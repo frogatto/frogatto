@@ -218,6 +218,16 @@ hex_object_ptr hex_map::get_tile_from_pixel_pos(int mx, int my) const
 	return get_tile_at(p.x, p.y);
 }
 
+point hex_map::get_pixel_pos_from_tile_pos(int x, int y)
+{
+	const int HexTileSize = 72;
+	const int HexTileSizeHalf = HexTileSize/2;
+	const int HexTileSizeThreeQuarters = (HexTileSize*3)/4;
+	const int tx = x*(abs(x)%2)*HexTileSizeThreeQuarters + x*(abs(x)%2==0)*HexTileSizeThreeQuarters;
+	const int ty = HexTileSize*y + (abs(x)%2)*HexTileSizeHalf;
+	return point(tx, ty);
+}
+
 hex_object_ptr hex_map::get_tile_at(int x, int y) const
 {
 	x -= x_;
@@ -254,6 +264,50 @@ bool hex_map::set_tile(int xx, int yy, const std::string& tile)
 		changed = true;
 	}
 	return changed;
+}
+
+point hex_map::loc_in_dir(int x, int y, direction d)
+{
+	int ox = x;
+	int oy = y;
+	if(d == NORTH) {
+		y -= 1;
+	} else if(d == SOUTH) {
+		y += 1;
+	} else if(d == NORTH_WEST) {
+		y -= (abs(ox)%2==0) ? 1 : 0;
+		x -= 1;
+	} else if(d == NORTH_EAST) {
+		y -= (abs(ox)%2==0) ? 1 : 0;
+		x += 1;
+	} else if(d == SOUTH_WEST) {
+		y += (abs(ox)%2) ? 1 : 0;
+		x -= 1;
+	} else if(d == SOUTH_EAST) {
+		y += (abs(ox)%2) ? 1 : 0;
+		x += 1;
+	} else {
+		ASSERT_LOG(false, "Unrecognised direction: " << d);
+	}
+	return point(x, y);
+}
+
+point hex_map::loc_in_dir(int x, int y, const std::string& s)
+{
+	if(s == "north" || s == "n") {
+		return loc_in_dir(x, y, NORTH);
+	} else if(s == "south" || s == "s") {
+		return loc_in_dir(x, y, SOUTH);
+	} else if(s == "north_west" || s == "nw" || s == "northwest") {
+		return loc_in_dir(x, y, NORTH_WEST);
+	} else if(s == "north_east" || s == "ne" || s == "northeast") {
+		return loc_in_dir(x, y, NORTH_EAST);
+	} else if(s == "south_west" || s == "sw" || s == "southwest") {
+		return loc_in_dir(x, y, SOUTH_WEST);
+	} else if(s == "south_east" || s == "se" || s == "southeast") {
+		return loc_in_dir(x, y, SOUTH_EAST);
+	}
+	ASSERT_LOG(false, "Unreognised direction " << s);
 }
 
 }

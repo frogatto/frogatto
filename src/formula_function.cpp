@@ -2229,6 +2229,87 @@ FUNCTION_DEF(hex_get_tile_at, 3, 3, "hex_get_tile_at(hexmap, x, y) -> hex_tile o
 	return variant(hexmap->get_tile_from_pixel_pos(mx, my).get());
 END_FUNCTION_DEF(hex_get_tile_at)
 
+FUNCTION_DEF(hex_tile_coords, 2, 3, "hex_tile_coords(x, y, (opt)string) -> [x,y]: Gets the center pixel co-ordinates of a given tile co-ordinate."
+	"string can be effect the co-ordinates returned. \"bounding\" -> [x,y,w,h] Bounding rect of the tile. \"center\" -> [x,y] center co-ordinates of the tile(default)"
+	"\"hex\" -> [[x0,y0],[x1,y1],[x2,y2],[x3,y3],[x4,y4],[x5,y5]] Co-ordinates of points around outside of the tile.")
+	const int x = args()[0]->evaluate(variables).as_int();
+	const int y = args()[1]->evaluate(variables).as_int();
+	point p(hex::hex_map::get_pixel_pos_from_tile_pos(x, y));
+	std::vector<variant> v;
+	const int HexTileSize = 72;
+	if(args().size() > 2) {
+		const std::string opt(args()[2]->evaluate(variables).as_string());
+		if(opt == "bounding" || opt == "rect") {
+			v.push_back(variant(p.x));
+			v.push_back(variant(p.y));
+			v.push_back(variant(HexTileSize));
+			v.push_back(variant(HexTileSize));
+		} else if(opt == "hex") {
+			const float angle = 2.0f * 3.14159265358979f / 6.0f;
+			for(int i = 0; i < 6; i++) {
+				v.push_back(variant(decimal(p.x + HexTileSize/2 + HexTileSize/2.0f * sin(i * angle))));
+				v.push_back(variant(decimal(p.y + HexTileSize/2 + HexTileSize/2.0f * cos(i * angle))));
+			}
+		} else {
+			v.push_back(variant(p.x + HexTileSize/2));
+			v.push_back(variant(p.y + HexTileSize/2));
+		}
+		// unknown just drop down and do default
+	} else {
+		v.push_back(variant(p.x + HexTileSize/2));
+		v.push_back(variant(p.y + HexTileSize/2));
+	}
+	return variant(&v);
+END_FUNCTION_DEF(hex_tile_coords)
+
+FUNCTION_DEF(hex_location, 3, 3, "hex_location(x,y,string dir) -> [x,y]: calculates the co-ordinates of the tile in the given direction.")
+	const int x = args()[0]->evaluate(variables).as_int();
+	const int y = args()[1]->evaluate(variables).as_int();
+	variant d = args()[2]->evaluate(variables);
+	point p(x,y);
+	if(d.is_list()) {
+		for(int i = 0; i < d.num_elements(); i++) {
+			p = hex::hex_map::loc_in_dir(p.x, p.y, d[i].as_string());
+		}
+	} else if(d.is_string()) {
+		const std::string dir(d.as_string());
+		p = hex::hex_map::loc_in_dir(x, y, dir);
+	}
+	std::vector<variant> v;
+	v.push_back(variant(p.x));
+	v.push_back(variant(p.y));
+	return variant(&v);
+END_FUNCTION_DEF(hex_location)
+
+FUNCTION_DEF(hex_get_tile, 1, 1, "hex_get_tile(string) -> hex_tile object: Returns a hex tile object with the given name.")
+	const std::string& tstr(args()[0]->evaluate(variables).as_string());
+	return variant(hex::hex_object::get_hex_tile(tstr).get());
+END_FUNCTION_DEF(hex_get_tile)
+
+FUNCTION_DEF(hex_get_random_tile, 1, 2, "hex_get_random_tile(regex, (opt)count) -> hex_tile object(s): Generates either a single random tile or an array of count random tiles, picked from the given regular expression")
+	const boost::regex re(args()[0]->evaluate(variables).as_string());
+	std::vector<hex::hex_tile_ptr>& tile_list = hex::hex_object::get_editor_tiles();
+	std::vector<hex::hex_tile_ptr> matches;
+	for(size_t i = 0; i < tile_list.size(); ++i) {
+		if(boost::regex_match(tile_list[i]->get_editor_info().type, re)) {
+			matches.push_back(tile_list[i]);
+		}
+	}
+	if(matches.empty()) {
+		return variant();
+	}
+	if(args().size() > 1) {
+		const int count = args()[1]->evaluate(variables).as_int();
+		std::vector<variant> v;
+		for(int i = 0; i < count; ++i ) {
+			v.push_back(variant(matches[rand() % matches.size()].get()));
+		}
+		return variant(&v);
+	} else {
+		return variant(matches[rand() % matches.size()].get());
+	}
+END_FUNCTION_DEF(hex_get_random_tile)
+
 }
 
 UNIT_TEST(modulo_operation) {

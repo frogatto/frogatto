@@ -47,6 +47,8 @@ public:
 	static std::vector<std::string> get_rules();
 	static std::vector<hex_tile_ptr> get_hex_tiles();
 	static std::vector<hex_tile_ptr>& get_editor_tiles();
+
+	static hex_tile_ptr get_hex_tile(const std::string& type);
 private:
 
 	// map coordinates.

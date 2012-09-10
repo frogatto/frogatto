@@ -39,22 +39,18 @@ basic_hex_tile::~basic_hex_tile()
 
 void basic_hex_tile::draw(int x, int y) const
 {
-	//XXX FIXME for non 72x72 tiles.
-	//XXX Draw using offset_x_ and offset_y_
-	const int TileSize = 72;
-	const int TileSizeHalf = TileSize/2;
-	const int TileSizeThreeQuarters = (TileSize*3)/4;
-	const int tx = x*(abs(x)%2)*TileSizeThreeQuarters + x*(abs(x)%2==0)*TileSizeThreeQuarters - offset_x_;
-	const int ty = TileSize*y + (abs(x)%2)*TileSizeHalf - offset_y_;
+	point p(hex_map::get_pixel_pos_from_tile_pos(x,y));
+	p.x -= offset_x_;
+	p.y -= offset_y_;
 	if(frame_) {
-		frame_->draw(tx, ty, true, false, cycle_);
+		frame_->draw(p.x, p.y, true, false, cycle_);
 		if(++cycle_ >= frame_->duration()) {
 			cycle_ = 0;
 			// XXX: here we could do stuff like cycling through animations automatically
 			// or calling event handlers to grab the next animation to play etc.
 		}
 	} else {
-		graphics::blit_texture(texture_, tx, ty, rect_.w(), rect_.h(), 0.0f, 
+		graphics::blit_texture(texture_, p.x, p.y, rect_.w(), rect_.h(), 0.0f, 
 			GLfloat(rect_.x())/GLfloat(texture_.width()),
 			GLfloat(rect_.y())/GLfloat(texture_.height()),
 			GLfloat(rect_.x2())/GLfloat(texture_.width()),
@@ -306,79 +302,14 @@ basic_hex_tile_ptr hex_tile::get_single_tile()
 	return variations_.front();
 }
 
-basic_hex_tile_ptr hex_tile::best_terrain_match(hex_object_ptr hop,
-	const std::string& terrain, 
-	const std::vector<std::string>& adjacent, 
-	const std::string& transition_type)
-{
-	// See if "transition_type" exists
-	std::map<std::string, transition_map>::const_iterator tx_it = transitions_.find(transition_type);
-	if(tx_it == transitions_.end()) {
-		return basic_hex_tile_ptr();
-	}
-
-	// Is this tile in adjacent list
-	std::vector<std::string>::const_iterator ait = std::find(adjacent.begin(), adjacent.end(), type());
-	if(ait == adjacent.end()) {
-		return basic_hex_tile_ptr();
-	}
-
-	// Extraxt keys
-	std::vector<std::string> tx_keys;
-	std::transform(tx_it->second.begin(), tx_it->second.end(), std::back_inserter(tx_keys),
-		boost::bind(&hex::transition_map::value_type::first,_1));
-
-	// Split keys into components. XXX can we combine this with the above transform?
-	std::vector<std::vector<std::string> > split_keys;
-	std::transform(tx_keys.begin(), tx_keys.end(), std::back_inserter(split_keys), boost::bind(&util::split, _1, "-"));
-
-	std::string longest_match;
-
-	// Match terrain in directions
-	std::vector<std::vector<std::string> >::const_iterator skit = split_keys.begin();
-	while(skit != split_keys.end()) {
-		bool pattern_match = true;
-		foreach(const std::string& d, *skit) {
-			hex_object_ptr nhop = hop->get_tile_in_dir(d);
-			if(nhop == NULL || nhop->tile()->type() != terrain) {
-				pattern_match = false;
-			}
-		}
-		if(pattern_match) {
-			std::string s = util::join(*skit, '-');
-			if(s.length() > longest_match.length()) {
-				longest_match = s;
-			}
-		}
-		++skit;
-	}
-	if(longest_match.empty()) {
-		return basic_hex_tile_ptr();
-	}
-	std::cerr << "MATCH: " << hop->x() << "," << hop->y() << " : " << longest_match << " : " << type() << std::endl;
-
-	transition_map::const_iterator tm_it = tx_it->second.find(longest_match);
-	ASSERT_LOG(tm_it != tx_it->second.end(), "transition_map vanished, bad mojo");
-
-	int roll = rand() % tm_it->second.size();
-	tm_it->second[roll]->get_texture();
-	return tm_it->second[roll];
-}
-
 void hex_tile::editor_info::draw(int x, int y) const
 {
-	const int HexTileSize = 72;
-	const int HexTileSizeHalf = HexTileSize/2;
-	const int HexTileSizeThreeQuarters = (HexTileSize*3)/4;
-	const int tx = x*(abs(x)%2)*HexTileSizeThreeQuarters + x*(abs(x)%2==0)*HexTileSizeThreeQuarters;
-	const int ty = HexTileSize*y + (abs(x)%2)*HexTileSizeHalf;
-
-	graphics::blit_texture(texture, tx, ty, image_rect.w(), image_rect.h(), 0.0f, 
+	point p(hex_map::get_pixel_pos_from_tile_pos(x,y));
+	graphics::blit_texture(texture, p.x, p.y, image_rect.w(), image_rect.h(), 0.0f, 
 		GLfloat(image_rect.x())/GLfloat(texture.width()),
 		GLfloat(image_rect.y())/GLfloat(texture.height()),
 		GLfloat(image_rect.x2())/GLfloat(texture.width()),
 		GLfloat(image_rect.y2())/GLfloat(texture.height()));
-
 }
 
 }

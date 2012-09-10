@@ -88,12 +88,7 @@ namespace hex {
 		basic_hex_tile_ptr get_single_tile();
 		transition_map* find_transition(const std::string& key);
 		basic_hex_tile_ptr get_transition_tile(const std::string& key);
-
 		variant get_transitions();
-		basic_hex_tile_ptr best_terrain_match(hex_object_ptr hop,
-			const std::string& terrain, 
-			const std::vector<std::string>& matching, 
-			const std::string& transition_type);
 		
 		struct editor_info
 		{

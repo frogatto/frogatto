@@ -68,6 +68,15 @@ variant get_constant(const std::string& id)
 		return variant(i18n::get_locale());
 	} else if(id == "EPSILON") {
 		return variant(decimal::epsilon());
+	} else if(id == "HEX_DIRECTIONS") {
+		std::vector<variant> v;
+		v.push_back(variant("n"));
+		v.push_back(variant("ne"));
+		v.push_back(variant("se"));
+		v.push_back(variant("s"));
+		v.push_back(variant("sw"));
+		v.push_back(variant("nw"));
+		return variant(&v);
 	}
 
 	if(constants_stack.empty() == false) {

@@ -42,10 +42,14 @@ public:
 
 	bool set_tile(int x, int y, const std::string& tile);
 
-	hex_object_ptr get_hex_tile(enum hex::direction d, int x, int y) const;
+	hex_object_ptr get_hex_tile(direction d, int x, int y) const;
 	hex_object_ptr get_tile_at(int x, int y) const;
 	hex_object_ptr get_tile_from_pixel_pos(int x, int y) const;
 	static point get_tile_pos_from_pixel_pos(int x, int y);
+	static point get_pixel_pos_from_tile_pos(int x, int y);
+
+	static point loc_in_dir(int x, int y, direction d);
+	static point loc_in_dir(int x, int y, const std::string& s);
 protected:
 	virtual variant get_value(const std::string&) const;
 	virtual void set_value(const std::string& key, const variant& value);

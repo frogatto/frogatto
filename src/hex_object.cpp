@@ -79,45 +79,6 @@ void load_hex_tiles(variant node)
 	load_hex_editor_tiles();
 }
 
-
-class find_transition_function : public game_logic::function_expression {
-public:
-	explicit find_transition_function(const args_list& args)
-	 : function_expression("find_transition", args, 4, 4)
-	{}
-private:
-	variant execute(const game_logic::formula_callable& variables) const {
-		variant hex = args()[0]->evaluate(variables);
-		hex_object_ptr hop = hex_object_ptr(hex.try_convert<hex_object>());
-		ASSERT_LOG(hop != NULL, "Could not convert first parameter to valid hex_object");
-		std::string this_terrain = args()[1]->evaluate(variables).as_string();
-		std::vector<std::string> matching_terrain = args()[2]->evaluate(variables).as_list_string();
-		std::string tt = args()[3]->evaluate(variables).as_string();
-
-		return variant(hop->tile()->best_terrain_match(hop, this_terrain, matching_terrain, tt).get());
-	}
-};
-
-class create_tile_function : public game_logic::function_expression {
-public:
-	explicit create_tile_function(const args_list& args)
-	 : function_expression("create_tile", args, 1, 1)
-	{}
-private:
-	variant execute(const game_logic::formula_callable& variables) const {
-		const std::string key = args()[0]->evaluate(variables).as_string();
-		std::map<std::string, hex_tile_ptr>::const_iterator it 
-			= get_editor_hex_tile_map().find(key);
-		if(it == get_editor_hex_tile_map().end()) {
-			it = get_hex_tile_map().find(key);
-			if(it == get_hex_tile_map().end()) {
-				return variant();
-			}
-		}
-		return variant(it->second->get_single_tile().get());
-	}
-};
-
 class get_tile_function : public game_logic::function_expression {
 public:
 	explicit get_tile_function(const args_list& args)
@@ -126,15 +87,7 @@ public:
 private:
 	variant execute(const game_logic::formula_callable& variables) const {
 		const std::string key = args()[0]->evaluate(variables).as_string();
-		std::map<std::string, hex_tile_ptr>::const_iterator it 
-			= get_editor_hex_tile_map().find(key);
-		if(it == get_editor_hex_tile_map().end()) {
-			it = get_hex_tile_map().find(key);
-			if(it == get_hex_tile_map().end()) {
-				return variant();
-			}
-		}
-		return variant(it->second.get());
+		return variant(hex_object::get_hex_tile(key).get());
 	}
 };
 
@@ -149,12 +102,8 @@ public:
 		const std::vector<game_logic::expression_ptr>& args,
 		const game_logic::formula_callable_definition* callable_def) const
 	{
-		if(fn == "create_tile") {
-			return game_logic::expression_ptr(new create_tile_function(args));
-		} else if(fn == "get_tile") {
+		if(fn == "get_tile") {
 			return game_logic::expression_ptr(new get_tile_function(args));
-		} else if(fn == "find_transition") {
-			return game_logic::expression_ptr(new find_transition_function(args));
 		}
 		return function_symbol_table::create_function(fn, args, callable_def);
 	}
@@ -309,8 +258,9 @@ variant hex_object::get_value(const std::string& key) const
 void hex_object::set_value(const std::string& key, const variant& value)
 {
 	if(key == "tile") {
-		tile_ = basic_hex_tile_ptr(value.try_convert<basic_hex_tile>());
-		ASSERT_LOG(tile_ != NULL, "Couldn't convert tile to correct type");
+		hex_tile_ptr htp(value.try_convert<hex_tile>());
+		ASSERT_LOG(htp != NULL, "Couldn't convert tile to correct type");
+		tile_ = htp->get_single_tile();
 	} else if(key == "transitions") {
 		if(value.is_callable()) {
 			transitions_.push_back(basic_hex_tile_ptr(value.try_convert<basic_hex_tile>()));
@@ -399,6 +349,19 @@ std::vector<hex_tile_ptr> hex_object::get_hex_tiles()
 std::vector<hex_tile_ptr>& hex_object::get_editor_tiles()
 {
 	return get_hex_editor_tiles();
+}
+
+hex_tile_ptr hex_object::get_hex_tile(const std::string& type)
+{
+	std::map<std::string, hex_tile_ptr>::const_iterator it 
+		= get_editor_hex_tile_map().find(type);
+	if(it == get_editor_hex_tile_map().end()) {
+		it = get_hex_tile_map().find(type);
+		if(it == get_hex_tile_map().end()) {
+			return hex_tile_ptr();
+		}
+	}
+	return it->second;
 }
 
 }
