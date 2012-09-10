@@ -1645,13 +1645,13 @@ FUNCTION_DEF(teleport, 1, 5, "teleport(string dest_level, (optional)string dest_
 		}
 	} else {
 		variant argMap = args()[0]->evaluate(variables);
-		dst_level_str = argMap["level"].is_null() ? "" : argMap["level"].as_string();
-		label = argMap["label"].is_null() ? "" : argMap["label"].as_string();
+		dst_level_str = argMap["level"].as_string_default("");
+		label = argMap["label"].as_string_default("");
 		if(!argMap["player"].is_null()) {
 			new_playable = argMap["player"].try_convert<entity>();
 		}
-		transition = argMap["transition"].is_null() ? "iris" : argMap["transition"].as_string();
-		no_move_to_standing = argMap["stand"].is_null() ? false : !argMap["stand"].as_bool();
+		transition = argMap["transition"].as_string_default("iris");
+		no_move_to_standing = !argMap["stand"].as_bool(true);
 	}
 
 	return variant(new teleport_command(dst_level_str, label, transition, new_playable, no_move_to_standing));
