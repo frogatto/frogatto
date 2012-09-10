@@ -11,6 +11,7 @@
 #include "module.hpp"
 #include "variant_utils.hpp"
 
+
 namespace hex {
 
 namespace {
@@ -19,6 +20,41 @@ std::map<std::string, hex_tile_ptr>& get_hex_tile_map()
 {
 	static std::map<std::string, hex_tile_ptr> tile_map;
 	return tile_map;
+}
+
+std::vector<hex_tile_ptr>& get_hex_editor_tiles()
+{
+	static std::vector<hex_tile_ptr> tiles;
+	return tiles;
+}
+
+std::map<std::string, hex_tile_ptr>& get_editor_hex_tile_map()
+{
+	static std::map<std::string, hex_tile_ptr> tile_map;
+	return tile_map;
+}
+
+void load_editor_tiles()
+{
+	std::map<std::string, hex_tile_ptr>::const_iterator it = get_hex_tile_map().begin();
+	while(it != get_hex_tile_map().end()) {
+		if(it->second->get_editor_info().name.empty() == false 
+			&& it->second->get_editor_info().type.empty() == false) {
+			get_hex_editor_tiles().push_back(it->second);
+		}
+		++it;
+	}
+}
+
+void load_hex_editor_tiles()
+{
+	std::map<std::string, hex_tile_ptr>::const_iterator it = get_hex_tile_map().begin();
+	while(it != get_hex_tile_map().end()) {
+		if(it->second->get_editor_info().type.empty() == false) {
+			get_editor_hex_tile_map()[it->second->get_editor_info().type] = it->second;
+		}
+		++it;
+	}
 }
 
 void load_hex_tiles(variant node)
@@ -30,6 +66,17 @@ void load_hex_tiles(variant node)
 		std::string keys = key.as_string();
 		get_hex_tile_map()[keys] = hex_tile_ptr(new hex_tile(keys, node[key]));
 	}
+
+	// get list of all tiles have non-empty "editor_info" blocks.
+	if(!get_hex_editor_tiles().empty()) {
+		get_hex_editor_tiles().clear();
+	}
+	load_editor_tiles();
+
+	if(!get_editor_hex_tile_map().empty()) {
+		get_editor_hex_tile_map().clear();
+	}
+	load_hex_editor_tiles();
 }
 
 
@@ -58,10 +105,14 @@ public:
 	{}
 private:
 	variant execute(const game_logic::formula_callable& variables) const {
+		const std::string key = args()[0]->evaluate(variables).as_string();
 		std::map<std::string, hex_tile_ptr>::const_iterator it 
-			= get_hex_tile_map().find(args()[0]->evaluate(variables).as_string());
-		if(it == get_hex_tile_map().end()) {
-			return variant();
+			= get_editor_hex_tile_map().find(key);
+		if(it == get_editor_hex_tile_map().end()) {
+			it = get_hex_tile_map().find(key);
+			if(it == get_hex_tile_map().end()) {
+				return variant();
+			}
 		}
 		return variant(it->second->get_single_tile().get());
 	}
@@ -74,10 +125,14 @@ public:
 	{}
 private:
 	variant execute(const game_logic::formula_callable& variables) const {
+		const std::string key = args()[0]->evaluate(variables).as_string();
 		std::map<std::string, hex_tile_ptr>::const_iterator it 
-			= get_hex_tile_map().find(args()[0]->evaluate(variables).as_string());
-		if(it == get_hex_tile_map().end()) {
-			return variant();
+			= get_editor_hex_tile_map().find(key);
+		if(it == get_editor_hex_tile_map().end()) {
+			it = get_hex_tile_map().find(key);
+			if(it == get_hex_tile_map().end()) {
+				return variant();
+			}
 		}
 		return variant(it->second.get());
 	}
@@ -254,12 +309,6 @@ variant hex_object::get_value(const std::string& key) const
 void hex_object::set_value(const std::string& key, const variant& value)
 {
 	if(key == "tile") {
-		//std::map<std::string, hex_tile_ptr>::const_iterator it 
-		//	= get_hex_tile_map().find(value.as_string());
-		//ASSERT_LOG(it != get_hex_tile_map().end(), "tile named \"" << value.as_string() << "\" not found");
-		//if(it != get_hex_tile_map().end()) {
-		//	tile_ = it->second->get_single_tile();
-		//}
 		tile_ = basic_hex_tile_ptr(value.try_convert<basic_hex_tile>());
 		ASSERT_LOG(tile_ != NULL, "Couldn't convert tile to correct type");
 	} else if(key == "transitions") {
@@ -281,9 +330,7 @@ void hex_object::set_value(const std::string& key, const variant& value)
 
 void hex_object::build()
 {
-	//std::map<std::string, hex_tile_ptr>::const_iterator it = get_hex_tile_map().find(type_);
-	//ASSERT_LOG(it != get_hex_tile_map().end(), "\"" << type_ << "\" not found while building tiles.");
-	//tile_ = it->second;
+	// XXX
 }
 
 bool hex_object::execute_command(const variant& value)
@@ -347,6 +394,11 @@ std::vector<hex_tile_ptr> hex_object::get_hex_tiles()
 		std::back_inserter(v), 
 		boost::bind(&std::map<std::string, hex_tile_ptr>::value_type::second,_1));
 	return v;
+}
+
+std::vector<hex_tile_ptr>& hex_object::get_editor_tiles()
+{
+	return get_hex_editor_tiles();
 }
 
 }

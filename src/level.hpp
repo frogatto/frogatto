@@ -108,6 +108,11 @@ public:
 	void get_all_tiles_rect(int x1, int y1, int x2, int y2, std::map<int, std::vector<std::string> >& tiles) const;
 	void clear_tile_rect(int x1, int y1, int x2, int y2);
 	void remove_tiles_at(int x, int y);
+	void add_hex_tile_rect(int zorder, int x1, int y1, int x2, int y2, const std::string& tile);
+	void add_hex_tile_rect_vector(int zorder, int x1, int y1, int x2, int y2, const std::vector<std::string>& tiles);
+	void get_hex_tile_rect(int zorder, int x1, int y1, int x2, int y2, std::vector<std::string>& tiles) const;
+	void get_all_hex_tiles_rect(int x1, int y1, int x2, int y2, std::map<int, std::vector<std::string> >& tiles) const;
+	void clear_hex_tile_rect(int x1, int y1, int x2, int y2);
 
 	//function to do 'magic wand' selection -- given an x/y pixel position,
 	//will return all the solid tiles connected
@@ -361,6 +366,7 @@ private:
 	void calculate_lighting(int x, int y, int w, int h) const;
 
 	bool add_tile_rect_vector_internal(int zorder, int x1, int y1, int x2, int y2, const std::vector<std::string>& tiles);
+	bool add_hex_tile_rect_vector_internal(int zorder, int x1, int y1, int x2, int y2, const std::vector<std::string>& tiles);
 
 	void draw_layer(int layer, int x, int y, int w, int h) const;
 	void draw_layer_solid(int layer, int x, int y, int w, int h) const;

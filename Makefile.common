@@ -79,6 +79,7 @@ objects = \
 	hex_map.o \
 	hex_object.o \
 	hex_tile.o \
+	hex_tileset_editor_dialog.o \
 	http_client.o \
     http_server.o \
 	i18n.o \

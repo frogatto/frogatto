@@ -29,6 +29,7 @@ class property_editor_dialog;
 class segment_editor_dialog;
 class tileset_editor_dialog;
 class custom_object_dialog;
+class hex_tileset_editor_dialog;
 }
 
 class code_editor_dialog;
@@ -110,12 +111,15 @@ public:
 	int get_tileset() const { return cur_tileset_; }
 	void set_tileset(int index);
 
+	int get_hex_tileset() const { return cur_hex_tileset_; }
+	void set_hex_tileset(int index);
+
 	const std::vector<enemy_type>& all_characters() const;
 
 	int get_object() const { return cur_object_; }
 	void set_object(int index);
 
-	enum EDIT_TOOL { TOOL_ADD_RECT, TOOL_SELECT_RECT, TOOL_MAGIC_WAND, TOOL_PENCIL, TOOL_PICKER, TOOL_ADD_OBJECT, TOOL_SELECT_OBJECT, TOOL_EDIT_SEGMENTS, NUM_TOOLS };
+	enum EDIT_TOOL { TOOL_ADD_RECT, TOOL_SELECT_RECT, TOOL_MAGIC_WAND, TOOL_PENCIL, TOOL_PICKER, TOOL_ADD_OBJECT, TOOL_SELECT_OBJECT, TOOL_EDIT_SEGMENTS, TOOL_EDIT_HEXES, NUM_TOOLS };
 	EDIT_TOOL tool() const;
 	void change_tool(EDIT_TOOL tool);
 
@@ -219,6 +223,9 @@ private:
 	void draw() const;
 	void draw_selection(int xoffset, int yoffset) const;
 
+	void add_hex_tile_rect(int x1, int y1, int x2, int y2);
+	void remove_hex_tile_rect(int x1, int y1, int x2, int y2);
+
 	void add_tile_rect(int x1, int y1, int x2, int y2);
 	void remove_tile_rect(int x1, int y1, int x2, int y2);
 	void select_tile_rect(int x1, int y1, int x2, int y2);
@@ -272,6 +279,7 @@ private:
 	bool face_right_;
 	bool upside_down_;
 	int cur_tileset_;
+	int cur_hex_tileset_;
 
 	int cur_object_;
 
@@ -283,6 +291,7 @@ private:
 	boost::scoped_ptr<editor_dialogs::editor_layers_dialog> layers_dialog_;
 	boost::scoped_ptr<editor_dialogs::property_editor_dialog> property_dialog_;
 	boost::scoped_ptr<editor_dialogs::tileset_editor_dialog> tileset_dialog_;
+	boost::scoped_ptr<editor_dialogs::hex_tileset_editor_dialog> hex_tileset_dialog_;
 
 	boost::scoped_ptr<editor_dialogs::segment_editor_dialog> segment_dialog_;
 

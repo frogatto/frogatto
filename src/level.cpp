@@ -2588,6 +2588,23 @@ void level::add_tile_rect_vector(int zorder, int x1, int y1, int x2, int y2, con
 	add_tile_rect_vector_internal(zorder, x1, y1, x2, y2, tiles);
 }
 
+void level::add_hex_tile_rect(int zorder, int x1, int y1, int x2, int y2, const std::string& tile)
+{
+	add_hex_tile_rect_vector(zorder, x1, y1, x2, y2, std::vector<std::string>(1, tile));
+}
+
+void level::add_hex_tile_rect_vector(int zorder, int x1, int y1, int x2, int y2, const std::vector<std::string>& tiles)
+{
+	if(x1 > x2) {
+		std::swap(x1, x2);
+	}
+
+	if(y1 > y2) {
+		std::swap(y1, y2);
+	}
+	add_hex_tile_rect_vector_internal(zorder, x1, y1, x2, y2, tiles);
+}
+
 void level::set_tile_layer_speed(int zorder, int x_speed, int y_speed)
 {
 	tile_map& m = tile_maps_[zorder];
@@ -2650,6 +2667,42 @@ bool level::add_tile_rect_vector_internal(int zorder, int x1, int y1, int x2, in
 	return changed;
 }
 
+bool level::add_hex_tile_rect_vector_internal(int zorder, int x1, int y1, int x2, int y2, const std::vector<std::string>& tiles)
+{
+	if(tiles.empty()) {
+		return false;
+	}
+
+	if(x1 > x2) {
+		std::swap(x1, x2);
+	}
+
+	if(y1 > y2) {
+		std::swap(y1, y2);
+	}
+
+	std::map<int, hex::hex_map_ptr>::iterator it = hex_maps_.find(zorder);
+	if(it == hex_maps_.end()) {
+		hex_maps_[zorder] = hex::hex_map_ptr(new hex::hex_map());
+	}
+	hex::hex_map_ptr& m = hex_maps_[zorder];
+	m->set_zorder(zorder);
+
+	bool changed = false;
+	int index = 0;
+	const int TileSize = 72;
+	for(int x = x1; x < x2; x += TileSize) {
+		for(int y = y1; y < y2; y += TileSize) {
+			changed = m->set_tile(x, y, tiles[index]) || changed;
+			if(index+1 < tiles.size()) {
+				++index;
+			}
+		}
+	}
+
+	return changed;
+}
+
 void level::get_tile_rect(int zorder, int x1, int y1, int x2, int y2, std::vector<std::string>& tiles) const
 {
 	if(x1 > x2) {
@@ -2694,6 +2747,47 @@ void level::get_all_tiles_rect(int x1, int y1, int x2, int y2, std::map<int, std
 	}
 }
 
+void level::get_all_hex_tiles_rect(int x1, int y1, int x2, int y2, std::map<int, std::vector<std::string> >& tiles) const
+{
+	for(std::set<int>::const_iterator i = layers_.begin(); i != layers_.end(); ++i) {
+		if(hidden_layers_.count(*i)) {
+			continue;
+		}
+
+		std::vector<std::string> cleared;
+		get_hex_tile_rect(*i, x1, y1, x2, y2, cleared);
+		if(std::count(cleared.begin(), cleared.end(), "") != cleared.size()) {
+			tiles[*i].swap(cleared);
+		}
+	}
+}
+
+void level::get_hex_tile_rect(int zorder, int x1, int y1, int x2, int y2, std::vector<std::string>& tiles) const
+{
+	if(x1 > x2) {
+		std::swap(x1, x2);
+	}
+
+	if(y1 > y2) {
+		std::swap(y1, y2);
+	}
+
+	std::map<int, hex::hex_map_ptr>::const_iterator map_iterator = hex_maps_.find(zorder);
+	if(map_iterator == hex_maps_.end()) {
+		tiles.push_back("");
+		return;
+	}
+	const hex::hex_map_ptr& m = map_iterator->second;
+
+	const int HexTileSize = 72;
+	for(int x = x1; x < x2; x += HexTileSize) {
+		for(int y = y1; y < y2; y += HexTileSize) {
+			hex::hex_object_ptr p = m->get_tile_from_pixel_pos(x, y);
+			tiles.push_back((p) ? p->type() : "");
+		}
+	}
+}
+
 void level::clear_tile_rect(int x1, int y1, int x2, int y2)
 {
 	if(x1 > x2) {
@@ -2712,6 +2806,29 @@ void level::clear_tile_rect(int x1, int y1, int x2, int y2)
 		}
 
 		if(add_tile_rect_vector_internal(*i, x1, y1, x2, y2, v)) {
+			changed = true;
+		}
+	}
+}
+
+void level::clear_hex_tile_rect(int x1, int y1, int x2, int y2)
+{
+	if(x1 > x2) {
+		std::swap(x1, x2);
+	}
+
+	if(y1 > y2) {
+		std::swap(y1, y2);
+	}
+
+	bool changed = false;
+	std::vector<std::string> v(1, "");
+	for(std::set<int>::const_iterator i = layers_.begin(); i != layers_.end(); ++i) {
+		if(hidden_layers_.count(*i)) {
+			continue;
+		}
+
+		if(add_hex_tile_rect_vector_internal(*i, x1, y1, x2, y2, v)) {
 			changed = true;
 		}
 	}
@@ -3381,6 +3498,12 @@ variant level::get_value(const std::string& key) const
 	} else if(key == "debug_properties") {
 		return vector_to_variant(debug_properties_);
 	} else if(key == "hexmap") {
+		if(hex_maps_.empty() == false) {
+			return variant(hex_maps_.rbegin()->second.get());
+		} else {
+			return variant();
+		}
+	} else if(key == "hexmaps") {
 		std::map<variant, variant> m;
 		std::map<int, hex::hex_map_ptr>::const_iterator it = hex_maps_.begin();
 		while(it != hex_maps_.end()) {
@@ -3770,7 +3893,7 @@ std::vector<entity_ptr> level::predict_future(entity_ptr e, int ncycles)
 			process();
 			backup();
 			++nframes;
-		} catch(validation_failure_exception& e) {
+		} catch(validation_failure_exception&) {
 			std::cerr << "ERROR WHILE PREDICTING FUTURE...\n";
 			break;
 		}

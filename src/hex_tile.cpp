@@ -106,6 +106,7 @@ hex_tile::hex_tile(const std::string& type, variant node)
 		editor_info_.name = node["editor_info"]["name"].as_string();
 		editor_info_.image = node["editor_info"]["image"].as_string();
 		editor_info_.group = node["editor_info"]["group"].as_string();
+		editor_info_.type = node["editor_info"]["type"].as_string();
 		ASSERT_LOG(node["editor_info"]["rect"].num_elements() == 4 && node["editor_info"]["rect"].is_list(), "rect must be a list of four(4) integers.");
 		editor_info_.image_rect = rect::from_coordinates(node["editor_info"]["rect"][0].as_int(), 
 			node["editor_info"]["rect"][1].as_int(), 
@@ -221,6 +222,48 @@ public:
 	{}
 };
 
+class editor_info_callable : public game_logic::formula_callable
+{
+	hex_tile_ptr tile_;
+	variant get_value(const std::string& key) const
+	{
+		if(key == "type") {
+			return variant(tile_->get_editor_info().type);
+		} else if(key == "name") {
+			return variant(tile_->get_editor_info().name);
+		} else if(key == "image") {
+			return variant(tile_->get_editor_info().image);
+		} else if(key == "rect") {
+			std::vector<variant> v;
+			v.push_back(variant(tile_->get_editor_info().image_rect.x()));
+			v.push_back(variant(tile_->get_editor_info().image_rect.y()));
+			v.push_back(variant(tile_->get_editor_info().image_rect.w()));
+			v.push_back(variant(tile_->get_editor_info().image_rect.h()));
+			return variant(&v);
+		} else if(key == "group") {
+			return variant(tile_->get_editor_info().group);
+		}
+		std::map<variant, variant> m;
+		m[variant("type")] = variant(tile_->get_editor_info().type);
+		m[variant("name")] = variant(tile_->get_editor_info().name);
+		m[variant("image")] = variant(tile_->get_editor_info().image);
+		m[variant("group")] = variant(tile_->get_editor_info().group);
+		std::vector<variant> v;
+		v.push_back(variant(tile_->get_editor_info().image_rect.x()));
+		v.push_back(variant(tile_->get_editor_info().image_rect.y()));
+		v.push_back(variant(tile_->get_editor_info().image_rect.w()));
+		v.push_back(variant(tile_->get_editor_info().image_rect.h()));
+		m[variant("rect")] = variant(&v);
+		return variant(&m);
+	}
+	void set_value(const std::string& key, const variant& value)
+	{}
+public:
+	explicit editor_info_callable(const hex_tile& tile)
+		: tile_(const_cast<hex_tile*>(&tile))
+	{}
+};
+
 variant hex_tile::get_value(const std::string& key) const
 {
 	if(key == "variations") {
@@ -230,6 +273,8 @@ variant hex_tile::get_value(const std::string& key) const
 		return variant(type());
 	} else if(key == "name") {
 		return variant(name());
+	} else if(key == "editor_info") {
+		return variant(new editor_info_callable(*this));
 	}
 	return variant();
 }
@@ -318,6 +363,22 @@ basic_hex_tile_ptr hex_tile::best_terrain_match(hex_object_ptr hop,
 	int roll = rand() % tm_it->second.size();
 	tm_it->second[roll]->get_texture();
 	return tm_it->second[roll];
+}
+
+void hex_tile::editor_info::draw(int x, int y) const
+{
+	const int HexTileSize = 72;
+	const int HexTileSizeHalf = HexTileSize/2;
+	const int HexTileSizeThreeQuarters = (HexTileSize*3)/4;
+	const int tx = x*(abs(x)%2)*HexTileSizeThreeQuarters + x*(abs(x)%2==0)*HexTileSizeThreeQuarters;
+	const int ty = HexTileSize*y + (abs(x)%2)*HexTileSizeHalf;
+
+	graphics::blit_texture(texture, tx, ty, image_rect.w(), image_rect.h(), 0.0f, 
+		GLfloat(image_rect.x())/GLfloat(texture.width()),
+		GLfloat(image_rect.y())/GLfloat(texture.height()),
+		GLfloat(image_rect.x2())/GLfloat(texture.width()),
+		GLfloat(image_rect.y2())/GLfloat(texture.height()));
+
 }
 
 }

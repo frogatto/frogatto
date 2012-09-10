@@ -28,6 +28,10 @@ public:
 	{}
 	explicit hex_map(variant node);
 	int zorder() const { return zorder_; }
+	void set_zorder(int zorder) { zorder_ = zorder; }
+
+	int x() const { return x_; }
+	int y() const { return y_; }
 
 	size_t width() const { return width_; }
 	size_t height() const { return height_; }
@@ -36,8 +40,12 @@ public:
 	virtual void draw() const;
 	variant write() const;
 
-	hex_object_ptr get_hex_tile(enum hex::direction d, int x, int y) const;
+	bool set_tile(int x, int y, const std::string& tile);
 
+	hex_object_ptr get_hex_tile(enum hex::direction d, int x, int y) const;
+	hex_object_ptr get_tile_at(int x, int y) const;
+	hex_object_ptr get_tile_from_pixel_pos(int x, int y) const;
+	static point get_tile_pos_from_pixel_pos(int x, int y);
 protected:
 	virtual variant get_value(const std::string&) const;
 	virtual void set_value(const std::string& key, const variant& value);

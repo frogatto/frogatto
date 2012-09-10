@@ -94,6 +94,20 @@ namespace hex {
 			const std::string& terrain, 
 			const std::vector<std::string>& matching, 
 			const std::string& transition_type);
+		
+		struct editor_info
+		{
+			std::string name;
+			std::string type;
+			std::string image;
+			mutable graphics::texture texture;
+			std::string group;
+			rect image_rect;
+			void draw(int tx, int ty) const;
+		};
+
+		editor_info& get_editor_info() { return editor_info_; } 
+
 	protected:
 		virtual variant get_value(const std::string&) const;
 		virtual void set_value(const std::string& key, const variant& value);
@@ -102,15 +116,8 @@ namespace hex {
 		std::string name_;
 		std::vector<basic_hex_tile_ptr> variations_;
 		std::map<std::string, transition_map> transitions_;
-	
-		struct editor_info
-		{
-			std::string name;
-			std::string image;
-			mutable graphics::texture texture;
-			std::string group;
-			rect image_rect;
-		} editor_info_;
+
+		editor_info editor_info_;
 	};
 
 	typedef boost::intrusive_ptr<hex_tile> hex_tile_ptr;

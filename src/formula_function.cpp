@@ -30,6 +30,7 @@
 #include "formula_function.hpp"
 #include "formula_function_registry.hpp"
 #include "geometry.hpp"
+#include "hex_map.hpp"
 #include "string_utils.hpp"
 #include "unit_test.hpp"
 #include "variant_callable.hpp"
@@ -2197,6 +2198,36 @@ void function_expression::set_debug_info(const variant& parent_formula,
 	}
 }
 
+namespace {
+bool point_in_triangle(point p, point t[3]) 
+{
+	point v0(t[2].x - t[0].x, t[2].y - t[0].y);
+	point v1(t[1].x - t[0].x, t[1].y - t[0].y);
+	point v2(p.x - t[0].x, p.y - t[0].y);
+
+	int dot00 = t[0].x * t[0].x + t[0].y * t[0].y;
+	int dot01 = t[0].x * t[1].x + t[0].y * t[1].y;
+	int dot02 = t[0].x * t[2].x + t[0].y * t[2].y;
+	int dot11 = t[1].x * t[1].x + t[1].y * t[1].y;
+	int dot12 = t[1].x * t[2].x + t[1].y * t[2].y;
+	float invDenom = 1 / float(dot00 * dot11 - dot01 * dot01);
+	float u = (dot11 * dot02 - dot01 * dot12) * invDenom;
+	float v = (dot00 * dot12 - dot01 * dot02) * invDenom;
+	return u >= 0.0f && v >= 0.0f && (u+v) < 1.0f;
+}
+}
+
+
+FUNCTION_DEF(hex_get_tile_at, 3, 3, "hex_get_tile_at(hexmap, x, y) -> hex_tile object: Finds the hex tile at the given level co-ordinates")
+	// Because we assume hexes are placed at a regular series of intervals
+	variant v = args()[0]->evaluate(variables);
+	hex::hex_map_ptr hexmap = hex::hex_map_ptr(v.try_convert<hex::hex_map>());
+	ASSERT_LOG(hexmap, "hexmap not of the correct type.");
+	const int mx = args()[1]->evaluate(variables).as_int();
+	const int my = args()[2]->evaluate(variables).as_int();
+
+	return variant(hexmap->get_tile_from_pixel_pos(mx, my).get());
+END_FUNCTION_DEF(hex_get_tile_at)
 
 }
 

@@ -17,7 +17,7 @@ namespace hex {
 hex_map::hex_map(variant node)
 	: zorder_(node["zorder"].as_int(-1000)), 
 	x_(node["x"].as_int(0)), 
-	y_(node["y"].as_int(0))
+	y_(node["y"].as_int(0)), width_(0), height_(0)
 {
 	std::vector<std::string> result;
 	std::string tile_str = node["tiles"].as_string();
@@ -164,6 +164,96 @@ variant hex_map::get_value(const std::string& key) const
 
 void hex_map::set_value(const std::string& key, const variant& value)
 {
+}
+
+point hex_map::get_tile_pos_from_pixel_pos(int mx, int my)
+{
+	//const int TileSize = 72;
+	//const int TileSizeOnePointFive = (3*TileSize)/2;
+	//const int TileSizeThreeQuarters = (3*TileSize)/4;
+	//const int tx = mx / TileSizeThreeQuarters;
+	//const int ty = my / TileSize;
+	//return point(tx, ty);
+	const int TileSize = 72;
+	const int tesselation_x_size = (3*TileSize)/4 * 2;
+	const int tesselation_y_size = TileSize;
+	const int x_base = mx / tesselation_x_size * 2;
+	const int x_mod  = mx % tesselation_x_size;
+	const int y_base = my / tesselation_y_size;
+	const int y_mod  = my % tesselation_y_size;
+
+	int x_modifier = 0;
+	int y_modifier = 0;
+
+	if (y_mod < tesselation_y_size / 2) {
+		if ((x_mod * 2 + y_mod) < (TileSize / 2)) {
+			x_modifier = -1;
+			y_modifier = -1;
+		} else if ((x_mod * 2 - y_mod) < (TileSize * 3 / 2)) {
+			x_modifier = 0;
+			y_modifier = 0;
+		} else {
+			x_modifier = 1;
+			y_modifier = -1;
+		}
+
+	} else {
+		if ((x_mod * 2 - (y_mod - TileSize / 2)) < 0) {
+			x_modifier = -1;
+			y_modifier = 0;
+		} else if ((x_mod * 2 + (y_mod - TileSize / 2)) < TileSize * 2) {
+			x_modifier = 0;
+			y_modifier = 0;
+		} else {
+			x_modifier = 1;
+			y_modifier = 0;
+		}
+	}
+	return point(x_base + x_modifier, y_base + y_modifier);
+}
+
+hex_object_ptr hex_map::get_tile_from_pixel_pos(int mx, int my) const
+{
+	point p = get_tile_pos_from_pixel_pos(mx, my);
+	return get_tile_at(p.x, p.y);
+}
+
+hex_object_ptr hex_map::get_tile_at(int x, int y) const
+{
+	x -= x_;
+	y -= y_;
+	if(x < 0 || y < 0 || size_t(y) >= tiles_.size()) {
+		return hex_object_ptr();
+	}
+	if(size_t(x) >= tiles_[y].size()) {
+		return hex_object_ptr();
+	}
+	return tiles_[y][x];
+}
+
+bool hex_map::set_tile(int xx, int yy, const std::string& tile)
+{
+	point p = get_tile_pos_from_pixel_pos(xx, yy);
+	const int tx = p.x - x();
+	const int ty = p.y - y();
+	bool changed = false;
+
+	int needed_rows = int(size_t(ty)+1 - tiles_.size());
+	changed |= (needed_rows > 0 );
+	while(needed_rows-- > 0) {
+		std::vector<hex_object_ptr> r;
+		tiles_.push_back(r);
+	}
+	int needed_cols = int(size_t(tx)+1 - tiles_[ty].size());
+	changed |= (needed_cols > 0 );
+	while(needed_cols-- > 0) {
+		tiles_[ty].push_back(hex_object_ptr());
+	}
+	if(tiles_[ty][tx]->type() != tile) {
+		tiles_[ty][tx].reset(new hex_object(tile, tx, ty, this));
+		changed = true;
+	}
+	return changed;
 }
 
 }
