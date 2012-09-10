@@ -2643,6 +2643,9 @@ void editor::change_tool(EDIT_TOOL tool)
 		segment_dialog_->set_segment(selected_segment_);
 		break;
 	}
+	case NUM_TOOLS:
+		// The size of the enum
+		break;
 	}
 
 	if(editor_mode_dialog_) {

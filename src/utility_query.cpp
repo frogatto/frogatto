@@ -44,6 +44,8 @@ StringRange get_list_element_range(const char* i1, const char* i2)
 		case Token::TYPE_LSQUARE:
 			++nbracket;
 			break;
+		default:
+			break;
 		}
 
 		prev = token;
@@ -100,6 +102,8 @@ find_pair_range(const std::string& contents, int line, int col, variant key) {
 		case Token::TYPE_LCURLY:
 		case Token::TYPE_LSQUARE:
 			++nbracket;
+			break;
+		default:
 			break;
 		}
 

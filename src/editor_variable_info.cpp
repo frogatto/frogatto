@@ -97,6 +97,9 @@ variant editor_variable_info::write() const
 	case TYPE_POINTS:
 		node.add("type", "points");
 		break;
+	case TYPE_INTEGER:
+		// Handled by numeric_decimal_
+		break;
 	}
 	return node.build();
 }

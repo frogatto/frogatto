@@ -1949,6 +1949,8 @@ void formula::check_brackets_match(const std::vector<token>& tokens) const
 			brackets.pop();
 			brackets_locs.pop();
 			break;
+		default:
+			break;
 		}
 	}
 

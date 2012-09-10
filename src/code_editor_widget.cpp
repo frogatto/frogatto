@@ -94,6 +94,8 @@ void code_editor_widget::on_change()
 								opening_brackets.back().push_back(std::pair<int,int>(colors_.size()-1, colors_.back().size()));
 							}
 							break;
+						default:
+							break;
 						}
 
 						if(t.type == formula_tokenizer::TOKEN_OPERATOR && util::c_isalpha(*t.begin)) {
