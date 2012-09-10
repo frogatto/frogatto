@@ -853,7 +853,7 @@ bool level_runner::play_cycle()
 
 			if(player) {
 				player->get_entity().set_pos(portal->dest);
-				if(!player->get_entity().no_move_to_standing() || portal->no_move_to_standing){
+				if(!player->get_entity().no_move_to_standing() && !portal->no_move_to_standing){
 					player->get_entity().move_to_standing(*lvl_);
 				}
 			}
@@ -938,7 +938,7 @@ bool level_runner::play_cycle()
 				}
 				player->get_entity().set_pos(dest);
 				new_level->add_player(&player->get_entity());
-				if(!player->get_entity().no_move_to_standing()){
+				if(!player->get_entity().no_move_to_standing() && !portal->no_move_to_standing){
 					player->get_entity().move_to_standing(*new_level);
 				}
 				player->get_entity().handle_event("enter_level");
