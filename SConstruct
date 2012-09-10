@@ -46,7 +46,7 @@ else                  : build_suffix = "-" + build
 Export("build_suffix")
 
 if "gcc" in env["TOOLS"]:
-    env.AppendUnique(CCFLAGS = Split("-Wignored-qualifiers -Wformat"))
+    env.AppendUnique(CCFLAGS = Split("-Wignored-qualifiers -Wformat -Wswitch"))
     if env['extrawarn']:
         env.AppendUnique(CCFLAGS = Split("-W -Wall -Wno-sign-compare -Wno-parentheses"))
 
