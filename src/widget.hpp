@@ -19,6 +19,7 @@
 #include "formula.hpp"
 #include "graphics.hpp"
 #include "input.hpp"
+#include "tooltip.hpp"
 
 namespace gui {
 
@@ -43,7 +44,7 @@ public:
 	int y() const;
 	int width() const;
 	int height() const;
-	void set_tooltip(const std::string& str);
+	void set_tooltip(const std::string& str, int fontsize=18);
 	bool visible() { return visible_; }
 	void set_visible(bool visible) { visible_ = visible; }
 	std::string id() const { return id_; }
@@ -84,8 +85,9 @@ private:
 	int w_, h_;
 	int true_x_;
 	int true_y_;
-	boost::shared_ptr<std::string> tooltip_;
+	boost::shared_ptr<gui::tooltip_item> tooltip_;
 	bool tooltip_displayed_;
+	int tooltip_fontsize_;
 	bool visible_;
 	game_logic::formula_callable* environ_;
 	void process_delegate();

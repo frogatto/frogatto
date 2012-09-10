@@ -1,4 +1,4 @@
-
+	
 /*
    Copyright (C) 2007 by David White <dave@whitevine.net>
    Part of the Silver Tree Project
@@ -19,7 +19,7 @@
 namespace gui {
 
 namespace {
-boost::shared_ptr<std::string> cur_tooltip;
+boost::shared_ptr<tooltip_item> cur_tooltip;
 
 graphics::texture& text() {
 	static graphics::texture t;
@@ -27,13 +27,13 @@ graphics::texture& text() {
 }
 }
 
-void set_tooltip(const boost::shared_ptr<std::string>& tip)
+void set_tooltip(const boost::shared_ptr<tooltip_item>& tip)
 {
 	cur_tooltip = tip;
-	text() = font::render_text(*cur_tooltip, graphics::color_yellow(), 18);
+	text() = font::render_text(cur_tooltip->text, graphics::color_yellow(), cur_tooltip->font_size);
 }
 
-void remove_tooltip(const boost::shared_ptr<std::string>& tip)
+void remove_tooltip(const boost::shared_ptr<tooltip_item>& tip)
 {
 	if(tip == cur_tooltip) {
 		cur_tooltip.reset();

@@ -18,8 +18,17 @@
 
 namespace gui {
 
-void set_tooltip(const boost::shared_ptr<std::string>& str);
-void remove_tooltip(const boost::shared_ptr<std::string>& str);
+struct tooltip_item
+{
+	explicit tooltip_item(const std::string& s, int fs=18) 
+		: font_size(fs), text(s)
+	{}
+	std::string text;
+	int font_size;
+};
+
+void set_tooltip(const boost::shared_ptr<tooltip_item>& str);
+void remove_tooltip(const boost::shared_ptr<tooltip_item>& str);
 void draw_tooltip();
 
 }

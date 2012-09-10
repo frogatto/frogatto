@@ -28,8 +28,7 @@ namespace gui {
 widget::widget(const variant& v, game_logic::formula_callable* e) 
 	: environ_(e), w_(0), h_(0), x_(0), y_(0), zorder_(0), 
 	true_x_(0), true_y_(0), disabled_(false), disabled_opacity_(v["disabled_opacity"].as_int(127)),
-	tooltip_displayed_(false), id_(v["id"].as_string_default()),
-	align_h_(HALIGN_LEFT), align_v_(VALIGN_TOP)
+	tooltip_displayed_(false), id_(v["id"].as_string_default()), align_h_(HALIGN_LEFT), align_v_(VALIGN_TOP)
 {
 	if(v.has_key("width")) {
 		w_ = v["width"].as_int();
@@ -73,7 +72,14 @@ widget::widget(const variant& v, game_logic::formula_callable* e)
 		ffl_on_process_ = get_environment()->create_formula(v["on_process"]);
 	}
 	if(v.has_key("tooltip")) {
-		set_tooltip(v["tooltip"].as_string());
+		if(v["tooltip"].is_string()) {
+			set_tooltip(v["tooltip"].as_string(), v["tooltip_size"].as_int(18));
+		} else if(v["tooltip"].is_map()) {
+			set_tooltip(v["tooltip"]["text"].as_string(), v["tooltip"]["size"].as_int(18));
+		} else {
+			ASSERT_LOG(false, "Specify the tooltip as a string, e.g. \"tooltip\":\"Text to display on mouseover\", "
+				"or a map, e.g. \"tooltip\":{\"text\":\"Text to display.\", \"size\":14}");
+		}
 	}
 	visible_ = v["visible"].as_bool(true);
 	if(v.has_key("align_h")) {
@@ -187,16 +193,16 @@ void widget::normalize_event(SDL_Event* event, bool translate_coords)
 	}
 }
 
-void widget::set_tooltip(const std::string& str)
+void widget::set_tooltip(const std::string& str, int fontsize)
 {
-	if(tooltip_displayed_) {
-		if(*tooltip_ == str) {
+	if(tooltip_displayed_ && tooltip_ != NULL) {
+		if(tooltip_->text == str) {
 			return;
 		}
 		gui::remove_tooltip(tooltip_);
 		tooltip_displayed_ = false;
 	}
-	tooltip_.reset(new std::string(i18n::tr(str)));
+	tooltip_.reset(new gui::tooltip_item(std::string(i18n::tr(str)), fontsize));
 }
 
 bool widget::process_event(const SDL_Event& event, bool claimed)
@@ -286,7 +292,7 @@ variant widget::get_value(const std::string& key) const
 		return variant(&v);
 	} else if(key == "tooltip") {
 		if(tooltip_) {
-			return variant(*tooltip_);
+			return variant(tooltip_->text);
 		}
 	} else if(key == "is_visible") {
 		return variant(visible_);
