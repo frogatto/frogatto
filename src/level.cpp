@@ -3201,6 +3201,16 @@ void level::add_character(entity_ptr p)
 	p->add_to_level();
 
 	layers_.insert(p->zorder());
+
+	const int screen_left = last_draw_position().x/100;
+	const int screen_right = last_draw_position().x/100 + graphics::screen_width();
+	const int screen_top = last_draw_position().y/100;
+	const int screen_bottom = last_draw_position().y/100 + graphics::screen_height();
+
+	const rect screen_area(screen_left, screen_top, screen_right - screen_left, screen_bottom - screen_top);
+	if(!active_chars_.empty() && (p->is_active(screen_area) || p->use_absolute_screen_coordinates())) {
+		add_draw_character(p);
+	}
 }
 
 void level::add_draw_character(entity_ptr p)
