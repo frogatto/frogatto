@@ -2280,18 +2280,24 @@ void level::do_processing()
 		active_chars = chars_immune_from_time_freeze_;
 	}
 
-	foreach(const entity_ptr& c, active_chars) {
-		if(!c->destroyed() && (chars_by_label_.count(c->label()) || c->is_human())) {
-			c->process(*this);
-		}
-
-		if(c->destroyed() && !c->is_human()) {
-			if(player_ && !c->respawn() && c->get_id() != -1) {
-				player_->is_human()->object_destroyed(id(), c->get_id());
+	while(!active_chars.empty()) {
+		new_chars_.clear();
+		foreach(const entity_ptr& c, active_chars) {
+			if(!c->destroyed() && (chars_by_label_.count(c->label()) || c->is_human())) {
+				c->process(*this);
 			}
-
-			erase_char(c);
+	
+			if(c->destroyed() && !c->is_human()) {
+				if(player_ && !c->respawn() && c->get_id() != -1) {
+					player_->is_human()->object_destroyed(id(), c->get_id());
+				}
+	
+				erase_char(c);
+			}
 		}
+
+		active_chars = new_chars_;
+		active_chars_.insert(active_chars_.end(), new_chars_.begin(), new_chars_.end());
 	}
 
 	if(water_) {
@@ -3209,7 +3215,7 @@ void level::add_character(entity_ptr p)
 
 	const rect screen_area(screen_left, screen_top, screen_right - screen_left, screen_bottom - screen_top);
 	if(!active_chars_.empty() && (p->is_active(screen_area) || p->use_absolute_screen_coordinates())) {
-		add_draw_character(p);
+		new_chars_.push_back(p);
 	}
 }
 

@@ -494,6 +494,7 @@ private:
 	void erase_char(entity_ptr c);
 	std::vector<entity_ptr> chars_;
 	std::vector<entity_ptr> active_chars_;
+	std::vector<entity_ptr> new_chars_;
 	mutable std::vector<entity_ptr> solid_chars_;
 
 	std::vector<entity_ptr> chars_immune_from_time_freeze_;

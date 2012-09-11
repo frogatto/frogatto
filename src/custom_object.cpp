@@ -1195,7 +1195,10 @@ void custom_object::process(level& lvl)
 		handle_event(OBJECT_EVENT_SURFACE_DAMAGE);
 	}
 
-	time_in_frame_ += time_in_frame_delta_;
+	if(cycle_ != 1) {
+		//don't advance to the next frame in the object's very first cycle.
+		time_in_frame_ += time_in_frame_delta_;
+	}
 	if(time_in_frame_ < 0) {
 		time_in_frame_ = 0;
 	}
