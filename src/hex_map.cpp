@@ -14,6 +14,8 @@
 
 namespace hex {
 
+static const int HexTileSize = 72;
+
 hex_map::hex_map(variant node)
 	: zorder_(node["zorder"].as_int(-1000)), 
 	x_(node["x"].as_int(0)), 
@@ -168,28 +170,22 @@ void hex_map::set_value(const std::string& key, const variant& value)
 
 point hex_map::get_tile_pos_from_pixel_pos(int mx, int my)
 {
-	//const int TileSize = 72;
-	//const int TileSizeOnePointFive = (3*TileSize)/2;
-	//const int TileSizeThreeQuarters = (3*TileSize)/4;
-	//const int tx = mx / TileSizeThreeQuarters;
-	//const int ty = my / TileSize;
-	//return point(tx, ty);
-	const int TileSize = 72;
-	const int tesselation_x_size = (3*TileSize)/4 * 2;
-	const int tesselation_y_size = TileSize;
-	const int x_base = mx / tesselation_x_size * 2;
-	const int x_mod  = mx % tesselation_x_size;
-	const int y_base = my / tesselation_y_size;
-	const int y_mod  = my % tesselation_y_size;
+	const int tesselation_x_size = (3*HexTileSize)/2;
+	const int tesselation_y_size = HexTileSize;
+	const int x_base = (mx>=0) ? mx / tesselation_x_size * 2 : mx / tesselation_x_size * 2 - 2;
+	const int x_mod  = (mx>=0) ? mx % tesselation_x_size : tesselation_x_size + (mx % tesselation_x_size);
+	const int y_base = (my>=0) ? my / tesselation_y_size : my / tesselation_y_size - 1;
+	const int y_mod  = (my>=0) ? my % tesselation_y_size : tesselation_y_size + (my % tesselation_y_size);
+	const int m = 2;
 
 	int x_modifier = 0;
 	int y_modifier = 0;
 
-	if (y_mod < tesselation_y_size / 2) {
-		if ((x_mod * 2 + y_mod) < (TileSize / 2)) {
+	if(y_mod < tesselation_y_size / 2) {
+		if((x_mod * m + y_mod) < (HexTileSize / 2)) {
 			x_modifier = -1;
 			y_modifier = -1;
-		} else if ((x_mod * 2 - y_mod) < (TileSize * 3 / 2)) {
+		} else if ((x_mod * m - y_mod) < (HexTileSize * 3 / 2)) {
 			x_modifier = 0;
 			y_modifier = 0;
 		} else {
@@ -198,10 +194,10 @@ point hex_map::get_tile_pos_from_pixel_pos(int mx, int my)
 		}
 
 	} else {
-		if ((x_mod * 2 - (y_mod - TileSize / 2)) < 0) {
+		if((x_mod * m - (y_mod - HexTileSize / 2)) < 0) {
 			x_modifier = -1;
 			y_modifier = 0;
-		} else if ((x_mod * 2 + (y_mod - TileSize / 2)) < TileSize * 2) {
+		} else if((x_mod * m + (y_mod - HexTileSize / 2)) < HexTileSize * 2) {
 			x_modifier = 0;
 			y_modifier = 0;
 		} else {
@@ -220,10 +216,9 @@ hex_object_ptr hex_map::get_tile_from_pixel_pos(int mx, int my) const
 
 point hex_map::get_pixel_pos_from_tile_pos(int x, int y)
 {
-	const int HexTileSize = 72;
 	const int HexTileSizeHalf = HexTileSize/2;
 	const int HexTileSizeThreeQuarters = (HexTileSize*3)/4;
-	const int tx = x*(abs(x)%2)*HexTileSizeThreeQuarters + x*(abs(x)%2==0)*HexTileSizeThreeQuarters;
+	const int tx = x*HexTileSizeThreeQuarters;
 	const int ty = HexTileSize*y + (abs(x)%2)*HexTileSizeHalf;
 	return point(tx, ty);
 }
@@ -308,6 +303,7 @@ point hex_map::loc_in_dir(int x, int y, const std::string& s)
 		return loc_in_dir(x, y, SOUTH_EAST);
 	}
 	ASSERT_LOG(false, "Unreognised direction " << s);
+	return point();
 }
 
 }
