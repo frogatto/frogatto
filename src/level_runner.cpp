@@ -1189,46 +1189,6 @@ bool level_runner::play_cycle()
 #if !defined(__native_client__)
 					IMG_SaveFrameBuffer((std::string(preferences::user_data_path()) + "screenshot.png").c_str(), 5);
 #endif
-				} else if(key == SDLK_w && (mod&KMOD_CTRL)) {
-#ifndef NO_EDITOR
-					if(editor_) {
-						if(!editor_->confirm_quit()) {
-							break;
-						}
-					}
-#endif
-
-					//warp to another level.
-					std::vector<std::string> levels = get_known_levels();
-					assert(!levels.empty());
-					int index = std::find(levels.begin(), levels.end(), lvl_->id()) - levels.begin();
-					index = (index+1)%levels.size();
-					level* new_level = load_level(levels[index]);
-					if(editor_) {
-						new_level->set_editor();
-					}
-
-					new_level->set_as_current_level();
-
-					if(!new_level->music().empty()) {
-						sound::play_music(new_level->music());
-					}
-
-					set_scene_title(new_level->title());
-					lvl_.reset(new_level);
-
-					custom_object::run_garbage_collection();
-
-#ifndef NO_EDITOR
-					if(editor_) {
-						editor_ = editor::get_editor(lvl_->id().c_str());
-						editor_->set_playing_level(lvl_);
-						editor_->setup_for_editing();
-						lvl_->set_as_current_level();
-						lvl_->set_editor();
-						init_history_slider();
-					}
-#endif
 				} else if(key == SDLK_l && (mod&KMOD_CTRL)) {
 					preferences::set_use_pretty_scaling(!preferences::use_pretty_scaling());
 					graphics::surface_cache::clear();
