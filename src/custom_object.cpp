@@ -2920,8 +2920,12 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	
 	case CUSTOM_OBJECT_MID_X:
 	case CUSTOM_OBJECT_MIDPOINT_X: {
+		//midpoint is, unlike IMG_MID or SOLID_MID, meant to be less-rigorous, but more convenient; it default to basing the "midpoint" on solidity, but drops down to using img_mid if there is no solidity.  The rationale is that generally it doesn't matter which it comes from, and our form of failure (which is silent and returns just x1) is sneaky and can be very expensive because it can take a long time to realize that the value returned actually means the object doesn't have a midpoint for that criteria.  If you need to be rigorous, always use IMG_MID and SOLID_MID.
 		const int start_x = centi_x();
-		const int current_x = x() + current_frame().width()/2;
+			
+		const int solid_diff_x = solid_rect().x() - x();
+		const int current_x = solid_rect().w() ? (x() + solid_diff_x + solid_rect().w()/2) : x() + current_frame().width()/2;
+
 		const int xdiff = current_x - x();
 		set_pos(value.as_int() - xdiff, y());
 		if(entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
@@ -2933,7 +2937,10 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	case CUSTOM_OBJECT_MID_Y:
 	case CUSTOM_OBJECT_MIDPOINT_Y: {
 		const int start_y = centi_y();
-		const int current_y = y() + current_frame().height()/2;
+		
+		const int solid_diff_y = solid_rect().y() - y();
+		const int current_y = solid_rect().h() ? (y() + solid_diff_y + solid_rect().h()/2) : y() + current_frame().height()/2;
+
 		const int ydiff = current_y - y();
 		set_pos(x(), value.as_int() - ydiff);
 		if(entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
@@ -2944,6 +2951,89 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 
 	case CUSTOM_OBJECT_MID_XY:
 	case CUSTOM_OBJECT_MIDPOINT_XY: {
+		ASSERT_LOG(value.is_list() && value.num_elements() == 2, "set midpoint_xy value of object to a value in incorrect format ([x,y] expected): " << value.to_debug_string());
+		const int start_x = centi_x();
+		const int solid_diff_x = solid_rect().x() - x();
+		const int current_x = solid_rect().w() ? (x() + solid_diff_x + solid_rect().w()/2) : x() + current_frame().width()/2;
+		const int xdiff = current_x - x();
+
+		const int start_y = centi_y();
+		const int solid_diff_y = solid_rect().y() - y();
+		const int current_y = solid_rect().h() ? (y() + solid_diff_y + solid_rect().h()/2) : y() + current_frame().height()/2;
+		const int ydiff = current_y - y();
+
+		set_pos(value[0].as_int() - xdiff, value[1].as_int() - ydiff);
+		if(entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
+			set_centi_x(start_x);
+			set_centi_y(start_y);
+		}
+		break;
+	}
+
+	case CUSTOM_OBJECT_SOLID_MID_X: {
+		const int start_x = centi_x();
+		const int solid_diff = solid_rect().x() - x();
+		const int current_x = x() + solid_diff + solid_rect().w()/2;
+		const int xdiff = current_x - x();
+		set_pos(value.as_int() - xdiff, y());
+		if(entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
+			set_centi_x(start_x);
+		}
+		break;
+	}
+			
+	case CUSTOM_OBJECT_SOLID_MID_Y: {
+		const int start_y= centi_y();
+		const int solid_diff = solid_rect().y() - y();
+		const int current_y = y() + solid_diff + solid_rect().h()/2;
+		const int ydiff = current_y - y();
+		set_pos(x(), value.as_int() - ydiff);
+		if(entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
+			set_centi_y(start_y);
+		}
+		break;
+	}
+
+	case CUSTOM_OBJECT_SOLID_MID_XY: {
+		const int start_x = centi_x();
+		const int solid_diff_x = solid_rect().x() - x();
+		const int current_x = x() + solid_diff_x + solid_rect().w()/2;
+		const int xdiff = current_x - x();
+		const int start_y= centi_y();
+		const int solid_diff_y = solid_rect().y() - y();
+		const int current_y = y() + solid_diff_y + solid_rect().h()/2;
+		const int ydiff = current_y - y();
+		set_pos(value[0].as_int() - xdiff, value[1].as_int() - ydiff);
+		if(entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
+			set_centi_x(start_x);
+			set_centi_y(start_y);
+		}
+		break;
+	}
+
+	case CUSTOM_OBJECT_IMG_MID_X: {
+		const int start_x = centi_x();
+		const int current_x = x() + current_frame().width()/2;
+		const int xdiff = current_x - x();
+		set_pos(value.as_int() - xdiff, y());
+		if(entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
+			set_centi_x(start_x);
+		}
+		break;
+	}
+		
+	case CUSTOM_OBJECT_IMG_MID_Y: {
+		const int start_y = centi_y();
+		const int current_y = y() + current_frame().height()/2;
+		const int ydiff = current_y - y();
+		set_pos(x(), value.as_int() - ydiff);
+		if(entity_collides(level::current(), *this, MOVE_NONE) && entity_in_current_level(this)) {
+			set_centi_y(start_y);
+		}
+		break;
+	}
+		
+	case CUSTOM_OBJECT_IMG_MID_XY: {
 		ASSERT_LOG(value.is_list() && value.num_elements() == 2, "set midpoint_xy value of object to a value in incorrect format ([x,y] expected): " << value.to_debug_string());
 		const int start_x = centi_x();
 		const int current_x = x() + current_frame().width()/2;
@@ -2958,7 +3048,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		}
 		break;
 	}
-
+			
 	case CUSTOM_OBJECT_CYCLE:
 		cycle_ = value.as_int();
 		break;
