@@ -820,7 +820,7 @@ void custom_object::draw(int xx, int yy) const
 		if(shader_vars_) {
 			for(game_logic::map_formula_callable::const_iterator i = shader_vars_->begin(); i != shader_vars_->end(); ++i) {
 				GLuint id = glGetUniformLocation(shader_, i->first.c_str());
-				glUniform1f(id, i->second.as_int()/1000.0);
+				glUniform1f(id, i->second.as_int()/1000.0f);
 			}
 		}
 	}
@@ -848,13 +848,13 @@ void custom_object::draw(int xx, int yy) const
 	if(type_->hidden_in_game() && !level::current().in_editor()) {
 		//pass
 	} else if(custom_draw_.get() != NULL) {
-		frame_->draw_custom(draw_x-draw_x%2, draw_y-draw_y%2, *custom_draw_, draw_area_.get(), face_right(), upside_down(), time_in_frame_, rotate_.as_float());
+		frame_->draw_custom(draw_x-draw_x%2, draw_y-draw_y%2, *custom_draw_, draw_area_.get(), face_right(), upside_down(), time_in_frame_, GLfloat(rotate_.as_float()));
 	} else if(draw_scale_) {
-		frame_->draw(draw_x-draw_x%2, draw_y-draw_y%2, face_right(), upside_down(), time_in_frame_, rotate_.as_float(), draw_scale_->as_float());
+		frame_->draw(draw_x-draw_x%2, draw_y-draw_y%2, face_right(), upside_down(), time_in_frame_, GLfloat(rotate_.as_float()), GLfloat(draw_scale_->as_float()));
 	} else if(!draw_area_.get()) {
-		frame_->draw(draw_x-draw_x%2, draw_y-draw_y%2, face_right(), upside_down(), time_in_frame_, rotate_.as_float());
+		frame_->draw(draw_x-draw_x%2, draw_y-draw_y%2, face_right(), upside_down(), time_in_frame_, GLfloat(rotate_.as_float()));
 	} else {
-		frame_->draw(draw_x-draw_x%2, draw_y-draw_y%2, *draw_area_, face_right(), upside_down(), time_in_frame_, rotate_.as_float());
+		frame_->draw(draw_x-draw_x%2, draw_y-draw_y%2, *draw_area_, face_right(), upside_down(), time_in_frame_, GLfloat(rotate_.as_float()));
 	}
 
 	if(blur_) {
@@ -868,7 +868,7 @@ void custom_object::draw(int xx, int yy) const
 			while(!transform.fits_in_color()) {
 				transform = transform - transform.to_color();
 				transform.to_color().set_as_current_color();
-				frame_->draw(draw_x-draw_x%2, draw_y-draw_y%2, face_right(), upside_down(), time_in_frame_, rotate_.as_float());
+				frame_->draw(draw_x-draw_x%2, draw_y-draw_y%2, face_right(), upside_down(), time_in_frame_, GLfloat(rotate_.as_float()));
 			}
 
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -934,7 +934,7 @@ void custom_object::draw(int xx, int yy) const
 				left.push_back(key_texture);
 				right.push_back(value_texture);
 	
-				if(key_texture.width() > max_property_width) {
+				if(key_texture.width() > size_t(max_property_width)) {
 					max_property_width = key_texture.width();
 				}
 			} catch(validation_failure_exception&) {
@@ -954,8 +954,8 @@ void custom_object::draw(int xx, int yy) const
 		std::vector<GLfloat> v;
 		const rect& r = platform_rect();
 		for(int x = 0; x < r.w(); x += 2) {
-			v.push_back(r.x() + x);
-			v.push_back(platform_rect_at(r.x() + x).y());
+			v.push_back(GLfloat(r.x() + x));
+			v.push_back(GLfloat(platform_rect_at(r.x() + x).y()));
 		}
 
 		if(!v.empty()) {
@@ -1074,7 +1074,7 @@ void custom_object::process(level& lvl)
 	bool fired_collide_feet = false;
 
 	collision_info stand_info;
-	const bool started_standing = is_standing(lvl, &stand_info);
+	const bool started_standing = is_standing(lvl, &stand_info) != NOT_STANDING;
 	if(!started_standing && standing_on_) {
 		//if we were standing on something the previous frame, but aren't
 		//standing any longer, we use the value of what we were previously
@@ -1145,9 +1145,9 @@ void custom_object::process(level& lvl)
 		const int pos = (cycle_ - position_schedule_->base_cycle)/position_schedule_->speed;
 
 		if(position_schedule_->expires &&
-		   pos >= position_schedule_->x_pos.size() &&
-		   pos >= position_schedule_->y_pos.size() &&
-		   pos >= position_schedule_->rotation.size()) {
+		   size_t(pos) >= position_schedule_->x_pos.size() &&
+		   size_t(pos) >= position_schedule_->y_pos.size() &&
+		   size_t(pos) >= position_schedule_->rotation.size()) {
 			handle_event(OBJECT_EVENT_SCHEDULE_FINISHED);
 			position_schedule_.reset();
 		} else {
@@ -1720,7 +1720,7 @@ void custom_object::process(level& lvl)
 	}
 
 	if(blur_) {
-		blur_->next_frame(start_x, start_y, x(), y(), frame_, time_in_frame_, face_right(), upside_down(), start_rotate.as_float(), rotate_.as_float());
+		blur_->next_frame(start_x, start_y, x(), y(), frame_, time_in_frame_, face_right(), upside_down(), float(start_rotate.as_float()), float(rotate_.as_float()));
 		if(blur_->destroyed()) {
 			blur_.reset();
 		}
@@ -2099,7 +2099,7 @@ decimal calculate_velocity_magnitude(int velocity_x, int velocity_y)
 	const int64_t xval = velocity_x;
 	const int64_t yval = velocity_y;
 	int64_t value = xval*xval + yval*yval;
-	value = sqrt(double(value));
+	value = int64_t(sqrt(double(value)));
 	decimal result(decimal::from_int(static_cast<int>(value)));
 	result /= 1000;
 	return result;
@@ -2300,8 +2300,8 @@ variant custom_object::get_value_by_slot(int slot) const
 		return v;
 	}
 	case CUSTOM_OBJECT_DRIVER:            return variant(driver_ ? driver_.get() : this);
-	case CUSTOM_OBJECT_IS_HUMAN:          return variant::from_bool(is_human());
-	case CUSTOM_OBJECT_INVINCIBLE:        return variant::from_bool(invincible_);
+	case CUSTOM_OBJECT_IS_HUMAN:          return variant::from_bool(is_human() != NULL);
+	case CUSTOM_OBJECT_INVINCIBLE:        return variant::from_bool(invincible_ != 0);
 	case CUSTOM_OBJECT_SOUND_VOLUME:      return variant(sound_volume_);
 	case CUSTOM_OBJECT_DESTROYED:         return variant::from_bool(destroyed());
 
@@ -2470,7 +2470,7 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_CTRL_TONGUE:
 		return variant::from_bool(control_status(static_cast<controls::CONTROL_ITEM>(slot - CUSTOM_OBJECT_CTRL_UP)));
 	default:
-		if(slot >= type_->slot_properties_base() && (slot - type_->slot_properties_base() < type_->slot_properties().size())) {
+		if(slot >= type_->slot_properties_base() && (size_t(slot - type_->slot_properties_base()) < type_->slot_properties().size())) {
 			const custom_object_type::property_entry& e = type_->slot_properties()[slot - type_->slot_properties_base()];
 			if(e.getter) {
 				return e.getter->execute(*this);
@@ -2615,7 +2615,7 @@ void custom_object::set_value(const std::string& key, const variant& value)
 	} else if(key == "facing") {
 		set_face_right(value.as_int() > 0);
 	} else if(key == "upside_down") {
-		set_upside_down(value.as_int());
+		set_upside_down(value.as_int() != 0);
 	} else if(key == "hitpoints") {
 		const int old_hitpoints = hitpoints_;
 		hitpoints_ = value.as_int();
@@ -3471,7 +3471,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 
 		for(int n = 0; n != value.num_elements(); ++n) {
 			if(value[n].is_decimal() || value[n].is_int()) {
-				positions.push_back(value[n].as_decimal().as_float());
+				positions.push_back(GLfloat(value[n].as_decimal().as_float()));
 			} else if(value[n].is_list()) {
 				for(int index = 0; index != value[n].num_elements(); index += 2) {
 					ASSERT_LOG(value[n].num_elements() - index >= 2, "ILLEGAL VALUE TO custom_draw: " << value.to_debug_string() << ", " << n << ", " << index << "/" << value[n].num_elements());
@@ -3506,7 +3506,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	}
 
 	default:
-		if(slot >= type_->slot_properties_base() && (slot - type_->slot_properties_base() < type_->slot_properties().size())) {
+		if(slot >= type_->slot_properties_base() && (size_t(slot - type_->slot_properties_base()) < type_->slot_properties().size())) {
 			const custom_object_type::property_entry& e = type_->slot_properties()[slot - type_->slot_properties_base()];
 			if(e.setter) {
 				game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
@@ -3817,7 +3817,7 @@ bool custom_object::handle_event_internal(int event, const formula_callable* con
 	}
 
 #ifndef NO_EDITOR
-	if(event != OBJECT_EVENT_ANY && (event < event_handlers_.size() && event_handlers_[OBJECT_EVENT_ANY] || type_->get_event_handler(OBJECT_EVENT_ANY))) {
+	if(event != OBJECT_EVENT_ANY && (size_t(event) < event_handlers_.size() && event_handlers_[OBJECT_EVENT_ANY] || type_->get_event_handler(OBJECT_EVENT_ANY))) {
 		game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
 		variant v(callable);
 
@@ -3830,7 +3830,7 @@ bool custom_object::handle_event_internal(int event, const formula_callable* con
 	const game_logic::formula* handlers[2];
 	int nhandlers = 0;
 
-	if(event < event_handlers_.size() && event_handlers_[event]) {
+	if(size_t(event) < event_handlers_.size() && event_handlers_[event]) {
 		handlers[nhandlers++] = event_handlers_[event].get();
 	}
 
@@ -4018,7 +4018,7 @@ const graphics::color_transform& custom_object::draw_color() const
 
 game_logic::const_formula_ptr custom_object::get_event_handler(int key) const
 {
-	if(key < event_handlers_.size()) {
+	if(size_t(key) < event_handlers_.size()) {
 		return event_handlers_[key];
 	} else {
 		return game_logic::const_formula_ptr();
@@ -4027,7 +4027,7 @@ game_logic::const_formula_ptr custom_object::get_event_handler(int key) const
 
 void custom_object::set_event_handler(int key, game_logic::const_formula_ptr f)
 {
-	if(key >= event_handlers_.size()) {
+	if(size_t(key) >= event_handlers_.size()) {
 		event_handlers_.resize(key+1);
 	}
 
@@ -4059,7 +4059,7 @@ bool map_variant_entities(variant& v, const std::map<entity_ptr, entity_ptr>& m)
 				}
 
 				new_values.push_back(var);
-				for(int i = n+1; i < v.num_elements(); ++i) {
+				for(size_t i = n+1; i < v.num_elements(); ++i) {
 					var = v[i];
 					map_variant_entities(var, m);
 					new_values.push_back(var);
@@ -4363,7 +4363,7 @@ int custom_object::parent_depth(bool* has_human_parent, int cur_depth) const
 {
 	if(!parent_ || cur_depth > 10) {
 		if(has_human_parent) {
-			*has_human_parent = is_human();
+			*has_human_parent = is_human() != NULL;
 		}
 		return cur_depth;
 	}
@@ -4398,7 +4398,7 @@ rect custom_object::platform_rect_at(int xpos) const
 
 	const int pos = (xpos - area.x())*1024;
 	const int seg_width = (area.w()*1024)/(platform_offsets_.size()-1);
-	const int segment = pos/seg_width;
+	const size_t segment = pos/seg_width;
 	ASSERT_GE(segment, 0);
 	ASSERT_LT(segment, platform_offsets_.size()-1);
 
@@ -4421,7 +4421,7 @@ int custom_object::platform_slope_at(int xpos) const
 
 	const int pos = (xpos - area.x())*1024;
 	const int dx = (area.w()*1024)/(platform_offsets_.size()-1);
-	const int segment = pos/dx;
+	const size_t segment = pos/dx;
 	ASSERT_GE(segment, 0);
 	ASSERT_LT(segment, platform_offsets_.size()-1);
 
