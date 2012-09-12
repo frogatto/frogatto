@@ -321,7 +321,10 @@ void hex_object::apply_rules(const std::string& rule)
 void hex_object::draw() const
 {
 	// Draw base tile.
-	ASSERT_LOG(tile_ != NULL, "tile is NULL");
+	if(tile_ == NULL) {
+		return;
+	}
+
 	tile_->draw(x_, y_);
 	// Draw transitions
 	foreach(const const_basic_hex_tile_ptr& htp, transitions_) {
