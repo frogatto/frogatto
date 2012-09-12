@@ -239,23 +239,51 @@ hex_object_ptr hex_map::get_tile_at(int x, int y) const
 bool hex_map::set_tile(int xx, int yy, const std::string& tile)
 {
 	point p = get_tile_pos_from_pixel_pos(xx, yy);
+
+	// New tile position is outside current bounds, so enlarge.
+	if(p.y < y()) {
+		int needed_rows = y() - p.y;
+		y_ = p.y;
+		std::vector<hex_object_ptr> r;
+		tiles_.insert(tiles_.begin(), r);
+	}
+	if(p.x < x()) {
+		int needed_cols = x() - p.x;
+		int n = x_;
+		x_ = p.x;
+		for(int j = 0; j < tiles_.size(); ++j) {
+			for(int i = 0; i < needed_cols; ++i) {
+				tiles_[j].insert(tiles_[j].begin(), new hex_object("Xv", n + x(), j + y(), this));
+				--n;
+			}
+		}
+	}
+
 	const int tx = p.x - x();
 	const int ty = p.y - y();
 	bool changed = false;
 
+	std::cerr << "ADD HEX TILE AT " << xx << "," << yy << "  :  " << tx << "," << ty << std::endl;
 	int needed_rows = int(size_t(ty)+1 - tiles_.size());
+	std::cerr << "NEEDED_ROWS: " << needed_rows << std::endl;
 	changed |= (needed_rows > 0 );
 	while(needed_rows-- > 0) {
 		std::vector<hex_object_ptr> r;
 		tiles_.push_back(r);
 	}
 	int needed_cols = int(size_t(tx)+1 - tiles_[ty].size());
+	std::cerr << "NEEDED_COLS: " << needed_cols << std::endl;
 	changed |= (needed_cols > 0 );
+	int n = tx;
 	while(needed_cols-- > 0) {
-		tiles_[ty].push_back(hex_object_ptr());
+		// Add Void 
+		tiles_[ty].push_back(hex_object_ptr(new hex_object("Xv", n + x(), ty + y(), this)));
+		++n;
 	}
-	if(tiles_[ty][tx]->type() != tile) {
-		tiles_[ty][tx].reset(new hex_object(tile, tx, ty, this));
+	std::cerr << "tiles_.size(): " << tiles_.size() << std::endl; 
+	std::cerr << "tiles_[ty].size(): " << tiles_[ty].size() << std::endl; 
+	if(tiles_[ty][tx] == NULL || tiles_[ty][tx]->type() != tile) {
+		tiles_[ty][tx].reset(new hex_object(tile, tx + x(), ty + y(), this));
 		changed = true;
 	}
 	return changed;

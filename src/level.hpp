@@ -198,6 +198,7 @@ public:
 
 	//a function to start rebuilding tiles in a background thread.
 	void start_rebuild_tiles_in_background(const std::vector<int>& layers);
+	void start_rebuild_hex_tiles_in_background(const std::vector<int>& layers);
 
 	//a function which, if rebuilding tiles has been completed, will update
 	//with the new tiles.

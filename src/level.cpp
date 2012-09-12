@@ -795,6 +795,11 @@ void build_tiles_thread_function(level_tile_rebuild_info* info, std::map<int, ti
 
 }
 
+void level::start_rebuild_hex_tiles_in_background(const std::vector<int>& layers)
+{
+	hex_maps_[layers[0]]->build();
+}
+
 void level::start_rebuild_tiles_in_background(const std::vector<int>& layers)
 {
 	level_tile_rebuild_info& info = tile_rebuild_map[this];
@@ -2697,8 +2702,8 @@ bool level::add_hex_tile_rect_vector_internal(int zorder, int x1, int y1, int x2
 	bool changed = false;
 	int index = 0;
 	const int TileSize = 72;
-	for(int x = x1; x < x2; x += TileSize) {
-		for(int y = y1; y < y2; y += TileSize) {
+	for(int x = x1; x <= x2; x += TileSize) {
+		for(int y = y1; y <= y2; y += TileSize) {
 			changed = m->set_tile(x, y, tiles[index]) || changed;
 			if(index+1 < tiles.size()) {
 				++index;

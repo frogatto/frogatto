@@ -2565,10 +2565,10 @@ void editor::add_hex_tile_rect(int x1, int y1, int x2, int y2)
 		redo.push_back(boost::bind(&level::add_hex_tile_rect, lvl.get(), zorder, x1, y1, x2, y2, t[get_hex_tileset()]->get_editor_info().type));
 		undo.push_back(boost::bind(&level::add_hex_tile_rect_vector, lvl.get(), zorder, x1, y1, x2, y2, old_rect));
 
-		//std::vector<int> layers;
-		//layers.push_back(zorder);
-		//undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl.get(), layers));
-		//redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl.get(), layers));
+		std::vector<int> layers;
+		layers.push_back(zorder);
+		undo.push_back(boost::bind(&level::start_rebuild_hex_tiles_in_background, lvl.get(), layers));
+		redo.push_back(boost::bind(&level::start_rebuild_hex_tiles_in_background, lvl.get(), layers));
 	}
 
 	execute_command(
@@ -2600,8 +2600,8 @@ void editor::remove_hex_tile_rect(int x1, int y1, int x2, int y2)
 		}
 
 		redo.push_back(boost::bind(&level::clear_hex_tile_rect, lvl.get(), x1, y1, x2, y2));
-		//undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl.get(), std::vector<int>()));
-		//redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl.get(), std::vector<int>()));
+		undo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl.get(), std::vector<int>()));
+		redo.push_back(boost::bind(&level::start_rebuild_tiles_in_background, lvl.get(), std::vector<int>()));
 	}
 
 	execute_command(
