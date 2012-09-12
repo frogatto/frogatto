@@ -467,6 +467,7 @@ rect g_rect_drawing;
 
 //the tiles that we've drawn in the current action.
 std::vector<point> g_current_draw_tiles;
+std::vector<point> g_current_draw_hex_tiles;
 
 const editor_variable_info* g_variable_editing = NULL;
 int g_variable_editing_index = -1;
@@ -1288,15 +1289,15 @@ void editor::process()
 		const int xpos = xpos_ + mousex*zoom_;
 		const int ypos = ypos_ + mousey*zoom_;
 		point p(xpos, ypos);
-		/*if(std::find(g_current_draw_tiles.begin(), g_current_draw_tiles.end(), p) == g_current_draw_tiles.end()) {
-			g_current_draw_tiles.push_back(p);
+		if(std::find(g_current_draw_hex_tiles.begin(), g_current_draw_hex_tiles.end(), p) == g_current_draw_hex_tiles.end()) {
+			g_current_draw_hex_tiles.push_back(p);
 
 			if(buttons&SDL_BUTTON_LEFT) {
 				add_hex_tile_rect(p.x, p.y, p.x, p.y);
 			} else {
 				remove_hex_tile_rect(p.x, p.y, p.x, p.y);
 			}
-		}*/
+		}
 	}
 
 	foreach(level_ptr lvl, levels_) {
@@ -1940,6 +1941,8 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 		} else {
 			remove_hex_tile_rect(p.x, p.y, p.x, p.y);
 		}
+		g_current_draw_hex_tiles.clear();
+		g_current_draw_hex_tiles.push_back(p);
 	} else if(property_dialog_ && variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_, zoom_)) {
 		g_variable_editing = variable_info_selected(property_dialog_->get_entity(), anchorx_, anchory_, zoom_, &g_variable_editing_index);
 		g_variable_editing_original_value = property_dialog_->get_entity()->query_value(g_variable_editing->variable_name());

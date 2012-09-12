@@ -263,16 +263,13 @@ bool hex_map::set_tile(int xx, int yy, const std::string& tile)
 	const int ty = p.y - y();
 	bool changed = false;
 
-	std::cerr << "ADD HEX TILE AT " << xx << "," << yy << "  :  " << tx << "," << ty << std::endl;
 	int needed_rows = int(size_t(ty)+1 - tiles_.size());
-	std::cerr << "NEEDED_ROWS: " << needed_rows << std::endl;
 	changed |= (needed_rows > 0 );
 	while(needed_rows-- > 0) {
 		std::vector<hex_object_ptr> r;
 		tiles_.push_back(r);
 	}
 	int needed_cols = int(size_t(tx)+1 - tiles_[ty].size());
-	std::cerr << "NEEDED_COLS: " << needed_cols << std::endl;
 	changed |= (needed_cols > 0 );
 	int n = tx;
 	while(needed_cols-- > 0) {
@@ -280,8 +277,6 @@ bool hex_map::set_tile(int xx, int yy, const std::string& tile)
 		tiles_[ty].push_back(hex_object_ptr(new hex_object("Xv", n + x(), ty + y(), this)));
 		++n;
 	}
-	std::cerr << "tiles_.size(): " << tiles_.size() << std::endl; 
-	std::cerr << "tiles_[ty].size(): " << tiles_[ty].size() << std::endl; 
 	if(tiles_[ty][tx] == NULL || tiles_[ty][tx]->type() != tile) {
 		tiles_[ty][tx].reset(new hex_object(tile, tx + x(), ty + y(), this));
 		changed = true;
