@@ -45,6 +45,16 @@ public:
 	static void invalidate_object(const std::string& id);
 	static void invalidate_all_objects();
 	static std::vector<const_custom_object_type_ptr> get_all();
+	static std::vector<std::string> get_all_ids();
+
+	//a function which returns all objects that have an editor category
+	//mapped to the category they are in.
+	struct EditorSummary {
+		std::string category, help;
+		variant first_frame;
+	};
+
+	static std::map<std::string,EditorSummary> get_editor_categories();
 
 	static void set_file_contents(const std::string& path, const std::string& contents);
 

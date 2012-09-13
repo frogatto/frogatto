@@ -92,12 +92,18 @@ public:
 	};
 
 	struct enemy_type {
-		static void init(variant node);
-		explicit enemy_type(const custom_object_type& type);
+		enemy_type(const std::string& type, const std::string& category, variant frame_info);
 		variant node;
 		std::string category;
-		entity_ptr preview_object;
-		boost::shared_ptr<const frame> preview_frame;
+		std::string help;
+
+		const entity_ptr& preview_object() const;
+		const boost::shared_ptr<const frame>& preview_frame() const;
+	
+	private:
+		mutable entity_ptr preview_object_;
+		mutable boost::shared_ptr<const frame> preview_frame_;
+		variant frame_info_;
 	};
 
 	struct tile_selection {
@@ -114,7 +120,7 @@ public:
 	int get_hex_tileset() const { return cur_hex_tileset_; }
 	void set_hex_tileset(int index);
 
-	const std::vector<enemy_type>& all_characters() const;
+	std::vector<enemy_type>& all_characters() const;
 
 	int get_object() const { return cur_object_; }
 	void set_object(int index);

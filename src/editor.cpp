@@ -631,34 +631,40 @@ editor::manager::~manager() {
 	enemy_types.clear();
 }
 
-void editor::enemy_type::init(variant node)
-{
-	enemy_types.clear();
-	const std::vector<const_custom_object_type_ptr> types = custom_object_type::get_all();
-	foreach(const_custom_object_type_ptr t, types) {
-		if(t->editor_info()) {
-			enemy_types.push_back(editor::enemy_type(*t));
-		}
-	}
-}
-
-editor::enemy_type::enemy_type(const custom_object_type& type)
-  : category(type.editor_info()->category())
+editor::enemy_type::enemy_type(const std::string& type, const std::string& category, variant frame_info)
+  : category(category), frame_info_(frame_info)
 {
 	variant_builder new_node;
-	new_node.add("type", type.id());
+	new_node.add("type", type);
 	new_node.add("custom", true);
 	new_node.add("face_right", false);
 	new_node.add("x", 1500);
 	new_node.add("y", 0);
 
-	if(type.is_human()) {
-		new_node.add("is_human", true);
+	node = new_node.build();
+}
+
+const entity_ptr& editor::enemy_type::preview_object() const
+{
+	if(!preview_object_) {
+		preview_object_ = entity::build(node);
 	}
 
-	node = new_node.build();
-	preview_object = entity::build(node);
-	preview_frame.reset(new frame(preview_object->current_frame()));
+	return preview_object_;
+}
+
+const boost::shared_ptr<const frame>& editor::enemy_type::preview_frame() const
+{
+	if(!preview_frame_) {
+		if(frame_info_.is_map() && !preview_object_) {
+			preview_frame_.reset(new frame(frame_info_));
+		} else {
+			std::cerr << "COULD NOT READ FROM FRAME: " << frame_info_.write_json() << "\n";
+			preview_frame_.reset(new frame(preview_object()->current_frame()));
+		}
+	}
+
+	return preview_frame_;
 }
 
 void editor::tileset::init(variant node)
@@ -749,7 +755,6 @@ editor::editor(const char* level_cfg)
 		variant editor_cfg = json::parse_from_file("data/editor.cfg");
 		tile_map::load_all();
 		tileset::init(editor_cfg);
-		enemy_type::init(editor_cfg);
 		first_time = false;
 		if(editor_cfg.is_map()) {
 			if(editor_cfg["resolution"].is_null() == false) {
@@ -2022,12 +2027,15 @@ void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 
 	if(tool() == TOOL_ADD_OBJECT && event.button == SDL_BUTTON_LEFT && !lvl_->editor_highlight()) {
 		variant_builder node;
-		node.merge_object(enemy_types[cur_object_].node);
+		node.merge_object(all_characters()[cur_object_].node);
 		node.set("x", (ctrl_pressed ? anchorx_ : round_tile_size(anchorx_)));
 		node.set("y", (ctrl_pressed ? anchory_ : round_tile_size(anchory_)));
 		node.set("face_right", face_right_);
-
 		node.set("upside_down", upside_down_);
+
+		if(custom_object_type::get(all_characters()[cur_object_].node["type"].as_string())->is_human()) {
+			node.set("is_human", true);
+		}
 
 		entity_ptr c(entity::build(node.build()));
 
@@ -2645,8 +2653,16 @@ const std::vector<editor::tileset>& editor::all_tilesets() const
 	return tilesets;
 }
 
-const std::vector<editor::enemy_type>& editor::all_characters() const
+std::vector<editor::enemy_type>& editor::all_characters() const
 {
+	if(enemy_types.empty()) {
+		typedef std::pair<std::string, custom_object_type::EditorSummary> type_cat;
+		foreach(const type_cat& item, custom_object_type::get_editor_categories()) {
+			enemy_types.push_back(enemy_type(item.first, item.second.category, item.second.first_frame));
+			enemy_types.back().help = item.second.help;
+		}
+	}
+
 	return enemy_types;
 }
 
@@ -2678,7 +2694,7 @@ void editor::set_hex_tileset(int index)
 
 void editor::set_object(int index)
 {
-	int max = enemy_types.size();
+	int max = all_characters().size();
 
 	if(index < 0) {
 		index = max - 1;
@@ -2978,11 +2994,11 @@ void editor::draw_gui() const
 			y = ypos_ + mousey*zoom_;
 		}
 
-		entity& e = *all_characters()[cur_object_].preview_object;
+		entity& e = *all_characters()[cur_object_].preview_object();
 		e.set_pos(x, y);
 		if(place_entity_in_level(*lvl_, e)) {
 			glColor4f(1.0, 1.0, 1.0, 0.5);
-			all_characters()[cur_object_].preview_frame->draw(e.x(), e.y(), face_right_, upside_down_);
+			all_characters()[cur_object_].preview_frame()->draw(e.x(), e.y(), face_right_, upside_down_);
 			glColor4f(1.0, 1.0, 1.0, 1.0);
 		}
 	}
@@ -3295,8 +3311,6 @@ void editor::draw_gui() const
 	glEnable(GL_TEXTURE_2D);
 #endif
 
-	ASSERT_INDEX_INTO_VECTOR(cur_object_, enemy_types);
-
 	glColor4f(1.0, 1.0, 1.0, 1.0);
 	graphics::texture xtex = font::render_text(formatter() << (xpos_ + mousex*zoom_) << ",", graphics::color_white(), 14);
 	graphics::texture ytex = font::render_text(formatter() << (ypos_ + mousey*zoom_), graphics::color_white(), 14);
@@ -3546,7 +3560,7 @@ void editor::create_new_object()
 		const_custom_object_type_ptr obj = custom_object_type::get(type);
 
 		if(obj->editor_info()) {
-			enemy_types.push_back(editor::enemy_type(*obj));
+			all_characters().push_back(editor::enemy_type(type, obj->editor_info()->category(), variant()));
 			current_dialog_ = character_dialog_.get();
 
 			for(int n = 0; n != all_characters().size(); ++n) {

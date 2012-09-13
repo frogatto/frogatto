@@ -357,6 +357,7 @@ std::map<std::string, std::vector<std::string> > object_prototype_paths;
 custom_object_type_ptr custom_object_type::recreate(const std::string& id,
                                              const custom_object_type* old_type)
 {
+	std::cerr << "CREATE OBJ: "<< id << "\n";
 	if(object_file_paths().empty()) {
 		load_file_paths();
 	}
@@ -397,9 +398,9 @@ void custom_object_type::invalidate_all_objects()
 	::prototype_file_paths().clear();
 }
 
-std::vector<const_custom_object_type_ptr> custom_object_type::get_all()
+std::vector<std::string> custom_object_type::get_all_ids()
 {
-	std::vector<const_custom_object_type_ptr> res;
+	std::vector<std::string> res;
 	std::map<std::string, std::string> file_paths;
 	module::get_unique_filenames_under_dir(object_file_path(), &file_paths);
 	for(std::map<std::string, std::string>::const_iterator i = file_paths.begin(); i != file_paths.end(); ++i) {
@@ -409,6 +410,106 @@ std::vector<const_custom_object_type_ptr> custom_object_type::get_all()
 		}
 
 		const std::string id(fname.begin(), fname.end() - 4);
+		res.push_back(id);
+	}
+
+	return res;
+}
+
+std::map<std::string,custom_object_type::EditorSummary> custom_object_type::get_editor_categories()
+{
+	const std::string path = std::string(preferences::user_data_path()) + "/editor_cache.cfg";
+	variant cache, proto_cache;
+	if(sys::file_exists(path)) {
+		try {
+			cache = json::parse(sys::read_file(path), json::JSON_NO_PREPROCESSOR);
+			proto_cache = cache["prototype_info"];
+		} catch(...) {
+		}
+	}
+
+	std::map<std::string, bool> proto_status;
+
+	std::map<variant, variant> items, proto_info;
+	foreach(const std::string& id, get_all_ids()) {
+		variant info;
+		const std::string* path = get_object_path(id + ".cfg");
+		if(path == NULL) {
+			fprintf(stderr, "NO FILE FOR OBJECT '%s'\n", id.c_str());
+		}
+
+		const int mod_time = static_cast<int>(sys::file_mod_time(*path));
+		if(cache.is_map() && cache.has_key(id) && cache[id]["mod"].as_int() == mod_time) {
+			info = cache[id];
+			foreach(const std::string& p, info["prototype_paths"].as_list_string()) {
+				if(!proto_status.count(p)) {
+					const int t = static_cast<int>(sys::file_mod_time(p));
+					proto_info[variant(p)] = variant(t);
+					proto_status[p] = t == proto_cache[p].as_int();
+				}
+
+				if(!proto_status[p]) {
+					info = variant();
+					break;
+				}
+			}
+		}
+
+		if(info.is_null()) {
+			std::vector<std::string> proto_paths;
+			variant node = merge_prototype(json::parse_from_file(*path), &proto_paths);
+			std::map<variant,variant> summary;
+			summary[variant("mod")] = variant(mod_time);
+			std::vector<variant> proto_paths_v;
+			foreach(const std::string& s, proto_paths) {
+				proto_paths_v.push_back(variant(s));
+			}
+
+			summary[variant("prototype_paths")] = variant(&proto_paths_v);
+
+			if(node["animation"].is_list()) {
+				summary[variant("animation")] = node["animation"][0];
+			} else if(node["animation"].is_map()) {
+				summary[variant("animation")] = node["animation"];
+			}
+
+			if(node["editor_info"].is_map()) {
+				summary[variant("category")] = node["editor_info"]["category"];
+				if(node["editor_info"]["help"].is_string()) {
+					summary[variant("help")] = node["editor_info"]["help"];
+				}
+			}
+
+			info = variant(&summary);
+		}
+
+		items[variant(id)] = info;
+	}
+
+	std::map<std::string,EditorSummary> m;
+	for(std::map<variant,variant>::const_iterator i = items.begin(); i != items.end(); ++i) {
+		if(i->second.has_key("category")) {
+			EditorSummary& summary = m[i->first.as_string()];
+			summary.category = i->second["category"].as_string();
+			if(i->second["help"].is_string()) {
+				summary.help = i->second["help"].as_string();
+			}
+			summary.first_frame = i->second["animation"];
+		}
+	}
+
+	items[variant("prototype_info")] = variant(&proto_info);
+
+	const variant result = variant(&items);
+	sys::write_file(path, result.write_json());
+
+	return m;
+}
+
+std::vector<const_custom_object_type_ptr> custom_object_type::get_all()
+{
+	std::vector<const_custom_object_type_ptr> res;
+	foreach(const std::string& id, get_all_ids()) {
 		res.push_back(get(id));
 	}
 

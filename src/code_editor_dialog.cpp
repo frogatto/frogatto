@@ -173,10 +173,10 @@ void code_editor_dialog::load_file(std::string fname, bool focus)
 		f.editor->set_on_change_handler(boost::bind(&code_editor_dialog::on_code_changed, this));
 		f.editor->set_on_move_cursor_handler(boost::bind(&code_editor_dialog::on_move_cursor, this));
 
-		foreach(const_custom_object_type_ptr obj_type, custom_object_type::get_all()) {
-			const std::string* path = custom_object_type::get_object_path(obj_type->id() + ".cfg");
+		foreach(const std::string& obj_type, custom_object_type::get_all_ids()) {
+			const std::string* path = custom_object_type::get_object_path(obj_type + ".cfg");
 			if(path && *path == fname) {
-				f.anim.reset(new frame(obj_type->default_frame()));
+				f.anim.reset(new frame(custom_object_type::get(obj_type)->default_frame()));
 				break;
 			}
 		}

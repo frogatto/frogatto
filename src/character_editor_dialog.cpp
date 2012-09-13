@@ -43,7 +43,7 @@ void character_editor_dialog::init()
 	find_grid->add_col(widget_ptr(find_edit_));
 	add_widget(find_grid, 10, 10);
 
-	const frame& frame = *editor_.all_characters()[editor_.get_object()].preview_frame;
+	const frame& frame = *editor_.all_characters()[editor_.get_object()].preview_frame();
 
 	button* facing_button = new button(
 	  widget_ptr(new label(editor_.face_right() ? "right" : "left", graphics::color_white())),
@@ -76,22 +76,22 @@ gui::widget_ptr character_editor_dialog::generate_grid(const std::string& catego
 		grid->set_max_height(height() - 50);
 		int index = 0;
 		foreach(const editor::enemy_type& c, editor_.all_characters()) {
-			const bool matches = search_string.empty() == false && strstr(c.preview_object->debug_description().c_str(), search_string.c_str()) != NULL ||
+			const bool matches = search_string.empty() == false && strstr(c.node["type"].as_string().c_str(), search_string.c_str()) != NULL ||
 			                      search_string.empty() && c.category == category_;
 			if(matches) {
 				if(first_obj_.count(category_) == 0) {
 					first_obj_[category] = index;
 				}
 
-				image_widget* preview = new image_widget(c.preview_frame->img());
+				image_widget* preview = new image_widget(c.preview_frame()->img());
 				preview->set_dim(36, 36);
-				preview->set_area(c.preview_frame->area());
+				preview->set_area(c.preview_frame()->area());
 				button_ptr char_button(new button(widget_ptr(preview), boost::bind(&character_editor_dialog::set_character, this, index)));
 	
 				std::string tooltip_str = c.node["type"].as_string();
-				const_editor_entity_info_ptr editor_info = c.preview_object->editor_info();
-				if(editor_info && !editor_info->help().empty()) {
-					tooltip_str += "\n" + editor_info->help();
+
+				if(c.help.empty() == false) {
+					tooltip_str += "\n" + c.help;
 				}
 				char_button->set_tooltip(tooltip_str);
 				char_button->set_dim(40, 40);
@@ -148,9 +148,9 @@ void character_editor_dialog::show_category_menu()
 	foreach(const cat_pair& cp, categories) {
 		const editor::enemy_type& c = *cp.second;
 
-		image_widget* preview = new image_widget(c.preview_frame->img());
+		image_widget* preview = new image_widget(c.preview_frame()->img());
 		preview->set_dim(28, 28);
-		preview->set_area(c.preview_frame->area());
+		preview->set_area(c.preview_frame()->area());
 		grid->add_col(widget_ptr(preview))
 		     .add_col(widget_ptr(new label(c.category, graphics::color_white())));
 		grid->register_row_selection_callback(boost::bind(&character_editor_dialog::select_category, this, c.category));
