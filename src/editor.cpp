@@ -396,7 +396,8 @@ class editor_mode_dialog : public gui::dialog
 			case SDL_KEYDOWN: {
 				switch(event.key.keysym.sym) {
 					//TODO: add short cuts for tools here.
-
+					default:
+				break;
 				}
 
 				break;
