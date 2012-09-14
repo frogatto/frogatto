@@ -682,10 +682,17 @@ editor::tileset::tileset(variant node)
 	sloped(node["sloped"].as_bool()),
 	node_info(node)
 {
-	if(node.has_key("preview")) {
-		preview.reset(new tile_map(node["preview"]));
-	}
 }
+
+boost::shared_ptr<tile_map> editor::tileset::preview() const
+{
+	if(!preview_ && node_info.has_key("preview")) {
+		preview_.reset(new tile_map(node_info["preview"]));
+	}
+
+	return preview_;
+}
+
 
 editor* editor::get_editor(const char* level_cfg)
 {
@@ -748,13 +755,19 @@ editor::editor(const char* level_cfg)
 	selected_segment_(-1), prev_mousex_(-1), prev_mousey_(-1),
 	xres_(0), yres_(0)
 {
+	fprintf(stderr, "BEGIN EDITOR::EDITOR\n");
+	const int begin = SDL_GetTicks();
 	preferences::set_record_history(true);
 
 	static bool first_time = true;
 	if(first_time) {
 		variant editor_cfg = json::parse_from_file("data/editor.cfg");
+		const int begin = SDL_GetTicks();
 		tile_map::load_all();
+		const int mid = SDL_GetTicks();
+		fprintf(stderr, "tile_map::load_all(): %dms\n", mid - begin);
 		tileset::init(editor_cfg);
+		fprintf(stderr, "tileset::init(): %dms\n", SDL_GetTicks() - mid);
 		first_time = false;
 		if(editor_cfg.is_map()) {
 			if(editor_cfg["resolution"].is_null() == false) {
@@ -781,6 +794,7 @@ editor::editor(const char* level_cfg)
 	if(preferences::external_code_editor().is_null() == false && !external_code_editor_) {
 		external_code_editor_ = external_text_editor::create(preferences::external_code_editor());
 	}
+	fprintf(stderr, "END EDITOR::EDITOR: %dms\n", SDL_GetTicks() - begin);
 }
 
 editor::~editor()

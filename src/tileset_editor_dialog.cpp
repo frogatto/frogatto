@@ -69,7 +69,7 @@ void tileset_editor_dialog::init()
 			if(first_index_ == -1) {
 				first_index_ = index;
 			}
-			preview_tileset_widget* preview = new preview_tileset_widget(*t.preview);
+			preview_tileset_widget* preview = new preview_tileset_widget(*t.preview());
 			preview->set_dim(40, 40);
 			button_ptr tileset_button(new button(widget_ptr(preview), boost::bind(&tileset_editor_dialog::set_tileset, this, index)));
 			tileset_button->set_dim(44, 44);
@@ -117,7 +117,7 @@ void tileset_editor_dialog::show_category_menu()
 
 		categories.insert(t.category);
 
-		preview_tileset_widget* preview = new preview_tileset_widget(*t.preview);
+		preview_tileset_widget* preview = new preview_tileset_widget(*t.preview());
 		preview->set_dim(48, 48);
 		grid->add_col(widget_ptr(preview))
 		     .add_col(widget_ptr(new label(t.category, graphics::color_white())));
