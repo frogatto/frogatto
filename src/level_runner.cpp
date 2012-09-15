@@ -6,6 +6,8 @@
 
 #include "graphics.hpp"
 
+#include "background_task_pool.hpp"
+#include "base64.hpp"
 #include "collision_utils.hpp"
 #include "controls.hpp"
 #include "custom_object.hpp"
@@ -18,8 +20,10 @@
 #include "filesystem.hpp"
 #include "font.hpp"
 #include "foreach.hpp"
+#include "formatter.hpp"
 #include "formula_profiler.hpp"
 #include "formula_callable.hpp"
+#include "http_client.hpp"
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY) || defined(__ANDROID__)
 #include "iphone_controls.hpp"
 #endif
@@ -27,6 +31,7 @@
 #include "userevents.h"
 #endif
 #include "joystick.hpp"
+#include "json_parser.hpp"
 #include "level_runner.hpp"
 #include "light.hpp"
 #include "load_level.hpp"
@@ -61,6 +66,50 @@ public:
 		current_level_runner = old_;
 	}
 };
+
+struct upload_screenshot_info {
+	upload_screenshot_info() : error(false), done(false)
+	{}
+	void finished(std::string response, bool is_error) {
+		fprintf(stderr, "finished(%d, %s)\n", is_error, response.c_str());
+		result = response;
+		error = is_error;
+		done = true;
+	}
+	std::string result;
+	bool error;
+	bool done;
+};
+
+void upload_screenshot(std::string file, boost::shared_ptr<upload_screenshot_info> info)
+{
+	http_client client("www.theargentlark.com", "80");
+	client.send_request("POST /cgi-bin/upload-screenshot.pl", 
+		base64::b64encode(sys::read_file(file)), 
+		boost::bind(&upload_screenshot_info::finished, info.get(), _1, false),
+		boost::bind(&upload_screenshot_info::finished, info.get(), _1, true),
+		0);
+	while(!info->done) {
+		client.process();
+	}
+}
+
+void done_upload_screenshot(boost::shared_ptr<upload_screenshot_info> info)
+{
+	try {
+		if(info->error == false) {
+			fprintf(stderr, "DONE UPLOAD SCREENSHOT (%s)\n", info->result.c_str());
+			variant v = json::parse(info->result, json::JSON_NO_PREPROCESSOR);
+			debug_console::add_message(formatter() << "Uploaded screenshot to " << v["url"].as_string());;
+		}
+	} catch(...) {
+		info->error = true;
+	}
+
+	if(info->error) {
+		debug_console::add_message("error uploading screenshot");
+	}
+}
 
 int skipping_game = 0;
 
@@ -692,6 +741,8 @@ bool level_runner::play_cycle()
 		controls::mark_valid();
 	}
 
+	background_task_pool::pump();
+
 	performance_data current_perf(current_fps_,50,0,0,0,0,0,custom_object::events_handled_per_second,"");
 
 	if(controls::num_players() > 1) {
@@ -1187,7 +1238,12 @@ bool level_runner::play_cycle()
 					sys::write_file(preferences::save_file_path(), lvl_node.write_json(true));
 				} else if(key == SDLK_s && (mod&KMOD_ALT)) {
 #if !defined(__native_client__)
-					IMG_SaveFrameBuffer((std::string(preferences::user_data_path()) + "screenshot.png").c_str(), 5);
+					const std::string fname = std::string(preferences::user_data_path()) + "screenshot.png";
+					IMG_SaveFrameBuffer(fname.c_str(), 5);
+					boost::shared_ptr<upload_screenshot_info> info(new upload_screenshot_info);
+					background_task_pool::submit(
+					  boost::bind(upload_screenshot, fname, info),
+					  boost::bind(done_upload_screenshot, info));
 #endif
 				} else if(key == SDLK_l && (mod&KMOD_CTRL)) {
 					preferences::set_use_pretty_scaling(!preferences::use_pretty_scaling());

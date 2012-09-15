@@ -14,6 +14,7 @@
 #endif
 
 #include "asserts.hpp"
+#include "background_task_pool.hpp"
 #include "checksum.hpp"
 #include "controls.hpp"
 #include "custom_object.hpp"
@@ -369,6 +370,8 @@ extern "C" int main(int argcount, char** argvec)
 #endif // NO_EDITOR
 
 	preferences::expand_data_paths();
+
+	background_task_pool::manager bg_task_pool_manager;
 	LOG( "After expand_data_paths()" );
 
 	std::cerr << "Preferences dir: " << preferences::user_data_path() << '\n';
