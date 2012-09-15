@@ -10,6 +10,7 @@
 #include "grid_widget.hpp"
 #include "image_widget.hpp"
 #include "label.hpp"
+#include "module.hpp"
 #include "raster.hpp"
 #include "text_editor_widget.hpp"
 
@@ -76,8 +77,13 @@ gui::widget_ptr character_editor_dialog::generate_grid(const std::string& catego
 		grid->set_max_height(height() - 50);
 		int index = 0;
 		foreach(const editor::enemy_type& c, editor_.all_characters()) {
-			const bool matches = search_string.empty() == false && strstr(c.node["type"].as_string().c_str(), search_string.c_str()) != NULL ||
-			                      search_string.empty() && c.category == category_;
+			bool matches = c.category == category;
+			if(search_string.empty() == false) {
+				const std::string id = module::get_id(c.node["type"].as_string());
+				const char* p = strstr(id.c_str(), search_string.c_str());
+				matches = p == id.c_str() || p != NULL && *(p-1) == '_';
+			}
+
 			if(matches) {
 				if(first_obj_.count(category_) == 0) {
 					first_obj_[category] = index;

@@ -12,6 +12,7 @@ objects = \
 	animation_widget.o \
 	asserts.o \
 	background.o \
+	background_task_pool.o \
 	base64.o \
 	blur.o \
 	border_widget.o \

@@ -86,9 +86,12 @@ public:
 		int zorder;
 		int x_speed;
 		int y_speed;
-		boost::shared_ptr<tile_map> preview;
 		bool sloped;
 		variant node_info;
+
+		boost::shared_ptr<tile_map> preview() const;
+	private:
+		mutable boost::shared_ptr<tile_map> preview_;
 	};
 
 	struct enemy_type {

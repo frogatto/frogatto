@@ -1116,6 +1116,8 @@ bool variant::operator==(const variant& v) const
 	case VARIANT_TYPE_FUNCTION: {
 		return fn_ == v.fn_;
 	}
+	case VARIANT_TYPE_DELAYED:
+		assert(false);
 	}
 
 	assert(false);
@@ -1181,6 +1183,11 @@ bool variant::operator<=(const variant& v) const
 	case VARIANT_TYPE_CALLABLE: {
 		return !v.callable_->less(callable_);
 	}
+	case VARIANT_TYPE_FUNCTION: {
+		return fn_ <= v.fn_;
+	}
+	case VARIANT_TYPE_DELAYED:
+		assert(false);
 	}
 
 	assert(false);
@@ -1510,6 +1517,7 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 		char buf[64];
 		sprintf(buf, "(loading %lx)", callable_loading_);
 		s << buf;
+		break;
 	}
 
 	case VARIANT_TYPE_CALLABLE: {
@@ -1532,6 +1540,27 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 			s << "...";
 		}
 		s << "}";
+		break;
+	}
+	case VARIANT_TYPE_FUNCTION: {
+		char buf[64];
+		sprintf(buf, "(%p)", fn_);
+		s << buf << "(";
+		bool first = true;
+		for(const std::string *i = fn_->begin_args; i != fn_->end_args; ++i) {
+			if (first)
+				first = false;
+			else
+				s << ", ";
+			s << *i;
+		}
+		s << ")";
+		break;
+	}
+	case VARIANT_TYPE_DELAYED: {
+		char buf[64];
+		sprintf(buf, "(delayed %p)", delayed_);
+		s << buf;
 		break;
 	}
 	case VARIANT_TYPE_MAP: {

@@ -1,10 +1,22 @@
 = Useful Utilities =
-① Universal Animation Modifier:
+
+Universal Animation Modifier:
 This adds a little base tag to every cube trains object which sets its scale.
 ./game --utility=query modules/cube_trains 'map(filter(visit_objects(doc), value.animation != null), set(value.animation, [{"@base": true, scale: 1}] + if(is_list(value.animation), value.animation, [value.animation])))'
 
-② Search the commit logs for a word, for a given file.
+Search the commit logs for a word, for a given file.
 git log --grep=word -- whatever/path
 
-③ Log Frogatto's console output to a file.
+Log Frogatto's console output to a file.
 ./game --level module-manager.cfg 2>&1 | tee log.txt
+
+Log objects outside the level dimensions.
+./game --utility=query modules/cube_trains "
+    if(is_list(doc.dimensions),
+        map(filter(visit_objects(doc), 
+                //value.type in ['coin_gold_big','coin_gold_enormous','coin_silver','gold_berry']), 'obj', //Alternative check, useful for Frogatto, for coins.
+                value.type and value.x and value.label), 'obj',
+            if(not point_in_rect([obj.x, obj.y], doc.dimensions),
+                debug('\${doc.id} has a \${obj.type}, \${obj.label}, out-of-bounds at \${[obj.x, obj.y]}.'))
+        )) where point_in_rect = def(point, rect) (rect[0] < point[0] and point[0] < rect[2] and //Cloned this function from functions-geometry.cfg sans safety.
+                                                   rect[1] < point[1] and point[1] < rect[3])"

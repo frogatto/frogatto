@@ -37,26 +37,13 @@
 
 #include <string>
 
+#include "base64.hpp"
 #include "filesystem.hpp"
 #include "http_client.hpp"
 #include "IMG_savepng.h"
 #include "preferences.hpp"
 #include "stats.hpp"
 #include "surface.hpp"
-
-namespace {
-void upload_finished(std::string response, bool* flag)
-{
-	*flag = true;
-	std::cerr << "UPLOADED SCREENSHOT" << std::endl;
-}
-void upload_error(std::string response, bool* flag)
-{
-	*flag = true;
-	std::cerr << "ERROR UPLOADING SCREENSHOT" << std::endl;
-}
-
-}
 
 int IMG_SaveFrameBuffer(const char* file, int compression)
 {
@@ -81,17 +68,8 @@ int IMG_SaveFrameBuffer(const char* file, int compression)
 		fprintf(stderr, "FAILED TO SAVE SCREENSHOT\n");
 		return result;
 	}
-	fprintf(stderr, "SAVED SCREENSHOT TO %s, UPLOADING...\n", file);
-	bool done = false;
-	http_client client("theargentlark.com", "5000");
-	client.send_request("POST /cgi-bin/upload-screenshot", 
-		sys::read_file(file), 
-		boost::bind(upload_finished, _1, &done),
-		boost::bind(upload_error, _1, &done),
-		0);
-	while(!done) {
-		client.process();
-	}
+	fprintf(stderr, "SAVED SCREENSHOT TO %s.\n", file);
+	
 	return result;
 }
 

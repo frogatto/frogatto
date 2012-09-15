@@ -1102,3 +1102,8 @@ UTILITY(object_definition)
 		std::cout << "OBJECT " << arg << "\n---\n" << node.write_json(true) << "\n---\n";
 	}
 }
+
+UTILITY(test_all_objects)
+{
+	custom_object_type::get_all();
+}
