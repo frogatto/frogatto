@@ -45,20 +45,6 @@
 #include "stats.hpp"
 #include "surface.hpp"
 
-namespace {
-void upload_finished(std::string response, bool* flag)
-{
-	*flag = true;
-	std::cerr << "UPLOADED SCREENSHOT: " << response << std::endl;
-}
-void upload_error(std::string response, bool* flag)
-{
-	*flag = true;
-	std::cerr << "ERROR UPLOADING SCREENSHOT " << response << std::endl;
-}
-
-}
-
 int IMG_SaveFrameBuffer(const char* file, int compression)
 {
 	const int w = preferences::actual_screen_width();
