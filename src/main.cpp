@@ -599,6 +599,14 @@ extern "C" int main(int argcount, char** argvec)
 		GLenum err = glGetError();
 		std::cerr << "Error in extensions string: " << std::hex << err << std::endl;
 	}
+#ifdef GL_SHADING_LANGUAGE_VERSION
+	if((glstrings = glGetString(GL_SHADING_LANGUAGE_VERSION)) != NULL) {
+		std::cerr << "GLSL Version: " << reinterpret_cast<const char *>(glstrings) << std::endl;
+	} else {
+		GLenum err = glGetError();
+		std::cerr << "Error in GLSL string: " << std::hex << err << std::endl;
+	}
+#endif
 	std::cerr << std::endl;
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_BLEND);
