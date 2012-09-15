@@ -343,8 +343,10 @@ void code_editor_dialog::process()
 					throw;
 				}
 				std::cerr << "INIT TILE MAP OK\n";
+#if defined(USE_GLES2)
 			} else if(fname_.find("data/shaders.cfg")) {
 				gles2::load_shader_file(editor_->text());
+#endif
 			} else { 
 				std::cerr << "SET FILE: " << fname_ << "\n";
 				custom_object_type::set_file_contents(fname_, editor_->text());
