@@ -961,11 +961,9 @@ void custom_object::draw(int xx, int yy) const
 		if(!v.empty()) {
 #if defined(USE_GLES2)
 			glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-
-			gles2::manager gles2_manager;
-			glUniform1f(gles2_manager.pt_size, 2);
-			glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, &v[0]);
-			glEnableVertexAttribArray(gles2_manager.vtx_coord);
+			glPointSize(2.0f);
+			gles2::manager gles2_manager(gles2::get_simple_shader());
+			gles2::get_simple_shader()->vertex_array(2, GL_FLOAT, 0, 0, &v[0]);
 			glDrawArrays(GL_POINTS, 0, v.size()/2);
 			glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 #else

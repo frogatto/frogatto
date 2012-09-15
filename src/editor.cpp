@@ -134,6 +134,9 @@ class editor_menu_dialog : public gui::dialog
 			"Restart Level (including player)", "ctrl+alt+r", boost::bind(&editor::reset_playing_level, &editor_, false),
 			"Pause Game", "ctrl+p", boost::bind(&editor::toggle_pause, &editor_),
 			"Code", "", boost::bind(&editor::toggle_code, &editor_),
+#if defined(USE_GLES2)
+			"Shaders", "", boost::bind(&editor::edit_shaders, &editor_),
+#endif
 		};
 
 		menu_item duplicate_item = { "Duplicate Object(s)", "ctrl+1", boost::bind(&editor::duplicate_selected_objects, &editor_) };
@@ -3110,9 +3113,8 @@ void editor::draw_gui() const
 
 			if(!varray.empty()) {
 #if defined(USE_GLES2)
-				gles2::manager gles2_manager;
-				glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, &varray.front());
-				glEnableVertexAttribArray(gles2_manager.vtx_coord);
+				gles2::manager gles2_manager(gles2::get_simple_shader());
+				gles2::get_simple_shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
 #else
 				glVertexPointer(2, GL_FLOAT, 0, &varray.front());
 #endif
@@ -3169,9 +3171,8 @@ void editor::draw_gui() const
 		varray.push_back(graphics::screen_width()); varray.push_back(y);
 	}
 #if defined(USE_GLES2)
-	gles2::manager gles2_manager;
-	glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, &varray.front());
-	glEnableVertexAttribArray(gles2_manager.vtx_coord);
+	gles2::manager gles2_manager(gles2::get_simple_shader());
+	gles2::active_shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
 #else
 	glVertexPointer(2, GL_FLOAT, 0, &varray.front());
 #endif
@@ -3258,10 +3259,8 @@ void editor::draw_gui() const
 		}
 		
 #if defined(USE_GLES2)
-		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, &varray.front());
-		glEnableVertexAttribArray(gles2_manager.vtx_coord);
-		glVertexAttribPointer(gles2_manager.color, 4, GL_FLOAT, 0, 0, &carray.front());
-		glEnableVertexAttribArray(gles2_manager.color);
+		gles2::active_shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
+		gles2::active_shader()->color_array(4, GL_FLOAT, 0, 0, &carray.front());
 		glDrawArrays(GL_LINES, 0, varray.size()/2);
 #else
 		glEnableClientState(GL_COLOR_ARRAY);
@@ -3392,9 +3391,8 @@ void editor::draw_selection(int xoffset, int yoffset) const
 		}
 	}
 #if defined(USE_GLES2)
-	gles2::manager gles2_manager;
-	glEnableVertexAttribArray(gles2_manager.vtx_coord);
-	glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, &varray.front());
+	gles2::manager gles2_manager(gles2::get_simple_shader());
+	gles2::get_simple_shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
 #else
 	glVertexPointer(2, GL_FLOAT, 0, &varray.front());
 #endif
@@ -3572,6 +3570,28 @@ void editor::create_new_object()
 			}
 		}
 	}
+}
+
+void editor::edit_shaders()
+{
+#if defined(USE_GLES2)
+	const std::string path = module::map_file("data/shaders.cfg");
+	if(sys::file_exists(path) == false) {
+		sys::write_file(path, "{\n\t\"shaders\": {\n\t},\n\t\"programs\": [\n\t],\n}");
+	}
+	if(external_code_editor_ && external_code_editor_->replace_in_game_editor()) {
+
+		std::cerr << "Loading file in external editor: " << path << "\n";
+		external_code_editor_->load_file(path);
+	}
+
+	if(code_dialog_) {
+		code_dialog_.reset();
+	} else {
+		code_dialog_.reset(new code_editor_dialog(rect(graphics::screen_width() - 620, 30, 620, graphics::screen_height() - 30)));
+		code_dialog_->load_file(path);
+	}
+#endif
 }
 
 

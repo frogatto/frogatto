@@ -115,10 +115,9 @@ void water_particle_system::draw(const rect& screen_area, const entity& e) const
 
 	glColor4f(info_.rgba[0]/255.0, info_.rgba[1]/255.0, info_.rgba[2]/255.0, info_.rgba[3]/255.0);
 #if defined(USE_GLES2)
-	gles2::manager gles2_manager;
-	glUniform1f(gles2_manager.pt_size, info_.dot_size);
-	glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_SHORT, GL_FALSE, 0, &vertices.front());
-	glEnableVertexAttribArray(gles2_manager.vtx_coord);
+	glPointSize(info_.dot_size);
+	gles2::manager gles2_manager(gles2::get_simple_shader());
+	gles2::active_shader()->vertex_array(2, GL_SHORT, GL_FALSE, 0, &vertices.front());
 	glDrawArrays(GL_POINTS, 0, vertices.size()/2);
 #else
 	glDisable(GL_TEXTURE_2D);

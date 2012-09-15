@@ -66,6 +66,9 @@ public:
 	//in the main thread.
 	void finish_loading();
 
+	virtual game_logic::formula_ptr create_formula(const variant& v);
+	bool execute_command(const variant& var);
+
 	//function which sets which player we're controlling on this machine.
 	void set_multiplayer_slot(int slot);
 

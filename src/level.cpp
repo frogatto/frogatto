@@ -1563,15 +1563,13 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 	}
 
 #if defined(USE_GLES2)
-	gles2::manager gles2_manager(true);
-	glEnableVertexAttribArray(gles2_manager.vtx_coord);
-	glEnableVertexAttribArray(gles2_manager.tex_coord);
+	gles2::active_shader()->prepare_draw();
 #endif
 
 	if(!opaque_indexes.empty()) {
 #if defined(USE_GLES2)
-		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_SHORT, GL_FALSE, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
-		glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, GL_FALSE, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
+		gles2::active_shader()->vertex_array(2, GL_SHORT, GL_FALSE, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
+		gles2::active_shader()->texture_array(2, GL_FLOAT, GL_FALSE, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
 #else
 		glVertexPointer(2, GL_SHORT, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
 		glTexCoordPointer(2, GL_FLOAT, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
@@ -1582,8 +1580,8 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 
 	if(!translucent_indexes.empty()) {
 #if defined(USE_GLES2)
-		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_SHORT, GL_FALSE, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
-		glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, GL_FALSE, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
+		gles2::active_shader()->vertex_array(2, GL_SHORT, GL_FALSE, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
+		gles2::active_shader()->texture_array(2, GL_FLOAT, GL_FALSE, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
 #else
 		glVertexPointer(2, GL_SHORT, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
 		glTexCoordPointer(2, GL_FLOAT, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
@@ -1636,9 +1634,8 @@ void level::draw_layer_solid(int layer, int x, int y, int w, int h) const
 			  area.x() + area.w(), area.y() + area.h(),
 			};
 #if defined(USE_GLES2)
-			gles2::manager gles2_manager;
-			glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, varray);
-			glEnableVertexAttribArray(gles2_manager.vtx_coord);
+			gles2::manager gles2_manager(gles2::get_simple_shader());
+			gles2::active_shader()->vertex_array(2, GL_FLOAT, 0, 0, varray);
 #else
 			glVertexPointer(2, GL_SHORT, 0, varray);
 #endif
@@ -2007,11 +2004,9 @@ void level::calculate_lighting(int x, int y, int w, int h) const
 	const GLfloat tcarray_rotated[] = { 0, 1, 1, 1, 0, 0, 1, 0 };
 	GLfloat varray[] = { 0, h, 0, 0, w, h, w, 0 };
 #if defined(USE_GLES2)
-	gles2::manager gles2_manager(true);
-	glEnableVertexAttribArray(gles2_manager.vtx_coord);
-	glEnableVertexAttribArray(gles2_manager.tex_coord);
-	glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_SHORT, 0, sizeof(tile_corner), varray);
-	glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, GL_FALSE, 0, 
+	gles2::active_shader()->prepare_draw();
+	gles2::active_shader()->vertex_array(2, GL_SHORT, 0, sizeof(tile_corner), varray);
+	gles2::active_shader()->texture_array(2, GL_FLOAT, GL_FALSE, 0, 
 		preferences::screen_rotated() ? tcarray_rotated : tcarray);
 #else
 	glVertexPointer(2, GL_FLOAT, 0, varray);
@@ -2070,8 +2065,9 @@ void level::draw_debug_solid(int x, int y, int w, int h) const
 					}
 
 #if defined(USE_GLES2)
-					gles2::manager gles2_manager;
-					glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_SHORT, 0, 0, &v[0]);
+					glPointSize(1.0f);
+					gles2::manager gles2_manager(gles2::get_simple_shader());
+					gles2::active_shader()->vertex_array(2, GL_SHORT, 0, 0, &v[0]);
 #else
 					glPointSize(1);
 					glVertexPointer(2, GL_SHORT, 0, &v[0]);
@@ -4251,6 +4247,34 @@ std::pair<std::vector<level_tile>::const_iterator, std::vector<level_tile>::cons
 	return std::equal_range(tiles_by_position_.begin(), tiles_by_position_.end(), loc, level_tile_pos_comparer());
 }
 
+game_logic::formula_ptr level::create_formula(const variant& v)
+{
+	// XXX Add symbol table here?
+	return game_logic::formula_ptr(new game_logic::formula(v));
+}
+
+bool level::execute_command(const variant& var)
+{
+	bool result = true;
+	if(var.is_null()) {
+		return result;
+	}
+
+	if(var.is_list()) {
+		const int num_elements = var.num_elements();
+		for(int n = 0; n != num_elements; ++n) {
+			if(var[n].is_null() == false) {
+				result = execute_command(var[n]) && result;
+			}
+		}
+	} else {
+		game_logic::command_callable* cmd = var.try_convert<game_logic::command_callable>();
+		if(cmd != NULL) {
+			cmd->execute(*this);
+		}
+	}
+	return result;
+}
 
 UTILITY(correct_solidity)
 {

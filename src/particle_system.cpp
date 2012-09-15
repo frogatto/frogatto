@@ -571,15 +571,12 @@ void simple_particle_system::draw(const rect& area, const entity& e) const
 	}
 	
 #if defined(USE_GLES2)
-	gles2::manager gles2_manager(true);
+	gles2::active_shader()->prepare_draw();
 	if(info_.delta_a_) {
-		glVertexAttribPointer(gles2_manager.color, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, &carray.front());
-		glEnableVertexAttribArray(gles2_manager.color);
+		gles2::active_shader()->color_array(4, GL_UNSIGNED_BYTE, GL_TRUE, 0, &carray.front());
 	}
-	glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, GL_FALSE, 0, &varray.front());
-	glEnableVertexAttribArray(gles2_manager.vtx_coord);
-	glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, GL_FALSE, 0, &tcarray.front());
-	glEnableVertexAttribArray(gles2_manager.tex_coord);
+	gles2::active_shader()->vertex_array(2, GL_FLOAT, GL_FALSE, 0, &varray.front());
+	gles2::active_shader()->texture_array(2, GL_FLOAT, GL_FALSE, 0, &tcarray.front());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
 #else
 	if(info_.delta_a_){
@@ -797,12 +794,10 @@ public:
 
 #if defined(USE_GLES2)
 		// Not dealing with GL_POINT_SMOOTH right now -- this would probably be better as a frgament shader.
-		gles2::manager gles2_manager;
-		glUniform1f(gles2_manager.pt_size, info_.dot_size);
-		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_SHORT, GL_FALSE, 0, &vertex[0]);
-		glEnableVertexAttribArray(gles2_manager.vtx_coord);
-		glVertexAttribPointer(gles2_manager.color, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, &colors[0]);
-		glEnableVertexAttribArray(gles2_manager.color);
+		glPointSize(info_.dot_size);
+		gles2::manager gles2_manager(gles2::get_simple_shader());
+		gles2::active_shader()->vertex_array(2, GL_SHORT, GL_FALSE, 0, &vertex[0]);
+		gles2::active_shader()->color_array(4, GL_UNSIGNED_BYTE, GL_TRUE, 0, &colors[0]);
 		glDrawArrays(GL_POINTS, 0, particles_.size());
 #else
 		glDisable(GL_TEXTURE_2D);

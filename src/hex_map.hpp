@@ -9,6 +9,7 @@ namespace hex {
 	enum direction {NORTH, SOUTH, NORTH_WEST, NORTH_EAST, SOUTH_WEST, SOUTH_EAST};
 }
 
+#include "graphics.hpp"
 #include "hex_object_fwd.hpp"
 #include "hex_object.hpp"
 #include "formula_callable.hpp"
@@ -40,6 +41,9 @@ public:
 	virtual void draw() const;
 	variant write() const;
 
+	game_logic::formula_ptr create_formula(const variant& v);
+	bool execute_command(const variant& var);
+
 	bool set_tile(int x, int y, const std::string& tile);
 
 	hex_object_ptr get_hex_tile(direction d, int x, int y) const;
@@ -53,6 +57,7 @@ public:
 protected:
 	virtual variant get_value(const std::string&) const;
 	virtual void set_value(const std::string& key, const variant& value);
+	virtual void handle_draw() const;
 
 	std::string make_tile_string() const;
 private:
@@ -62,6 +67,9 @@ private:
 	int x_;
 	int y_;
 	int zorder_;
+#ifdef USE_GLES2
+	gles2::program_ptr shader_;
+#endif
 };
 
 typedef boost::intrusive_ptr<hex_map> hex_map_ptr;

@@ -56,21 +56,21 @@ void glColor4ub_1(GLubyte red, GLubyte green, GLubyte blue, GLubyte alpha);
 #endif
 
 namespace gles2 {
-	class program;
+	program_ptr get_tex_shader();
+	program_ptr get_simple_shader();
+	program_ptr active_shader();
 
 	struct manager
 	{
-		manager(bool enable_tex = false);
+		manager(program_ptr shader=NULL);
 		~manager();
-		program& get();
-		
-		GLint pt_size;
-		GLint vtx_coord;
-		GLint tex_coord;
-		GLint color;
 	};
 
 	void init_default_shader();
+	void load_shader_file(const std::string& shader_data);
+	const mat4& get_mvp_matrix();
+	GLfloat get_alpha();
+	GLfloat* get_color();
 }
 
 #endif // GLES2_HPP_INCLUDED

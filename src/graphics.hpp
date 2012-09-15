@@ -29,7 +29,6 @@
 #endif
 
 #include "gles2.hpp"
-#include "shaders.hpp"
 #include "wm.hpp"
 
 #if defined(GL_ES_VERSION_2_0)

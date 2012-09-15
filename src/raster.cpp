@@ -290,11 +290,9 @@ SDL_Surface* set_video_mode(int w, int h, int bitsperpixel, int flags)
 			texture::get_coord_x(1.0), texture::get_coord_y(1.0)
 		};
 #if defined(USE_GLES2)
-		gles2::manager gles2_manager(true);
-		glEnableVertexAttribArray(gles2_manager.vtx_coord);
-		glEnableVertexAttribArray(gles2_manager.tex_coord);
-		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, varray);
-		glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, 0, 0, tcarray);
+		gles2::active_shader()->prepare_draw();
+		gles2::active_shader()->vertex_array(2, GL_FLOAT, 0, 0, varray);
+		gles2::active_shader()->texture_array(2, GL_FLOAT, 0, 0, tcarray);
 #else
 		glVertexPointer(2, GL_FLOAT, 0, varray);
 		glTexCoordPointer(2, GL_FLOAT, 0, tcarray);
@@ -373,11 +371,9 @@ SDL_Surface* set_video_mode(int w, int h, int bitsperpixel, int flags)
 				texture::get_coord_x(x2), texture::get_coord_y(y2)
 			};
 #if defined(USE_GLES2)
-			gles2::manager gles2_manager(true);
-			glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, varray);
-			glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, 0, 0, tcarray);
-			glEnableVertexAttribArray(gles2_manager.vtx_coord);
-			glEnableVertexAttribArray(gles2_manager.tex_coord);
+			gles2::active_shader()->prepare_draw();
+			gles2::active_shader()->vertex_array(2, GL_FLOAT, 0, 0, varray);
+			gles2::active_shader()->texture_array(2, GL_FLOAT, 0, 0, tcarray);
 #else
 			glVertexPointer(2, GL_FLOAT, 0, varray);
 			glTexCoordPointer(2, GL_FLOAT, 0, tcarray);
@@ -458,11 +454,9 @@ SDL_Surface* set_video_mode(int w, int h, int bitsperpixel, int flags)
 					}
 					
 #if defined(USE_GLES2)
-					gles2::manager gles2_manager(true);
-					glEnableVertexAttribArray(gles2_manager.vtx_coord);
-					glEnableVertexAttribArray(gles2_manager.tex_coord);
-					glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, points);
-					glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, 0, 0, uv);
+					gles2::active_shader()->prepare_draw();
+					gles2::active_shader()->vertex_array(2, GL_FLOAT, 0, 0, points);
+					gles2::active_shader()->texture_array(2, GL_FLOAT, 0, 0, uv);
 #else
 					glVertexPointer(2, GL_FLOAT, 0, points);
 					glTexCoordPointer(2, GL_FLOAT, 0, uv);
@@ -643,11 +637,9 @@ void flush_blit_texture()
 
 	blit_current_texture->set_as_current_texture();
 #if defined(USE_GLES2)
-	gles2::manager gles2_manager(true);
-	glEnableVertexAttribArray(gles2_manager.vtx_coord);
-	glEnableVertexAttribArray(gles2_manager.tex_coord);
-	glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_SHORT, 0, 0, &blit_vqueue.front());
-	glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, 0, 0,  &blit_tcqueue.front());
+	gles2::active_shader()->prepare_draw();
+	gles2::active_shader()->vertex_array(2, GL_SHORT, 0, 0, &blit_vqueue.front());
+	gles2::active_shader()->texture_array(2, GL_FLOAT, 0, 0,  &blit_tcqueue.front());
 #else
 	glVertexPointer(2, GL_SHORT, 0, &blit_vqueue.front());
 	glTexCoordPointer(2, GL_FLOAT, 0, &blit_tcqueue.front());
@@ -675,11 +667,9 @@ void blit_queue::do_blit() const
 	texture::set_current_texture(texture_);
 
 #if defined(USE_GLES2)
-	gles2::manager gles2_manager(true);
-	glEnableVertexAttribArray(gles2_manager.vtx_coord);
-	glEnableVertexAttribArray(gles2_manager.tex_coord);
-	glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_SHORT, 0, 0, &vertex_.front());
-	glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, 0, 0,  &uv_.front());
+	gles2::active_shader()->prepare_draw();
+	gles2::active_shader()->vertex_array(2, GL_SHORT, 0, 0, &vertex_.front());
+	gles2::active_shader()->texture_array(2, GL_FLOAT, 0, 0,  &uv_.front());
 #else
 	glVertexPointer(2, GL_SHORT, 0, &vertex_.front());
 	glTexCoordPointer(2, GL_FLOAT, 0, &uv_.front());
@@ -696,11 +686,9 @@ void blit_queue::do_blit_range(short begin, short end) const
 	texture::set_current_texture(texture_);
 
 #if defined(USE_GLES2)
-	gles2::manager gles2_manager(true);
-	glEnableVertexAttribArray(gles2_manager.vtx_coord);
-	glEnableVertexAttribArray(gles2_manager.tex_coord);
-	glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_SHORT, 0, 0, &vertex_[begin]);
-	glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, 0, 0,  &uv_[begin]);
+	gles2::active_shader()->prepare_draw();
+	gles2::active_shader()->vertex_array(2, GL_SHORT, 0, 0, &vertex_[begin]);
+	gles2::active_shader()->texture_array(2, GL_FLOAT, 0, 0,  &uv_[begin]);
 #else
 	glVertexPointer(2, GL_SHORT, 0, &vertex_[begin]);
 	glTexCoordPointer(2, GL_FLOAT, 0, &uv_[begin]);
@@ -772,9 +760,8 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 		};
 #if defined(USE_GLES2)
 		glColor4ub(color.r,color.g,color.b,alpha);
-		gles2::manager gles2_manager;
-		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, varray);
-		glEnableVertexAttribArray(gles2_manager.vtx_coord);
+		gles2::manager gles2_manager(gles2::get_simple_shader());
+		gles2::active_shader()->vertex_array(2, GL_FLOAT, 0, 0, varray);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 #else
@@ -800,9 +787,8 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 		};
 #if defined(USE_GLES2)
 		glColor4ub(color.r(),color.g(),color.b(),color.a());
-		gles2::manager gles2_manager;
-		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, varray);
-		glEnableVertexAttribArray(gles2_manager.vtx_coord);
+		gles2::manager gles2_manager(gles2::get_simple_shader());
+		gles2::active_shader()->vertex_array(2, GL_FLOAT, 0, 0, varray);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 #else
@@ -830,9 +816,8 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 		};
 #if defined(USE_GLES2)
 		glColor4ub(color.r, color.g, color.b, alpha);
-		gles2::manager gles2_manager;
-		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, varray);
-		glEnableVertexAttribArray(gles2_manager.vtx_coord);
+		gles2::manager gles2_manager(gles2::get_simple_shader());
+		gles2::active_shader()->vertex_array(2, GL_FLOAT, 0, 0, varray);
 		glDrawArrays(GL_LINE_LOOP, 0, sizeof(varray)/sizeof(GLfloat)/2);
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 #else
@@ -865,9 +850,8 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 		varray.push_back(varray[3]);
 
 #if defined(USE_GLES2)
-		gles2::manager gles2_manager;
-		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, &varray.front());
-		glEnableVertexAttribArray(gles2_manager.vtx_coord);
+		gles2::manager gles2_manager(gles2::get_simple_shader());
+		gles2::active_shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
 		glDrawArrays(GL_TRIANGLE_FAN, 0, varray.size()/2);
 #else
 		glDisable(GL_TEXTURE_2D);

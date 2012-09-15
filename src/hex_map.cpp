@@ -9,6 +9,7 @@
 #include "hex_object.hpp"
 #include "hex_tile.hpp"
 #include "json_parser.hpp"
+#include "level.hpp"
 #include "module.hpp"
 #include "variant_utils.hpp"
 
@@ -49,15 +50,37 @@ hex_map::hex_map(variant node)
 		width_ = std::max<size_t>(width_, tiles_.back().size());		
 	}
 	height_ = tiles_.size();
+
+#ifdef USE_GLES2
+	if(node.has_key("shader")) {
+		ASSERT_LOG(node["shader"].is_map(), "shader attribute must be a map.");
+		shader_ = gles2::find_program(node["shader"]["program"].as_string());
+		shader_->configure(node["shader"], shader_.get());
+	}
+#endif
 }
 
-void hex_map::draw() const
+void hex_map::handle_draw() const
 {
 	foreach(const hex_tile_row& row, tiles_) {
 		foreach(const hex_object_ptr& col, row) {
 			col->draw();
 		}
 	}
+}
+
+void hex_map::draw() const
+{
+#if defined(USE_GLES2)
+	if(shader_ != NULL) {
+		gles2::manager manager(shader_);
+		handle_draw();
+	} else {
+#endif
+	handle_draw();
+#if defined(USE_GLES2)
+	}
+#endif
 }
 
 void hex_map::build()
@@ -251,8 +274,8 @@ bool hex_map::set_tile(int xx, int yy, const std::string& tile)
 		int needed_cols = x() - p.x;
 		int n = x_;
 		x_ = p.x;
-		for(int j = 0; j < tiles_.size(); ++j) {
-			for(int i = 0; i < needed_cols; ++i) {
+		for(size_t j = 0; j < tiles_.size(); ++j) {
+			for(size_t i = 0; i < needed_cols; ++i) {
 				tiles_[j].insert(tiles_[j].begin(), new hex_object("Xv", n + x(), j + y(), this));
 				--n;
 			}
@@ -327,6 +350,34 @@ point hex_map::loc_in_dir(int x, int y, const std::string& s)
 	}
 	ASSERT_LOG(false, "Unreognised direction " << s);
 	return point();
+}
+
+game_logic::formula_ptr hex_map::create_formula(const variant& v)
+{
+	return game_logic::formula_ptr(new game_logic::formula(v));
+}
+
+bool hex_map::execute_command(const variant& var)
+{
+	bool result = true;
+	if(var.is_null()) {
+		return result;
+	}
+
+	if(var.is_list()) {
+		const int num_elements = var.num_elements();
+		for(int n = 0; n != num_elements; ++n) {
+			if(var[n].is_null() == false) {
+				result = execute_command(var[n]) && result;
+			}
+		}
+	} else {
+		game_logic::command_callable* cmd = var.try_convert<game_logic::command_callable>();
+		if(cmd != NULL) {
+			cmd->execute(*this);
+		}
+	}
+	return result;
 }
 
 }

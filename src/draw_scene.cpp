@@ -466,15 +466,13 @@ void render_scene(const level& lvl, screen_position& pos, const entity* focus, b
 		GLshort varray2[8] = {preferences::actual_screen_width() - pixels,0,  preferences::actual_screen_width(),0,   preferences::actual_screen_width(),preferences::actual_screen_height(),  preferences::actual_screen_width() - pixels,preferences::actual_screen_height()};
 		glColor4ub(0, 0, 0, 255);
 #if defined(USE_GLES2)
-		gles2::manager gles2_manager;
+		gles2::manager gles2_manager(gles2::get_simple_shader());
 		glViewport(0, 0, preferences::actual_screen_width(), preferences::actual_screen_height());
 
-		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_SHORT, 0, 0,varray1);
-		glEnableVertexAttribArray(gles2_manager.vtx_coord);
+		gles2::get_simple_shader()->vertex_array(2, GL_SHORT, 0, 0,varray1);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
-		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_SHORT, 0, 0, varray2);
-		glEnableVertexAttribArray(gles2_manager.vtx_coord);
+		gles2::get_simple_shader()->vertex_array(2, GL_SHORT, 0, 0, varray2);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 #else
 		glDisable(GL_TEXTURE_2D);

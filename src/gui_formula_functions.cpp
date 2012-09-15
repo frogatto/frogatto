@@ -254,11 +254,9 @@ public:
 		varray.push_back(GLfloat(x2_.as_float()));
 		varray.push_back(GLfloat(y2_.as_float()));
 #if defined(USE_GLES2)
-		gles2::manager gles2_manager;
 		glLineWidth(GLfloat(width_.as_float()));
-
-		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0,  &varray.front());
-		glEnableVertexAttribArray(gles2_manager.vtx_coord);
+		gles2::manager gles2_manager(gles2::get_simple_shader());
+		gles2::get_simple_shader()->vertex_array(2, GL_FLOAT, 0, 0,  &varray.front());
 		glDrawArrays(GL_LINES, 0, varray.size()/2);
 #else
 		glDisable(GL_TEXTURE_2D);

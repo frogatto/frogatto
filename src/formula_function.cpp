@@ -2262,6 +2262,16 @@ FUNCTION_DEF(hex_tile_coords, 2, 3, "hex_tile_coords(x, y, (opt)string) -> [x,y]
 	return variant(&v);
 END_FUNCTION_DEF(hex_tile_coords)
 
+FUNCTION_DEF(hex_pixel_coords, 2, 2, "hex_pixel_coords(x,y) -> [x,y]: Converts a pair of pixel co-ordinates to the corresponding tile co-ordinate.")
+	const int x = args()[0]->evaluate(variables).as_int();
+	const int y = args()[1]->evaluate(variables).as_int();
+	point p(hex::hex_map::get_tile_pos_from_pixel_pos(x, y));
+	std::vector<variant> v;
+	v.push_back(variant(p.x));
+	v.push_back(variant(p.y));
+	return variant(&v);
+END_FUNCTION_DEF(hex_pixel_coords)
+
 FUNCTION_DEF(hex_location, 3, 3, "hex_location(x,y,string dir) -> [x,y]: calculates the co-ordinates of the tile in the given direction.")
 	const int x = args()[0]->evaluate(variables).as_int();
 	const int y = args()[1]->evaluate(variables).as_int();

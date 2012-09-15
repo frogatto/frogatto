@@ -67,9 +67,8 @@ protected:
 		}
 #if defined(USE_GLES2)
 		glColor4ub(color_.r, color_.g, color_.b, 255);
-		gles2::manager gles2_manager;
-		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, &varray.front());
-		glEnableVertexAttribArray(gles2_manager.vtx_coord);
+		gles2::manager gles2_manager(gles2::get_simple_shader());
+		gles2::get_simple_shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
 		glDrawArrays(GL_LINE_STRIP, 0, varray.size()/2);
 		glColor4ub(255, 255, 255, 255);
 #else

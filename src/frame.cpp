@@ -672,11 +672,9 @@ void frame::draw_custom(int x, int y, const std::vector<CustomPoint>& points, co
 	ASSERT_LOG(vqueue.size() > 4, "ILLEGAL CUSTOM BLIT: " << vqueue.size());
 #if defined(USE_GLES2)
 	{
-		gles2::manager gles2_manager(true);
-		glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_SHORT, 0, 0, &vqueue.front());
-		glEnableVertexAttribArray(gles2_manager.vtx_coord);
-		glVertexAttribPointer(gles2_manager.tex_coord, 2, GL_FLOAT, GL_FALSE, 0, &tcqueue.front());
-		glEnableVertexAttribArray(gles2_manager.tex_coord);
+		gles2::active_shader()->prepare_draw();
+		gles2::active_shader()->vertex_array(2, GL_SHORT, 0, 0, &vqueue.front());
+		gles2::active_shader()->texture_array(2, GL_FLOAT, GL_FALSE, 0, &tcqueue.front());
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, tcqueue.size()/2);
 	}
 #else

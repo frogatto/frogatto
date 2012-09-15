@@ -62,7 +62,7 @@ void circle_light::draw(const rect& screen_area, const unsigned char* color) con
 	static std::vector<float> y_angles;
 
 	if(x_angles.empty()) {
-		for(float angle = 0; angle < 3.1459*2.0; angle += 0.2) {
+		for(float angle = 0.0f; angle < 3.1459f*2.0f; angle += 0.2f) {
 			x_angles.push_back(cos(angle));
 			y_angles.push_back(sin(angle));
 		}
@@ -90,9 +90,8 @@ void circle_light::draw(const rect& screen_area, const unsigned char* color) con
 	glColor4ub(color[0], color[1], color[2], 255);
 
 #if defined(USE_GLES2)
-	gles2::manager gles2_manager;
-	glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, &varray.front());
-	glEnableVertexAttribArray(gles2_manager.vtx_coord);
+	gles2::manager gles2_manager(gles2::get_simple_shader());
+	gles2::active_shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
 #else
 	glDisable(GL_TEXTURE_2D);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -133,10 +132,8 @@ void circle_light::draw(const rect& screen_area, const unsigned char* color) con
 	}
 #if defined(USE_GLES2)
 	// May need to use a frgament shader implementing phong shading here.
-	glVertexAttribPointer(gles2_manager.vtx_coord, 2, GL_FLOAT, 0, 0, &varray.front());
-	glEnableVertexAttribArray(gles2_manager.vtx_coord);
-	glVertexAttribPointer(gles2_manager.color, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, &carray.front());
-	glEnableVertexAttribArray(gles2_manager.color);
+	gles2::active_shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
+	gles2::active_shader()->color_array(4, GL_UNSIGNED_BYTE, GL_TRUE, 0, &carray.front());
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
 #else
 	glEnableClientState(GL_COLOR_ARRAY);
