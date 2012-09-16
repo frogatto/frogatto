@@ -14,7 +14,7 @@ for line in objectlines:
         target = "game"
     else:
         target = target.rstrip("_")
-    sources_map[target] = [object.strip().replace(".o", ".cpp") for object in rest.strip().split()]
+    sources_map[target] = [o for o in [object.strip().replace(".o", ".cpp") for object in rest.strip().split()] if o not in env["exclude"]]
 
 binaries = []
 
