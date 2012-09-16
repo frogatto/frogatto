@@ -62,8 +62,12 @@ if "gcc" in env["TOOLS"]:
     env["OPT_FLAGS"] = "-O2"
     env["DEBUG_FLAGS"] = Split("-O0 -DDEBUG -ggdb3")
 
+env['exclude'] = []
+
 if env['gles2']:
-    env.Append(CXXFLAGS= ["-DUSEGLES2"])
+    env.Append(CXXFLAGS= ["-DUSE_GLES2"])
+else:
+    env['exclude'] += [ "gles2.cpp", "shaders.cpp" ]
 if env.get('cxxtool',""):
     env['CXX'] = env['cxxtool']
     if 'HOME' in os.environ:
