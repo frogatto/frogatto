@@ -63,7 +63,7 @@ public:
 	void color_array(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr);
 
 	void vertex_attrib_array(GLint ndx, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr);
-	void program::disable_vertex_attrib(GLint);
+	void disable_vertex_attrib(GLint);
 protected:
 	bool link();
 	bool queryUniforms();
