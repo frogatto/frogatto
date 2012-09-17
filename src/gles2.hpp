@@ -56,18 +56,17 @@ void glColor4ub_1(GLubyte red, GLubyte green, GLubyte blue, GLubyte alpha);
 #endif
 
 namespace gles2 {
-	program_ptr get_tex_shader();
-	program_ptr get_simple_shader();
-	program_ptr active_shader();
+	shader_ptr get_tex_shader();
+	shader_ptr get_simple_shader();
+	shader_ptr active_shader();
 
 	struct manager
 	{
-		manager(program_ptr shader=NULL);
+		manager(shader_ptr shader = NULL);
 		~manager();
 	};
 
 	void init_default_shader();
-	void load_shader_file(const std::string& shader_data);
 	const mat4& get_mvp_matrix();
 	GLfloat get_alpha();
 	GLfloat* get_color();

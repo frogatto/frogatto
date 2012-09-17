@@ -81,7 +81,7 @@ void weather_particle_system::draw(const rect& area, const entity& e) const
 	}
 #if defined(USE_GLES2)
 	gles2::manager gles2_manager(gles2::get_simple_shader());
-	gles2::active_shader()->vertex_array(2, GL_FLOAT, 0, 0, &vertices.front());
+	gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, &vertices.front());
 #else
 	glVertexPointer(2, GL_FLOAT, 0, &vertices.front());
 #endif

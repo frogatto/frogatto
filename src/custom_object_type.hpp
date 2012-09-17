@@ -207,6 +207,10 @@ public:
 	bool editor_force_standing() const { return editor_force_standing_; }
 	bool hidden_in_game() const { return hidden_in_game_; }
 
+#if defined(USE_GLES2)
+	const gles2::shader_program& shader() const { return shader_; }
+#endif
+
 private:
 	//recreate an object type, optionally given the old version to base
 	//things off where possible
@@ -314,6 +318,10 @@ private:
 	bool hidden_in_game_;
 
 	std::vector<int> platform_offsets_;
+
+#ifdef USE_GLES2
+	gles2::shader_program shader_;
+#endif
 };
 
 #endif

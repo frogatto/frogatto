@@ -117,7 +117,7 @@ void water_particle_system::draw(const rect& screen_area, const entity& e) const
 #if defined(USE_GLES2)
 	glPointSize(info_.dot_size);
 	gles2::manager gles2_manager(gles2::get_simple_shader());
-	gles2::active_shader()->vertex_array(2, GL_SHORT, GL_FALSE, 0, &vertices.front());
+	gles2::active_shader()->shader()->vertex_array(2, GL_SHORT, GL_FALSE, 0, &vertices.front());
 	glDrawArrays(GL_POINTS, 0, vertices.size()/2);
 #else
 	glDisable(GL_TEXTURE_2D);

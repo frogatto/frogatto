@@ -1,9 +1,9 @@
-#include <boost/regex.hpp>
-
 #include "asserts.hpp"
 #include "filesystem.hpp"
 #include "graphics.hpp"
+#include "gles2.hpp"
 #include "json_parser.hpp"
+#include "level.hpp"
 #include "module.hpp"
 
 namespace {
@@ -216,10 +216,14 @@ namespace {
 		"        \"on_draw\": \"[set(uniforms.mvp_matrix, mvp_matrix), set(uniforms.u_color,color), set(uniforms.u_point_size, point_size)]\",\n"
 		"        \"on_create\": \"set(uniforms.u_point_size, 1.0)\",\n"
 		"    },\n"
+		"}}\n";
+	
+	const std::string simple_attribute_info = 
+		"{\n"
 		"    \"attributes\": {\n"
 		"        \"vertex\": \"a_position\",\n"
 		"    },\n"
-		"}}\n";
+		"}\n";
 
 	const std::string tex_shader_info = 
 		"{\"shader\": {\n"
@@ -228,33 +232,35 @@ namespace {
 		"        \"on_draw\": \"[set(uniforms.mvp_matrix, mvp_matrix),set(uniforms.u_alpha, alpha)]\",\n"
 		"        \"on_create\": \"[set(uniforms.u_alpha, 1.0),set(uniforms.u_tex_map, 0)]\",\n"
         "    },\n"
+		"}}\n";
+
+	const std::string tex_attribute_info = 
+		"{\n"
         "    \"attributes\": {\n"
         "        \"vertex\": \"a_position\",\n"
         "        \"texcoord\": \"a_texcoord\",\n"
         "    },\n"
-		"}}\n";
+		"}\n";
 
-	std::map<std::string, gles2::program_ptr> shader_programs;
+	static gles2::shader_ptr tex_shader_program;
+	static gles2::shader_ptr simple_shader_program;
 
-	static gles2::program_ptr tex_shader_program;
-	static gles2::program_ptr simple_shader_program;
-
-	std::stack<gles2::program_ptr> shader_stack;
-	gles2::program_ptr active_shader_program;
+	std::stack<gles2::shader_ptr> shader_stack;
+	gles2::shader_ptr active_shader_program;
 }
 
 namespace gles2 {
-	program_ptr get_tex_shader()
+	shader_ptr get_tex_shader()
 	{
 		return tex_shader_program;
 	}
 
-	program_ptr get_simple_shader()
+	shader_ptr get_simple_shader()
 	{
 		return simple_shader_program;
 	}
 
-	program_ptr active_shader()
+	shader_ptr active_shader()
 	{
 		return active_shader_program;
 	}
@@ -287,70 +293,19 @@ namespace gles2 {
 		return pt_size;
 	}
 
-	void load_shader_file(const std::string& shader_data)
-	{
-		variant node = json::parse(shader_data);
-		ASSERT_LOG(node.is_map() && node.has_key("shaders") && node.has_key("programs"),
-			"shaders.cfg must be a map with \"shaders\" and \"programs\" attributes.");
-		for(size_t n = 0; n < node["programs"].num_elements(); ++n) {
-			const variant& prog = node["programs"][n];
-			ASSERT_LOG(prog.has_key("vertex") 
-				&& prog.has_key("fragment") 
-				&& prog.has_key("name"),
-				"Program's must contain \"vertex\", \"fragment\" and \"name\" attributes.");
-			const std::string vs_name = prog["vertex"].as_string();
-			const std::string fs_name = prog["fragment"].as_string();
-
-			ASSERT_LOG(node["shaders"].has_key("vertex") 
-				&& node["shaders"]["vertex"].has_key(vs_name),
-				"No key \"" << vs_name << "\" found under \"vertex\" attribute.");
-			ASSERT_LOG(node["shaders"].has_key("fragment") 
-				&& node["shaders"]["fragment"].has_key(fs_name),
-				"No key \"" << vs_name << "\" found under \"fragment\" attribute.");
-			std::string vert_data = node["shaders"]["vertex"][vs_name].as_string();
-			std::string frag_data = node["shaders"]["fragment"][fs_name].as_string();
-
-			// Simple test to differntiate shaders as strings, compared to shaders in files.
-			// i.e. shaders as strings will have "void main" stanzas, it would be kind of
-			// pathological to create a file containing "void main" as part of the filename.
-			const boost::regex re("void\\s+main");
-			if(boost::regex_search(vert_data, re) == false) {
-				// Try loading as file.
-				vert_data = sys::read_file(module::map_file("data/" + vert_data));
-			}
-			if(boost::regex_search(frag_data, re) == false) {
-				// Try loading as file.
-				frag_data = sys::read_file(module::map_file("data/" + frag_data));
-			}
-
-			gles2::shader v_shader(GL_VERTEX_SHADER, vs_name, vert_data);
-			gles2::shader f_shader(GL_FRAGMENT_SHADER, fs_name, frag_data);
-			std::string program_name = prog["name"].as_string();
-			std::map<std::string, gles2::program_ptr>::iterator it = shader_programs.find(program_name);
-			if(it == shader_programs.end()) {
-				shader_programs[program_name] = program_ptr(new program(program_name, v_shader, f_shader));
-			} else {
-				it->second->init(program_name, v_shader, f_shader);
-			}
-
-			std::cerr << "Loaded shader program: \"" << program_name << "\" from file. (" 
-				<< vs_name << ", " << fs_name << ")." << std::endl;
-		}
-	}
-
 	void init_default_shader()
 	{
-		simple_shader_program.reset(new program());
 		gles2::shader v1(GL_VERTEX_SHADER, "simple_vertex_shader", vs1);
 		gles2::shader f1(GL_FRAGMENT_SHADER, "simple_fragment_shader", fs1);
-		simple_shader_program->init("simple_shader", v1, f1);
-		simple_shader_program->configure(json::parse(simple_shader_info)["shader"], simple_shader_program.get());
+		program::add_shader("simple_shader", v1, f1, json::parse(simple_attribute_info)["attributes"]);
+		simple_shader_program.reset(new shader_program());
+		simple_shader_program->init(json::parse(simple_shader_info)["shader"]);
 
-		tex_shader_program.reset(new program());
 		gles2::shader v_tex(GL_VERTEX_SHADER, "tex_vertex_shader", vs_tex);
 		gles2::shader f_tex(GL_FRAGMENT_SHADER, "tex_fragment_shader", fs_tex);
-		tex_shader_program->init("tex_shader", v_tex, f_tex);
-		tex_shader_program->configure(json::parse(tex_shader_info)["shader"], tex_shader_program.get());
+		program::add_shader("tex_shader", v_tex, f_tex, json::parse(tex_attribute_info)["attributes"]);
+		tex_shader_program.reset(new shader_program());
+		tex_shader_program->init(json::parse(tex_shader_info)["shader"]);
 
 		matrix_mode = GL_PROJECTION;
 		p_mat_stack.empty();
@@ -365,21 +320,17 @@ namespace gles2 {
 
 		std::string shader_file = module::map_file("data/shaders.cfg");
 		if(sys::file_exists(shader_file)) {
-			load_shader_file(sys::read_file(shader_file));
+			program::load_shaders(sys::read_file(shader_file));
 		}
 		active_shader_program = tex_shader_program;
 	}
 
-	program_ptr find_program(const std::string& prog_name)
+	manager::manager(shader_ptr shader)
 	{
-		std::map<std::string, gles2::program_ptr>::const_iterator it = shader_programs.find(prog_name);
-		ASSERT_LOG(it != shader_programs.end(), "Shader program \"" << prog_name << "\" not found.");
-		return it->second;
-	}
-
-	manager::manager(program_ptr shader)
-	{
-		if(shader != NULL && active_shader_program != shader) {
+		if(shader == NULL || active_shader_program == shader) {
+			return;
+		}
+		if(active_shader_program != shader) {
 			shader_stack.push(active_shader_program);
 			active_shader_program = shader;
 		}
@@ -389,13 +340,13 @@ namespace gles2 {
 
 	manager::~manager()
 	{
-		active_shader_program->disable_vertex_attrib(-1);
+		active_shader_program->shader()->disable_vertex_attrib(-1);
 		if(shader_stack.empty() == false) {
 			active_shader_program = shader_stack.top();
 			shader_stack.pop();
 		} else {
 			active_shader_program = tex_shader_program;
 		}
-		glUseProgram(active_shader_program->get());
+		glUseProgram(active_shader_program->shader()->get());
 	}
 }

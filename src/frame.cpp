@@ -673,8 +673,8 @@ void frame::draw_custom(int x, int y, const std::vector<CustomPoint>& points, co
 #if defined(USE_GLES2)
 	{
 		gles2::active_shader()->prepare_draw();
-		gles2::active_shader()->vertex_array(2, GL_SHORT, 0, 0, &vqueue.front());
-		gles2::active_shader()->texture_array(2, GL_FLOAT, GL_FALSE, 0, &tcqueue.front());
+		gles2::active_shader()->shader()->vertex_array(2, GL_SHORT, 0, 0, &vqueue.front());
+		gles2::active_shader()->shader()->texture_array(2, GL_FLOAT, GL_FALSE, 0, &tcqueue.front());
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, tcqueue.size()/2);
 	}
 #else

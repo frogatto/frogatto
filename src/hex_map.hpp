@@ -68,7 +68,7 @@ private:
 	int y_;
 	int zorder_;
 #ifdef USE_GLES2
-	gles2::program_ptr shader_;
+	gles2::shader_ptr shader_;
 #endif
 };
 

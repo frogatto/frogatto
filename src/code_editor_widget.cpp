@@ -448,7 +448,7 @@ code_editor_widget::ObjectInfo code_editor_widget::get_object_at(int row, int co
 	result.tokens = std::vector<json::Token>(begin_token, end_token+1);
 	try {
 		result.obj = get_map_editing(row, col, current_obj_);
-	} catch(json::parse_error& e) {
+	} catch(json::parse_error&) {
 		std::cerr << "json parse error: " << std::string(begin_token->begin, end_token->end) << "\n";
 		return result;
 	}

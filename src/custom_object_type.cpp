@@ -928,6 +928,14 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 
 	game_logic::register_formula_callable_definition("object_type", &callable_definition_);
 
+#if defined(USE_GLES2)
+	shader_.clear();
+	if(node.has_key("shader")) {
+		shader_.init(node["shader"]);
+		std::cerr << "CTSHADER: " << shader_.name() << std::endl;
+	}
+#endif
+
 	if(base_type) {
 		//if we're a variation, just get the functions from our base type.
 		//variations can't define new functions.

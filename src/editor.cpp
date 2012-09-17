@@ -3129,7 +3129,7 @@ void editor::draw_gui() const
 			if(!varray.empty()) {
 #if defined(USE_GLES2)
 				gles2::manager gles2_manager(gles2::get_simple_shader());
-				gles2::get_simple_shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
+				gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
 #else
 				glVertexPointer(2, GL_FLOAT, 0, &varray.front());
 #endif
@@ -3186,8 +3186,9 @@ void editor::draw_gui() const
 		varray.push_back(graphics::screen_width()); varray.push_back(y);
 	}
 #if defined(USE_GLES2)
+	{
 	gles2::manager gles2_manager(gles2::get_simple_shader());
-	gles2::active_shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
+	gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
 #else
 	glVertexPointer(2, GL_FLOAT, 0, &varray.front());
 #endif
@@ -3274,8 +3275,8 @@ void editor::draw_gui() const
 		}
 		
 #if defined(USE_GLES2)
-		gles2::active_shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
-		gles2::active_shader()->color_array(4, GL_FLOAT, 0, 0, &carray.front());
+		gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
+		gles2::active_shader()->shader()->color_array(4, GL_FLOAT, 0, 0, &carray.front());
 		glDrawArrays(GL_LINES, 0, varray.size()/2);
 #else
 		glEnableClientState(GL_COLOR_ARRAY);
@@ -3323,6 +3324,8 @@ void editor::draw_gui() const
 #if !defined(USE_GLES2)
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
+#else
+	}
 #endif
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);
@@ -3407,7 +3410,7 @@ void editor::draw_selection(int xoffset, int yoffset) const
 	}
 #if defined(USE_GLES2)
 	gles2::manager gles2_manager(gles2::get_simple_shader());
-	gles2::get_simple_shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
+	gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
 #else
 	glVertexPointer(2, GL_FLOAT, 0, &varray.front());
 #endif

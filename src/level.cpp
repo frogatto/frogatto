@@ -1568,8 +1568,8 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 
 	if(!opaque_indexes.empty()) {
 #if defined(USE_GLES2)
-		gles2::active_shader()->vertex_array(2, GL_SHORT, GL_FALSE, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
-		gles2::active_shader()->texture_array(2, GL_FLOAT, GL_FALSE, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
+		gles2::active_shader()->shader()->vertex_array(2, GL_SHORT, GL_FALSE, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
+		gles2::active_shader()->shader()->texture_array(2, GL_FLOAT, GL_FALSE, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
 #else
 		glVertexPointer(2, GL_SHORT, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
 		glTexCoordPointer(2, GL_FLOAT, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
@@ -1580,8 +1580,8 @@ void level::draw_layer(int layer, int x, int y, int w, int h) const
 
 	if(!translucent_indexes.empty()) {
 #if defined(USE_GLES2)
-		gles2::active_shader()->vertex_array(2, GL_SHORT, GL_FALSE, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
-		gles2::active_shader()->texture_array(2, GL_FLOAT, GL_FALSE, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
+		gles2::active_shader()->shader()->vertex_array(2, GL_SHORT, GL_FALSE, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
+		gles2::active_shader()->shader()->texture_array(2, GL_FLOAT, GL_FALSE, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
 #else
 		glVertexPointer(2, GL_SHORT, sizeof(tile_corner), &blit_info.blit_vertexes[0].vertex[0]);
 		glTexCoordPointer(2, GL_FLOAT, sizeof(tile_corner), &blit_info.blit_vertexes[0].uv[0]);
@@ -1635,7 +1635,7 @@ void level::draw_layer_solid(int layer, int x, int y, int w, int h) const
 			};
 #if defined(USE_GLES2)
 			gles2::manager gles2_manager(gles2::get_simple_shader());
-			gles2::active_shader()->vertex_array(2, GL_FLOAT, 0, 0, varray);
+			gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, varray);
 #else
 			glVertexPointer(2, GL_SHORT, 0, varray);
 #endif
@@ -2005,8 +2005,8 @@ void level::calculate_lighting(int x, int y, int w, int h) const
 	GLfloat varray[] = { 0, h, 0, 0, w, h, w, 0 };
 #if defined(USE_GLES2)
 	gles2::active_shader()->prepare_draw();
-	gles2::active_shader()->vertex_array(2, GL_SHORT, 0, sizeof(tile_corner), varray);
-	gles2::active_shader()->texture_array(2, GL_FLOAT, GL_FALSE, 0, 
+	gles2::active_shader()->shader()->vertex_array(2, GL_SHORT, 0, sizeof(tile_corner), varray);
+	gles2::active_shader()->shader()->texture_array(2, GL_FLOAT, GL_FALSE, 0, 
 		preferences::screen_rotated() ? tcarray_rotated : tcarray);
 #else
 	glVertexPointer(2, GL_FLOAT, 0, varray);
@@ -2067,7 +2067,7 @@ void level::draw_debug_solid(int x, int y, int w, int h) const
 #if defined(USE_GLES2)
 					glPointSize(1.0f);
 					gles2::manager gles2_manager(gles2::get_simple_shader());
-					gles2::active_shader()->vertex_array(2, GL_SHORT, 0, 0, &v[0]);
+					gles2::active_shader()->shader()->vertex_array(2, GL_SHORT, 0, 0, &v[0]);
 #else
 					glPointSize(1);
 					glVertexPointer(2, GL_SHORT, 0, &v[0]);
