@@ -53,9 +53,7 @@ hex_map::hex_map(variant node)
 
 #ifdef USE_GLES2
 	if(node.has_key("shader")) {
-		ASSERT_LOG(node["shader"].is_map(), "shader attribute must be a map.");
-		shader_ = gles2::find_program(node["shader"]["program"].as_string());
-		shader_->configure(node["shader"], shader_.get());
+		shader_.reset(new gles2::shader_program(node["shader"]));
 	}
 #endif
 }
@@ -113,6 +111,12 @@ variant hex_map::write() const
 	res.add("zorder", zorder_);
 
 	res.add("tiles", make_tile_string());
+
+#if defined(USE_GLES2)
+	if(shader_) {
+		res.add("shader", shader_->write());
+	}
+#endif
 	return res.build();
 }
 

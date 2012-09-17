@@ -47,7 +47,7 @@ custom_object_callable::custom_object_callable()
 	"previous_water_bounds", "water_bounds", "water_object",
 	"driver", "is_human", "invincible",
 	"sound_volume", "destroyed", "is_standing_on_platform", "standing_on",
-	"fragment_shaders", "vertex_shaders", "shader", "variations",
+	"shader", "variations",
 	"attached_objects", "call_stack", "lights",
 	"solid_dimensions_in", "solid_dimensions_not_in",
 	"collide_dimensions_in", "collide_dimensions_not_in",

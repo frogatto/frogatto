@@ -109,9 +109,6 @@ custom_object::custom_object(variant node)
 	created_(node["created"].as_bool(false)), loaded_(false),
 	standing_on_prev_x_(INT_MIN), standing_on_prev_y_(INT_MIN),
 	can_interact_with_(false), fall_through_platforms_(0),
-	fragment_shaders_(util::split(node["fragment_shaders"].as_string_default())),
-	vertex_shaders_(util::split(node["vertex_shaders"].as_string_default())),
-	shader_(0),
 	always_active_(node["always_active"].as_bool(false)),
 	activation_border_(node["activation_border"].as_int(type_->activation_border())),
 	last_cycle_active_(0),
@@ -123,6 +120,14 @@ custom_object::custom_object(variant node)
 {
 	get_all().insert(this);
 	get_all(base_type_->id()).insert(this);
+
+#if defined(USE_GLES2)
+	if(type_->shader().name().empty() == false) {
+		shader_ = new gles2::shader_program(type_->shader());
+	} else {
+		shader_ = NULL;
+	}
+#endif
 
 	if(node.has_key("platform_area")) {
 		set_platform_area(rect(node["platform_area"]));
@@ -310,7 +315,7 @@ custom_object::custom_object(variant node)
 	} else {
 		platform_offsets_ = type_->platform_offsets();
 	}
-	
+
 	//fprintf(stderr, "object address= %p, ", this);
 	//fprintf(stderr, "zsub_order=%d,", zsub_order_);
 }
@@ -339,7 +344,6 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	last_hit_by_anim_(0),
 	cycle_(0),
 	created_(false), loaded_(false), fall_through_platforms_(0),
-	shader_(0),
 	always_active_(false),
 	activation_border_(type_->activation_border()),
 	last_cycle_active_(0),
@@ -350,6 +354,14 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 {
 	get_all().insert(this);
 	get_all(base_type_->id()).insert(this);
+
+#if defined(USE_GLES2)
+	if(type_->shader().name().empty() == false) {
+		shader_ = new gles2::shader_program(type_->shader());
+	} else {
+		shader_ = NULL;
+	}
+#endif
 
 	set_solid_dimensions(type_->solid_dimensions(),
 	                     type_->weak_solid_dimensions());
@@ -422,9 +434,6 @@ custom_object::custom_object(const custom_object& o) :
 	driver_(o.driver_),
 	blur_(o.blur_),
 	fall_through_platforms_(o.fall_through_platforms_),
-	fragment_shaders_(o.fragment_shaders_),
-	vertex_shaders_(o.vertex_shaders_),
-	shader_(o.shader_),
 	always_active_(o.always_active_),
 	activation_border_(o.activation_border_),
 	last_cycle_active_(0),
@@ -442,6 +451,10 @@ custom_object::custom_object(const custom_object& o) :
 {
 	get_all().insert(this);
 	get_all(base_type_->id()).insert(this);
+
+#if defined(USE_GLES2)
+	shader_ = o.shader_ ? new gles2::shader_program(*o.shader_) : NULL;
+#endif
 }
 
 custom_object::~custom_object()
@@ -634,13 +647,11 @@ variant custom_object::write() const
 		res.add("max_hitpoints", type_->hitpoints() + max_hitpoints_);
 	}
 
-	if(!vertex_shaders_.empty()) {
-		res.add("vertex_shaders", util::join(vertex_shaders_));
+#if defined(USE_GLES2)
+	if(shader_) {
+		res.add("shader", shader_->write());
 	}
-
-	if(!fragment_shaders_.empty()) {
-		res.add("fragment_shaders", util::join(fragment_shaders_));
-	}
+#endif
 
 	if(zorder_ != type_->zorder()) {
 		res.add("zorder", zorder_);
@@ -809,21 +820,9 @@ void custom_object::draw(int xx, int yy) const
 		adjusted_draw_position_.y = yy;
 	}
 
-	if(shader_ == 0 && (!fragment_shaders_.empty() || !vertex_shaders_.empty())) {
-		shader_ = get_gl_shader(vertex_shaders_, fragment_shaders_);
-	}
-
-#ifndef SDL_VIDEO_OPENGL_ES
-	if(shader_) {
-		glUseProgram(shader_);
-
-		if(shader_vars_) {
-			for(game_logic::map_formula_callable::const_iterator i = shader_vars_->begin(); i != shader_vars_->end(); ++i) {
-				GLuint id = glGetUniformLocation(shader_, i->first.c_str());
-				glUniform1f(id, i->second.as_int()/1000.0f);
-			}
-		}
-	}
+#if defined(USE_GLES2)
+	{
+	gles2::manager manager(shader_);
 #endif
 
 	if(clip_area_) {
@@ -915,9 +914,7 @@ void custom_object::draw(int xx, int yy) const
 		graphics::pop_clip();
 	}
 
-#ifndef SDL_VIDEO_OPENGL_ES
-	if(shader_) {
-		glUseProgram(0);
+#if defined(USE_GLES2)
 	}
 #endif
 
@@ -963,7 +960,7 @@ void custom_object::draw(int xx, int yy) const
 			glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
 			glPointSize(2.0f);
 			gles2::manager gles2_manager(gles2::get_simple_shader());
-			gles2::get_simple_shader()->vertex_array(2, GL_FLOAT, 0, 0, &v[0]);
+			gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, &v[0]);
 			glDrawArrays(GL_POINTS, 0, v.size()/2);
 			glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 #else
@@ -2324,30 +2321,13 @@ variant custom_object::get_value_by_slot(int slot) const
 		return variant(info.collide_with.get());
 	}
 	
-	case CUSTOM_OBJECT_FRAGMENT_SHADERS: {
-		std::vector<variant> v;
-		foreach(const std::string& shader, fragment_shaders_) {
-			v.push_back(variant(shader));
-		}
-
-		return variant(&v);
-	}
-
-	case CUSTOM_OBJECT_VERTEX_SHADERS: {
-		std::vector<variant> v;
-		foreach(const std::string& shader, vertex_shaders_) {
-			v.push_back(variant(shader));
-		}
-
-		return variant(&v);
-	}
-	
 	case CUSTOM_OBJECT_SHADER: {
-		if(shader_vars_.get() == NULL) {
-			shader_vars_.reset(new game_logic::map_formula_callable);
+#if defined(USE_GLES2)
+		if(shader_ != NULL) {
+			return variant(shader_.get());
 		}
-
-		return variant(shader_vars_.get());
+#endif
+		return variant();
 	}
 
 	case CUSTOM_OBJECT_ACTIVATION_AREA: {
@@ -2667,18 +2647,11 @@ void custom_object::set_value(const std::string& key, const variant& value)
 				tags_->add(value[n].as_string(), variant(1));
 			}
 		}
-	} else if(key == "fragment_shaders") {
-		fragment_shaders_.clear();
-		for(int n = 0; n != value.num_elements(); ++n) {
-			fragment_shaders_.push_back(value[n].as_string());
-		}
-		shader_ = 0;
-	} else if(key == "vertex_shaders") {
-		vertex_shaders_.clear();
-		for(int n = 0; n != value.num_elements(); ++n) {
-			vertex_shaders_.push_back(value[n].as_string());
-		}
-		shader_ = 0;
+#if defined(USE_GLES2)
+	} else if(key == "shader") {
+		shader_ = gles2::shader_ptr(value.try_convert<gles2::shader_program>());
+		ASSERT_LOG(shader_ != NULL, "Couldn't concert type to shader");
+#endif
 	} else if(key == "draw_area") {
 		if(value.is_list() && value.num_elements() == 4) {
 			draw_area_.reset(new rect(value[0].as_int(), value[1].as_int(), value[2].as_int(), value[3].as_int()));
@@ -3192,22 +3165,13 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		}
 
 		break;
-	
-	case CUSTOM_OBJECT_FRAGMENT_SHADERS:
-		fragment_shaders_.clear();
-		for(int n = 0; n != value.num_elements(); ++n) {
-			fragment_shaders_.push_back(value[n].as_string());
-		}
-		shader_ = 0;
-		break;
 
-	case CUSTOM_OBJECT_VERTEX_SHADERS:
-		vertex_shaders_.clear();
-		for(int n = 0; n != value.num_elements(); ++n) {
-			vertex_shaders_.push_back(value[n].as_string());
-		}
-		shader_ = 0;
+#if defined(USE_GLES2)
+	case CUSTOM_OBJECT_SHADER:
+		shader_ = gles2::shader_ptr(value.try_convert<gles2::shader_program>());
+		ASSERT_LOG(shader_ != NULL, "shader couldn't be converted");
 		break;
+#endif
 
 	case CUSTOM_OBJECT_DRAW_AREA:
 		if(value.is_list() && value.num_elements() == 4) {
@@ -4489,6 +4453,10 @@ void custom_object::update_type(const_custom_object_type_ptr old_type,
 	for(std::map<std::string, particle_system_ptr>::const_iterator i = systems.begin(); i != systems.end(); ++i) {
 		add_particle_system(i->first, i->second->type());
 	}
+
+#if defined(USE_GLES2)
+	shader_ = new_type->shader().name().empty() == false ? new gles2::shader_program(new_type->shader()) : NULL; 
+#endif
 }
 
 bool custom_object::handle_sdl_event(const SDL_Event& event, bool claimed)

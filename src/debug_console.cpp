@@ -183,7 +183,7 @@ void draw_graph()
 #if defined(USE_GLES2)
 		{
 			gles2::manager gles2_manager(gles2::get_simple_shader());
-			gles2::get_simple_shader()->vertex_array(2, GL_FLOAT, 0, 0, &points[0]);
+			gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, &points[0]);
 			glDrawArrays(GL_LINE_STRIP, 0, points.size()/2);
 		}
 #else

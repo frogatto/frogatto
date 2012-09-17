@@ -203,7 +203,7 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 #endif	
 #if defined(USE_GLES2)
 	gles2::manager gles2_manager(gles2::get_simple_shader());
-	gles2::active_shader()->vertex_array(2, GL_FLOAT, 0, 0, vertices);
+	gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, vertices);
 #else
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
 #endif
@@ -248,8 +248,8 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 			255, 255, 255, 0,
 		};
 #if defined(USE_GLES2)
-		gles2::active_shader()->vertex_array(2, GL_FLOAT, GL_FALSE, 0, varray);
-		gles2::active_shader()->color_array(4, GL_UNSIGNED_BYTE, GL_TRUE, 0, vcolors);
+		gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, GL_FALSE, 0, varray);
+		gles2::active_shader()->shader()->color_array(4, GL_UNSIGNED_BYTE, GL_TRUE, 0, vcolors);
 #else
 		glVertexPointer(2, GL_FLOAT, 0, varray);
 		glColorPointer(4, GL_UNSIGNED_BYTE, 0, vcolors);
@@ -271,8 +271,8 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 			0, 230, 200, 0,
 		};
 #if defined(USE_GLES2)
-		gles2::active_shader()->vertex_array(2, GL_FLOAT, 0, 0, varray2);
-		gles2::active_shader()->color_array(4, GL_UNSIGNED_BYTE, GL_TRUE, 0, vcolors2);
+		gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, varray2);
+		gles2::active_shader()->shader()->color_array(4, GL_UNSIGNED_BYTE, GL_TRUE, 0, vcolors2);
 #else
 		glVertexPointer(2, GL_FLOAT, 0, varray2);
 		glColorPointer(4, GL_UNSIGNED_BYTE, 0, vcolors2);

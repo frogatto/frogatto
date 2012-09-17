@@ -1,9 +1,17 @@
+#include <boost/regex.hpp>
+
 #include "asserts.hpp"
 #include "foreach.hpp"
 #include "formula.hpp"
 #include "formula_profiler.hpp"
 #include "graphics.hpp"
+#include "json_parser.hpp"
+#include "level.hpp"
+#include "module.hpp"
 #include "shaders.hpp"
+#include "variant_utils.hpp"
+
+#define WRITE_LOG(_a,_b) if( !(_a) ) { std::ostringstream _s; _s << __FILE__ << ":" << __LINE__ << " ASSERTION FAILED: " << _b << "\n"; std::cerr << _s.str(); return; }
 
 namespace gles2 {
 
@@ -47,16 +55,22 @@ bool shader::compile(const std::string& code)
 	return true;
 }
 
+namespace {
+	std::map<std::string, gles2::program_ptr> shader_programs;
+}
+
 program::program() 
-	: object_(0), vtx_coord_(0), col_coord_(0), environ_(NULL)
+	: object_(0), vtx_coord_(-1), col_coord_(-1)
 {
-	tex_coord_[0] = tex_coord_[1] = 0;
+	environ_ = this;
+	tex_coord_[0] = tex_coord_[1] = -1;
 }
 
 
 program::program(const std::string& name, const shader& vs, const shader& fs)
-	: object_(0), vtx_coord_(-1), col_coord_(-1), environ_(NULL)
+	: object_(0), vtx_coord_(-1), col_coord_(-1)
 {
+	environ_ = this;
 	tex_coord_[0] = tex_coord_[1] = -1;
 	init(name, vs, fs);
 }
@@ -157,9 +171,7 @@ bool program::queryUniforms()
 void program::set_uniform(const std::string& key, const variant& value)
 {
 	std::map<std::string, actives>::iterator it = uniforms_.find(key);
-	ASSERT_LOG(it != uniforms_.end(), "No uniform found with name: " << key);
-	//ASSERT_LOG(it->second.num_elements > 1 && value.num_elements() != it->second.num_elements,
-	//	"Number of elements doesn't match: " << it->second.num_elements << " != " << value.num_elements());
+	WRITE_LOG(it != uniforms_.end(), "No uniform found with name: " << key);
 	const actives& u = it->second;
 	switch(u.type) {
 	case GL_FLOAT: {
@@ -167,6 +179,7 @@ void program::set_uniform(const std::string& key, const variant& value)
 		break;
 	}
 	case GL_FLOAT_VEC2: {
+		WRITE_LOG(value.num_elements() == 2, "Must be four(2) elements in vector.");
 		std::vector<GLfloat> f;
 		for(size_t n = 0; n < value.num_elements(); ++n) {
 			f.push_back(GLfloat(value[n].as_decimal().as_float()));
@@ -175,6 +188,7 @@ void program::set_uniform(const std::string& key, const variant& value)
 		break;
 	}
 	case GL_FLOAT_VEC3: {
+		WRITE_LOG(value.num_elements() == 3, "Must be three(3) elements in vector.");
 		std::vector<GLfloat> f;
 		for(size_t n = 0; n < value.num_elements(); ++n) {
 			f.push_back(GLfloat(value[n].as_decimal().as_float()));
@@ -183,6 +197,7 @@ void program::set_uniform(const std::string& key, const variant& value)
 		break;
 	}
 	case GL_FLOAT_VEC4: {
+		WRITE_LOG(value.num_elements() == 4, "Must be four(4) elements in vector.");
 		std::vector<GLfloat> f;
 		for(size_t n = 0; n < value.num_elements(); ++n) {
 			f.push_back(GLfloat(value[n].as_decimal().as_float()));
@@ -191,18 +206,33 @@ void program::set_uniform(const std::string& key, const variant& value)
 		break;
 	}
 	case GL_INT:		glUniform1i(u.location, value.as_int()); break;
-	case GL_INT_VEC2:	glUniform2i(u.location, value[0].as_int(), value[1].as_int()); break;
-	case GL_INT_VEC3:	glUniform3iv(u.location, u.num_elements, &value.as_list_int()[0]); break;
-	case GL_INT_VEC4: 	glUniform4iv(u.location, u.num_elements, &value.as_list_int()[0]); break;
+	case GL_INT_VEC2:	
+		WRITE_LOG(value.num_elements() == 2, "Must be two(2) elements in vec.");
+		glUniform2i(u.location, value[0].as_int(), value[1].as_int()); 
+		break;
+	case GL_INT_VEC3:	
+		WRITE_LOG(value.num_elements() == 3, "Must be three(3) elements in vec.");
+		glUniform3iv(u.location, u.num_elements, &value.as_list_int()[0]); 
+		break;
+	case GL_INT_VEC4: 	
+		WRITE_LOG(value.num_elements() == 4, "Must be four(4) elements in vec.");
+		glUniform4iv(u.location, u.num_elements, &value.as_list_int()[0]); 
+		break;
 	case GL_BOOL:		glUniform1i(u.location, value.as_bool()); break;
-	case GL_BOOL_VEC2:	glUniform2i(u.location, value[0].as_bool(), value[1].as_bool()); break;
+	case GL_BOOL_VEC2:	
+		WRITE_LOG(value.num_elements() == 2, "Must be two(2) elements in vec.");
+		glUniform2i(u.location, value[0].as_bool(), value[1].as_bool()); 
+		break;
 	case GL_BOOL_VEC3:	
+		WRITE_LOG(value.num_elements() == 3, "Must be three(3) elements in vec.");
 		glUniform3i(u.location, value[0].as_bool(), value[1].as_bool(), value[2].as_bool()); 
 		break;
 	case GL_BOOL_VEC4:
+		WRITE_LOG(value.num_elements() == 4, "Must be four(4) elements in vec.");
 		glUniform4i(u.location, value[0].as_bool(), value[1].as_bool(), value[2].as_bool(), value[3].as_bool()); 
 		break;
 	case GL_FLOAT_MAT2:	{
+		WRITE_LOG(value.num_elements() == 4, "Must be four(4) elements in matrix.");
 		std::vector<GLfloat> f;
 		for(size_t n = 0; n < value.num_elements(); ++n) {
 			f.push_back(GLfloat(value[n].as_decimal().as_float()));
@@ -211,6 +241,7 @@ void program::set_uniform(const std::string& key, const variant& value)
 		break;
 	}
 	case GL_FLOAT_MAT3: {
+		WRITE_LOG(value.num_elements() == 9, "Must be nine(9) elements in matrix.");
 		std::vector<GLfloat> f;
 		for(size_t n = 0; n < value.num_elements(); ++n) {
 			f.push_back(GLfloat(value[n].as_decimal().as_float()));
@@ -219,6 +250,7 @@ void program::set_uniform(const std::string& key, const variant& value)
 		break;
 	}
 	case GL_FLOAT_MAT4: {
+		WRITE_LOG(value.num_elements() == 16, "Must be four(16) elements in matrix.");
 		std::vector<GLfloat> f;
 		for(size_t n = 0; n < value.num_elements(); ++n) {
 			f.push_back(GLfloat(value[n].as_decimal().as_float()));
@@ -231,7 +263,7 @@ void program::set_uniform(const std::string& key, const variant& value)
 
 	case GL_SAMPLER_CUBE:
 	default:
-		ASSERT_LOG(false, "Unhandled uniform type: " << it->second.type);
+		WRITE_LOG(false, "Unhandled uniform type: " << it->second.type);
 	}
 }
 
@@ -256,6 +288,7 @@ namespace {
 
 variant program::get_value(const std::string& key) const
 {
+#if defined(USE_GLES2)
 	if(key == "uniforms") {
 		return variant(new uniforms_callable(*this));
 	} else if(key == "alpha") {
@@ -278,53 +311,12 @@ variant program::get_value(const std::string& key) const
 		}
 		return variant(&v);
 	}
+#endif
 	return variant();
 }
 
 void program::set_value(const std::string& key, const variant& value)
 {
-}
-
-void program::configure(const variant& node, game_logic::formula_callable* e)
-{
-	ASSERT_LOG(e != NULL, "callable environment can't be NULL.");
-	ASSERT_LOG(node["program"].as_string() == name(), 
-		"name specified in shader definition is not the same as the program name");
-	environ_ = e;
-	if(node.has_key("uniforms")) {
-		foreach(const variant_pair& p, node["uniforms"].as_map()) {
-			if(p.first.as_string() == "on_create") {
-				create_ = e->create_formula(p.second);
-			}
-			if(p.first.as_string() == "on_draw") {
-				draw_ = e->create_formula(p.second);
-			}
-		}
-	}
-
-	if(node.has_key("attributes")) {
-		foreach(const variant_pair&p, node["attributes"].as_map()) {
-			const std::string key = p.first.as_string();
-			if(key == "vertex") {
-				vtx_coord_ = get_attribute(p.second.as_string());
-			} else if(key == "color") {
-				col_coord_ = get_attribute(p.second.as_string());
-			} else if(key == "texcoord" || key == "texcoord0") {
-				tex_coord_[0] = get_attribute(p.second.as_string());
-			} else if(key == "texcoord1") {
-				tex_coord_[1] = get_attribute(p.second.as_string());
-			}
-		}
-	}
-
-	GLint current_program;
-	glGetIntegerv(GL_CURRENT_PROGRAM, &current_program);
-	// Set default values for uniforms
-	glUseProgram(get());
-	if(create_ != NULL) {
-		environ_->execute_command(create_->execute(*environ_));
-	}
-	glUseProgram(current_program);
 }
 
 namespace {
@@ -337,9 +329,11 @@ namespace {
 		variant execute(const game_logic::formula_callable& variables) const {
 			game_logic::formula::fail_if_static_context();
 			std::vector<variant> v;
+#if defined(USE_GLES2)
 			for(size_t n = 0; n < 16; n++) {
 				v.push_back(variant(((GLfloat*)(&gles2::get_mvp_matrix().x.x))[n]));
 			}
+#endif
 			return variant(&v);
 		}
 	};
@@ -397,24 +391,6 @@ bool program::execute_command(const variant& var)
 	return result;
 }
 
-void program::prepare_draw()
-{
-	//LARGE_INTEGER frequency;
-	//LARGE_INTEGER t1, t2;
-	//double elapsedTime;
-	//QueryPerformanceFrequency(&frequency);
-	//QueryPerformanceCounter(&t1);
-
-	glUseProgram(get());
-	if(draw_ != NULL) {
-		environ_->execute_command(draw_->execute(*environ_));
-	}
-
-	//QueryPerformanceCounter(&t2);
-	//elapsedTime = (t2.QuadPart - t1.QuadPart) * 1000.0 / frequency.QuadPart;
-	//std::cerr << elapsedTime << " ms\n";
-}
-
 void program::disable_vertex_attrib(GLint)
 {
 	::glDisableVertexAttribArray(vtx_coord_);
@@ -442,6 +418,209 @@ void program::texture_array(GLint size, GLenum type, GLboolean normalized, GLsiz
 void program::color_array(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr)
 {
 	vertex_attrib_array(col_coord_, size, type, normalized, stride, ptr);
+}
+
+variant program::write()
+{
+	variant_builder res;
+	res.add("program", name());
+	res.add("vertex", vs_.name());
+	res.add("fragment", fs_.name());
+	res.add("attributes", stored_attributes_);
+	return res.build();
+}
+
+void program::set_attributes(const variant& node)
+{
+	std::cerr << "shader program: " << name();
+	if(node.has_key("vertex")) {
+		vtx_coord_ = get_attribute(node["vertex"].as_string());
+		std::cerr << ", vtx_coord: " << vtx_coord_;
+	} 
+	if(node.has_key("color")) {
+		col_coord_ = get_attribute(node["color"].as_string());
+		std::cerr << ", col_coord: " << col_coord_;
+	} 
+	if(node.has_key("colour")) {
+		col_coord_ = get_attribute(node["colour"].as_string());
+		std::cerr << ", col_coord: " << col_coord_;
+	} 
+	if(node.has_key("texcoord")) {
+		tex_coord_[0] = get_attribute(node["texcoord"].as_string());
+		std::cerr << ", tex_coord0: " << tex_coord_[0];
+	} 
+	if(node.has_key("texcoord0")) {
+		tex_coord_[0] = get_attribute(node["texcoord0"].as_string());
+		std::cerr << ", tex_coord0: " << tex_coord_[0];
+	} 
+	if(node.has_key("texcoord1")) {
+		tex_coord_[1] = get_attribute(node["texcoord1"].as_string());
+		std::cerr << ", tex_coord1: " << tex_coord_[1];
+	}
+	std::cerr << std::endl;
+	stored_attributes_ = node;
+}
+
+
+void program::load_shaders(const std::string& shader_data)
+{
+	variant node = json::parse(shader_data);
+	//std::cerr << "load_shaders: " << node << std::endl;
+	ASSERT_LOG(node.is_map() && node.has_key("shaders") && node.has_key("programs"),
+		"shaders.cfg must be a map with \"shaders\" and \"programs\" attributes.");
+	for(size_t n = 0; n < node["programs"].num_elements(); ++n) {
+		const variant& prog = node["programs"][n];
+		ASSERT_LOG(prog.has_key("vertex") 
+			&& prog.has_key("fragment") 
+			&& prog.has_key("name"),
+			"Program's must contain \"vertex\", \"fragment\" and \"name\" attributes.");
+		const std::string vs_name = prog["vertex"].as_string();
+		const std::string fs_name = prog["fragment"].as_string();
+
+		ASSERT_LOG(node["shaders"].has_key("vertex") 
+			&& node["shaders"]["vertex"].has_key(vs_name),
+			"No key \"" << vs_name << "\" found under \"vertex\" attribute.");
+		ASSERT_LOG(node["shaders"].has_key("fragment") 
+			&& node["shaders"]["fragment"].has_key(fs_name),
+			"No key \"" << vs_name << "\" found under \"fragment\" attribute.");
+		std::string vert_data = node["shaders"]["vertex"][vs_name].as_string();
+		std::string frag_data = node["shaders"]["fragment"][fs_name].as_string();
+
+		// Simple test to differntiate shaders as strings, compared to shaders in files.
+		// i.e. shaders as strings will have "void main" stanzas, it would be kind of
+		// pathological to create a file containing "void main" as part of the filename.
+		const boost::regex re("void\\s+main");
+		if(boost::regex_search(vert_data, re) == false) {
+			// Try loading as file.
+			vert_data = sys::read_file(module::map_file("data/" + vert_data));
+		}
+		if(boost::regex_search(frag_data, re) == false) {
+			// Try loading as file.
+			frag_data = sys::read_file(module::map_file("data/" + frag_data));
+		}
+
+		gles2::shader v_shader(GL_VERTEX_SHADER, vs_name, vert_data);
+		gles2::shader f_shader(GL_FRAGMENT_SHADER, fs_name, frag_data);
+		const std::string& program_name = prog["name"].as_string();
+		add_shader(program_name, v_shader, f_shader, prog["attributes"]);
+
+		std::cerr << "Loaded shader program: \"" << program_name << "\" from file. (" 
+			<< vs_name << ", " << fs_name << ")." << std::endl;
+	}
+}
+
+void program::add_shader(const std::string& program_name, 
+		const shader& v_shader, 
+		const shader& f_shader, 
+		const variant& prog)
+{
+	std::map<std::string, gles2::program_ptr>::iterator it = shader_programs.find(program_name);
+	if(it == shader_programs.end()) {
+		shader_programs[program_name] = program_ptr(new program(program_name, v_shader, f_shader));
+	} else {
+		it->second->init(program_name, v_shader, f_shader);
+	}
+	shader_programs[program_name]->set_attributes(prog);
+}
+
+program_ptr program::find_program(const std::string& prog_name)
+{
+	std::map<std::string, gles2::program_ptr>::const_iterator it = shader_programs.find(prog_name);
+	ASSERT_LOG(it != shader_programs.end(), "Shader program \"" << prog_name << "\" not found.");
+	return it->second;
+}
+
+
+///////////////////////////////////////////////////////////////////////////
+// shader_program
+
+shader_program::shader_program()
+{
+}
+
+shader_program::shader_program(const variant& node)
+{
+	init(node);
+}
+
+void shader_program::init(const variant& node)
+{
+	ASSERT_LOG(node.is_map(), "shader attribute must be a map.");
+	name_ = node["program"].as_string();
+	program_object_ = program::find_program(name_);
+	game_logic::formula_callable* e = program_object_->get_environment();
+	ASSERT_LOG(e != NULL, "Environment was not set.");
+
+	if(node.has_key("uniforms")) {
+		const variant& u = node["uniforms"];
+		if(u.has_key("on_create")) {
+			create_ = e->create_formula(u["on_create"]);
+		}
+		if(u.has_key("on_draw")) {
+			draw_ = e->create_formula(u["on_draw"]);
+		}
+	}
+
+	GLint current_program;
+	glGetIntegerv(GL_CURRENT_PROGRAM, &current_program);
+	// Set default values for uniforms
+	glUseProgram(program_object_->get());
+	if(create_ != NULL) {
+		e->execute_command(create_->execute(*e));
+	}
+	glUseProgram(current_program);
+}
+
+variant shader_program::write()
+{
+	variant_builder u;
+	u.add("program", name());
+	u.add("on_create", create_->str());
+	u.add("on_draw", draw_->str());
+	return u.build();
+}
+
+void shader_program::prepare_draw()
+{
+	//LARGE_INTEGER frequency;
+	//LARGE_INTEGER t1, t2;
+	//double elapsedTime;
+	//QueryPerformanceFrequency(&frequency);
+	//QueryPerformanceCounter(&t1);
+
+	glUseProgram(program_object_->get());
+	if(draw_ != NULL) {
+		game_logic::formula_callable* e = program_object_->get_environment();
+		e->execute_command(draw_->execute(*e));
+	}
+
+	//QueryPerformanceCounter(&t2);
+	//elapsedTime = (t2.QuadPart - t1.QuadPart) * 1000.0 / frequency.QuadPart;
+	//std::cerr << elapsedTime << " ms\n";
+}
+
+variant shader_program::get_value(const std::string& key) const
+{
+	return program_object_->get_value(key);
+}
+
+void shader_program::set_value(const std::string& key, const variant& value)
+{
+	program_object_->set_value(key, value);
+}
+
+program_ptr shader_program::shader() const 
+{ 
+	ASSERT_LOG(program_object_ != NULL, "null shader program");
+	return program_object_;
+}
+
+void shader_program::clear()
+{
+	program_object_.reset();
+	create_.reset();
+	draw_.reset();
+	name_.clear();
 }
 
 }

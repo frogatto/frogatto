@@ -469,10 +469,10 @@ void render_scene(const level& lvl, screen_position& pos, const entity* focus, b
 		gles2::manager gles2_manager(gles2::get_simple_shader());
 		glViewport(0, 0, preferences::actual_screen_width(), preferences::actual_screen_height());
 
-		gles2::get_simple_shader()->vertex_array(2, GL_SHORT, 0, 0,varray1);
+		gles2::active_shader()->shader()->vertex_array(2, GL_SHORT, 0, 0,varray1);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
-		gles2::get_simple_shader()->vertex_array(2, GL_SHORT, 0, 0, varray2);
+		gles2::active_shader()->shader()->vertex_array(2, GL_SHORT, 0, 0, varray2);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 #else
 		glDisable(GL_TEXTURE_2D);

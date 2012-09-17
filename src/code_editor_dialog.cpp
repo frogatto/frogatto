@@ -344,8 +344,9 @@ void code_editor_dialog::process()
 				}
 				std::cerr << "INIT TILE MAP OK\n";
 #if defined(USE_GLES2)
-			} else if(fname_.find("data/shaders.cfg")) {
-				gles2::load_shader_file(editor_->text());
+			} else if(strstr(fname_.c_str(), "data/shaders.cfg")) {
+				std::cerr << "CODE_EDIT_DIALOG FILE: " << fname_ << std::endl;
+				gles2::program::load_shaders(editor_->text());
 #endif
 			} else { 
 				std::cerr << "SET FILE: " << fname_ << "\n";
