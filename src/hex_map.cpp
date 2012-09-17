@@ -54,6 +54,8 @@ hex_map::hex_map(variant node)
 #ifdef USE_GLES2
 	if(node.has_key("shader")) {
 		shader_.reset(new gles2::shader_program(node["shader"]));
+	} else {
+		shader_.reset();
 	}
 #endif
 }

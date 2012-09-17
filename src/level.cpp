@@ -190,6 +190,14 @@ level::level(const std::string& level_cfg, variant node)
 		id_ = node["id"].as_string();
 	}
 
+#if defined(USE_GLES2)
+	if(node.has_key("shader")) {
+		shader_.reset(new gles2::shader_program(node["shader"]));
+	} else {
+		shader_.reset();
+	}
+#endif
+
 	if(preferences::load_compiled() && (level_cfg == "save.cfg" || level_cfg == "autosave.cfg")) {
 		if(preferences::version() != node["version"].as_string()) {
 			std::cerr << "DIFFERENT VERSION LEVEL\n";
@@ -1391,6 +1399,12 @@ variant level::write() const
 
 	res.add("vars", vars_);
 
+#if defined(USE_GLES2)
+	if(shader_) {
+		res.add("shader", shader_->write());
+	}
+#endif
+
 	variant result = res.build();
 	result.add_attr(variant("serialized_objects"), serialization_scope.write_objects(result));
 	return result;
@@ -1835,6 +1849,11 @@ void level::draw(int x, int y, int w, int h) const
 	w += widest_tile_;
 	h += highest_tile_;
 
+#if defined(USE_GLES2)
+	{
+	gles2::manager manager(shader_);
+#endif
+
 	const std::vector<entity_ptr>* chars_ptr = &active_chars_;
 	std::vector<entity_ptr> editor_chars_buf;
 
@@ -1964,6 +1983,9 @@ void level::draw(int x, int y, int w, int h) const
 	}
 
 	calculate_lighting(start_x, start_y, start_w, start_h);
+#if defined(USE_GLES2)
+	}
+#endif
 }
 
 void level::calculate_lighting(int x, int y, int w, int h) const
@@ -3528,6 +3550,12 @@ variant level::get_value(const std::string& key) const
 			++it;
 		}
 		return variant(&m);
+	} else if(key == "shader") {
+#if defined(USE_GLES2)
+		return variant(shader_.get());
+#else
+		return variant();
+#endif
 	} else {
 		const_entity_ptr e = get_entity_by_label(key);
 		if(e) {

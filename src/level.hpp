@@ -117,6 +117,10 @@ public:
 	void get_all_hex_tiles_rect(int x1, int y1, int x2, int y2, std::map<int, std::vector<std::string> >& tiles) const;
 	void clear_hex_tile_rect(int x1, int y1, int x2, int y2);
 
+#if defined(USE_GLES2)
+	gles2::shader_ptr shader() const { return shader_; }
+#endif
+
 	//function to do 'magic wand' selection -- given an x/y pixel position,
 	//will return all the solid tiles connected
 	std::vector<point> get_solid_contiguous_region(int xpos, int ypos) const;
@@ -536,6 +540,10 @@ private:
 	int xscale_, yscale_;
 
 	std::map<int, hex::hex_map_ptr> hex_maps_;
+	//current shader we're using to draw with.
+#ifdef USE_GLES2
+	gles2::shader_ptr shader_;
+#endif
 
 	int save_point_x_, save_point_y_;
 	bool editor_;

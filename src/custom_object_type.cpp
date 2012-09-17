@@ -932,7 +932,6 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 	shader_.clear();
 	if(node.has_key("shader")) {
 		shader_.init(node["shader"]);
-		std::cerr << "CTSHADER: " << shader_.name() << std::endl;
 	}
 #endif
 
