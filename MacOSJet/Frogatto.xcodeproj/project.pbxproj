@@ -514,6 +514,17 @@
 		C0BD5B2015DB9A2800FEA10E /* http_client.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = http_client.hpp; sourceTree = "<group>"; };
 		C0BD5B2115DB9A2800FEA10E /* http_server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = http_server.cpp; sourceTree = "<group>"; };
 		C0BD5B2215DB9A2800FEA10E /* http_server.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = http_server.hpp; sourceTree = "<group>"; };
+		C0DF89231609B7E20094A8C3 /* hex_map.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = hex_map.cpp; sourceTree = "<group>"; };
+		C0DF89241609B7E20094A8C3 /* hex_map.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = hex_map.hpp; sourceTree = "<group>"; };
+		C0DF89261609B7E20094A8C3 /* hex_object.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = hex_object.cpp; sourceTree = "<group>"; };
+		C0DF89271609B7E20094A8C3 /* hex_object.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = hex_object.hpp; sourceTree = "<group>"; };
+		C0DF89281609B7E20094A8C3 /* hex_tile.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = hex_tile.cpp; sourceTree = "<group>"; };
+		C0DF89291609B7E20094A8C3 /* hex_tile.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = hex_tile.hpp; sourceTree = "<group>"; };
+		C0DF892B1609B8160094A8C3 /* progress_bar.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = progress_bar.cpp; sourceTree = "<group>"; };
+		C0DF892C1609B8160094A8C3 /* progress_bar.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = progress_bar.hpp; sourceTree = "<group>"; };
+		C0DF892D1609BB8F0094A8C3 /* module_web_server.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = module_web_server.cpp; sourceTree = "<group>"; };
+		C0DF892E1609BB8F0094A8C3 /* module_web_server.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = module_web_server.hpp; sourceTree = "<group>"; };
+		C0DF892F1609BBB30094A8C3 /* hex_object_fwd.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = hex_object_fwd.hpp; sourceTree = "<group>"; };
 		C0FCB5E115A4058800AF57C2 /* tbs_ai_player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tbs_ai_player.cpp; sourceTree = "<group>"; };
 		C0FCB5E215A4058800AF57C2 /* tbs_ai_player.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = tbs_ai_player.hpp; sourceTree = "<group>"; };
 		C0FCB5E315A4058800AF57C2 /* tbs_client.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tbs_client.cpp; sourceTree = "<group>"; };
@@ -851,6 +862,13 @@
 				C0471F3313E7B79D0057B40E /* gui_formula_functions.hpp */,
 				C0471F3413E7B79D0057B40E /* gui_section.cpp */,
 				C0471F3513E7B79D0057B40E /* gui_section.hpp */,
+				C0DF89231609B7E20094A8C3 /* hex_map.cpp */,
+				C0DF89241609B7E20094A8C3 /* hex_map.hpp */,
+				C0DF892F1609BBB30094A8C3 /* hex_object_fwd.hpp */,
+				C0DF89261609B7E20094A8C3 /* hex_object.cpp */,
+				C0DF89271609B7E20094A8C3 /* hex_object.hpp */,
+				C0DF89281609B7E20094A8C3 /* hex_tile.cpp */,
+				C0DF89291609B7E20094A8C3 /* hex_tile.hpp */,
 				C0471F3613E7B79D0057B40E /* hi_res_timer.hpp */,
 				C0BD5B1F15DB9A2800FEA10E /* http_client.cpp */,
 				C0BD5B2015DB9A2800FEA10E /* http_client.hpp */,
@@ -902,6 +920,8 @@
 				C0FCB65015A40C2600AF57C2 /* md5.hpp */,
 				C0471F6413E7B79E0057B40E /* message_dialog.cpp */,
 				C0471F6513E7B79E0057B40E /* message_dialog.hpp */,
+				C0DF892D1609BB8F0094A8C3 /* module_web_server.cpp */,
+				C0DF892E1609BB8F0094A8C3 /* module_web_server.hpp */,
 				C0FCB62D15A4097A00AF57C2 /* module.cpp */,
 				C0FCB62E15A4097A00AF57C2 /* module.hpp */,
 				C0471F6613E7B79E0057B40E /* movement_script.cpp */,
@@ -934,6 +954,8 @@
 				C0471F8313E7B79E0057B40E /* preprocessor.hpp */,
 				C0471F8413E7B79E0057B40E /* preview_tileset_widget.cpp */,
 				C0471F8513E7B79E0057B40E /* preview_tileset_widget.hpp */,
+				C0DF892B1609B8160094A8C3 /* progress_bar.cpp */,
+				C0DF892C1609B8160094A8C3 /* progress_bar.hpp */,
 				C0471F8613E7B79E0057B40E /* property_editor_dialog.cpp */,
 				C0471F8713E7B79E0057B40E /* property_editor_dialog.hpp */,
 				C0471F8813E7B79E0057B40E /* random.cpp */,
