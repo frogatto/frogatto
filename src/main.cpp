@@ -252,15 +252,22 @@ extern "C" int main(int argcount, char** argvec)
 	}
 
 	if(sys::file_exists("./master-config.cfg")) {
+		std::cerr << "LOADING CONFIGURATION FROM master-config.cfg" << std::endl;
 		variant cfg = json::parse_from_file("./master-config.cfg");
 		if(cfg.is_map()) {
 			if( cfg["id"].is_null() == false) {
+				std::cerr << "SETTING MODULE PATH FROM master-config.cfg: " << cfg["id"].as_string() << std::endl;
 				preferences::set_preferences_path_from_module(cfg["id"].as_string());
 				//XXX module::set_module_name(cfg["id"].as_string(), cfg["id"].as_string());
 			}
 			if(cfg["arguments"].is_null() == false) {
 				std::vector<std::string> additional_args = cfg["arguments"].as_list_string();
 				argv.insert(argv.begin(), additional_args.begin(), additional_args.end());
+				std::cerr << "ADDING ARGUMENTS FROM master-config.cfg:";
+				for(size_t n = 0; n < cfg["arguments"].num_elements(); ++n) {
+					std::cerr << " " << cfg["arguments"][n].as_string();
+				}
+				std::cerr << std::endl;
 			}
 		}
 	}
@@ -608,6 +615,19 @@ extern "C" int main(int argcount, char** argvec)
 	}
 #endif
 	std::cerr << std::endl;
+
+#if defined(USE_GLES2)
+	GLfloat min_pt_sz;
+	glGetFloatv(GL_POINT_SIZE_MIN, &min_pt_sz);
+	GLfloat max_pt_sz;
+	glGetFloatv(GL_POINT_SIZE_MAX, &max_pt_sz);
+	std::cerr << "Point size range: " << min_pt_sz << " < size < " << max_pt_sz << std::endl;
+#if !defined(GL_ES_VERSION_2_0)
+	glEnable(GL_POINT_SPRITE);
+	glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
+#endif
+#endif
+
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_BLEND);
 #if !defined(USE_GLES2)
