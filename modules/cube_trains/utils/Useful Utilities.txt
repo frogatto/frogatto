@@ -20,3 +20,9 @@ Log objects outside the level dimensions.
                 debug('\${doc.id} has a \${obj.type}, \${obj.label}, out-of-bounds at \${[obj.x, obj.y]}.'))
         )) where point_in_rect = def(point, rect) (rect[0] < point[0] and point[0] < rect[2] and //Cloned this function from functions-geometry.cfg sans safety.
                                                    rect[1] < point[1] and point[1] < rect[3])"
+
+Compile Frogatto with shaders:
+export CXXFLAGS=-DUSE_GLES2 && make clean && make
+
+Or not:
+unset CXXFLAGS && make clean && make
