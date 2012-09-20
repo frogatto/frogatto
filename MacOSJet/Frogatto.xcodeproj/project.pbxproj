@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C010C548160AA254006E7D90 /* background_task_pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0DF893C1609BFDA0094A8C3 /* background_task_pool.cpp */; };
+		C010C549160AA2BC006E7D90 /* hex_map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0DF89231609B7E20094A8C3 /* hex_map.cpp */; };
+		C010C54A160AA2C1006E7D90 /* hex_tile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0DF89281609B7E20094A8C3 /* hex_tile.cpp */; };
+		C010C54B160AA2C5006E7D90 /* hex_object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0DF89261609B7E20094A8C3 /* hex_object.cpp */; };
+		C010C54C160AA2CA006E7D90 /* hex_tileset_editor_dialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0DF89381609BC270094A8C3 /* hex_tileset_editor_dialog.cpp */; };
+		C010C54D160AA323006E7D90 /* progress_bar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0DF892B1609B8160094A8C3 /* progress_bar.cpp */; };
 		C0471CAE13E7A8FB0057B40E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0471CAD13E7A8FB0057B40E /* Cocoa.framework */; };
 		C0471EA213E7B2E00057B40E /* SDL_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0471E9E13E7B2E00057B40E /* SDL_image.framework */; };
 		C0471EA313E7B2E00057B40E /* SDL_mixer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0471E9F13E7B2E00057B40E /* SDL_mixer.framework */; };
@@ -524,7 +530,11 @@
 		C0DF892C1609B8160094A8C3 /* progress_bar.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = progress_bar.hpp; sourceTree = "<group>"; };
 		C0DF892D1609BB8F0094A8C3 /* module_web_server.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = module_web_server.cpp; sourceTree = "<group>"; };
 		C0DF892E1609BB8F0094A8C3 /* module_web_server.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = module_web_server.hpp; sourceTree = "<group>"; };
-		C0DF892F1609BBB30094A8C3 /* hex_object_fwd.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = hex_object_fwd.hpp; sourceTree = "<group>"; };
+		C0DF89381609BC270094A8C3 /* hex_tileset_editor_dialog.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = hex_tileset_editor_dialog.cpp; sourceTree = "<group>"; };
+		C0DF89391609BC270094A8C3 /* hex_tileset_editor_dialog.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = hex_tileset_editor_dialog.hpp; sourceTree = "<group>"; };
+		C0DF893B1609BEDE0094A8C3 /* hex_object_fwd.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = hex_object_fwd.hpp; sourceTree = "<group>"; };
+		C0DF893C1609BFDA0094A8C3 /* background_task_pool.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = background_task_pool.cpp; sourceTree = "<group>"; };
+		C0DF893D1609BFDA0094A8C3 /* background_task_pool.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = background_task_pool.hpp; sourceTree = "<group>"; };
 		C0FCB5E115A4058800AF57C2 /* tbs_ai_player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tbs_ai_player.cpp; sourceTree = "<group>"; };
 		C0FCB5E215A4058800AF57C2 /* tbs_ai_player.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = tbs_ai_player.hpp; sourceTree = "<group>"; };
 		C0FCB5E315A4058800AF57C2 /* tbs_client.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tbs_client.cpp; sourceTree = "<group>"; };
@@ -722,6 +732,8 @@
 				C0FCB5FB15A4071400AF57C2 /* animation_widget.hpp */,
 				C0FCB64715A40B5900AF57C2 /* asserts.cpp */,
 				C0471EC413E7B79D0057B40E /* asserts.hpp */,
+				C0DF893C1609BFDA0094A8C3 /* background_task_pool.cpp */,
+				C0DF893D1609BFDA0094A8C3 /* background_task_pool.hpp */,
 				C0471EC513E7B79D0057B40E /* background.cpp */,
 				C0471EC613E7B79D0057B40E /* background.hpp */,
 				C0FCB5FF15A4072900AF57C2 /* base64.cpp */,
@@ -864,11 +876,13 @@
 				C0471F3513E7B79D0057B40E /* gui_section.hpp */,
 				C0DF89231609B7E20094A8C3 /* hex_map.cpp */,
 				C0DF89241609B7E20094A8C3 /* hex_map.hpp */,
-				C0DF892F1609BBB30094A8C3 /* hex_object_fwd.hpp */,
+				C0DF893B1609BEDE0094A8C3 /* hex_object_fwd.hpp */,
 				C0DF89261609B7E20094A8C3 /* hex_object.cpp */,
 				C0DF89271609B7E20094A8C3 /* hex_object.hpp */,
 				C0DF89281609B7E20094A8C3 /* hex_tile.cpp */,
 				C0DF89291609B7E20094A8C3 /* hex_tile.hpp */,
+				C0DF89381609BC270094A8C3 /* hex_tileset_editor_dialog.cpp */,
+				C0DF89391609BC270094A8C3 /* hex_tileset_editor_dialog.hpp */,
 				C0471F3613E7B79D0057B40E /* hi_res_timer.hpp */,
 				C0BD5B1F15DB9A2800FEA10E /* http_client.cpp */,
 				C0BD5B2015DB9A2800FEA10E /* http_client.hpp */,
@@ -1148,6 +1162,7 @@
 			files = (
 				C0471FF113E7B79E0057B40E /* achievements.cpp in Sources */,
 				C0471FF313E7B79E0057B40E /* background.cpp in Sources */,
+				C010C548160AA254006E7D90 /* background_task_pool.cpp in Sources */,
 				C0471FF413E7B79E0057B40E /* blur.cpp in Sources */,
 				C0471FF513E7B79E0057B40E /* border_widget.cpp in Sources */,
 				C0471FF613E7B79E0057B40E /* button.cpp in Sources */,
@@ -1197,6 +1212,10 @@
 				C047202413E7B79E0057B40E /* group_property_editor_dialog.cpp in Sources */,
 				C047202513E7B79E0057B40E /* gui_formula_functions.cpp in Sources */,
 				C047202613E7B79E0057B40E /* gui_section.cpp in Sources */,
+				C010C549160AA2BC006E7D90 /* hex_map.cpp in Sources */,
+				C010C54B160AA2C5006E7D90 /* hex_object.cpp in Sources */,
+				C010C54A160AA2C1006E7D90 /* hex_tile.cpp in Sources */,
+				C010C54C160AA2CA006E7D90 /* hex_tileset_editor_dialog.cpp in Sources */,
 				C047202713E7B79E0057B40E /* i18n.cpp in Sources */,
 				C047202813E7B79E0057B40E /* image_widget.cpp in Sources */,
 				C047202913E7B79E0057B40E /* IMG_savepng.cpp in Sources */,
@@ -1228,6 +1247,7 @@
 				C047204B13E7B79E0057B40E /* preferences.cpp in Sources */,
 				C047204C13E7B79E0057B40E /* preprocessor.cpp in Sources */,
 				C047204D13E7B79E0057B40E /* preview_tileset_widget.cpp in Sources */,
+				C010C54D160AA323006E7D90 /* progress_bar.cpp in Sources */,
 				C047204E13E7B79E0057B40E /* property_editor_dialog.cpp in Sources */,
 				C047204F13E7B79E0057B40E /* random.cpp in Sources */,
 				C047205013E7B79E0057B40E /* raster.cpp in Sources */,
