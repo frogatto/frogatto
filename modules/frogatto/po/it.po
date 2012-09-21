@@ -13,15 +13,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-09-01 20:29-0300\n"
-"PO-Revision-Date: 2012-09-01 23:32+0000\n"
+"POT-Creation-Date: 2012-09-20 22:51-0300\n"
+"PO-Revision-Date: 2012-09-21 01:53+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/Frogatto/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: it\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../../../src/controls_dialog.cpp:51
 msgid "Directions"
@@ -43,11 +43,11 @@ msgstr "Attacco"
 msgid "Back"
 msgstr "Indietro"
 
-#: ../../../src/custom_object_functions.cpp:241
+#: ../../../src/custom_object_functions.cpp:242
 msgid "Select save slot to use."
 msgstr ""
 
-#: ../../../src/custom_object_functions.cpp:334
+#: ../../../src/custom_object_functions.cpp:335
 msgid "Select save slot to load."
 msgstr ""
 
@@ -55,23 +55,23 @@ msgstr ""
 msgid "Achievement Unlocked!"
 msgstr "Obiettivo Sbloccato!"
 
-#: ../../../src/main.cpp:649
+#: ../../../src/main.cpp:662
 msgid "Initializing custom object functions"
 msgstr "Inizializzazione delle funzioni dell'oggetto personalizzato"
 
-#: ../../../src/main.cpp:651
+#: ../../../src/main.cpp:664
 msgid "Initializing textures"
 msgstr ""
 
-#: ../../../src/main.cpp:653
+#: ../../../src/main.cpp:666
 msgid "Initializing tiles"
 msgstr "Inizializzazione delle immagini"
 
-#: ../../../src/main.cpp:655 ../../../src/main.cpp:659
+#: ../../../src/main.cpp:668 ../../../src/main.cpp:672
 msgid "Initializing GUI"
 msgstr "Inizializzazione dell'Interfaccia Grafica"
 
-#: ../../../src/main.cpp:666
+#: ../../../src/main.cpp:679
 msgid "Loading level"
 msgstr "Caricamento Livello"
 
@@ -859,7 +859,7 @@ msgstr "Devo salire... Ci deve essere un \nmodo per attivare questo ascensore."
 msgid "Burning Stone"
 msgstr "La Roccia Bruciante"
 
-#: ../data/level/catfactory-catwalk.cfg:2441
+#: ../data/level/catfactory-catwalk.cfg:2445
 msgid "The Cat-Factory's Catwalks"
 msgstr ""
 
@@ -1181,7 +1181,7 @@ msgid "You!!"
 msgstr "Tu!!"
 
 #: ../data/level/crevice-village-cave.cfg:750
-#: ../data/object_prototypes/buyable_item.cfg:23
+#: ../data/object_prototypes/buyable_item.cfg:24
 msgid "Yes"
 msgstr "Si"
 
@@ -1194,7 +1194,7 @@ msgid "I thought so!"
 msgstr "Io penso di sì!"
 
 #: ../data/level/crevice-village-cave.cfg:752
-#: ../data/object_prototypes/buyable_item.cfg:30
+#: ../data/object_prototypes/buyable_item.cfg:31
 msgid "No"
 msgstr "No"
 
@@ -1710,7 +1710,7 @@ msgstr ""
 #: ../data/level/crevice-village-house-elder.cfg:485
 #: ../data/level/kitty-dormitory.cfg:1975
 #: ../data/level/kitty-dormitory.cfg:3230
-#: ../data/level/to-nenes-house-inside.cfg:88
+#: ../data/level/to-nenes-house-inside.cfg:100
 msgid "..."
 msgstr "..."
 
@@ -2440,7 +2440,7 @@ msgstr "Perché, io ti mostrerò la strada ..."
 msgid "The Elder's House"
 msgstr "La Casa del Sindaco"
 
-#: ../data/level/crevice-village.cfg:76 ../data/level/to-nenes-house.cfg:316
+#: ../data/level/crevice-village.cfg:76 ../data/level/to-nenes-house.cfg:333
 msgid "I better leave this key here."
 msgstr "Farei meglio a lasciare questa chiave qui."
 
@@ -3096,7 +3096,7 @@ msgid ""
 "Dismissed."
 msgstr ""
 
-#: ../data/level/golden-glen.cfg:3640
+#: ../data/level/golden-glen.cfg:3644
 msgid "Golden Glen"
 msgstr ""
 
@@ -3437,7 +3437,7 @@ msgstr "Questo sì che è un baratro profondo..."
 msgid "AAAAAAH! I CAN'T FLY!"
 msgstr "AAAAAAH! NON SO VOLARE!"
 
-#: ../data/level/hidden-depths.cfg:5186
+#: ../data/level/hidden-depths.cfg:5194
 msgid "Hidden Depths"
 msgstr "Le Profondità Nascoste"
 
@@ -4287,8 +4287,8 @@ msgstr ""
 
 #: ../data/level/kitty-factory-maze.cfg:1955
 #: ../data/level/kitty-factory-old.cfg:4354
-#: ../data/level/kitty-factory-upper.cfg:2081
-#: ../data/level/kitty-factory.cfg:2759
+#: ../data/level/kitty-factory-upper.cfg:2153
+#: ../data/level/kitty-factory.cfg:3167
 msgid "The Kitty Factory"
 msgstr ""
 
@@ -4792,7 +4792,7 @@ msgid "Fight!"
 msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:991
-#: ../data/objects/playable/map-selector.cfg:21
+#: ../data/objects/playable/map-selector.cfg:22
 msgid "Milgram's Throne Room"
 msgstr "Sala del Trono di Milgram"
 
@@ -4810,6 +4810,11 @@ msgstr ""
 
 #: ../data/level/moonlit-ramparts.cfg:5407
 msgid "Moonlit Ramparts"
+msgstr ""
+
+#: ../data/level/new-game-screen.cfg:39
+#: ../data/level/titlescreen-difficulty-selector.cfg:39
+msgid "SELECT DIFFICULTY LEVEL:"
 msgstr ""
 
 #: ../data/level/north-courtyard.cfg:648
@@ -5771,6 +5776,10 @@ msgstr "Tranne il sindaco."
 msgid "The End"
 msgstr "Fine"
 
+#: ../data/level/test-multiplayer.cfg:127
+msgid "Staging Forest"
+msgstr ""
+
 #: ../data/level/the-north-tower.cfg:2089
 msgid "The North Tower"
 msgstr ""
@@ -5814,10 +5823,6 @@ msgstr "Gara delle monete"
 #: ../data/level/titlescreen-arcade.cfg:247
 msgid "COIN RACE"
 msgstr "CORSA DELLE MONETE"
-
-#: ../data/level/titlescreen-difficulty-selector.cfg:39
-msgid "SELECT DIFFICULTY LEVEL:"
-msgstr ""
 
 #: ../data/level/titlescreen-new-game-selector.cfg:24
 msgid "Select Save Slot:"
@@ -5991,174 +5996,212 @@ msgstr "Ma se può farti piacere credo\ndi aver lasciato una capsula di vita lag
 msgid "I might have something else for you."
 msgstr ""
 
-#: ../data/level/to-nenes-house-inside.cfg:68
+#: ../data/level/to-nenes-house-inside.cfg:70
+msgid ""
+"Ah, so you're carrying one of the ants.\n"
+"You'll get rid of it, won't you?"
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:72
+msgid ""
+"I don't know, now that I think of it...\n"
+"It's not their fault they're here,\n"
+"the ants are just playing to their instincts."
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:74
+msgid ""
+"If you say so... Just throw it outside.\n"
+"As long as they're out of my food, I'm good."
+msgstr ""
+
+#: ../data/level/to-nenes-house-inside.cfg:80
 msgid "Here, I have another little surprise for you."
 msgstr ""
 
-#: ../data/level/to-nenes-house-inside.cfg:68
+#: ../data/level/to-nenes-house-inside.cfg:80
 msgid ""
 "You really did do it.\n"
 "You rock!"
 msgstr ""
 
-#: ../data/level/to-nenes-house-inside.cfg:71
+#: ../data/level/to-nenes-house-inside.cfg:83
 msgid "Is it cake?"
 msgstr ""
 
-#: ../data/level/to-nenes-house-inside.cfg:73
+#: ../data/level/to-nenes-house-inside.cfg:85
 msgid ""
 "Ha.  No, it's quite a bit better.\n"
 "It's a little souvenir from the IDF."
 msgstr ""
 
-#: ../data/level/to-nenes-house-inside.cfg:74
+#: ../data/level/to-nenes-house-inside.cfg:86
 msgid "It's a Fire Talisman, and I'd like you to have it."
 msgstr ""
 
-#: ../data/level/to-nenes-house-inside.cfg:77
+#: ../data/level/to-nenes-house-inside.cfg:89
 msgid ""
 "Wow... That's... awesome, but\n"
 "why on earth are you giving this to me?"
 msgstr ""
 
-#: ../data/level/to-nenes-house-inside.cfg:79
-msgid "It's a bit much for killing a few ants!"
+#: ../data/level/to-nenes-house-inside.cfg:91
+msgid "It's a bit much for getting rid of a few ants!"
 msgstr ""
 
-#: ../data/level/to-nenes-house-inside.cfg:81
+#: ../data/level/to-nenes-house-inside.cfg:93
 msgid ""
 "Honestly?  I had originally meant to\n"
 "give it to you as a birthday present."
 msgstr ""
 
-#: ../data/level/to-nenes-house-inside.cfg:82
+#: ../data/level/to-nenes-house-inside.cfg:94
 msgid "I just never got around to it."
 msgstr ""
 
-#: ../data/level/to-nenes-house-inside.cfg:83
+#: ../data/level/to-nenes-house-inside.cfg:95
 msgid ""
 "I don't need it myself, and I know\n"
 "you'd get a LOT of use out of it."
 msgstr ""
 
-#: ../data/level/to-nenes-house-inside.cfg:84
+#: ../data/level/to-nenes-house-inside.cfg:96
 msgid "So...  Happy (rather belated) Birthday!"
 msgstr ""
 
-#: ../data/level/to-nenes-house-inside.cfg:87
+#: ../data/level/to-nenes-house-inside.cfg:99
 msgid ""
 "You know, I'm really lucky to\n"
 "have friends like you!"
 msgstr ""
 
-#: ../data/level/to-nenes-house-inside.cfg:90
+#: ../data/level/to-nenes-house-inside.cfg:102
 msgid ""
 "Say, that wouldn't also happen\n"
 "to be *Birthday* Cake, would it?"
 msgstr ""
 
-#: ../data/level/to-nenes-house-inside.cfg:92
+#: ../data/level/to-nenes-house-inside.cfg:104
 msgid ""
 "...\n"
 "What?  No!"
 msgstr ""
 
-#: ../data/level/to-nenes-house-inside.cfg:93
+#: ../data/level/to-nenes-house-inside.cfg:105
 msgid ""
 "Just take the present,\n"
 "you silly, silly frog."
 msgstr ""
 
-#: ../data/level/to-nenes-house-inside.cfg:99
+#: ../data/level/to-nenes-house-inside.cfg:111
 msgid ""
 "Hey, thanks for taking care\n"
 "of those ants down there!"
 msgstr ""
 
-#: ../data/level/to-nenes-house-inside.cfg:101
+#: ../data/level/to-nenes-house-inside.cfg:113
 msgid ""
 "Of course.\n"
 "I don't disappoint!"
 msgstr "Certo.\nIo non deludo!"
 
-#: ../data/level/to-nenes-house-inside.cfg:103
+#: ../data/level/to-nenes-house-inside.cfg:115
 msgid ""
 "And thanks for the gift,\n"
 "by the way."
 msgstr "Ed a proposito,\ngrazie per il regalo."
 
-#: ../data/level/to-nenes-house-inside.cfg:104
+#: ../data/level/to-nenes-house-inside.cfg:116
 msgid "You're welcome."
 msgstr "Prego."
 
-#: ../data/level/to-nenes-house-inside.cfg:599
+#: ../data/level/to-nenes-house-inside.cfg:611
 msgid "Well, dangit, this door is locked."
 msgstr "Accidenti, questa porta è chiusa."
 
-#: ../data/level/to-nenes-house-inside.cfg:601
+#: ../data/level/to-nenes-house-inside.cfg:613
 msgid ""
 "Can't a guy sneak into his neighbor's\n"
 "basement uninvited these days?"
 msgstr "Può uno non imbucarsi nella casa del vicino\ndi questi giorni?"
 
-#: ../data/level/to-nenes-house-inside.cfg:1083
+#: ../data/level/to-nenes-house-inside.cfg:1095
 msgid "Nene's House"
 msgstr "Casa di Nene"
 
-#: ../data/level/to-nenes-house.cfg:2129
+#: ../data/level/to-nenes-house.cfg:172
+msgid ""
+"It smells like Nene's cooking something nice,\n"
+"but I don't think she'd want any ants for lunch.\n"
+"I'd better throw it out before entering!"
+msgstr ""
+
+#: ../data/level/to-nenes-house.cfg:177
+msgid ""
+"I guess that sneaking in with some bugs\n"
+"would be an easy way of getting a new job..."
+msgstr ""
+
+#: ../data/level/to-nenes-house.cfg:179
+msgid ""
+"But what am I thinking?\n"
+"It would be just nasty of me if I did that."
+msgstr ""
+
+#: ../data/level/to-nenes-house.cfg:2146
 msgid "Hah!"
 msgstr "Hah!"
 
-#: ../data/level/to-nenes-house.cfg:2130
+#: ../data/level/to-nenes-house.cfg:2147
 msgid "There's Nene's house, right up there!"
 msgstr "Lassù c'è la casa di Nene."
 
-#: ../data/level/to-nenes-house.cfg:2141
+#: ../data/level/to-nenes-house.cfg:2158
 msgid "A moment of your time sir?"
 msgstr "Un attimo del vostro tempo signore?"
 
-#: ../data/level/to-nenes-house.cfg:2143
+#: ../data/level/to-nenes-house.cfg:2160
 msgid ""
 "Sorry, I'm off to town!\n"
 "Not interested!"
 msgstr "Mi dispiace, sto andando in città!\nNon sono interessato!"
 
-#: ../data/level/to-nenes-house.cfg:2144
+#: ../data/level/to-nenes-house.cfg:2161
 msgid "But the town, you see ..."
 msgstr "Ma la città, vede..."
 
-#: ../data/level/to-nenes-house.cfg:2146
+#: ../data/level/to-nenes-house.cfg:2163
 msgid ""
 "Not. Interested.\n"
 "Buzz off."
 msgstr "Non. Sono. Interessato.\nSparisci."
 
-#: ../data/level/to-nenes-house.cfg:2148
+#: ../data/level/to-nenes-house.cfg:2165
 msgid ""
 "I don't care what you're preaching,\n"
 "go sell it to someone else."
 msgstr "Non mi importa cosa stai svendendo,\nvallo a vendere a qualcun'altro."
 
-#: ../data/level/to-nenes-house.cfg:2149
+#: ../data/level/to-nenes-house.cfg:2166
 msgid "Very well."
 msgstr "Molto bene."
 
-#: ../data/level/to-nenes-house.cfg:2152
+#: ../data/level/to-nenes-house.cfg:2169
 msgid ""
 "Someday, those door-to-door people\n"
 "will realize that kind of hard-sell tactic\n"
 "just annoys people."
 msgstr "Un giorno o l'altro, i venditori porta-a-porta\nsi renderanno conto che le loro tattiche\ninvasive seccano le persone."
 
-#: ../data/level/to-nenes-house.cfg:2154
+#: ../data/level/to-nenes-house.cfg:2171
 msgid "The sooner, the better."
 msgstr "Prima avverrà, meglio sarà."
 
-#: ../data/level/to-nenes-house.cfg:3204
+#: ../data/level/to-nenes-house.cfg:3221
 msgid "To Nene's House"
 msgstr "Verso Casa di Nene"
 
-#: ../data/level/twisted-trees.cfg:5230
+#: ../data/level/twisted-trees.cfg:5217
 msgid "Twisted Trees"
 msgstr "Gli Alberi Ritorti"
 
@@ -6357,20 +6400,21 @@ msgstr "La Piscina Sotterranea"
 msgid "Wandering Passage"
 msgstr "Il Passaggio del Vagabondo"
 
-#: ../data/level/watery-alley.cfg:1790
+#: ../data/level/watery-alley.cfg:1841
+#: ../data/objects/playable/map-selector.cfg:20
 msgid "Watery Alley"
 msgstr "Il Vicolo Lacrimante"
 
-#: ../data/object_prototypes/buyable_item.cfg:18
-#: ../data/object_prototypes/buyable_item.cfg:21
+#: ../data/object_prototypes/buyable_item.cfg:19
+#: ../data/object_prototypes/buyable_item.cfg:22
 msgid "The price is ${final_price} coins."
 msgstr ""
 
-#: ../data/object_prototypes/buyable_item.cfg:18
+#: ../data/object_prototypes/buyable_item.cfg:19
 msgid "You don't have enough money."
 msgstr "Non hai abbastanza denaro."
 
-#: ../data/object_prototypes/buyable_item.cfg:22
+#: ../data/object_prototypes/buyable_item.cfg:23
 msgid "Do you want to buy the ${consts.name}?"
 msgstr ""
 
@@ -6598,12 +6642,12 @@ msgstr "Intenso"
 msgid "Unfair"
 msgstr "Sleale"
 
-#: ../data/objects/playable/map-selector.cfg:20
+#: ../data/objects/playable/map-selector.cfg:21
 msgid "Milgram's Castle"
 msgstr "Castello di Milgram"
 
-#: ../data/objects/props-interactive/misc/save_toilet.cfg:15
-#: ../data/objects/props-interactive/portals/dungeon_save_door.cfg:12
+#: ../data/objects/props-interactive/misc/save_toilet.cfg:16
+#: ../data/objects/props-interactive/portals/dungeon_save_door.cfg:13
 #: ../data/objects/props-interactive/portals/world_1_interior_save_door.cfg:12
 msgid "The game has been saved."
 msgstr "Il gioco è stato salvato."
