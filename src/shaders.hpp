@@ -5,9 +5,12 @@
 #include <map>
 #include <vector>
 #include <boost/intrusive_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include "asserts.hpp"
+#include "entity_fwd.hpp"
 #include "formula_callable.hpp"
+#include "formula_variable_storage.hpp"
 
 namespace gles2
 {
@@ -39,6 +42,8 @@ struct actives
 	GLsizei num_elements;
 	// Location of the active uniform/attribute
 	GLint location;
+	// Last value
+	variant last_value;
 };
 
 class program;
@@ -60,23 +65,30 @@ public:
 	game_logic::formula_ptr create_formula(const variant& v);
 	bool execute_command(const variant& var);
 	void set_uniform(const std::string& key, const variant& value);
+	variant get_uniform_value(const std::string& key) const;
+	void set_attributes(const std::string& key, const variant& value);
+	variant get_attributes_value(const std::string& key) const;
 	game_logic::formula_callable* get_environment() { return environ_; }
 
-	variant write();
-
-	void vertex_array(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr);
-	void texture_array(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr);
-	void color_array(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr);
+	virtual variant write();
 
 	void vertex_attrib_array(GLint ndx, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr);
+
+	virtual void vertex_array(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr);
+	virtual void texture_array(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr);
+	virtual void color_array(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr);
+	virtual void set_fixed_attributes(const variant& node);
+
 	void disable_vertex_attrib(GLint);
 
 	static void load_shaders(const std::string& shader_data);
 	static program_ptr find_program(const std::string& prog_name);
 	static void add_shader(const std::string& program_name, 
 		const shader& v_shader, 
-		const shader& f_shader, 
+		const shader& f_shader,
 		const variant& prog);
+	static std::map<std::string, gles2::program_ptr>& get_shaders();
+	static void clear_shaders();
 protected:
 	bool link();
 	bool queryUniforms();
@@ -85,7 +97,8 @@ protected:
 	virtual variant get_value(const std::string& key) const;
 	virtual void set_value(const std::string& key, const variant& value);
 
-	void set_attributes(const variant& node);
+	std::vector<GLint> active_attributes_;
+	variant stored_attributes_;
 private:
 	game_logic::formula_callable* environ_;
 	std::string name_;
@@ -95,11 +108,6 @@ private:
 	std::map<std::string, actives> attribs_;
 	std::map<std::string, actives> uniforms_;
 
-	// Same cached variables to speed things up.
-	GLint vtx_coord_;
-	GLint tex_coord_[2];
-	GLint col_coord_;
-	variant stored_attributes_;
 	friend class shader_program;
 };
 
@@ -107,14 +115,23 @@ class shader_program : public game_logic::formula_callable
 {
 public:
 	shader_program();
-	explicit shader_program(const variant& node);
+	explicit shader_program(const variant& node, entity* obj = NULL);
 	virtual ~shader_program()
 	{}
-	void init(const variant& node);
+	void configure(const variant& node, entity* obj = NULL);
+	void init(entity* obj);
+	game_logic::formula_ptr create_formula(const variant& v);
+	bool execute_command(const variant& var);
+	int zorder() const { return zorder_; }
 
 	void prepare_draw();
 	program_ptr shader() const;
 	std::string name() const { return name_; }
+	entity* parent() const { return parent_; }
+	void set_parent(entity* obj) { parent_ = obj; }
+
+	game_logic::formula_callable* vars() { return vars_.get(); }
+	const game_logic::formula_callable* vars() const { return vars_.get(); }
 
 	void clear();
 	variant write();
@@ -125,8 +142,17 @@ private:
 	std::string name_;
 	program_ptr program_object_;
 
-	game_logic::formula_ptr create_;
-	game_logic::formula_ptr draw_;
+	game_logic::formula_variable_storage_ptr vars_;
+
+	std::vector<std::string> create_commands_;
+	std::vector<std::string> draw_commands_;
+	std::vector<game_logic::formula_ptr> create_formulas_;
+	std::vector<game_logic::formula_ptr> draw_formulas_;
+
+	// fake zorder value
+	int zorder_;
+
+	entity* parent_;
 };
 
 typedef boost::intrusive_ptr<shader_program> shader_ptr;

@@ -57,7 +57,6 @@ public:
 protected:
 	virtual variant get_value(const std::string&) const;
 	virtual void set_value(const std::string& key, const variant& value);
-	virtual void handle_draw() const;
 
 	std::string make_tile_string() const;
 private:

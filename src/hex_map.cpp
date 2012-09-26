@@ -60,27 +60,16 @@ hex_map::hex_map(variant node)
 #endif
 }
 
-void hex_map::handle_draw() const
+void hex_map::draw() const
 {
+#if defined(USE_GLES2)
+	gles2::manager manager(shader_);
+#endif
 	foreach(const hex_tile_row& row, tiles_) {
 		foreach(const hex_object_ptr& col, row) {
 			col->draw();
 		}
 	}
-}
-
-void hex_map::draw() const
-{
-#if defined(USE_GLES2)
-	if(shader_ != NULL) {
-		gles2::manager manager(shader_);
-		handle_draw();
-	} else {
-#endif
-	handle_draw();
-#if defined(USE_GLES2)
-	}
-#endif
 }
 
 void hex_map::build()
@@ -277,7 +266,7 @@ bool hex_map::set_tile(int xx, int yy, const std::string& tile)
 		tiles_.insert(tiles_.begin(), r);
 	}
 	if(p.x < x()) {
-		int needed_cols = x() - p.x;
+		size_t needed_cols = x() - p.x;
 		int n = x_;
 		x_ = p.x;
 		for(size_t j = 0; j < tiles_.size(); ++j) {

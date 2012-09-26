@@ -1,6 +1,8 @@
 #include <boost/regex.hpp>
 
+#include "array_callable.hpp"
 #include "asserts.hpp"
+#include "custom_object.hpp"
 #include "foreach.hpp"
 #include "formula.hpp"
 #include "formula_profiler.hpp"
@@ -10,6 +12,9 @@
 #include "module.hpp"
 #include "shaders.hpp"
 #include "variant_utils.hpp"
+#if defined(WIN32)
+#include "win_profile_timer.hpp"
+#endif
 
 #define WRITE_LOG(_a,_b) if( !(_a) ) { std::ostringstream _s; _s << __FILE__ << ":" << __LINE__ << " ASSERTION FAILED: " << _b << "\n"; std::cerr << _s.str(); return; }
 
@@ -60,18 +65,16 @@ namespace {
 }
 
 program::program() 
-	: object_(0), vtx_coord_(-1), col_coord_(-1)
+	: object_(0)
 {
 	environ_ = this;
-	tex_coord_[0] = tex_coord_[1] = -1;
 }
 
 
 program::program(const std::string& name, const shader& vs, const shader& fs)
-	: object_(0), vtx_coord_(-1), col_coord_(-1)
+	: object_(0)
 {
 	environ_ = this;
-	tex_coord_[0] = tex_coord_[1] = -1;
 	init(name, vs, fs);
 }
 
@@ -124,7 +127,10 @@ GLuint program::get_attribute(const std::string& attr) const
 GLuint program::get_uniform(const std::string& attr) const
 {
 	std::map<std::string, actives>::const_iterator it = uniforms_.find(attr);
-	ASSERT_LOG(it != uniforms_.end(), "Uniform \"" << attr << "\" not found in list.");
+	//ASSERT_LOG(it != uniforms_.end(), "Uniform \"" << attr << "\" not found in list.");
+	if(it == uniforms_.end()) {
+		return 0xffffffffUL;
+	}
 	return it->second.location;
 }
 
@@ -168,11 +174,19 @@ bool program::queryUniforms()
 	return true;
 }
 
+variant program::get_uniform_value(const std::string& key) const
+{
+	std::map<std::string, actives>::const_iterator it = uniforms_.find(key);
+	ASSERT_LOG(it != uniforms_.end(), "No uniform found with name: " << key);
+	return it->second.last_value;
+}
+
 void program::set_uniform(const std::string& key, const variant& value)
 {
 	std::map<std::string, actives>::iterator it = uniforms_.find(key);
 	WRITE_LOG(it != uniforms_.end(), "No uniform found with name: " << key);
 	const actives& u = it->second;
+	it->second.last_value = value;
 	switch(u.type) {
 	case GL_FLOAT: {
 		glUniform1f(u.location, GLfloat(value.as_decimal().as_float()));
@@ -273,7 +287,13 @@ namespace {
 		program_ptr program_;
 		variant get_value(const std::string& key) const 
 		{
-			return variant();
+			//GLfloat f[16];
+			//glGetUniformfv(program_->get(), program_->get_uniform(key), f);
+			//GLenum err = glGetError();
+			//ASSERT_LOG(err == GL_NONE, "glGetUniformfv OpenGL error: 0x" << std::hex << err);
+			// XXX fixme to check type of uniform for number of elements to return.
+			//return variant(f[0]);
+			return program_->get_uniform_value(key);
 		}
 		void set_value(const std::string& key, const variant& value) 
 		{
@@ -284,6 +304,23 @@ namespace {
 			: program_(const_cast<program*>(&p))
 		{}
 	};
+
+	class attributes_callable : public game_logic::formula_callable 
+	{
+		program_ptr program_;
+		variant get_value(const std::string& key) const 
+		{
+			return program_->get_attributes_value(key);
+		}
+		void set_value(const std::string& key, const variant& value) 
+		{
+			program_->set_attributes(key, value);
+		}
+	public:
+		explicit attributes_callable(const program& p) 
+			: program_(const_cast<program*>(&p))
+		{}
+	};
 }
 
 variant program::get_value(const std::string& key) const
@@ -291,6 +328,8 @@ variant program::get_value(const std::string& key) const
 #if defined(USE_GLES2)
 	if(key == "uniforms") {
 		return variant(new uniforms_callable(*this));
+	} else if(key == "attributes") {
+		return variant(new attributes_callable(*this));
 	} else if(key == "alpha") {
 		return variant(get_alpha());
 	} else if(key == "color") {
@@ -320,7 +359,58 @@ void program::set_value(const std::string& key, const variant& value)
 }
 
 namespace {
-	class get_mvp_matrix_function : public game_logic::function_expression {
+	GLenum convert_mode(const std::string& smode)
+	{
+		if(smode == "points") {
+			return GL_POINTS;
+		} else if(smode == "lines") {
+			return GL_LINES;
+		} else if(smode == "line_strips") {
+			return GL_LINE_STRIP;
+		} else if(smode == "line_loop") {
+			return GL_LINE_LOOP;
+		} else if(smode == "triangles") {
+			return GL_TRIANGLES;
+		} else if(smode == "triangle_strip") {
+			return GL_TRIANGLE_STRIP;
+		} else if(smode == "triangle_fan") {
+			return GL_TRIANGLE_FAN;
+		}
+		ASSERT_LOG(false, "Unexpected mode type: " << smode);
+		return GL_POINTS;
+	}
+
+	GLenum get_blend_mode(variant v)
+	{
+		if(v.is_string()) {
+			const std::string s = v.as_string();
+			if(s == "zero") {
+				return GL_ZERO;
+			} else if(s == "one") {
+				return GL_ONE;
+			} else if(s == "src_color") {
+				return GL_SRC_COLOR;
+			} else if(s == "one_minus_src_color") {
+				return GL_ONE_MINUS_SRC_COLOR;
+			} else if(s == "src_alpha") {
+				return GL_SRC_ALPHA;
+			} else if(s == "one_minus_src_alpha") {
+				return GL_ONE_MINUS_SRC_ALPHA;
+			} else if(s == "dst_alpha") {
+				return GL_DST_ALPHA;
+			} else if(s == "one_minus_dst_alpha") {
+				return GL_ONE_MINUS_DST_ALPHA;
+			} 
+			ASSERT_LOG(false, "Unrecognised blend mode (maybe needs adding): " << s);
+		} else if(v.is_int()) {
+			return v.as_int();
+		}
+		ASSERT_LOG(false, "Expected blend mode to be a string or integer");
+		return GL_ZERO;
+	}
+
+	class get_mvp_matrix_function : public game_logic::function_expression
+	{
 	public:
 		explicit get_mvp_matrix_function(const args_list& args)
 		 : function_expression("get_mvp_matrix", args, 0, 0)
@@ -338,6 +428,184 @@ namespace {
 		}
 	};
 
+	class draw_arrays_command : public game_logic::command_callable
+	{
+	public:
+		explicit draw_arrays_command(GLenum mode, GLint first, GLsizei count)
+			: mode_(mode), first_(first), count_(count)
+		{}
+		virtual void execute(formula_callable& ob) const
+		{
+			glDrawArrays(mode_, first_, count_);
+		}
+	private:
+		GLenum mode_;
+		GLint first_;
+		GLsizei count_;
+	};
+
+	class draw_arrays_function : public game_logic::function_expression 
+	{
+	public:
+		explicit draw_arrays_function(const args_list& args)
+		 : function_expression("draw_arrays", args, 3, 3)
+		{}
+	private:
+		variant execute(const game_logic::formula_callable& variables) const 
+		{
+			game_logic::formula::fail_if_static_context();
+			GLenum mode;
+			variant vmode = args()[0]->evaluate(variables);
+			if(vmode.is_string()) {
+				mode = convert_mode(vmode.as_string());
+			} else if(vmode.is_int()) {
+				mode = vmode.as_int();
+			} else {
+				ASSERT_LOG(false, "Unexpected type for mode argument: " << vmode.type());
+			}
+			return variant(new draw_arrays_command(mode, 
+				args()[1]->evaluate(variables).as_int(), 
+				args()[2]->evaluate(variables).as_int()));
+		}
+	};
+
+	class draw_elements_command : public game_logic::command_callable
+	{
+	public:
+		explicit draw_elements_command(GLenum mode, std::vector<GLshort>* indicies)
+			: mode_(mode)
+		{
+			indicies_.swap(*indicies);
+		}
+		virtual void execute(formula_callable& ob) const
+		{
+			glDrawElements(mode_, indicies_.size(), GL_SHORT, &indicies_[0]);
+		}
+	private:
+		GLenum mode_;
+		std::vector<GLshort> indicies_;
+	};
+
+	class draw_elements_function : public game_logic::function_expression 
+	{
+	public:
+		explicit draw_elements_function(const args_list& args)
+		 : function_expression("draw_elements", args, 2, 2)
+		{}
+	private:
+		variant execute(const game_logic::formula_callable& variables) const 
+		{
+			game_logic::formula::fail_if_static_context();
+			GLenum mode;
+			variant vmode = args()[0]->evaluate(variables);
+			if(vmode.is_string()) {
+				mode = convert_mode(vmode.as_string());
+			} else if(vmode.is_int()) {
+				mode = vmode.as_int();
+			} else {
+				ASSERT_LOG(false, "Unexpected type for mode argument: " << vmode.type());
+			}
+			variant ndxs = args()[1]->evaluate(variables);
+			std::vector<GLshort> indicies;
+			for(size_t n = 0; n < ndxs.num_elements(); ++n) {
+				indicies.push_back(GLshort(ndxs[n].as_int()));
+			}
+			return variant(new draw_elements_command(mode, &indicies));
+		}
+	};
+
+	class bind_texture_command : public game_logic::command_callable
+	{
+	public:
+		explicit bind_texture_command(GLuint tex_id, GLuint active = 0)
+			: tex_id_(tex_id), active_(active)
+		{}
+		virtual void execute(formula_callable& ob) const
+		{
+			glActiveTexture(GL_TEXTURE0 + active_);
+			glBindTexture(GL_TEXTURE_2D, tex_id_);
+		}
+	private:
+		GLuint tex_id_;
+		GLuint active_;
+	};
+
+	class bind_texture_function : public game_logic::function_expression 
+	{
+	public:
+		explicit bind_texture_function(const args_list& args)
+		 : function_expression("bind_texture", args, 1, 2)
+		{}
+	private:
+		variant execute(const game_logic::formula_callable& variables) const 
+		{
+			GLuint active_tex = args().size() > 1 ? args()[1]->evaluate(variables).as_int() : 0;
+			return variant(new bind_texture_command(GLuint(args()[0]->evaluate(variables).as_int()), active_tex));
+		}
+	};
+
+	class texture_callable : public game_logic::formula_callable
+	{
+	public:
+		explicit texture_callable(const graphics::texture& tex): tex_(tex)
+		{}
+		variant get_value(const std::string& key) const
+		{
+			if(key == "id") {
+				return variant(tex_.get_id());
+			}
+			return variant();
+		}
+	private:
+		graphics::texture tex_;
+	};
+
+	class load_texture_function : public game_logic::function_expression 
+	{
+	public:
+		explicit load_texture_function(const args_list& args)
+		 : function_expression("load_texture", args, 1, 1)
+		{}
+	private:
+		variant execute(const game_logic::formula_callable& variables) const 
+		{
+			const std::string filename = module::map_file(args()[0]->evaluate(variables).as_string());
+			const graphics::texture tex = graphics::texture::get(filename);
+			return variant(new texture_callable(tex));
+		}
+	};
+
+	class blend_mode_command : public game_logic::command_callable
+	{
+	public:
+		explicit blend_mode_command(GLenum src, GLenum dst)
+			: src_(src), dst_(dst)
+		{}
+		virtual void execute(formula_callable& ob) const
+		{
+			glEnable(GL_BLEND);
+			glBlendFunc(src_, dst_);
+		}
+	private:
+		GLenum src_;
+		GLenum dst_;
+	};
+
+	class blend_mode_function : public game_logic::function_expression 
+	{
+	public:
+		explicit blend_mode_function(const args_list& args)
+		 : function_expression("blend_mode", args, 2, 2)
+		{}
+	private:
+		variant execute(const game_logic::formula_callable& variables) const 
+		{
+			const GLenum src = get_blend_mode(args()[0]->evaluate(variables));
+			const GLenum dst = get_blend_mode(args()[1]->evaluate(variables));
+			return variant(new blend_mode_command(src, dst));
+		}
+	};
+
 	class shader_symbol_table : public game_logic::function_symbol_table
 	{
 	public:
@@ -351,7 +619,17 @@ namespace {
 		{
 			if(fn == "get_mvp_matrix") {
 				return game_logic::expression_ptr(new get_mvp_matrix_function(args));
-			} 
+			} else if(fn == "draw_arrays") {
+				return game_logic::expression_ptr(new draw_arrays_function(args));
+			} else if(fn == "draw_elements") {
+				return game_logic::expression_ptr(new draw_elements_function(args));
+			} else if(fn == "bind_texture") {
+				return game_logic::expression_ptr(new bind_texture_function(args));
+			} else if(fn == "load_texture") {
+				return game_logic::expression_ptr(new load_texture_function(args));
+			} else if(fn == "blend_mode") {
+				return game_logic::expression_ptr(new blend_mode_function(args));
+			}
 			return function_symbol_table::create_function(fn, args, callable_def);
 		}
 	};
@@ -391,33 +669,84 @@ bool program::execute_command(const variant& var)
 	return result;
 }
 
+variant program::get_attributes_value(const std::string& key) const
+{
+	std::map<std::string, actives>::const_iterator it = attribs_.find(key);
+	ASSERT_LOG(it != attribs_.end(), "No attribute found with name: " << key);
+	return it->second.last_value;	
+}
+
+void program::set_attributes(const std::string& key, const variant& value)
+{
+	std::map<std::string, actives>::iterator it = attribs_.find(key);
+	ASSERT_LOG(it != attribs_.end(), "No attribute found with name: " << key << ", prog: " << get());
+	const actives& a = it->second;
+	WRITE_LOG(a.type == GL_FLOAT || a.type == GL_FLOAT_VEC2 || a.type == GL_FLOAT_VEC3 || a.type == GL_FLOAT_VEC4, 
+		"Attribute type must be float not: " << a.type);
+	it->second.last_value = value;
+
+	if(value.is_callable()) {
+		boost::intrusive_ptr<game_logic::float_array_callable> f = value.try_convert<game_logic::float_array_callable>();
+		boost::intrusive_ptr<game_logic::short_array_callable> s = value.try_convert<game_logic::short_array_callable>();
+		if(f != NULL) {
+			::glVertexAttribPointer(a.location, f->num_elements(), GL_FLOAT, GL_FALSE, 0, &(f->floats()[0]));
+			//GLenum err = glGetError();
+			//GLint prog, max_va;
+			//glGetIntegerv(GL_CURRENT_PROGRAM, &prog);
+			//glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &max_va);
+			//ASSERT_LOG(err == GL_NONE, "Error in OpenGL: 0x" 
+			//		<< std::hex << err << std::dec << " : " << key << " : " << a.location << " : " << a.type << " : " << f->num_elements()
+			//		<< ", progs " << prog << " : " << get() << ", max vertex attribs: " << max_va);
+		} else if(s != NULL) {
+			::glVertexAttribPointer(a.location, s->num_elements(), GL_SHORT, GL_FALSE, 0, &(s->shorts()[0]));
+			//GLenum err = glGetError();
+			//ASSERT_LOG(err == GL_NONE, "Error in OpenGL: 0x" << std::hex << err << std::dec << " : " << key << " : " << a.location << " : " << a.type);
+		} else {
+			ASSERT_LOG(false, "Couldn't convert to float_array or short_array type: " << a.name);
+		}
+		::glEnableVertexAttribArray(a.location);
+		//GLenum err = glGetError();
+		//ASSERT_LOG(err == GL_NONE, "Error in OpenGL: 0x" << std::hex << err << std::dec << " : " << key << " : " << a.location << " : " << a.type);
+		active_attributes_.push_back(a.location);
+	} else {//if(a.num_elements == value.num_elements()) {
+		// Probably just a constant. not an attrib array.
+		if(value.num_elements() == 1) {
+			ASSERT_LOG(value.is_decimal(), "Value not floating point number");
+			glVertexAttrib1f(a.location, GLfloat(value.as_decimal().as_float()));
+		} else if(value.num_elements() == 2) {
+			ASSERT_LOG(value.is_list(), "Value not list");
+			glVertexAttrib2f(a.location, 
+				GLfloat(value[0].as_decimal().as_float()),
+				GLfloat(value[1].as_decimal().as_float()));
+		} else if(value.num_elements() == 3) {
+			ASSERT_LOG(value.is_list(), "Value not list");
+			glVertexAttrib3f(a.location, 
+				GLfloat(value[0].as_decimal().as_float()),
+				GLfloat(value[1].as_decimal().as_float()),
+				GLfloat(value[2].as_decimal().as_float()));
+		} else if(value.num_elements() == 4) {
+			ASSERT_LOG(value.is_list(), "Value not list");
+			//std::cerr << "set attribute \"" << key << "\" to " << value << std::endl;
+			glVertexAttrib4f(a.location, 
+				GLfloat(value[0].as_decimal().as_float()),
+				GLfloat(value[1].as_decimal().as_float()),
+				GLfloat(value[2].as_decimal().as_float()),
+				GLfloat(value[3].as_decimal().as_float()));
+			glDisableVertexAttribArray(a.location);
+		} else {
+			ASSERT_LOG(false, "Unrecognised attribute type: " << value.type() << " : " << a.name << " : " << a.num_elements << "," << value.num_elements());
+		}
+	//} else {
+	//	ASSERT_LOG(false, "Unrecognised attribute type: " << value.type() << " : " << a.name << " : " << a.num_elements << "," << value.num_elements());
+	}
+}
+
 void program::disable_vertex_attrib(GLint)
 {
-	::glDisableVertexAttribArray(vtx_coord_);
-	::glDisableVertexAttribArray(tex_coord_[0]);
-	::glDisableVertexAttribArray(tex_coord_[1]);
-	::glDisableVertexAttribArray(col_coord_);
-}
-
-void program::vertex_attrib_array(GLint ndx, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr)
-{
-	::glVertexAttribPointer(ndx, size, type, normalized, stride, ptr);
-	::glEnableVertexAttribArray(ndx);
-}
-
-void program::vertex_array(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr)
-{
-	vertex_attrib_array(vtx_coord_, size, type, normalized, stride, ptr);
-}
-
-void program::texture_array(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr)
-{
-	vertex_attrib_array(tex_coord_[0], size, type, normalized, stride, ptr);
-}
-
-void program::color_array(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr)
-{
-	vertex_attrib_array(col_coord_, size, type, normalized, stride, ptr);
+	for(size_t n = 0; n < active_attributes_.size(); ++n) {
+		::glDisableVertexAttribArray(active_attributes_[n]);
+	}
+	active_attributes_.clear();
 }
 
 variant program::write()
@@ -426,41 +755,65 @@ variant program::write()
 	res.add("program", name());
 	res.add("vertex", vs_.name());
 	res.add("fragment", fs_.name());
-	res.add("attributes", stored_attributes_);
+	if(stored_attributes_.is_null() == false) {
+		res.add("attributes", stored_attributes_);
+	}
 	return res.build();
 }
 
-void program::set_attributes(const variant& node)
+void program::vertex_attrib_array(GLint ndx, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr)
 {
-	std::cerr << "shader program: " << name();
-	if(node.has_key("vertex")) {
-		vtx_coord_ = get_attribute(node["vertex"].as_string());
-		std::cerr << ", vtx_coord: " << vtx_coord_;
-	} 
-	if(node.has_key("color")) {
-		col_coord_ = get_attribute(node["color"].as_string());
-		std::cerr << ", col_coord: " << col_coord_;
-	} 
-	if(node.has_key("colour")) {
-		col_coord_ = get_attribute(node["colour"].as_string());
-		std::cerr << ", col_coord: " << col_coord_;
-	} 
-	if(node.has_key("texcoord")) {
-		tex_coord_[0] = get_attribute(node["texcoord"].as_string());
-		std::cerr << ", tex_coord0: " << tex_coord_[0];
-	} 
-	if(node.has_key("texcoord0")) {
-		tex_coord_[0] = get_attribute(node["texcoord0"].as_string());
-		std::cerr << ", tex_coord0: " << tex_coord_[0];
-	} 
-	if(node.has_key("texcoord1")) {
-		tex_coord_[1] = get_attribute(node["texcoord1"].as_string());
-		std::cerr << ", tex_coord1: " << tex_coord_[1];
-	}
-	std::cerr << std::endl;
-	stored_attributes_ = node;
+	::glVertexAttribPointer(ndx, size, type, normalized, stride, ptr);
+	::glEnableVertexAttribArray(ndx);
+	active_attributes_.push_back(ndx);
 }
 
+void program::vertex_array(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr)
+{
+	if(stored_attributes_.has_key("vertex")) {
+		const variant& v = stored_attributes_["vertex"];
+		if(v.is_string()) {
+			vertex_attrib_array(get_attribute(v.as_string()), size, type, normalized, stride, ptr);
+		} else {
+			ASSERT_LOG(false, "Expected vertex attribute to be string.");
+		}
+	} else {
+		ASSERT_LOG(false, "No attribute mapping found for: 'vertex', program: " << name());
+	}
+}
+
+void program::texture_array(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr)
+{
+	if(stored_attributes_.has_key("texcoord")) {
+		const variant& v = stored_attributes_["texcoord"];
+		if(v.is_string()) {
+			vertex_attrib_array(get_attribute(v.as_string()), size, type, normalized, stride, ptr);
+		} else {
+			ASSERT_LOG(false, "Expected texcoord attribute to be string.");
+		}
+	} else {
+		ASSERT_LOG(false, "No attribute mapping found for: 'texcoord', program: " << name());
+	}
+}
+
+void program::color_array(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr)
+{
+	if(stored_attributes_.has_key("color")) {
+		const variant& v = stored_attributes_["color"];
+		if(v.is_string()) {
+			vertex_attrib_array(get_attribute(v.as_string()), size, type, normalized, stride, ptr);
+		} else {
+			ASSERT_LOG(false, "Expected color attribute to be string.");
+		}
+	} else {
+		ASSERT_LOG(false, "No attribute mapping found for: 'color', program: " << name());
+	}
+}
+
+void program::set_fixed_attributes(const variant& node)
+{
+	stored_attributes_ = node;
+}
 
 void program::load_shaders(const std::string& shader_data)
 {
@@ -504,14 +857,16 @@ void program::load_shaders(const std::string& shader_data)
 		const std::string& program_name = prog["name"].as_string();
 		add_shader(program_name, v_shader, f_shader, prog["attributes"]);
 
-		std::cerr << "Loaded shader program: \"" << program_name << "\" from file. (" 
+		std::map<std::string, gles2::program_ptr>::iterator it = shader_programs.find(program_name);
+		ASSERT_LOG(it != shader_programs.end(), "Error! Something bad happened adding the shader.");
+		std::cerr << "Loaded shader program: \"" << program_name << "\"(" << it->second->get() << ") from file. (" 
 			<< vs_name << ", " << fs_name << ")." << std::endl;
 	}
 }
 
 void program::add_shader(const std::string& program_name, 
 		const shader& v_shader, 
-		const shader& f_shader, 
+		const shader& f_shader,
 		const variant& prog)
 {
 	std::map<std::string, gles2::program_ptr>::iterator it = shader_programs.find(program_name);
@@ -520,7 +875,9 @@ void program::add_shader(const std::string& program_name,
 	} else {
 		it->second->init(program_name, v_shader, f_shader);
 	}
-	shader_programs[program_name]->set_attributes(prog);
+	if(prog.is_null() == false) {
+		shader_programs[program_name]->set_fixed_attributes(prog);
+	}
 }
 
 program_ptr program::find_program(const std::string& prog_name)
@@ -530,77 +887,148 @@ program_ptr program::find_program(const std::string& prog_name)
 	return it->second;
 }
 
+std::map<std::string, gles2::program_ptr>& program::get_shaders()
+{
+	return shader_programs;
+}
+
+void program::clear_shaders()
+{
+	shader_programs.clear();
+}
 
 ///////////////////////////////////////////////////////////////////////////
 // shader_program
 
 shader_program::shader_program()
+	: vars_(new game_logic::formula_variable_storage()), parent_(NULL), zorder_(-1)
 {
 }
 
-shader_program::shader_program(const variant& node)
+shader_program::shader_program(const variant& node, entity* obj)
+	: vars_(new game_logic::formula_variable_storage()), parent_(obj), zorder_(-1)
 {
-	init(node);
+	configure(node, obj);
 }
 
-void shader_program::init(const variant& node)
+void shader_program::configure(const variant& node, entity* obj)
 {
 	ASSERT_LOG(node.is_map(), "shader attribute must be a map.");
 	name_ = node["program"].as_string();
 	program_object_ = program::find_program(name_);
-	game_logic::formula_callable* e = program_object_->get_environment();
+	game_logic::formula_callable* e = this;
 	ASSERT_LOG(e != NULL, "Environment was not set.");
 
-	if(node.has_key("uniforms")) {
-		const variant& u = node["uniforms"];
-		if(u.has_key("on_create")) {
-			create_ = e->create_formula(u["on_create"]);
+	zorder_ = node["zorder"].as_int(-1);
+	if(node.has_key("create")) {
+		const variant& c = node["create"];
+		if(c.is_list()) {
+			for(size_t n = 0; n < c.num_elements(); ++n) {
+				std::string cmd = c[n].as_string();
+				create_commands_.push_back(cmd);
+				ASSERT_LOG(node.has_key(cmd) == true, "No attribute found with name: " << cmd);
+				create_formulas_.push_back(e->create_formula(node[cmd]));
+			}
+		} else if(c.is_string()) {
+			// single formula stored
+			create_formulas_.push_back(e->create_formula(variant(c.as_string())));
+		} else {
+			ASSERT_LOG(false, "create must be string or list");
 		}
-		if(u.has_key("on_draw")) {
-			draw_ = e->create_formula(u["on_draw"]);
+	}
+	if(node.has_key("draw")) {
+		const variant& d = node["draw"];
+		if(d.is_list()) {
+			for(size_t n = 0; n < d.num_elements(); ++n) {
+				std::string cmd = d[n].as_string();
+				draw_commands_.push_back(cmd);
+				ASSERT_LOG(node.has_key(cmd) == true, "No attribute found with name: " << cmd);
+				draw_formulas_.push_back(e->create_formula(node[cmd]));
+			}
+		} else if(d.is_string()) {
+			draw_formulas_.push_back(e->create_formula(variant(d.as_string())));
+		} else {
+			ASSERT_LOG(false, "draw must be string or list");
 		}
 	}
 
+	vars_->read(node["vars"]);
+
+	if(obj) {
+		init(obj);
+	}
+}
+
+void shader_program::init(entity* obj)
+{
+	ASSERT_LOG(name_.empty() != true, "Configure not run, before calling init");
+	game_logic::formula_callable* e = this;
+	parent_ = obj;
 	GLint current_program;
 	glGetIntegerv(GL_CURRENT_PROGRAM, &current_program);
-	// Set default values for uniforms
 	glUseProgram(program_object_->get());
-	if(create_ != NULL) {
-		e->execute_command(create_->execute(*e));
+	for(size_t n = 0; n < create_formulas_.size(); ++n) {
+		e->execute_command(create_formulas_[n]->execute(*e));
 	}
 	glUseProgram(current_program);
 }
 
 variant shader_program::write()
 {
-	variant_builder u;
-	u.add("program", name());
-	u.add("on_create", create_->str());
-	u.add("on_draw", draw_->str());
-	return u.build();
+	variant_builder res;
+	res.add("program", name());
+
+	if(draw_commands_.size() == 0 && draw_formulas_.size() == 1) {
+		// write a single formula as a string in "draw" attribute.
+		res.add("draw", draw_formulas_[0]->str());
+	} else {
+		ASSERT_LOG(draw_commands_.size() == draw_formulas_.size(), "commands and formulas not same size");
+		for(size_t n = 0; n < draw_commands_.size(); ++n) {
+			res.add("draw", draw_commands_[n]);
+			res.add(draw_commands_[n], draw_formulas_[n]->str());
+		}
+	}
+
+	if(create_commands_.size() == 0 && create_formulas_.size() == 1) {
+		// write a single formula as a string in "draw" attribute.
+		res.add("create", create_formulas_[0]->str());
+	} else {
+		ASSERT_LOG(create_commands_.size() == create_formulas_.size(), "commands and formulas not same size");
+		for(size_t n = 0; n < create_commands_.size(); ++n) {
+			res.add("create", create_commands_[n]);
+			res.add(create_commands_[n], create_formulas_[n]->str());
+		}
+	}
+
+	if(vars_ != NULL) {
+		res.add("vars", vars_->write());
+	}
+	if(zorder_ != -1) {
+		res.add("zorder", zorder_);
+	}
+	return res.build();
 }
 
 void shader_program::prepare_draw()
 {
-	//LARGE_INTEGER frequency;
-	//LARGE_INTEGER t1, t2;
-	//double elapsedTime;
-	//QueryPerformanceFrequency(&frequency);
-	//QueryPerformanceCounter(&t1);
-
+//#if defined(WIN32)
+//	profile::manager manager;
+//#endif
 	glUseProgram(program_object_->get());
-	if(draw_ != NULL) {
-		game_logic::formula_callable* e = program_object_->get_environment();
-		e->execute_command(draw_->execute(*e));
+	game_logic::formula_callable* e = this;
+	for(size_t n = 0; n < draw_formulas_.size(); ++n) {
+		e->execute_command(draw_formulas_[n]->execute(*e));
 	}
-
-	//QueryPerformanceCounter(&t2);
-	//elapsedTime = (t2.QuadPart - t1.QuadPart) * 1000.0 / frequency.QuadPart;
-	//std::cerr << elapsedTime << " ms\n";
 }
 
 variant shader_program::get_value(const std::string& key) const
 {
+	if(key == "vars") {
+		return variant(vars_.get());
+	} else if(key == "parent" || key == "object") {
+		ASSERT_LOG(parent_ != NULL, "Tried to request parent, when value is null");
+		return variant(parent_);
+	}
 	return program_object_->get_value(key);
 }
 
@@ -618,9 +1046,39 @@ program_ptr shader_program::shader() const
 void shader_program::clear()
 {
 	program_object_.reset();
-	create_.reset();
-	draw_.reset();
 	name_.clear();
+	create_commands_.clear();
+	draw_commands_.clear();
+	create_formulas_.clear();
+	draw_formulas_.clear();
+}
+
+bool shader_program::execute_command(const variant& var)
+{
+	bool result = true;
+	if(var.is_null()) {
+		return result;
+	}
+
+	if(var.is_list()) {
+		const int num_elements = var.num_elements();
+		for(int n = 0; n != num_elements; ++n) {
+			if(var[n].is_null() == false) {
+				result = execute_command(var[n]) && result;
+			}
+		}
+	} else {
+		game_logic::command_callable* cmd = var.try_convert<game_logic::command_callable>();
+		if(cmd != NULL) {
+			cmd->execute(*this);
+		}
+	}
+	return result;
+}
+
+game_logic::formula_ptr shader_program::create_formula(const variant& v)
+{
+	return game_logic::formula_ptr(new game_logic::formula(v, &get_shader_symbol_table()));
 }
 
 }

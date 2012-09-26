@@ -208,7 +208,8 @@ public:
 	bool hidden_in_game() const { return hidden_in_game_; }
 
 #if defined(USE_GLES2)
-	const gles2::shader_program& shader() const { return shader_; }
+	const gles2::shader_ptr& shader() const { return shader_; }
+	const std::vector<gles2::shader_ptr>& effects() const { return effects_; }
 #endif
 
 private:
@@ -320,7 +321,8 @@ private:
 	std::vector<int> platform_offsets_;
 
 #ifdef USE_GLES2
-	gles2::shader_program shader_;
+	gles2::shader_ptr shader_;
+	std::vector<gles2::shader_ptr> effects_;
 #endif
 };
 

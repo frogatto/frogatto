@@ -2027,7 +2027,7 @@ void level::calculate_lighting(int x, int y, int w, int h) const
 	GLfloat varray[] = { 0, h, 0, 0, w, h, w, 0 };
 #if defined(USE_GLES2)
 	gles2::active_shader()->prepare_draw();
-	gles2::active_shader()->shader()->vertex_array(2, GL_SHORT, 0, sizeof(tile_corner), varray);
+	gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, GL_FALSE, 0, varray);
 	gles2::active_shader()->shader()->texture_array(2, GL_FLOAT, GL_FALSE, 0, 
 		preferences::screen_rotated() ? tcarray_rotated : tcarray);
 #else

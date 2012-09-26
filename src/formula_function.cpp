@@ -17,6 +17,7 @@
 #include <stack>
 #include <math.h>
 
+#include "array_callable.hpp"
 #include "asserts.hpp"
 #include "compress.hpp"
 #include "dialog.hpp"
@@ -605,6 +606,28 @@ FUNCTION_DEF(zip, 3, 3, "zip(list1, list2, expr) -> list")
 	return variant();
 END_FUNCTION_DEF(zip)
 
+FUNCTION_DEF(float_array, 1, 2, "float_array(list, (opt) num_elements) -> callable: Converts a list of floating point values into an efficiently accessible object.")
+	game_logic::formula::fail_if_static_context();
+	variant f = args()[0]->evaluate(variables);
+	int num_elems = args().size() == 1 ? 1 : args()[1]->evaluate(variables).as_int();
+	std::vector<GLfloat> floats;
+	for(size_t n = 0; n < f.num_elements(); ++n) {
+		floats.push_back(GLfloat(f[n].as_decimal().as_float()));
+	}
+	return variant(new float_array_callable(&floats, num_elems));
+END_FUNCTION_DEF(float_array)
+
+FUNCTION_DEF(short_array, 1, 2, "short_array(list) -> callable: Converts a list of integer values into an efficiently accessible object.")
+	game_logic::formula::fail_if_static_context();
+	variant s = args()[0]->evaluate(variables);
+	int num_elems = args().size() == 1 ? 1 : args()[1]->evaluate(variables).as_int();
+	std::vector<GLshort> shorts;
+	for(size_t n = 0; n < s.num_elements(); ++n) {
+		shorts.push_back(GLshort(s[n].as_int()));
+	}
+	return variant(new short_array_callable(&shorts, num_elems));
+END_FUNCTION_DEF(short_array)
+
 /* XXX Krista to be reworked
 FUNCTION_DEF(update_controls, 1, 1, "update_controls(map) : Updates the controls based on a list of id:string, pressed:bool pairs")
 	const variant map = args()[0]->evaluate(variables);
@@ -797,6 +820,20 @@ END_FUNCTION_DEF(sort)
 
 FUNCTION_DEF(shuffle, 1, 1, "shuffle(list) - Returns a shuffled version of the list. Like shuffling cards.")
 	variant list = args()[0]->evaluate(variables);
+	boost::intrusive_ptr<float_array_callable> f = list.try_convert<float_array_callable>();
+	if(f != NULL) {
+		std::vector<GLfloat> floats(f->floats().begin(), f->floats().end());
+		std::random_shuffle(floats.begin(), floats.end());
+		return variant(new float_array_callable(&floats));
+	}
+	
+	boost::intrusive_ptr<short_array_callable> s = list.try_convert<short_array_callable>();
+	if(s != NULL) {
+		std::vector<GLshort> shorts(s->shorts().begin(), s->shorts().end());
+		std::random_shuffle(shorts.begin(), shorts.end());
+		return variant(new short_array_callable(&shorts));
+	}
+
 	std::vector<variant> vars;
 	vars.reserve(list.num_elements());
 	for(size_t n = 0; n != list.num_elements(); ++n) {

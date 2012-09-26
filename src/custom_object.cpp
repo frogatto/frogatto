@@ -121,14 +121,6 @@ custom_object::custom_object(variant node)
 	get_all().insert(this);
 	get_all(base_type_->id()).insert(this);
 
-#if defined(USE_GLES2)
-	if(type_->shader().name().empty() == false) {
-		shader_ = new gles2::shader_program(type_->shader());
-	} else {
-		shader_ = NULL;
-	}
-#endif
-
 	if(node.has_key("platform_area")) {
 		set_platform_area(rect(node["platform_area"]));
 	}
@@ -299,10 +291,12 @@ custom_object::custom_object(variant node)
 		}
 	}
 
-	foreach(variant light_node, node[""].as_list()) {
-		light_ptr new_light(light::create_light(*this, light_node));
-		if(new_light) {
-			lights_.push_back(new_light);
+	if(node.has_key("lights")) {
+		foreach(variant light_node, node["lights"].as_list()) {
+			light_ptr new_light(light::create_light(*this, light_node));
+			if(new_light) {
+				lights_.push_back(new_light);
+			}
 		}
 	}
 
@@ -315,6 +309,15 @@ custom_object::custom_object(variant node)
 	} else {
 		platform_offsets_ = type_->platform_offsets();
 	}
+
+#if defined(USE_GLES2)
+	if(type_->shader()) {
+		shader_.reset(new gles2::shader_program(*type_->shader()));
+	}
+	for(size_t n = 0; n < type_->effects().size(); ++n) {
+		effects_.push_back(new gles2::shader_program(*type_->effects()[n]));
+	}
+#endif
 
 	//fprintf(stderr, "object address= %p, ", this);
 	//fprintf(stderr, "zsub_order=%d,", zsub_order_);
@@ -356,10 +359,11 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	get_all(base_type_->id()).insert(this);
 
 #if defined(USE_GLES2)
-	if(type_->shader().name().empty() == false) {
-		shader_ = new gles2::shader_program(type_->shader());
-	} else {
-		shader_ = NULL;
+	if(type_->shader()) {
+		shader_.reset(new gles2::shader_program(*type_->shader()));
+	}
+	for(size_t n = 0; n < type_->effects().size(); ++n) {
+		effects_.push_back(new gles2::shader_program(*type_->effects()[n]));
 	}
 #endif
 
@@ -453,7 +457,12 @@ custom_object::custom_object(const custom_object& o) :
 	get_all(base_type_->id()).insert(this);
 
 #if defined(USE_GLES2)
-	shader_ = o.shader_ ? new gles2::shader_program(*o.shader_) : NULL;
+	if(o.shader_) {
+		shader_.reset(new gles2::shader_program(*o.shader_));
+	}
+	for(size_t n = 0; n < o.effects_.size(); ++n) {
+		effects_.push_back(new gles2::shader_program(*o.effects_[n]));
+	}
 #endif
 }
 
@@ -474,6 +483,12 @@ void custom_object::finish_loading()
 		}
 		parent_loading_ = variant();
 	}
+#if defined(USE_GLES2)
+	if(shader_) { shader_->init(this); }
+	for(size_t n = 0; n < effects_.size(); ++n) {
+		effects_[n]->init(this);
+	}
+#endif
 }
 
 bool custom_object::serializable() const
@@ -648,8 +663,9 @@ variant custom_object::write() const
 	}
 
 #if defined(USE_GLES2)
-	if(shader_) {
-		res.add("shader", shader_->write());
+	if(shader_) { res.add("shader", shader_->write()); }
+	for(size_t n = 0; n < effects_.size(); ++n) {
+		res.add("effects", effects_[n]->write());
 	}
 #endif
 
@@ -664,8 +680,6 @@ variant custom_object::write() const
 		}
 	}
 	   
-	
-	
 	if(zsub_order_ != 0) {
 		res.add("zsub_order", zsub_order_);
 	}
@@ -758,7 +772,7 @@ variant custom_object::write() const
 	}
 
 	foreach(const light_ptr& p, lights_) {
-		res.add("light", p->write());
+		res.add("lights", p->write());
 	}
 
 	if(parent_.get() != NULL) {
@@ -821,7 +835,12 @@ void custom_object::draw(int xx, int yy) const
 	}
 
 #if defined(USE_GLES2)
-	{
+	for(size_t n = 0; n < type_->effects().size(); ++n) {
+		if(effects_[n]->zorder() < 0) {
+			gles2::manager gles2_manager(effects_[n]);
+		}
+	}
+
 	gles2::manager manager(shader_);
 #endif
 
@@ -915,6 +934,10 @@ void custom_object::draw(int xx, int yy) const
 	}
 
 #if defined(USE_GLES2)
+	for(size_t n = 0; n < type_->effects().size(); ++n) {
+		if(effects_[n]->zorder() >= 0) {
+			gles2::manager gles2_manager(effects_[n]);
+		}
 	}
 #endif
 
@@ -2320,12 +2343,22 @@ variant custom_object::get_value_by_slot(int slot) const
 		is_standing(level::current(), &info);
 		return variant(info.collide_with.get());
 	}
-	
+
+	case CUSTOM_OBJECT_EFFECTS: {
+#if defined(USE_GLES2)
+		std::vector<variant> v;
+		for(size_t n = 0; n < effects_.size(); ++n) {
+			v.push_back(variant(effects_[n].get()));
+		}
+		return variant(&v);
+#else
+		return variant();
+#endif
+	}
+
 	case CUSTOM_OBJECT_SHADER: {
 #if defined(USE_GLES2)
-		if(shader_ != NULL) {
-			return variant(shader_.get());
-		}
+		return variant(shader_.get());
 #endif
 		return variant();
 	}
@@ -2649,8 +2682,29 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		}
 #if defined(USE_GLES2)
 	} else if(key == "shader") {
-		shader_ = gles2::shader_ptr(value.try_convert<gles2::shader_program>());
-		ASSERT_LOG(shader_ != NULL, "Couldn't concert type to shader");
+		using namespace gles2;
+		if(value.is_map()) {
+			shader_.reset(new shader_program(value));
+		} else {
+			shader_.reset(value.try_convert<shader_program>());
+		}
+	} else if(key == "effects") {
+		using namespace gles2;
+		effects_.clear();
+		if(value.is_list()) {
+			for(size_t n = 0; n < value.num_elements(); ++n) {
+				if(value[n].is_map()) {
+					effects_.push_back(new shader_program(value[n]));
+				} else {
+					effects_.push_back(shader_ptr(value[n].try_convert<shader_program>()));
+				}
+			}
+		} else if(value.is_map()) {
+			effects_.push_back(new shader_program(value));
+		} else {
+			effects_.push_back(shader_ptr(value.try_convert<shader_program>()));
+			ASSERT_LOG(effects_.size() > 0, "Couldn't convert type to shader");
+		}
 #endif
 	} else if(key == "draw_area") {
 		if(value.is_list() && value.num_elements() == 4) {
@@ -3167,10 +3221,34 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		break;
 
 #if defined(USE_GLES2)
-	case CUSTOM_OBJECT_SHADER:
-		shader_ = gles2::shader_ptr(value.try_convert<gles2::shader_program>());
-		ASSERT_LOG(shader_ != NULL, "shader couldn't be converted");
+	case CUSTOM_OBJECT_SHADER: {
+		using namespace gles2;
+		if(value.is_map()) {
+			shader_.reset(new shader_program(value));
+		} else {
+			shader_.reset(value.try_convert<shader_program>());
+		}
 		break;
+	}
+	case CUSTOM_OBJECT_EFFECTS: {
+		using namespace gles2;
+		effects_.clear();
+		if(value.is_list()) {
+			for(size_t n = 0; n < value.num_elements(); ++n) {
+				if(value[n].is_map()) {
+					effects_.push_back(new shader_program(value[n]));
+				} else {
+					effects_.push_back(shader_ptr(value[n].try_convert<shader_program>()));
+				}
+			}
+		} else if(value.is_map()) {
+			effects_.push_back(new shader_program(value));
+		} else {
+			effects_.push_back(shader_ptr(value.try_convert<shader_program>()));
+			ASSERT_LOG(effects_.size() > 0, "Couldn't convert type to shader");
+		}
+		break;
+	}
 #endif
 
 	case CUSTOM_OBJECT_DRAW_AREA:
@@ -4455,7 +4533,12 @@ void custom_object::update_type(const_custom_object_type_ptr old_type,
 	}
 
 #if defined(USE_GLES2)
-	shader_ = new_type->shader().name().empty() == false ? new gles2::shader_program(new_type->shader()) : NULL; 
+	shader_.reset(new_type->shader() ? new gles2::shader_program(*new_type->shader()) : NULL);
+	effects_.clear();
+	for(size_t n = 0; n < new_type->effects().size(); ++n) {
+		effects_.push_back(new gles2::shader_program(*new_type->effects()[n]));
+		effects_.back()->init(this);
+	}
 #endif
 }
 

@@ -275,6 +275,12 @@ void hex_object::set_value(const std::string& key, const variant& value)
 					<< " : " << x_ << "," << y_ << std::endl;
 			}
 		}
+#ifdef USE_GLES2
+	} else if(key == "shader") {
+		ASSERT_LOG(value.is_map() && value.has_key("program"), 
+			"shader must be specified by map having a \"program\" attribute");
+		shader_.reset(new gles2::shader_program(value));
+#endif
 	}
 }
 
@@ -324,6 +330,10 @@ void hex_object::draw() const
 	if(tile_ == NULL) {
 		return;
 	}
+
+#ifdef USE_GLES2
+	gles2::manager gles2_manager(shader_);
+#endif
 
 	tile_->draw(x_, y_);
 	// Draw transitions
