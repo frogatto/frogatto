@@ -52,6 +52,17 @@ private:
 	bool slider_decimal_;
 	int slider_magnitude_;
 
+	struct slider_range {
+		slider_range(float b, float e, decimal tb, decimal te)
+		  : begin(b), end(e), target_begin(tb), target_end(te)
+		{}
+		float begin, end;
+		decimal target_begin, target_end;
+	};
+
+	std::vector<slider_range> slider_range_;
+	std::vector<widget_ptr> slider_labels_;
+
 	void generate_tokens();
 	std::string current_text_;
 	variant current_obj_;

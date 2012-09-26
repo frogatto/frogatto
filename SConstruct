@@ -67,7 +67,8 @@ env['exclude'] = []
 if env['gles2']:
     env.Append(CXXFLAGS= ["-DUSE_GLES2"])
 else:
-    env['exclude'] += [ "gles2.cpp", "shaders.cpp" ]
+    pass
+    #env['exclude'] += [ "gles2.cpp", "shaders.cpp" ]
 if env.get('cxxtool',""):
     env['CXX'] = env['cxxtool']
     if 'HOME' in os.environ:
