@@ -569,7 +569,7 @@ END_FUNCTION_DEF(fold)
 
 FUNCTION_DEF(unzip, 1, 1, "unzip(list of lists) -> list of lists: Converts [[1,4],[2,5],[3,6]] -> [[1,2,3],[4,5,6]]")
 	variant item1 = args()[0]->evaluate(variables);
-	ASSERT_LOG(item1.is_list(), "unzip function arguments must be either lists");
+	ASSERT_LOG(item1.is_list(), "unzip function arguments must be a list");
 
 	// Calculate breadth and depth of new list.
 	const int depth = item1.num_elements();
@@ -586,11 +586,8 @@ FUNCTION_DEF(unzip, 1, 1, "unzip(list of lists) -> list of lists: Converts [[1,4
 		v.push_back(e1);
 	}
 
-	std::cerr << "breadth: " << breadth << ", depth: " << depth << std::endl;
-
 	for(size_t n = 0; n < item1.num_elements(); ++n) {
 		for(size_t m = 0; m < item1[n].num_elements(); ++m) {
-			std::cerr << "item[" << n << "][" << m << "]: " << item1[n][m] << std::endl;
 			v[m][n] = item1[n][m];
 		}
 	}
