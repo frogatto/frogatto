@@ -2217,7 +2217,6 @@ bool point_in_triangle(point p, point t[3])
 }
 }
 
-
 FUNCTION_DEF(hex_get_tile_at, 3, 3, "hex_get_tile_at(hexmap, x, y) -> hex_tile object: Finds the hex tile at the given level co-ordinates")
 	// Because we assume hexes are placed at a regular series of intervals
 	variant v = args()[0]->evaluate(variables);
@@ -2229,7 +2228,26 @@ FUNCTION_DEF(hex_get_tile_at, 3, 3, "hex_get_tile_at(hexmap, x, y) -> hex_tile o
 	return variant(hexmap->get_tile_from_pixel_pos(mx, my).get());
 END_FUNCTION_DEF(hex_get_tile_at)
 
-FUNCTION_DEF(hex_tile_coords, 2, 3, "hex_tile_coords(x, y, (opt)string) -> [x,y]: Gets the center pixel co-ordinates of a given tile co-ordinate."
+FUNCTION_DEF(pixel_to_tile_coords, 1, 2, "pixel_to_tile_coords(args) -> [x,y]: Gets the tile at the pixel position given in the arguments. The position"
+	"can either be a single list of two values suck as [x,y] or two seperate x,y co-ordinates.")
+	int x, y;
+	if(args().size() == 1) {
+		variant vl = args()[0]->evaluate(variables);
+		ASSERT_LOG(vl.is_list() && vl.num_elements() == 2, "Single argument must be a list of two elements");
+		x = vl[0].as_int();
+		y = vl[1].as_int();
+	} else {
+		x = args()[0]->evaluate(variables).as_int();
+		y = args()[1]->evaluate(variables).as_int();
+	}
+	point xy = hex::hex_map::get_tile_pos_from_pixel_pos(x,y);
+	std::vector<variant> v;
+	v.push_back(variant(xy.x));
+	v.push_back(variant(xy.y));
+	return variant(&v);
+END_FUNCTION_DEF(pixel_to_tile_coords)
+
+FUNCTION_DEF(tile_to_pixel_coords, 2, 3, "tile_to_pixel_coords(x, y, (opt)string) -> [x,y]: Gets the center pixel co-ordinates of a given tile co-ordinate."
 	"string can be effect the co-ordinates returned. \"bounding\" -> [x,y,w,h] Bounding rect of the tile. \"center\" -> [x,y] center co-ordinates of the tile(default)"
 	"\"hex\" -> [[x0,y0],[x1,y1],[x2,y2],[x3,y3],[x4,y4],[x5,y5]] Co-ordinates of points around outside of the tile.")
 	const int x = args()[0]->evaluate(variables).as_int();
@@ -2260,7 +2278,7 @@ FUNCTION_DEF(hex_tile_coords, 2, 3, "hex_tile_coords(x, y, (opt)string) -> [x,y]
 		v.push_back(variant(p.y + HexTileSize/2));
 	}
 	return variant(&v);
-END_FUNCTION_DEF(hex_tile_coords)
+END_FUNCTION_DEF(tile_to_pixel_coords)
 
 FUNCTION_DEF(hex_pixel_coords, 2, 2, "hex_pixel_coords(x,y) -> [x,y]: Converts a pair of pixel co-ordinates to the corresponding tile co-ordinate.")
 	const int x = args()[0]->evaluate(variables).as_int();
