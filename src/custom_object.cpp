@@ -1099,8 +1099,8 @@ void custom_object::process(level& lvl)
 		fired_collide_feet = true;
 	}
 
-	if(y() > lvl.boundaries().y2()) {
-		--hitpoints_;
+	if(y() > lvl.boundaries().y2() || y() < lvl.boundaries().y() || x() > lvl.boundaries().x2() || x() < lvl.boundaries().x()) {
+		handle_event(OBJECT_EVENT_OUTSIDE_LEVEL);
 	}
 	
 	previous_y_ = y();

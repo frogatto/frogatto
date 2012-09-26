@@ -43,6 +43,7 @@ std::vector<std::string> create_object_event_names()
 	res.push_back("begin_dialog");
 	res.push_back("cosmic_shift");
 	res.push_back("schedule_finished");
+	res.push_back("outside_level");
 
 	ASSERT_EQ(res.size(), NUM_OBJECT_BUILTIN_EVENT_IDS);
 	return res;
