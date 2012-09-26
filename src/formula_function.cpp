@@ -567,6 +567,41 @@ FUNCTION_DEF(fold, 2, 3, "fold(list, expr, [default]) -> value")
 	return a;
 END_FUNCTION_DEF(fold)
 
+FUNCTION_DEF(unzip, 1, 1, "unzip(list of lists) -> list of lists: Converts [[1,4],[2,5],[3,6]] -> [[1,2,3],[4,5,6]]")
+	variant item1 = args()[0]->evaluate(variables);
+	ASSERT_LOG(item1.is_list(), "unzip function arguments must be either lists");
+
+	// Calculate breadth and depth of new list.
+	const int depth = item1.num_elements();
+	size_t breadth = 0;
+	for(size_t n = 0; n < item1.num_elements(); ++n) {
+		ASSERT_LOG(item1[n].is_list(), "Item " << n << " on list isn't list");
+		breadth = std::max(item1[n].num_elements(), breadth);
+	}
+
+	std::vector<std::vector<variant> > v;
+	for(size_t n = 0; n < breadth; ++n) {
+		std::vector<variant> e1;
+		e1.resize(depth);
+		v.push_back(e1);
+	}
+
+	std::cerr << "breadth: " << breadth << ", depth: " << depth << std::endl;
+
+	for(size_t n = 0; n < item1.num_elements(); ++n) {
+		for(size_t m = 0; m < item1[n].num_elements(); ++m) {
+			std::cerr << "item[" << n << "][" << m << "]: " << item1[n][m] << std::endl;
+			v[m][n] = item1[n][m];
+		}
+	}
+
+	std::vector<variant> vl;
+	for(size_t n = 0; n < v.size(); ++n) {
+		vl.push_back(variant(&v[n]));
+	}
+	return variant(&vl);
+END_FUNCTION_DEF(unzip)
+
 FUNCTION_DEF(zip, 3, 3, "zip(list1, list2, expr) -> list")
 	map_formula_callable_ptr callable(new map_formula_callable(&variables));
 	variant& a = callable->add_direct_access("a");
