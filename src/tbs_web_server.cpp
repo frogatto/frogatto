@@ -6,8 +6,10 @@
 #include "asserts.hpp"
 #include "filesystem.hpp"
 #include "foreach.hpp"
+#include "formatter.hpp"
 #include "json_parser.hpp"
 #include "string_utils.hpp"
+#include "tbs_bot.hpp"
 #include "tbs_server.hpp"
 #include "tbs_web_server.hpp"
 #include "unit_test.hpp"
@@ -65,6 +67,8 @@ void web_server::handle_get(socket_ptr socket,
 
 COMMAND_LINE_UTILITY(tbs_server) {
 	int port = 23456;
+	std::vector<std::string> bot_id;
+	std::vector<boost::intrusive_ptr<tbs::bot> > bots;
 	if(args.size() > 0) {
 		std::vector<std::string>::const_iterator it = args.begin();
 		while(it != args.end()) {
@@ -73,15 +77,25 @@ COMMAND_LINE_UTILITY(tbs_server) {
 				if(it != args.end()) {
 					port = atoi(it->c_str());
 					ASSERT_LOG(port > 0 && port <= 65535, "tbs_server(): Port must lie in the range 1-65535.");
-					it = args.end();
+					++it;
+				}
+			} else if(*it == "--bot") {
+				++it;
+				if(it != args.end()) {
+					bot_id.push_back(*it++);
 				}
 			} else {
-				it++;
+				++it;
 			}
 		}
 	}
-	std::cerr << "tbs_server(): Listening on port " << std::dec << port << std::endl;
+
 	boost::asio::io_service io_service;
+	foreach(const std::string& id, bot_id) {
+		bots.push_back(boost::intrusive_ptr<tbs::bot>(new tbs::bot(io_service, "localhost", formatter() << port, json::parse_from_file("data/tbs_test/" + id + ".cfg"))));
+	}
+
+	std::cerr << "tbs_server(): Listening on port " << std::dec << port << std::endl;
 	tbs::server s(io_service);
 	tbs::web_server ws(s, io_service, port);
 	io_service.run();

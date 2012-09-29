@@ -1,5 +1,5 @@
-#ifndef WEB_SERVER_HPP_INCLUDED
-#define WEB_SERVER_HPP_INCLUDED
+#ifndef TBS_WEB_SERVER_HPP_INCLUDED
+#define TBS_WEB_SERVER_HPP_INCLUDED
 
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
