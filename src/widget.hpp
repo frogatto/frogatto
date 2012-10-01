@@ -80,6 +80,7 @@ protected:
 	boost::function<void()> on_process_;
 	virtual void handle_process();
 	virtual void recalc_loc();
+	virtual bool in_widget(int xloc, int yloc) const;
 private:
 	int x_, y_;
 	int w_, h_;

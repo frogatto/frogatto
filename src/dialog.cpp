@@ -294,18 +294,18 @@ bool dialog::handle_event_children(const SDL_Event &event, bool claimed) {
     return input::listener_container::process_event(ev, claimed);
 }
 
-bool dialog::handle_event(const SDL_Event& event, bool claimed)
+bool dialog::handle_event(const SDL_Event& ev, bool claimed)
 {
 
-    claimed |= handle_event_children(event, claimed);
+    claimed |= handle_event_children(ev, claimed);
 
     if(!claimed && opened_) {
-        if(event.type == SDL_KEYDOWN &&
-           event.key.keysym.sym == SDLK_RETURN) {
+        if(ev.type == SDL_KEYDOWN &&
+           ev.key.keysym.sym == SDLK_RETURN) {
             close();
 			cancelled_ = false;
             claimed = true;
-        } else if(event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE) {
+        } else if(ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_ESCAPE) {
 			close();
 			cancelled_ = true;
 			claimed = true;
@@ -313,15 +313,12 @@ bool dialog::handle_event(const SDL_Event& event, bool claimed)
     }
 
 	if(!claimed) {
-		switch(event.type) {
+		switch(ev.type) {
 		//if it's a mouse button up or down and it's within the dialog area,
 		//then we claim it because nobody else should get it.
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP: {
-			int mousex, mousey;
-			SDL_GetMouseState(&mousex, &mousey);
-			if(mousex >= x() && mousex < x() + width() &&
-			   mousey >= y() && mousey < y() + height()) {
+			if(in_widget(ev.button.x, ev.button.y)) {
 				claimed = true;
 			}
 			break;
