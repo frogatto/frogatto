@@ -250,6 +250,10 @@ variant hex_object::get_value(const std::string& key) const
 		v.push_back(variant(x_));
 		v.push_back(variant(y_));
 		return variant(&v);
+#ifdef USE_GLES2
+	} else if(key == "shader") {
+		return variant(shader_.get());
+#endif
 	}
 	 
 	return variant();
