@@ -29,7 +29,7 @@
 
     <!-- Description, displayed in the BlackBerry Tablet OS application installer.
          May have multiple values for each language. See samples or xsd schema file. Optional. -->
-    <description>The frogatto application</description>
+    <description>An old-school platformer with beautiful hand-pixeled art.</description>
 
     <!-- Copyright information. Optional. -->
     <!-- <copyright></copyright> -->
@@ -136,6 +136,9 @@
 
     <!-- Request permission to execute native code.  Required for native applications. -->
     <action system="true">run_native</action>
+    <action>play_audio</action>
+    <action>set_audio_volume</action>
+    <action>access_internet</action>
     
     <!--  The permissions requested by your application. -->
     <!--  <action>access_shared</action> -->
