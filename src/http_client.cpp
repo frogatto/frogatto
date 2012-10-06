@@ -4,8 +4,10 @@
 #include "asserts.hpp"
 #include "http_client.hpp"
 
-http_client::http_client(const std::string& host, const std::string& port, int session)
+http_client::http_client(const std::string& host, const std::string& port, int session, boost::asio::io_service* service)
   : session_id_(session),
+    io_service_buf_(service ? NULL : new boost::asio::io_service),
+	io_service_(service ? *service : *io_service_buf_),
     resolver_(io_service_),
 	host_(host),
 	resolver_query_(host.c_str(), port.c_str()),

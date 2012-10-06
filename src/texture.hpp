@@ -106,7 +106,6 @@ public:
 		int width, height;
 	};
 
-private:
 	static texture get_no_cache(const key& k);
 
 	mutable boost::shared_ptr<ID> id_;

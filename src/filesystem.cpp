@@ -900,6 +900,7 @@ void file_mod_worker_thread_fn()
 					}
 				}
 				std::vector<boost::function<void()> >& handlers = m[path];
+				std::cerr << "FILE HANDLERS: " << handlers.size() << "\n";
 
 				threading::lock lck(get_mod_queue_mutex());
 				file_mod_notification_queue.insert(file_mod_notification_queue.end(), handlers.begin(), handlers.end());
@@ -966,6 +967,7 @@ void pump_file_modifications()
 	}
 
 	foreach(boost::function<void()> f, v) {
+		std::cerr << "CALLING FILE MOD HANDLER\n";
 		f();
 	}
 }

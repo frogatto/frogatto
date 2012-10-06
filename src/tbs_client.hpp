@@ -18,8 +18,8 @@ using boost::asio::ip::tcp;
 class client : public http_client
 {
 public:
-	client(const std::string& host, const std::string& port, int session=-1)
-		: http_client(host, port, session)
+	client(const std::string& host, const std::string& port, int session=-1, boost::asio::io_service* service=NULL)
+		: http_client(host, port, session, service)
 	{}
 	void send_request(const std::string& request, 
 		game_logic::map_formula_callable_ptr callable, 

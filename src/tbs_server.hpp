@@ -22,6 +22,8 @@ public:
 	explicit server(boost::asio::io_service& io_service);
 	 
 	void adopt_ajax_socket(socket_ptr socket, int session_id, const variant& msg);
+
+	void clear_games();
 private:
 
 	struct game_info {
