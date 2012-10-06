@@ -128,7 +128,6 @@ void create_compiled_tiles_image()
 
 
 	graphics::surface s(SDL_CreateRGBSurface(SDL_SWSURFACE, 1024, (compiled_tile_ids.size()/64 + 1)*BaseTileSize, 32, SURFACE_MASK));
-	fprintf(stderr, "CREATE IMAGE SIZE: 1024x%d %d\n", (compiled_tile_ids.size()/64 + 1)*BaseTileSize, compiled_tile_ids.size());
 	for(std::map<tile_id, int>::const_iterator itor = compiled_tile_ids.begin();
 	    itor != compiled_tile_ids.end(); ++itor) {
 		const tile_id& tile_info = itor->first;
@@ -164,7 +163,6 @@ void create_compiled_tiles_image()
 //	IMG_SavePNG("images/tiles-compiled.png", s.get(), 5);
 
 	SDL_SetAlpha(s.get(), 0, SDL_ALPHA_OPAQUE);
-	IMG_SavePNG("out.png", s, 5);
 
 	for(std::map<obj_variant_ptr, int>::const_iterator i = tile_nodes_to_zorders.begin(); i != tile_nodes_to_zorders.end(); ++i) {
 		const int num_tiles = zorder_to_num_tiles[i->second];
