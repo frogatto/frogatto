@@ -347,4 +347,12 @@ void widget::set_value(const std::string& key, const variant& v)
 	}
 }
 
+bool widget::in_widget(int xloc, int yloc) const
+{
+	if(xloc > 32767) {xloc -= 65536;}
+	if(yloc > 32767) {yloc -= 65536;}
+	return xloc > x() && xloc < x() + width() &&
+			yloc > y() && yloc < y() + height();
+}
+
 }

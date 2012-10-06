@@ -41,7 +41,6 @@ protected:
 private:
 	void setup();
 
-	bool in_button(int x, int y) const;
 	void handle_draw() const;
 	bool handle_event(const SDL_Event& event, bool claimed);
 	void click();
