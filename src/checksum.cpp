@@ -8,6 +8,7 @@
 #include "filesystem.hpp"
 #include "foreach.hpp"
 #include "md5.hpp"
+#include "module.hpp"
 #include "json_parser.hpp"
 #include "unit_test.hpp"
 #include "variant.hpp"
@@ -87,7 +88,7 @@ void verify_file(const std::string& fname_input, const std::string& contents)
 
 	verified = md5::sum(contents) == itor->second;
 	if(!verified) {
-		std::cerr << "UNVERIFIED FILE: " << fname << "\n";
+		std::cerr << "UNVERIFIED FILE: " << fname << " (((" << contents << ")))\n";
 	}
 }
 
@@ -97,14 +98,16 @@ namespace {
 void get_signatures(const std::string& dir, std::map<std::string, std::string>* results)
 {
 	std::vector<std::string> files, dirs;
-	sys::get_files_in_dir(dir, &files, &dirs);
+	module::get_files_in_dir(dir, &files, &dirs);
 	foreach(const std::string& d, dirs) {
 		get_signatures(dir + "/" + d, results);
 	}
 
 	foreach(const std::string& fname, files) {
 		const std::string path = dir + "/" + fname;
-		const std::string md5sum = md5::sum(sys::read_file(path));
+		const std::string contents = sys::read_file(module::map_file(path));
+		ASSERT_LOG(contents != "", "COULD NOT READ " << path);
+		const std::string md5sum = md5::sum(contents);
 		(*results)[path] = md5sum;
 	}
 }
