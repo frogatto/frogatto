@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-09-30 02:54-0300\n"
-"PO-Revision-Date: 2012-09-30 05:56+0000\n"
+"POT-Creation-Date: 2012-10-06 21:47-0300\n"
+"PO-Revision-Date: 2012-10-07 00:50+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Gaelic, Scottish (http://www.transifex.com/projects/p/Frogatto/language/gd/)\n"
 "MIME-Version: 1.0\n"
@@ -1241,7 +1241,7 @@ msgstr "Uill, b' urrainn dhuinn\nseo a chur air dòigh."
 
 #: ../data/level/crevice-village-cave.cfg:1231
 #: ../data/level/crevice-village-central.cfg:4054
-#: ../data/level/crevice-village-heights.cfg:2078
+#: ../data/level/crevice-village-heights.cfg:2241
 #: ../data/level/crevice-village.cfg:1647
 #: ../data/objects/playable/map-selector.cfg:17
 msgid "Crevice Village"
@@ -1326,361 +1326,361 @@ msgstr "'S dòcha gu bheil es nas fheàrr faighneachd\no phrìosanaiche gus rude
 msgid "Hey! Over here!"
 msgstr "Haoidh! A-bhos an-seo!"
 
-#: ../data/level/crevice-village-heights.cfg:240
+#: ../data/level/crevice-village-heights.cfg:241
 msgid ""
 "Wow, so they seriously just packed up and left?\n"
 "That's amazing!"
 msgstr "Na can rium gun do paisg iad na slatan \n's gun do dh'fhalbh iad!\nCha ghabh seo creidsinn!"
 
-#: ../data/level/crevice-village-heights.cfg:241
+#: ../data/level/crevice-village-heights.cfg:242
 msgid "Tell me about it."
 msgstr "Cha ghabh gu dearbh."
 
-#: ../data/level/crevice-village-heights.cfg:243
+#: ../data/level/crevice-village-heights.cfg:244
 msgid "So, how did you get out of your cage?"
 msgstr "Nise, ciamar a fhuair thu a-mach às a' chèidse?"
 
-#: ../data/level/crevice-village-heights.cfg:244
+#: ../data/level/crevice-village-heights.cfg:245
 msgid "Well, they just let me out."
 msgstr "Uill, leig iadsan fa sgaoil mi."
 
-#: ../data/level/crevice-village-heights.cfg:246
+#: ../data/level/crevice-village-heights.cfg:247
 msgid ""
 "What?!\n"
 "They ... as in Milgram's kitties?"
 msgstr "Dè?!\nIadsan... na piseagan Mhilgram, am b' e?"
 
-#: ../data/level/crevice-village-heights.cfg:247
+#: ../data/level/crevice-village-heights.cfg:248
 msgid "^Yeah."
 msgstr ""
 
-#: ../data/level/crevice-village-heights.cfg:249
+#: ../data/level/crevice-village-heights.cfg:250
 msgid ""
 "Weird.. that doesn't make any sense!\n"
 "Why would they just let you go?"
 msgstr "Neònach... chan eil ciall sam bith dha!\nCarson a leigeadh iadsan fa sgaoil thu?"
 
-#: ../data/level/crevice-village-heights.cfg:251
+#: ../data/level/crevice-village-heights.cfg:252
 msgid "That seems like an enormous waste of effort."
 msgstr "Is a' sìor-chaitheamh an t-saothair aca."
 
-#: ../data/level/crevice-village-heights.cfg:252
+#: ../data/level/crevice-village-heights.cfg:253
 msgid "Yeah, this whole day has just been ... bizarre."
 msgstr "Aidh, bha an latha air fad mar sin... neònach."
 
-#: ../data/level/crevice-village-heights.cfg:253
+#: ../data/level/crevice-village-heights.cfg:254
 msgid ""
 "I've been thinking about that part,\n"
 "and I have a hunch."
 msgstr "Tha mi air a bhith a' cnuasadh air seo,\nis thàinig beachd a-steach orm."
 
-#: ../data/level/crevice-village-heights.cfg:254
+#: ../data/level/crevice-village-heights.cfg:255
 msgid ""
 "I think the rank-and-file weren't\n"
 "given very specific orders."
 msgstr "Cha chreid mi gun d' fhuair na h-ìochdaran àitheantan uabhasach sònraichte."
 
-#: ../data/level/crevice-village-heights.cfg:255
+#: ../data/level/crevice-village-heights.cfg:256
 msgid ""
 "I don't think they were told\n"
 "what they were looking for."
 msgstr "Saoilidh mi nach deach innse dhaibh cò air a bha iar an tòir."
 
-#: ../data/level/crevice-village-heights.cfg:256
+#: ../data/level/crevice-village-heights.cfg:257
 msgid ""
 "I think they were just told\n"
 "to secure the place."
 msgstr "Cha chreid mi nach deach innse dhaibh ach\ngun dèan iad an t-àite tèarainte."
 
-#: ../data/level/crevice-village-heights.cfg:257
+#: ../data/level/crevice-village-heights.cfg:258
 msgid ""
 "Just arresting everyone is a strange way\n"
 "to do it, but I guess it's not so weird\n"
 "if you've got lots of manpower to spare."
 msgstr "'S e dòigh neònach a th' ann a bhith a' cur \na h-uile duine ann an làimh, ach cha chreid mi\ngu bheil e cho neònach sin ma tha tuilleadh 's a chòrr \ndhe dhaoine agad."
 
-#: ../data/level/crevice-village-heights.cfg:258
+#: ../data/level/crevice-village-heights.cfg:259
 msgid ""
 "If they were just looking for the elder\n"
 "and didn't care about ticking people off,\n"
 "it's one way to make sure he couldn't slip away."
 msgstr "Mura robh iad ach an tòir air an t-seanair is ma bha\niad coma mu dhragh a chur air daoine, seo dòigh\ngus dèanamh cinnteach nach siabadh e air falbh."
 
-#: ../data/level/crevice-village-heights.cfg:260
+#: ../data/level/crevice-village-heights.cfg:261
 msgid "Well, is that really who they were after?"
 msgstr "Uill, an e esan a bh' ann air an robh iad an tòir?"
 
-#: ../data/level/crevice-village-heights.cfg:261
+#: ../data/level/crevice-village-heights.cfg:262
 msgid ""
 "Yeah, one of their head guys showed me\n"
 "a drawing of him."
 msgstr "Aidh, sheall aon dhe na prìomhachan aca \ndealbh dhethsan dhomh."
 
-#: ../data/level/crevice-village-heights.cfg:262
+#: ../data/level/crevice-village-heights.cfg:263
 msgid "He asked me if I knew who it was."
 msgstr "Dh'fhaighnich e dhìom an robh fios agam cò th' ann."
 
-#: ../data/level/crevice-village-heights.cfg:264
+#: ../data/level/crevice-village-heights.cfg:265
 msgid "That's very interesting..."
 msgstr "Tha seo inntinneach dha-rìribh..."
 
-#: ../data/level/crevice-village-heights.cfg:266
+#: ../data/level/crevice-village-heights.cfg:267
 msgid ""
 "Suddenly their motives don't seem\n"
 "so cut and dry."
 msgstr "Gu h-obann, chan eil coltas cho simplidh sin \nair na h-adhbharan aca."
 
-#: ../data/level/crevice-village-heights.cfg:268
+#: ../data/level/crevice-village-heights.cfg:269
 msgid "Strange.."
 msgstr "Neònach..."
 
-#: ../data/level/crevice-village-heights.cfg:270
+#: ../data/level/crevice-village-heights.cfg:271
 msgid ""
 "Anyways, not sure if you heard this part,\n"
 "but I'm about to take a little trip."
 msgstr "Co-dhiù no co-dheth, chan eil fhios a'm \nan cuala tu mu dheidhinn,\nach tha mi gu bhith dhol air sgrìobag."
 
-#: ../data/level/crevice-village-heights.cfg:271
+#: ../data/level/crevice-village-heights.cfg:272
 msgid "No, I didn't hear this."
 msgstr "Cha chuala."
 
-#: ../data/level/crevice-village-heights.cfg:273
+#: ../data/level/crevice-village-heights.cfg:274
 msgid ""
 "Yeah, I'm a little worried about\n"
 "what might happen if someone doesn't\n"
 "get in touch with Milgram."
 msgstr "Aidh, tha mi caran draghail mu na b' urrainn tachairt mura tèid\ncuideigin a' bruidhinn ri Milgram."
 
-#: ../data/level/crevice-village-heights.cfg:275
+#: ../data/level/crevice-village-heights.cfg:276
 msgid ""
 "That old clown was just sabre-rattling\n"
 "about raising a militia."
 msgstr "Cha robh amadan a' bhodaich seo ach ri faoineas \nmu thogail mhailisidh."
 
-#: ../data/level/crevice-village-heights.cfg:277
+#: ../data/level/crevice-village-heights.cfg:278
 msgid ""
 "You don't think he could actually\n"
 "pull that off, do you?"
 msgstr "Chan eil thu dhen bheachd gun soirbhicheadh e leis,\na bheil?"
 
-#: ../data/level/crevice-village-heights.cfg:278
+#: ../data/level/crevice-village-heights.cfg:279
 msgid ""
 "Nah, this town doesn't have the fire for that.\n"
 "Which is a shame in some ways, but ..."
 msgstr "Chan eil, chan eil am baile seo lasach gu leòr airson a leithid rud.\n'S truagh seo ann an dòigh, ach.."
 
-#: ../data/level/crevice-village-heights.cfg:279
+#: ../data/level/crevice-village-heights.cfg:280
 msgid ""
 "It's probably for the best, really,\n"
 "I can't imagine the mess if people actually\n"
 "got to fighting over stuff they disagreed about."
 msgstr "Tha e nas fheàrr mar seo, cha chreid.\nChan urrainn dhomh smaoineachadh air a' bhùrach \nnan robh daoine a' sabaid ann an da-rìribh\nmu rudan air nach eil iad ag aontachadh."
 
-#: ../data/level/crevice-village-heights.cfg:281
+#: ../data/level/crevice-village-heights.cfg:282
 msgid ""
 "I guess I'm also worried about the other end;\n"
 "what Milgram is doing, et cetera."
 msgstr "'S dòcha gu bheil dragh orm air an taobh eile;\ndè tha Milgram a' dèanamh 's mar sin air adhart."
 
-#: ../data/level/crevice-village-heights.cfg:283
+#: ../data/level/crevice-village-heights.cfg:284
 msgid ""
 "I don't know; it's a little crazy to do this,\n"
 "but I've kinda been itching for something\n"
 "worthwhile to do."
 msgstr "Chan eil fhios a'm, tha e caran craicte seo a dhèanamh,\nach ann an dòigh bu mhiann leam \nrudeigin luachmhor a dhèanamh."
 
-#: ../data/level/crevice-village-heights.cfg:285
+#: ../data/level/crevice-village-heights.cfg:286
 msgid ""
 "Good excuse to get out and travel a bit.\n"
 "See the island."
 msgstr "Leisgeul math gus faighinn a-mach is siubhal mu thimcheall,\na' faicinn an eilein."
 
-#: ../data/level/crevice-village-heights.cfg:286
+#: ../data/level/crevice-village-heights.cfg:287
 msgid "Risky business, though, isn't it?"
 msgstr "Gnothach cunnartach co-dhiù, nach e?"
 
-#: ../data/level/crevice-village-heights.cfg:288
+#: ../data/level/crevice-village-heights.cfg:289
 msgid "Oh, no question."
 msgstr "'S e, gun teagamh."
 
-#: ../data/level/crevice-village-heights.cfg:290
+#: ../data/level/crevice-village-heights.cfg:291
 msgid ""
 "Can't be worse than the crap I have\n"
 "to deal with just coming into town, though."
 msgstr "Chan urrainn dha bhith nas miosa \nna an cac ris a bheil agam ri dèiligeadh\non a thàinig mi dhan bhaile, co-dhiù."
 
-#: ../data/level/crevice-village-heights.cfg:292
+#: ../data/level/crevice-village-heights.cfg:293
 msgid ""
 "Who knows?\n"
 "Maybe something good will come of it?"
 msgstr "Cò aige a tha fios? 'S dòcha gun tig dad math às?"
 
-#: ../data/level/crevice-village-heights.cfg:293
+#: ../data/level/crevice-village-heights.cfg:294
 msgid ""
 "Well, good luck!\n"
 "I'll be around."
 msgstr "Uill, guma math a thèid leat!\nChì mi a-rithist thu."
 
-#: ../data/level/crevice-village-heights.cfg:316
+#: ../data/level/crevice-village-heights.cfg:322
 msgid ""
 "Hello, again!\n"
 "So ... what now?"
 msgstr "Haoidh, a-rithist!\nDè a-nis?"
 
-#: ../data/level/crevice-village-heights.cfg:317
+#: ../data/level/crevice-village-heights.cfg:323
 msgid ""
 "It seems like some of the kitties are\n"
 "packing up and leaving, actually."
 msgstr "A dh'innse na fìrinn , tha e coltach gu bheil \ncuid dhe na piseagan a' pasgadh na slatan gus fàgail."
 
-#: ../data/level/crevice-village-heights.cfg:319
+#: ../data/level/crevice-village-heights.cfg:325
 msgid ""
 "That's news to me!\n"
 "Where did you see that?"
 msgstr "'S  e naidheachd ùr a th' ann dhomhsa!\nCàite am faca tu sin?"
 
-#: ../data/level/crevice-village-heights.cfg:321
+#: ../data/level/crevice-village-heights.cfg:327
 msgid ""
 "Actually, nevermind - I'm just trying\n"
 "to figure out what their intentions are."
 msgstr "Ach, coma leat - chan eil mi a' feuchainn ach faig obrachadh a-mach\ndè tha fainear dhaibh."
 
-#: ../data/level/crevice-village-heights.cfg:322
+#: ../data/level/crevice-village-heights.cfg:328
 msgid ""
 "Well, if you're game to find out,\n"
 "I just saw one of Milgram's lieutenants\n"
 "march up to the elder's house."
 msgstr "Uill, ma tha thu airson faighinn a-mach,\nchunnaic mi tànaiste aig Milgram a' dol suas dhan taigh aig an t-seanair."
 
-#: ../data/level/crevice-village-heights.cfg:324
+#: ../data/level/crevice-village-heights.cfg:330
 msgid ""
 "Weird.\n"
 "I wonder what they want with the elder?"
 msgstr "Neònach.\nSaoil dè tha iad ag iarraidh bhon t-seanair?"
 
-#: ../data/level/crevice-village-heights.cfg:325
+#: ../data/level/crevice-village-heights.cfg:331
 msgid ""
 "I have a notion,\n"
 "but if you're going to go up there,\n"
 "you'd better go whilst the going's good."
 msgstr "Tha beachd agam,\nach ma thèid thu thall suas,\nbu chòir dhut togail ort."
 
-#: ../data/level/crevice-village-heights.cfg:327
+#: ../data/level/crevice-village-heights.cfg:333
 msgid "Yeah, I'll check it out."
 msgstr "Seadh, bheir mi sùil air."
 
-#: ../data/level/crevice-village-heights.cfg:1325
+#: ../data/level/crevice-village-heights.cfg:1489
 msgid "So!  I've unlocked this gate, here."
 msgstr "Nise! Dh'fhosgail mi an geata a tha seo."
 
-#: ../data/level/crevice-village-heights.cfg:1329
+#: ../data/level/crevice-village-heights.cfg:1493
 msgid "Finally, a chance to use your degree..."
 msgstr "Mu dheireadh thall, cothrom gus an ceum agad a chleachdadh..."
 
-#: ../data/level/crevice-village-heights.cfg:1331
+#: ../data/level/crevice-village-heights.cfg:1495
 msgid "...Sorry."
 msgstr "...Duilich."
 
-#: ../data/level/crevice-village-heights.cfg:1334
+#: ../data/level/crevice-village-heights.cfg:1498
 msgid ""
 "Through there,\n"
 "is the way to where Milgram lives."
 msgstr "Tro thall an-siud, siud far a bheil slighe\ngu far a bheil Milgram a' fuireach."
 
-#: ../data/level/crevice-village-heights.cfg:1336
+#: ../data/level/crevice-village-heights.cfg:1500
 msgid ""
 "If I remember right,\n"
 "one way to his castle will take you... hmm."
 msgstr "Ma 's math mo chuimhne, bheir aon dhe na slighean dhan chaisteal thu... hmm."
 
-#: ../data/level/crevice-village-heights.cfg:1338
+#: ../data/level/crevice-village-heights.cfg:1502
 msgid ""
 "Uh, this'll take you over a bridge,\n"
 "then through an underground passage."
 msgstr "Uill, bheir e thairis air drochaid thu\nis an uair sin tro shlighe fon talamh."
 
-#: ../data/level/crevice-village-heights.cfg:1340
+#: ../data/level/crevice-village-heights.cfg:1504
 msgid "Watch your head in there."
 msgstr "An aire air do cheann a-staigh an-siud."
 
-#: ../data/level/crevice-village-heights.cfg:1342
+#: ../data/level/crevice-village-heights.cfg:1506
 msgid "Past that, and you come to the forest."
 msgstr "Seachad air seo is thig thu dhan choille."
 
-#: ../data/level/crevice-village-heights.cfg:1344
+#: ../data/level/crevice-village-heights.cfg:1508
 msgid ""
 "I haven't been there in a long time,\n"
 "so I'm not sure what's become of it."
 msgstr "Cha robh mi ann tall o chionn fhada,\n's chan eil fhios a'm dè dh'èirich dha."
 
-#: ../data/level/crevice-village-heights.cfg:1347
+#: ../data/level/crevice-village-heights.cfg:1511
 msgid ""
 "I'm rather out of date on my political geography,\n"
 "so you'll just have to ask people as you go."
 msgstr ""
 
-#: ../data/level/crevice-village-heights.cfg:1350
+#: ../data/level/crevice-village-heights.cfg:1514
 msgid ""
 "Uhm... well, don't you have any maps or such?\n"
 "Are you going to help outfit me for this?"
 msgstr "Tha... uill, nach eil mapa no dha leithid agad?\nAn toir thu taic dhomh le trusgan idir?"
 
-#: ../data/level/crevice-village-heights.cfg:1352
+#: ../data/level/crevice-village-heights.cfg:1516
 msgid ""
 "Nope.\n"
 "You're on your own.  Good luck."
 msgstr "Cha toir.\nTha thu nad aonar.\nGuma math a thèid leat."
 
-#: ../data/level/crevice-village-heights.cfg:1355
+#: ../data/level/crevice-village-heights.cfg:1519
 msgid "Gee, thanks."
 msgstr "Thia, taing."
 
-#: ../data/level/crevice-village-heights.cfg:1357
+#: ../data/level/crevice-village-heights.cfg:1521
 msgid ""
 "Before we part ways, though,\n"
 "one question:"
 msgstr "Mus dealaich sinn, tha ceist agam co-dhiù:"
 
-#: ../data/level/crevice-village-heights.cfg:1359
+#: ../data/level/crevice-village-heights.cfg:1523
 msgid ""
 "What are we planning to do about\n"
 "the rest of Milgram's army?"
 msgstr "Dè nì sinn leis a' chòrr dhen airm aig Milgram?"
 
-#: ../data/level/crevice-village-heights.cfg:1364
+#: ../data/level/crevice-village-heights.cfg:1528
 msgid "Hey guys!"
 msgstr "Haoidh, a ghillean!"
 
-#: ../data/level/crevice-village-heights.cfg:1367
+#: ../data/level/crevice-village-heights.cfg:1531
 msgid ""
 "Oh, hey there!\n"
 "Didn't see you coming."
 msgstr "Ò, haoidh!\nChan fhaca mi thu a' tighinn."
 
-#: ../data/level/crevice-village-heights.cfg:1369
+#: ../data/level/crevice-village-heights.cfg:1533
 msgid ""
 "Yeah, I couldn't help but overhear, and\n"
 "... good news: Your problem is solved!"
 msgstr "Aidh, cha b' urrainn dhomh gun a bhith a' cluinntinn, agus\n.... naidheachd mhath: Tha an trioblaid agad fuasgailte!"
 
-#: ../data/level/crevice-village-heights.cfg:1372
+#: ../data/level/crevice-village-heights.cfg:1536
 msgid "What do you mean?"
 msgstr "Dè tha thu a' ciallachadh?"
 
-#: ../data/level/crevice-village-heights.cfg:1374
+#: ../data/level/crevice-village-heights.cfg:1538
 msgid ""
 "Milgram's crew.  When that captain-guy\n"
 "came out of the house here,\n"
 "they all hopped in his airship and left."
 msgstr "Sgioba Mhilgram. Nuair a thàinig an caiptean ud a th' aca\na-mach às an taigh ud, leum iad uile \ndhan t-soitheach adhair aige is thog iad orra."
 
-#: ../data/level/crevice-village-heights.cfg:1377
+#: ../data/level/crevice-village-heights.cfg:1541
 msgid ""
 "Amazing...  if you don't mind,\n"
 "I have a few questions for you."
 msgstr "Mìorbhaileach... mas fhaod mi,\ntha ceist no dhà agam dhut."
 
-#: ../data/level/crevice-village-heights.cfg:1380
+#: ../data/level/crevice-village-heights.cfg:1544
 msgid ""
 "Well, that settles things for me.\n"
 "You two have fun."
@@ -3415,7 +3415,7 @@ msgid ""
 "there will often be a new one waiting to use."
 msgstr ""
 
-#: ../data/level/hanging-platforms.cfg:5698
+#: ../data/level/hanging-platforms.cfg:5780
 #: ../data/level/test-background_flicker.cfg:4265
 msgid "Hanging Platforms"
 msgstr "Àrd-ùrlaran Crocte"
@@ -4614,13 +4614,13 @@ msgstr ""
 #: ../data/level/milgrams-basement-junction.cfg:419
 msgid ""
 "There's only one thing that can\n"
-"drive a man, like that:  Revenge."
+"drive a man like that:  Revenge."
 msgstr ""
 
 #: ../data/level/milgrams-basement-junction.cfg:421
 msgid ""
 "Uh... I never said he walked...\n"
-"listen, aren't we jumping to conclusions here?"
+"Listen, aren't we jumping to conclusions here?"
 msgstr ""
 
 #: ../data/level/milgrams-basement-junction.cfg:423
