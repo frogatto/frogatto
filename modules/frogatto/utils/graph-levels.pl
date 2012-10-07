@@ -55,6 +55,7 @@ foreach my $level (@levels) {
 	my $fg_palettes = '';
 	my $bg_palette = '';
 	my $heart_pieces = 0;
+	my $full_heart_pieces = 0;
 	my $coins = 0;
 
 	while(my $line = <LVL>) {
@@ -80,7 +81,7 @@ foreach my $level (@levels) {
 		}
 		
 		if(my ($heart_object) = $line =~ /type"?: "(max_heart_object)"/) {
-			$heart_pieces += 100;
+			++$full_heart_pieces;
 		}
 		
 		if(my ($heart_object) = $line =~ /type"?: "(partial_max_heart_object)"/) {
@@ -135,10 +136,10 @@ foreach my $level (@levels) {
 		$label .= "\\n";
 		$label .= $bg_palette . " bg";
 	}
-	if($show_heart_pieces and $heart_pieces > 0){
+	if($show_heart_pieces and ($heart_pieces > 0 or $full_heart_pieces > 0)){
 		use integer;
 		$label .= "\\n";
-		$label .= $heart_pieces/100 . " full " . $heart_pieces%100 . " partial hearts";
+		$label .= $full_heart_pieces . " full " . $heart_pieces . " partial hearts";
 	}
 	if($show_coins and $coins > 0){
 		$label .= "\\n";
