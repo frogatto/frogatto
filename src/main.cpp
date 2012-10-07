@@ -575,6 +575,15 @@ extern "C" int main(int argcount, char** argvec)
 #endif
 
 #if defined(USE_GLES2)
+	if(glCreateShader == NULL) {
+		const GLubyte* glstrings;
+		if(glGetString && (glstrings = glGetString(GL_VERSION)) != NULL) {
+			std::cerr << "OpenGL version: " << reinterpret_cast<const char *>(glstrings) << std::endl;
+		}
+		std::cerr << "glCreateShader is NULL. Check that your current video card drivers support"
+			<< "an OpenGL version >= 2. Exiting." << std::endl;
+		return 0;
+	}
 	// Has to happen after the call to glewInit().
 	gles2::init_default_shader();
 #endif
