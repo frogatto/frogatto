@@ -101,6 +101,14 @@ void set_alpha_for_transparent_colors_in_rgba_surface(SDL_Surface* s, int option
 
 UTILITY(compile_objects)
 {
+#ifndef IMPLEMENT_SAVE_PNG
+	std::cerr
+		<< "This build wasn't done with IMPLEMENT_SAVE_PNG defined. "
+		<< "Consquently image files will not be written, aborting requested operation."
+		<< std::endl;
+	return;
+#endif
+
 	using graphics::surface;
 
 	int num_output_images = 0;

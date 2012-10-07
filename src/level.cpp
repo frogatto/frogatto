@@ -4336,6 +4336,14 @@ UTILITY(correct_solidity)
 
 UTILITY(compile_levels)
 {
+#ifndef IMPLEMENT_SAVE_PNG
+	std::cerr
+		<< "This build wasn't done with IMPLEMENT_SAVE_PNG defined. "
+		<< "Consquently image files will not be written, aborting requested operation."
+		<< std::endl;
+	return;
+#endif
+
 	preferences::compiling_tiles = true;
 
 	std::cerr << "COMPILING LEVELS...\n";
