@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-10-06 21:47-0300\n"
-"PO-Revision-Date: 2012-10-07 00:49+0000\n"
+"POT-Creation-Date: 2012-10-07 13:05-0300\n"
+"PO-Revision-Date: 2012-10-07 16:08+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Malay (Malaysia) (http://www.transifex.com/projects/p/Frogatto/language/ms_MY/)\n"
 "MIME-Version: 1.0\n"
@@ -501,12 +501,12 @@ msgid "But that's not a secret area."
 msgstr "Tapi tu bukan kawasan rahsia."
 
 #: ../data/achievements.cfg:26
-msgid "Gold Hoarder"
-msgstr "Pengumpul Emas"
+msgid "Numismatologist"
+msgstr ""
 
 #: ../data/achievements.cfg:27
-msgid "Collect all the coins."
-msgstr "Kumpul semua koin."
+msgid "Collect a thousand coins."
+msgstr ""
 
 #: ../data/achievements.cfg:33
 msgid "Speed Trader"
@@ -4647,7 +4647,33 @@ msgstr ""
 msgid "Basement Junction"
 msgstr ""
 
-#: ../data/level/milgrams-throne-room-entrance.cfg:409
+#: ../data/level/milgrams-throne-room-entrance.cfg:44
+msgid ""
+"Ugh.\n"
+"..."
+msgstr ""
+
+#: ../data/level/milgrams-throne-room-entrance.cfg:46
+msgid ""
+"Remember, if I'm wrong about this,\n"
+"I won't live to regret it."
+msgstr ""
+
+#: ../data/level/milgrams-throne-room-entrance.cfg:48
+msgid "We can do this."
+msgstr ""
+
+#: ../data/level/milgrams-throne-room-entrance.cfg:50
+msgid ""
+"Blithe audacity might kill us, but\n"
+"at least someone will laugh about it later."
+msgstr ""
+
+#: ../data/level/milgrams-throne-room-entrance.cfg:52
+msgid "Right?"
+msgstr ""
+
+#: ../data/level/milgrams-throne-room-entrance.cfg:417
 msgid "Milgram's Throne Room Entrance"
 msgstr ""
 
