@@ -133,7 +133,7 @@ namespace preferences {
 		bool show_fps_ = false;
 		int frame_time_millis_ = 20;
 		bool no_iphone_controls_ = false;
-		bool allow_autopause_ = true;
+		bool allow_autopause_ = false;
 
 		std::string level_path_ = "data/level/";
 		bool level_path_set_ = false;
