@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-09-30 02:54-0300\n"
-"PO-Revision-Date: 2012-09-30 05:55+0000\n"
+"POT-Creation-Date: 2012-10-06 21:47-0300\n"
+"PO-Revision-Date: 2012-10-07 00:49+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/Frogatto/language/it/)\n"
 "MIME-Version: 1.0\n"
@@ -1246,7 +1246,7 @@ msgstr "Possiamo farcela."
 
 #: ../data/level/crevice-village-cave.cfg:1231
 #: ../data/level/crevice-village-central.cfg:4054
-#: ../data/level/crevice-village-heights.cfg:2078
+#: ../data/level/crevice-village-heights.cfg:2241
 #: ../data/level/crevice-village.cfg:1647
 #: ../data/objects/playable/map-selector.cfg:17
 msgid "Crevice Village"
@@ -1331,361 +1331,361 @@ msgstr "Domandare ai prigionieri è probabilmente\nla migliore possibilità per 
 msgid "Hey! Over here!"
 msgstr "Hey! Di qua!"
 
-#: ../data/level/crevice-village-heights.cfg:240
+#: ../data/level/crevice-village-heights.cfg:241
 msgid ""
 "Wow, so they seriously just packed up and left?\n"
 "That's amazing!"
 msgstr "Wow, sono veramente partiti in fretta e furia?\nQuesto è incredibile!"
 
-#: ../data/level/crevice-village-heights.cfg:241
+#: ../data/level/crevice-village-heights.cfg:242
 msgid "Tell me about it."
 msgstr "Parlamene."
 
-#: ../data/level/crevice-village-heights.cfg:243
+#: ../data/level/crevice-village-heights.cfg:244
 msgid "So, how did you get out of your cage?"
 msgstr "Quindi, come hai fatto ad uscire dalla tua gabbia?"
 
-#: ../data/level/crevice-village-heights.cfg:244
+#: ../data/level/crevice-village-heights.cfg:245
 msgid "Well, they just let me out."
 msgstr "Beh, fammi uscire."
 
-#: ../data/level/crevice-village-heights.cfg:246
+#: ../data/level/crevice-village-heights.cfg:247
 msgid ""
 "What?!\n"
 "They ... as in Milgram's kitties?"
 msgstr "Cosa?!\nSono ... i gattini di Milgram?"
 
-#: ../data/level/crevice-village-heights.cfg:247
+#: ../data/level/crevice-village-heights.cfg:248
 msgid "^Yeah."
 msgstr "^Già."
 
-#: ../data/level/crevice-village-heights.cfg:249
+#: ../data/level/crevice-village-heights.cfg:250
 msgid ""
 "Weird.. that doesn't make any sense!\n"
 "Why would they just let you go?"
 msgstr "Strano .. non ha alcun senso!\nPerché avrebbero dovuto lasciarti andare?"
 
-#: ../data/level/crevice-village-heights.cfg:251
+#: ../data/level/crevice-village-heights.cfg:252
 msgid "That seems like an enormous waste of effort."
 msgstr "Quello sembra tutto lavoro sprecato."
 
-#: ../data/level/crevice-village-heights.cfg:252
+#: ../data/level/crevice-village-heights.cfg:253
 msgid "Yeah, this whole day has just been ... bizarre."
 msgstr "Sì, l'intera giornata è stata semplicemente ... bizzarra."
 
-#: ../data/level/crevice-village-heights.cfg:253
+#: ../data/level/crevice-village-heights.cfg:254
 msgid ""
 "I've been thinking about that part,\n"
 "and I have a hunch."
 msgstr "Ho pensato riguardo a quello, e ho un presentimento."
 
-#: ../data/level/crevice-village-heights.cfg:254
+#: ../data/level/crevice-village-heights.cfg:255
 msgid ""
 "I think the rank-and-file weren't\n"
 "given very specific orders."
 msgstr "Penso che i ranghi non avessero ordini specifici."
 
-#: ../data/level/crevice-village-heights.cfg:255
+#: ../data/level/crevice-village-heights.cfg:256
 msgid ""
 "I don't think they were told\n"
 "what they were looking for."
 msgstr "Non credo che gli sia stato detto che cosa cercare."
 
-#: ../data/level/crevice-village-heights.cfg:256
+#: ../data/level/crevice-village-heights.cfg:257
 msgid ""
 "I think they were just told\n"
 "to secure the place."
 msgstr "Penso che gli fosse stato detto solamente di rendere sicuro il posto."
 
-#: ../data/level/crevice-village-heights.cfg:257
+#: ../data/level/crevice-village-heights.cfg:258
 msgid ""
 "Just arresting everyone is a strange way\n"
 "to do it, but I guess it's not so weird\n"
 "if you've got lots of manpower to spare."
 msgstr "Arrestare tutti, pur essendo uno strano modo di fare, non è così strampalato se si ha a disposizione parecchi scagnozi."
 
-#: ../data/level/crevice-village-heights.cfg:258
+#: ../data/level/crevice-village-heights.cfg:259
 msgid ""
 "If they were just looking for the elder\n"
 "and didn't care about ticking people off,\n"
 "it's one way to make sure he couldn't slip away."
 msgstr "Quello è stato un controllo a tappeto onde evitare\nche l'anziano potesse sfuggire nascondendosi tra la gente."
 
-#: ../data/level/crevice-village-heights.cfg:260
+#: ../data/level/crevice-village-heights.cfg:261
 msgid "Well, is that really who they were after?"
 msgstr "Beh, è ​​quello che stavano cercando?"
 
-#: ../data/level/crevice-village-heights.cfg:261
+#: ../data/level/crevice-village-heights.cfg:262
 msgid ""
 "Yeah, one of their head guys showed me\n"
 "a drawing of him."
 msgstr "Sì, uno dei loro pupilli mi ha mostrato la sua immagine."
 
-#: ../data/level/crevice-village-heights.cfg:262
+#: ../data/level/crevice-village-heights.cfg:263
 msgid "He asked me if I knew who it was."
 msgstr "Mi ha chiesto se sapessi chi fosse."
 
-#: ../data/level/crevice-village-heights.cfg:264
+#: ../data/level/crevice-village-heights.cfg:265
 msgid "That's very interesting..."
 msgstr "Questo è molto interessante ..."
 
-#: ../data/level/crevice-village-heights.cfg:266
+#: ../data/level/crevice-village-heights.cfg:267
 msgid ""
 "Suddenly their motives don't seem\n"
 "so cut and dry."
 msgstr "Improvvisamente le loro motivazioni non stanno più in piedi."
 
-#: ../data/level/crevice-village-heights.cfg:268
+#: ../data/level/crevice-village-heights.cfg:269
 msgid "Strange.."
 msgstr "Strano .."
 
-#: ../data/level/crevice-village-heights.cfg:270
+#: ../data/level/crevice-village-heights.cfg:271
 msgid ""
 "Anyways, not sure if you heard this part,\n"
 "but I'm about to take a little trip."
 msgstr "Comunque, non so se avete sentito questa parte,\nma sto per fare un piccolo viaggio."
 
-#: ../data/level/crevice-village-heights.cfg:271
+#: ../data/level/crevice-village-heights.cfg:272
 msgid "No, I didn't hear this."
 msgstr "No, non l'ho sentito."
 
-#: ../data/level/crevice-village-heights.cfg:273
+#: ../data/level/crevice-village-heights.cfg:274
 msgid ""
 "Yeah, I'm a little worried about\n"
 "what might happen if someone doesn't\n"
 "get in touch with Milgram."
 msgstr "Sì, sono un po' preoccupati per ciò che potrebbe capitare\nse qualcuno non contattasse Milgram."
 
-#: ../data/level/crevice-village-heights.cfg:275
+#: ../data/level/crevice-village-heights.cfg:276
 msgid ""
 "That old clown was just sabre-rattling\n"
 "about raising a militia."
 msgstr "Quel vecchio clown stava facendo lo spaccone\nsulla formazione di una milizia."
 
-#: ../data/level/crevice-village-heights.cfg:277
+#: ../data/level/crevice-village-heights.cfg:278
 msgid ""
 "You don't think he could actually\n"
 "pull that off, do you?"
 msgstr "Non pensi lo possa fare realmente, vero?"
 
-#: ../data/level/crevice-village-heights.cfg:278
+#: ../data/level/crevice-village-heights.cfg:279
 msgid ""
 "Nah, this town doesn't have the fire for that.\n"
 "Which is a shame in some ways, but ..."
 msgstr "Nah, questa città non ha la forza per farlo. Per certi versi è una vergogna, ma ..."
 
-#: ../data/level/crevice-village-heights.cfg:279
+#: ../data/level/crevice-village-heights.cfg:280
 msgid ""
 "It's probably for the best, really,\n"
 "I can't imagine the mess if people actually\n"
 "got to fighting over stuff they disagreed about."
 msgstr "E probabilmente è meglio così, davvero, non riesco\nad immaginare il putiferio che nascerebbe se la gente avesse\nla forza di combattere per tutte le cose in cui sono disaccordo."
 
-#: ../data/level/crevice-village-heights.cfg:281
+#: ../data/level/crevice-village-heights.cfg:282
 msgid ""
 "I guess I'm also worried about the other end;\n"
 "what Milgram is doing, et cetera."
 msgstr "Inoltre sono preoccupato anche per l'altra sponda;\ncosa stia facendo Milgram, eccetera."
 
-#: ../data/level/crevice-village-heights.cfg:283
+#: ../data/level/crevice-village-heights.cfg:284
 msgid ""
 "I don't know; it's a little crazy to do this,\n"
 "but I've kinda been itching for something\n"
 "worthwhile to do."
 msgstr "Non lo so, è una idea pazza,\nma è da un po' che sto cercando\nqualcosa di interessante da fare."
 
-#: ../data/level/crevice-village-heights.cfg:285
+#: ../data/level/crevice-village-heights.cfg:286
 msgid ""
 "Good excuse to get out and travel a bit.\n"
 "See the island."
 msgstr "Una buona scusa per uscire e viaggiare un po'.\nVisitare l'isola."
 
-#: ../data/level/crevice-village-heights.cfg:286
+#: ../data/level/crevice-village-heights.cfg:287
 msgid "Risky business, though, isn't it?"
 msgstr "Rischioso però,\nvero?"
 
-#: ../data/level/crevice-village-heights.cfg:288
+#: ../data/level/crevice-village-heights.cfg:289
 msgid "Oh, no question."
 msgstr "Oh, niente domande."
 
-#: ../data/level/crevice-village-heights.cfg:290
+#: ../data/level/crevice-village-heights.cfg:291
 msgid ""
 "Can't be worse than the crap I have\n"
 "to deal with just coming into town, though."
 msgstr "Però, non può essere peggio della merda con cui\nho avuto a che fare appena sono arrivato in città."
 
-#: ../data/level/crevice-village-heights.cfg:292
+#: ../data/level/crevice-village-heights.cfg:293
 msgid ""
 "Who knows?\n"
 "Maybe something good will come of it?"
 msgstr "Chi lo sa? Forse qualcosa di buono ne verrà fuori?"
 
-#: ../data/level/crevice-village-heights.cfg:293
+#: ../data/level/crevice-village-heights.cfg:294
 msgid ""
 "Well, good luck!\n"
 "I'll be around."
 msgstr "Beh, buona fortuna! Rimarrò da queste parti."
 
-#: ../data/level/crevice-village-heights.cfg:316
+#: ../data/level/crevice-village-heights.cfg:322
 msgid ""
 "Hello, again!\n"
 "So ... what now?"
 msgstr "Nuovamente ciao! Quindi ... ora cosa si fa?"
 
-#: ../data/level/crevice-village-heights.cfg:317
+#: ../data/level/crevice-village-heights.cfg:323
 msgid ""
 "It seems like some of the kitties are\n"
 "packing up and leaving, actually."
 msgstr "Sembra, in realtà, che alcuni dei gattini stiano\npreparando le valigie e stiano partendo."
 
-#: ../data/level/crevice-village-heights.cfg:319
+#: ../data/level/crevice-village-heights.cfg:325
 msgid ""
 "That's news to me!\n"
 "Where did you see that?"
 msgstr "Questa è una novità per me!\nDove l'hai visto?"
 
-#: ../data/level/crevice-village-heights.cfg:321
+#: ../data/level/crevice-village-heights.cfg:327
 msgid ""
 "Actually, nevermind - I'm just trying\n"
 "to figure out what their intentions are."
 msgstr "Lascia stare - sto solo cercando di capire\nquali sono le loro intenzioni."
 
-#: ../data/level/crevice-village-heights.cfg:322
+#: ../data/level/crevice-village-heights.cfg:328
 msgid ""
 "Well, if you're game to find out,\n"
 "I just saw one of Milgram's lieutenants\n"
 "march up to the elder's house."
 msgstr "Beh, se ti interessa, ho appena visto\nuno dei luogotenenti di Milgram in marcia\nverso la casa del maggiore."
 
-#: ../data/level/crevice-village-heights.cfg:324
+#: ../data/level/crevice-village-heights.cfg:330
 msgid ""
 "Weird.\n"
 "I wonder what they want with the elder?"
 msgstr "Strano.\nMi chiedo che cosa vogliano dall'anziano?"
 
-#: ../data/level/crevice-village-heights.cfg:325
+#: ../data/level/crevice-village-heights.cfg:331
 msgid ""
 "I have a notion,\n"
 "but if you're going to go up there,\n"
 "you'd better go whilst the going's good."
 msgstr "Ho un'idea,\nma se hai intenzione di andare lassù,\nè meglio che tu vada finchè la strada è libera."
 
-#: ../data/level/crevice-village-heights.cfg:327
+#: ../data/level/crevice-village-heights.cfg:333
 msgid "Yeah, I'll check it out."
 msgstr "Sì, controllerò."
 
-#: ../data/level/crevice-village-heights.cfg:1325
+#: ../data/level/crevice-village-heights.cfg:1489
 msgid "So!  I've unlocked this gate, here."
 msgstr "Allora! Ho sbloccato questo cancello."
 
-#: ../data/level/crevice-village-heights.cfg:1329
+#: ../data/level/crevice-village-heights.cfg:1493
 msgid "Finally, a chance to use your degree..."
 msgstr "Finalmente, una possibilità di usare il tuo grado ..."
 
-#: ../data/level/crevice-village-heights.cfg:1331
+#: ../data/level/crevice-village-heights.cfg:1495
 msgid "...Sorry."
 msgstr "... Mi dispiace."
 
-#: ../data/level/crevice-village-heights.cfg:1334
+#: ../data/level/crevice-village-heights.cfg:1498
 msgid ""
 "Through there,\n"
 "is the way to where Milgram lives."
 msgstr "Per di là, c'è la strada \nper arrivare al covo di Milgram."
 
-#: ../data/level/crevice-village-heights.cfg:1336
+#: ../data/level/crevice-village-heights.cfg:1500
 msgid ""
 "If I remember right,\n"
 "one way to his castle will take you... hmm."
 msgstr "Se ben ricordo,\nuna direzione per il suo castello ti porterà ... hmm."
 
-#: ../data/level/crevice-village-heights.cfg:1338
+#: ../data/level/crevice-village-heights.cfg:1502
 msgid ""
 "Uh, this'll take you over a bridge,\n"
 "then through an underground passage."
 msgstr "Uh, questo ti porterà ad un ponte,\npoi attraverso un passaggio sotterraneo."
 
-#: ../data/level/crevice-village-heights.cfg:1340
+#: ../data/level/crevice-village-heights.cfg:1504
 msgid "Watch your head in there."
 msgstr "Fai attenzione là dentro"
 
-#: ../data/level/crevice-village-heights.cfg:1342
+#: ../data/level/crevice-village-heights.cfg:1506
 msgid "Past that, and you come to the forest."
 msgstr "Attraversalo, e arrivarai nella foresta."
 
-#: ../data/level/crevice-village-heights.cfg:1344
+#: ../data/level/crevice-village-heights.cfg:1508
 msgid ""
 "I haven't been there in a long time,\n"
 "so I'm not sure what's become of it."
 msgstr "Non ci vado da molto tempo, quindi non\nho idea di cosa sia successo laggiù."
 
-#: ../data/level/crevice-village-heights.cfg:1347
+#: ../data/level/crevice-village-heights.cfg:1511
 msgid ""
 "I'm rather out of date on my political geography,\n"
 "so you'll just have to ask people as you go."
 msgstr "La mia geografia politica è piuttosto obsoleta,\ndovrai quindi dovrai chiedere alle altre persone che incontrerai."
 
-#: ../data/level/crevice-village-heights.cfg:1350
+#: ../data/level/crevice-village-heights.cfg:1514
 msgid ""
 "Uhm... well, don't you have any maps or such?\n"
 "Are you going to help outfit me for this?"
 msgstr "Uhm ... beh, non hai mappe o simili?\nMi aiuterai a trovarne?"
 
-#: ../data/level/crevice-village-heights.cfg:1352
+#: ../data/level/crevice-village-heights.cfg:1516
 msgid ""
 "Nope.\n"
 "You're on your own.  Good luck."
 msgstr "No. Non ti aiuterò. Buona fortuna."
 
-#: ../data/level/crevice-village-heights.cfg:1355
+#: ../data/level/crevice-village-heights.cfg:1519
 msgid "Gee, thanks."
 msgstr "Accidenti, grazie."
 
-#: ../data/level/crevice-village-heights.cfg:1357
+#: ../data/level/crevice-village-heights.cfg:1521
 msgid ""
 "Before we part ways, though,\n"
 "one question:"
 msgstr "Prima di separarci però,\nho una domanda da farti:"
 
-#: ../data/level/crevice-village-heights.cfg:1359
+#: ../data/level/crevice-village-heights.cfg:1523
 msgid ""
 "What are we planning to do about\n"
 "the rest of Milgram's army?"
 msgstr "Che cosa ne faremo del resto dell'esercito di Milgram?"
 
-#: ../data/level/crevice-village-heights.cfg:1364
+#: ../data/level/crevice-village-heights.cfg:1528
 msgid "Hey guys!"
 msgstr "Ciao ragazzi!"
 
-#: ../data/level/crevice-village-heights.cfg:1367
+#: ../data/level/crevice-village-heights.cfg:1531
 msgid ""
 "Oh, hey there!\n"
 "Didn't see you coming."
 msgstr "Oh, ciao!\nNon ti ho visto arrivare."
 
-#: ../data/level/crevice-village-heights.cfg:1369
+#: ../data/level/crevice-village-heights.cfg:1533
 msgid ""
 "Yeah, I couldn't help but overhear, and\n"
 "... good news: Your problem is solved!"
 msgstr "Sì, non ho potuto fare a meno di udire, e\n... buone notizie: Il tuo problema è risolto!"
 
-#: ../data/level/crevice-village-heights.cfg:1372
+#: ../data/level/crevice-village-heights.cfg:1536
 msgid "What do you mean?"
 msgstr "Che cosa vuoi dire?"
 
-#: ../data/level/crevice-village-heights.cfg:1374
+#: ../data/level/crevice-village-heights.cfg:1538
 msgid ""
 "Milgram's crew.  When that captain-guy\n"
 "came out of the house here,\n"
 "they all hopped in his airship and left."
 msgstr "Quella è la ciurma di Milgram. Quando quel tizio\nche fa da capitano uscì da questa casa, tutti quanti\nse ne andarono entrando nel suo dirigibile."
 
-#: ../data/level/crevice-village-heights.cfg:1377
+#: ../data/level/crevice-village-heights.cfg:1541
 msgid ""
 "Amazing...  if you don't mind,\n"
 "I have a few questions for you."
 msgstr "Favoloso ... se non ti disturbo,\navrei alcune domande da porti."
 
-#: ../data/level/crevice-village-heights.cfg:1380
+#: ../data/level/crevice-village-heights.cfg:1544
 msgid ""
 "Well, that settles things for me.\n"
 "You two have fun."
@@ -3420,7 +3420,7 @@ msgid ""
 "there will often be a new one waiting to use."
 msgstr "Da notare che questi hanno una proprietà inusuale, se li termini, allontanatidalla posizione dove li hai trovati, e poi ritornaci, ne comparirà spesso uno nuovo in attesa di poter essere utilizzato."
 
-#: ../data/level/hanging-platforms.cfg:5698
+#: ../data/level/hanging-platforms.cfg:5780
 #: ../data/level/test-background_flicker.cfg:4265
 msgid "Hanging Platforms"
 msgstr "Le Piattaforme Sospese"
@@ -4619,13 +4619,13 @@ msgstr ""
 #: ../data/level/milgrams-basement-junction.cfg:419
 msgid ""
 "There's only one thing that can\n"
-"drive a man, like that:  Revenge."
+"drive a man like that:  Revenge."
 msgstr ""
 
 #: ../data/level/milgrams-basement-junction.cfg:421
 msgid ""
 "Uh... I never said he walked...\n"
-"listen, aren't we jumping to conclusions here?"
+"Listen, aren't we jumping to conclusions here?"
 msgstr ""
 
 #: ../data/level/milgrams-basement-junction.cfg:423

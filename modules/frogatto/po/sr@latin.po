@@ -3,394 +3,393 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <litoll@freemail.hu>, 2012.
-#   <reeelo@web.de>, 2012.
+#   <posta.marko@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2012-10-06 21:47-0300\n"
-"PO-Revision-Date: 2012-10-07 00:49+0000\n"
+"PO-Revision-Date: 2012-10-07 00:50+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
-"Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/Frogatto/language/hu_HU/)\n"
+"Language-Team: Serbian (Latin) (http://www.transifex.com/projects/p/Frogatto/language/sr@latin/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: hu_HU\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: sr@latin\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../../../src/controls_dialog.cpp:51
 msgid "Directions"
-msgstr "Irányok"
+msgstr ""
 
 #: ../../../src/controls_dialog.cpp:56
 msgid "Jump"
-msgstr "Ugrás"
+msgstr ""
 
 #: ../../../src/controls_dialog.cpp:58
 msgid "Tongue"
-msgstr "Nyelvkiöltés"
+msgstr ""
 
 #: ../../../src/controls_dialog.cpp:60
 msgid "Attack"
-msgstr "Támadás"
+msgstr ""
 
 #: ../../../src/controls_dialog.cpp:62
 msgid "Back"
-msgstr "Vissza"
+msgstr ""
 
 #: ../../../src/custom_object_functions.cpp:242
 msgid "Select save slot to use."
-msgstr "Válaszd ki a használni kívánt mentési helyet."
+msgstr ""
 
 #: ../../../src/custom_object_functions.cpp:335
 msgid "Select save slot to load."
-msgstr "Válaszd ki a betöltendő állást."
+msgstr ""
 
 #: ../../../src/draw_scene.cpp:426
 msgid "Achievement Unlocked!"
-msgstr "Achievement feloldva!"
+msgstr ""
 
 #: ../../../src/main.cpp:682
 msgid "Initializing custom object functions"
-msgstr "Egyedi objektumok működésének betöltése"
+msgstr ""
 
 #: ../../../src/main.cpp:684
 msgid "Initializing textures"
-msgstr "Textúrák betöltése"
+msgstr ""
 
 #: ../../../src/main.cpp:686
 msgid "Initializing tiles"
-msgstr "Csempék betöltése"
+msgstr ""
 
 #: ../../../src/main.cpp:688 ../../../src/main.cpp:692
 msgid "Initializing GUI"
-msgstr "GUI betöltése"
+msgstr ""
 
 #: ../../../src/main.cpp:699
 msgid "Loading level"
-msgstr "Pálya betöltése"
+msgstr ""
 
 #: ../../../src/pause_game_dialog.cpp:53
 msgid "Music Volume:"
-msgstr "Zenék hangereje:"
+msgstr ""
 
 #: ../../../src/pause_game_dialog.cpp:55
 msgid "Sound Volume:"
-msgstr "Hanghatások hangereje:"
+msgstr ""
 
 #: ../../../src/pause_game_dialog.cpp:73
 msgid "Resume"
-msgstr "Folytatás"
+msgstr ""
 
 #: ../../../src/pause_game_dialog.cpp:74
 msgid "Controls..."
-msgstr "Vezérlőgombok..."
+msgstr ""
 
 #: ../../../src/pause_game_dialog.cpp:75
 msgid "Return to Titlescreen"
-msgstr "Vissza a kezdőképernyőhöz"
+msgstr ""
 
 #: ../../../src/pause_game_dialog.cpp:76
 msgid "Exit Game"
-msgstr "Kilépés a játékból"
+msgstr ""
 
 #: ../../../src/pause_game_dialog.cpp:77
 msgid "Reverse A and B"
-msgstr "A és B felcserélése"
+msgstr ""
 
 #: ../../../src/pause_game_dialog.cpp:79
 msgid "OpenFeint"
-msgstr "OpenFeint"
+msgstr ""
 
 #: ../CHANGELOG:1 ../iOS_CHANGELOG:1
 msgid "Version 1.2:"
-msgstr "Verzió 1.2:"
+msgstr ""
 
 #: ../CHANGELOG:2 ../iOS_CHANGELOG:2
 msgid ""
 "Complete redo of attack logic; frogatto now is free to walk around whilst he"
 " attacks, and in general is much more responsive."
-msgstr "A támadási algoritmusok teljes átdolgozása; Frogatto mostmár szabadon sétálhat miközben támad, és általánosságban is sokkal jobban reagál."
+msgstr ""
 
 #: ../CHANGELOG:3 ../iOS_CHANGELOG:3
 msgid "Frogatto's tongue-grabbing is MUCH more forgiving"
-msgstr "SOKKAL egyszerűbb lett Frogatto nyelvével megragadni dolgokat."
+msgstr ""
 
 #: ../CHANGELOG:4 ../iOS_CHANGELOG:4
 msgid ""
 "Complete rewrite of damage handling; much more consistent now, and "
 "categorically eliminates some bugs where damage wouldn't get dealt."
-msgstr "A sebgéskezelési algoritmusok teljes átdolgozása; sokkal konzisztensebb működés, és kategorikusan kijavítottuk azokat a hibákat, ahol a sebzést nem kezelte le rendesen eddig."
+msgstr ""
 
 #: ../CHANGELOG:5 ../iOS_CHANGELOG:5
 msgid "Reworked some tilesets to eliminate tiling errors."
-msgstr "Ismétlődési hibák kijavítására néhány csempeszett átdolgozva."
+msgstr ""
 
 #: ../CHANGELOG:6 ../iOS_CHANGELOG:6
 msgid "Further enhancements to dungeon wall graphics (added edges)."
-msgstr "További javítások a tömlöc falak grafikáján (szélek hozzáadása)."
+msgstr ""
 
 #: ../CHANGELOG:7 ../iOS_CHANGELOG:7
 msgid "New, more readable dialogue font."
-msgstr "Új, sokkal olvashatóbb párbeszéd betűtípus."
+msgstr ""
 
 #: ../CHANGELOG:8 ../iOS_CHANGELOG:8
 msgid "Lots of small graphical tweaks."
-msgstr "Sok apró grafikai javítás."
+msgstr ""
 
 #: ../CHANGELOG:9 ../iOS_CHANGELOG:9
 msgid "Maps are now strewn with spittable props within easy reach."
-msgstr "A pályák mostmár teli vannak könnyen elérhető köphető kellékkel."
+msgstr ""
 
 #: ../CHANGELOG:10 ../iOS_CHANGELOG:10
 msgid "Rewrote most of the dialogue."
-msgstr "A legtöbb dialógus újra lett írva."
+msgstr ""
 
 #: ../CHANGELOG:11 ../iOS_CHANGELOG:11
 msgid ""
 "Collectible items like coins can be collected by being touched by the "
 "tongue, besides just frogatto's body."
-msgstr "A gyűjthető tárgyak, mint pl. az érmék, mostmár nemcsak Frogattó testével, hanem a nyelve érintésével is felvehetőek."
+msgstr ""
 
 #: ../CHANGELOG:12 ../iOS_CHANGELOG:12
 msgid "Redrew the world map."
-msgstr "A világtérkép újra lett rajzolva."
+msgstr ""
 
 #: ../CHANGELOG:13 ../iOS_CHANGELOG:13
 msgid ""
 "Added a few new monsters, like the red hornbugs, and completely rewrote how "
 "bats behave."
-msgstr "Hozzáadtunk néhány további szörnyet, mint pl. a piros szarvasbogarak, és a denevérek viselkedését teljesen átírtuk."
+msgstr ""
 
 #: ../CHANGELOG:14 ../iOS_CHANGELOG:14
 msgid ""
 "Fixed a bug that caused a black line in the seaside background during "
 "dialogues."
-msgstr "Kijavítottunk egy hibát, amely párbeszéd alkalmával a tengeri háttéren egy fekete vonalat kirajzolását eredményezte."
+msgstr ""
 
 #: ../CHANGELOG:15 ../iOS_CHANGELOG:15
 msgid ""
 "Fixed a bug that caused some tiles to incorrectly be flagged as opaque."
-msgstr "Kijavítottunk egy hibát, amelyből kifolyólag bizonyos csempék nem megfelelően lettek átlátszatlanok."
+msgstr ""
 
 #: ../CHANGELOG:17 ../iOS_CHANGELOG:17
 msgid "Version 1.1.1:"
-msgstr "Verzió 1.1.1:"
+msgstr ""
 
 #: ../CHANGELOG:18 ../iOS_CHANGELOG:18
 msgid "Fixed some crashing bugs."
-msgstr "Néhány összeomlást előidéző hiba javítva."
+msgstr ""
 
 #: ../CHANGELOG:19
 msgid "Fixed The Long Haul (compiled mode)"
-msgstr "A Hosszú menet kijavítva (arcade pálya)"
+msgstr ""
 
 #: ../CHANGELOG:20
 msgid "Fixed instructions on titlescreen (iOS)"
-msgstr "Üdvözlőképernyőn az útmutató kijavítva (iOS)."
+msgstr ""
 
 #: ../CHANGELOG:21 ../iOS_CHANGELOG:21
 msgid "New translation: Italian"
-msgstr "Új nyelvre fordítva: olasz."
+msgstr ""
 
 #: ../CHANGELOG:22
 msgid "Added automatic language selection for Windows"
-msgstr "Windows alatti automatikus nyelvválasztás hozzáadása."
+msgstr ""
 
 #: ../CHANGELOG:23 ../iOS_CHANGELOG:22
 msgid ""
 "Complete redo of iOS controls, switching to a 2-button dpad from a 4-button."
 "  Eliminates all problems with mispressed up or down keys interrupting other"
 " actions."
-msgstr "Az iOS vezérlés teljes átdolgozása, 2-gombos dpad-ra váltás az eddigi 4-gombosról. Megoldott minden eddigi problémát, amely a különböző cselekedetek megszakítására vonatkozott, amikor a fel és le gombokat véletlenül félrenyomtuk."
+msgstr ""
 
 #: ../CHANGELOG:25
 msgid "Version 1.1:"
-msgstr "Verzió 1.1:"
+msgstr ""
 
 #: ../CHANGELOG:26
 msgid "Added arcade mode."
-msgstr "Arcade játékmód hozzáadása."
+msgstr ""
 
 #: ../CHANGELOG:27
 msgid "Redid graphics for forest trees."
-msgstr "Erdei fák grafikájának újrarajzolása."
+msgstr ""
 
 #: ../CHANGELOG:28
 msgid "Redid graphics for forest background"
-msgstr "Erdei háttér grafikájának újrarajzolása."
+msgstr ""
 
 #: ../CHANGELOG:29
 msgid "Redid graphics for dungeon wall tiles"
-msgstr "A tömlöc fali csempék újrarajzolása."
+msgstr ""
 
 #: ../CHANGELOG:30
 msgid "Redid graphics for basement wall tiles"
-msgstr "Az alagsori fali csempék újrarajzolása."
+msgstr ""
 
 #: ../CHANGELOG:31
 msgid "Added a bunch of interior props"
-msgstr "Egy rakat beltéri tárgy hozzáadása."
+msgstr ""
 
 #: ../CHANGELOG:32
 msgid "Reworked \"darkness\" for improved appearance"
-msgstr "A \"sötétség\" átdolgozva a jobb megjelenés érdekében"
+msgstr ""
 
 #: ../CHANGELOG:33
 msgid "Added new palettes to forest and seaside areas."
-msgstr "Új erdei és tengerparti textúrapaletták hozzáadva."
+msgstr ""
 
 #: ../CHANGELOG:34
 msgid "Added some unique enemies to the forest."
-msgstr "Az erdőkhöz néhány egyedi ellenség hozzáadva."
+msgstr ""
 
 #: ../CHANGELOG:35
 msgid ""
 "Refactored damage and monster type systems to make behavior more consistent "
 "and eliminate some rare buggy behavior."
-msgstr "A sebzés és szörny típusok újradolgozva, hogy a viselkedések konzisztensebbé váljanak és néhány ritka hibás viselkedést így elkerüljünk."
+msgstr ""
 
 #: ../CHANGELOG:36
 msgid ""
 "Added translation support, with 4 complete translations: French, Brazilian "
 "Portuguese, Chinese (Simplified), and Japanese."
-msgstr "Fordítások támogatása hozzáadáva, 4 teljes fordítással együtt: francia, brazíliai portugál, kínai (egyszerűsített) és japán."
+msgstr ""
 
 #: ../CHANGELOG:38
 msgid "Version 1.0.3:"
-msgstr "Verzió 1.0.3:"
+msgstr ""
 
 #: ../CHANGELOG:39
 msgid "Fixed crash when picking up max heart pieces."
-msgstr "Összeomlási hiba kijavítva, amikor egy max. szívrészt felveszünk."
+msgstr ""
 
 #: ../CHANGELOG:40
 msgid "Other small bug fixes."
-msgstr "Egyéb apróbb hibák kijavítva."
+msgstr ""
 
 #: ../CHANGELOG:42
 msgid "Version 1.0.2:"
-msgstr "Verzió 1.0.2:"
+msgstr ""
 
 #: ../CHANGELOG:43
 msgid "Added support for \"darkness\" in levels."
-msgstr "\"Sötétség\" támogatása a pályákon."
+msgstr ""
 
 #: ../CHANGELOG:44
 msgid "Added support for WVGA."
-msgstr "WVGA megjelenítési mód támogatása."
+msgstr ""
 
 #: ../CHANGELOG:45
 msgid "Made player status not show on the titlescreen or world map."
-msgstr "A játékosállapot nem jelenik meg az üdvözlőképernyőn és a világtérképen."
+msgstr ""
 
 #: ../CHANGELOG:46
 msgid "Made golden ants less ambiguous."
-msgstr "Az arany hangyák mostmár kevésbé kétértelműek."
+msgstr ""
 
 #: ../CHANGELOG:47
 msgid "Fixed bug making certain music always play at full volume (iPhone)."
-msgstr "Hiba kijavítva, melynek hatására egyes aláfestő zenék teljes hangerőn szóltak (iPhone)."
+msgstr ""
 
 #: ../CHANGELOG:48
 msgid "Added option to reverse positions of A and B buttons (iPhone)."
-msgstr "Opció hozzáadva, hogy az A és B betűket felcserélhessük (iPhone)."
+msgstr ""
 
 #: ../CHANGELOG:49
 msgid "Added support for repeating levels (for arcade modes)."
-msgstr "A végtelen szintek támogatásának hozzáadása (arcade játékmódokban)."
+msgstr ""
 
 #: ../CHANGELOG:50
 msgid ""
 "Pressing jump while in the air pressing against a wall now makes you cling "
 "to the wall."
-msgstr "Mostmár a levegőben egy fal mellett az ugrás gomb megnyomására a falhoz kapaszkodunk."
+msgstr ""
 
 #: ../CHANGELOG:51
 msgid "Made it so you can skip dialogs sequences."
-msgstr "Beszélgetések átugrásának lehetősége implementálva."
+msgstr ""
 
 #: ../CHANGELOG:52
 msgid "Fixed lots of z-order issues."
-msgstr "Számos z-tengelymenti megjelenítési hiba kijavítva."
+msgstr ""
 
 #: ../CHANGELOG:53
 msgid "Fixed bug causing ambient sounds to not work."
-msgstr "A környezeti zajok hibás működését előidéző hiba kijavítva."
+msgstr ""
 
 #: ../CHANGELOG:54
 msgid "Improved forest background, and made it go upwards infinitely."
-msgstr "Erdei háttér feljavítva, és felfelé a végtelenségig terjed mostmár."
+msgstr ""
 
 #: ../CHANGELOG:55
 msgid "Made hearts heal a full heart, rather than just half."
-msgstr "Szívek mostmár egy teljes szívet gyógyítanak, az eddigi fél helyett."
+msgstr ""
 
 #: ../CHANGELOG:56
 msgid "Changed tilesets to make water look better."
-msgstr "Csempeszettek módosíta, hogy a víz sokkal jobban nézzen ki."
+msgstr ""
 
 #: ../CHANGELOG:57
 msgid "Many small bug fixes."
-msgstr "Számos egyéb apróbb hiba kijavítva."
+msgstr ""
 
 #: ../CHANGELOG:59
 msgid "Version 1.0.1 (iPhone only):"
-msgstr "Verzió 1.0.1 (kizárólag iPhonera):"
+msgstr ""
 
 #: ../CHANGELOG:60
 msgid ""
 "Significantly improved controls, both functionally and graphically (iPhone)."
-msgstr "A vezérlés nagymértékű feljavítása, mind funkcionálisan és grafikailag is (iPhone)."
+msgstr ""
 
 #: ../CHANGELOG:61
 msgid "Fixed auto-saving on iOS4 where multitasking is supported (iPhone)."
-msgstr "Automatikus-mentés kijavítva iOS4 alatt, ahol az egyidejű többfeladatos kezelés támogatott (iPhone)."
+msgstr ""
 
 #: ../CHANGELOG:62
 msgid "Fixed bug where a dialog could repeat forever."
-msgstr "Hiba kijavítva, amely egy beszélgetés végtelenségig folytatását eredményezte."
+msgstr ""
 
 #: ../CHANGELOG:63
 msgid "Fixed crash in world map when you hold down while entering it."
-msgstr "Hiba kijavítva, ahol a a játék összeomlott amikor a világtérképre belépéskor a lefele gombot nyomva tartottuk."
+msgstr ""
 
 #: ../CHANGELOG:64
 msgid "Fixed fullscreen mode (Mac/Windows)."
-msgstr "Teljesképernyős megjelenítési mód kijavítva (Mac/Windows)."
+msgstr ""
 
 #: ../CHANGELOG:65
 msgid "Fixed controlpad issues for computers."
-msgstr "Számítógépeknél kontrolpad hiba kijavítva."
+msgstr ""
 
 #: ../CHANGELOG:66
 msgid "Added music and sound volume controls to pause screen."
-msgstr "A pause képernyőn a zene és hangeffektek hangerejének szabályozhatósága hozzáadva."
+msgstr ""
 
 #: ../CHANGELOG:67
 msgid "Added customizable controls."
-msgstr "Vezérlőbillentyűk állíthatósága hozzáadva."
+msgstr ""
 
 #: ../CHANGELOG:68
 msgid "Added half-hearts."
-msgstr "Félszívek hozzáadása."
+msgstr ""
 
 #: ../CHANGELOG:69
 msgid "Added scons script for compiling."
-msgstr "Fordításnál scons szkript hozzáadva."
+msgstr ""
 
 #: ../CHANGELOG:70
 msgid "Minor level changes."
-msgstr "Apróbb változtatások a terepeken."
+msgstr ""
 
 #: ../CHANGELOG:71
 msgid "Updated music."
-msgstr "Zenék frissítve."
+msgstr ""
 
 #: ../MAC_APP_STORE_METADATA:1 ../iOS_APP_STORE_METADATA:1
 msgid "NOW WITH BETTER CONTROLS:"
-msgstr "MOSTANTÓL JOBB IRÁNYÍTHATÓSÁGGAL:"
+msgstr ""
 
 #: ../MAC_APP_STORE_METADATA:3 ../iOS_APP_STORE_METADATA:3
 msgid ""
@@ -412,7 +411,7 @@ msgstr ""
 
 #: ../MAC_APP_STORE_METADATA:7 ../iOS_APP_STORE_METADATA:7
 msgid "Features:"
-msgstr "Jellemzők:"
+msgstr ""
 
 #: ../MAC_APP_STORE_METADATA:8 ../iOS_APP_STORE_METADATA:8
 msgid "- grab enemies with your tongue and spit them to deal damage"
@@ -450,68 +449,68 @@ msgstr ""
 
 #: ../MAC_APP_STORE_METADATA:16 ../iOS_APP_STORE_METADATA:17
 msgid "To find out more about the game please visit http://www.frogatto.com/"
-msgstr "Ha többet szeretnél megtudni a játékról, akkor látogass el a http://www.frogatto.com/ oldalra."
+msgstr ""
 
 #: ../MAC_APP_STORE_METADATA:18 ../iOS_APP_STORE_METADATA:19
 msgid "Reviews:"
-msgstr "Kritikák:"
+msgstr ""
 
 #: ../MAC_APP_STORE_METADATA:19 ../iOS_APP_STORE_METADATA:20
 msgid "- [3/4 SlideToPlay.com] \"a fun and surprisingly deep platformer\""
-msgstr "- [3/4 SlideToPlay.com] \"szórakoztató és meglepően összetett platformer\""
+msgstr ""
 
 #: ../MAC_APP_STORE_METADATA:20 ../iOS_APP_STORE_METADATA:21
 msgid "- [4/5 AppSpy.com] \"boy-howdy is this an amazing visual feast!\""
-msgstr "- [4/5 AppSpy.com] \"tyű-apám, ez aztán egy lenyűgöző vizuális kényeztetés!\""
+msgstr ""
 
 #: ../MAC_APP_STORE_METADATA:21 ../iOS_APP_STORE_METADATA:22
 msgid "- [n/a TouchArcade.com] \"totally worth checking out.\""
-msgstr "- [n/a TouchArcade.com] \"abszolút megéri kipróbálni.\""
+msgstr ""
 
 #: ../MAC_APP_STORE_METADATA:23 ../iOS_APP_STORE_METADATA:24
 msgid "keywords:"
-msgstr "kulcsszavak:"
+msgstr ""
 
 #: ../MAC_APP_STORE_METADATA:24 ../iOS_APP_STORE_METADATA:25
 msgid ""
 "platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
-msgstr "platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
+msgstr ""
 
 #: ../data/achievements.cfg:5
 msgid "Pocket Money"
-msgstr "Zsebpénz"
+msgstr "Džeparac"
 
 #: ../data/achievements.cfg:6
 msgid "Collect ten coins."
-msgstr "Gyűjts össze tíz érmét."
+msgstr ""
 
 #: ../data/achievements.cfg:12
 msgid "Nature Boy"
-msgstr "Természet fiú"
+msgstr ""
 
 #: ../data/achievements.cfg:13
 msgid "Put a water beetle back in water."
-msgstr "Egy vízibogarat helyezz vissza a vízbe."
+msgstr ""
 
 #: ../data/achievements.cfg:19
 msgid "Nice Try..."
-msgstr "Szép próbálkozás..."
+msgstr ""
 
 #: ../data/achievements.cfg:20
 msgid "But that's not a secret area."
-msgstr "De ez nem is egy titkos hely."
+msgstr ""
 
 #: ../data/achievements.cfg:26
 msgid "Gold Hoarder"
-msgstr "Aranygyűjtő"
+msgstr ""
 
 #: ../data/achievements.cfg:27
 msgid "Collect all the coins."
-msgstr "Gyűjtsd össze az összes érmét."
+msgstr ""
 
 #: ../data/achievements.cfg:33
 msgid "Speed Trader"
-msgstr "Villámkereskedő"
+msgstr ""
 
 #: ../data/achievements.cfg:34
 msgid "Playing the economy game, eh?"
@@ -519,47 +518,47 @@ msgstr ""
 
 #: ../data/achievements.cfg:40
 msgid "Speedrun"
-msgstr "Gyorsmenet"
+msgstr ""
 
 #: ../data/achievements.cfg:41
 msgid "Complete the game within 1 hour."
-msgstr "Teljesítsd a játékot 1 órán belül."
+msgstr ""
 
 #: ../data/achievements.cfg:47
 msgid "Win!"
-msgstr "Győzelem!"
+msgstr ""
 
 #: ../data/achievements.cfg:48
 msgid "Congratulations, you just won the game!"
-msgstr "Gratulálunk, megnyerted a játékot!"
+msgstr ""
 
 #: ../data/achievements.cfg:54
 msgid "Rampage!"
-msgstr "Tombolás!"
+msgstr ""
 
 #: ../data/achievements.cfg:55
 msgid "Kill 5 enemies in 10 seconds."
-msgstr "Ölj meg 5 ellenséget 10mp alatt."
+msgstr ""
 
 #: ../data/achievements.cfg:61
 msgid "Cube Chain"
-msgstr "Kocka lánc"
+msgstr ""
 
 #: ../data/achievements.cfg:62
 msgid "Collect 15 points cubes in a row."
-msgstr "Gyűjts egymás után 15 pontkockát."
+msgstr ""
 
 #: ../data/achievements.cfg:69
 msgid "Grudge"
-msgstr "Harag"
+msgstr ""
 
 #: ../data/achievements.cfg:70
 msgid "Kill 10 of the same type of enemy in a row."
-msgstr "Egymás után ölj meg 10-et azonos típusú ellenséget."
+msgstr ""
 
 #: ../data/achievements.cfg:76
 msgid "Jackalope"
-msgstr "Nyúltilop"
+msgstr ""
 
 #: ../data/achievements.cfg:77
 msgid "Bound, bound, bound and rebound!"
@@ -567,47 +566,47 @@ msgstr ""
 
 #: ../data/achievements.cfg:83
 msgid "Frogourmet"
-msgstr "Frogasztronóm"
+msgstr ""
 
 #: ../data/achievements.cfg:84
 msgid "Try to eat all kinds of enemies."
-msgstr "Egyél meg különféle ellenségeket."
+msgstr ""
 
 #: ../data/achievements.cfg:90
 msgid "Dream on..."
-msgstr "Álmodj csak..."
+msgstr ""
 
 #: ../data/achievements.cfg:91
 msgid "That's the infinite cage."
-msgstr "Az a végtelen ketrec."
+msgstr ""
 
 #: ../data/achievements.cfg:97
 msgid "Geosynchronous Orbit Achieved"
-msgstr "Geoszinkron pálya elérve"
+msgstr ""
 
 #: ../data/achievements.cfg:98
 msgid "Now applying artificial gravity."
-msgstr "Mesterséges gravitáció bekapcsolása."
+msgstr ""
 
 #: ../data/achievements.cfg:104
 msgid "Not Without My Hat!"
-msgstr "A Kalapom Nélkül Soha!"
+msgstr ""
 
 #: ../data/achievements.cfg:105
 msgid "Start a level with no health left."
-msgstr "Kezdj egy pályát úgy, hogy nem maradt életerőd."
+msgstr ""
 
 #: ../data/level/airplane-boss.cfg:14
 msgid "Stonepipe Bridge"
-msgstr "Kőfúvó híd"
+msgstr ""
 
 #: ../data/level/airplane-boss.cfg:400
 msgid "Ambush!"
-msgstr "Csapda!"
+msgstr "Zaseda!"
 
 #: ../data/level/airplane-boss.cfg:409
 msgid "Victory!"
-msgstr "Győzelem!"
+msgstr "Pobeda!"
 
 #: ../data/level/arcade-blocks.cfg:103 ../data/level/arcade-blocks.cfg:105
 msgid "You got ${level.player.score} points in the Blocks Run!"
@@ -622,21 +621,21 @@ msgstr ""
 #: ../data/level/arcade-wild-new-wonder.cfg:2496
 #: ../data/objects/effects/control/level_controller_coin_race.cfg:16
 msgid "This is a new high score!"
-msgstr "Túlszárnyaltad az előző top pontszámot!"
+msgstr ""
 
 #: ../data/level/arcade-blocks.cfg:106
 msgid "The high score is ${registry.arcade_blocks_high_score}."
-msgstr "A csúcs ${registry.arcade_blocks_high_score} pont."
+msgstr ""
 
 #: ../data/level/arcade-blocks.cfg:756
 #: ../data/level/titlescreen-arcade.cfg:152
 msgid "Blocks Run"
-msgstr "Akadályfutás"
+msgstr ""
 
 #: ../data/level/arcade-down-the-rabbit-hall.cfg:13
 #: ../data/level/titlescreen-arcade.cfg:151
 msgid "Down the Rabbit Hall"
-msgstr "Lefelé a nyúl termébe"
+msgstr ""
 
 #: ../data/level/arcade-down-the-rabbit-hall.cfg:844
 #: ../data/level/arcade-down-the-rabbit-hall.cfg:847
@@ -646,12 +645,12 @@ msgstr ""
 #: ../data/level/arcade-down-the-rabbit-hall.cfg:848
 msgid ""
 "The high score is ${registry.arcade_down_the_rabbit_hall_high_score} points."
-msgstr "A csúcs ${registry.arcade_down_the_rabbit_hall_high_score} pont."
+msgstr ""
 
 #: ../data/level/arcade-maintenance-shaft.cfg:13
 #: ../data/level/titlescreen-arcade.cfg:132
 msgid "Maintenance Shaft"
-msgstr "Szervízakna"
+msgstr ""
 
 #: ../data/level/arcade-maintenance-shaft.cfg:2559
 #: ../data/level/arcade-maintenance-shaft.cfg:2562
@@ -661,7 +660,7 @@ msgstr ""
 #: ../data/level/arcade-maintenance-shaft.cfg:2563
 msgid ""
 "The high score is ${registry.arcade_maintenance_shaft_high_score} points."
-msgstr "A csúcs ${registry.arcade_maintenance_shaft_high_score} pont."
+msgstr ""
 
 #: ../data/level/arcade-nutty-factory.cfg:521
 #: ../data/level/arcade-nutty-factory.cfg:524
@@ -670,12 +669,12 @@ msgstr ""
 
 #: ../data/level/arcade-nutty-factory.cfg:525
 msgid "The high score is ${registry.arcade_nutty_factory_high_score} points."
-msgstr "A csúcs ${registry.arcade_nutty_factory_high_score} pont."
+msgstr ""
 
 #: ../data/level/arcade-the-long-haul.cfg:11
 #: ../data/level/titlescreen-arcade.cfg:150
 msgid "The Long Haul"
-msgstr "A hosszú menet"
+msgstr ""
 
 #: ../data/level/arcade-the-long-haul.cfg:634
 #: ../data/level/arcade-the-long-haul.cfg:637
@@ -684,12 +683,12 @@ msgstr ""
 
 #: ../data/level/arcade-the-long-haul.cfg:638
 msgid "The high score is ${registry.arcade_the_long_haul_high_score} points."
-msgstr " A csúcs ${registry.arcade_the_long_haul_high_score} pont."
+msgstr ""
 
 #: ../data/level/arcade-upper-deck.cfg:13
 #: ../data/level/titlescreen-arcade.cfg:131
 msgid "Upper Deck"
-msgstr "Felső fedélzet"
+msgstr ""
 
 #: ../data/level/arcade-upper-deck.cfg:2928
 #: ../data/level/arcade-upper-deck.cfg:2931
@@ -698,12 +697,12 @@ msgstr ""
 
 #: ../data/level/arcade-upper-deck.cfg:2932
 msgid "The high score is ${registry.arcade_upper_deck_high_score} points."
-msgstr "A csúcs ${registry.arcade_upper_deck_high_score} pont."
+msgstr ""
 
 #: ../data/level/arcade-wild-new-wonder.cfg:13
 #: ../data/level/titlescreen-arcade.cfg:130
 msgid "Wild New Wonder"
-msgstr "Vad új csoda"
+msgstr "Novo divlje čudo"
 
 #: ../data/level/arcade-wild-new-wonder.cfg:2495
 #: ../data/level/arcade-wild-new-wonder.cfg:2498
@@ -713,15 +712,15 @@ msgstr ""
 #: ../data/level/arcade-wild-new-wonder.cfg:2499
 msgid ""
 "The high score is ${registry.arcade_wild_new_wonder_high_score} points."
-msgstr "A csúcs ${registry.arcade_wild_new_wonder_high_score} pont."
+msgstr ""
 
 #: ../data/level/bombing-fools.cfg:2211
 msgid "Bombing Fools"
-msgstr " Őrült robbantók"
+msgstr ""
 
 #: ../data/level/bon-bosque.cfg:185
 msgid "Well, you made it!"
-msgstr "Nos, megcsináltad!"
+msgstr ""
 
 #: ../data/level/bon-bosque.cfg:186
 msgid ""
@@ -731,7 +730,7 @@ msgid ""
 "There is said to be a way into the\n"
 "basement floors of Milgram's compound,\n"
 "somewhere in the caverns."
-msgstr "Nos ott van egy kapu pont egyenes.\nHa át tudsz rajta jutni,\nakkor eljutsz a mészkő barlanghoz.\nOtt úgy hírlik vezet egy út,\nodabent valamerre, amelynek végén\nMilgram táborának pincéje rejlik. "
+msgstr ""
 
 #: ../data/level/bon-bosque.cfg:187
 msgid ""
@@ -739,23 +738,23 @@ msgid ""
 "sneaking in is probably the best bet.\n"
 "I doubt the entrance guards\n"
 "would give you the time of day."
-msgstr "Ha személyes meghallgatást szeretnél,\njobban teszed, ha beosonsz.\nKétlem, hogy a bejáratnál levő őrök\nderűsebbé tennék a napodat."
+msgstr ""
 
 #: ../data/level/bon-bosque.cfg:189
 msgid ""
 "Yeah... geez though.  Caves, now?\n"
 "Are these caves long?"
-msgstr "Ja...de ugyanmár. Már barlangok is?\nHosszúak ezek a barlangok?"
+msgstr ""
 
 #: ../data/level/bon-bosque.cfg:190
 msgid "I'm afraid so."
-msgstr "Attól tartok."
+msgstr ""
 
 #: ../data/level/bon-bosque.cfg:192
 msgid ""
 "Ugh.\n"
 "No sense in turning back now, though."
-msgstr "Uh. Bár...\nMár most nincs értelme visszafordulni"
+msgstr ""
 
 #: ../data/level/bon-bosque.cfg:193
 msgid ""
@@ -784,7 +783,7 @@ msgstr ""
 
 #: ../data/level/bon-bosque.cfg:200
 msgid "Oh?"
-msgstr "Oh?"
+msgstr ""
 
 #: ../data/level/bon-bosque.cfg:201
 msgid ""
@@ -839,21 +838,21 @@ msgstr ""
 
 #: ../data/level/bug-mining.cfg:4115
 msgid "Bug Mining"
-msgstr "Bogár bányászat"
+msgstr ""
 
 #: ../data/level/burn-and-bubble.cfg:3049
 msgid "Burn and Bubble"
-msgstr "Égetés és pukkanás"
+msgstr ""
 
 #: ../data/level/burning-stone.cfg:72
 msgid ""
 "I need to go up... There must be\n"
 "a way to activate this elevator."
-msgstr "Felfelé kell haladnom... Biztosan\nvan rá valami mód, hogy aktiváljam a liftet."
+msgstr ""
 
 #: ../data/level/burning-stone.cfg:3748
 msgid "Burning Stone"
-msgstr "Ízzó kő"
+msgstr ""
 
 #: ../data/level/catfactory-catwalk.cfg:2459
 msgid "The Cat-Factory's Catwalks"
@@ -861,7 +860,7 @@ msgstr ""
 
 #: ../data/level/caverns-of-holes.cfg:3876
 msgid "Caverns of Holes"
-msgstr "Lyukasüreg"
+msgstr "Pećine rupa"
 
 #: ../data/level/central-services.cfg:2460
 msgid "Central Services"
@@ -869,7 +868,7 @@ msgstr ""
 
 #: ../data/level/chopple-shop-interior.cfg:161
 msgid "Oh hey, I hadn't seen you here before."
-msgstr "Ó, hahó, nem láttalak még erre korábban. "
+msgstr ""
 
 #: ../data/level/chopple-shop-interior.cfg:162
 msgid ""
@@ -877,71 +876,71 @@ msgid ""
 "He had asked me to go to the village\n"
 "to know what was going on, with all that noise\n"
 "that was coming from beyond the cave."
-msgstr "Ah, igen, "
+msgstr ""
 
 #: ../data/level/chopple-shop-interior.cfg:164
 msgid ""
 "Then I suppose that Milgram's guards saw you\n"
 "and locked you up?"
-msgstr "Akkor feltételezem Milgram őrei megláttak \nés lecsuktak téged?"
+msgstr ""
 
 #: ../data/level/chopple-shop-interior.cfg:165
 msgid ""
 "Yeah! And to think that I thought\n"
 "that the day was going to be boring!"
-msgstr "Igen! És én még azt gondoltam, hogy a mai nap unalmas lesz!"
+msgstr ""
 
 #: ../data/level/chopple-shop-interior.cfg:662
 #: ../data/level/chopple-shop.cfg:16
 msgid "Chopple's General Store"
-msgstr "Chopple mindenes boltja"
+msgstr "Čoplova prodavnica"
 
 #: ../data/level/crevice-bridge.cfg:297
 msgid "Hi, again."
-msgstr "Üdv újra."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:298
 msgid "So, how did it go?"
-msgstr "Nos, hogy ment?"
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:300
 msgid "Could've been worse."
-msgstr "Lehetett volna rosszabb is."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:302
 msgid ""
 "That ... uh, \"captain\" cat, or whoever he was,\n"
 "tried to dice me up."
-msgstr "Az a... uh, \"kapitány\" macska, vagy ki is volt, \nmegpróbált felkockázni engem."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:304
 msgid ""
 "Naturally, we wouldn't be having\n"
 "this conversation if I hadn't gotten\n"
 "the better of him."
-msgstr "Természetesen most nem beszélgetnénk, \nha nem győzedelmeskedtem volna felette végül."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:306
 msgid ""
 "So all's well\n"
 "that ends well, I suppose."
-msgstr "Akkor minden jó, ha jó a vége, gondolom."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:308
 msgid ""
 "I did find out what was going on, at least,\n"
 "that is, what the elder *says* is going on."
-msgstr "Rájöttem mi történik, vagy legalábbis \nez az amit a rangidős *állít*, hogy történik."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:310
 msgid ""
 "I wouldn't mind running this by a few people,\n"
 "since I have no idea what's true, or not."
-msgstr "Nem bánnám, ha ellenőrizve lenne pár embernél, \nmivel fogalmam sincs, hogy igaz-e, vagy sem."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:312
 msgid "Go right ahead."
-msgstr "Gyerünk csak."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:315
 msgid ""
@@ -952,7 +951,7 @@ msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:317
 msgid "Trying to get his money back."
-msgstr "Próbálja visszaszerezni a pénzét."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:319
 msgid ""
@@ -964,27 +963,27 @@ msgstr ""
 #: ../data/level/crevice-bridge.cfg:321
 #: ../data/level/crevice-village-house-elder.cfg:471
 msgid "Wow."
-msgstr "Tyűha!"
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:322
 msgid "I've never heard of any of this."
-msgstr "Semmi ilyesmiről nem hallottam még."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:325
 msgid ""
 "Really?\n"
 "He's never talked about this?"
-msgstr "Tényleg? \nSoha nem beszélt erről?"
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:327
 msgid "Never."
-msgstr "Soha."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:330
 msgid ""
 "Has he ever shown any signs of ... suddenly\n"
 "having way more spending money than usual?"
-msgstr "Mutatta jelét valaha is annak, hogy... hirtelen \nsokkal több költőpénze volt, mint a megszokott?"
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:332
 msgid ""
@@ -997,25 +996,25 @@ msgid ""
 "He's such a miser, you know -\n"
 "the man would probably burn his\n"
 "furniture just to save on firewood."
-msgstr "Tudod, hihetetlenül zsugori - \nvalószínűleg elégetné  bútorait, csak hogy spóroljon a tűzifán."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:334
 msgid ""
 "So, no, he's never seemed\n"
 "to have a dime to spare."
-msgstr "Szóval, nem, soha nem tűnt olyannak, mint akinek lenne akár \negy tartalék petákja is."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:335
 msgid ""
 "He does brag about being known by important\n"
 "people, but you know how he is."
-msgstr "Szokása dicsekedni a fontos ismerőseivel, \nde tudod, hogy milyen."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:338
 msgid ""
 "Yeah.  Geez.\n"
 "So, uh, here's what I think we know:"
-msgstr "Aha. Hűha.\nSzóval, uh, azt hiszem ezt tudjuk eddig:"
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:340
 msgid ""
@@ -1041,56 +1040,56 @@ msgstr ""
 msgid ""
 "Oh yeah, I forgot to mention;\n"
 "he said it was some kind of \"investment\""
-msgstr "Ó igen, elfelejtettem említeni: azt mondta, hogy ez egyfajta \"befektetés\" volt."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:348
 msgid ""
 "Which I assume would be for the town.\n"
 "Building things."
-msgstr "Ami feltételezem a városért lett volna. \nKülönböző dolgokat építeni."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:350
 msgid "Naturally, we know that didn't happen."
-msgstr "Természetesen tudjuk, hogy ez soha nem történt meg."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:352
 msgid "So other than that, it's a mystery."
-msgstr "Szóval ettől eltekintve, ez egy rejtély."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:354
 msgid ""
 "So, dare I ask:\n"
 "What do we do now?"
-msgstr "Nos, félve kérdezem: Mit csinálunk most?"
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:357
 msgid ""
 "Ah, that.  I went and decided that\n"
 "it's probably a very good idea to\n"
 "do a little diplomacy."
-msgstr "Ah, az. Fogtam magam és és elhatároztam, hogy ez egy remek\nalkalom egy kis diplomáciához."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:359
 msgid ""
 "*Someone* needs to go talk to Milgram,\n"
 "and ask what was wrong, so nothing bad happens."
-msgstr "*Valakinek* muszáj beszélnie Milgrammal és megkérdeznie mi ment félre, hogy semmi rossz ne történhessen."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:361
 msgid ""
 "So for a lack of any other willing parties,\n"
 "I decided to go."
-msgstr "Mivel nincs más jelentkező,\nelhatároztam, hogy én megyek."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:363
 msgid "That's very noble of you."
-msgstr "Ez igazán nemes tett tőled."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:366
 msgid ""
 "Ha, well, we're also going to find out\n"
 "if it's very foolish, as well."
-msgstr "Ha, hát, hamarosan az is kiderül, hogy mennyire őrült cselekedet is."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:369
 msgid ""
@@ -1114,29 +1113,29 @@ msgstr ""
 msgid ""
 "To spare your asking,\n"
 "yes, I'd be happy to continue."
-msgstr "Hogy megkíméljelek attól, hogy meg kelljen kérdezned, \nigen, boldogan folytatom."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:378
 msgid "Hey, thanks, that's really nice of you!"
-msgstr "Hé, köszi, ez igazán rendes tőled!"
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:380
 msgid ""
 "It's the least I can do.\n"
 "I'd offer to carry you, even,\n"
 "but I'm afraid that's physically impossible."
-msgstr "Ez a legkevesebb amit megtehetek. \nAzt is felajánlanám, hogy cipellek, \nde attól tartok az fizikai képtelenség."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:381
 msgid ""
 "I'm as curious as you are, about this,\n"
 "and we're more likely to get to the\n"
 "bottom of things if we work together."
-msgstr "Én is legalább annyira kíváncsi vagyok ez ügyben, mint te \nés előbb jutunk a végére, ha közösen dolgozunk."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:384
 msgid "Awesome!"
-msgstr "Szuper!"
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:387
 msgid ""
@@ -1146,99 +1145,99 @@ msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:389
 msgid "Does that sound like a good idea?"
-msgstr "Ez egy jó ötletnek tűnik neked?"
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:391
 msgid ""
 "Yes... it is the only path I know of,\n"
 "but be careful in there."
-msgstr "Igen.. ez az egyetlen út amit ismerek, \nde legyél óvatos."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:394
 msgid ""
 "Yeah, no kidding.\n"
 "Well, see you soon!  Thanks again!"
-msgstr "Bizony, nem tréfadolog. Hát, akkor viszlát! És ismételten köszönöm."
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:1276
 msgid "Ahh, there you are!"
-msgstr "Áhh, megvagy!"
+msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:1790
 msgid "Crevice Bridge"
-msgstr "Hasadék híd"
+msgstr "Most Pukotina"
 
 #: ../data/level/crevice-village-cave.cfg:749
 msgid "What the..."
-msgstr "Mi a..."
+msgstr "Ma šta..."
 
 #: ../data/level/crevice-village-cave.cfg:749
 msgid "You!!"
-msgstr "Te!!"
+msgstr "Ti!!"
 
 #: ../data/level/crevice-village-cave.cfg:750
 #: ../data/object_prototypes/buyable_item.cfg:24
 msgid "Yes"
-msgstr "Igen"
+msgstr "Da"
 
 #: ../data/level/crevice-village-cave.cfg:750
 msgid "You're an intruder, aren't you?!"
-msgstr "Egy betolakodó vagy, nemde?"
+msgstr "Ti si uljez, zar ne?!"
 
 #: ../data/level/crevice-village-cave.cfg:751
 msgid "I thought so!"
-msgstr "Ahogy sejtettem!"
+msgstr "Tako sam i mislio! "
 
 #: ../data/level/crevice-village-cave.cfg:752
 #: ../data/object_prototypes/buyable_item.cfg:31
 msgid "No"
-msgstr "Nem"
+msgstr "Ne"
 
 #: ../data/level/crevice-village-cave.cfg:753
 msgid "There's no fooling me."
-msgstr "Nem versz át olyan könnyen."
+msgstr "Mene je nemoguće prevariti."
 
 #: ../data/level/crevice-village-cave.cfg:753
 msgid ""
 "You look like a very\n"
 "suspicious character."
-msgstr "Egy kimondottan gyanús\nszemélynek tűnsz."
+msgstr "Izgledaš kao veoma⏎sumnjiv lik. "
 
 #: ../data/level/crevice-village-cave.cfg:755
 msgid "Could you just step aside?"
-msgstr "Félre tudnál lépni az útból?"
+msgstr "Možeš li samo da se pomeriš u stranu?"
 
 #: ../data/level/crevice-village-cave.cfg:757
 msgid ""
 "I need to take care\n"
 "of something in town."
-msgstr "El kell intéznem\nvalamit a városban."
+msgstr "Moram nešto da⏎obavim u gradu."
 
 #: ../data/level/crevice-village-cave.cfg:758
 msgid ""
 "Well, I can't let anyone\n"
 "past this gate."
-msgstr "Nos, nem engedhetek senkit\nsem át ezen a kapun."
+msgstr "Pa, ne mogu nikoga⏎propustim kroz ovu kapiju."
 
 #: ../data/level/crevice-village-cave.cfg:759
 msgid ""
 "Without this key,\n"
 "you're not getting anywhere."
-msgstr "E kulcs nélkül nem\njutsz innen sehová."
+msgstr "Bez ovog ključa,⏎ne ideš nikuda."
 
 #: ../data/level/crevice-village-cave.cfg:761
 msgid ""
 "Okay.  Will you please lend\n"
 "me that key?"
-msgstr "Ok. Kölcsön adod kérlek\nazt a kulcsot?"
+msgstr "U redu. Hoćeš li mi, molim te,⏎pozajmiti taj ključ?"
 
 #: ../data/level/crevice-village-cave.cfg:762
 msgid "No way!  Over my dead body!"
-msgstr "Hogy képzeled!? Csak a \ntestemen keresztül!"
+msgstr "Nema šanse! Samo preko mene mrtvog!"
 
 #: ../data/level/crevice-village-cave.cfg:764
 msgid "We can do that."
-msgstr "Ez menni fog."
+msgstr "Možemo i tako."
 
 #: ../data/level/crevice-village-cave.cfg:1231
 #: ../data/level/crevice-village-central.cfg:4054
@@ -1246,64 +1245,64 @@ msgstr "Ez menni fog."
 #: ../data/level/crevice-village.cfg:1647
 #: ../data/objects/playable/map-selector.cfg:17
 msgid "Crevice Village"
-msgstr "Hasadék falva"
+msgstr "Selo Pukotina"
 
 #: ../data/level/crevice-village-central-side-cave.cfg:1111
 msgid "Hidden Cave"
-msgstr "Rejtett barlang"
+msgstr "Skrivena pećina"
 
 #: ../data/level/crevice-village-central.cfg:130
 msgid ""
 "Ahh, good, you made it\n"
 "through there in one piece!"
-msgstr "Ahh, helyes, sikerült egy\ndarabban idejutnod!"
+msgstr "Ah, dobro je, uspeo si⏎da dođeš dovde u jednom komadu!"
 
 #: ../data/level/crevice-village-central.cfg:132
 msgid ""
 "Yeah, those goons\n"
 "had a little ambush set up."
-msgstr "Igen, azok a banditák egy\nkisebb csapdát állítottak fel."
+msgstr "Da, banditi su⏎postavili malu zasedu."
 
 #: ../data/level/crevice-village-central.cfg:134
 msgid "So, now what?"
-msgstr "Na, akkor hogyan tovább?"
+msgstr "I, šta sad?"
 
 #: ../data/level/crevice-village-central.cfg:135
 msgid ""
 "Well, as you know, the town\n"
 "is split into two halves."
-msgstr "Nos, amint tudod, a város\nkét részre van felosztva."
+msgstr "Pa, kao što znaš, grad⏎je podeljen na dve polovine."
 
 #: ../data/level/crevice-village-central.cfg:136
 msgid ""
 "Milgram has this half of the town\n"
 "locked down tight, and he has\n"
 "most of the residents held prisoner."
-msgstr "Milgram szorosan zár alatt tartja\na város ezen felét és a lakók\ntöbbségét foglyul ejtette."
+msgstr "Milgram drži ovu polovinu grada⏎pod ključem, i zarobio je⏎većinu stanovnika."
 
 #: ../data/level/crevice-village-central.cfg:137
 msgid ""
 "They're tied up inside the houses,\n"
 "under guard. If you free them,\n"
 "I'm sure they can help you."
-msgstr "Megkötözve őrizetben tartja őket a\nházakban. Ha sikerül kiszabadítanod\nőket, biztosan segítenek Neked."
+msgstr "Vezani su u svojim kućama,⏎pod stražom. Ako ih oslobodiš,⏎siguran sam da će moći da ti pomognu."
 
 #: ../data/level/crevice-village-central.cfg:139
 msgid "Makes sense."
-msgstr "Logikusan hangzik."
+msgstr "Ima smisla."
 
 #: ../data/level/crevice-village-central.cfg:140
 msgid ""
 "Your big problem will be that\n"
 "the gate connecting the two halves\n"
 "of town has been locked."
-msgstr "A legnagyobb gondod az lesz, hogy\nhogy a két város felet összekötő\nkaput lezárták."
+msgstr "Veliki problem će biti ti⏎što je kapija koja povezuje dve polovine⏎grada zaključana."
 
 #: ../data/level/crevice-village-central.cfg:141
 msgid ""
 "And I don't think there's a guard next\n"
 "to it, whom you can steal the key from."
-msgstr "És nem hiszem, hogy lenne mellette\nőr, akitől ellophatnád a kulcsot."
+msgstr "I čini mi se da tamo nema stražara⏎od kojih bi mogao ukrasti ključ."
 
 #: ../data/level/crevice-village-central.cfg:142
 msgid ""
@@ -1321,298 +1320,298 @@ msgstr ""
 msgid ""
 "Asking one of the prisoners is probably\n"
 "our best bet for a clue."
-msgstr "A foglyok kikérdezése lesz a legjobb\nlehetőséged megtudni valamit."
+msgstr "Najbolja šansa nam je da⏎pitamo nekog od zatvorenika za savet."
 
 #: ../data/level/crevice-village-central.cfg:2747
 msgid "Hey! Over here!"
-msgstr "Hé! Ide gyere!"
+msgstr "Hej! Ovamo!"
 
 #: ../data/level/crevice-village-heights.cfg:241
 msgid ""
 "Wow, so they seriously just packed up and left?\n"
 "That's amazing!"
-msgstr "Hű, tehát komolyan csak összecsomagoltak\nés elmentek? Ez meglepő!"
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:242
 msgid "Tell me about it."
-msgstr "Mesélj nekem róla."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:244
 msgid "So, how did you get out of your cage?"
-msgstr "Nos, hogyan jutottál ki a ketrecből?"
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:245
 msgid "Well, they just let me out."
-msgstr "Hát, csak úgy kiengedtek."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:247
 msgid ""
 "What?!\n"
 "They ... as in Milgram's kitties?"
-msgstr "Micsoda?!\nŐk ... mármint Milgram cicái?"
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:248
 msgid "^Yeah."
-msgstr "^Aha."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:250
 msgid ""
 "Weird.. that doesn't make any sense!\n"
 "Why would they just let you go?"
-msgstr "Furcsa.. ennek semmi értelme!\nMiért engednének el csak úgy?"
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:252
 msgid "That seems like an enormous waste of effort."
-msgstr "Ez roppant felesleges erőfeszítésnek tűnik."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:253
 msgid "Yeah, this whole day has just been ... bizarre."
-msgstr "Igen, ez az egész nap egyszerűen ... furcsa volt."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:254
 msgid ""
 "I've been thinking about that part,\n"
 "and I have a hunch."
-msgstr "Elgondolkodtam azon a dolgon, és van egy sejtésem."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:255
 msgid ""
 "I think the rank-and-file weren't\n"
 "given very specific orders."
-msgstr "Szerintem a közkatonák nem kaptak\ntúl pontos parancsokat."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:256
 msgid ""
 "I don't think they were told\n"
 "what they were looking for."
-msgstr "Nem gondolom, hogy elmondták nekik,\nhogy mit keressenek."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:257
 msgid ""
 "I think they were just told\n"
 "to secure the place."
-msgstr "Szerintem csak az volt a parancsuk,\nhogy elfoglalják a helyet."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:258
 msgid ""
 "Just arresting everyone is a strange way\n"
 "to do it, but I guess it's not so weird\n"
 "if you've got lots of manpower to spare."
-msgstr "Elég furcsa módszer csak úgy bezárni mindnekit,\nde talán nem olyan meglepő, ha valakinek\nennyi embere van."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:259
 msgid ""
 "If they were just looking for the elder\n"
 "and didn't care about ticking people off,\n"
 "it's one way to make sure he couldn't slip away."
-msgstr "Ha csak a rangidőst keresték, és nem érdekelte\nőket az emberek jóléte, akkor ez hatásos\nmódszer, hogy ne tudjon megmenekülni."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:261
 msgid "Well, is that really who they were after?"
-msgstr "Nos, tényleg ő volt az akit el akartak kapni?"
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:262
 msgid ""
 "Yeah, one of their head guys showed me\n"
 "a drawing of him."
-msgstr "Igen, az egyik vezetőjük mutatott róla egy rajzot."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:263
 msgid "He asked me if I knew who it was."
-msgstr "Megkérdezte, hogy tudom-e, hogy ki ő."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:265
 msgid "That's very interesting..."
-msgstr "Ez nagyon érdekes..."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:267
 msgid ""
 "Suddenly their motives don't seem\n"
 "so cut and dry."
-msgstr "Hirtelen nem olyan egyértélműek az indítékaik."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:269
 msgid "Strange.."
-msgstr "Furcsa.."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:271
 msgid ""
 "Anyways, not sure if you heard this part,\n"
 "but I'm about to take a little trip."
-msgstr "Egyébként, nem tudom, hogy hallottad-e,\nde egy kis kirándulásra készülök."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:272
 msgid "No, I didn't hear this."
-msgstr "Nem, nem hallottam."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:274
 msgid ""
 "Yeah, I'm a little worried about\n"
 "what might happen if someone doesn't\n"
 "get in touch with Milgram."
-msgstr "Igen, kicsit aggódom, hogy mi történhet,\nha senki nem lép kapcsolatba Milgrammal."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:276
 msgid ""
 "That old clown was just sabre-rattling\n"
 "about raising a militia."
-msgstr "Az a vén bohóc csak a kardját csörtette,\nhogy állítsunk fel egy hadsereget."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:278
 msgid ""
 "You don't think he could actually\n"
 "pull that off, do you?"
-msgstr "De nem gondolod, hogy ezzel\nsikerrel járhat, ugye?"
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:279
 msgid ""
 "Nah, this town doesn't have the fire for that.\n"
 "Which is a shame in some ways, but ..."
-msgstr "Dehogy is, ahhoz a város nem elég tüzes.\nAmi bizonyos szempontból szégyen, de ..."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:280
 msgid ""
 "It's probably for the best, really,\n"
 "I can't imagine the mess if people actually\n"
 "got to fighting over stuff they disagreed about."
-msgstr "Valószínűleg így a legjobb. Komolyan,\nnem tudom elképzelni azt a zűrzavart,\namikor az emberek elkezdenek harcolni\nvalami nézeteltérés miatt."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:282
 msgid ""
 "I guess I'm also worried about the other end;\n"
 "what Milgram is doing, et cetera."
-msgstr "Azt hiszem, a másik véglet is aggaszt,\naz, amit Milgram csinál."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:284
 msgid ""
 "I don't know; it's a little crazy to do this,\n"
 "but I've kinda been itching for something\n"
 "worthwhile to do."
-msgstr "Nem tudom, kicsit őrült ilyet csinálni,\nde valahogy vágytam rá, hogy\ntegyek valami hasznosat."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:286
 msgid ""
 "Good excuse to get out and travel a bit.\n"
 "See the island."
-msgstr "Jó ürügy, hogy kiránduljak egy kicsit\nés körülnézzek a szigeten."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:287
 msgid "Risky business, though, isn't it?"
-msgstr "De azért ez veszélyes, nem gondolod?"
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:289
 msgid "Oh, no question."
-msgstr "Ó, ez nem vitás."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:291
 msgid ""
 "Can't be worse than the crap I have\n"
 "to deal with just coming into town, though."
-msgstr "De nem lehet rosszab mint az a hülyeség,\namivel bajlódnom kell ha csak belépek a városba."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:293
 msgid ""
 "Who knows?\n"
 "Maybe something good will come of it?"
-msgstr "Nos, hogyan jutottál ki a ketrecből?"
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:294
 msgid ""
 "Well, good luck!\n"
 "I'll be around."
-msgstr "Nos, sok szerencsét!\nÉn a közelben leszek."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:322
 msgid ""
 "Hello, again!\n"
 "So ... what now?"
-msgstr "Hát, csak úgy kiengedtek."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:323
 msgid ""
 "It seems like some of the kitties are\n"
 "packing up and leaving, actually."
-msgstr "Úgy tűnik, némelyik macska összecsomagol,\nés elmegy."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:325
 msgid ""
 "That's news to me!\n"
 "Where did you see that?"
-msgstr "Ez új hír!\nHol láttad?"
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:327
 msgid ""
 "Actually, nevermind - I'm just trying\n"
 "to figure out what their intentions are."
-msgstr "Inkább ne is törődj vele. Csak rá próbálok\njönni, hogy mi a céljuk."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:328
 msgid ""
 "Well, if you're game to find out,\n"
 "I just saw one of Milgram's lieutenants\n"
 "march up to the elder's house."
-msgstr "Hát, ha kész vagy utánajárni,\népp most láttam Milgram egyik hadnagyát\nfelmenni a rangidős házába."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:330
 msgid ""
 "Weird.\n"
 "I wonder what they want with the elder?"
-msgstr "Érdekes.\nKiváncsi vagyok, hogy mit akarnak a rangidőssel."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:331
 msgid ""
 "I have a notion,\n"
 "but if you're going to go up there,\n"
 "you'd better go whilst the going's good."
-msgstr "Van némi elképzelésem,\nde ha felmész oda, akkor\naddig tedd amíg nyugis a helyzet."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:333
 msgid "Yeah, I'll check it out."
-msgstr "Rendben, megnézem."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:1489
 msgid "So!  I've unlocked this gate, here."
-msgstr "Nos! Kinyitottam ezt a kaput!"
+msgstr "Evo! Otključao sam ovu kapiju, evo. "
 
 #: ../data/level/crevice-village-heights.cfg:1493
 msgid "Finally, a chance to use your degree..."
-msgstr "Végre egy lehetőség,\nhogy hasznodra váljon a diplomád..."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:1495
 msgid "...Sorry."
-msgstr "... bocsi."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:1498
 msgid ""
 "Through there,\n"
 "is the way to where Milgram lives."
-msgstr "Arra át vezet az út\noda, ahol Milgram lakik."
+msgstr "Ovuda se ide⏎do Milgramove kuće."
 
 #: ../data/level/crevice-village-heights.cfg:1500
 msgid ""
 "If I remember right,\n"
 "one way to his castle will take you... hmm."
-msgstr "Ha jól emlékszem, az egyik út a kastélya felé\nelvisz téged... hmm."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:1502
 msgid ""
 "Uh, this'll take you over a bridge,\n"
 "then through an underground passage."
-msgstr "Hát, ez átvisz egy hídon, utána meg\negy földalatti átjáron."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:1504
 msgid "Watch your head in there."
-msgstr "Vigyázz a fejedre ott bent."
+msgstr "Pazi glavu tamo unutra."
 
 #: ../data/level/crevice-village-heights.cfg:1506
 msgid "Past that, and you come to the forest."
-msgstr "Azokat elhagyod, és megérkezel az erdőhöz."
+msgstr "Kada se prođe to, dolazi se do šume."
 
 #: ../data/level/crevice-village-heights.cfg:1508
 msgid ""
 "I haven't been there in a long time,\n"
 "so I'm not sure what's become of it."
-msgstr "Már régóta nem jártam arra, nem\ntudom hát, milyen állapotban lehet."
+msgstr "Nisam bio tamo već dosta dugo,⏎tako da ne znam kako je tamo."
 
 #: ../data/level/crevice-village-heights.cfg:1511
 msgid ""
@@ -1624,73 +1623,73 @@ msgstr ""
 msgid ""
 "Uhm... well, don't you have any maps or such?\n"
 "Are you going to help outfit me for this?"
-msgstr "Ő... nos, nincs valami térképed vagy ilyesmi?\nEl tudsz látni felszereléssel?"
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:1516
 msgid ""
 "Nope.\n"
 "You're on your own.  Good luck."
-msgstr "Nem.\nEgyedül vagy. Sok szerencsét."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:1519
 msgid "Gee, thanks."
-msgstr "Hát kösz."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:1521
 msgid ""
 "Before we part ways, though,\n"
 "one question:"
-msgstr "Mielőtt elbúcsúzunk, még lenne egy kérdésem:"
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:1523
 msgid ""
 "What are we planning to do about\n"
 "the rest of Milgram's army?"
-msgstr "Mit akarunk tenni Milgram\nmaradék hadseregével?"
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:1528
 msgid "Hey guys!"
-msgstr "Hé srácok!"
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:1531
 msgid ""
 "Oh, hey there!\n"
 "Didn't see you coming."
-msgstr "Ó, helló!\nNem láttam, hogy jössz."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:1533
 msgid ""
 "Yeah, I couldn't help but overhear, and\n"
 "... good news: Your problem is solved!"
-msgstr "Nem tehetek róla, de nem kerülte el a fülemet,\nés jó hírem van: A problémátok megoldódott!"
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:1536
 msgid "What do you mean?"
-msgstr "Ezt hogy érted?"
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:1538
 msgid ""
 "Milgram's crew.  When that captain-guy\n"
 "came out of the house here,\n"
 "they all hopped in his airship and left."
-msgstr "Milgram emberei. Amikor az a kapitány-fickó\nkijött ebből a házból, mindannyian\nbeugrottak a léghajójába, és elmentek."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:1541
 msgid ""
 "Amazing...  if you don't mind,\n"
 "I have a few questions for you."
-msgstr "Elképesztő... Ha nem gond,\nlenne hozzád pár kérdésem."
+msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:1544
 msgid ""
 "Well, that settles things for me.\n"
 "You two have fun."
-msgstr "Nos, ez nekem lezárja az ügyet.\nJó szórakozást kettőtöknek."
+msgstr ""
 
 #: ../data/level/crevice-village-house-1.cfg:955
 #: ../data/level/kitty-dormitory.cfg:3171
 msgid "Who are you?"
-msgstr "Te ki vagy?"
+msgstr "Ko si ti?"
 
 #: ../data/level/crevice-village-house-1.cfg:957
 msgid "I'm whatever the occasion calls for."
@@ -1712,7 +1711,7 @@ msgstr "..."
 
 #: ../data/level/crevice-village-house-1.cfg:959
 msgid "That's nutty."
-msgstr "Ez bolondság!"
+msgstr "To je blesavo."
 
 #: ../data/level/crevice-village-house-1.cfg:961
 msgid ""
@@ -1724,11 +1723,11 @@ msgstr ""
 msgid ""
 "What's important is that I'm not in a cage,\n"
 "so I might be able to do something to help."
-msgstr "Ami fontos, hogy én nem vagyok ketrecben, \núgyhogy talán tudok tenni valami, hogy segítsek."
+msgstr ""
 
 #: ../data/level/crevice-village-house-1.cfg:965
 msgid "Got any advice?"
-msgstr "Van bármi ötleted?"
+msgstr "Imaš neki savet?"
 
 #: ../data/level/crevice-village-house-1.cfg:966
 msgid ""
@@ -1739,7 +1738,7 @@ msgstr ""
 
 #: ../data/level/crevice-village-house-1.cfg:967
 msgid "Maybe."
-msgstr "Talán."
+msgstr "Možda."
 
 #: ../data/level/crevice-village-house-1.cfg:968
 msgid ""
@@ -1756,11 +1755,11 @@ msgstr ""
 
 #: ../data/level/crevice-village-house-1.cfg:970
 msgid "Keep an eye out for it!"
-msgstr "Tartsd nyitva a szemed érte!"
+msgstr ""
 
 #: ../data/level/crevice-village-house-1.cfg:972
 msgid "Will do.  Catch ya around."
-msgstr "Meglesz. Még később találkozunk."
+msgstr "Može. Vidimo se."
 
 #: ../data/level/crevice-village-house-1.cfg:973
 msgid ""
@@ -1770,13 +1769,13 @@ msgstr ""
 
 #: ../data/level/crevice-village-house-1.cfg:975
 msgid "Does it look like I have a key for your cage?"
-msgstr "Úgy nézek ki, mintha lenne kulcsom a ketrecedhez?"
+msgstr ""
 
 #: ../data/level/crevice-village-house-1.cfg:977
 msgid ""
 "Ah, I see..\n"
 "carry on then."
-msgstr "Ah, értem..\nfolytasd csak akkor."
+msgstr "Ah, razumem..⏎Nastavi onda."
 
 #: ../data/level/crevice-village-house-1.cfg:991
 msgid "Thank god it's you!"
@@ -1784,147 +1783,147 @@ msgstr ""
 
 #: ../data/level/crevice-village-house-1.cfg:993
 msgid "Hey, Hedge, you alright?"
-msgstr "Hé, Hedge, minden rendben?"
+msgstr "Hej, Hedž, jesi li dobro?"
 
 #: ../data/level/crevice-village-house-1.cfg:994
 msgid "Eh, I've been better, but yeah, I'm okay."
-msgstr "Eh, volt már jobb is, de megvagyok."
+msgstr "Ma, bilo je i boljih dana, ali nije loše. "
 
 #: ../data/level/crevice-village-house-1.cfg:995
 msgid "Besides the obvious cage situation."
-msgstr "Mármint a nyilvánvaló ketrec\ndolgot leszámítva."
+msgstr "Ne računajući očigledan problem sa kavezom."
 
 #: ../data/level/crevice-village-house-1.cfg:997
 msgid ""
 "Yeah.\n"
 "Sad to say, I can't pick locks.\n"
 "I got nothing."
-msgstr "Ja. Bár szomorú, de nem tudok\nzárakat feltörni. Nincs semmim\nhozzá."
+msgstr "Da.⏎Na žalost, ne znam da provaljujem brave.⏎Nemam ništa."
 
 #: ../data/level/crevice-village-house-1.cfg:998
 msgid "So I'm stuck here, huh?"
-msgstr "Akkor itt ragadtam, mi?"
+msgstr "Znači, zaglavljen sam ovde, a?"
 
 #: ../data/level/crevice-village-house-1.cfg:1000
 msgid "Yep."
-msgstr "Bizony."
+msgstr "Jesi."
 
 #: ../data/level/crevice-village-house-1.cfg:1001
 msgid "Phooey."
-msgstr "Hajaj."
+msgstr "Fju. "
 
 #: ../data/level/crevice-village-house-1.cfg:1003
 msgid ""
 "Hmm, you know, I know one thing\n"
 "that might help you.."
-msgstr "Hmm, tudod, van valami, ami lehet,\nhogy segítene Neked..."
+msgstr "Hmm, znaš, ima nešto⏎što bi ti moglo pomoći.."
 
 #: ../data/level/crevice-village-house-1.cfg:1004
 msgid ""
 "There's supposedly\n"
 "a secret room in this house."
-msgstr "Állítólag van a házban\negy titkos szoba."
+msgstr "Navodno u ovoj kući⏎postoji tajna odaja."
 
 #: ../data/level/crevice-village-house-1.cfg:1006
 msgid "Oh really?  Where at?"
-msgstr "Igazán? És merre?"
+msgstr "O, stvarno? Gde je?"
 
 #: ../data/level/crevice-village-house-1.cfg:1007
 msgid ""
 "If I knew that, it wouldn't\n"
 "be much of a secret, would it?"
-msgstr "Ha tudnám, akkor már nem\nigazán lenne titkos, nemde?"
+msgstr "Kada bih znao to baš⏎i ne bi bila neka tajna, zar ne?"
 
 #: ../data/level/crevice-village-house-1.cfg:1009
 msgid ""
 "Figures.\n"
 "Well, thanks for the help!"
-msgstr "Jogos. Nos,\nköszönöm a segítséget!"
+msgstr "Valjda je tako.⏎Pa, hvala na pomoći!"
 
 #: ../data/level/crevice-village-house-1.cfg:1010
 msgid "Good luck!"
-msgstr "Sok szerencsét!"
+msgstr "Srećno!"
 
 #: ../data/level/crevice-village-house-1.cfg:1024
 msgid ""
 "Jeez, I *swear* this house\n"
 "didn't look THIS big from the outside!"
-msgstr "Jesszus, *esküszöm* kívülről nem\nvolt EKKORA ez a ház!"
+msgstr "Bokte, zakleo bih se da ova kuća⏎nije izgledala TAKO velika spolja!"
 
 #: ../data/level/crevice-village-house-1.cfg:1045
 msgid "Uh, oh, I hear ... trouble."
-msgstr "Ajjaj, ez úgy hallatszik mint valami... probléma."
+msgstr ""
 
 #: ../data/level/crevice-village-house-1.cfg:2348
 #: ../data/level/liberated-crevice-village-house-1.cfg:1503
 msgid "The Elevator House"
-msgstr "A liftház"
+msgstr ""
 
 #: ../data/level/crevice-village-house-2-basement-backroom.cfg:1976
 #: ../data/level/crevice-village-house-2-basement.cfg:1682
 #: ../data/level/crevice-village-house-2.cfg:2905
 #: ../data/level/liberated-crevice-village-house-2.cfg:1492
 msgid "Central House"
-msgstr "Központi ház"
+msgstr "Centralna kuća"
 
 #: ../data/level/crevice-village-house-2.cfg:1199
 msgid "Something's odd about this fireplace."
-msgstr "Valami furcsa ezen a kandallón."
+msgstr "Nešto je čudno u vezi sa ovim ognjištem."
 
 #: ../data/level/crevice-village-house-2.cfg:1363
 msgid "Wow, you guys look exactly alike."
-msgstr "Óó, pont ugyanúgy néztek ki."
+msgstr "Hej, vas dvojica ste potpuno isti."
 
 #: ../data/level/crevice-village-house-2.cfg:1364
 msgid "We're twins."
-msgstr "Ikrek vagyunk."
+msgstr "Mi smo blizanci."
 
 #: ../data/level/crevice-village-house-2.cfg:1365
 msgid ""
 "Is there anything\n"
 "you can do to help us?"
-msgstr "Van esetleg valami\namiben tudnál segíteni nekünk?"
+msgstr "Ima li išta što bi mogao⏎da uradiš da nam pomogneš?"
 
 #: ../data/level/crevice-village-house-2.cfg:1367
 msgid ""
 "Not yet.\n"
 "Sorry."
-msgstr "Még nincs.\nSajnálom."
+msgstr "Još uvek ne.⏎Izvinite."
 
 #: ../data/level/crevice-village-house-2.cfg:1388
 msgid ""
 "Hey,\n"
 "I'm trying to help save the town."
-msgstr "Hé, a város megmentésében\npróbálok segédkezni."
+msgstr "Hej,⏎pokušavam da pomognem u spasavanju grada."
 
 #: ../data/level/crevice-village-house-2.cfg:1390
 msgid "Can you give me any advice?"
-msgstr "Van valami tanács számomra?"
+msgstr "Možeš li mi dati neki savet?"
 
 #: ../data/level/crevice-village-house-2.cfg:1391
 msgid "Yeah."
-msgstr "Aha."
+msgstr ""
 
 #: ../data/level/crevice-village-house-2.cfg:1392
 msgid ""
 "The elder's house is off to the east,\n"
 "past the town gate."
-msgstr "A rangidős háza keletre található,\na városkapun túl."
+msgstr ""
 
 #: ../data/level/crevice-village-house-2.cfg:1393
 msgid "We saw Milgram's lieutenant go in there."
-msgstr "Láttuk Milgram egyik hadnagyát\nbemenni oda."
+msgstr "Videli smo Milgramovog poručnika kako ulazi unutra."
 
 #: ../data/level/crevice-village-house-2.cfg:1395
 #: ../data/level/rock-a-fort.cfg:1654
 msgid "How interesting."
-msgstr "Milyen érdekes."
+msgstr "Veoma interesantno."
 
 #: ../data/level/crevice-village-house-3-backroom.cfg:1754
 #: ../data/level/crevice-village-house-3.cfg:1499
 #: ../data/level/liberated-crevice-village-house-3.cfg:1312
 msgid "The Danger House"
-msgstr "A veszélyes ház"
+msgstr "Kuća opasnosti"
 
 #: ../data/level/crevice-village-house-3-switch.cfg:108
 msgid ""
@@ -1936,219 +1935,219 @@ msgstr ""
 msgid ""
 "Argh! Who in the world would\n"
 "design a house like this?"
-msgstr "Ah! Ki a fene tervezne\negy ilyen házat?"
+msgstr "Argh! Ko je dovoljno lud da⏎ovako projektuje kuću?"
 
 #: ../data/level/crevice-village-house-4-backroom.cfg:1529
 #: ../data/level/crevice-village-house-4.cfg:2648
 #: ../data/level/liberated-crevice-village-house-4.cfg:1842
 msgid "Fan House"
-msgstr "Szellőző ház"
+msgstr ""
 
 #: ../data/level/crevice-village-house-4.cfg:1068
 msgid "Hmmm..."
-msgstr "Hmmm...."
+msgstr "Hmmm..."
 
 #: ../data/level/crevice-village-house-4.cfg:1069
 msgid "It seems I'm trapped inside this house."
-msgstr "Úgy néz ki csapdába estem ebben a házban."
+msgstr ""
 
 #: ../data/level/crevice-village-house-4.cfg:1070
 msgid "I guess the only way out, is in!"
-msgstr "Azt hiszem az egyetlen út ki innen, bent van!"
+msgstr ""
 
 #: ../data/level/crevice-village-house-4.cfg:1195
 msgid "This is decidedly unpleasant."
-msgstr "Ez kétségkívül kellemetlen."
+msgstr "Ovo je odista neprijatno."
 
 #: ../data/level/crevice-village-house-4.cfg:1197
 #: ../data/level/crevice-village-house-4.cfg:1207
 msgid "You don't say."
-msgstr "Nem mondod.."
+msgstr "Ma nemoj."
 
 #: ../data/level/crevice-village-house-4.cfg:1199
 msgid ""
 "When I stepped in the door,\n"
 "it locked behind me."
-msgstr "Amikor beléptem az ajtón,\naz azonnal becsukódott mögöttem."
+msgstr ""
 
 #: ../data/level/crevice-village-house-4.cfg:1200
 msgid ""
 "That's actually a rather clever\n"
 "way to round everyone up."
-msgstr "Ez igazából egy elég ötletes módja,\nhogy az embereket összegyűjtse."
+msgstr ""
 
 #: ../data/level/crevice-village-house-4.cfg:1202
 msgid ""
 "Know anything helpful\n"
 "about this house?"
-msgstr "Tudsz bármi hasznosat\nerről a házról?"
+msgstr ""
 
 #: ../data/level/crevice-village-house-4.cfg:1203
 msgid ""
 "Unfortunately I don't.\n"
 "I was just visiting."
-msgstr "Sajnálatosan nem.\nCsak látogatóba jöttem."
+msgstr ""
 
 #: ../data/level/crevice-village-house-4.cfg:1204
 msgid "The floorplan is quite loony."
-msgstr "Eléggé őrült az alaprajza."
+msgstr ""
 
 #: ../data/level/crevice-village-house-4.cfg:1206
 msgid "Marvelous ventilation, though."
-msgstr "Ellenben lenyűgöző a szellőztetés."
+msgstr ""
 
 #: ../data/level/crevice-village-house-4.cfg:1209
 msgid ""
 "Anyways, I'd better be off.\n"
 "I'm trying to sort out this mess."
-msgstr "Mindenesetre jobb, ha megyek.\nPróbálom megoldani ezt a zűrt!"
+msgstr ""
 
 #: ../data/level/crevice-village-house-4.cfg:1210
 msgid "Good luck."
-msgstr "Egy kalappal."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:154
 msgid "How's that business with Milgram going?"
-msgstr "Hogy mennek dolgok Milgrammal?"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:156
 msgid "I'm working on it."
-msgstr "Dolgozom rajta."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:158
 msgid "That's good to hear!"
-msgstr "Ezt jó hallani!"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:328
 msgid "Ugh."
-msgstr "Uh."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:329
 msgid ""
 "For the last time, we *know* you've\n"
 "got the money somewhere."
-msgstr "Utoljára mondom, *tudjuk*, hogy\nitt van a pénzed valahol."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:330
 msgid "Make this easy on yourself."
-msgstr "Könnyítsd meg a helyzetet magadnak."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:332
 msgid "I have no idea what you're talking about."
-msgstr "Fogalmam sincs, hogy miről beszéltek."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:334
 msgid "*ahem*"
-msgstr "*köhm*"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:336
 msgid "Er..  Right, uh, it's over here.."
-msgstr "Öö..Rendben, hm, itt erre van..."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:344
 msgid "Oh, no you don't!"
-msgstr "Oh, eszedbe ne jusson!"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:345
 msgid ""
 "You're not going anywhere, buster!\n"
 "Now, listen up,\n"
 "You're SERIOUSLY testing my patience."
-msgstr "Nem mész sehova, öcskös! És most,\nfigyelj csak, ELÉGGÉ keményen\npróbára teszed a türelmemet."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:346
 msgid "If you don't tell...  uh..."
-msgstr "Ha nem mondod.... uh..."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:351
 msgid "Oh, hi, what's going on here?"
-msgstr "Oh, hello, mi folyik itt?"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:355
 msgid "Who the hell are you?"
-msgstr "Ki a fene vagy?"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:358
 msgid "Frogatto, at your service."
-msgstr "Frogatto, szolgálatodra."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:361
 msgid "I don't have to put up with this."
-msgstr "Nem vagyok hajlandó ezt elviselni."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:363
 msgid "Excuse me whilst I vent a little frustration."
-msgstr "Bocsáss meg, amíg levezetem egy\nkicsit a dühömet."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:396
 msgid "-ouch-"
-msgstr "-áó-"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:397
 msgid "Okay, I've had enough!  I'm going home."
-msgstr "Rendben, elegem van! Megyek haza."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:447
 msgid ""
 "Well!\n"
 "That went better than expected."
-msgstr "Nos!\nEz jobban ment, mint gondoltam."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:450
 msgid ""
 "Say ...\n"
 "What happened to the elder?"
-msgstr "Mondd...\nMi lett a rangidőssel?"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:455
 msgid ""
 "Whoa...\n"
 "... is that what I think it is?"
-msgstr "Eej....\n...ez az, aminek gondolom?"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:467
 msgid "It is indeed, my boy!"
-msgstr "Valóban az, fiacskám!"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:469
 msgid "It's my very own safe room."
-msgstr "A különbejáratú biztonságiszobám!"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:473
 msgid "Built it for exactly this sort of crisis."
-msgstr "Épp egy ilyen krízis idejére építettem."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:477
 msgid ""
 "That's really amazing.\n"
 "Uh..."
-msgstr "Ez igazán lenyűgöző.\nŐ..."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:479
 msgid ""
 "I guess I have to ask:\n"
 "Whatever prompted you to build this?"
-msgstr "Azt hiszem meg kell kérdeznem:\nMi sarkallt arra, hogy ezt megépítsd?"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:481
 msgid ""
 "This HAD to be expensive.\n"
 "I mean ... really ... expensive."
-msgstr "Ez tuti, hogy drága volt.\nÚgy értem ... igazán... drága."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:483
 msgid ""
 "Yes.\n"
 "Yes it was."
-msgstr "Igen.\nIgen, az volt."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:487
 msgid "...And?"
-msgstr "...És?"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:489
 msgid "And what?"
-msgstr "És mi?"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:491
 msgid ""
@@ -2170,7 +2169,7 @@ msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:497
 msgid "Just gonna run by town, check the news."
-msgstr "Csak körülnézek a városban, megnézem mi újság."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:499
 msgid ""
@@ -2192,27 +2191,27 @@ msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:505
 msgid "Ugh, I suppose you're right."
-msgstr "Ugh, azt hiszem igazad lehet."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:507
 msgid "You bet I am."
-msgstr "Abban biztos lehetsz."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:509
 msgid "Hmm... boy, where do I start?"
-msgstr "Hmm... jaj, hogy is kezdjem?"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:511
 msgid ""
 "Why don't we start with:\n"
 "Why was that guy asking about money?"
-msgstr "Miért nem ezzel kezded:\nMiért kérdezett az a csávó pénzről?"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:513
 msgid ""
 "Well, I am the mayor, after all,\n"
 "and mayors are well endowed."
-msgstr "Nos, elvégre én vagyok a polgármester,\nés a polgármestereket jól fizetik."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:515
 msgid ""
@@ -2231,23 +2230,23 @@ msgid ""
 "In fact, clowns like you are the reason\n"
 "we *can't* agree on a mayor,\n"
 "or get anything else done around here."
-msgstr "Valójában a teféle bohócok miatt nem tudunk\nmegegyezni egy polgármesteren, vagy\nakár barmi hasznosat elindítani."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:521
 msgid "Are you done insulting me, yet?"
-msgstr "Most már befejezted a sértegetést?"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:523
 msgid ""
 "Nope.\n"
 "Not until you answer my question!"
-msgstr "Nem.\nAddig, amíg nem válaszolsz a kérdésemre!"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:525
 msgid ""
 "Seriously - I'm on your side, here!\n"
 "I just risked my butt fighting that guy off."
-msgstr "Komolyan - a te oldaladon állok!\nA nyakamt kockáztattam,\namikor megküzdöttem azzal a sráccal."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:527
 msgid ""
@@ -2259,90 +2258,90 @@ msgstr ""
 msgid ""
 "Maybe ...\n"
 "I can actually help you?"
-msgstr "Talán...\nValóban tudok segíteni?"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:531
 msgid ""
 "Okay.\n"
 "What have I got to lose, eh?"
-msgstr "Ok.\nMit veszíthetek, ugye?"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:533
 msgid ""
 "I'm afraid if this gets out,\n"
 "the town might blame me for this incident."
-msgstr "Attól félek, hogy ha ez kiderül,\na város engem hibáztat a történtekért."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:535
 msgid ""
 "See, some years ago,\n"
 "Milgram approached me with a proposition."
-msgstr "Szóval, pár évvel ezelőtt,\nMilgram megkeresett egy javaslattal."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:537
 msgid ""
 "He was going to invest a\n"
 "sizeable amount of money, here."
-msgstr "Komoly összeget akart itt befektetni."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:539
 msgid ""
 "Wait,\n"
 "did he think you were actually the mayor?"
-msgstr "Várj,\nazt hitte, hogy tényleg te vagy a polgármester?"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:541
 msgid "YES!"
-msgstr "IGEN!"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:543
 msgid ""
 "Anyhow, I was all too happy to accept,\n"
 "but it wasn't long before I realized\n"
 "what was really afoot."
-msgstr "Akkor mindenesetre örömmel elfogadtam,\nde nem tartott sokáig míg rájöttem,\nmire megy ki az egész."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:545
 msgid ""
 "I realized this was all a scam.\n"
 "He was establishing a claim, you see."
-msgstr "Rájöttem, hogy az egész egy átverés.\nElkezdett követelőzni."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:547
 msgid "I'm not sure I follow you..."
-msgstr "Nem biztos, hogy értelek..."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:549
 msgid "Okay, do you know what 'usury' is?"
-msgstr "Rendben, tudod mi az \"uzsoráskodás\"?"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:551
 msgid "Not exactly."
-msgstr "Nem egészen."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:553
 msgid ""
 "See, Milgram was being\n"
 "what's called a 'loan shark'."
-msgstr "Milgram az, amit \"uzsorásnak\" hívnak."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:555
 msgid ""
 "He gives me money,\n"
 "then he just 'decides' what I owe him."
-msgstr "Pénzt ad, és aztán csak úgy \"eldönti\",\nmivel tartozom."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:557
 msgid ""
 "That I owe him more money\n"
 "than I could ever repay."
-msgstr "Hogy több pénzzel tartozom neki,\nmint amit valaha vissza tudnék fizetni."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:559
 msgid ""
 "See, then he can just take\n"
 "whatever he wants, as payment."
-msgstr "És akkor bármit elvehet, amit\ncsak akar, fizetésként."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:561
 msgid ""
@@ -2354,107 +2353,107 @@ msgstr ""
 msgid ""
 "Okay... I guess that sorta makes sense,\n"
 "although it's a bit convoluted."
-msgstr "Rendben... azt hiszem, így már van értelme,\nmég akkor is, ha eléggé meg van csavarva."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:565
 msgid ""
 "I don't see why he'd need an excuse.\n"
 "If he wanted to take over the town,\n"
 "he could just ... do it."
-msgstr "Nem értem miért kell neki ilyen indok.\nHa el akarná foglalni a várost, akkor\ncsak simán ... megtehetné."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:567
 msgid ""
 "No!\n"
 "You always need an excuse.\n"
 "Otherwise, no one would support your claim!"
-msgstr "Nem!\nMindig kell egy indok, különben senki nem\nhinné el a követelést!"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:569
 msgid ""
 "Uhh, okay...\n"
 "Anyways, what are we gonna do here?"
-msgstr "Ő, ok...\nMindenesetre mit fogunk itt tenni?"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:571
 msgid ""
 "Well, I think we should form a militia,\n"
 "and bring the fight to Milgram!"
-msgstr "Nos, úgy gondolom, hogy hadsereget kell\nalakítanunk és meg kell küzdenünk Milgrammal!"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:573
 msgid ""
 "I don't think that's a good idea!\n"
 "Let's not jump the gun, here!"
-msgstr "Ez nem hiszem, hogy jó ötlet.\nNe hamarkodjuk el az ügyet!"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:575
 msgid ""
 "If you ask me, I think we need to go\n"
 "hear Milgram's side of the story."
-msgstr "Szerintem meg kell hallgatnunk Milgram\ntörténetét is."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:577
 msgid ""
 "Talk it over.  See if we can reach\n"
 "some mutually amicable agreement."
-msgstr "Megbeszélni az egészet. Talán elérünk\negy mindenki számára elfogadható\negyezményt."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:579
 msgid "I don't think that would work."
-msgstr "Nem hiszem, hogy ez menni fog."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:581
 msgid ""
 "I sure do!\n"
 "Cripes - I tell you what: I'll do it."
-msgstr "Én meg igen!\nA kutyafáját, tudod mit? Én megteszem!"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:583
 msgid ""
 "I'll go talk to Milgram,\n"
 "and get this all sorted out.  Okay?"
-msgstr "Elmegyek beszélni Milgrammal\nés elintézem az egészet. Rendben?"
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:585
 msgid ""
 "I just think this is a big misunderstanding,\n"
 "and I'd rather not see anyone get hurt."
-msgstr "Szerintem ez csak egy nagy félreértés,\nés nem akarom, hogy bárki megsérüljön."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:587
 msgid ""
 "Well, if you say so, I suppose I can't object.\n"
 "In fact, it might be a good stalling tactic."
-msgstr "Nos, ha így mondod, az hiszem nem tiltakozom.\nIgazából ez egy jó időhúzási taktika lehet."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:589
 msgid "Why, I'll even show you the way..."
-msgstr "Sőt, meg is mutatom neked az utat."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:1615
 msgid "The Elder's House"
-msgstr "A rangidős háza"
+msgstr ""
 
 #: ../data/level/crevice-village.cfg:76 ../data/level/to-nenes-house.cfg:333
 msgid "I better leave this key here."
-msgstr "Jobb, ha itt hagyom ezt a kulcsot."
+msgstr ""
 
 #: ../data/level/crevice-village.cfg:177
 msgid "Hey!"
-msgstr "Hé!"
+msgstr ""
 
 #: ../data/level/crevice-village.cfg:815
 msgid ""
 "Glad I caught you!\n"
 "You'd better be aware of this..."
-msgstr "Örülök, hogy utolértelek!\nJobb, ha tudsz róla, hogy..."
+msgstr ""
 
 #: ../data/level/crevice-village.cfg:816
 msgid ""
 "The cave that leads into the town,\n"
 "has a sentry posted in it."
-msgstr "A város felé vezető barlangban\negy őrszem van szolgálatban."
+msgstr ""
 
 #: ../data/level/crevice-village.cfg:817
 msgid ""
@@ -2466,35 +2465,35 @@ msgstr ""
 msgid ""
 "That might have been why\n"
 "he tried to take out that bridge."
-msgstr "Lehet pont emiatt próbálta azt\na hidat megsemmisíteni."
+msgstr ""
 
 #: ../data/level/crevice-village.cfg:819
 msgid ""
 "If you're thinking to go in there,\n"
 "you might reconsider."
-msgstr "Ha azt tervezted, hogy bemész oda,\nlehet jobb, ha újra megfontolod."
+msgstr ""
 
 #: ../data/level/crevice-village.cfg:821
 msgid ""
 "Well, yeah,\n"
 "I was gonna go in there."
-msgstr "Nos, igen, úgy terveztem,\nhogy bemegyek oda."
+msgstr ""
 
 #: ../data/level/crevice-village.cfg:823
 msgid ""
 "I mean, what are we gonna do,\n"
 "sit on our butts here?"
-msgstr "Úgy értem, mit fogunk tenni,\ncsak ülünk itt a fenekünkön?"
+msgstr ""
 
 #: ../data/level/crevice-village.cfg:824
 msgid ""
 "No, no...\n"
 "but I was hoping we'd go in in force."
-msgstr "Nem, nem... de reméltem,\nhogy több magunkkal rontunk be."
+msgstr ""
 
 #: ../data/level/crevice-village.cfg:826
 msgid "Against Milgram? Really?"
-msgstr "Milgram ellen? Valóban?"
+msgstr ""
 
 #: ../data/level/crevice-village.cfg:828
 msgid ""
@@ -2512,13 +2511,13 @@ msgstr ""
 msgid ""
 "Fair enough.\n"
 "I'm not particularly fond of it, myself."
-msgstr "Végülis igaz. Az én tetszésemet\nsem nyerte el különösebben."
+msgstr ""
 
 #: ../data/level/crevice-village.cfg:833
 msgid ""
 "Firstly, Milgram's got LOTS of followers.\n"
 "Tons of em.  He runs an entire city."
-msgstr "Először is, Milgramnak RENGETEG\nkövetője van. Tonnaszámnyi. Egy\negész város van az irányítása alatt."
+msgstr ""
 
 #: ../data/level/crevice-village.cfg:835
 msgid ""
@@ -2540,83 +2539,83 @@ msgstr ""
 
 #: ../data/level/crevice-village.cfg:841
 msgid "Brute force against brute force won't work."
-msgstr "A nyers erő nem működik a nyers erő ellen."
+msgstr ""
 
 #: ../data/level/crevice-village.cfg:843
 msgid ""
 "We'd be like ... \n"
 "a bull butting heads with a freight train."
-msgstr "Olyan lenne...mintha bikaként egy\ntehervonattal mennénk ölre."
+msgstr ""
 
 #: ../data/level/crevice-village.cfg:844
 msgid ""
 "Yes... oh dear.\n"
 "I see what you mean."
-msgstr "Igen...oh istenem.\nÉrtem mire gondolsz."
+msgstr ""
 
 #: ../data/level/crevice-village.cfg:846
 msgid ""
 "There's got to be something\n"
 "we can use to our advantage,\n"
 "but \"numerical superiority\" isn't it."
-msgstr "Biztosan lennie kell valaminek,\namit előnyünkre fordíthatunk,\nde a \"számbeli fölény\" nem az."
+msgstr ""
 
 #: ../data/level/crevice-village.cfg:848
 msgid ""
 "Anyways, about the cave ahead...\n"
 "it's just one guy, right?"
-msgstr "Egyébként, a barlangra visszatérve...\ncsak egy ember van bent, igaz?"
+msgstr ""
 
 #: ../data/level/crevice-village.cfg:849
 msgid "To my knowledge, yes."
-msgstr "Tudtommal, igen."
+msgstr ""
 
 #: ../data/level/crevice-village.cfg:851
 msgid "Maybe I can talk my way around him?"
-msgstr "Talán kibeszélhetem magam,\nhogy átengedjen?"
+msgstr ""
 
 #: ../data/level/crevice-village.cfg:853
 msgid ""
 "Worse comes to worse,\n"
 "I can just run for it.  Right?"
-msgstr "Ha minden kötél szakad, akkor\negyszerű elfuthatok. Igaz?"
+msgstr ""
 
 #: ../data/level/crevice-village.cfg:854
 msgid ""
 "I do hope so.\n"
 "Good luck!"
-msgstr "Remélem is.\nSok szerencsét!"
+msgstr ""
 
 #: ../data/level/dark-corridor.cfg:218
 msgid "Now what?"
-msgstr "Most mi legyen?"
+msgstr ""
 
 #: ../data/level/dark-corridor.cfg:1673
 msgid "Dark Corridor"
-msgstr "Sötét folyosó"
+msgstr ""
 
 #: ../data/level/darkness-central.cfg:3588
 msgid "Darkness Central"
-msgstr "Sötétség központ"
+msgstr ""
 
 #: ../data/level/descent-to-town.cfg:16
 msgid "Descent to Town"
-msgstr "Leereszkedés a városba"
+msgstr ""
 
 #: ../data/level/descent-to-town.cfg:894
 msgid ""
 "It says,\n"
 "\"Chopple's General Store,\n"
 "just ahead."
-msgstr "Azt mondja,\n\"Chopple Mindenes Boltja,\negyenesen előre."
+msgstr ""
 
 #: ../data/level/descent-to-town.cfg:896
 msgid "Honest trade and thrifty prices!\""
-msgstr "Őszinte kereskedelem és gazdaságos árak!\""
+msgstr ""
 
 #: ../data/level/downhill.cfg:3929
 msgid "Downhill"
-msgstr "Lesiklás"
+msgstr ""
 
 #: ../data/level/dungeon-blocks.cfg:1778
 msgid "Dungeon Blocks"
@@ -2624,80 +2623,80 @@ msgstr ""
 
 #: ../data/level/dungeon-crawling.cfg:3580
 msgid "Dungeon Crawling"
-msgstr "Kalandozás a kazamatában"
+msgstr ""
 
 #: ../data/level/dungeon-entrance.cfg:2831
 msgid "The Entrance"
-msgstr "A bejárat"
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:126
 msgid "h... Hello?"
-msgstr "h... Helló?"
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:130
 msgid "Is everything alright?"
-msgstr "Minden rendben van?"
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:132
 msgid "Oh thank goodness, you can talk!"
-msgstr "Óh, hála az égnek, tudsz beszélni?"
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:135
 msgid "This is a surprise?"
-msgstr "Ez olyan furcsa lenne?"
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:137
 msgid ""
 "Yeah, I thought you were some creature\n"
 "that had shambled in from the caves."
-msgstr "Aha, azt hittem valami barlangi lény vagy, aki valahogy idevonszolta magát."
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:138
 msgid "We get that from time to time."
-msgstr "Ezt megkapjuk időről időre."
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:139
 msgid ""
 "I hate this job.\n"
 "It's CREEPY down here!"
-msgstr "Utálom ezt a munkát. \nNagyon FÉLELMETES itt lent!"
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:142
 msgid "What are you even doing?"
-msgstr "Egyáltalán mit csinálsz itt?"
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:144
 msgid ""
 "Cleaning.\n"
 "I'm a janitor."
-msgstr "Tisztogatok. \nTakarítóként dolgozom."
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:145
 msgid ""
 "What are YOU doing?\n"
 "For that matter, who are you, anyways?"
-msgstr "TE mit csinálsz? \nHa már itt tartunk, ki is vagy te?"
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:148
 #: ../data/level/kitty-dormitory.cfg:3174
 msgid "I'm Frogatto."
-msgstr "Frogatto vagyok."
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:150
 msgid "Do Frogattoes live in caves?"
-msgstr "A Frogattók barlangi lények?"
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:153
 msgid ""
 "We're called 'Frogs', actually...\n"
 "I guess sometimes we do, but I don't."
-msgstr "Nos, igazából 'Békák' vagyunk... \nAzt hiszem némelyikünk az, de én nem."
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:155
 msgid ""
 "Anyways, if you must know,\n"
 "I've actually come here to see Milgram."
-msgstr "Egyébként meg, ha tudni akarod, \nazért jöttem ide, hogy lássam Milgramot."
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:157
 msgid ""
@@ -2709,37 +2708,37 @@ msgstr ""
 msgid ""
 "Wow.\n"
 "That's pretty bold!"
-msgstr "Azta. \nEz igazán bátor dolog."
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:160
 msgid "What business do you have with him?"
-msgstr "Mi dolgod van vele?"
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:163
 msgid ""
 "Well, some of you came to my hometown a little\n"
 " while ago, and went after someone I know."
-msgstr "Nos, néhányotok eljött a szülővárosomba, valakiért akit ismerek."
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:165
 msgid ""
 "He's not really a friend of mine,\n"
 "but I'd like to know what's going on."
-msgstr "Nem mondhatnám, hogy a barátom, \nde tudni szeretném mi is történik."
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:167
 msgid "You guys ... kinda scared a few people."
-msgstr "Ti ... a frászt hoztátok pár emberre."
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:169
 msgid "Geez, I'm sorry to hear that."
-msgstr "Hűű, nagyon sajnálom."
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:170
 msgid ""
 "You know, now that you mention it,\n"
 "you look kinda familiar."
-msgstr "Tudod, ahogy így mondod, ismerősnek tűnsz nekem."
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:171
 msgid "I think they put out a security bulletin about you."
@@ -2791,11 +2790,11 @@ msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:186
 msgid "If anyone asks, I didn't see you, okay?"
-msgstr "Ha valaki kérdezné, nem láttalak, rendben?"
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:189
 msgid "Roger!"
-msgstr "Vettem!"
+msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:695
 msgid "Dungeon Gateway"
@@ -2807,155 +2806,155 @@ msgstr ""
 
 #: ../data/level/dungeon-storerooms.cfg:1354
 msgid "Storerooms"
-msgstr "Éléskamrák"
+msgstr ""
 
 #: ../data/level/eerie-arbor.cfg:4309
 msgid "Eerie Arbor"
-msgstr "Kísérteties lugas"
+msgstr ""
 
 #: ../data/level/fast-lane.cfg:2056
 msgid "Fast Lane"
-msgstr "Gyorssáv"
+msgstr ""
 
 #: ../data/level/flooded-caverns.cfg:4167
 msgid "Flooded Caverns"
-msgstr "Elárasztott barlangok"
+msgstr ""
 
 #: ../data/level/foreboding-forest.cfg:2811
 #: ../data/objects/playable/map-selector.cfg:18
 msgid "Foreboding Forest"
-msgstr "Baljóslatú erdő"
+msgstr ""
 
 #: ../data/level/frogatto-grotto-frogattos-room.cfg:292
 msgid ""
 "Ahh, what a beautiful ..\n"
 "..Afternoon?!"
-msgstr "Ahh, milyen kellemes...\n...délután?!"
+msgstr ""
 
 #: ../data/level/frogatto-grotto-frogattos-room.cfg:293
 msgid "Oh geez! I overslept!"
-msgstr "Istenem! Bealudtam!"
+msgstr ""
 
 #: ../data/level/frogatto-grotto-frogattos-room.cfg:890
 msgid "Frogatto's Room"
-msgstr "Frogatto szobája"
+msgstr ""
 
 #: ../data/level/frogatto-grotto-inside.cfg:236
 msgid "Hey, how's breakfast coming?"
-msgstr "Hé, hogy áll a reggeli?"
+msgstr ""
 
 #: ../data/level/frogatto-grotto-inside.cfg:237
 msgid "Breakfast? ..bud, we're on lunch."
-msgstr "Reggeli?..öreg, már ebédre készülünk."
+msgstr ""
 
 #: ../data/level/frogatto-grotto-inside.cfg:238
 msgid "You need to get up earlier."
-msgstr "Hamarabb kellene felkelned."
+msgstr ""
 
 #: ../data/level/frogatto-grotto-inside.cfg:241
 msgid "Okay, then how's lunch coming?"
-msgstr "Ok, akkor hogy áll az ebéd?"
+msgstr ""
 
 #: ../data/level/frogatto-grotto-inside.cfg:242
 msgid ""
 "Getting there.\n"
 "It's gonna be a while, though."
-msgstr "Mindjárt kész. De még\neltart egy darabig."
+msgstr ""
 
 #: ../data/level/frogatto-grotto-inside.cfg:244
 msgid "I'll check back later, then."
-msgstr "Akkor visszanézek később."
+msgstr ""
 
 #: ../data/level/frogatto-grotto-inside.cfg:247
 msgid "So, what happened to lunch?"
-msgstr "Nos, mi történt az ebéddel?"
+msgstr ""
 
 #: ../data/level/frogatto-grotto-inside.cfg:248
 msgid ""
 "I got tired of waiting,\n"
 "and ate by myself."
-msgstr "Meguntam a várakozást, és\nmegettem egyedül."
+msgstr ""
 
 #: ../data/level/frogatto-grotto-inside.cfg:249
 msgid "Leftovers are in the fridge."
-msgstr "A maradékok a hűtőben vannak."
+msgstr ""
 
 #: ../data/level/frogatto-grotto-inside.cfg:252
 msgid "Okay, uhm, thanks."
-msgstr "Ok, ööö, kösz."
+msgstr ""
 
 #: ../data/level/frogatto-grotto-inside.cfg:634
 msgid "Hey, Frogatto."
-msgstr "Hé, Frogatto."
+msgstr ""
 
 #: ../data/level/frogatto-grotto-inside.cfg:638
 msgid "Uhm... yes?"
-msgstr "Öö...igen?"
+msgstr ""
 
 #: ../data/level/frogatto-grotto-inside.cfg:640
 msgid ""
 "At least TRY to get a job today,\n"
 "alright?"
-msgstr "Legalább ma PRÓBÁLJ meg\nmunkát szerezni, jó?"
+msgstr ""
 
 #: ../data/level/frogatto-grotto-inside.cfg:641
 msgid "We need some help around here."
-msgstr "Szükségünk van egy kis segítségre."
+msgstr ""
 
 #: ../data/level/frogatto-grotto-inside.cfg:644
 msgid "Yeah, I know.  I'll try."
-msgstr "Igen, tudom. Megpróbálom."
+msgstr ""
 
 #: ../data/level/frogatto-grotto-inside.cfg:646
 msgid "See to it."
-msgstr "Láss hozzá."
+msgstr ""
 
 #: ../data/level/frogatto-grotto-inside.cfg:657
 msgid "Not like I need to be up,"
-msgstr "Nem mintha fent kéne lennem,"
+msgstr ""
 
 #: ../data/level/frogatto-grotto-inside.cfg:658
 msgid "but it's the principle of the thing."
-msgstr "de ennek most így kell lennie."
+msgstr ""
 
 #: ../data/level/frogatto-grotto-inside.cfg:1506
 msgid "Frogatto's House"
-msgstr "Frogatto háza"
+msgstr ""
 
 #: ../data/level/frogatto-grotto-patos-room.cfg:789
 msgid "Pato's Room"
-msgstr "Pato szobája"
+msgstr ""
 
 #: ../data/level/frogatto-grotto.cfg:60
 msgid "I know!"
-msgstr "Tudom már!"
+msgstr ""
 
 #: ../data/level/frogatto-grotto.cfg:61
 msgid ""
 "I can stop in at Nene's house\n"
 "on the way to town!"
-msgstr "A városba menet benézek\nNenéhez a házába."
+msgstr ""
 
 #: ../data/level/frogatto-grotto.cfg:82
 msgid "Such a beautiful view from here."
-msgstr "Olyan gyönyörű a kilátás innen."
+msgstr ""
 
 #: ../data/level/frogatto-grotto.cfg:228
 msgid "Nothing to see in my backyard."
-msgstr "Semmi látnivaló a kertemben."
+msgstr ""
 
 #: ../data/level/frogatto-grotto.cfg:1875
 #: ../data/objects/playable/map-selector.cfg:15
 msgid "Frogatto Grotto"
-msgstr "Frogatto grotta"
+msgstr ""
 
 #: ../data/level/gloomy-glade.cfg:3628
 msgid "Gloomy Glade"
-msgstr "Bús tisztás"
+msgstr ""
 
 #: ../data/level/gnarled-knoll.cfg:3908
 msgid "Gnarled Knoll"
-msgstr "Bütykös dombtető"
+msgstr ""
 
 #: ../data/level/golden-glen.cfg:2300
 #: ../data/level/milgrams-basement-junction.cfg:387
@@ -3032,7 +3031,7 @@ msgstr ""
 
 #: ../data/level/golden-glen.cfg:2338
 msgid "Anybody?"
-msgstr "Valaki?"
+msgstr ""
 
 #: ../data/level/golden-glen.cfg:2342
 msgid ""
@@ -3080,17 +3079,17 @@ msgstr ""
 
 #: ../data/level/golden-glen.cfg:2359
 msgid "Don't take no for an answer."
-msgstr "Nem fogadok el nemleges választ."
+msgstr ""
 
 #: ../data/level/golden-glen.cfg:2361
 msgid "Yes, sir!"
-msgstr "Igen, uram!"
+msgstr ""
 
 #: ../data/level/golden-glen.cfg:2364
 msgid ""
 "That will be all, gentlemen.\n"
 "Dismissed."
-msgstr "Ez minden, uraim. \nOszolj!"
+msgstr ""
 
 #: ../data/level/golden-glen.cfg:3644
 msgid "Golden Glen"
@@ -3098,7 +3097,7 @@ msgstr ""
 
 #: ../data/level/grassy-path.cfg:14
 msgid "Grassy Path"
-msgstr "Füves ösvény"
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:997
 msgid ""
@@ -3110,7 +3109,7 @@ msgstr ""
 msgid ""
 "If you already know how to play,\n"
 "then just walk to the next level."
-msgstr "Ha már tudod, hogyan kell játszani,\nakkor nyugodtan sétálj a következőre."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1015
 msgid ""
@@ -3149,7 +3148,7 @@ msgstr ""
 msgid ""
 "Whilst you are clinging to the wall,\n"
 "pressing jump will make you rebound off."
-msgstr "Miközben a falra kapaszkodsz, az ugrás\nújboli megnyomására elrugaszkodsz ismét."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1038
 msgid ""
@@ -3160,33 +3159,33 @@ msgstr ""
 
 #: ../data/level/grassy-path.cfg:1039
 msgid "This lets you ascend vertical columns."
-msgstr "Ennek segítségével feljuthatsz függőleges oszlopokra."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1056
 msgid "Frogatto's world is a dangerous place."
-msgstr "Frogatto világa egy veszélyes hely."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1057
 msgid ""
 "In his travels, you'll encounter\n"
 "many creatures who want to hurt you."
-msgstr "Az utazásaid során számos olyan lénnyel találkozol, \nakik ártani akarnak majd neked."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1058
 msgid ""
 "It's often fine to just avoid them, but if you have\n"
 "to fight, Frogatto's best defense is his tongue."
-msgstr "Gyakran elegendő, ha kikerülöd őket, te ha már harcra kerül a sor, \nFrogatto legjobb védelme a nyelve."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1059
 msgid ""
 "You can grab enemies with the tongue,\n"
 "and then spit them back out."
-msgstr "Megragadhatod az ellenséget a\nnyelveddel, majd vissza kiköpheted őket."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1060
 msgid "Once spat out, they become a deadly projectile."
-msgstr "Kiköpve őket, veszélyes lövedékké válnak"
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1061
 msgid ""
@@ -3198,25 +3197,25 @@ msgstr ""
 msgid ""
 "Whilst on their backs,\n"
 "they're vulnerable to being stomped on."
-msgstr "Míg a hátukon fekszenek, addig\nnem bírják, ha rájuk ugrasz."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1063
 msgid ""
 "Sticking out the tongue and spitting,\n"
 "are both done with the attack key."
-msgstr "A nyelv kiöltése és a kiköpés is\na támadás gombbal történik."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1064
 msgid ""
 "There are a few ants just ahead.\n"
 "Feel free to try this on them."
-msgstr "Van is egy pár hangya pont előre.\nNyugodtan próbáld ki rajtuk."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1065
 msgid ""
 "And don't worry - if you die,\n"
 "you'll restart right here."
-msgstr "És ne aggódj - ha meghalsz,\nugyaninnen folytathatod."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1102
 msgid ""
@@ -3258,13 +3257,13 @@ msgstr ""
 msgid ""
 "Fountains, and other water dispensers,\n"
 "are very helpful."
-msgstr "A szökőkútak és egyéb vízautomaták\nnagyon hasznosak."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1140
 msgid ""
 "If you drink from them,\n"
 "you will restore all of your health!"
-msgstr "Ha iszol belőlük, akkor az\nösszes életerőd visszatöltődik."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1158
 msgid ""
@@ -3274,19 +3273,19 @@ msgstr ""
 
 #: ../data/level/grassy-path.cfg:1159
 msgid "You can also jump down through them."
-msgstr "Le is ugorhatsz rajtuk keresztül."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1160
 msgid ""
 "A special button will appear,\n"
 "whenever this is possible."
-msgstr "Egy különleges gomb fog megjelenni,\namikor ez lehetséges."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1161
 msgid ""
 "To do so, hold down the down key,\n"
 "and then press jump."
-msgstr "Ehhez nyomd meg a legfele gombot,\nmajd utána az ugrást."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1198
 msgid ""
@@ -3304,7 +3303,7 @@ msgstr ""
 msgid ""
 "There is a store conveniently located\n"
 "outside of the town."
-msgstr "Van egy praktikusan elhelyezett üzlet\na városon kívül."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1218
 msgid ""
@@ -3336,23 +3335,23 @@ msgstr ""
 msgid ""
 "Up ahead, you'll notice an anthill,\n"
 "which ants constantly come out of."
-msgstr "Előre felé láthatsz egy hangyabolyt,\nmelyből folyamatosan jönnek a hangyák."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1328
 msgid ""
 "There is no way to stop this;\n"
 "you can't destroy the anthill."
-msgstr "Ezt nem tudod megállítani; nem\ntudod megsemmisíteni a hangyabolyt."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1329
 msgid ""
 "Some hazards are like this.\n"
 "You simply have to work around them."
-msgstr "Egyesek akadályok ilyenek.\nEgyszerűen meg kell kerülnöd őket."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1347
 msgid "That's it for this tutorial."
-msgstr "Ennyi volt az útmutató."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1348
 msgid ""
@@ -3364,11 +3363,11 @@ msgstr ""
 msgid ""
 "Feel free to come back here,\n"
 "if you want to read a hint again."
-msgstr "Nyugodtan visszajöhetsz ide,\nha újra el szeretnéd olvasni\nvalamelyik útmutatót."
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1350
 msgid "Have fun!"
-msgstr "Jó szórakozást!"
+msgstr ""
 
 #: ../data/level/grassy-path.cfg:1369
 msgid ""
@@ -3419,31 +3418,31 @@ msgstr ""
 #: ../data/level/hanging-platforms.cfg:5780
 #: ../data/level/test-background_flicker.cfg:4265
 msgid "Hanging Platforms"
-msgstr "Függeszkedő emelvények"
+msgstr ""
 
 #: ../data/level/hidden-depths.cfg:47
 msgid "I'd better be careful."
-msgstr "Jobb, ha vigyázok."
+msgstr ""
 
 #: ../data/level/hidden-depths.cfg:47
 msgid "This is a very deep chasm..."
-msgstr "Ez egy nagyon mély szakadék..."
+msgstr ""
 
 #: ../data/level/hidden-depths.cfg:322
 msgid "AAAAAAH! I CAN'T FLY!"
-msgstr "AAAAAAH! NEM TUDOK REPÜLNI!"
+msgstr ""
 
 #: ../data/level/hidden-depths.cfg:5194
 msgid "Hidden Depths"
-msgstr "Rejtett mélységek"
+msgstr ""
 
 #: ../data/level/killer-bunnies.cfg:1135
 msgid "That guy sure doesn't look glad to meet me!"
-msgstr "Az a fickó aztán tényleg a háta közepére se kíván!"
+msgstr ""
 
 #: ../data/level/killer-bunnies.cfg:4377
 msgid "Killer Bunnies"
-msgstr "Gyilkos nyuszik"
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:232
 msgid ""
@@ -3502,7 +3501,7 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:1913
 msgid "So what is it you do for a, uh... job?"
-msgstr "Szóval mi a te, uh... munkád?"
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:1915
 msgid ""
@@ -3524,73 +3523,73 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:1920
 msgid "I'll keep that in mind, thanks."
-msgstr "Észben fogom tartani, köszi."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:1948
 msgid "Hi there, what's going on?"
-msgstr "Szevasz, mi folyik itt?"
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:1950
 msgid ""
 "Oh, hello.\n"
 "I'm just eating some fruit."
-msgstr "Ó, szia. \nÉpp csak egy kis gyümölcsöt eszem."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:1951
 msgid "Are you that green guy security is after?"
-msgstr "Te vagy az a zöld fickó akit üldöznek a biztonságiak?"
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:1954
 msgid ""
 "If I answer yes,\n"
 "are you going to call them in here?"
-msgstr "Ha igennel válaszolok, akkor idehívod őket?"
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:1956
 msgid "No, I'm not looking for trouble."
-msgstr "Nem, nem keresem a bajt."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:1957
 msgid ""
 "Besides which, you don't seem like a bad guy,\n"
 "if you ask my opinion."
-msgstr "És ezen kívül, nem tűnsz olyan rossz fickónak, \nmár ha a véleményemre vagy kíváncsi."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:1958
 msgid "Not that anyone's asking me."
-msgstr "Nem mintha bárki is kérdezné."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:1960
 msgid "Well, thanks, I do appreciate that."
-msgstr "Nos, köszönöm, tényleg értékelem."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:1962
 msgid ""
 "Speaking of which, color me curious,\n"
 "but I thought that cats were carnivores?"
-msgstr "Ha már itt tartunk, ez érdekelne, \núgy tudtam a macskák húsevők?"
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:1964
 msgid "How is it that you're able to eat fruit?"
-msgstr "Hogyhogy tudsz gyümölcsöt enni?"
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:1966
 msgid ""
 "Oh! I guess you wouldn't know these things...\n"
 "I suppose we take that for granted."
-msgstr "Ó! Azt hiszem nem tudhatsz ezekről a dolgokról... gondolom mi ezt természetesnek vesszük."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:1967
 msgid ""
 "See, strictly speaking, we're not cats.\n"
 "We're simply made to look like them."
-msgstr "Tudod, szigorúan véve, mi nem vagyunk macskák. \nCsak úgy vagyunk megalkotva, hogy hasonlítsunk rájuk."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:1970
 msgid ""
 "Er... \"made to\", you say?\n"
 "That's an interesting choice of words."
-msgstr "Öö... \"megalkotva\", azt mondod? \nEz egy igazán  érdekes szóhasználat."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:1972
 msgid ""
@@ -3660,80 +3659,80 @@ msgstr ""
 msgid ""
 "He fancies himself an artist in this regard,\n"
 "and for ego's sake I'm not about to disagree."
-msgstr "Ő egy igazi művésznek tartja magát e területen, \nés a büszkeségem miatt inkább nem is ellenkezem vele."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:1997
 msgid ""
 "These days, moreover, we're mass-produced.\n"
 "There's a factory downstairs that churns out\n"
 "the more successful designs."
-msgstr "Mostanában azonban inkább tömeggyártásban készülünk. \nVan egy gyár az alsó szinten, ami ontja magából a  sikeresebb konstrukciókat."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2000
 msgid ""
 "But that's just CRAZY!\n"
 "How does that even work?!  Magic?"
-msgstr "De ez egyszerűen ŐRÜLTSÉG! \nHogy működik egyáltalán? Varázslattal?"
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2002
 msgid "Like I said, I really don't know, myself."
-msgstr "Ahogy mondtam, én magam se tudom igazán."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2003
 msgid ""
 "But it's not any crazier than\n"
 "you transforming from a tadpole."
-msgstr "De nem nagyobb őrültség, mint az, hogy te egy ebihalból fejlődtél ki."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2004
 msgid ""
 "I mean, that seems pretty incredible\n"
 "from my perspective."
-msgstr "Vagyis, eléggé hihetetlennek tűnik az én szemszögemből."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2005
 msgid "But that is how it works for frogs, right?"
-msgstr "De így működnek a békák, nemde?"
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2008
 msgid ""
 "It is.\n"
 "It's just a crazy world we live in, huh?"
-msgstr "De igen.\nEgy igazán őrült világban élünk, huh?"
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2010
 msgid "Madness and wonder every step of the way."
-msgstr "Őrület és csoda, bármerre is megyünk."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2013
 msgid ""
 "No kidding.  Well, hey, have a nice meal.\n"
 "Thanks for all the info."
-msgstr "De komolyan. Nos, hé, jó étvágyat. \nKöszönöm az információkat."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2015
 msgid "No problem."
-msgstr "Szívesen."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2042
 msgid "Hi, what are you doing?"
-msgstr "Hahó, mit csinálsz?"
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2044
 msgid ""
 "Oh, hello there.\n"
 "I haven't met you before."
-msgstr "Ó, szia. \nMég nem találkoztunk."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2045
 msgid "I'm reading a book."
-msgstr "Épp egy könyvet olvasok."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2048
 msgid ""
 "That's nice.\n"
 "What's it about?"
-msgstr "Az remek. \nMiről szól?"
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2050
 msgid "Ahh, it's a collection of old fairy tales."
@@ -3784,16 +3783,16 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2809
 msgid "WHOA!"
-msgstr "HŰHA!"
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2812
 msgid "What's wrong?!"
-msgstr "Mi a baj?!"
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2814
 #: ../data/level/kitty-dormitory.cfg:3115
 msgid "Uh..."
-msgstr "Uh..."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2815
 msgid "Was I asleep?"
@@ -3823,11 +3822,11 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2854
 msgid "Do you ever feel like that?"
-msgstr "Gyakran érzed így?"
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2857
 msgid "All the time."
-msgstr "Állandóan."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2859
 msgid ""
@@ -3837,11 +3836,11 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2861
 msgid "Ha."
-msgstr "Ha."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2892
 msgid "Hey, what's up?"
-msgstr "Hé, mi a helyzet?"
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2894
 msgid ""
@@ -3861,13 +3860,13 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2900
 msgid "It's controlled by this computer."
-msgstr "Ez a számítógép vezérli."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2901
 msgid ""
 "It's important because it's much more\n"
 "precise than anything we could do by hand."
-msgstr "Fontos,  mert sokkal pontosabb bárminél, amit mi kézzel véghez tudnánk vinni."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2902
 msgid ""
@@ -3882,11 +3881,11 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2906
 msgid "That sounds like a pretty good system."
-msgstr "Ez egy elég jó rendszernek tűnik."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2908
 msgid "Yeah, it isn't bad."
-msgstr "Hát igen, nem rossz."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2909
 msgid ""
@@ -3906,7 +3905,7 @@ msgstr ""
 #: ../data/level/kitty-dormitory.cfg:2967
 #: ../data/level/secluded-hut-interior.cfg:312
 msgid "Hello there."
-msgstr "Üdv néked."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2965
 msgid "Uh... hi?"
@@ -3990,7 +3989,7 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2999
 msgid "That's nice to hear."
-msgstr "Ezt jó hallani."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:3045
 msgid "Oh, hi there!"
@@ -4054,13 +4053,13 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:3097
 msgid "Hi.  Haven't seen you around before."
-msgstr "Üdv. Nem láttalak erre még."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:3100
 msgid ""
 "Yeah, I'm rather far from home\n"
 "at the moment."
-msgstr "Igen, elég távol vagyok az otthonomtól jelenleg."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:3102
 msgid "So what are you doing?"
@@ -4153,7 +4152,7 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:3132
 msgid "Hmm..."
-msgstr "Hmm..."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:3133
 msgid ""
@@ -4169,7 +4168,7 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:3135
 msgid "Bah."
-msgstr "Bah."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:3136
 msgid ""
@@ -4179,12 +4178,12 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:3139
 msgid "Of course."
-msgstr "Természetesen."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:3176
 #: ../data/level/secluded-hut-interior.cfg:317
 msgid "That's nice."
-msgstr "Ez kedves."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:3177
 msgid ""
@@ -4194,7 +4193,7 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:3180
 msgid "Sure, okay..."
-msgstr "Rendben, oké..."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:3213
 msgid ""
@@ -4349,7 +4348,7 @@ msgstr ""
 
 #: ../data/level/kitty-kitchen.cfg:402
 msgid "I understand."
-msgstr "Értettem."
+msgstr ""
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:206
 msgid "Hey, man, look at you!"
@@ -4393,15 +4392,15 @@ msgstr ""
 msgid ""
 "It's an important question,\n"
 "and someone needs to look into it."
-msgstr "Ez egy fontos kérdés, \nés valakinek utána kellene járnia."
+msgstr ""
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:218
 msgid "Would that someone possibly be you?"
-msgstr "Talán lehetnél te az a valaki?"
+msgstr ""
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:220
 msgid "That is a distinct possibility."
-msgstr "Van rá némi lehetőség."
+msgstr ""
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:221
 msgid ""
@@ -4411,31 +4410,31 @@ msgstr ""
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:604
 msgid "Hey, what's new?"
-msgstr "Hé, mi újság?"
+msgstr ""
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:605
 msgid "Oh, just cleaning up after that ruckus."
-msgstr "Oh, csak rendet rakok a felfordulás után."
+msgstr ""
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:606
 msgid "So nice to have things back to normal."
-msgstr "Olyan jó, hogy minden a\nmegszokott szerint megy."
+msgstr ""
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:608
 msgid "You bet."
-msgstr "Naná."
+msgstr ""
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:610
 msgid ""
 "Speaking of which, am I imagining it\n"
 "or is this house actually smaller now?"
-msgstr "Ha már szóba került, most képzelődöm,\nvagy ez a ház tényleg kisebb lett?"
+msgstr ""
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:611
 msgid ""
 "Of course not.\n"
 "That's just nutty."
-msgstr "Persze, hogy nem.\nEz őrültség."
+msgstr ""
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:191
 msgid "Hey there - is everything going alright?"
@@ -4449,27 +4448,27 @@ msgstr ""
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:193
 msgid "That was really brave of you!"
-msgstr "Ez igazán bátor dolog volt tőled!"
+msgstr ""
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:195
 msgid "I'm just glad everyone's okay."
-msgstr "Én csak örülök neki, hogy mindenki épségben van."
+msgstr ""
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:197
 msgid "Where's your sibling, by the way?"
-msgstr "Hol a testvéred, egyébként?"
+msgstr ""
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:198
 msgid "At the store."
-msgstr "Az üzletnél."
+msgstr ""
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:200
 msgid "I see."
-msgstr "Értem."
+msgstr ""
 
 #: ../data/level/lobby.cfg:12
 msgid "Lobby"
-msgstr "Előcsarnok"
+msgstr ""
 
 #: ../data/level/long-plastic-hallway.cfg:287
 msgid "A Long Plastic Hallway"
@@ -4477,7 +4476,7 @@ msgstr ""
 
 #: ../data/level/main-map.cfg:398
 msgid "World Map"
-msgstr "Világtérkép"
+msgstr ""
 
 #: ../data/level/milgrams-basement-junction.cfg:170
 msgid "It says, \"This leads to the cave entrance."
@@ -4493,7 +4492,7 @@ msgstr ""
 
 #: ../data/level/milgrams-basement-junction.cfg:193
 msgid "\"Still under construction, wear your hard hat!\""
-msgstr "\"Még mindig építés alatt áll, viseld a védősisakod!\""
+msgstr ""
 
 #: ../data/level/milgrams-basement-junction.cfg:212
 msgid ""
@@ -4572,7 +4571,7 @@ msgstr ""
 msgid ""
 "...\n"
 "Mother of god."
-msgstr "... \nTe jószagú Úristen!"
+msgstr ""
 
 #: ../data/level/milgrams-basement-junction.cfg:410
 msgid ""
@@ -4638,11 +4637,11 @@ msgstr ""
 
 #: ../data/level/milgrams-basement-junction.cfg:425
 msgid "That's an order."
-msgstr "Ez parancs."
+msgstr ""
 
 #: ../data/level/milgrams-basement-junction.cfg:428
 msgid "Fine."
-msgstr "Rendben."
+msgstr ""
 
 #: ../data/level/milgrams-basement-junction.cfg:1069
 msgid "Basement Junction"
@@ -4650,78 +4649,78 @@ msgstr ""
 
 #: ../data/level/milgrams-throne-room-entrance.cfg:409
 msgid "Milgram's Throne Room Entrance"
-msgstr "Milgram tróntermének bejárata"
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:42
 msgid "No!  You can't be..."
-msgstr "Nem! Te nem lehetsz..."
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:44
 #: ../data/level/secluded-hut-interior.cfg:314
 msgid "Hi, I'm Frogatto."
-msgstr "Hello, Frogatto vagyok."
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:55
 msgid ""
 "Oh crap, oh crap!\n"
 "Boss! He's here!"
-msgstr "Fenébe, szarban vagyunk!\nFőnök! Itt van!"
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:57
 msgid "Who's here?"
-msgstr "Ki van itt?"
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:58
 msgid ""
 "Frogatto!\n"
 "He's RIGHT HERE!"
-msgstr "Frogatto!\nPont ITT van!"
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:60
 msgid ""
 "The intruder?\n"
 "How did he get in here?"
-msgstr "A behatoló? \nHogy tudott ide bejutni?"
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:61
 msgid "We... We tried to stop him, but he's..."
-msgstr "Mi... Mi próbáltuk megállítani, de ő..."
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:63
 msgid "Why do I have to deal with everything myself?!"
-msgstr "Miért mindent nekem kell elintézni?"
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:65
 msgid "Get out of the way!"
-msgstr "Tűnj az útból!"
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:113
 msgid ""
 "Ugh!\n"
 "You do put up quite a fight!"
-msgstr "Ugh! Valóban\nkiemelkedő kihívást jelentesz!"
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:115
 msgid "Will you hear me out now?"
-msgstr "Meghallgatod mostmár a mondandómat?"
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:117
 msgid "Yes."
-msgstr "Igen."
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:119
 msgid "What was it you wanted?"
-msgstr "Mit is akartál?"
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:122
 msgid "I wanted to ask you about that incident in town."
-msgstr "Már akartalak kérdezni arról az incidensről a városban."
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:124
 msgid ""
 "Remarkable.\n"
 "I really thought you'd come here to attack me."
-msgstr "Igazán figyelemre méltó. \nKomolyan azt gondoltam, hogy azért jössz ide, hogy megtámadj."
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:126
 msgid ""
@@ -4731,19 +4730,19 @@ msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:128
 msgid "Talk it over? Like gentlemen?"
-msgstr "Megbeszélni? Mint úriemberek?"
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:130
 msgid "Yes, like gentlemen. Over tea."
-msgstr "Igen, mint úriemberek. Tea mellett."
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:137
 msgid "Wait a minute, it's you, isn't it?"
-msgstr "Várj csak, Te vagy az, nemde?"
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:139
 msgid "Yup, I'm Frogatto!"
-msgstr "Bizony, Frogatto vagyok!"
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:141
 msgid ""
@@ -4755,11 +4754,11 @@ msgstr ""
 msgid ""
 "So you're the one who's been causing\n"
 "all this trouble, eh?"
-msgstr "Ezek szerint te lennél az, aki ezt a sok gondot okozza, eh?"
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:145
 msgid "I am?"
-msgstr "Én?"
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:147
 msgid ""
@@ -4771,17 +4770,17 @@ msgstr ""
 msgid ""
 "Is there any chance I...\n"
 "can discuss something with you?"
-msgstr "Van rá valami esély, hogy... \nmeg tudjak valamit beszélni veled?"
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:151
 msgid "Sure..."
-msgstr "Persze..."
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:153
 msgid ""
 "...but the subject's going to be:\n"
 "\"What happens to trespassers.\""
-msgstr "...de a téma a következő lesz: \n\"Mi a birtokháborítók sorsa.\""
+msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:157
 msgid "Fight!"
@@ -4790,19 +4789,19 @@ msgstr ""
 #: ../data/level/milgrams-throne-room.cfg:991
 #: ../data/objects/playable/map-selector.cfg:22
 msgid "Milgram's Throne Room"
-msgstr "Milgram trónterme"
+msgstr ""
 
 #: ../data/level/moonlit-ramparts.cfg:2112
 msgid ""
 "It says, \"Careful!\n"
 "This area is extremely unfinished.\""
-msgstr "Azt írja, \"Óvatosan! \nEz a terület még nagyon nincs kész!\""
+msgstr ""
 
 #: ../data/level/moonlit-ramparts.cfg:2114
 msgid ""
 "\"Completely unsafe for pedestrian traffic!\n"
 "Workers only!\""
-msgstr "\"Gyalogos forgalom számára egyáltalán nem biztonságos! \nCsak a munkásoknak!\""
+msgstr ""
 
 #: ../data/level/moonlit-ramparts.cfg:5407
 msgid "Moonlit Ramparts"
@@ -4811,7 +4810,7 @@ msgstr ""
 #: ../data/level/new-game-screen.cfg:39
 #: ../data/level/titlescreen-difficulty-selector.cfg:39
 msgid "SELECT DIFFICULTY LEVEL:"
-msgstr "VÁLASZD KI A NEHÉZSÉGI FOKOZATOT:"
+msgstr ""
 
 #: ../data/level/north-courtyard.cfg:648
 msgid "North Courtyard"
@@ -4819,15 +4818,15 @@ msgstr ""
 
 #: ../data/level/pinecone-park.cfg:2165
 msgid "Pinecone Park"
-msgstr "Fenyőtoboz park"
+msgstr ""
 
 #: ../data/level/plagued-mine.cfg:931
 msgid "These crazy bombers are everywhere!"
-msgstr "Ezek az őrült bombázók mindenütt ott vannak!"
+msgstr ""
 
 #: ../data/level/plagued-mine.cfg:4982
 msgid "Plagued Mine"
-msgstr "Fertőzött bánya"
+msgstr ""
 
 #: ../data/level/platform-peril.cfg:1825
 msgid "Platform Peril"
@@ -4839,69 +4838,69 @@ msgstr ""
 
 #: ../data/level/rock-a-fort.cfg:1653
 msgid "Woah! A flying plant!"
-msgstr "Hű! Egy repülő virág!"
+msgstr ""
 
 #: ../data/level/rocky-roots.cfg:149
 msgid "Bleh. A locked door."
-msgstr "Bleh. Egy zárt ajtó."
+msgstr ""
 
 #: ../data/level/rocky-roots.cfg:149
 msgid "There must be a way around it."
-msgstr "Csak van egy megkerülő út."
+msgstr ""
 
 #: ../data/level/rocky-roots.cfg:2542
 msgid "Rocky Roots"
-msgstr "Köves gyökérzet"
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:315
 msgid ""
 "A pleasure to meet you.\n"
 "I am Mortimer."
-msgstr "Örülök, hogy találkoztunk.\nMortimer vagyok."
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:319
 msgid ""
 "Uhm, I hope you don't mind my asking,\n"
 "but what on earth ARE you, anyway?"
-msgstr "Öhm, remélem nem bánod, ha megkérdem,\nde mi az atyaég VAGY te, egyébként?"
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:320
 msgid "Ostensibly, I am a mole."
-msgstr "Mint látható, egy vakond."
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:322
 msgid ""
 "...\n"
 "Okay."
-msgstr "...\nRendben."
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:323
 msgid ""
 "Perhaps more importantly, I am a bit of\n"
 "an astronomer and biologist, by trade."
-msgstr "Bár ettől lényegesebb, hogy egyfajta\ncsillagász és biológus vagyok."
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:324
 msgid ""
 "That is why I live all the way up here.\n"
 "You can see quite a bit from this height."
-msgstr "Ezért lakom ilyen egész magasan. Elég\nsok minden látható ilyen magasságból."
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:326
 msgid ""
 "...and I guess you have these\n"
 "ants in cages to study them?"
-msgstr "...és gondolom ezeket a hangyákat\nazért fogtad be, hogy tanulmányozd?"
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:327
 msgid ""
 "That's right.  Unfortunately,\n"
 "my collection lacks the rarer golden ant."
-msgstr "Így van. Sajnálatos módon a \nkollekcióm nélkülözi a ritkább arany hangyát."
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:329
 msgid "Oh, what a shame."
-msgstr "Oh, milyen kár."
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:330
 msgid ""
@@ -4909,19 +4908,19 @@ msgid ""
 "If you could bring me a golden ant\n"
 "and stick it in one of my cages,\n"
 "I'd reward you handsomely."
-msgstr "Tudod, kellően jól tájékozottnak tűnsz.\nHa tudnál nekem hozni egy arany hangyát,\nés beraknád a ketrecembe, akkor\nbusás jutalomra számíthatsz!"
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:332
 msgid ""
 "Handsomely you say?\n"
 "I'm on it!"
-msgstr "Azt mondod, busás jutalom?\nMáris rajta vagyok!"
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:335
 msgid ""
 "Oh! You got the golden ant for me.\n"
 "It's beautiful, beautiful!"
-msgstr "Oh! Elhoztad nekem az arany hangyát.\nEgyszerűen gyönyörű, gyönyörű!"
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:337
 msgid ""
@@ -4983,73 +4982,73 @@ msgstr ""
 msgid ""
 "Oh my! If that's a golden ant in your stomach,\n"
 "then quick, spit it out into the cage!"
-msgstr "Jaj nekem! Ha az egy arany hangya a gyomrodban, \nakkor gyorsan köpd ki, ide a ketrecbe!"
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:352
 msgid ""
 "I don't suppose you've had any\n"
 "luck with getting a golden ant yet?"
-msgstr "Gyanítom még nem jártál sikerrel\naz arany hangyát illetően?"
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:354
 msgid ""
 "I'm working on it.\n"
 "Those things pack a pretty mean bite, you know."
-msgstr "Épp azon dolgozom.\nMit mondjak, ezek az izék tudnak csípni rendesen."
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:357
 msgid ""
 "I do hope you are enjoying exploring the island.\n"
 "There are so many wonderful creatures on it."
-msgstr "Remélem élvezed a szigetet felfedezését. \nAnnyi csodálatos teremtmény él rajta."
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:359
 msgid "... most of which seem inclined to kill me."
-msgstr "... és a legtöbbnek feltett szándéka, hogy végezzen velem."
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:643
 msgid "I say! Who's there?"
-msgstr "Nocsak! Ki van ott?"
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:1063
 #: ../data/level/secluded-hut.cfg:16
 #: ../data/objects/playable/map-selector.cfg:16
 msgid "Secluded Hut"
-msgstr "Félreeső kunyhó"
+msgstr ""
 
 #: ../data/level/secluded-hut.cfg:2208
 msgid "Are you quite alright?"
-msgstr "Minden rendben veled?"
+msgstr ""
 
 #: ../data/level/secluded-hut.cfg:2210
 msgid ""
 "Yeah.\n"
 "Who WAS that guy?!"
-msgstr "Igen.\nKi VOLT ez a fazon?"
+msgstr ""
 
 #: ../data/level/secluded-hut.cfg:2211
 msgid "One of Milgram's henchmen, no doubt."
-msgstr "Kétségkívül Milgram egyik csatlósa. "
+msgstr ""
 
 #: ../data/level/secluded-hut.cfg:2212
 msgid ""
 "They may have seen me talking to you,\n"
 "I can't be sure."
-msgstr "Lehet meglátták, hogy veled beszélek,\nnem tudom biztosan."
+msgstr ""
 
 #: ../data/level/secluded-hut.cfg:2214
 msgid "Wait, what?  Milgram?"
-msgstr "Várj, micsoda? Milgram?"
+msgstr ""
 
 #: ../data/level/secluded-hut.cfg:2216
 msgid ""
 "What's he doing\n"
 "on this side of the island?"
-msgstr "Mit keres Ő itt,\na sziget ezen oldalán?"
+msgstr ""
 
 #: ../data/level/secluded-hut.cfg:2218
 msgid "You still haven't heard, then."
-msgstr "Akkor még nem hallottad."
+msgstr ""
 
 #: ../data/level/secluded-hut.cfg:2219
 msgid ""
@@ -5069,31 +5068,31 @@ msgstr ""
 msgid ""
 "That certainly...\n"
 "changes my plans for the day."
-msgstr "Ez aztán...\nváltoztat a mai napi tervemen."
+msgstr ""
 
 #: ../data/level/secluded-hut.cfg:2224
 msgid ""
 "Wow, uhm... \n"
 "I'd sure like to help, but ...\n"
 "I just don't see what I could do."
-msgstr "Hű, öhm...\nSzívesen segítenék, de...\nNem igazán tudom, hogyan is tudnék."
+msgstr ""
 
 #: ../data/level/secluded-hut.cfg:2226
 msgid ""
 "I don't think I can promise anything,\n"
 "but if the opportunity presents itself,\n"
 "who knows?"
-msgstr "Nem hiszem, hogy ígérhetek bármit is,\nde ha a lehetőség előáll,\nki tudja?"
+msgstr ""
 
 #: ../data/level/secluded-hut.cfg:2227
 msgid ""
 "Yes, it's unreasonable to expect\n"
 "someone to just charge in there."
-msgstr "Igen, ésszerűtlen azt várni\nbárkitől is, hogy csak rontson be oda."
+msgstr ""
 
 #: ../data/level/secluded-hut.cfg:2228
 msgid "I'm at a loss for a plan, myself."
-msgstr "Jómagam is ötlet hiányában szenvedek."
+msgstr ""
 
 #: ../data/level/secluded-hut.cfg:2229
 msgid ""
@@ -5101,43 +5100,43 @@ msgid ""
 "Hopefully, we'll fix that bridge soon.\n"
 "Impressive how fast they can do that,\n"
 "with modular construction and all."
-msgstr "Mindenesetre jobb, ha megyek.\nRemélhetőleg nemsokára megjavítjuk\nazt a hídat. Lenyűgöző, hogy milyengyorsan rendbe tudják tenni akészelemeknek köszönhetően."
+msgstr ""
 
 #: ../data/level/secluded-hut.cfg:2230
 msgid ""
 "In the meantime, you might benefit from\n"
 "visiting the fellow who lives here."
-msgstr "Addig is, javadra lehet, ha el-\nlátogatsz az itt lakó fickóhoz."
+msgstr ""
 
 #: ../data/level/secluded-hut.cfg:2231
 msgid ""
 "Bit of a recluse, but he's quite sharp.\n"
 "He lives on top of this rock column."
-msgstr "Kicsit zárkózott, de elég ravasz.\nEnnek a kőpillérnek a tetején él."
+msgstr ""
 
 #: ../data/level/secluded-hut.cfg:2233
 msgid "And I get up there... how?"
-msgstr "És oda ...hogy jutok fel?"
+msgstr ""
 
 #: ../data/level/secluded-hut.cfg:2237
 msgid "Simple, just take to the air!"
-msgstr "Egyszerű, csak szárnyalj!"
+msgstr ""
 
 #: ../data/level/secluded-hut.cfg:2240
 msgid "You ... do realize I can't fly?"
-msgstr "De...ugy tisztában vagy vele,\nhogy nem tudok repülni?"
+msgstr ""
 
 #: ../data/level/splash-hop.cfg:14
 msgid "Splash, Hop"
-msgstr "Csobbanás, szökellés"
+msgstr ""
 
 #: ../data/level/starlit-cave.cfg:1056
 msgid "Starlit Cave"
-msgstr "Csillagfényes barlang"
+msgstr ""
 
 #: ../data/level/stonepipe-meadow.cfg:2796
 msgid "Stonepipe Meadow"
-msgstr "Kőfúvó mező"
+msgstr ""
 
 #: ../data/level/suboptimal-design.cfg:2605
 msgid "Suboptimal Design"
@@ -5149,19 +5148,19 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:60
 msgid "Webmaster"
-msgstr "Webmester"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:61
 msgid "Programmer • Sound and iOS Code"
-msgstr "Programozó • Hang és iOS kód"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:62
 msgid "Minor Object Scripter and Level Designer"
-msgstr "Al objektum szkripter és pálya designer"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:66
 msgid "Documentation Lead"
-msgstr "Dokumentációs vezető"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:67
 msgid "Object Scripter • Props and Achievements"
@@ -5169,24 +5168,24 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:68
 msgid "Engine Improvements"
-msgstr "Engine javítások"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:72
 msgid "Lead Programmer"
-msgstr "Vezető programozó"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:73
 msgid "Scripting Language Designer"
-msgstr "Szkriptnyelv designer"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:74 ../data/level/tea-with-milgram.cfg:97
 #: ../data/level/tea-with-milgram.cfg:109
 msgid "Object Scripter"
-msgstr "Objektum szkriptelő"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:75
 msgid "Minor Level Designer"
-msgstr "Al-pályadesigner"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:78
 msgid "Artist • Props"
@@ -5202,11 +5201,11 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:96
 msgid "Level Designer • forest, cave, and dungeon levels"
-msgstr "Pályatervezés  • erdő, barlang és kazamata pályák"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:102
 msgid "Programmer • Engine Development and Improvement"
-msgstr "Programozó • Engine fejlesztés és javítás"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:103
 msgid "User Interface Code"
@@ -5218,15 +5217,15 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:105
 msgid "Android Port"
-msgstr "Android port"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:108
 msgid "Translation Coordinator"
-msgstr "Fordítás koordinátor"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:110
 msgid "Bug Fixer"
-msgstr "Hibák javítása"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:114
 msgid "Translation Code"
@@ -5246,19 +5245,19 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:120
 msgid "Bug Reports/Fixes"
-msgstr "Hiba jelentések/javítások"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:121
 msgid "Technical Advice"
-msgstr "Technikai tanácsadás"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:122
 msgid "Level Design and Object Scripting"
-msgstr "Pálya design és objektum szkriptelés"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:123
 msgid "Devil's Advocacy"
-msgstr "Az Ördög képviselete"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:126
 msgid "Programmer, Lead Content Wrangler and Lead Object Scripter"
@@ -5278,69 +5277,69 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:132
 msgid "Musician"
-msgstr "Zeneszerző"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:133
 msgid "Sound Effect Designer"
-msgstr "Hang effekt designer"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:137
 msgid "SPECIAL THANKS:"
-msgstr "KÜLÖN KÖSZÖNET:"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:146
 msgid "So let me get this straight..."
-msgstr "Tehát ha jól értem ezt..."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:149
 msgid ""
 "What you're saying, is that the elder\n"
 "borrowed all this money from you,"
-msgstr "Azt mondod, hogy a rangidős kölcsökérte\nezt a rengeteg pénzt tőled,"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:151
 msgid ""
 "and it was meant to be used on\n"
 "civil projects for the town?"
-msgstr "és a város javára civil\nberuházásokra lett volna?"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:153
 msgid "Exactly!"
-msgstr "Pontosan!"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:155
 msgid ""
 "In fact, I came to him with the idea.\n"
 "It was meant to be philanthropy."
-msgstr "Lényegében, én kerestem fel az ötlettel.\nEmberbarátiságot próbáltam gyakorolni."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:157
 msgid ""
 "I thought a 'mayor' would be responsible,\n"
 "but instead he's spending it all on himself!"
-msgstr "Azt hittem egy 'polgármester' talán\nfelelőségteljesebb lesz, de ehelyett\nmindet magára költi!"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:159
 msgid "And now he's refusing to repay you?"
-msgstr "Most meg nem hajlandó visszafizetni?"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:162
 msgid "That's right!"
-msgstr "Így van!"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:165
 msgid "Ouch."
-msgstr "Aú."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:167
 msgid ""
 "You know, I really think there are some big\n"
 "misunderstandings that need to get cleared up."
-msgstr "Tudod, komolyan úgy gondolom, hogy van néhány nagy \nfélreértés, amiket tisztázni kell."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:169
 msgid "Almost all of which are his fault."
-msgstr "A legtöbb a te hibádból."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:171
 msgid ""
@@ -5352,13 +5351,13 @@ msgstr ""
 msgid ""
 "He's just plain nuts.\n"
 "He's got a lot of bizarre delusions about things..."
-msgstr "Teljesen elment az esze. \nEgy csomó furcsa tévképzete van különböző dolgokról..."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:175
 msgid ""
 "...and mostly we just humor him,\n"
 "because he's pretty harmless."
-msgstr "...és többnyire csak adjuk alá a lovat, \nugyanis eléggé ártalmatlan."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:178
 msgid ""
@@ -5374,11 +5373,11 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:183
 msgid "Sounds like a perfect place for him!"
-msgstr "Tökéletes helynek tűnik számára!"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:185
 msgid "Yes, he's our official 'greeter'."
-msgstr "Igen, ő a mi hivatalos 'köszöntőnk'."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:187
 msgid ""
@@ -5395,7 +5394,7 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:191
 msgid "For starters, uh ... he's NOT our mayor."
-msgstr "Kezdetnek, uh ... ő NEM a polgármesterünk."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:194
 msgid ""
@@ -5471,25 +5470,25 @@ msgstr ""
 msgid ""
 "Yes.\n"
 "No wonder we were confused!"
-msgstr "Igen. \nNem csoda, hogy meg voltunk zavarodva."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:226
 msgid "Ah, there we are..."
-msgstr "Ah, erről van szó..."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:231
 msgid ""
 "Fetch some for our guest,\n"
 "would you, kindly?"
-msgstr "Lenne olyan szíves hozni a vendégünknek?"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:234
 msgid "So where was I?"
-msgstr "Szóval, hol tartottam?"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:236
 msgid "What did the elder actually tell you?"
-msgstr "Mit mondott neked az elöljáró?"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:242
 msgid ""
@@ -5586,7 +5585,7 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:276
 msgid "I hope they've learned a lesson from this."
-msgstr "Remélem megtanulták a leckét ebből."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:278
 msgid ""
@@ -5602,7 +5601,7 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:288
 msgid "Thank you Jeeves, that will do nicely."
-msgstr "Köszönöm Jeeves, ez így pompás."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:292
 msgid "Anyhow, I'm quite unsure where to go from here."
@@ -5628,29 +5627,29 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:302
 msgid "Would you have any suggestions?"
-msgstr "Vannak javaslataid?"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:304
 msgid "One or two."
-msgstr "Egy-kettő."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:307
 msgid ""
 "Probably the craziest and most helpful is...\n"
 "I actually think he still has that money."
-msgstr "Valószínűleg a legőrültebb és leghasznosabb az, hogy... \nÚgy gondolom még mindig nála van a pénz."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:310
 msgid ""
 "I know it sounds completely nuts,\n"
 "but I honestly think that when he was given it..."
-msgstr "Tudom, hogy teljesen eszelősen hangzik, \nde komolyan azt hiszem, hogy amikor megkapta..."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:312
 msgid ""
 "...he didn't have a clue what to do with it,\n"
 "so he just ... hid it."
-msgstr "...fogalma se volt, hogy mihez kezdjen vele, \nezért egyszerűen csak... elrejtette."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:314
 msgid ""
@@ -5666,7 +5665,7 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:318
 msgid "I ... didn't see that coming."
-msgstr "Erre ... igazán nem számítottam."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:321
 msgid ""
@@ -5694,7 +5693,7 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:330
 msgid "Incredible."
-msgstr "Hihetetlen."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:332
 msgid ""
@@ -5729,37 +5728,37 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:344
 msgid "I'm dreading the trip back."
-msgstr "A hátam közepére se kívánom a visszautat."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:346
 msgid ""
 "Really?\n"
 "Where's your ship parked?"
-msgstr "Tényleg? \nHol parkol a hajód?"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:349
 msgid ""
 "I ... didn't ... use a vehicle.\n"
 "I walked."
-msgstr "Én ... nem ... használtam járművet. Gyalog jöttem."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:352
 msgid ""
 "...\n"
 "I'm amazed that's even possible."
-msgstr "... \nEl vagyok képedve, hogy ez egyáltalán lehetséges."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:354
 msgid ""
 "I like you, little frog!\n"
 "You're quite bold."
-msgstr "Kedvellek, kicsi béka! \nElég bátor vagy."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:356
 msgid ""
 "Well, I can certainly at least\n"
 "guarantee transportation for you!"
-msgstr "Nos, biztosan tudok legalább valami szállítóeszközt garantálni számodra."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:358
 msgid ""
@@ -5776,7 +5775,7 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:363
 msgid "So ... all's well that ends well?"
-msgstr "Szóval... minden jó, ha jó a vége?"
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:365
 msgid ""
@@ -5786,11 +5785,11 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:367
 msgid "Except the elder."
-msgstr "A rangidőst leszámítva."
+msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:373
 msgid "The End"
-msgstr "Vége"
+msgstr ""
 
 #: ../data/level/test-multiplayer.cfg:127
 msgid "Staging Forest"
@@ -5798,67 +5797,67 @@ msgstr ""
 
 #: ../data/level/the-north-tower.cfg:2089
 msgid "The North Tower"
-msgstr "Az északi torony "
+msgstr ""
 
 #: ../data/level/titlescreen-arcade.cfg:61
 msgid "Each machine has a different arcade-style challenge."
-msgstr "Az egyes gépek különböző féle arcade-stílusú kihivást nyújtanak."
+msgstr ""
 
 #: ../data/level/titlescreen-arcade.cfg:89
 msgid "Show us what you can do!"
-msgstr "Mutasd, mit tudsz!"
+msgstr ""
 
 #: ../data/level/titlescreen-arcade.cfg:114
 msgid "EXIT"
-msgstr "KILÉPÉS"
+msgstr ""
 
 #: ../data/level/titlescreen-arcade.cfg:129
 #: ../data/level/titlescreen-arcade.cfg:149
 #: ../data/level/titlescreen-arcade.cfg:219
 msgid "Select a level:"
-msgstr "Válassz egy pályát:"
+msgstr ""
 
 #: ../data/level/titlescreen-arcade.cfg:133
 #: ../data/level/titlescreen-arcade.cfg:153
 #: ../data/level/titlescreen-arcade.cfg:221
 msgid "(cancel)"
-msgstr "(mégse)"
+msgstr ""
 
 #: ../data/level/titlescreen-arcade.cfg:179
 msgid "CLIMB"
-msgstr "MÁSZÁS"
+msgstr ""
 
 #: ../data/level/titlescreen-arcade.cfg:204
 msgid "RUN"
-msgstr "FUTÁS"
+msgstr ""
 
 #: ../data/level/titlescreen-arcade.cfg:220
 msgid "Coin Race"
-msgstr "Érme verseny"
+msgstr ""
 
 #: ../data/level/titlescreen-arcade.cfg:247
 msgid "COIN RACE"
-msgstr "ÉRME VERSENY"
+msgstr ""
 
 #: ../data/level/titlescreen-new-game-selector.cfg:24
 msgid "Select Save Slot:"
-msgstr "Válaszd ki a mentési helyet:"
+msgstr ""
 
 #: ../data/level/titlescreen-new-game-selector.cfg:50
 msgid "Select Difficulty:"
-msgstr "Válaszd ki a nehézséget:"
+msgstr ""
 
 #: ../data/level/titlescreen-new-game-selector.cfg:64
 #: ../data/level/titlescreen-new-game-selector.cfg:93
 #: ../data/level/titlescreen-new-game-selector.cfg:122
 #: ../data/level/titlescreen-new-game-selector.cfg:151
 msgid "empty"
-msgstr "üres"
+msgstr ""
 
 #: ../data/level/titlescreen-new-game-selector.cfg:192
 #: ../data/objects/playable/difficulty-selector.cfg:24
 msgid "Casual"
-msgstr "Laza"
+msgstr ""
 
 #: ../data/level/titlescreen-new-game-selector.cfg:220
 msgid "Challenging"
@@ -5870,11 +5869,11 @@ msgstr ""
 
 #: ../data/level/titlescreen.cfg:56
 msgid "LOAD GAME"
-msgstr "JÁTÉK BETÖLTÉSE"
+msgstr ""
 
 #: ../data/level/titlescreen.cfg:81
 msgid "NEW GAME"
-msgstr "ÚJ JÁTÉK"
+msgstr ""
 
 #: ../data/level/titlescreen.cfg:121
 msgid "Press ${LEFT_KEY} or ${RIGHT_KEY} to walk."
@@ -5890,7 +5889,7 @@ msgstr ""
 
 #: ../data/level/titlescreen.cfg:124
 msgid "Walk in front of a door or person, and press"
-msgstr "Sétálj egy ajtóhoz vagy szeméylhez és nyomd"
+msgstr ""
 
 #: ../data/level/titlescreen.cfg:125
 msgid "Press ${UP_KEY} to talk, and use things like doors."
@@ -5898,7 +5897,7 @@ msgstr ""
 
 #: ../data/level/titlescreen.cfg:125
 msgid "the button that appears to interact with them."
-msgstr "meg a megjelenő billentyűt, hogy kapcsolatba lépj vele."
+msgstr ""
 
 #: ../data/level/titlescreen.cfg:126
 msgid "Press ${JUMP_KEY} to jump."
@@ -5910,7 +5909,7 @@ msgstr ""
 
 #: ../data/level/titlescreen.cfg:166
 msgid "ARCADE"
-msgstr "ARCADE"
+msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:29
 msgid ""
@@ -5920,37 +5919,37 @@ msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:36
 msgid "Hey Nene, what's cooking?"
-msgstr "Hé Nene, mi fortyog?"
+msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:37
 msgid ""
 "I'm making a cake.\n"
 "Would you like to have some?"
-msgstr "Egy tortát készítek.\nMegszeretnéd kóstolni?"
+msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:39
 msgid "Nah, I'd better get to town."
-msgstr "Neeem, jobb, ha sietek a városba."
+msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:41
 msgid "I have serious business to attend to."
-msgstr "Komoly dolgokat kell elintéznem."
+msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:45
 msgid ""
 "Oh, well maybe before you go\n"
 "you could look at my basement."
-msgstr "Oh, nos mielőtt mész,\ntalán megnézhetnéd a pincémet."
+msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:47
 msgid "Your basement?"
-msgstr "A pincédet?"
+msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:51
 msgid ""
 "Yes, here's the key.\n"
 "There're some ants down there."
-msgstr "Igen, itt a kulcsa.\nHangyák vannak odalent."
+msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:52
 msgid ""
@@ -5987,13 +5986,13 @@ msgstr ""
 msgid ""
 "How much were you figuring on\n"
 "paying for a pest exterminator?"
-msgstr "Mennyit gondoltál fizetni egy\nkártevőírtónak?"
+msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:64
 msgid ""
 "Well sheesh, I thought you'd\n"
 "do it for free for a friend!"
-msgstr "Na mondhatom, azt hittem ingyen\nis megcsinálnád egy barátnak!"
+msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:65
 msgid ""
@@ -6006,7 +6005,7 @@ msgid ""
 "But if you're going to be like that\n"
 "I think I left a health capsule down there.\n"
 "If you can clear it out, it's yours."
-msgstr "De ha így akarsz hozzáállni,\nakkor azt hiszem lent hagytam egy\nszívkapszulát. Ha sikerül\nkitakarítanod, a Tied lehet."
+msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:65
 msgid "I might have something else for you."
@@ -6119,31 +6118,31 @@ msgstr ""
 msgid ""
 "Of course.\n"
 "I don't disappoint!"
-msgstr "Hát persze.\nNem okozok csalódást!"
+msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:115
 msgid ""
 "And thanks for the gift,\n"
 "by the way."
-msgstr "És köszönöm az ajándékot,\nmellesleg."
+msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:116
 msgid "You're welcome."
-msgstr "Szívesen."
+msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:611
 msgid "Well, dangit, this door is locked."
-msgstr "Na, a fenébe, az ajtó zárva van."
+msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:613
 msgid ""
 "Can't a guy sneak into his neighbor's\n"
 "basement uninvited these days?"
-msgstr "Nem tudom már manapság az ember\nbeosonni a szomszédja pincéjébe?"
+msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:1095
 msgid "Nene's House"
-msgstr "Nene háza"
+msgstr ""
 
 #: ../data/level/to-nenes-house.cfg:172
 msgid ""
@@ -6166,60 +6165,60 @@ msgstr ""
 
 #: ../data/level/to-nenes-house.cfg:2146
 msgid "Hah!"
-msgstr "Hah!"
+msgstr ""
 
 #: ../data/level/to-nenes-house.cfg:2147
 msgid "There's Nene's house, right up there!"
-msgstr "Ott van Nene háza, pont arra!"
+msgstr ""
 
 #: ../data/level/to-nenes-house.cfg:2158
 msgid "A moment of your time sir?"
-msgstr "Egy percre feltarthatom, uram?"
+msgstr ""
 
 #: ../data/level/to-nenes-house.cfg:2160
 msgid ""
 "Sorry, I'm off to town!\n"
 "Not interested!"
-msgstr "Sajnálom, a város felé tartok!\nNem érdekel!"
+msgstr ""
 
 #: ../data/level/to-nenes-house.cfg:2161
 msgid "But the town, you see ..."
-msgstr "De pont ez az, a város, tudja..."
+msgstr ""
 
 #: ../data/level/to-nenes-house.cfg:2163
 msgid ""
 "Not. Interested.\n"
 "Buzz off."
-msgstr "Nem. Érdekel.\nTűnj el."
+msgstr ""
 
 #: ../data/level/to-nenes-house.cfg:2165
 msgid ""
 "I don't care what you're preaching,\n"
 "go sell it to someone else."
-msgstr "Nem érdekel, miről prédkiálsz,\nmenj sózd rá másra."
+msgstr ""
 
 #: ../data/level/to-nenes-house.cfg:2166
 msgid "Very well."
-msgstr "Hát legyen akkor."
+msgstr ""
 
 #: ../data/level/to-nenes-house.cfg:2169
 msgid ""
 "Someday, those door-to-door people\n"
 "will realize that kind of hard-sell tactic\n"
 "just annoys people."
-msgstr "Egy nap majd rájönnek ezek a\nházalók, hogy ez az izomból-\nárusító technika csak megörjíti\naz embereket."
+msgstr ""
 
 #: ../data/level/to-nenes-house.cfg:2171
 msgid "The sooner, the better."
-msgstr "Minél hamarabb, annál jobb."
+msgstr ""
 
 #: ../data/level/to-nenes-house.cfg:3221
 msgid "To Nene's House"
-msgstr "Nene házához"
+msgstr ""
 
 #: ../data/level/twisted-trees.cfg:5217
 msgid "Twisted Trees"
-msgstr "Torzult fák"
+msgstr ""
 
 #: ../data/level/underground-pool.cfg:2458
 msgid ""
@@ -6309,7 +6308,7 @@ msgstr ""
 
 #: ../data/level/underground-pool.cfg:2495
 msgid "However, I cannot stress this enough:"
-msgstr "Azonban nem hangsúlyozhatom ezt eléggé:"
+msgstr ""
 
 #: ../data/level/underground-pool.cfg:2497
 msgid ""
@@ -6325,7 +6324,7 @@ msgstr ""
 
 #: ../data/level/underground-pool.cfg:2502
 msgid "Yup."
-msgstr "Aha."
+msgstr ""
 
 #: ../data/level/underground-pool.cfg:2504
 msgid ""
@@ -6384,11 +6383,11 @@ msgstr ""
 
 #: ../data/level/underground-pool.cfg:2525
 msgid "Understood, sir."
-msgstr "Érettem, uram!"
+msgstr ""
 
 #: ../data/level/underground-pool.cfg:2528
 msgid "Good."
-msgstr "Remek."
+msgstr ""
 
 #: ../data/level/underground-pool.cfg:2530
 msgid ""
@@ -6410,16 +6409,16 @@ msgstr ""
 
 #: ../data/level/underground-pool.cfg:3965
 msgid "Underground Pool"
-msgstr "Földalatti tó"
+msgstr ""
 
 #: ../data/level/wandering-passage.cfg:2653
 msgid "Wandering Passage"
-msgstr "Vándorló átjáró"
+msgstr ""
 
 #: ../data/level/watery-alley.cfg:1841
 #: ../data/objects/playable/map-selector.cfg:20
 msgid "Watery Alley"
-msgstr "Vízes sikátor"
+msgstr ""
 
 #: ../data/object_prototypes/buyable_item.cfg:19
 #: ../data/object_prototypes/buyable_item.cfg:22
@@ -6428,7 +6427,7 @@ msgstr ""
 
 #: ../data/object_prototypes/buyable_item.cfg:19
 msgid "You don't have enough money."
-msgstr "Nincs elegendő pénzed."
+msgstr ""
 
 #: ../data/object_prototypes/buyable_item.cfg:23
 msgid "Do you want to buy the ${consts.name}?"
@@ -6436,7 +6435,7 @@ msgstr ""
 
 #: ../data/object_prototypes/door.cfg:21
 msgid "Nope, it's locked."
-msgstr "Nem, zárva van."
+msgstr "Ne, zaključano je. "
 
 #: ../data/objects/effects/control/level_controller_coin_race.cfg:15
 #: ../data/objects/effects/control/level_controller_coin_race.cfg:17
@@ -6462,7 +6461,7 @@ msgstr ""
 #: ../data/objects/items/ability.cfg:8 ../data/objects/items/ability.cfg:9
 #: ../data/objects/items/ability.cfg:10
 msgid "You gained a new ability!"
-msgstr "Szereztél egy új képességet!"
+msgstr ""
 
 #: ../data/objects/items/ability.cfg:9
 msgid ""
@@ -6493,87 +6492,87 @@ msgstr ""
 msgid ""
 "You have acquired a heart capsule.\n"
 "Your maximum HP has increased by one!"
-msgstr "Szereztél egy szívkapszulát. A\nmaximális életerőd eggyel nőtt!"
+msgstr ""
 
 #: ../data/objects/items/partial_max_heart_object.cfg:11
 msgid ""
 "You've found part of a heart capsule.\n"
 "Collect another three to increase\n"
 "your maximum HP by one!"
-msgstr "Megtaláltál egy szívkapszula részt.\nGyűjts össze további hármat, hogy\neggyel növeld a maximális életerőd!"
+msgstr ""
 
 #: ../data/objects/items/partial_max_heart_object.cfg:13
 msgid ""
 "You've found part of a heart capsule.\n"
 "Collect another two to increase\n"
 "your maximum HP by one!"
-msgstr "Megtaláltál egy szívkapszula részt.\nGyűjts össze további kettőt, hogy\neggyel növeld a maximális életerőd!"
+msgstr ""
 
 #: ../data/objects/items/partial_max_heart_object.cfg:15
 msgid ""
 "You've found part of a heart capsule.\n"
 "Collect another one to increase\n"
 "your maximum HP by one!"
-msgstr "Megtaláltál egy szívkapszula részt.\nGyűjts össze még egyet, hogy\neggyel növeld a maximális életerőd!"
+msgstr ""
 
 #: ../data/objects/items/partial_max_heart_object.cfg:19
 msgid ""
 "You've collected enough parts to\n"
 "make a whole new heart capsule!\n"
 "Your maximum HP has increased by one!"
-msgstr "Elegendő részt gyűjtöttél össze\negy új szívkapszula összerakásához!A maximális életerőd eggyel nőtt!"
+msgstr ""
 
 #: ../data/objects/items/store-items/buyable_gliding_wings.cfg:5
 msgid "gliding wings"
-msgstr "siklószárnyak"
+msgstr ""
 
 #: ../data/objects/items/store-items/buyable_gliding_wings.cfg:7
 msgid ""
 "The gliding wings will allow\n"
 "you to glide through the air."
-msgstr "A siklószárnyakkal a levegőben\ntudsz siklani."
+msgstr ""
 
 #: ../data/objects/items/store-items/buyable_greater_mana_talisman.cfg:5
 msgid "greater mana talisman"
-msgstr "erősebb manatalizmán"
+msgstr ""
 
 #: ../data/objects/items/store-items/buyable_greater_mana_talisman.cfg:7
 msgid ""
 "This is a crystal talisman which\n"
 "will boost your mana recharge rate.\n"
 "This one is quite strong, but the price is steep."
-msgstr "Ez egy krisálytalizmán, amely\nfelgyorsítja a mana újratöltődésedet.\nEléggé erős darab, de az ára is az."
+msgstr ""
 
 #: ../data/objects/items/store-items/buyable_heart_container.cfg:5
 msgid "heart"
-msgstr "szív"
+msgstr ""
 
 #: ../data/objects/items/store-items/buyable_heart_container.cfg:7
 msgid ""
 "The heart will give you\n"
 "an extra health point."
-msgstr "A szív egy egységnyit gyógyít."
+msgstr ""
 
 #: ../data/objects/items/store-items/buyable_jumping_boots.cfg:7
 msgid ""
 "The power boots will\n"
 "make you jump higher."
-msgstr "Az erőbakancstól magasabbra\ntudsz ugrani."
+msgstr ""
 
 #: ../data/objects/items/store-items/buyable_lesser_mana_talisman.cfg:5
 msgid "lesser mana talisman"
-msgstr "gyengébb manatalizmán"
+msgstr ""
 
 #: ../data/objects/items/store-items/buyable_lesser_mana_talisman.cfg:7
 msgid ""
 "This is a crystal talisman which\n"
 "will boost your mana recharge rate.\n"
 "It's weak, but you can't beat the price."
-msgstr "Ez egy kristálytalizmán, amely\nfelgyorsítja a mana újratöltődésedet.\nGyenge, de az ára verhetetlen."
+msgstr ""
 
 #: ../data/objects/items/store-items/buyable_powerup_invincible.cfg:5
 msgid "invincibility crystal"
-msgstr "sérthetetlenség kristály"
+msgstr ""
 
 #: ../data/objects/items/store-items/buyable_powerup_invincible.cfg:7
 msgid ""
@@ -6581,11 +6580,11 @@ msgid ""
 "invincibility powerups. Invincibility\n"
 "powerups will make you\n"
 "invincible for a short time."
-msgstr "A sérthetetlenségkristály\nfelszabadítja a sérthetetlenség\nerőnövelőket. A sérthetetlenség\nerőnövelők hatására rövid időre\nhalhatatlanná válsz."
+msgstr ""
 
 #: ../data/objects/items/store-items/buyable_powerup_reflexes.cfg:5
 msgid "hyper crystal"
-msgstr "hiper kristály"
+msgstr ""
 
 #: ../data/objects/items/store-items/buyable_powerup_reflexes.cfg:7
 msgid ""
@@ -6594,11 +6593,11 @@ msgid ""
 "powerups will heighten your\n"
 "reflexes, making the world\n"
 "seem to slow down around you."
-msgstr "A hiperkristály felszabadítja a\nhiper erőnövelőket. A hiper\nerőnövelők hatására a reflexeid\nélesebbé válnak, körülötted a\nvilág mintha lelassulna."
+msgstr ""
 
 #: ../data/objects/items/store-items/buyable_powerup_shooting.cfg:5
 msgid "energy crystal"
-msgstr "energia kristály"
+msgstr ""
 
 #: ../data/objects/items/store-items/buyable_powerup_shooting.cfg:7
 msgid ""
@@ -6606,106 +6605,106 @@ msgid ""
 "energy powerups. Energy\n"
 "powerups will allow you\n"
 "to shoot bolts of energy."
-msgstr "Az energiakristály felszabadítja az\nenergia erőnövelőket. Az energia\nerőnövelők hatására energianyalábokat\nlövelhetsz ki. "
+msgstr ""
 
 #: ../data/objects/items/store-items/buyable_shield.cfg:7
 msgid ""
 "The energy shield protects you\n"
 "from damage when you crouch."
-msgstr "Az energiapajzs megvéd a\nsérülésektől amikor leguggol."
+msgstr ""
 
 #: ../data/objects/items/store-items/buyable_speed_boots.cfg:7
 msgid ""
 "The speed boots will make\n"
 "you faster."
-msgstr "A sebességbakkancstól gyorsabban\ntudsz haladni."
+msgstr ""
 
 #: ../data/objects/items/store-items/buyable_spit_strengthener.cfg:5
 msgid "spit strengthener"
-msgstr "köpés erősítő"
+msgstr ""
 
 #: ../data/objects/items/store-items/buyable_spit_strengthener.cfg:7
 msgid ""
 "The spit strengthener will extend\n"
 "the range you can spit."
-msgstr "A köpés erősítő megnöveli a\nköpéseid hatótávját."
+msgstr ""
 
 #: ../data/objects/items/store-items/buyable_tongue_extension.cfg:5
 msgid "tongue extender"
-msgstr "nyelvhosszabító"
+msgstr ""
 
 #: ../data/objects/items/store-items/buyable_tongue_extension.cfg:7
 msgid ""
 "The tongue extender will extend\n"
 "the length of your tongue."
-msgstr "A nyelvhosszabító megnöveszti\na nyelvednyújtásod távolságát."
+msgstr ""
 
 #: ../data/objects/items/trophy.cfg:28
 msgid ""
 "It has no special use, but hey - it's solid gold.\n"
 "That can't be bad!"
-msgstr "Nincs semmilyen haszna, de na - színarany.\nNem lehet olyan rossz!"
+msgstr ""
 
 #: ../data/objects/items/trophy.cfg:28
 msgid "You found a golden trophy!"
-msgstr "Megtaláltál egy arany trófeát!"
+msgstr ""
 
 #: ../data/objects/playable/difficulty-selector.cfg:31
 msgid "Intense"
-msgstr "Feszes"
+msgstr ""
 
 #: ../data/objects/playable/difficulty-selector.cfg:38
 msgid "Unfair"
-msgstr "Méltánytalan"
+msgstr ""
 
 #: ../data/objects/playable/map-selector.cfg:21
 msgid "Milgram's Castle"
-msgstr "Milgram vára"
+msgstr ""
 
 #: ../data/objects/props-interactive/misc/save_toilet.cfg:16
 #: ../data/objects/props-interactive/portals/dungeon_save_door.cfg:13
 #: ../data/objects/props-interactive/portals/world_1_interior_save_door.cfg:12
 msgid "The game has been saved."
-msgstr "A játék elmentve."
+msgstr ""
 
 #: ../data/objects/props-interactive/npcs/chopple_npc.cfg:6
 msgid "Hi, Chopple."
-msgstr "Hello, Chopple."
+msgstr ""
 
 #: ../data/objects/props-interactive/npcs/chopple_npc.cfg:7
 msgid ""
 "Hey.\n"
 "Welcome to the store."
-msgstr "Hé!\nÜdv az üzletben."
+msgstr ""
 
 #: ../data/objects/props-interactive/npcs/chopple_npc.cfg:8
 msgid "Take your time, look around."
-msgstr "Ne siess, nyugodtan nézz körbe."
+msgstr ""
 
 #: ../data/preload.cfg:6
 msgid "Loading textures."
-msgstr "Textúrák betöltése."
+msgstr ""
 
 #: ../data/preload.cfg:11
 msgid "Loading textures.."
-msgstr "Textúrák betöltése.."
+msgstr ""
 
 #: ../data/preload.cfg:16
 msgid "Loading textures..."
-msgstr "Textúrák betöltése..."
+msgstr ""
 
 #: ../data/preload.cfg:21
 msgid "Loading Frogatto character"
-msgstr "Frogatto karakter betöltése"
+msgstr ""
 
 #: ../iOS_APP_STORE_METADATA:15
 msgid "- OpenFeint and Achievement support"
-msgstr "- OpenFeint és Achievement támogatás"
+msgstr ""
 
 #: ../iOS_CHANGELOG:19
 msgid "Fixed The Long Haul (arcade level)"
-msgstr "A Hosszú menet kijavítva (arcade pálya)"
+msgstr ""
 
 #: ../iOS_CHANGELOG:20
 msgid "Fixed instructions on titlescreen"
-msgstr "Üdvözlőképernyőn az utasítások kijavítva."
+msgstr ""
