@@ -1,3 +1,5 @@
+#To run: ". bash_autocomplete.sh". The period and space is very, very important. ./ won't work.
+
 set -e
 set -u
 
@@ -14,6 +16,7 @@ else
 	fi
 fi
 
+. ${relative_file}
 sudo rm -f /etc/bash_completion.d/frogatto
 sudo ln ${relative_file} /etc/bash_completion.d/frogatto
-echo -e "\e[00;32mSuccess:\e[00m Tab completion installed. Please restart your console or run '. ${relative_file}'."
+echo -e "\e[00;32mSuccess:\e[00m Tab completion installed."

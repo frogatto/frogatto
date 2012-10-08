@@ -1,3 +1,4 @@
+#Note: Do not invoke this script directly, rather, use ". bash_autocomplete_setup.sh".
 _frogatto() 
 {
     local cur prev opts
