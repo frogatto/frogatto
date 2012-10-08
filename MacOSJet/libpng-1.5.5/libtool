@@ -2,7 +2,7 @@
 
 # libtool - Provide generalized library-building support services.
 # Generated automatically by config.status (libpng) 1.5.5
-# Libtool was configured on host richard-ketterings-macbook.local:
+# Libtool was configured on host MacBook.local:
 # NOTE: Changes made to this file will be lost: look at ltmain.sh.
 #
 #   Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005,
@@ -87,13 +87,13 @@ fast_install=needless
 
 # The host system.
 host_alias=
-host=x86_64-apple-darwin11.1.0
-host_os=darwin11.1.0
+host=x86_64-apple-darwin12.1.0
+host_os=darwin12.1.0
 
 # The build system.
 build_alias=
-build=x86_64-apple-darwin11.1.0
-build_os=darwin11.1.0
+build=x86_64-apple-darwin12.1.0
+build_os=darwin12.1.0
 
 # A BSD- or MS-compatible name lister.
 NM="/usr/bin/nm"
@@ -272,7 +272,7 @@ finish_eval=""
 hardcode_into_libs=no
 
 # Compile-time system search path for libraries.
-sys_lib_search_path_spec="/usr/llvm-gcc-4.2/lib/gcc/i686-apple-darwin11/4.2.1/x86_64 /Developer/usr/llvm-gcc-4.2/lib/gcc/i686-apple-darwin11/4.2.1/x86_64 /usr/lib/gcc/i686-apple-darwin11/4.2.1/x86_64 /usr/lib/i686-apple-darwin11/4.2.1 /usr/lib /usr/llvm-gcc-4.2/lib/gcc /usr/llvm-gcc-4.2/lib /Developer/usr/llvm-gcc-4.2/lib  /usr/local/lib"
+sys_lib_search_path_spec="/usr/llvm-gcc-4.2/lib/gcc/i686-apple-darwin11/4.2.1/x86_64 /Applications/Xcode.app/Contents/Developer/usr/llvm-gcc-4.2/lib/gcc/i686-apple-darwin11/4.2.1/x86_64 /usr/lib /usr/llvm-gcc-4.2/lib/gcc /usr/llvm-gcc-4.2/lib /Applications/Xcode.app/Contents/Developer/usr/llvm-gcc-4.2/lib  /usr/local/lib"
 
 # Run-time system search path for libraries.
 sys_lib_dlsearch_path_spec="/usr/local/lib /lib /usr/lib"

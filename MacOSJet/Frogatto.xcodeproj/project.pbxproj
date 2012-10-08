@@ -96,7 +96,7 @@
 		C010C794160AFD4D006E7D90 /* http_client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C66C160AFD4C006E7D90 /* http_client.cpp */; };
 		C010C796160AFD4D006E7D90 /* i18n.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C670160AFD4C006E7D90 /* i18n.cpp */; };
 		C010C797160AFD4D006E7D90 /* image_widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C672160AFD4C006E7D90 /* image_widget.cpp */; };
-		C010C798160AFD4D006E7D90 /* IMG_savepng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C675160AFD4C006E7D90 /* IMG_savepng.cpp */; };
+		C010C798160AFD4D006E7D90 /* IMG_savepng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C675160AFD4C006E7D90 /* IMG_savepng.cpp */; settings = {COMPILER_FLAGS = "-DIMPLEMENT_SAVE_PNG"; }; };
 		C010C799160AFD4D006E7D90 /* input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C677160AFD4C006E7D90 /* input.cpp */; };
 		C010C79A160AFD4D006E7D90 /* iphone_controls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C679160AFD4C006E7D90 /* iphone_controls.cpp */; };
 		C010C79D160AFD4D006E7D90 /* joystick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C67F160AFD4C006E7D90 /* joystick.cpp */; };
@@ -188,9 +188,7 @@
 		C010C811160B0688006E7D90 /* SDL_image.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C010C5AB160AFC60006E7D90 /* SDL_image.framework */; };
 		C010C812160B068B006E7D90 /* SDL_mixer.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C010C5AC160AFC60006E7D90 /* SDL_mixer.framework */; };
 		C010C82C160C69BB006E7D90 /* SDL_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C010C82B160C69BB006E7D90 /* SDL_ttf.framework */; };
-		C010C834160C6B3E006E7D90 /* libpng12.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C010C830160C6B3E006E7D90 /* libpng12.0.dylib */; };
 		C010C835160C750C006E7D90 /* SDL_ttf.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C010C82B160C69BB006E7D90 /* SDL_ttf.framework */; };
-		C010C836160C7521006E7D90 /* libpng12.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C010C830160C6B3E006E7D90 /* libpng12.0.dylib */; };
 		C0EF2A5616215F78004CD227 /* libboost_iostreams.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0EF2A5316215F78004CD227 /* libboost_iostreams.dylib */; };
 		C0EF2A5716215F78004CD227 /* libboost_regex.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0EF2A5416215F78004CD227 /* libboost_regex.dylib */; };
 		C0EF2A5816215F78004CD227 /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0EF2A5516215F78004CD227 /* libboost_system.dylib */; };
@@ -199,6 +197,8 @@
 		C0EF2A5C16222978004CD227 /* libboost_system.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C0EF2A5516215F78004CD227 /* libboost_system.dylib */; };
 		C0EF2A5E16229160004CD227 /* libGLEW.1.9.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0EF2A5D16229160004CD227 /* libGLEW.1.9.0.dylib */; };
 		C0EF2A5F1622918D004CD227 /* libGLEW.1.9.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C0EF2A5D16229160004CD227 /* libGLEW.1.9.0.dylib */; };
+		C0EF2A6A1622DC81004CD227 /* libpng15.15.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0EF2A691622DC81004CD227 /* libpng15.15.dylib */; };
+		C0EF2A6B1622DCF7004CD227 /* libpng15.15.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C0EF2A691622DC81004CD227 /* libpng15.15.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -208,11 +208,11 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				C0EF2A6B1622DCF7004CD227 /* libpng15.15.dylib in CopyFiles */,
 				C0EF2A5F1622918D004CD227 /* libGLEW.1.9.0.dylib in CopyFiles */,
 				C0EF2A5A1622296E004CD227 /* libboost_iostreams.dylib in CopyFiles */,
 				C0EF2A5B16222973004CD227 /* libboost_regex.dylib in CopyFiles */,
 				C0EF2A5C16222978004CD227 /* libboost_system.dylib in CopyFiles */,
-				C010C836160C7521006E7D90 /* libpng12.0.dylib in CopyFiles */,
 				C010C810160B0686006E7D90 /* SDL.framework in CopyFiles */,
 				C010C812160B068B006E7D90 /* SDL_mixer.framework in CopyFiles */,
 				C010C835160C750C006E7D90 /* SDL_ttf.framework in CopyFiles */,
@@ -602,11 +602,11 @@
 		C010C7FE160AFD82006E7D90 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; name = images; path = ../images; sourceTree = "<group>"; };
 		C010C7FF160AFD82006E7D90 /* modules */ = {isa = PBXFileReference; lastKnownFileType = folder; name = modules; path = ../modules; sourceTree = "<group>"; };
 		C010C82B160C69BB006E7D90 /* SDL_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL_ttf.framework; sourceTree = "<group>"; };
-		C010C830160C6B3E006E7D90 /* libpng12.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpng12.0.dylib; sourceTree = "<group>"; };
 		C0EF2A5316215F78004CD227 /* libboost_iostreams.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libboost_iostreams.dylib; sourceTree = "<group>"; };
 		C0EF2A5416215F78004CD227 /* libboost_regex.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libboost_regex.dylib; sourceTree = "<group>"; };
 		C0EF2A5516215F78004CD227 /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libboost_system.dylib; sourceTree = "<group>"; };
 		C0EF2A5D16229160004CD227 /* libGLEW.1.9.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libGLEW.1.9.0.dylib; sourceTree = "<group>"; };
+		C0EF2A691622DC81004CD227 /* libpng15.15.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpng15.15.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -621,11 +621,11 @@
 				C010C5B3160AFC60006E7D90 /* SDL_image.framework in Frameworks */,
 				C010C5B4160AFC60006E7D90 /* SDL_mixer.framework in Frameworks */,
 				C010C82C160C69BB006E7D90 /* SDL_ttf.framework in Frameworks */,
-				C010C834160C6B3E006E7D90 /* libpng12.0.dylib in Frameworks */,
 				C0EF2A5616215F78004CD227 /* libboost_iostreams.dylib in Frameworks */,
 				C0EF2A5716215F78004CD227 /* libboost_regex.dylib in Frameworks */,
 				C0EF2A5816215F78004CD227 /* libboost_system.dylib in Frameworks */,
 				C0EF2A5E16229160004CD227 /* libGLEW.1.9.0.dylib in Frameworks */,
+				C0EF2A6A1622DC81004CD227 /* libpng15.15.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -689,11 +689,11 @@
 		C010C5A5160AFC60006E7D90 /* External Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C0EF2A691622DC81004CD227 /* libpng15.15.dylib */,
 				C0EF2A5D16229160004CD227 /* libGLEW.1.9.0.dylib */,
 				C0EF2A5316215F78004CD227 /* libboost_iostreams.dylib */,
 				C0EF2A5416215F78004CD227 /* libboost_regex.dylib */,
 				C0EF2A5516215F78004CD227 /* libboost_system.dylib */,
-				C010C830160C6B3E006E7D90 /* libpng12.0.dylib */,
 				C010C5B6160AFC7C006E7D90 /* libz.dylib */,
 				C010C82B160C69BB006E7D90 /* SDL_ttf.framework */,
 				C010C5AA160AFC60006E7D90 /* SDL.framework */,
@@ -1384,6 +1384,7 @@
 					"\"$(SRCROOT)/dylibs\"",
 				);
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Resources/Frogatto-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
@@ -1418,6 +1419,7 @@
 					"\"$(SRCROOT)/dylibs\"",
 				);
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Resources/Frogatto-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
