@@ -1,0 +1,298 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C010C572160AFAD9006E7D90 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C010C571160AFAD9006E7D90 /* Cocoa.framework */; };
+		C010C57C160AFAD9006E7D90 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C010C57A160AFAD9006E7D90 /* InfoPlist.strings */; };
+		C010C57E160AFADA006E7D90 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C010C57D160AFADA006E7D90 /* main.m */; };
+		C010C582160AFADA006E7D90 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = C010C580160AFADA006E7D90 /* Credits.rtf */; };
+		C010C585160AFADA006E7D90 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C010C584160AFADA006E7D90 /* AppDelegate.m */; };
+		C010C588160AFADA006E7D90 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = C010C586160AFADA006E7D90 /* MainMenu.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		C010C56D160AFAD9006E7D90 /* Frogatto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Frogatto.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C010C571160AFAD9006E7D90 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		C010C574160AFAD9006E7D90 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		C010C575160AFAD9006E7D90 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		C010C576160AFAD9006E7D90 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C010C579160AFAD9006E7D90 /* Frogatto-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Frogatto-Info.plist"; sourceTree = "<group>"; };
+		C010C57B160AFAD9006E7D90 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C010C57D160AFADA006E7D90 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C010C57F160AFADA006E7D90 /* Frogatto-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Frogatto-Prefix.pch"; sourceTree = "<group>"; };
+		C010C581160AFADA006E7D90 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		C010C583160AFADA006E7D90 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		C010C584160AFADA006E7D90 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		C010C587160AFADA006E7D90 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C010C56A160AFAD9006E7D90 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C010C572160AFAD9006E7D90 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C010C562160AFAD9006E7D90 = {
+			isa = PBXGroup;
+			children = (
+				C010C577160AFAD9006E7D90 /* Frogatto */,
+				C010C570160AFAD9006E7D90 /* Frameworks */,
+				C010C56E160AFAD9006E7D90 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C010C56E160AFAD9006E7D90 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C010C56D160AFAD9006E7D90 /* Frogatto.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C010C570160AFAD9006E7D90 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C010C571160AFAD9006E7D90 /* Cocoa.framework */,
+				C010C573160AFAD9006E7D90 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C010C573160AFAD9006E7D90 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C010C574160AFAD9006E7D90 /* AppKit.framework */,
+				C010C575160AFAD9006E7D90 /* CoreData.framework */,
+				C010C576160AFAD9006E7D90 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		C010C577160AFAD9006E7D90 /* Frogatto */ = {
+			isa = PBXGroup;
+			children = (
+				C010C583160AFADA006E7D90 /* AppDelegate.h */,
+				C010C584160AFADA006E7D90 /* AppDelegate.m */,
+				C010C586160AFADA006E7D90 /* MainMenu.xib */,
+				C010C578160AFAD9006E7D90 /* Supporting Files */,
+			);
+			path = Frogatto;
+			sourceTree = "<group>";
+		};
+		C010C578160AFAD9006E7D90 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C010C579160AFAD9006E7D90 /* Frogatto-Info.plist */,
+				C010C57A160AFAD9006E7D90 /* InfoPlist.strings */,
+				C010C57D160AFADA006E7D90 /* main.m */,
+				C010C57F160AFADA006E7D90 /* Frogatto-Prefix.pch */,
+				C010C580160AFADA006E7D90 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C010C56C160AFAD9006E7D90 /* Frogatto */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C010C58B160AFADA006E7D90 /* Build configuration list for PBXNativeTarget "Frogatto" */;
+			buildPhases = (
+				C010C569160AFAD9006E7D90 /* Sources */,
+				C010C56A160AFAD9006E7D90 /* Frameworks */,
+				C010C56B160AFAD9006E7D90 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Frogatto;
+			productName = Frogatto;
+			productReference = C010C56D160AFAD9006E7D90 /* Frogatto.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C010C564160AFAD9006E7D90 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0440;
+				ORGANIZATIONNAME = "Richard Kettering";
+			};
+			buildConfigurationList = C010C567160AFAD9006E7D90 /* Build configuration list for PBXProject "Frogatto" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = C010C562160AFAD9006E7D90;
+			productRefGroup = C010C56E160AFAD9006E7D90 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C010C56C160AFAD9006E7D90 /* Frogatto */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C010C56B160AFAD9006E7D90 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C010C57C160AFAD9006E7D90 /* InfoPlist.strings in Resources */,
+				C010C582160AFADA006E7D90 /* Credits.rtf in Resources */,
+				C010C588160AFADA006E7D90 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C010C569160AFAD9006E7D90 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C010C57E160AFADA006E7D90 /* main.m in Sources */,
+				C010C585160AFADA006E7D90 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		C010C57A160AFAD9006E7D90 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C010C57B160AFAD9006E7D90 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		C010C580160AFADA006E7D90 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C010C581160AFADA006E7D90 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		C010C586160AFADA006E7D90 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C010C587160AFADA006E7D90 /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C010C589160AFADA006E7D90 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		C010C58A160AFADA006E7D90 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		C010C58C160AFADA006E7D90 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Frogatto/Frogatto-Prefix.pch";
+				INFOPLIST_FILE = "Frogatto/Frogatto-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		C010C58D160AFADA006E7D90 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Frogatto/Frogatto-Prefix.pch";
+				INFOPLIST_FILE = "Frogatto/Frogatto-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C010C567160AFAD9006E7D90 /* Build configuration list for PBXProject "Frogatto" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C010C589160AFADA006E7D90 /* Debug */,
+				C010C58A160AFADA006E7D90 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C010C58B160AFADA006E7D90 /* Build configuration list for PBXNativeTarget "Frogatto" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C010C58C160AFADA006E7D90 /* Debug */,
+				C010C58D160AFADA006E7D90 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C010C564160AFAD9006E7D90 /* Project object */;
+}
