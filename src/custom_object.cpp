@@ -4439,7 +4439,6 @@ rect custom_object::platform_rect_at(int xpos) const
 	const int pos = (xpos - area.x())*1024;
 	const int seg_width = (area.w()*1024)/(platform_offsets_.size()-1);
 	const size_t segment = pos/seg_width;
-	ASSERT_GE(segment, 0);
 	ASSERT_LT(segment, platform_offsets_.size()-1);
 
 	const int partial = pos%seg_width;
