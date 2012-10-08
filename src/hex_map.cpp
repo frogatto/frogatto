@@ -63,13 +63,21 @@ hex_map::hex_map(variant node)
 void hex_map::draw() const
 {
 #if defined(USE_GLES2)
-	gles2::manager manager(shader_);
+#ifndef NO_EDITOR
+	try {
 #endif
-	foreach(const hex_tile_row& row, tiles_) {
-		foreach(const hex_object_ptr& col, row) {
-			col->draw();
+		gles2::manager manager(shader_);
+#endif
+		foreach(const hex_tile_row& row, tiles_) {
+			foreach(const hex_object_ptr& col, row) {
+				col->draw();
+			}
 		}
+#if defined(USE_GLES2) && !defined(NO_EDITOR)
+	} catch(validation_failure_exception& e) {
+		gles2::shader::set_runtime_error("HEX MAP SHADER ERROR: " + e.msg);
 	}
+#endif
 }
 
 void hex_map::build()

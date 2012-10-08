@@ -312,6 +312,11 @@ void code_editor_dialog::process()
 		try {
 			custom_object::reset_current_debug_error();
 
+#if defined(USE_GLES2)
+			gles2::shader::get_and_clear_runtime_error();
+#endif
+
+
 			if(strstr(fname_.c_str(), "/tiles/")) {
 				std::cerr << "INIT TILE MAP\n";
 
@@ -366,6 +371,14 @@ void code_editor_dialog::process()
 		error_label_->set_text("Runtime Error");
 		error_label_->set_tooltip(*custom_object::current_debug_error());
 	}
+
+#if defined(USE_GLES2)
+	const std::string shader_error = gles2::shader::get_and_clear_runtime_error();
+	if(shader_error != "") {
+		error_label_->set_text("Runtime Shader Error");
+		error_label_->set_tooltip(shader_error);
+	}
+#endif
 
 	const bool show_replace = editor_->has_search_matches();
 	replace_label_->set_visible(show_replace);

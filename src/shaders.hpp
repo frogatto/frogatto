@@ -18,6 +18,9 @@ namespace gles2
 class shader 
 {
 public:
+	static void set_runtime_error(const std::string& msg);
+	static std::string get_and_clear_runtime_error();
+
 	shader() : type_(0), shader_(0)
 	{}
 	explicit shader(GLenum type, const std::string& name, const std::string& code);

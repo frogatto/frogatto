@@ -20,6 +20,25 @@
 
 namespace gles2 {
 
+namespace {
+std::string current_error;
+}
+
+void shader::set_runtime_error(const std::string& msg)
+{
+	current_error = msg;
+	if(msg == "") {
+		current_error = "UNKNOWN SHADER ERROR";
+	}
+}
+
+std::string shader::get_and_clear_runtime_error()
+{
+	const std::string result = current_error;
+	current_error = "";
+	return result;
+}
+
 shader::shader(GLenum type, const std::string& name, const std::string& code)
 	: type_(type), shader_(0), name_(name)
 {

@@ -835,6 +835,9 @@ void custom_object::draw(int xx, int yy) const
 	}
 
 #if defined(USE_GLES2)
+#ifndef NO_EDITOR
+	try {
+#endif
 	for(size_t n = 0; n < type_->effects().size(); ++n) {
 		if(effects_[n]->zorder() < 0) {
 			gles2::manager gles2_manager(effects_[n]);
@@ -1001,6 +1004,14 @@ void custom_object::draw(int xx, int yy) const
 #endif
 		}
 	}
+
+#if defined(USE_GLES2) && !defined(NO_EDITOR)
+	//catch errors that result from bad shaders etc while in the editor.
+	} catch(validation_failure_exception& e) {
+		gles2::shader::set_runtime_error("HEX MAP SHADER ERROR: " + e.msg);
+	}
+#endif
+
 	if(use_absolute_screen_coordinates_) {
 		glPopMatrix();
 	}
