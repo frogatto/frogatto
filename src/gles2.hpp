@@ -56,8 +56,42 @@ void glColor4ub_1(GLubyte red, GLubyte green, GLubyte blue, GLubyte alpha);
 #endif
 
 namespace gles2 {
+	class fixed_program : public program
+	{
+	public:
+		fixed_program();
+		explicit fixed_program(const std::string& name, const shader& vs, const shader& fs);
+		virtual ~fixed_program()
+		{}
+		virtual void vertex_array(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr);
+		virtual void texture_array(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr);
+		virtual void color_array(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr);
+
+		virtual void set_fixed_attributes(const variant& node);
+		static void add_shader(const std::string& program_name, 
+			const shader& v_shader, 
+			const shader& f_shader, 
+			const variant& prog);
+	private:
+		typedef std::vector<GLfloat> gl_attribute;
+		typedef boost::shared_ptr<gl_attribute> attribute_ptr;
+		typedef boost::shared_ptr<const gl_attribute> const_attribute_ptr;
+		std::map<GLint, const_attribute_ptr> saved_attributes;
+
+		// Same cached variables to speed things up.
+		GLint vtx_coord_;
+		GLint tex_coord_[2];
+		GLint col_coord_;
+	};
+
+	typedef boost::intrusive_ptr<fixed_program> fixed_program_ptr;
+	typedef boost::intrusive_ptr<const fixed_program> const_fixed_program_ptr;
+
 	shader_ptr get_tex_shader();
+	shader_ptr get_texcol_shader();
 	shader_ptr get_simple_shader();
+	shader_ptr get_simple_col_shader();
+	
 	shader_ptr active_shader();
 
 	struct manager

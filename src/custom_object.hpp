@@ -372,9 +372,11 @@ private:
 	//at the end of every cycle.
 	int fall_through_platforms_;
 
-	//current shader we're using to draw with.
 #ifdef USE_GLES2
+	//current shader we're using to draw with.
 	gles2::shader_ptr shader_;
+	// List of shader effects to run.
+	std::vector<gles2::shader_ptr> effects_;
 #endif
 
 	bool always_active_;

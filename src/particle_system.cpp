@@ -571,13 +571,18 @@ void simple_particle_system::draw(const rect& area, const entity& e) const
 	}
 	
 #if defined(USE_GLES2)
-	gles2::active_shader()->prepare_draw();
 	if(info_.delta_a_) {
+		gles2::manager gles2_manager(gles2::get_texcol_shader());
 		gles2::active_shader()->shader()->color_array(4, GL_UNSIGNED_BYTE, GL_TRUE, 0, &carray.front());
+		gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, GL_FALSE, 0, &varray.front());
+		gles2::active_shader()->shader()->texture_array(2, GL_FLOAT, GL_FALSE, 0, &tcarray.front());
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
+	} else {
+		gles2::active_shader()->prepare_draw();
+		gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, GL_FALSE, 0, &varray.front());
+		gles2::active_shader()->shader()->texture_array(2, GL_FLOAT, GL_FALSE, 0, &tcarray.front());
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
 	}
-	gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, GL_FALSE, 0, &varray.front());
-	gles2::active_shader()->shader()->texture_array(2, GL_FLOAT, GL_FALSE, 0, &tcarray.front());
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
 #else
 	if(info_.delta_a_){
 		glEnableClientState(GL_COLOR_ARRAY);
@@ -795,7 +800,7 @@ public:
 #if defined(USE_GLES2)
 		// Not dealing with GL_POINT_SMOOTH right now -- this would probably be better as a frgament shader.
 		glPointSize(info_.dot_size);
-		gles2::manager gles2_manager(gles2::get_simple_shader());
+		gles2::manager gles2_manager(gles2::get_simple_col_shader());
 		gles2::active_shader()->shader()->vertex_array(2, GL_SHORT, GL_FALSE, 0, &vertex[0]);
 		gles2::active_shader()->shader()->color_array(4, GL_UNSIGNED_BYTE, GL_TRUE, 0, &colors[0]);
 		glDrawArrays(GL_POINTS, 0, particles_.size());

@@ -16,7 +16,7 @@ using boost::asio::ip::tcp;
 class http_client : public game_logic::formula_callable
 {
 public:
-	http_client(const std::string& host, const std::string& port, int session=-1);
+	http_client(const std::string& host, const std::string& port, int session=-1, boost::asio::io_service* service=NULL);
 	void send_request(const std::string& method_path,
 	                  const std::string& request,
 					  boost::function<void(std::string)> handler,
@@ -31,7 +31,8 @@ private:
 	
 	int session_id_;
 
-	boost::asio::io_service io_service_;
+	boost::shared_ptr<boost::asio::io_service> io_service_buf_;
+	boost::asio::io_service& io_service_;
 
 	struct Connection {
 		explicit Connection(boost::asio::io_service& serv) : socket(serv), nbytes_sent(0), expected_len(-1)

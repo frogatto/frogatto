@@ -62,6 +62,11 @@ std::map<std::string, game_type>& all_types() {
 
 extern std::string global_debug_str;
 
+void game::reload_game_types()
+{
+	all_types() = generate_game_types();
+}
+
 namespace {
 game* current_game = NULL;
 
@@ -341,6 +346,14 @@ void game::ai_play()
 void game::set_message(const std::string& msg)
 {
 	current_message_ = msg;
+}
+
+void game::process()
+{
+	if(started_) {
+		static const std::string ProcessStr = "process";
+		handle_event(ProcessStr);
+	}
 }
 
 variant game::get_value(const std::string& key) const

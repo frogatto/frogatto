@@ -97,14 +97,6 @@ void button::set_label(widget_ptr label)
 	set_dim(label_->width()+hpadding_*2,label_->height()+vpadding_*2);
 }
 
-bool button::in_button(int xloc, int yloc) const
-{
-	if(xloc > 32767) {xloc -= 65536;}
-	if(yloc > 32767) {yloc -= 65536;}
-	return xloc > x() && xloc < x() + width() &&
-	       yloc > y() && yloc < y() + height();
-}
-
 void button::handle_draw() const
 {
 	label_->set_loc(x()+width()/2 - label_->width()/2,y()+height()/2 - label_->height()/2);
@@ -122,7 +114,7 @@ bool button::handle_event(const SDL_Event& event, bool claimed)
 {
 	if((event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) 
 		&& (event.button.button == SDL_BUTTON_WHEELUP || event.button.button == SDL_BUTTON_WHEELDOWN)
-		&& in_button(event.button.x, event.button.y)) {
+		&& in_widget(event.button.x, event.button.y)) {
 		// skip processing if mousewheel event
 		return claimed;
 	}
@@ -134,14 +126,14 @@ bool button::handle_event(const SDL_Event& event, bool claimed)
 
 	if(event.type == SDL_MOUSEMOTION) {
 		const SDL_MouseMotionEvent& e = event.motion;
-		if(in_button(e.x,e.y)) {
+		if(in_widget(e.x,e.y)) {
 			current_button_image_set_ = down_ ? depressed_button_image_set_ : focus_button_image_set_;
 		} else {
 			current_button_image_set_ = normal_button_image_set_;
 		}
 	} else if(event.type == SDL_MOUSEBUTTONDOWN) {
 		const SDL_MouseButtonEvent& e = event.button;
-		if(in_button(e.x,e.y)) {
+		if(in_widget(e.x,e.y)) {
 			current_button_image_set_ = depressed_button_image_set_;
 			down_ = true;
 			claimed = true;
@@ -150,7 +142,7 @@ bool button::handle_event(const SDL_Event& event, bool claimed)
 		down_ = false;
 		const SDL_MouseButtonEvent& e = event.button;
 		if(current_button_image_set_ == depressed_button_image_set_) {
-			if(in_button(e.x,e.y)) {
+			if(in_widget(e.x,e.y)) {
 				current_button_image_set_ = focus_button_image_set_;
 				onclick_();
 				claimed = true;

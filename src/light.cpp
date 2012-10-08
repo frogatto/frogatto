@@ -131,10 +131,13 @@ void circle_light::draw(const rect& screen_area, const unsigned char* color) con
 		carray.push_back(0);
 	}
 #if defined(USE_GLES2)
-	// May need to use a frgament shader implementing phong shading here.
-	gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
-	gles2::active_shader()->shader()->color_array(4, GL_UNSIGNED_BYTE, GL_TRUE, 0, &carray.front());
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
+	{
+		gles2::manager gles2_manager(gles2::get_simple_col_shader());
+		// May need to use a frgament shader implementing phong shading here.
+		gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
+		gles2::active_shader()->shader()->color_array(4, GL_UNSIGNED_BYTE, GL_TRUE, 0, &carray.front());
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
+	}
 #else
 	glEnableClientState(GL_COLOR_ARRAY);
 	glShadeModel(GL_SMOOTH);

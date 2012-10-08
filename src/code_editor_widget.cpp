@@ -1,8 +1,10 @@
 #include "asserts.hpp"
 #include "code_editor_widget.hpp"
 #include "decimal.hpp"
+#include "formatter.hpp"
 #include "formula_tokenizer.hpp"
 #include "json_parser.hpp"
+#include "label.hpp"
 #include "string_utils.hpp"
 #include "utility_query.hpp"
 
@@ -220,6 +222,25 @@ void code_editor_widget::select_token(const std::string& row, int& begin_row, in
 			const decimal slider_value = (current_value - decimal::from_int(-slider_magnitude_)) / decimal::from_int(slider_magnitude_*2);
 			slider_->set_position(slider_value.as_float());
 
+			slider_range_.clear();
+			slider_labels_.clear();
+			if(current_value > 0) {
+				slider_range_.push_back(slider_range(0.0, 0.1, -current_value*5, -current_value));
+				slider_range_.push_back(slider_range(0.1, 0.2, -current_value, decimal(0)));
+				slider_range_.push_back(slider_range(0.2, 0.3, decimal(0), current_value));
+				slider_range_.push_back(slider_range(0.3, 0.5, decimal(0), current_value));
+				slider_range_.push_back(slider_range(0.5, 0.7, current_value, 2*current_value));
+				slider_range_.push_back(slider_range(0.7, 0.9, 2*current_value, 5*current_value));
+				slider_range_.push_back(slider_range(0.9, 1.0, 5*current_value, 10*current_value));
+				slider_range_.push_back(slider_range(1.0, 2.0, 10*current_value, 20*current_value));
+				slider_->set_position(0.5);
+			} else {
+				slider_range_.push_back(slider_range(0.0, 0.5, current_value*2, decimal(0)));
+				slider_range_.push_back(slider_range(0.5, 1.0, decimal(0), -current_value*2));
+				slider_range_.push_back(slider_range(1.0, 2.0, -current_value*2, -current_value*4));
+				slider_->set_position(0.25);
+			}
+
 			std::pair<int,int> pos = char_position_on_screen(begin_row, (begin_col+end_col)/2);
 
 			row_slider_ = begin_row;
@@ -245,6 +266,11 @@ void code_editor_widget::select_token(const std::string& row, int& begin_row, in
 			}
 	
 			slider_->set_loc(x, y);
+
+			foreach(slider_range& r, slider_range_) {
+				slider_labels_.push_back(widget_ptr(new gui::label(formatter() << r.target_begin, 10)));
+				slider_labels_.back()->set_loc(x + slider_->width()*r.begin - slider_labels_.back()->width()/2, y);
+			}
 		}
 	}
 }
@@ -256,9 +282,16 @@ void code_editor_widget::on_slider_move(double value)
 	}
 
 	std::ostringstream s;
-	value = (value - 0.5)*2.0; // normalize to [-1.0,1.0] range.
 
-	const decimal new_value(value*slider_magnitude_);
+	decimal new_value;
+	foreach(const slider_range& r, slider_range_) {
+		if(value <= r.end) {
+			const float pos = (value - r.begin)/(r.end - r.begin);
+			new_value = decimal(r.target_begin.as_float() + (r.target_end.as_float() - r.target_begin.as_float())*pos);
+			break;
+		}
+	}
+
 	if(slider_decimal_) {
 		s << new_value;
 	} else {
@@ -289,6 +322,9 @@ void code_editor_widget::handle_draw() const
 
 	if(slider_) {
 		slider_->draw();
+		foreach(widget_ptr w, slider_labels_) {
+			w->draw();
+		}
 	}
 }
 

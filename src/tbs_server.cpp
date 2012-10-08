@@ -145,12 +145,15 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 	close_ajax(socket, cli_info);
 }
 
+void server::clear_games()
+{
+	games_.clear();
+}
+
 void server::handle_message_internal(socket_ptr socket, client_info& cli_info, const variant& msg)
 {
 	const std::string& user = cli_info.user;
 	const std::string& type = msg["type"].as_string();
-
-	std::cerr << "GOT MESSAGE: '" << type << "'\n";
 
 	cli_info.last_contact = nheartbeat_;
 
@@ -165,7 +168,6 @@ void server::handle_message_internal(socket_ptr socket, client_info& cli_info, c
 		const bool game_started = cli_info.game->game_state->started();
 		const game_context context(cli_info.game->game_state.get());
 
-		std::cerr << "MESSAGE FROM " << cli_info.session_id << " -> " << cli_info.nplayer << "\n";
 		cli_info.game->game_state->handle_message(cli_info.nplayer, msg);
 		flush_game_messages(*cli_info.game);
 	}
@@ -230,7 +232,6 @@ void server::send_msg(socket_ptr socket, const std::string& msg)
 	boost::shared_ptr<std::string> str_buf(new std::string(header.empty() ? msg : (header + msg)));
 	boost::asio::async_write(*socket, boost::asio::buffer(*str_buf),
 			                         boost::bind(&server::handle_send, this, socket, _1, _2, str_buf));
-	std::cerr << "SEND MSG: " << *str_buf << "\n";
 }
 
 void server::handle_send(socket_ptr socket, const boost::system::error_code& e, size_t nbytes, boost::shared_ptr<std::string> buf)
@@ -251,7 +252,21 @@ void server::disconnect(socket_ptr socket)
 
 void server::heartbeat()
 {
-	const bool send_heartbeat = nheartbeat_++%10 == 0;
+	timer_.expires_from_now(boost::posix_time::milliseconds(100));
+	timer_.async_wait(boost::bind(&server::heartbeat, this));
+
+	foreach(game_info_ptr g, games_) {
+		g->game_state->process();
+	}
+
+	nheartbeat_++;
+	if(nheartbeat_%10 != 0) {
+		return;
+	}
+
+	sys::pump_file_modifications();
+
+	const bool send_heartbeat = nheartbeat_%100 == 0;
 
 	for(std::map<socket_ptr, std::string>::iterator i = waiting_connections_.begin(); i != waiting_connections_.end(); ++i) {
 		socket_ptr socket = i->first;
@@ -305,9 +320,6 @@ void server::heartbeat()
 	if(nheartbeat_ >= scheduled_write_) {
 		//write out the game recorded data.
 	}
-
-	timer_.expires_from_now(boost::posix_time::seconds(1));
-	timer_.async_wait(boost::bind(&server::heartbeat, this));
 }
 
 void server::schedule_write()

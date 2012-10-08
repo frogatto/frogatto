@@ -47,8 +47,6 @@ void web_server::handle_accept(socket_ptr socket, const boost::system::error_cod
 		return;
 	}
 
-	std::cerr << "RECEIVED CONNECTION. Listening " << ++nconnections << "\n";
-
 	start_receive(socket);
 	start_accept();
 }
@@ -71,7 +69,6 @@ void web_server::handle_receive(socket_ptr socket, buffer_ptr buf,
 	if(e) {
 		//TODO: handle error
 		std::cerr << "SOCKET ERROR: " << e.message() << "\n";
-		std::cerr << "CLOSESOCKA\n";
 		disconnect(socket);
 		return;
 	}
@@ -120,8 +117,6 @@ Request parse_request(const std::string& str) {
 				const std::string name(a.begin(), equal_itor);
 				const std::string value(equal_itor+1, a.end());
 				request.args[name] = value;
-
-				std::cerr << "ARG: " << name << " -> " << value << "\n";
 			}
 		}
 	}
@@ -148,8 +143,6 @@ std::map<std::string, std::string> parse_env(const std::string& str)
 
 		std::transform(key.begin(), key.end(), key.begin(), tolower);
 		env[key] = value;
-
-		std::cerr << "PARM: " << key << " -> " << value << "\n";
 	}
 
 	return env;
@@ -165,8 +158,6 @@ void web_server::handle_message(socket_ptr socket, receive_buf_ptr recv_buf)
 		disconnect(socket);
 		return;
 	}
-
-	std::cerr << "MESSAGE RECEIVED: " << msg << "\n";
 
 	if(std::equal(msg.begin(), msg.begin()+5, "POST ")) {
 
@@ -188,8 +179,6 @@ void web_server::handle_message(socket_ptr socket, receive_buf_ptr recv_buf)
 
 		const int payload_len = payload ? (msg.c_str() + msg.size() - payload) : 0;
 
-		std::cerr << "PAYLOAD: " << (payload ? payload_len : 0) << " VS " << content_length << "\n";
-		
 		if(!payload || payload_len < content_length) {
 			if(payload_len) {
 				recv_buf->wanted = msg.size() + (content_length - payload_len);
@@ -198,7 +187,6 @@ void web_server::handle_message(socket_ptr socket, receive_buf_ptr recv_buf)
 			return;
 		}
 
-		std::cerr << "POST: (((" << payload << ")))\n";
 		variant doc;
 
 		try {
@@ -249,17 +237,20 @@ void web_server::handle_message(socket_ptr socket, receive_buf_ptr recv_buf)
 
 void web_server::handle_send(socket_ptr socket, const boost::system::error_code& e, size_t nbytes, size_t max_bytes, boost::shared_ptr<std::string> buf)
 {
-	std::cerr << "SENT: " << nbytes << " / " << max_bytes << " " << e << "\n";
-		std::cerr << "CLOSESOCKF\n";
 	if(nbytes == max_bytes || e) {
 		disconnect(socket);
 	}
 }
 
-void web_server::disconnect(socket_ptr socket)
+void web_server::disconnect_socket(socket_ptr socket)
 {
 	socket->close();
 	--nconnections;
+}
+
+void web_server::disconnect(socket_ptr socket)
+{
+	disconnect_socket(socket);
 }
 
 void web_server::send_msg(socket_ptr socket, const std::string& type, const std::string& msg, const std::string& header_parms)

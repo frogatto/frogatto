@@ -19,6 +19,8 @@ public:
 	virtual ~web_server()
 	{}
 
+	static void disconnect_socket(socket_ptr socket);
+
 protected:
 	void start_accept();
 	void handle_accept(socket_ptr socket, const boost::system::error_code& error);

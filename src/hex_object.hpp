@@ -63,6 +63,11 @@ private:
 	// raw pointer to the map that owns this.
 	const hex_map* owner_map_;
 
+#ifdef USE_GLES2
+	// shader to draw tile with
+	gles2::shader_ptr shader_;
+#endif
+
 	// Private default constructor and copy constructor to stop them
 	// from being used.
 	hex_object() {}

@@ -161,7 +161,6 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 
 	unsigned char water_color[] = {a.color_[0], a.color_[1], a.color_[2], a.color_[3]};
 	
-	glBlendFunc(GL_ONE, GL_ONE);
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 	if (glBlendEquationOES) {
 		glBlendEquationOES(GL_FUNC_REVERSE_SUBTRACT_OES);
@@ -207,6 +206,7 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 #else
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
 #endif
+	glBlendFunc(GL_ONE, GL_ONE);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, sizeof(vertices)/sizeof(GLfloat)/2);
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 	if (glBlendEquationOES) {
@@ -248,13 +248,17 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 			255, 255, 255, 0,
 		};
 #if defined(USE_GLES2)
-		gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, GL_FALSE, 0, varray);
-		gles2::active_shader()->shader()->color_array(4, GL_UNSIGNED_BYTE, GL_TRUE, 0, vcolors);
+		{
+			gles2::manager gles2_manager(gles2::get_simple_col_shader());
+			gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, GL_FALSE, 0, varray);
+			gles2::active_shader()->shader()->color_array(4, GL_UNSIGNED_BYTE, GL_TRUE, 0, vcolors);
+			glDrawArrays(GL_LINE_STRIP, 0, 4);
+		}
 #else
 		glVertexPointer(2, GL_FLOAT, 0, varray);
 		glColorPointer(4, GL_UNSIGNED_BYTE, 0, vcolors);
-#endif
 		glDrawArrays(GL_LINE_STRIP, 0, 4);
+#endif
 	
 		//draw a second line, in a different color, just below the first
 		glColor4f(0.0, 0.9, 0.75, 0.5);
@@ -271,13 +275,17 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 			0, 230, 200, 0,
 		};
 #if defined(USE_GLES2)
-		gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, varray2);
-		gles2::active_shader()->shader()->color_array(4, GL_UNSIGNED_BYTE, GL_TRUE, 0, vcolors2);
+		{
+			gles2::manager gles2_manager(gles2::get_simple_col_shader());
+			gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, varray2);
+			gles2::active_shader()->shader()->color_array(4, GL_UNSIGNED_BYTE, GL_TRUE, 0, vcolors2);
+			glDrawArrays(GL_LINE_STRIP, 0, 4);
+		}
 #else
 		glVertexPointer(2, GL_FLOAT, 0, varray2);
 		glColorPointer(4, GL_UNSIGNED_BYTE, 0, vcolors2);
-#endif
 		glDrawArrays(GL_LINE_STRIP, 0, 4);
+#endif
 	}
 
 #if !defined(USE_GLES2)

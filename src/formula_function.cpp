@@ -17,6 +17,7 @@
 #include <stack>
 #include <math.h>
 
+#include "array_callable.hpp"
 #include "asserts.hpp"
 #include "compress.hpp"
 #include "dialog.hpp"
@@ -566,6 +567,38 @@ FUNCTION_DEF(fold, 2, 3, "fold(list, expr, [default]) -> value")
 	return a;
 END_FUNCTION_DEF(fold)
 
+FUNCTION_DEF(unzip, 1, 1, "unzip(list of lists) -> list of lists: Converts [[1,4],[2,5],[3,6]] -> [[1,2,3],[4,5,6]]")
+	variant item1 = args()[0]->evaluate(variables);
+	ASSERT_LOG(item1.is_list(), "unzip function arguments must be a list");
+
+	// Calculate breadth and depth of new list.
+	const int depth = item1.num_elements();
+	size_t breadth = 0;
+	for(size_t n = 0; n < item1.num_elements(); ++n) {
+		ASSERT_LOG(item1[n].is_list(), "Item " << n << " on list isn't list");
+		breadth = std::max(item1[n].num_elements(), breadth);
+	}
+
+	std::vector<std::vector<variant> > v;
+	for(size_t n = 0; n < breadth; ++n) {
+		std::vector<variant> e1;
+		e1.resize(depth);
+		v.push_back(e1);
+	}
+
+	for(size_t n = 0; n < item1.num_elements(); ++n) {
+		for(size_t m = 0; m < item1[n].num_elements(); ++m) {
+			v[m][n] = item1[n][m];
+		}
+	}
+
+	std::vector<variant> vl;
+	for(size_t n = 0; n < v.size(); ++n) {
+		vl.push_back(variant(&v[n]));
+	}
+	return variant(&vl);
+END_FUNCTION_DEF(unzip)
+
 FUNCTION_DEF(zip, 3, 3, "zip(list1, list2, expr) -> list")
 	map_formula_callable_ptr callable(new map_formula_callable(&variables));
 	variant& a = callable->add_direct_access("a");
@@ -604,6 +637,28 @@ FUNCTION_DEF(zip, 3, 3, "zip(list1, list2, expr) -> list")
 	}
 	return variant();
 END_FUNCTION_DEF(zip)
+
+FUNCTION_DEF(float_array, 1, 2, "float_array(list, (opt) num_elements) -> callable: Converts a list of floating point values into an efficiently accessible object.")
+	game_logic::formula::fail_if_static_context();
+	variant f = args()[0]->evaluate(variables);
+	int num_elems = args().size() == 1 ? 1 : args()[1]->evaluate(variables).as_int();
+	std::vector<GLfloat> floats;
+	for(size_t n = 0; n < f.num_elements(); ++n) {
+		floats.push_back(GLfloat(f[n].as_decimal().as_float()));
+	}
+	return variant(new float_array_callable(&floats, num_elems));
+END_FUNCTION_DEF(float_array)
+
+FUNCTION_DEF(short_array, 1, 2, "short_array(list) -> callable: Converts a list of integer values into an efficiently accessible object.")
+	game_logic::formula::fail_if_static_context();
+	variant s = args()[0]->evaluate(variables);
+	int num_elems = args().size() == 1 ? 1 : args()[1]->evaluate(variables).as_int();
+	std::vector<GLshort> shorts;
+	for(size_t n = 0; n < s.num_elements(); ++n) {
+		shorts.push_back(GLshort(s[n].as_int()));
+	}
+	return variant(new short_array_callable(&shorts, num_elems));
+END_FUNCTION_DEF(short_array)
 
 /* XXX Krista to be reworked
 FUNCTION_DEF(update_controls, 1, 1, "update_controls(map) : Updates the controls based on a list of id:string, pressed:bool pairs")
@@ -797,6 +852,20 @@ END_FUNCTION_DEF(sort)
 
 FUNCTION_DEF(shuffle, 1, 1, "shuffle(list) - Returns a shuffled version of the list. Like shuffling cards.")
 	variant list = args()[0]->evaluate(variables);
+	boost::intrusive_ptr<float_array_callable> f = list.try_convert<float_array_callable>();
+	if(f != NULL) {
+		std::vector<GLfloat> floats(f->floats().begin(), f->floats().end());
+		std::random_shuffle(floats.begin(), floats.end());
+		return variant(new float_array_callable(&floats));
+	}
+	
+	boost::intrusive_ptr<short_array_callable> s = list.try_convert<short_array_callable>();
+	if(s != NULL) {
+		std::vector<GLshort> shorts(s->shorts().begin(), s->shorts().end());
+		std::random_shuffle(shorts.begin(), shorts.end());
+		return variant(new short_array_callable(&shorts));
+	}
+
 	std::vector<variant> vars;
 	vars.reserve(list.num_elements());
 	for(size_t n = 0; n != list.num_elements(); ++n) {
@@ -2217,7 +2286,6 @@ bool point_in_triangle(point p, point t[3])
 }
 }
 
-
 FUNCTION_DEF(hex_get_tile_at, 3, 3, "hex_get_tile_at(hexmap, x, y) -> hex_tile object: Finds the hex tile at the given level co-ordinates")
 	// Because we assume hexes are placed at a regular series of intervals
 	variant v = args()[0]->evaluate(variables);
@@ -2229,7 +2297,26 @@ FUNCTION_DEF(hex_get_tile_at, 3, 3, "hex_get_tile_at(hexmap, x, y) -> hex_tile o
 	return variant(hexmap->get_tile_from_pixel_pos(mx, my).get());
 END_FUNCTION_DEF(hex_get_tile_at)
 
-FUNCTION_DEF(hex_tile_coords, 2, 3, "hex_tile_coords(x, y, (opt)string) -> [x,y]: Gets the center pixel co-ordinates of a given tile co-ordinate."
+FUNCTION_DEF(pixel_to_tile_coords, 1, 2, "pixel_to_tile_coords(args) -> [x,y]: Gets the tile at the pixel position given in the arguments. The position"
+	"can either be a single list of two values suck as [x,y] or two seperate x,y co-ordinates.")
+	int x, y;
+	if(args().size() == 1) {
+		variant vl = args()[0]->evaluate(variables);
+		ASSERT_LOG(vl.is_list() && vl.num_elements() == 2, "Single argument must be a list of two elements");
+		x = vl[0].as_int();
+		y = vl[1].as_int();
+	} else {
+		x = args()[0]->evaluate(variables).as_int();
+		y = args()[1]->evaluate(variables).as_int();
+	}
+	point xy = hex::hex_map::get_tile_pos_from_pixel_pos(x,y);
+	std::vector<variant> v;
+	v.push_back(variant(xy.x));
+	v.push_back(variant(xy.y));
+	return variant(&v);
+END_FUNCTION_DEF(pixel_to_tile_coords)
+
+FUNCTION_DEF(tile_to_pixel_coords, 2, 3, "tile_to_pixel_coords(x, y, (opt)string) -> [x,y]: Gets the center pixel co-ordinates of a given tile co-ordinate."
 	"string can be effect the co-ordinates returned. \"bounding\" -> [x,y,w,h] Bounding rect of the tile. \"center\" -> [x,y] center co-ordinates of the tile(default)"
 	"\"hex\" -> [[x0,y0],[x1,y1],[x2,y2],[x3,y3],[x4,y4],[x5,y5]] Co-ordinates of points around outside of the tile.")
 	const int x = args()[0]->evaluate(variables).as_int();
@@ -2260,7 +2347,7 @@ FUNCTION_DEF(hex_tile_coords, 2, 3, "hex_tile_coords(x, y, (opt)string) -> [x,y]
 		v.push_back(variant(p.y + HexTileSize/2));
 	}
 	return variant(&v);
-END_FUNCTION_DEF(hex_tile_coords)
+END_FUNCTION_DEF(tile_to_pixel_coords)
 
 FUNCTION_DEF(hex_pixel_coords, 2, 2, "hex_pixel_coords(x,y) -> [x,y]: Converts a pair of pixel co-ordinates to the corresponding tile co-ordinate.")
 	const int x = args()[0]->evaluate(variables).as_int();

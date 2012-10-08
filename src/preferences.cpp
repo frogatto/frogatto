@@ -133,7 +133,7 @@ namespace preferences {
 		bool show_fps_ = false;
 		int frame_time_millis_ = 20;
 		bool no_iphone_controls_ = false;
-		bool allow_autopause_ = true;
+		bool allow_autopause_ = false;
 
 		std::string level_path_ = "data/level/";
 		bool level_path_set_ = false;
@@ -231,7 +231,7 @@ namespace preferences {
 #ifndef PREFERENCES_PATH
 #define PREFERENCES_PATH "~/.frogatto/"
 #endif
-		bool send_stats_ = false;
+		bool send_stats_ = true;
 		bool sim_iphone_ = false;
 		bool use_joystick_ = true;
 		bool screen_rotated_ = false;
@@ -239,7 +239,7 @@ namespace preferences {
 		int virtual_screen_height_ = 600;
 		int actual_screen_width_ = 1024;
 		int actual_screen_height_ = 600;
-		bool load_compiled_ = false;
+		bool load_compiled_ = true;
 		bool use_fbo_ = true;
 		bool use_bequ_ = true;
 		bool use_16bpp_textures_ = false;

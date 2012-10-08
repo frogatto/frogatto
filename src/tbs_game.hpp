@@ -23,6 +23,7 @@ public:
 		std::string msg;
 	};
 
+	static void reload_game_types();
 	static boost::intrusive_ptr<game> create(const variant& v);
 	static game* current();
 
@@ -72,6 +73,8 @@ public:
 
 	virtual void set_as_current_game(bool set) {}
 
+	void process();
+
 protected:
 	void start_game();
 	virtual void send_game_state(int nplayer=-1);
@@ -84,6 +87,7 @@ protected:
 	int state_id() const { return state_id_; }
 
 	void set_message(const std::string& msg);
+
 
 private:
 

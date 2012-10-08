@@ -439,8 +439,6 @@ void sync_start_time(const level& lvl, boost::function<bool()> idle_fn)
 						const int player_num = receive_buf[5];
 						send_confirm_packet(player_num, msg, true);
 					}
-
-					fprintf(stderr, "RECEIVED UDP PACKET: %lu/%c\n", len, (len > 0 ? receive_buf[0] : '-'));
 				}
 			}
 

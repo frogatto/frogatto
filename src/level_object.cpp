@@ -112,7 +112,7 @@ void create_compiled_tiles_image()
 				tiles_in_sheet.push_back(0);
 				sheet_next_image_index.push_back(0);
 				sheets.push_back(graphics::surface(SDL_CreateRGBSurface(SDL_SWSURFACE, 1024, 1024, 32, SURFACE_MASK)));
-				tiles_in_sheet[sheet] += i->second;
+				tiles_in_sheet[sheet+n] += i->second;
 			}
 		} else {
 			tiles_in_sheet[sheet] += i->second;

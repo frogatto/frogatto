@@ -492,6 +492,8 @@ texture texture::get(const std::string& str, int options)
 		}
 		entry.t = result = texture(surfs, options);
 
+		fprintf(stderr, "LOADTEXTURE: %s -> %p\n", str.c_str(), result.id_.get());
+
 		texture_cache().put(str_key, entry);
 		//std::cerr << (next_power_of_2(result.width())*next_power_of_2(result.height())*2)/1024 << "KB TEXTURE " << str << ": " << result.width() << "x" << result.height() << "\n";
 	}
@@ -515,6 +517,7 @@ texture texture::get(const std::string& str, const std::string& algorithm)
 			entry.mod_time = sys::file_mod_time(entry.path);
 		}
 		entry.t = result = texture(surfs);
+		fprintf(stderr, "LOADTEXTURE: %s -> %p\n", str.c_str(), result.id_.get());
 		algorithm_texture_cache().put(k, entry);
 	}
 
@@ -536,6 +539,7 @@ texture texture::get_palette_mapped(const std::string& str, int palette)
 		if(s.get() != NULL) {
 			surfs.push_back(map_palette(s, palette));
 			entry.t = result = texture(surfs);
+			fprintf(stderr, "get palette mapped: %s, %d -> %p\n", str.c_str(), palette, result.id_.get());
 		} else {
 			std::cerr << "COULD NOT FIND IMAGE FOR PALETTE MAPPING: '" << str << "'\n";
 		}

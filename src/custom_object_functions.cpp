@@ -2243,6 +2243,23 @@ FUNCTION_DEF(module_launch, 1, 1, "module_launch(string module_id): launch the g
 	return variant(new module_launch_command(module_id));
 END_FUNCTION_DEF(module_launch)
 
+FUNCTION_DEF(eval, 1, 1, "eval(str): evaluate the given string as FFL")
+	variant s = args()[0]->evaluate(variables);
+	try {
+		const assert_recover_scope recovery_scope;
+		const_formula_ptr f(formula::create_optional_formula(s, &get_custom_object_functions_symbol_table()));
+		if(!f) {
+			return variant();
+		}
+
+		return f->execute(variables);
+	} catch(type_error&) {
+	} catch(validation_failure_exception&) {
+	}
+	std::cerr << "ERROR IN EVAL\n";
+	return variant();
+END_FUNCTION_DEF(eval)
+
 #endif // NO_MODULES
 
 class custom_object_function_symbol_table : public function_symbol_table

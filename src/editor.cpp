@@ -3275,9 +3275,12 @@ void editor::draw_gui() const
 		}
 		
 #if defined(USE_GLES2)
-		gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
-		gles2::active_shader()->shader()->color_array(4, GL_FLOAT, 0, 0, &carray.front());
-		glDrawArrays(GL_LINES, 0, varray.size()/2);
+		{
+			gles2::manager gles2_manager(gles2::get_simple_col_shader());
+			gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
+			gles2::active_shader()->shader()->color_array(4, GL_FLOAT, 0, 0, &carray.front());
+			glDrawArrays(GL_LINES, 0, varray.size()/2);
+		}
 #else
 		glEnableClientState(GL_COLOR_ARRAY);
 		glVertexPointer(2, GL_FLOAT, 0, &varray.front());

@@ -929,9 +929,15 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 	game_logic::register_formula_callable_definition("object_type", &callable_definition_);
 
 #if defined(USE_GLES2)
-	shader_.clear();
 	if(node.has_key("shader")) {
-		shader_.init(node["shader"]);
+		shader_.reset(new gles2::shader_program(node["shader"]));
+	}
+
+	if(node.has_key("effects")) {
+		effects_.clear();
+		for(size_t n = 0; n < node["effects"].num_elements(); ++n) {
+			effects_.push_back(gles2::shader_ptr(new gles2::shader_program(node["effects"][n])));
+		}
 	}
 #endif
 
