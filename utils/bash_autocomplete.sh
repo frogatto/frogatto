@@ -34,6 +34,8 @@ _frogatto()
     do
     	opts="${opts} --utility=${i}"
     done
+    
+    #echo "${COMP_WORDBREAKS}" | sed s/[\=]//
    	
     case "${prev}" in
 	"--level")
