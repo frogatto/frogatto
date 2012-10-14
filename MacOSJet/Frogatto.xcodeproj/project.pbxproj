@@ -96,7 +96,7 @@
 		C010C794160AFD4D006E7D90 /* http_client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C66C160AFD4C006E7D90 /* http_client.cpp */; };
 		C010C796160AFD4D006E7D90 /* i18n.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C670160AFD4C006E7D90 /* i18n.cpp */; };
 		C010C797160AFD4D006E7D90 /* image_widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C672160AFD4C006E7D90 /* image_widget.cpp */; };
-		C010C798160AFD4D006E7D90 /* IMG_savepng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C675160AFD4C006E7D90 /* IMG_savepng.cpp */; settings = {COMPILER_FLAGS = "-DIMPLEMENT_SAVE_PNG"; }; };
+		C010C798160AFD4D006E7D90 /* IMG_savepng.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C675160AFD4C006E7D90 /* IMG_savepng.cpp */; };
 		C010C799160AFD4D006E7D90 /* input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C677160AFD4C006E7D90 /* input.cpp */; };
 		C010C79A160AFD4D006E7D90 /* iphone_controls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C679160AFD4C006E7D90 /* iphone_controls.cpp */; };
 		C010C79D160AFD4D006E7D90 /* joystick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C67F160AFD4C006E7D90 /* joystick.cpp */; };
@@ -113,7 +113,7 @@
 		C010C7A9160AFD4D006E7D90 /* light.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C696160AFD4C006E7D90 /* light.cpp */; };
 		C010C7AA160AFD4D006E7D90 /* load_level.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C698160AFD4C006E7D90 /* load_level.cpp */; };
 		C010C7AC160AFD4D006E7D90 /* loading_screen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C69B160AFD4C006E7D90 /* loading_screen.cpp */; };
-		C010C7AD160AFD4D006E7D90 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C69D160AFD4C006E7D90 /* main.cpp */; };
+		C010C7AD160AFD4D006E7D90 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C69D160AFD4C006E7D90 /* main.cpp */; settings = {COMPILER_FLAGS = "-DIMPLEMENT_SAVE_PNG"; }; };
 		C010C7AE160AFD4D006E7D90 /* md5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C69F160AFD4C006E7D90 /* md5.cpp */; };
 		C010C7AF160AFD4D006E7D90 /* message_dialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C6A1160AFD4D006E7D90 /* message_dialog.cpp */; };
 		C010C7B0160AFD4D006E7D90 /* module.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C6A3160AFD4D006E7D90 /* module.cpp */; };
@@ -1404,6 +1404,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/dylibs\"",
 				);
+				OTHER_CFLAGS = "-DIMPLEMENT_SAVE_PNG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1439,6 +1440,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/dylibs\"",
 				);
+				OTHER_CFLAGS = "-DIMPLEMENT_SAVE_PNG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
