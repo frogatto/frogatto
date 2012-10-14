@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2012-10-07 13:05-0300\n"
-"PO-Revision-Date: 2012-10-10 02:06-0300\n"
+"PO-Revision-Date: 2012-10-12 05:09-0300\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/Frogatto/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -802,28 +802,36 @@ msgid ""
 "You're welcome, but it's a tad premature...\n"
 "I have something for you which I hope will help."
 msgstr ""
+"De nada, mas é meio cedo pra agradecer...\n"
+"Eu tenho algo aqui que talvez possa ajudar."
 
 #: ../data/level/bon-bosque.cfg:200
 msgid "Oh?"
-msgstr ""
+msgstr "Hã?"
 
 #: ../data/level/bon-bosque.cfg:201
 msgid ""
 "Yes, I've pulled a few strings,\n"
 "called in a few favors and whatnot..."
 msgstr ""
+"Sabe, eu mexi uns pauzinhos,\n"
+"pedi uns favores e por aí vai..."
 
 #: ../data/level/bon-bosque.cfg:202
 msgid ""
 "...and got my hands on a Force Talisman.\n"
 "For your use."
 msgstr ""
+"...e consegui pôr as mãos num Talismã de Força.\n"
+"Pra você usar."
 
 #: ../data/level/bon-bosque.cfg:203
 msgid ""
 "I'm not exactly sure what it will do, but\n"
 "I'm told it has somewhat of a mind of its own."
 msgstr ""
+"Não tenho certeza do que ele vai fazer,\n"
+"mas me falaram que ele age por conta própria."
 
 #: ../data/level/bon-bosque.cfg:205
 msgid "I'm not sure I understand..."
