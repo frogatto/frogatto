@@ -30,3 +30,13 @@ unset CXXFLAGS && make clean && make
 
 Chart Events Fired:
 debug_chart('events', performance().nevents),
+
+Chart all metrics:
+    debug_chart('fps', constrain(0, performance().fps, 100)),
+    debug_chart('cycles_per_second', constrain(0, performance().cycles_per_second, 100)),
+    debug_chart('delay', constrain(0, performance().delay, 100)),
+    debug_chart('draw', constrain(0, performance().draw, 100)),
+    debug_chart('process', constrain(0, performance().process, 100)),
+    debug_chart('flip', constrain(0, performance().flip, 100)),
+    debug_chart('nevents', constrain(0, performance().nevent, 100)),
+    debug_chart('time', time()%100),
