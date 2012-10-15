@@ -171,7 +171,8 @@ level::level(const std::string& level_cfg, variant node)
 	  zoom_level_(decimal::from_int(1)),
 	  palettes_used_(0),
 	  background_palette_(-1),
-	  segment_width_(0), segment_height_(0)
+	  segment_width_(0), segment_height_(0),
+	  allow_touch_controls_(true)
 {
 #ifndef NO_EDITOR
 	get_all_levels_set().insert(this);
@@ -448,6 +449,8 @@ level::level(const std::string& level_cfg, variant node)
 		data.xoffset = data.yoffset = 0;
 		data.xbase = data.ybase = 0;
 	}
+
+	allow_touch_controls_ = node["touch_controls"].as_bool(true);
 
 	const int time_taken_ms = (SDL_GetTicks() - start_time);
 	stats::entry("load", id()).set("time", variant(time_taken_ms));
@@ -1794,7 +1797,7 @@ void level::draw_status() const
 		foreach(gui_algorithm_ptr g, gui_algorithm_) {
 			g->draw(*this);
 		}
-		if(preferences::no_iphone_controls() == false) {
+		if(preferences::no_iphone_controls() == false || level::current().allow_touch_controls() == false) {
 			iphone_controls::draw();
 		}
 	}

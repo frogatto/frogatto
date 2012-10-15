@@ -362,6 +362,7 @@ public:
 
 	const std::vector<std::string>& debug_properties() const { return debug_properties_; }
 
+	bool allow_touch_controls() const { return allow_touch_controls_; }
 
 private:
 
@@ -623,6 +624,9 @@ private:
 	//A list of properties that each object in the level should display
 	//for debugging purposes.
 	std::vector<std::string> debug_properties_;
+
+	// Hack to disable the touchscreen controls for the current level -- replace for 1.4
+	bool allow_touch_controls_;
 };
 
 bool entity_in_current_level(const entity* e);
