@@ -1459,12 +1459,16 @@ FUNCTION_DEF(fire_event, 1, 3, "fire_event((optional) object target, string id, 
 	return variant(new fire_event_command(target, event, callable));
 END_FUNCTION_DEF(fire_event)
 
-FUNCTION_DEF(proto_event, 2, 2, "proto_event(prototype, event_name): for the given prototype, fire the named event. e.g. proto_event('playable', 'process')")
+FUNCTION_DEF(proto_event, 2, 3, "proto_event(prototype, event_name, (optional) arg): for the given prototype, fire the named event. e.g. proto_event('playable', 'process')")
 	const std::string proto = args()[0]->evaluate(variables).as_string();
 	const std::string event_type = args()[1]->evaluate(variables).as_string();
 	const std::string event_name = proto + "_PROTO_" + event_type;
+	const_formula_callable_ptr callable(&variables);
+	if(args().size() >= 3) {
+		callable.reset(args()[2]->evaluate(variables).as_callable());
+	}
 	ASSERT_LOG(event_depth < 100, "Infinite (or too deep?) recursion in proto_event(" << proto << ", " << event_type << ")");
-	return variant(new fire_event_command(entity_ptr(), event_name, const_formula_callable_ptr(&variables)));
+	return variant(new fire_event_command(entity_ptr(), event_name, callable));
 	
 END_FUNCTION_DEF(proto_event)
 

@@ -1,6 +1,6 @@
 /*
     SDL_mixer:  An audio mixer library based on the SDL library
-    Copyright (C) 1997-2009 Sam Lantinga
+    Copyright (C) 1997-2004 Sam Lantinga
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -20,7 +20,7 @@
     slouken@libsdl.org
 */
 
-/* $Id: SDL_mixer.h 5252 2009-11-15 09:41:26Z slouken $ */
+/* $Id: SDL_mixer.h 3278 2007-07-15 05:33:35Z slouken $ */
 
 #ifndef _SDL_MIXER_H
 #define _SDL_MIXER_H
@@ -41,7 +41,7 @@ extern "C" {
 */
 #define SDL_MIXER_MAJOR_VERSION	1
 #define SDL_MIXER_MINOR_VERSION	2
-#define SDL_MIXER_PATCHLEVEL    11
+#define SDL_MIXER_PATCHLEVEL	8
 
 /* This macro can be used to fill a version structure with the compile-time
  * version of the SDL_mixer library.
@@ -64,23 +64,6 @@ extern "C" {
    use the SDL_MIXER_VERSION() macro.
  */
 extern DECLSPEC const SDL_version * SDLCALL Mix_Linked_Version(void);
-
-typedef enum
-{
-    MIX_INIT_FLAC = 0x00000001,
-    MIX_INIT_MOD  = 0x00000002,
-    MIX_INIT_MP3  = 0x00000004,
-    MIX_INIT_OGG  = 0x00000008
-} MIX_InitFlags;
-
-/* Loads dynamic libraries and prepares them for use.  Flags should be
-   one or more flags from MIX_InitFlags OR'd together.
-   It returns the flags successfully initialized, or 0 on failure.
- */
-extern DECLSPEC int SDLCALL Mix_Init(int flags);
-
-/* Unloads libraries loaded with Mix_Init */
-extern DECLSPEC void SDLCALL Mix_Quit(void);
 
 
 /* The default mixer has 8 simultaneous mixing channels */
@@ -121,8 +104,7 @@ typedef enum {
 	MUS_MID,
 	MUS_OGG,
 	MUS_MP3,
-	MUS_MP3_MAD,
-	MUS_FLAC
+	MUS_MP3_MAD
 } Mix_MusicType;
 
 /* The internal format for a music chunk interpreted via mikmod */
@@ -162,30 +144,6 @@ extern DECLSPEC Mix_Chunk * SDLCALL Mix_QuickLoad_RAW(Uint8 *mem, Uint32 len);
 /* Free an audio chunk previously loaded */
 extern DECLSPEC void SDLCALL Mix_FreeChunk(Mix_Chunk *chunk);
 extern DECLSPEC void SDLCALL Mix_FreeMusic(Mix_Music *music);
-
-/* Get a list of chunk/music decoders that this build of SDL_mixer provides.
-   This list can change between builds AND runs of the program, if external
-   libraries that add functionality become available.
-   You must successfully call Mix_OpenAudio() before calling these functions.
-   This API is only available in SDL_mixer 1.2.9 and later.
-
-   // usage...
-   int i;
-   const int total = Mix_GetNumChunkDecoders();
-   for (i = 0; i < total; i++)
-       printf("Supported chunk decoder: [%s]\n", Mix_GetChunkDecoder(i));
-
-   Appearing in this list doesn't promise your specific audio file will
-   decode...but it's handy to know if you have, say, a functioning Timidity
-   install.
-
-   These return values are static, read-only data; do not modify or free it.
-   The pointers remain valid until you call Mix_CloseAudio().
-*/
-extern DECLSPEC int SDLCALL Mix_GetNumChunkDecoders(void);
-extern DECLSPEC const char * SDLCALL Mix_GetChunkDecoder(int index);
-extern DECLSPEC int SDLCALL Mix_GetNumMusicDecoders(void);
-extern DECLSPEC const char * SDLCALL Mix_GetMusicDecoder(int index);
 
 /* Find out the music format of a mixer music, or the currently playing
    music, if 'music' is NULL.

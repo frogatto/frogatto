@@ -34,8 +34,8 @@ public:
 	                node["y"].as_int(),
 	                node["w"].as_int(),
 	                node["h"].as_int()));
-		width_ = base_area.w()*2;
-		height_ = base_area.h()*2;
+		width_  = base_area.w()*node["scale"].as_int(2);
+		height_ = base_area.h()*node["scale"].as_int(2);
 		int nframes = node["frames"].as_int(1);
 		if(nframes < 1) {
 			nframes = 1;

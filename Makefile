@@ -23,10 +23,10 @@
 #
 
 OPTIMIZE=yes
-CCACHE?=
+CCACHE?=ccache
 USE_CCACHE?=$(shell which $(CCACHE) 2>&1 > /dev/null && echo yes)
 ifneq ($(USE_CCACHE),yes)
-CCACHE=ccache
+CCACHE=
 endif
 
 ifeq ($(OPTIMIZE),yes)

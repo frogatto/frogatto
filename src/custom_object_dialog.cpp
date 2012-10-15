@@ -546,7 +546,7 @@ void custom_object_dialog::execute_change_prototype(const std::vector<std::strin
 		remove_widget(context_menu_);
 		context_menu_.reset();
 	}
-	if(index < 0 || index >= choices.size()) {
+	if(index >= choices.size()) {
 		return;
 	}
 

@@ -1,6 +1,6 @@
 /*
     SDL - Simple DirectMedia Layer
-    Copyright (C) 1997-2012 Sam Lantinga
+    Copyright (C) 1997-2009 Sam Lantinga
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -43,7 +43,7 @@
 #ifndef DECLSPEC
 # if defined(__BEOS__) || defined(__HAIKU__)
 #  if defined(__GNUC__)
-#   define DECLSPEC
+#   define DECLSPEC	__declspec(dllexport)
 #  else
 #   define DECLSPEC	__declspec(export)
 #  endif

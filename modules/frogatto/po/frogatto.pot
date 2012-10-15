@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto v1.0.3\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-10-07 13:05-0300\n"
+"POT-Creation-Date: 2012-10-09 02:25-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,23 +49,23 @@ msgstr ""
 msgid "Achievement Unlocked!"
 msgstr ""
 
-#: ../../../src/main.cpp:682
+#: ../../../src/main.cpp:691
 msgid "Initializing custom object functions"
 msgstr ""
 
-#: ../../../src/main.cpp:684
+#: ../../../src/main.cpp:693
 msgid "Initializing textures"
 msgstr ""
 
-#: ../../../src/main.cpp:686
+#: ../../../src/main.cpp:695
 msgid "Initializing tiles"
 msgstr ""
 
-#: ../../../src/main.cpp:688 ../../../src/main.cpp:692
+#: ../../../src/main.cpp:697 ../../../src/main.cpp:701
 msgid "Initializing GUI"
 msgstr ""
 
-#: ../../../src/main.cpp:699
+#: ../../../src/main.cpp:708
 msgid "Loading level"
 msgstr ""
 

@@ -1,6 +1,6 @@
 /*
     SDL_ttf:  A companion library to SDL for working with TrueType (tm) fonts
-    Copyright (C) 1997-2009 Sam Lantinga
+    Copyright (C) 1997-2004 Sam Lantinga
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -20,7 +20,7 @@
     slouken@libsdl.org
 */
 
-/* $Id: SDL_ttf.h 5122 2009-10-17 18:16:33Z slouken $ */
+/* $Id: SDL_ttf.h 3282 2007-07-15 06:02:48Z slouken $ */
 
 /* This library is a wrapper around the excellent FreeType 2.0 library,
    available at:
@@ -42,7 +42,7 @@ extern "C" {
 */
 #define SDL_TTF_MAJOR_VERSION	2
 #define SDL_TTF_MINOR_VERSION	0
-#define SDL_TTF_PATCHLEVEL	10
+#define SDL_TTF_PATCHLEVEL	9
 
 /* This macro can be used to fill a version structure with the compile-time
  * version of the SDL_ttf library.
@@ -91,24 +91,16 @@ extern DECLSPEC TTF_Font * SDLCALL TTF_OpenFontIndex(const char *file, int ptsiz
 extern DECLSPEC TTF_Font * SDLCALL TTF_OpenFontRW(SDL_RWops *src, int freesrc, int ptsize);
 extern DECLSPEC TTF_Font * SDLCALL TTF_OpenFontIndexRW(SDL_RWops *src, int freesrc, int ptsize, long index);
 
-/* Set and retrieve the font style */
+/* Set and retrieve the font style
+   This font style is implemented by modifying the font glyphs, and
+   doesn't reflect any inherent properties of the truetype font file.
+*/
 #define TTF_STYLE_NORMAL	0x00
 #define TTF_STYLE_BOLD		0x01
 #define TTF_STYLE_ITALIC	0x02
 #define TTF_STYLE_UNDERLINE	0x04
-#define TTF_STYLE_STRIKETHROUGH	0x08
 extern DECLSPEC int SDLCALL TTF_GetFontStyle(const TTF_Font *font);
 extern DECLSPEC void SDLCALL TTF_SetFontStyle(TTF_Font *font, int style);
-extern DECLSPEC int SDLCALL TTF_GetFontOutline(const TTF_Font *font);
-extern DECLSPEC void SDLCALL TTF_SetFontOutline(TTF_Font *font, int outline);
-
-/* Set and retrieve FreeType hinter settings */
-#define TTF_HINTING_NORMAL    0
-#define TTF_HINTING_LIGHT     1
-#define TTF_HINTING_MONO      2
-#define TTF_HINTING_NONE      3
-extern DECLSPEC int SDLCALL TTF_GetFontHinting(const TTF_Font *font);
-extern DECLSPEC void SDLCALL TTF_SetFontHinting(TTF_Font *font, int hinting);
 
 /* Get the total height of the font - usually equal to point size */
 extern DECLSPEC int SDLCALL TTF_FontHeight(const TTF_Font *font);
@@ -126,10 +118,6 @@ extern DECLSPEC int SDLCALL TTF_FontDescent(const TTF_Font *font);
 /* Get the recommended spacing between lines of text for this font */
 extern DECLSPEC int SDLCALL TTF_FontLineSkip(const TTF_Font *font);
 
-/* Get/Set whether or not kerning is allowed for this font */
-extern DECLSPEC int SDLCALL TTF_GetFontKerning(const TTF_Font *font);
-extern DECLSPEC void SDLCALL TTF_SetFontKerning(TTF_Font *font, int allowed);
-
 /* Get the number of faces of the font */
 extern DECLSPEC long SDLCALL TTF_FontFaces(const TTF_Font *font);
 
@@ -137,9 +125,6 @@ extern DECLSPEC long SDLCALL TTF_FontFaces(const TTF_Font *font);
 extern DECLSPEC int SDLCALL TTF_FontFaceIsFixedWidth(const TTF_Font *font);
 extern DECLSPEC char * SDLCALL TTF_FontFaceFamilyName(const TTF_Font *font);
 extern DECLSPEC char * SDLCALL TTF_FontFaceStyleName(const TTF_Font *font);
-
-/* Check wether a glyph is provided by the font or not */
-extern DECLSPEC int SDLCALL TTF_GlyphIsProvided(const TTF_Font *font, Uint16 ch);
 
 /* Get the metrics (dimensions) of a glyph
    To understand what these metrics mean, here is a useful link:

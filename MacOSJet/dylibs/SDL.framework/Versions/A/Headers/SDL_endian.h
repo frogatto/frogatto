@@ -1,6 +1,6 @@
 /*
     SDL - Simple DirectMedia Layer
-    Copyright (C) 1997-2012 Sam Lantinga
+    Copyright (C) 1997-2009 Sam Lantinga
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -39,10 +39,6 @@
 /*@}*/
 
 #ifndef SDL_BYTEORDER	/* Not defined in SDL_config.h? */
-#ifdef __linux__
-#include <endian.h>
-#define SDL_BYTEORDER  __BYTE_ORDER
-#else /* __linux __ */
 #if defined(__hppa__) || \
     defined(__m68k__) || defined(mc68000) || defined(_M_M68K) || \
     (defined(__MIPS__) && defined(__MISPEB__)) || \
@@ -52,7 +48,6 @@
 #else
 #define SDL_BYTEORDER	SDL_LIL_ENDIAN
 #endif
-#endif /* __linux __ */
 #endif /* !SDL_BYTEORDER */
 
 
@@ -91,7 +86,7 @@ static __inline__ Uint16 SDL_Swap16(Uint16 x)
 	__asm__("rlwimi %0,%2,8,16,23" : "=&r" (result) : "0" (x >> 8), "r" (x));
 	return result;
 }
-#elif defined(__GNUC__) && (defined(__m68k__) && !defined(__mcoldfire__))
+#elif defined(__GNUC__) && (defined(__M68000__) || defined(__M68020__))
 static __inline__ Uint16 SDL_Swap16(Uint16 x)
 {
 	__asm__("rorw #8,%0" : "=d" (x) :  "0" (x) : "cc");
@@ -99,7 +94,7 @@ static __inline__ Uint16 SDL_Swap16(Uint16 x)
 }
 #else
 static __inline__ Uint16 SDL_Swap16(Uint16 x) {
-	return SDL_static_cast(Uint16, ((x<<8)|(x>>8)));
+	return((x<<8)|(x>>8));
 }
 #endif
 
@@ -126,7 +121,7 @@ static __inline__ Uint32 SDL_Swap32(Uint32 x)
 	__asm__("rlwimi %0,%2,24,0,7"   : "=&r" (result) : "0" (result),    "r" (x));
 	return result;
 }
-#elif defined(__GNUC__) && (defined(__m68k__) && !defined(__mcoldfire__))
+#elif defined(__GNUC__) && (defined(__M68000__) || defined(__M68020__))
 static __inline__ Uint32 SDL_Swap32(Uint32 x)
 {
 	__asm__("rorw #8,%0\n\tswap %0\n\trorw #8,%0" : "=d" (x) :  "0" (x) : "cc");
@@ -134,7 +129,7 @@ static __inline__ Uint32 SDL_Swap32(Uint32 x)
 }
 #else
 static __inline__ Uint32 SDL_Swap32(Uint32 x) {
-	return SDL_static_cast(Uint32, ((x<<24)|((x<<8)&0x00FF0000)|((x>>8)&0x0000FF00)|(x>>24)));
+	return((x<<24)|((x<<8)&0x00FF0000)|((x>>8)&0x0000FF00)|(x>>24));
 }
 #endif
 
@@ -171,7 +166,7 @@ static __inline__ Uint64 SDL_Swap64(Uint64 x)
 	x = SDL_Swap32(lo);
 	x <<= 32;
 	x |= SDL_Swap32(hi);
-	return (x);
+	return(x);
 }
 #endif
 #else

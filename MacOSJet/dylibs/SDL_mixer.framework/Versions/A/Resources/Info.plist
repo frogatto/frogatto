@@ -9,7 +9,7 @@
 	<key>CFBundleGetInfoString</key>
 	<string>http://www.libsdl.org</string>
 	<key>CFBundleIdentifier</key>
-	<string>SDL_mixer</string>
+	<string>org.libsdl.SDL-mixer</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -17,10 +17,10 @@
 	<key>CFBundlePackageType</key>
 	<string>FMWK</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.2.11</string>
+	<string>1.2.5</string>
 	<key>CFBundleSignature</key>
 	<string>SDL_mixerX</string>
 	<key>CFBundleVersion</key>
-	<string>1.2.11</string>
+	<string>1.2.5</string>
 </dict>
 </plist>

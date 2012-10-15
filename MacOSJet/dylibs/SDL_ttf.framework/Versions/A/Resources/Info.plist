@@ -9,7 +9,7 @@
 	<key>CFBundleGetInfoString</key>
 	<string>http://www.libsdl.org</string>
 	<key>CFBundleIdentifier</key>
-	<string>SDL_ttf</string>
+	<string>org.libsdl.SDL-ttf</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -21,6 +21,6 @@
 	<key>CFBundleSignature</key>
 	<string>SDL_ttfX</string>
 	<key>CFBundleVersion</key>
-	<string>2.0.10</string>
+	<string>2.0.6</string>
 </dict>
 </plist>
