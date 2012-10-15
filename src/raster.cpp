@@ -883,65 +883,37 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 
 	void push_clip(const SDL_Rect& r)
 	{
-		const bool was_enabled_clip = glIsEnabled(GL_SCISSOR_TEST);
-		bool should_enable_clip = true;
+		glEnable(GL_STENCIL_TEST);
+		glClear(GL_STENCIL_BUFFER_BIT);
 		
-		GLfloat x, y ,z;
-		coords_to_screen(0, graphics::screen_height(), 0, &x, &y, &z);
-		
-		SDL_Rect s = r;
-		s.x += static_cast<Sint16>(x);
-		s.y -= static_cast<Sint16>(y);
-		
-		if(s.x == 0 && s.y == 0 && s.w == screen_width() && s.h == screen_height()) {
-			should_enable_clip = false;
-		}
-		
-		
-		boost::shared_array<GLint> box(new GLint[4]);
-		
-		if(was_enabled_clip) {
-			glGetIntegerv(GL_SCISSOR_BOX, box.get());
-		} else {
-			box[0] = 0;
-			box[1] = 0;
-			box[2] = screen_width();
-			box[3] = screen_height();
-		}
-		clip_rectangles.push_back(box);
-		
-		if(should_enable_clip) {
-			if(!was_enabled_clip) {
-				glEnable(GL_SCISSOR_TEST);
-			}
-			glScissor(s.x, screen_height() - (s.y + s.h), s.w, s.h);
-		} else if(was_enabled_clip) {
-			glDisable(GL_SCISSOR_TEST);
-		}
+		GLfloat varray[] = {
+			r.x, r.y,
+			r.x+r.w, r.y,
+			r.x, r.y+r.h,
+			r.x+r.w, r.y+r.h
+		};
+		glStencilFunc(GL_NEVER, 0x0, 0x0);
+		glStencilOp(GL_INCR, GL_INCR, GL_INCR);
+#if defined(USE_GLES2)
+		glColor4f(1.0f,1.0f,1.0f,1.0f);
+		gles2::manager gles2_manager(gles2::get_simple_shader());
+		gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, varray);
+ 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+#else
+		glColor4ub(255, 255, 255, 255);
+		glDisable(GL_TEXTURE_2D);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glVertexPointer(2, GL_FLOAT, 0, varray);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glEnable(GL_TEXTURE_2D);
+#endif
+		glStencilFunc(GL_NOTEQUAL, 0x0, 0x1);
 	}
 	
 	void pop_clip() {
-		const bool was_enabled_clip = glIsEnabled(GL_SCISSOR_TEST);
-		bool should_enable_clip = false;
-		boost::shared_array<GLint> box;
-		
-		if(!clip_rectangles.empty()) {
-			box = *clip_rectangles.rbegin();
-			clip_rectangles.pop_back();
-			
-			if(box[0] != 0 || box[1] != 0 || box[2] != screen_width() || box[3] != screen_height()) {
-				should_enable_clip = true;
-			}
-		}
-		
-		if(should_enable_clip) {
-			if(!was_enabled_clip) {
-				glEnable(GL_SCISSOR_TEST);
-			}
-			glScissor(box[0], box[1], box[2], box[3]);
-		} else if(was_enabled_clip) {
-			glDisable(GL_SCISSOR_TEST);
-		}
+		glStencilFunc(GL_ALWAYS, 0x1, 0x1);
+		glDisable(GL_STENCIL_TEST);
 	}
 	
 	namespace {
