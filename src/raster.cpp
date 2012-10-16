@@ -893,8 +893,8 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 			r.x, r.y+r.h,
 			r.x+r.w, r.y+r.h
 		};
-		glStencilFunc(GL_NEVER, 0x0, 0x0);
-		glStencilOp(GL_INCR, GL_INCR, GL_INCR);
+		glStencilFunc(GL_NEVER, 0x1, 0xff);
+		glStencilOp(GL_REPLACE, GL_KEEP, GL_KEEP);
 #if defined(USE_GLES2)
 		glColor4f(1.0f,1.0f,1.0f,1.0f);
 		gles2::manager gles2_manager(gles2::get_simple_shader());

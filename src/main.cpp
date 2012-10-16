@@ -425,7 +425,7 @@ extern "C" int main(int argcount, char** argvec)
 	i18n::init ();
 	LOG( "After i18n::init()" );
 
-//	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 1);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 1);
 
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_BLACKBERRY) || defined(__ANDROID__)
 	//on the iPhone and PlayBook, try to restore the auto-save if it exists
