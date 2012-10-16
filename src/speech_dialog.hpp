@@ -1,11 +1,14 @@
 #ifndef SPEECH_DIALOG_HPP_INCLUDED
 #define SPEECH_DIALOG_HPP_INCLUDED
 
+#include <boost/shared_ptr.hpp>
+
 #include "graphics.hpp"
 
 #include <string>
 #include <vector>
 
+#include "color_utils.hpp"
 #include "entity.hpp"
 #include "gui_section.hpp"
 
@@ -40,6 +43,13 @@ private:
 	const_entity_ptr left_, right_;
 	bool left_side_speaking_;
 	int horizontal_position_;
+
+	struct TextMarkup {
+		int begin;
+		boost::shared_ptr<graphics::color> color;
+	};
+
+	std::vector<std::vector<TextMarkup> > markup_;
 
 	std::vector<std::string> text_;
 	int text_char_;

@@ -310,10 +310,32 @@ void speech_dialog::draw() const
 	for(int n = 0; n < 2 && n < text_.size() && nchars > 0; ++n) {
 		std::string str(text_[n].begin(), text_[n].begin() +
 		                  std::min<int>(nchars, text_[n].size()));
-		//currently the color of speech is hard coded.
-		glColor4ub(255, 187, 10, 255);
 		//move the first line slightly up so that accents don't mess up centering
-		rect area = font->draw(text_left_align[n], ypos - 2, str);
+		rect area = font->dimensions(str);
+		area = rect(text_left_align[n], ypos - 2, area.w(), area.h());
+
+		//draw the font by chunks of markup.
+		int xadj = 0;
+		const std::vector<TextMarkup>& markup = markup_[n];
+		for(int m = 0; m != markup.size(); ++m) {
+			const int begin_index = markup[m].begin;
+			const int end_index = std::min<int>(str.size(), m+1 == markup.size() ? str.size() : markup[m+1].begin);
+			std::cerr << "DRAW MARKUP: " << begin_index << ", " << end_index << "\n";
+			if(begin_index >= end_index) {
+				return;
+			}
+
+			if(markup[m].color) {
+				markup[m].color->set_as_current_color();
+			} else {
+				//default color of fonts.
+				glColor4ub(255, 187, 10, 255);
+			}
+
+			const rect r = font->draw(text_left_align[n] + xadj, ypos - 2, std::string(str.begin() + begin_index, str.begin() + end_index));
+			xadj += r.w();
+		}
+
 		glColor4f(1.0, 1.0, 1.0, 1.0);
 		//add some space between the lines
 		ypos = area.y2() + 4;
@@ -393,7 +415,38 @@ void speech_dialog::set_text(const std::vector<std::string>& text)
 		//split text[i] at newline characters, add each line separately
 		tokenizer lines(text[i], boost::char_separator<char> ("\n"));
 		for (tokenizer::iterator iter = lines.begin(); iter != lines.end(); ++iter) {
-			text_.push_back(*iter);
+			std::string txt = *iter;
+			std::vector<TextMarkup> markup;
+			TextMarkup m;
+			m.begin = 0;
+			markup.push_back(m);
+			static const std::string BeginEmStr = "<em>";
+			static const std::string EndEmStr = "</em>";
+			std::string::iterator begin_em = std::search(txt.begin(), txt.end(), BeginEmStr.begin(), BeginEmStr.end());
+			while(begin_em != txt.end()) {
+				const int begin_index = begin_em - txt.begin();
+				txt.erase(begin_em, begin_em + BeginEmStr.size());
+
+				TextMarkup m;
+				m.begin = begin_index;
+				m.color.reset(new graphics::color(255, 255, 255, 255));
+				markup.push_back(m);
+
+				std::string::iterator end_em = std::search(txt.begin(), txt.end(), EndEmStr.begin(), EndEmStr.end());
+				if(end_em != txt.end()) {
+					const int end_index = end_em - txt.begin();
+					txt.erase(end_em, end_em + EndEmStr.size());
+
+					TextMarkup m;
+					m.begin = end_index;
+					markup.push_back(m);
+				}
+
+				begin_em = std::search(txt.begin(), txt.end(), BeginEmStr.begin(), BeginEmStr.end());
+			}
+
+			text_.push_back(txt);
+			markup_.push_back(markup);
 		}
 	}
 	text_char_ = 0;
