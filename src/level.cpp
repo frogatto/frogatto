@@ -1093,6 +1093,8 @@ variant level::write() const
 	res.add("air_resistance", air_resistance_);
 	res.add("water_resistance", water_resistance_);
 
+	res.add("touch_controls", allow_touch_controls_);
+
 	res.add("preloads", util::join(preloads_));
 
 	if(lock_screen_) {
