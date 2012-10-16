@@ -908,11 +908,10 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
 #endif
-		glStencilFunc(GL_NOTEQUAL, 0x0, 0x1);
+		glStencilFunc(GL_EQUAL, 0x1, 0x1);
 	}
 	
 	void pop_clip() {
-		glStencilFunc(GL_ALWAYS, 0x1, 0x1);
 		glDisable(GL_STENCIL_TEST);
 	}
 	
