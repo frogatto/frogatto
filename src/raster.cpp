@@ -884,6 +884,7 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 	void push_clip(const SDL_Rect& r)
 	{
 		glEnable(GL_STENCIL_TEST);
+		glStencilMask(0xff);
 		glClear(GL_STENCIL_BUFFER_BIT);
 		
 		GLfloat varray[] = {
@@ -908,6 +909,7 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glEnable(GL_TEXTURE_2D);
 #endif
+		glStencilMask(0);
 		glStencilFunc(GL_EQUAL, 0x1, 0x1);
 	}
 	
