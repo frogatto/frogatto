@@ -16,7 +16,6 @@
 /** @file */
 
 #include "clipboard.hpp"
-#if 0
 #include <algorithm>
 #include <iostream>
 
@@ -584,8 +583,6 @@ std::string copy_from_clipboard(const bool)
         return false;
     }
     #endif
-#endif
-
 #endif
 
 #ifndef CLIPBOARD_FUNCS_DEFINED
