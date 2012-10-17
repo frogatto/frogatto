@@ -409,6 +409,7 @@ void speech_dialog::set_side(bool left_side)
 void speech_dialog::set_text(const std::vector<std::string>& text)
 {
 	text_.clear();
+	markup_.clear();
 	for (int i = 0; i < text.size(); i++) {
 		typedef boost::tokenizer<boost::char_separator<char> > tokenizer;
 		//split text[i] at newline characters, add each line separately
