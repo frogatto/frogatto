@@ -320,9 +320,8 @@ void speech_dialog::draw() const
 		for(int m = 0; m != markup.size(); ++m) {
 			const int begin_index = markup[m].begin;
 			const int end_index = std::min<int>(str.size(), m+1 == markup.size() ? str.size() : markup[m+1].begin);
-			std::cerr << "DRAW MARKUP: " << begin_index << ", " << end_index << "\n";
 			if(begin_index >= end_index) {
-				return;
+				continue;
 			}
 
 			if(markup[m].color) {
