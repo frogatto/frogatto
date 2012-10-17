@@ -147,6 +147,7 @@ bool speech_dialog::scroll_text()
 	}
 
 	if(text_.size() > 2) {
+		markup_.erase(markup_.begin());
 		text_.erase(text_.begin());
 		text_char_ = text_.front().size();
 		return false;
