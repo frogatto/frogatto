@@ -219,15 +219,16 @@ rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_te
 			font_tcarray.push_back(v2);
 		}
 
-		if(xpos + r.w()*size > x2) {
-			x2 = xpos + r.w()*size;
-		}
-
 		if(ypos + r.h()*size > y2) {
 			y2 = ypos + r.h()*size;
 		}
 		
 		xpos += r.w()*size + kerning_*size;
+
+		if(xpos > x2) {
+			x2 = xpos;
+		}
+
 		if(r.h() > highest) {
 			highest = r.h();
 		}
