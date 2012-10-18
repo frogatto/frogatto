@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
+#   <josuesupernet@gmail.com>, 2012.
 # Marcos Avila Isidoro <marcavis@yahoo.com.br>, 2011-2012.
 # Philipp Zabel <pzabel@gmx.de>, 2011.
 # Psy Shotter <deanheatterville@r7.com>, 2012.
@@ -11,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-10-07 13:05-0300\n"
-"PO-Revision-Date: 2012-10-12 05:09-0300\n"
+"POT-Creation-Date: 2012-10-09 02:25-0300\n"
+"PO-Revision-Date: 2012-10-15 13:32-0300\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/Frogatto/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -53,24 +54,24 @@ msgstr "Escolha o jogo salvo para carregar."
 msgid "Achievement Unlocked!"
 msgstr "Nova Proeza!"
 
-#: ../../../src/main.cpp:682
+#: ../../../src/main.cpp:691
 msgid "Initializing custom object functions"
 msgstr "Inicializando funções de objetos"
 
-#: ../../../src/main.cpp:684
+#: ../../../src/main.cpp:693
 msgid "Initializing textures"
 msgstr "Inicializando texturas"
 
-#: ../../../src/main.cpp:686
+#: ../../../src/main.cpp:695
 msgid "Initializing tiles"
 msgstr "Inicializando tiles"
 
-#: ../../../src/main.cpp:688
-#: ../../../src/main.cpp:692
+#: ../../../src/main.cpp:697
+#: ../../../src/main.cpp:701
 msgid "Initializing GUI"
 msgstr "Inicializando interface"
 
-#: ../../../src/main.cpp:699
+#: ../../../src/main.cpp:708
 msgid "Loading level"
 msgstr "Carregando fase"
 
@@ -3084,118 +3085,141 @@ msgstr "A Entrada"
 
 #: ../data/level/dungeon-gateway.cfg:126
 msgid "h... Hello?"
-msgstr ""
+msgstr "O... Olá?"
 
 #: ../data/level/dungeon-gateway.cfg:130
 msgid "Is everything alright?"
-msgstr ""
+msgstr "Tá tudo bem aí?"
 
 #: ../data/level/dungeon-gateway.cfg:132
 msgid "Oh thank goodness, you can talk!"
-msgstr ""
+msgstr "Ah, ufa, você sabe falar!"
 
 #: ../data/level/dungeon-gateway.cfg:135
 msgid "This is a surprise?"
-msgstr ""
+msgstr "Isso é uma surpresa?"
 
 #: ../data/level/dungeon-gateway.cfg:137
 msgid ""
 "Yeah, I thought you were some creature\n"
 "that had shambled in from the caves."
 msgstr ""
+"É, eu achei que você fosse algum tipo\n"
+"de criatura que veio se arrastando da caverna."
 
 #: ../data/level/dungeon-gateway.cfg:138
 msgid "We get that from time to time."
-msgstr ""
+msgstr "De vez em quando aparece uma dessas por aqui."
 
 #: ../data/level/dungeon-gateway.cfg:139
 msgid ""
 "I hate this job.\n"
 "It's CREEPY down here!"
 msgstr ""
+"Eu detesto este trabalho.\n"
+"É ASSUSTADOR aqui embaixo!"
 
 #: ../data/level/dungeon-gateway.cfg:142
 msgid "What are you even doing?"
-msgstr ""
+msgstr "Mas o que que você tá fazendo aqui?"
 
 #: ../data/level/dungeon-gateway.cfg:144
 msgid ""
 "Cleaning.\n"
 "I'm a janitor."
 msgstr ""
+"Limpando.\n"
+"Eu sou um zelador."
 
 #: ../data/level/dungeon-gateway.cfg:145
 msgid ""
 "What are YOU doing?\n"
 "For that matter, who are you, anyways?"
 msgstr ""
+"E VOCÊ, o que está fazendo?\n"
+"Aliás, quem é você, afinal?"
 
 #: ../data/level/dungeon-gateway.cfg:148
 #: ../data/level/kitty-dormitory.cfg:3174
 msgid "I'm Frogatto."
-msgstr ""
+msgstr "Eu sou o Frogatto."
 
 #: ../data/level/dungeon-gateway.cfg:150
 msgid "Do Frogattoes live in caves?"
-msgstr ""
+msgstr "Hmm, e Frogattos vivem em cavernas?"
 
 #: ../data/level/dungeon-gateway.cfg:153
 msgid ""
 "We're called 'Frogs', actually...\n"
 "I guess sometimes we do, but I don't."
 msgstr ""
+"Não! Bom, alguns sapos vivem em cavernas...\n"
+"que é o que eu sou, um sapo, que se chama Frogatto."
 
 #: ../data/level/dungeon-gateway.cfg:155
 msgid ""
 "Anyways, if you must know,\n"
 "I've actually come here to see Milgram."
 msgstr ""
+"De qualquer modo, já que você quer saber,\n"
+"eu vim aqui pra ver o Milgram."
 
 #: ../data/level/dungeon-gateway.cfg:157
 msgid ""
 "I'm trying to sneak in, because I hear he's\n"
 "nigh-impossible to get a proper audience with."
 msgstr ""
+"Tõ tentando entrar de fininho,\n"
+"já que ouvi que é um tanto impossível\n"
+"agendar uma reunião com ele."
 
 #: ../data/level/dungeon-gateway.cfg:159
 msgid ""
 "Wow.\n"
 "That's pretty bold!"
 msgstr ""
+"Uau.\n"
+"Isso é bem corajoso!"
 
 #: ../data/level/dungeon-gateway.cfg:160
 msgid "What business do you have with him?"
-msgstr ""
+msgstr "O que você tem a tratar com ele?"
 
 #: ../data/level/dungeon-gateway.cfg:163
 msgid ""
 "Well, some of you came to my hometown a little\n"
 " while ago, and went after someone I know."
 msgstr ""
+"Bem, alguns de vocês foram na nossa vila\n"
+"faz pouco, perseguindo alguém que eu conheço."
 
 #: ../data/level/dungeon-gateway.cfg:165
 msgid ""
 "He's not really a friend of mine,\n"
 "but I'd like to know what's going on."
 msgstr ""
+"Não é bem um amigo meu,\n"
+"mas eu queria saber o que tá acontecendo."
 
 #: ../data/level/dungeon-gateway.cfg:167
 msgid "You guys ... kinda scared a few people."
-msgstr ""
+msgstr "Vocês... meio que assustaram o pessoal."
 
 #: ../data/level/dungeon-gateway.cfg:169
 msgid "Geez, I'm sorry to hear that."
-msgstr ""
+msgstr "Puxa, sinto em ouvir isso."
 
 #: ../data/level/dungeon-gateway.cfg:170
 msgid ""
 "You know, now that you mention it,\n"
 "you look kinda familiar."
 msgstr ""
+"Hmm, agora que você tocou no assunto...\n"
+"você me parece familiar."
 
 #: ../data/level/dungeon-gateway.cfg:171
 msgid "I think they put out a security bulletin about you."
-msgstr ""
+msgstr "Acho que postaram um cartaz de procurado pra você."
 
 #: ../data/level/dungeon-gateway.cfg:174
 msgid ""
@@ -3558,7 +3582,7 @@ msgstr ""
 
 #: ../data/level/golden-glen.cfg:3644
 msgid "Golden Glen"
-msgstr ""
+msgstr "Ravina Dourada"
 
 #: ../data/level/grassy-path.cfg:14
 msgid "Grassy Path"
@@ -3828,6 +3852,8 @@ msgid ""
 "You can collect these\n"
 "and then use them to buy stuff!"
 msgstr ""
+"Você pode coletá-las e então/n\n"
+"usá-las para comprar coisas."
 
 #: ../data/level/grassy-path.cfg:1200
 msgid ""
@@ -4035,12 +4061,17 @@ msgid ""
 "Oh, I was just sitting down for a bite to eat.\n"
 "Care to join us?"
 msgstr ""
+"Ah, eu só tava parando pra fazer uma boquinha./n\n"
+"Quer se juntar a nós?"
 
 #: ../data/level/kitty-dormitory.cfg:1899
 msgid ""
 "Uh, maybe...\n"
 "I certainly appreciate the hospitality!"
 msgstr ""
+"Hã, pode ser...\\n"
+"\n"
+"Eu certamente agradeço a hospitalidade!"
 
 #: ../data/level/kitty-dormitory.cfg:1901
 msgid "So is this some kind of dining area?"
@@ -4949,37 +4980,46 @@ msgstr ""
 msgid ""
 "Yeah, I just hope we don't\n"
 "have a repeat incident..."
-msgstr ""
+msgstr "É, eu só espero que isso não se repita..."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:213
 msgid "Uh ... why would that happen?"
-msgstr ""
+msgstr "Uh... e por que motivo se repetiria?"
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:215
 msgid ""
 "I don't know, but...\n"
 "Why did this happen in the first place?"
 msgstr ""
+"Não sei, mas...\\n"
+"\n"
+"Pra começo de conversa,\\n"
+"\n"
+"por que foi que isso aconteceu?"
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:217
 msgid ""
 "It's an important question,\n"
 "and someone needs to look into it."
 msgstr ""
+"Essa é uma questão importante,/n\n"
+"e precisa de alguém pra solucioná-la."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:218
 msgid "Would that someone possibly be you?"
-msgstr ""
+msgstr "E esse alguém seria você, talvez?"
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:220
 msgid "That is a distinct possibility."
-msgstr ""
+msgstr "Digamos que há uma boa possibilidade."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:221
 msgid ""
 "Well, hey - you be careful, alright?\n"
 "Stay cool."
 msgstr ""
+"Bem, ei - seja cuidadoso, ok?/n\n"
+"Fique bem."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:604
 msgid "Hey, what's new?"
@@ -5019,7 +5059,7 @@ msgstr ""
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:191
 msgid "Hey there - is everything going alright?"
-msgstr ""
+msgstr "Olá - tá tudo indo bem?"
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:192
 msgid ""
@@ -5029,11 +5069,11 @@ msgstr ""
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:193
 msgid "That was really brave of you!"
-msgstr ""
+msgstr "Foi realmente um ato de bravura seu!"
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:195
 msgid "I'm just glad everyone's okay."
-msgstr ""
+msgstr "Só estou feliz que está todo mundo bem."
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:197
 msgid "Where's your sibling, by the way?"
@@ -5061,7 +5101,7 @@ msgstr "Mapa-Múndi"
 
 #: ../data/level/milgrams-basement-junction.cfg:170
 msgid "It says, \"This leads to the cave entrance."
-msgstr ""
+msgstr "Aqui diz: \"Este caminho leva à entrada da caverna."
 
 #: ../data/level/milgrams-basement-junction.cfg:172
 msgid "Be careful about venturing into the caves!\""
@@ -5069,11 +5109,11 @@ msgstr ""
 
 #: ../data/level/milgrams-basement-junction.cfg:191
 msgid "It says, \"This leads to the North Tower.\""
-msgstr ""
+msgstr "Aqui diz: \"Este caminho leva para a Torre Norte.\""
 
 #: ../data/level/milgrams-basement-junction.cfg:193
 msgid "\"Still under construction, wear your hard hat!\""
-msgstr ""
+msgstr "\"Sob construção, use capacete de segurança!\""
 
 #: ../data/level/milgrams-basement-junction.cfg:212
 msgid ""
@@ -5085,11 +5125,13 @@ msgstr ""
 
 #: ../data/level/milgrams-basement-junction.cfg:214
 msgid "Gee, guess who we'll find there?"
-msgstr ""
+msgstr "Nossa, adivinhe quem nós vamos encontrar lá?"
 
 #: ../data/level/milgrams-basement-junction.cfg:233
 msgid "It says, \"This leads to the cellar and storerooms.\""
 msgstr ""
+"Aqui diz : \"Este caminho leva ao porão/n\n"
+"e aos depósitos.\""
 
 #: ../data/level/milgrams-basement-junction.cfg:235
 msgid "\"No Admittance without authorization.\""
@@ -5434,12 +5476,17 @@ msgid ""
 "It says, \"Careful!\n"
 "This area is extremely unfinished.\""
 msgstr ""
+"Aqui diz:/n\n"
+"\"Cuidado! Esta área está extremamente incompleta.\""
 
 #: ../data/level/moonlit-ramparts.cfg:2114
 msgid ""
 "\"Completely unsafe for pedestrian traffic!\n"
 "Workers only!\""
 msgstr ""
+"\"Totalmente insegura para tráfego de pedestres!\\n"
+"\n"
+"Apenas trabalhadores!\""
 
 #: ../data/level/moonlit-ramparts.cfg:5407
 msgid "Moonlit Ramparts"
@@ -6654,7 +6701,7 @@ msgstr ""
 
 #: ../data/level/the-north-tower.cfg:2089
 msgid "The North Tower"
-msgstr ""
+msgstr "A Torre Norte"
 
 #: ../data/level/titlescreen-arcade.cfg:61
 msgid "Each machine has a different arcade-style challenge."
@@ -6738,11 +6785,11 @@ msgstr "Pressione ${LEFT_KEY} ou ${RIGHT_KEY} para andar."
 
 #: ../data/level/titlescreen.cfg:122
 msgid "Quickly press ${LEFT_KEY} or ${RIGHT_KEY} twice to run."
-msgstr ""
+msgstr "Pressione rapidamente ${LEFT_KEY} ou ${RIGHT_KEY} duas vezes para correr."
 
 #: ../data/level/titlescreen.cfg:124
 msgid "Press ${DOWN_KEY} to crouch."
-msgstr ""
+msgstr "Pressione ${DOWN_KEY} para agachar-se."
 
 #: ../data/level/titlescreen.cfg:124
 msgid "Walk in front of a door or person, and press"
@@ -6750,7 +6797,7 @@ msgstr "Você pode interagir com pessoas ou objetos como portas,"
 
 #: ../data/level/titlescreen.cfg:125
 msgid "Press ${UP_KEY} to talk, and use things like doors."
-msgstr ""
+msgstr "Pressione ${UP_KEY} para conversar, e interagir com coisas, como portas."
 
 #: ../data/level/titlescreen.cfg:125
 msgid "the button that appears to interact with them."
@@ -6758,11 +6805,11 @@ msgstr "tocando no botão que aparecer na tela."
 
 #: ../data/level/titlescreen.cfg:126
 msgid "Press ${JUMP_KEY} to jump."
-msgstr ""
+msgstr "Pressione ${JUMP_KEY} para pular."
 
 #: ../data/level/titlescreen.cfg:127
 msgid "Press ${TONGUE_KEY} to use a character's attacks."
-msgstr ""
+msgstr "Pressione ${TONGUE_KEY} para usar o ataque do personagem."
 
 #: ../data/level/titlescreen.cfg:166
 msgid "ARCADE"
@@ -7329,7 +7376,7 @@ msgstr "Não dá, está trancada."
 #: ../data/objects/effects/control/level_controller_coin_race.cfg:15
 #: ../data/objects/effects/control/level_controller_coin_race.cfg:17
 msgid "You made it to level ${level.player.difficulty} of the coin race."
-msgstr ""
+msgstr "Você chegou ao nível ${level.player.difficulty} da corrida das moedas."
 
 #: ../data/objects/effects/control/level_controller_coin_race.cfg:18
 msgid "The furthest that has been reached is level ${registry.arcade_coin_race_high_score}."
@@ -7582,10 +7629,15 @@ msgid ""
 "It has no special use, but hey - it's solid gold.\n"
 "That can't be bad!"
 msgstr ""
+"Não tem nenhuma utilidade em especial,\\n"
+"\n"
+"mas opa - é ouro puro.\\n"
+"\n"
+"Não pode ser ruim."
 
 #: ../data/objects/items/trophy.cfg:28
 msgid "You found a golden trophy!"
-msgstr ""
+msgstr "Você achou um troféu de ouro!"
 
 #: ../data/objects/playable/difficulty-selector.cfg:31
 msgid "Intense"
