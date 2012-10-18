@@ -16,6 +16,7 @@
 #include "surface.hpp"
 #include "surface_cache.hpp"
 #include "surface_palette.hpp"
+#include "unit_test.hpp"
 #include "variant_utils.hpp"
 
 namespace {
@@ -87,7 +88,9 @@ void create_compiled_tiles_image()
 	//calculate how many tiles are in each zorder
 	std::map<int, int> zorder_to_num_tiles;
 	for(std::map<obj_variant_ptr, int>::const_iterator i = tile_nodes_to_zorders.begin(); i != tile_nodes_to_zorders.end(); ++i) {
-		zorder_to_num_tiles[i->second]++;
+		obj_variant_ptr node = i->first;
+		std::vector<std::string> tiles_vec = util::split((*node)["tiles"].as_string(), '|');
+		zorder_to_num_tiles[i->second] += tiles_vec.size();
 	}
 
 	//now work out which zorders should go in which tilesheets.
@@ -102,12 +105,15 @@ void create_compiled_tiles_image()
 		int sheet = 0;
 		for(; sheet != tiles_in_sheet.size(); ++sheet) {
 			if(tiles_in_sheet[sheet] + i->second <= TilesInSheet) {
+				std::cerr << "ZORDER_ALLOC " << i->first << " (" << i->second << ") -> " << sheet << "\n";
 				break;
 			}
 		}
 
+
 		if(sheet == tiles_in_sheet.size()) {
 			const int num_sheets = 1 + i->second/TilesInSheet;
+			std::cerr << "ZORDER_ALLOC " << i->first << " (" << i->second << ") -> NEW SHEET " << sheet << "(" << num_sheets << ")\n";
 			for(int n = 0; n != num_sheets; ++n) {
 				tiles_in_sheet.push_back(0);
 				sheet_next_image_index.push_back(0);
@@ -171,7 +177,7 @@ void create_compiled_tiles_image()
 
 		obj_variant_ptr node = i->first;
 		if(num_sheets > 1) {
-			int offset = tile_str_to_palette[(*node)["tiles"].as_string()]%num_sheets;
+			int offset = abs(tile_str_to_palette[(*node)["tiles"].as_string()])%num_sheets;
 			
 			int count = 0;
 			while(sheet_next_image_index[sheet + offset] >= TilesInSheet) {
@@ -199,7 +205,9 @@ void create_compiled_tiles_image()
 			if(dst_index_map.count(tile_num)) {
 				dst_tile = dst_index_map[tile_num];
 			} else {
+				std::cerr << "TILE_ZORDER: Z" << i->second << "Z -> SHEETINC " << sheet << " -> " << sheet_next_image_index[sheet] << "\n";
 				dst_tile = sheet_next_image_index[sheet]++;
+				ASSERT_LOG(dst_tile < tiles_in_sheet[sheet], "TOO MANY TILES ON SHEET: " << sheet << ": " << tiles_in_sheet[sheet] << " ZORDER: " << i->second);
 				dst_index_map[tile_num] = dst_tile;
 
 				const int dst_x = (dst_tile%64) * BaseTileSize;
@@ -847,4 +855,16 @@ variant level_object::get_value(const std::string& key) const
 	} else {
 		return variant();
 	}
+}
+
+UNIT_TEST(level_object_base64)
+{
+	const char* s = "4O0";
+	const char* s2 = s + strlen(s);
+	const int num = base64_unencode(s, s2);
+	char buf[3];
+	base64_encode(num, buf, 3);
+	CHECK_EQ(buf[0], s[0]);
+	CHECK_EQ(buf[1], s[1]);
+	CHECK_EQ(buf[2], s[2]);
 }
