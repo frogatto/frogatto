@@ -205,7 +205,6 @@ void create_compiled_tiles_image()
 			if(dst_index_map.count(tile_num)) {
 				dst_tile = dst_index_map[tile_num];
 			} else {
-				std::cerr << "TILE_ZORDER: Z" << i->second << "Z -> SHEETINC " << sheet << " -> " << sheet_next_image_index[sheet] << "\n";
 				dst_tile = sheet_next_image_index[sheet]++;
 				ASSERT_LOG(dst_tile < tiles_in_sheet[sheet], "TOO MANY TILES ON SHEET: " << sheet << ": " << tiles_in_sheet[sheet] << " ZORDER: " << i->second);
 				dst_index_map[tile_num] = dst_tile;
