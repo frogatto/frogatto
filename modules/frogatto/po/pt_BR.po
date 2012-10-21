@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2012-10-20 20:56-0300\n"
-"PO-Revision-Date: 2012-10-20 21:05-0300\n"
+"PO-Revision-Date: 2012-10-20 21:32-0300\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/Frogatto/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -3818,7 +3818,6 @@ msgid ""
 "you've probably noticed the coins."
 msgstr ""
 "Conforme você veio jogando esta fase,\n"
-"/n\n"
 "deve ter notado as moedas de ouro."
 
 #: ../data/level/grassy-path.cfg:605
@@ -3826,7 +3825,7 @@ msgid ""
 "You can collect these\n"
 "and then use them to buy stuff!"
 msgstr ""
-"Você pode coletá-las e então/n\n"
+"Você pode coletá-las e então\n"
 "usá-las para comprar coisas."
 
 #: ../data/level/grassy-path.cfg:606
@@ -4039,7 +4038,7 @@ msgid ""
 "Oh, I was just sitting down for a bite to eat.\n"
 "Care to join us?"
 msgstr ""
-"Ah, eu só tava parando pra fazer uma boquinha./n\n"
+"Ah, eu só tava parando pra fazer uma boquinha.\n"
 "Quer se juntar a nós?"
 
 #: ../data/level/kitty-dormitory.cfg:1899
@@ -4047,8 +4046,7 @@ msgid ""
 "Uh, maybe...\n"
 "I certainly appreciate the hospitality!"
 msgstr ""
-"Hã, pode ser...\\n"
-"\n"
+"Hã, pode ser...\n"
 "Eu certamente agradeço a hospitalidade!"
 
 #: ../data/level/kitty-dormitory.cfg:1901
@@ -4102,7 +4100,7 @@ msgid ""
 "It's easy to accidentally fall.\n"
 "It's not really pedestrian-ready yet."
 msgstr ""
-"É facil cair acidentalmente. /n\n"
+"É facil cair acidentalmente. \n"
 "Realmente não está pronto para pedestres ainda."
 
 #: ../data/level/kitty-dormitory.cfg:1920
@@ -4119,14 +4117,12 @@ msgid ""
 "I'm just eating some fruit."
 msgstr ""
 "Ah,sim.\n"
-"/n\n"
 "Eu estou apenas comendo algumas frutas."
 
 #: ../data/level/kitty-dormitory.cfg:1951
 msgid "Are you that green guy security is after?"
 msgstr ""
 "Você é aquele cara verde\n"
-"/n \n"
 "que a segurança está procurando?"
 
 #: ../data/level/kitty-dormitory.cfg:1954
@@ -4955,7 +4951,7 @@ msgid ""
 "Eh, I'd hardly say they were 'scared' away,\n"
 "but I might have tipped the scales."
 msgstr ""
-"Eh, eu não diria que eles foram \"afugentados\",/n\n"
+"Eh, eu não diria que eles foram \"afugentados\",\n"
 "mas talvez eu tenha ajudado."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:210
@@ -4964,7 +4960,6 @@ msgid ""
 "I'm glad they're gone!"
 msgstr ""
 "Bem, independente do que você fez,\n"
-"/n\n"
 "eu estou feliz porque eles sumiram. "
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:212
@@ -4982,10 +4977,8 @@ msgid ""
 "I don't know, but...\n"
 "Why did this happen in the first place?"
 msgstr ""
-"Não sei, mas...\\n"
-"\n"
-"Pra começo de conversa,\\n"
-"\n"
+"Não sei, mas...\n"
+"Pra começo de conversa,\n"
 "por que foi que isso aconteceu?"
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:217
@@ -4993,7 +4986,7 @@ msgid ""
 "It's an important question,\n"
 "and someone needs to look into it."
 msgstr ""
-"Essa é uma questão importante,/n\n"
+"Essa é uma questão importante,\n"
 "e precisa de alguém pra solucioná-la."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:218
@@ -5009,8 +5002,8 @@ msgid ""
 "Well, hey - you be careful, alright?\n"
 "Stay cool."
 msgstr ""
-"Bem, ei - seja cuidadoso, ok?/n\n"
-"Fique bem."
+"Bem, ei - tenha cuidado, ok?\n"
+"Não se machuque."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:604
 msgid "Hey, what's new?"
@@ -5057,7 +5050,7 @@ msgid ""
 "It sure is now!  Thanks for\n"
 "taking those guys on!"
 msgstr ""
-"Com certeza está agora! Obrigado por /n\n"
+"Com certeza está agora! Obrigado por\n"
 "ter afugentado aqueles caras!"
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:193
@@ -5123,7 +5116,7 @@ msgstr "Nossa, adivinhe quem nós vamos encontrar lá?"
 #: ../data/level/milgrams-basement-junction.cfg:233
 msgid "It says, \"This leads to the cellar and storerooms.\""
 msgstr ""
-"Aqui diz : \"Este caminho leva ao porão/n\n"
+"Aqui diz : \"Este caminho leva ao porão\n"
 "e aos depósitos.\""
 
 #: ../data/level/milgrams-basement-junction.cfg:235
@@ -5469,7 +5462,7 @@ msgid ""
 "It says, \"Careful!\n"
 "This area is extremely unfinished.\""
 msgstr ""
-"Aqui diz:/n\n"
+"Aqui diz:\n"
 "\"Cuidado! Esta área está extremamente incompleta.\""
 
 #: ../data/level/moonlit-ramparts.cfg:2114
@@ -5477,8 +5470,7 @@ msgid ""
 "\"Completely unsafe for pedestrian traffic!\n"
 "Workers only!\""
 msgstr ""
-"\"Totalmente insegura para tráfego de pedestres!\\n"
-"\n"
+"\"Totalmente insegura para tráfego de pedestres!\n"
 "Apenas trabalhadores!\""
 
 #: ../data/level/moonlit-ramparts.cfg:5407
@@ -7581,10 +7573,8 @@ msgid ""
 "It has no special use, but hey - it's solid gold.\n"
 "That can't be bad!"
 msgstr ""
-"Não tem nenhuma utilidade em especial,\\n"
-"\n"
-"mas opa - é ouro puro.\\n"
-"\n"
+"Não tem nenhuma utilidade em especial,\n"
+"mas opa - é ouro puro.\n"
 "Não pode ser ruim."
 
 #: ../data/objects/items/trophy.cfg:28
