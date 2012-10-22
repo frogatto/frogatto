@@ -67,11 +67,13 @@ public:
 	std::string name() const { return name_; }
 	game_logic::formula_ptr create_formula(const variant& v);
 	bool execute_command(const variant& var);
-	void set_uniform(const std::string& key, const variant& value);
+	void set_uniform(const std::map<std::string,actives>::iterator& it, const variant& value);
+	void set_uniform_or_defer(const std::string& key, const variant& value);
 	variant get_uniform_value(const std::string& key) const;
 	void set_attributes(const std::string& key, const variant& value);
 	variant get_attributes_value(const std::string& key) const;
 	game_logic::formula_callable* get_environment() { return environ_; }
+	void set_deferred_uniforms();
 
 	virtual variant write();
 
@@ -110,6 +112,8 @@ private:
 	GLuint object_;
 	std::map<std::string, actives> attribs_;
 	std::map<std::string, actives> uniforms_;
+
+	std::vector<std::string> uniforms_to_update_;
 
 	friend class shader_program;
 };

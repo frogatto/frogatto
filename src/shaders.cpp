@@ -200,12 +200,9 @@ variant program::get_uniform_value(const std::string& key) const
 	return it->second.last_value;
 }
 
-void program::set_uniform(const std::string& key, const variant& value)
+void program::set_uniform(const std::map<std::string,actives>::iterator& it, const variant& value)
 {
-	std::map<std::string, actives>::iterator it = uniforms_.find(key);
-	WRITE_LOG(it != uniforms_.end(), "No uniform found with name: " << key);
 	const actives& u = it->second;
-	it->second.last_value = value;
 	switch(u.type) {
 	case GL_FLOAT: {
 		glUniform1f(u.location, GLfloat(value.as_decimal().as_float()));
@@ -300,6 +297,21 @@ void program::set_uniform(const std::string& key, const variant& value)
 	}
 }
 
+void program::set_uniform_or_defer(const std::string& key, const variant& value)
+{
+	std::map<std::string, actives>::iterator it = uniforms_.find(key);
+	WRITE_LOG(it != uniforms_.end(), "No uniform found with name: " << key);
+	it->second.last_value = value;
+
+	GLint cur_prog;
+	glGetIntegerv(GL_CURRENT_PROGRAM, &cur_prog);
+	if(cur_prog != get()) {
+		uniforms_to_update_.push_back(key);
+		return;
+	}
+	set_uniform(it, value);
+}
+
 namespace {
 	class uniforms_callable : public game_logic::formula_callable 
 	{
@@ -316,7 +328,7 @@ namespace {
 		}
 		void set_value(const std::string& key, const variant& value) 
 		{
-			program_->set_uniform(key, value);
+			program_->set_uniform_or_defer(key, value);
 		}
 	public:
 		explicit uniforms_callable(const program& p) 
@@ -916,6 +928,17 @@ void program::clear_shaders()
 	shader_programs.clear();
 }
 
+void program::set_deferred_uniforms()
+{
+	foreach(const std::string& key, uniforms_to_update_) {
+		std::map<std::string, actives>::iterator it = uniforms_.find(key);
+		ASSERT_LOG(it != uniforms_.end(), "No uniform found with name: " << key);
+		set_uniform(it, it->second.last_value);
+	}
+	uniforms_to_update_.clear();
+}
+
+
 ///////////////////////////////////////////////////////////////////////////
 // shader_program
 
@@ -1041,6 +1064,7 @@ void shader_program::prepare_draw()
 //	profile::manager manager;
 //#endif
 	glUseProgram(program_object_->get());
+	program_object_->set_deferred_uniforms();
 	game_logic::formula_callable* e = this;
 	for(size_t n = 0; n < draw_formulas_.size(); ++n) {
 		e->execute_command(draw_formulas_[n]->execute(*e));
