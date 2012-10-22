@@ -980,9 +980,9 @@ void shader_program::configure(const variant& node, entity* obj)
 
 	vars_->read(node["vars"]);
 
-	if(obj) {
+	//if(obj) {
 		init(obj);
-	}
+	//}
 }
 
 void shader_program::init(entity* obj)
