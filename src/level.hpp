@@ -364,6 +364,10 @@ public:
 
 	bool allow_touch_controls() const { return allow_touch_controls_; }
 
+#ifdef USE_GLES2
+	void shaders_updated();
+#endif
+
 private:
 
 	void read_compiled_tiles(variant node, std::vector<level_tile>::iterator& out);
@@ -544,6 +548,23 @@ private:
 	//current shader we're using to draw with.
 #ifdef USE_GLES2
 	gles2::shader_ptr shader_;
+
+	struct FrameBufferShaderEntry {
+		int begin_zorder, end_zorder;
+		variant shader_node;
+		mutable gles2::shader_ptr shader;
+	};
+
+	std::vector<FrameBufferShaderEntry> fb_shaders_;
+	mutable variant fb_shaders_variant_;
+
+	mutable std::vector<gles2::shader_ptr> active_fb_shaders_;
+
+	void frame_buffer_enter_zorder(int zorder) const;
+
+	void flush_frame_buffer_shaders_to_screen() const;
+	void apply_shader_to_frame_buffer_texture(gles2::shader_ptr shader, bool render_to_screen) const;
+
 #endif
 
 	int save_point_x_, save_point_y_;

@@ -352,6 +352,9 @@ void code_editor_dialog::process()
 			} else if(strstr(fname_.c_str(), "data/shaders.cfg")) {
 				std::cerr << "CODE_EDIT_DIALOG FILE: " << fname_ << std::endl;
 				gles2::program::load_shaders(editor_->text());
+				foreach(level* lvl, get_all_levels_set()) {
+					lvl->shaders_updated();
+				}
 #endif
 			} else { 
 				std::cerr << "SET FILE: " << fname_ << "\n";

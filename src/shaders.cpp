@@ -930,6 +930,13 @@ shader_program::shader_program(const variant& node, entity* obj)
 	configure(node, obj);
 }
 
+shader_program::shader_program(const std::string& program_name)
+	: vars_(new game_logic::formula_variable_storage()), zorder_(-1)
+{
+	name_ = program_name;
+	program_object_ = program::find_program(name_);
+}
+
 void shader_program::configure(const variant& node, entity* obj)
 {
 	ASSERT_LOG(node.is_map(), "shader attribute must be a map.");

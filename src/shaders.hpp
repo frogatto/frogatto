@@ -119,6 +119,7 @@ class shader_program : public game_logic::formula_callable
 public:
 	shader_program();
 	explicit shader_program(const variant& node, entity* obj = NULL);
+	explicit shader_program(const std::string& program_name);
 	virtual ~shader_program()
 	{}
 	void configure(const variant& node, entity* obj = NULL);
@@ -129,7 +130,7 @@ public:
 
 	void prepare_draw();
 	program_ptr shader() const;
-	std::string name() const { return name_; }
+	const std::string& name() const { return name_; }
 	entity* parent() const { return parent_; }
 	void set_parent(entity* obj) { parent_ = obj; }
 

@@ -245,11 +245,11 @@ void background::draw(int x, int y, const rect& area, const std::vector<rect>& o
 	//scissors to divide the screen into top and bottom.
 	if(height < y) {
 		//the entire screen is full of the bottom color
-		glClearColor(bot_.r/255.0, bot_.g/255.0, bot_.b/255.0, 0.0);
+		glClearColor(bot_.r/255.0, bot_.g/255.0, bot_.b/255.0, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);
 	} else if(height > y + graphics::screen_height()) {
 		//the entire screen is full of the top color.
-		glClearColor(top_.r/255.0, top_.g/255.0, top_.b/255.0, 0.0);
+		glClearColor(top_.r/255.0, top_.g/255.0, top_.b/255.0, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);
 	} else {
 		//both bottom and top colors are on the screen, so draw them both,
@@ -268,7 +268,7 @@ void background::draw(int x, int y, const rect& area, const std::vector<rect>& o
 #else
 		glScissor(0, dist_from_bottom, preferences::actual_screen_width(), preferences::actual_screen_width()*(1-dist_from_bottom/600));
 #endif
-		glClearColor(top_.r/255.0, top_.g/255.0, top_.b/255.0, 0.0);
+		glClearColor(top_.r/255.0, top_.g/255.0, top_.b/255.0, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
@@ -276,7 +276,7 @@ void background::draw(int x, int y, const rect& area, const std::vector<rect>& o
 #else
 		glScissor(0, 0, preferences::actual_screen_width(), dist_from_bottom);
 #endif
-		glClearColor(bot_.r/255.0, bot_.g/255.0, bot_.b/255.0, 0.0);
+		glClearColor(bot_.r/255.0, bot_.g/255.0, bot_.b/255.0, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glDisable(GL_SCISSOR_TEST);
@@ -429,7 +429,7 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 #else
 		glScissor(xpos, graphics::screen_height() - ypos, width, height);
 #endif
-		glClearColor(bg.color_above->r, bg.color_above->g, bg.color_above->b, 0.0);
+		glClearColor(bg.color_above->r, bg.color_above->g, bg.color_above->b, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glDisable(GL_SCISSOR_TEST);
 	}
@@ -451,7 +451,7 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 		glScissor(xpos, graphics::screen_height() - ypos, width, height);
 #endif
 
-		glClearColor(bg.color_below->r, bg.color_below->g, bg.color_below->b, 0.0);
+		glClearColor(bg.color_below->r, bg.color_below->g, bg.color_below->b, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glDisable(GL_SCISSOR_TEST);
 	}

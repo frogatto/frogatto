@@ -1849,13 +1849,15 @@ void level::draw(int x, int y, int w, int h) const
 	const int start_h = h;
 
 	const int ticks = SDL_GetTicks();
+	
 	x -= widest_tile_;
 	y -= highest_tile_;
 	w += widest_tile_;
 	h += highest_tile_;
+	
 
-#if defined(USE_GLES2)
 	{
+#if defined(USE_GLES2)
 	gles2::manager manager(shader_);
 #endif
 
@@ -1906,9 +1908,16 @@ void level::draw(int x, int y, int w, int h) const
 		water_zorder = water_->zorder();
 	}
 
+#ifdef USE_GLES2
+	frame_buffer_enter_zorder(-100000);
+#endif
+
 	std::set<int>::const_iterator layer = layers_.begin();
 
 	for(; layer != layers_.end(); ++layer) {
+#ifdef USE_GLES2
+		frame_buffer_enter_zorder(*layer);
+#endif
 		if(!water_drawn && *layer > water_zorder) {
 			water_->draw(x, y, w, h);
 			water_drawn = true;
@@ -1927,10 +1936,22 @@ void level::draw(int x, int y, int w, int h) const
 			water_drawn = true;
 	}
 
+	int last_zorder = -1000000;
 	while(entity_itor != chars.end()) {
+#ifdef USE_GLES2
+		if((*entity_itor)->zorder() != last_zorder) {
+			last_zorder = (*entity_itor)->zorder();
+			frame_buffer_enter_zorder(last_zorder);
+		}
+#endif
+
 		draw_entity(**entity_itor, x, y, editor_);
 		++entity_itor;
 	}
+
+#ifdef USE_GLES2
+	frame_buffer_enter_zorder(1000000);
+#endif
 
 	if(editor_) {
 		foreach(const entity_ptr& obj, chars_) {
@@ -1986,12 +2007,120 @@ void level::draw(int x, int y, int w, int h) const
 	if(background_) {
 		background_->draw_foreground(start_x, start_y, 0.0, cycle());
 	}
-
-	calculate_lighting(start_x, start_y, start_w, start_h);
-#if defined(USE_GLES2)
 	}
+
+	{
+#if defined(USE_GLES2)
+	gles2::manager manager(shader_);
 #endif
+	calculate_lighting(start_x, start_y, start_w, start_h);
+	}
 }
+
+#ifdef USE_GLES2
+void level::frame_buffer_enter_zorder(int zorder) const
+{
+	std::vector<gles2::shader_ptr> shaders;
+	foreach(const FrameBufferShaderEntry& e, fb_shaders_) {
+		if(zorder >= e.begin_zorder && zorder <= e.end_zorder) {
+			if(!e.shader) {
+				e.shader.reset(new gles2::shader_program(e.shader_node));
+			}
+
+			shaders.push_back(e.shader);
+		}
+	}
+
+	if(shaders != active_fb_shaders_) {
+		if(active_fb_shaders_.empty()) {
+			texture_frame_buffer::set_render_to_texture();
+			glClearColor(0.0, 0.0, 0.0, 0.0);
+			glClear(GL_COLOR_BUFFER_BIT);
+		} else if(shaders.empty()) {
+			//now there are no shaders, flush all to the screen and proceed with
+			//rendering to the screen.
+			flush_frame_buffer_shaders_to_screen();
+			texture_frame_buffer::set_render_to_screen();
+		} else {
+			bool add_shaders = false;
+			foreach(const gles2::shader_ptr& s, shaders) {
+				if(std::count(active_fb_shaders_.begin(), active_fb_shaders_.end(), s) == 0) {
+					add_shaders = true;
+					break;
+				}
+			}
+
+			if(add_shaders) {
+				//this works if we're adding and removing shaders.
+				flush_frame_buffer_shaders_to_screen();
+				texture_frame_buffer::set_render_to_texture();
+				glClearColor(0.0, 0.0, 0.0, 0.0);
+				glClear(GL_COLOR_BUFFER_BIT);
+			} else {
+				//we must just be removing shaders.
+				foreach(const gles2::shader_ptr& s, active_fb_shaders_) {
+					if(std::count(shaders.begin(), shaders.end(), s) == 0) {
+						apply_shader_to_frame_buffer_texture(s, false);
+					}
+				}
+			}
+		}
+
+		active_fb_shaders_ = shaders;
+	}
+}
+
+void level::flush_frame_buffer_shaders_to_screen() const
+{
+	for(int n = 0; n != active_fb_shaders_.size(); ++n) {
+		apply_shader_to_frame_buffer_texture(active_fb_shaders_[n], n == active_fb_shaders_.size()-1);
+	}
+}
+
+void level::apply_shader_to_frame_buffer_texture(gles2::shader_ptr shader, bool render_to_screen) const
+{
+	gles2::manager manager(shader);
+	texture_frame_buffer::set_as_current_texture();
+
+	if(render_to_screen) {
+		texture_frame_buffer::set_render_to_screen();
+	} else {
+		texture_frame_buffer::switch_texture();
+		texture_frame_buffer::set_render_to_texture();
+	}
+
+	glPushMatrix();
+	glLoadIdentity();
+
+	const int w = preferences::actual_screen_width();
+	const int h = preferences::actual_screen_height();
+
+	const GLfloat tcarray[] = { 0, 0, 0, 1, 1, 0, 1, 1 };
+	const GLfloat tcarray_rotated[] = { 0, 1, 1, 1, 0, 0, 1, 0 };
+	GLfloat varray[] = { -1, -1, -1, 1, 1, -1, 1, 1 };
+
+	gles2::active_shader()->prepare_draw();
+	gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, GL_FALSE, 0, varray);
+	gles2::active_shader()->shader()->texture_array(2, GL_FLOAT, GL_FALSE, 0, 
+		preferences::screen_rotated() ? tcarray_rotated : tcarray);
+
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+	glPopMatrix();
+
+	if(!render_to_screen) {
+		texture_frame_buffer::switch_texture();
+		texture_frame_buffer::set_render_to_texture();
+	}
+}
+
+void level::shaders_updated()
+{
+	foreach(FrameBufferShaderEntry& e, fb_shaders_) {
+		e.shader.reset();
+	}
+}
+#endif
 
 void level::calculate_lighting(int x, int y, int w, int h) const
 {
@@ -2127,6 +2256,10 @@ void level::draw_background(int x, int y, int rotation) const
 	}
 
 	if(background_) {
+#ifdef USE_GLES2
+		active_fb_shaders_.clear();
+		frame_buffer_enter_zorder(-1000000);
+#endif
 		static std::vector<rect> opaque_areas;
 		opaque_areas.clear();
 		int screen_width = graphics::screen_width();
@@ -3561,6 +3694,31 @@ variant level::get_value(const std::string& key) const
 #else
 		return variant();
 #endif
+
+#ifdef USE_GLES2
+	} else if(key == "frame_buffer_shaders") {
+//		if(!fb_shaders_variant_.is_null()) {
+//			return fb_shaders_variant_;
+//		}
+
+		std::vector<variant> v;
+		foreach(const FrameBufferShaderEntry& e, fb_shaders_) {
+			std::map<variant,variant> m;
+			m[variant("begin_zorder")] = variant(e.begin_zorder);
+			m[variant("end_zorder")] = variant(e.end_zorder);
+			m[variant("shader_info")] = e.shader_node;
+
+			if(!e.shader) {
+				e.shader.reset(new gles2::shader_program(e.shader_node));
+			}
+
+			m[variant("shader")] = variant(e.shader.get());
+			v.push_back(variant(&m));
+		}
+
+		fb_shaders_variant_ = variant(&v);
+		return fb_shaders_variant_;
+#endif
 	} else {
 		const_entity_ptr e = get_entity_by_label(key);
 		if(e) {
@@ -3621,6 +3779,18 @@ void level::set_value(const std::string& key, const variant& value)
 		} else {
 			debug_properties_ = value.as_list_string();
 		}
+#ifdef USE_GLES2
+	} else if(key == "frame_buffer_shaders") {
+		fb_shaders_variant_ = variant();
+		fb_shaders_.clear();
+		foreach(const variant& v, value.as_list()) {
+			FrameBufferShaderEntry e;
+			e.begin_zorder = v["begin_zorder"].as_int();
+			e.end_zorder = v["end_zorder"].as_int();
+			e.shader_node = v["shader_info"];
+			fb_shaders_.push_back(e);
+		}
+#endif
 	} else {
 		vars_ = vars_.add_attr(variant(key), value);
 	}

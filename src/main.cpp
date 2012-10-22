@@ -736,7 +736,12 @@ extern "C" int main(int argcount, char** argvec)
 	}
 
 	formula_profiler::manager profiler(profile_output);
+
+#ifdef USE_GLES2
+	texture_frame_buffer::init(preferences::actual_screen_width(), preferences::actual_screen_height());
+#else
 	texture_frame_buffer::init();
+#endif
 
 	if(run_benchmarks) {
 		if(benchmarks_list.empty() == false) {

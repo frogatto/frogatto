@@ -32,22 +32,13 @@ namespace texture_frame_buffer {
 
 namespace {
 bool supported = true;
-GLuint texture_id = 0;  //ID of the texture which the frame buffer is stored in
-GLuint framebuffer_id = 0; //framebuffer object
+GLuint texture_id = 0, texture_id_back = 0;  //ID of the texture which the frame buffer is stored in
+GLuint framebuffer_id = 0, framebuffer_id_back = 0; //framebuffer object
 GLint video_framebuffer_id = 0; //the original frame buffer object
 int frame_buffer_texture_width = 128;
 int frame_buffer_texture_height = 128;
-}
 
-int width() { return frame_buffer_texture_width; }
-int height() { return frame_buffer_texture_height; }
-
-bool unsupported()
-{
-	return !supported;
-}
-
-void init(int buffer_width, int buffer_height)
+void init_internal(int buffer_width, int buffer_height)
 {
 	// Clear any old errors.
 	glGetError();
@@ -129,17 +120,49 @@ void init(int buffer_width, int buffer_height)
 	err = glGetError();
 	ASSERT_EQ(err, GL_NO_ERROR);
 }
+}
 
-render_scope::render_scope()
+void init(int buffer_width, int buffer_height)
+{
+	init_internal(buffer_width, buffer_height);
+	switch_texture();
+	init_internal(buffer_width, buffer_height);
+}
+
+void switch_texture()
+{
+	std::swap(texture_id, texture_id_back);
+	std::swap(framebuffer_id, framebuffer_id_back);
+}
+
+int width() { return frame_buffer_texture_width; }
+int height() { return frame_buffer_texture_height; }
+
+bool unsupported()
+{
+	return !supported;
+}
+
+void set_render_to_texture()
 {
 	EXT_CALL(glBindFramebuffer)(EXT_MACRO(GL_FRAMEBUFFER), framebuffer_id);
 	glViewport(0, 0, width(), height());
 }
 
-render_scope::~render_scope()
+void set_render_to_screen()
 {
 	EXT_CALL(glBindFramebuffer)(EXT_MACRO(GL_FRAMEBUFFER), video_framebuffer_id);
 	glViewport(0, 0, preferences::actual_screen_width(), preferences::actual_screen_height());
+}
+
+render_scope::render_scope()
+{
+	set_render_to_texture();
+}
+
+render_scope::~render_scope()
+{
+	set_render_to_screen();
 }
 
 void set_as_current_texture()
