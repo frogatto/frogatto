@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-10-21 22:47-0200\n"
-"PO-Revision-Date: 2012-10-22 00:48+0000\n"
+"POT-Creation-Date: 2012-10-22 01:42-0200\n"
+"PO-Revision-Date: 2012-10-22 03:44+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Japanese (http://www.transifex.com/projects/p/Frogatto/language/ja/)\n"
 "MIME-Version: 1.0\n"
@@ -2738,7 +2738,7 @@ msgstr ""
 #: ../data/level/dungeon-gateway.cfg:163
 msgid ""
 "Well, some of you came to my hometown a little\n"
-" while ago, and went after someone I know."
+"while ago, and went after someone I know."
 msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:165
@@ -5504,7 +5504,7 @@ msgstr ""
 #: ../data/level/tea-with-milgram.cfg:217
 msgid ""
 "Anyways, we do manage to get by,\n"
-" but it really is a mess."
+"but it really is a mess."
 msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:219
@@ -6502,7 +6502,7 @@ msgstr ""
 #: ../data/objects/items/ability.cfg:8
 msgid ""
 "You can now breathe out a\n"
-" short stream of intense flame."
+"short stream of intense flame."
 msgstr ""
 
 #: ../data/objects/items/ability.cfg:8 ../data/objects/items/ability.cfg:9
