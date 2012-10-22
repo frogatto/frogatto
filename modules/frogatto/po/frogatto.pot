@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto v1.0.3\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-10-20 20:56-0300\n"
+"POT-Creation-Date: 2012-10-21 22:47-0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -595,16 +595,16 @@ msgstr ""
 msgid "Start a level with no health left."
 msgstr ""
 
-#: ../data/level/airplane-boss.cfg:14
-msgid "Stonepipe Bridge"
-msgstr ""
-
-#: ../data/level/airplane-boss.cfg:400
+#: ../data/level/airplane-boss.cfg:31
 msgid "Ambush!"
 msgstr ""
 
-#: ../data/level/airplane-boss.cfg:409
+#: ../data/level/airplane-boss.cfg:40
 msgid "Victory!"
+msgstr ""
+
+#: ../data/level/airplane-boss.cfg:1166
+msgid "Stonepipe Bridge"
 msgstr ""
 
 #: ../data/level/arcade-blocks.cfg:103 ../data/level/arcade-blocks.cfg:105
@@ -889,7 +889,7 @@ msgid ""
 msgstr ""
 
 #: ../data/level/chopple-shop-interior.cfg:662
-#: ../data/level/chopple-shop.cfg:16
+#: ../data/level/chopple-shop.cfg:927
 msgid "Chopple's General Store"
 msgstr ""
 
@@ -1157,11 +1157,11 @@ msgid ""
 "Well, see you soon!  Thanks again!"
 msgstr ""
 
-#: ../data/level/crevice-bridge.cfg:1276
+#: ../data/level/crevice-bridge.cfg:1277
 msgid "Ahh, there you are!"
 msgstr ""
 
-#: ../data/level/crevice-bridge.cfg:1790
+#: ../data/level/crevice-bridge.cfg:1794
 msgid "Crevice Bridge"
 msgstr ""
 
@@ -1238,8 +1238,8 @@ msgid "We can do that."
 msgstr ""
 
 #: ../data/level/crevice-village-cave.cfg:1231
-#: ../data/level/crevice-village-central.cfg:4054
-#: ../data/level/crevice-village-heights.cfg:2241
+#: ../data/level/crevice-village-central.cfg:4132
+#: ../data/level/crevice-village-heights.cfg:2246
 #: ../data/level/crevice-village.cfg:1647
 #: ../data/objects/playable/map-selector.cfg:17
 msgid "Crevice Village"
@@ -1320,7 +1320,7 @@ msgid ""
 "our best bet for a clue."
 msgstr ""
 
-#: ../data/level/crevice-village-central.cfg:2747
+#: ../data/level/crevice-village-central.cfg:2811
 msgid "Hey! Over here!"
 msgstr ""
 
@@ -2615,22 +2615,22 @@ msgstr ""
 msgid "Darkness Central"
 msgstr ""
 
-#: ../data/level/descent-to-town.cfg:16
-msgid "Descent to Town"
-msgstr ""
-
-#: ../data/level/descent-to-town.cfg:894
+#: ../data/level/descent-to-town.cfg:367
 msgid ""
 "It says,\n"
 "\"Chopple's General Store,\n"
 "just ahead."
 msgstr ""
 
-#: ../data/level/descent-to-town.cfg:896
+#: ../data/level/descent-to-town.cfg:369
 msgid "Honest trade and thrifty prices!\""
 msgstr ""
 
-#: ../data/level/downhill.cfg:3929
+#: ../data/level/descent-to-town.cfg:1701
+msgid "Descent to Town"
+msgstr ""
+
+#: ../data/level/downhill.cfg:3924
 msgid "Downhill"
 msgstr ""
 
@@ -2833,7 +2833,7 @@ msgstr ""
 msgid "Fast Lane"
 msgstr ""
 
-#: ../data/level/flooded-caverns.cfg:4167
+#: ../data/level/flooded-caverns.cfg:4165
 msgid "Flooded Caverns"
 msgstr ""
 
@@ -3764,7 +3764,7 @@ msgstr ""
 #: ../data/level/kitty-dormitory.cfg:2052
 msgid ""
 "...but some of the other ones\n"
-"are just plain <em>strange</em>."
+"are just plain <em>strange.</em>"
 msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2053
@@ -5054,90 +5054,90 @@ msgid "I say! Who's there?"
 msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:1063
-#: ../data/level/secluded-hut.cfg:16
+#: ../data/level/secluded-hut.cfg:2238
 #: ../data/objects/playable/map-selector.cfg:16
 msgid "Secluded Hut"
 msgstr ""
 
-#: ../data/level/secluded-hut.cfg:2208
+#: ../data/level/secluded-hut.cfg:1398
 msgid "Are you quite alright?"
 msgstr ""
 
-#: ../data/level/secluded-hut.cfg:2210
+#: ../data/level/secluded-hut.cfg:1400
 msgid ""
 "Yeah.\n"
 "Who WAS that guy?!"
 msgstr ""
 
-#: ../data/level/secluded-hut.cfg:2211
+#: ../data/level/secluded-hut.cfg:1401
 msgid "One of Milgram's henchmen, no doubt."
 msgstr ""
 
-#: ../data/level/secluded-hut.cfg:2212
+#: ../data/level/secluded-hut.cfg:1402
 msgid ""
 "They may have seen me talking to you,\n"
 "I can't be sure."
 msgstr ""
 
-#: ../data/level/secluded-hut.cfg:2214
+#: ../data/level/secluded-hut.cfg:1404
 msgid "Wait, what?  Milgram?"
 msgstr ""
 
-#: ../data/level/secluded-hut.cfg:2216
+#: ../data/level/secluded-hut.cfg:1406
 msgid ""
 "What's <em>he</em> doing\n"
 "on this side of the island?"
 msgstr ""
 
-#: ../data/level/secluded-hut.cfg:2218
+#: ../data/level/secluded-hut.cfg:1408
 msgid "You still haven't heard, then."
 msgstr ""
 
-#: ../data/level/secluded-hut.cfg:2219
+#: ../data/level/secluded-hut.cfg:1409
 msgid ""
 "Milgram's men showed up\n"
 "early this morning, in town.\n"
 "They've taken the whole place hostage!"
 msgstr ""
 
-#: ../data/level/secluded-hut.cfg:2220
+#: ../data/level/secluded-hut.cfg:1410
 msgid ""
 "Unfortunately, I don't know the details.\n"
 "I just flew out of there as soon as I could,\n"
 "looking for <em>anyone</em> who could help."
 msgstr ""
 
-#: ../data/level/secluded-hut.cfg:2222
+#: ../data/level/secluded-hut.cfg:1412
 msgid ""
 "That certainly...\n"
 "changes my plans for the day."
 msgstr ""
 
-#: ../data/level/secluded-hut.cfg:2224
+#: ../data/level/secluded-hut.cfg:1414
 msgid ""
 "Wow, uhm... \n"
 "I'd sure like to help, but ...\n"
 "I just don't see what I could do."
 msgstr ""
 
-#: ../data/level/secluded-hut.cfg:2226
+#: ../data/level/secluded-hut.cfg:1416
 msgid ""
 "I don't think I can promise anything,\n"
 "but if the opportunity presents itself,\n"
 "who knows?"
 msgstr ""
 
-#: ../data/level/secluded-hut.cfg:2227
+#: ../data/level/secluded-hut.cfg:1417
 msgid ""
 "Yes, it's unreasonable to expect\n"
 "someone to just charge in there."
 msgstr ""
 
-#: ../data/level/secluded-hut.cfg:2228
+#: ../data/level/secluded-hut.cfg:1418
 msgid "I'm at a loss for a plan, myself."
 msgstr ""
 
-#: ../data/level/secluded-hut.cfg:2229
+#: ../data/level/secluded-hut.cfg:1419
 msgid ""
 "Nevertheless, I'd better be going.\n"
 "Hopefully, we'll fix that bridge soon.\n"
@@ -5145,27 +5145,27 @@ msgid ""
 "with modular construction and all."
 msgstr ""
 
-#: ../data/level/secluded-hut.cfg:2230
+#: ../data/level/secluded-hut.cfg:1420
 msgid ""
 "In the meantime, you might benefit from\n"
 "visiting the fellow who lives here."
 msgstr ""
 
-#: ../data/level/secluded-hut.cfg:2231
+#: ../data/level/secluded-hut.cfg:1421
 msgid ""
 "Bit of a recluse, but he's quite sharp.\n"
 "He lives on top of this rock column."
 msgstr ""
 
-#: ../data/level/secluded-hut.cfg:2233
+#: ../data/level/secluded-hut.cfg:1423
 msgid "And I get up there... how?"
 msgstr ""
 
-#: ../data/level/secluded-hut.cfg:2237
+#: ../data/level/secluded-hut.cfg:1427
 msgid "Simple, just take to the air!"
 msgstr ""
 
-#: ../data/level/secluded-hut.cfg:2240
+#: ../data/level/secluded-hut.cfg:1430
 msgid "You ... <em>do</em> realize I can't fly?"
 msgstr ""
 
@@ -6529,6 +6529,10 @@ msgid ""
 "You can now fire balls of harmful\n"
 "energy from your fingertips,\n"
 "which home in on your enemies."
+msgstr ""
+
+#: ../data/objects/items/ability.cfg:12
+msgid "Press ${ATTACK_KEY} to switch between abilities."
 msgstr ""
 
 #: ../data/objects/items/max_heart_object.cfg:8
