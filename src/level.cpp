@@ -2025,6 +2025,7 @@ void level::frame_buffer_enter_zorder(int zorder) const
 		if(zorder >= e.begin_zorder && zorder <= e.end_zorder) {
 			if(!e.shader) {
 				e.shader.reset(new gles2::shader_program(e.shader_node));
+				e.shader->configure(e.shader_node);
 			}
 
 			shaders.push_back(e.shader);
@@ -3708,10 +3709,6 @@ variant level::get_value(const std::string& key) const
 			m[variant("end_zorder")] = variant(e.end_zorder);
 			m[variant("shader_info")] = e.shader_node;
 
-			if(!e.shader) {
-				e.shader.reset(new gles2::shader_program(e.shader_node));
-			}
-
 			m[variant("shader")] = variant(e.shader.get());
 			v.push_back(variant(&m));
 		}
@@ -3788,6 +3785,12 @@ void level::set_value(const std::string& key, const variant& value)
 			e.begin_zorder = v["begin_zorder"].as_int();
 			e.end_zorder = v["end_zorder"].as_int();
 			e.shader_node = v["shader_info"];
+
+			if(!e.shader) {
+				e.shader.reset(new gles2::shader_program(e.shader_node));
+				e.shader->configure(e.shader_node);
+			}
+
 			fb_shaders_.push_back(e);
 		}
 #endif
