@@ -3,7 +3,7 @@
 
 //A quick data structure for doing color shifts of pixel art images.
 #include <utility>
-#include <inttypes.h>
+#include <boost/cstdint.hpp>
 
 
 class colorshift_hash_table {
