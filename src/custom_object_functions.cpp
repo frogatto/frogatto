@@ -302,47 +302,66 @@ END_FUNCTION_DEF(save_game)
 class load_game_command : public entity_command_callable
 {
 	std::string transition_;
+	int slot_;
 public:
-	explicit load_game_command(const std::string& transition) : transition_(transition) {}
+	load_game_command(const std::string& transition, int slot) : transition_(transition), slot_(slot) {}
 	virtual void execute(level& lvl, entity& ob) const {
-		std::vector<std::string> save_options;
-		save_options.push_back("save.cfg");
+		std::string dest_file;
 
-		for(int n = 2; n <= 4; ++n) {
-			std::string fname = formatter() << "save" << n << ".cfg";
+		if(slot_ >= 0) {
+			std::string fname = "save.cfg";
+			if(slot_ != 0) {
+				fname = formatter() << "save" << (slot_+1) << ".cfg";
+			}
+
 			if(sys::file_exists(std::string(preferences::user_data_path()) + "/" + fname)) {
-				save_options.push_back(fname);
+				preferences::set_save_slot(fname);
+				dest_file = fname;
 			}
 		}
+		
+		if(dest_file.empty()) {
 
-		int noption = 0;
+			std::vector<std::string> save_options;
+			save_options.push_back("save.cfg");
 
-		if(save_options.size() > 1) {
-			int nslot = 1;
-			std::vector<std::string> option_descriptions;
-			foreach(const std::string& option, save_options) {
-				const std::string fname = std::string(preferences::user_data_path()) + "/" + option;
-				try {
-					const variant doc = json::parse_from_file(fname);
-					option_descriptions.push_back(formatter() << "Slot " << nslot << ": " << doc["title"].as_string());
-				} catch(json::parse_error&) {
-					option_descriptions.push_back(formatter() << "Slot " << nslot << ": Frogatto");
+			for(int n = 2; n <= 4; ++n) {
+				std::string fname = formatter() << "save" << n << ".cfg";
+				if(sys::file_exists(std::string(preferences::user_data_path()) + "/" + fname)) {
+					save_options.push_back(fname);
+				}
+			}
+
+			int noption = 0;
+
+			if(save_options.size() > 1) {
+				int nslot = 1;
+				std::vector<std::string> option_descriptions;
+				foreach(const std::string& option, save_options) {
+					const std::string fname = std::string(preferences::user_data_path()) + "/" + option;
+					try {
+						const variant doc = json::parse_from_file(fname);
+						option_descriptions.push_back(formatter() << "Slot " << nslot << ": " << doc["title"].as_string());
+					} catch(json::parse_error&) {
+						option_descriptions.push_back(formatter() << "Slot " << nslot << ": Frogatto");
+					}
+
+					++nslot;
 				}
 
-				++nslot;
+				noption = show_simple_option_dialog(lvl, _("Select save slot to load."), option_descriptions);
+	
+				if(noption == -1) {
+					return;
+				}
+
+				preferences::set_save_slot(save_options[noption]);
 			}
-
-			noption = show_simple_option_dialog(lvl, _("Select save slot to load."), option_descriptions);
-
-			if(noption == -1) {
-				return;
-			}
-
-			preferences::set_save_slot(save_options[noption]);
+			dest_file = save_options[noption];
 		}
 
 		level::portal p;
-		p.level_dest = save_options[noption];
+		p.level_dest = dest_file;
 		p.dest_starting_pos = true;
 		p.saved_game = true; 
 		p.transition = transition_;
@@ -350,12 +369,17 @@ public:
 	}
 };
 
-FUNCTION_DEF(load_game, 0, 1, "load_game(transition): loads the saved game. If transition (a string) is given, it will use that type of transition.")
+FUNCTION_DEF(load_game, 0, 2, "load_game(transition, slot): loads the saved game. If transition (a string) is given, it will use that type of transition.")
 	std::string transition;
+	int slot = -1;
 	if(args().size() >= 1) {
 		transition = args()[0]->evaluate(variables).as_string();
 	}
-	return variant(new load_game_command(transition));
+
+	if(args().size() >= 2) {
+		slot = args()[1]->evaluate(variables).as_int();
+	}
+	return variant(new load_game_command(transition, slot));
 END_FUNCTION_DEF(load_game)
 
 FUNCTION_DEF(can_load_game, 0, 0, "can_load_game(): returns true if there is a saved game available to load")
