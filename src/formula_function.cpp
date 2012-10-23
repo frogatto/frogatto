@@ -64,7 +64,7 @@ namespace {
 
 namespace game_logic {
 
-formula_expression::formula_expression(const char* name) : name_(name), begin_str_(EmptyStr.begin()), end_str_(EmptyStr.end())
+formula_expression::formula_expression(const char* name) : name_(name), begin_str_(EmptyStr.begin()), end_str_(EmptyStr.end()), ntimes_called_(0)
 {}
 
 void formula_expression::copy_debug_info_from(const formula_expression& o)

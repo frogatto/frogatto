@@ -8,6 +8,9 @@
 namespace formula_profiler
 {
 
+//should be called every cycle while the profiler is running.
+void pump();
+
 class manager
 {
 public:
@@ -31,6 +34,9 @@ class custom_object_type;
 
 namespace formula_profiler
 {
+
+//should be called every cycle while the profiler is running.
+void pump();
 
 struct custom_object_event_frame {
 	const custom_object_type* type;

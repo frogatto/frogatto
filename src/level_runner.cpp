@@ -1495,6 +1495,8 @@ bool level_runner::play_cycle()
 		profiling_summary_ = formula_profiler::get_profile_summary();
 	}
 
+	formula_profiler::pump();
+
 	const int raw_wait_time = desired_end_time - SDL_GetTicks();
 	const int wait_time = std::max<int>(1, desired_end_time - SDL_GetTicks());
 	next_delay_ += wait_time;

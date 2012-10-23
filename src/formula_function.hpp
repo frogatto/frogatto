@@ -54,6 +54,7 @@ public:
 
 	variant evaluate(const formula_callable& variables) const {
 #if !TARGET_OS_IPHONE
+		++ntimes_called_;
 		call_stack_manager manager(this);
 #endif
 		return execute(variables);
@@ -92,6 +93,8 @@ public:
 	const std::string& str() const { return str_; }
 
 	variant parent_formula() const { return parent_formula_; }
+
+	int ntimes_called() const { return ntimes_called_; }
 protected:
 	virtual variant execute_member(const formula_callable& variables, std::string& id) const;
 private:
@@ -101,6 +104,8 @@ private:
 	variant parent_formula_;
 	std::string::const_iterator begin_str_, end_str_;
 	std::string str_;
+
+	mutable int ntimes_called_;
 };
 
 class function_expression : public formula_expression {

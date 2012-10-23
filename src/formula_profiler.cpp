@@ -38,10 +38,13 @@ pthread_t main_thread;
 int empty_samples = 0;
 
 std::map<std::vector<const game_logic::formula_expression*>, int> expression_call_stack_samples;
+std::vector<const game_logic::formula_expression*> current_expression_call_stack;
 
 std::vector<custom_object_event_frame> event_call_stack_samples;
 int num_samples = 0;
 const size_t max_samples = 10000;
+
+int nframes_profiled = 0;
 
 #ifdef _WINDOWS
 SDL_TimerID sdl_profile_timer;
@@ -53,6 +56,8 @@ Uint32 sdl_timer_callback(Uint32 interval, void *param)
 void sigprof_handler(int sig)
 #endif
 {
+	//NOTE: Nothing in this function should allocate memory, since
+	//we might be called while allocating memory.
 #ifdef _WINDOWS
 	if(handler_disabled) {
 		return interval;
@@ -63,8 +68,10 @@ void sigprof_handler(int sig)
 	}
 #endif
 
-	//TODO: FIX THIS SO IT DOESN'T ALLOCATE MEMORY
-	//expression_call_stack_samples[get_expression_call_stack()]++;
+	if(current_expression_call_stack.empty() && current_expression_call_stack.capacity() >= get_expression_call_stack().size()) {
+		//Very important that this doesnot allocate memory.
+		current_expression_call_stack = get_expression_call_stack();
+	}
 
 	if(num_samples == max_samples) {
 #ifdef _WINDOWS
@@ -89,6 +96,7 @@ void sigprof_handler(int sig)
 manager::manager(const char* output_file)
 {
 	if(output_file) {
+		current_expression_call_stack.reserve(10000);
 		event_call_stack_samples.resize(max_samples);
 
 		main_thread = pthread_self();
@@ -137,7 +145,7 @@ manager::~manager()
 			samples_map[str]++;
 		}
 
-		std::vector<std::pair<int, std::string> > sorted_samples;
+		std::vector<std::pair<int, std::string> > sorted_samples, cum_sorted_samples;
 		for(std::map<std::string, int>::const_iterator i = samples_map.begin(); i != samples_map.end(); ++i) {
 			sorted_samples.push_back(std::pair<int, std::string>(i->second, i->first));
 		}
@@ -158,6 +166,53 @@ manager::~manager()
 			s << (100*sorted_samples[n].first)/total_samples << "% (" << sorted_samples[n].first << ") " << sorted_samples[n].second << "\n";
 		}
 
+		sorted_samples.clear();
+
+		std::map<const game_logic::formula_expression*, int> expr_samples, cum_expr_samples;
+
+		int total_expr_samples = 0;
+
+		for(std::map<std::vector<const game_logic::formula_expression*>, int>::const_iterator i = expression_call_stack_samples.begin(); i != expression_call_stack_samples.end(); ++i) {
+			const std::vector<const game_logic::formula_expression*>& sample = i->first;
+			const int nsamples = i->second;
+			if(sample.empty()) {
+				continue;
+			}
+
+			foreach(const game_logic::formula_expression* fe, sample) {
+				cum_expr_samples[fe] += nsamples;
+			}
+
+			expr_samples[sample.back()] += nsamples;
+
+			total_expr_samples += nsamples;
+		}
+
+		for(std::map<const game_logic::formula_expression*, int>::const_iterator i = expr_samples.begin(); i != expr_samples.end(); ++i) {
+			sorted_samples.push_back(std::pair<int, std::string>(i->second, formatter() << i->first->debug_pinpoint_location() << " (called " << double(i->first->ntimes_called())/double(nframes_profiled) << " times per frame)"));
+		}
+
+		for(std::map<const game_logic::formula_expression*, int>::const_iterator i = cum_expr_samples.begin(); i != cum_expr_samples.end(); ++i) {
+			cum_sorted_samples.push_back(std::pair<int, std::string>(i->second, formatter() << i->first->debug_pinpoint_location() << " (called " << double(i->first->ntimes_called())/double(nframes_profiled) << " times per frame)"));
+		}
+
+		std::sort(sorted_samples.begin(), sorted_samples.end());
+		std::reverse(sorted_samples.begin(), sorted_samples.end());
+
+		std::sort(cum_sorted_samples.begin(), cum_sorted_samples.end());
+		std::reverse(cum_sorted_samples.begin(), cum_sorted_samples.end());
+
+		s << "\n\nPROFILE BROKEN DOWN INTO FFL EXPRESSIONS:\n\nTOTAL SAMPLES: " << total_expr_samples << "\n OVER " << nframes_profiled << " FRAMES\nSELF TIME:\n";
+
+		for(int n = 0; n != sorted_samples.size(); ++n) {
+			s << (100*sorted_samples[n].first)/total_expr_samples << "% (" << sorted_samples[n].first << ") " << sorted_samples[n].second << "\n";
+		}
+
+		s << "\n\nCUMULATIVE TIME:\n";
+		for(int n = 0; n != cum_sorted_samples.size(); ++n) {
+			s << (100*cum_sorted_samples[n].first)/total_expr_samples << "% (" << cum_sorted_samples[n].first << ") " << cum_sorted_samples[n].second << "\n";
+		}
+
 		if(!output_fname.empty()) {
 			sys::write_file(output_fname, s.str());
 		} else {
@@ -166,6 +221,16 @@ manager::~manager()
 			std::cerr << "=== END PROFILE REPORT ===\n";
 		}
 	}
+}
+
+void pump()
+{
+	if(current_expression_call_stack.empty() == false) {
+		expression_call_stack_samples[current_expression_call_stack]++;
+		current_expression_call_stack.clear();
+	}
+
+	++nframes_profiled;
 }
 
 bool custom_object_event_frame::operator<(const custom_object_event_frame& f) const
