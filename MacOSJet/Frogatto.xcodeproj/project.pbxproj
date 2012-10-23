@@ -189,6 +189,13 @@
 		C010C812160B068B006E7D90 /* SDL_mixer.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C010C5AC160AFC60006E7D90 /* SDL_mixer.framework */; };
 		C010C82C160C69BB006E7D90 /* SDL_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C010C82B160C69BB006E7D90 /* SDL_ttf.framework */; };
 		C010C835160C750C006E7D90 /* SDL_ttf.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C010C82B160C69BB006E7D90 /* SDL_ttf.framework */; };
+		C089D452162BDF7B009D2878 /* master-config.cfg in Resources */ = {isa = PBXBuildFile; fileRef = C089D451162BDF7B009D2878 /* master-config.cfg */; };
+		C089D455162BDFBA009D2878 /* UbuntuMono-B.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C089D44C162BDF54009D2878 /* UbuntuMono-B.ttf */; };
+		C089D456162BDFBD009D2878 /* UbuntuMono-BI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C089D44D162BDF54009D2878 /* UbuntuMono-BI.ttf */; };
+		C089D457162BDFBF009D2878 /* UbuntuMono-R.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C089D44E162BDF54009D2878 /* UbuntuMono-R.ttf */; };
+		C089D458162BDFC2009D2878 /* UbuntuMono-RI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C089D44F162BDF54009D2878 /* UbuntuMono-RI.ttf */; };
+		C089D459162BDFC5009D2878 /* FreeMono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C089D454162BDF89009D2878 /* FreeMono.ttf */; };
+		C089D45A162BDFC8009D2878 /* DejaVuSans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C089D453162BDF89009D2878 /* DejaVuSans.ttf */; };
 		C0EF2A5616215F78004CD227 /* libboost_iostreams.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0EF2A5316215F78004CD227 /* libboost_iostreams.dylib */; };
 		C0EF2A5716215F78004CD227 /* libboost_regex.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0EF2A5416215F78004CD227 /* libboost_regex.dylib */; };
 		C0EF2A5816215F78004CD227 /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0EF2A5516215F78004CD227 /* libboost_system.dylib */; };
@@ -602,6 +609,13 @@
 		C010C7FE160AFD82006E7D90 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; name = images; path = ../images; sourceTree = "<group>"; };
 		C010C7FF160AFD82006E7D90 /* modules */ = {isa = PBXFileReference; lastKnownFileType = folder; name = modules; path = ../modules; sourceTree = "<group>"; };
 		C010C82B160C69BB006E7D90 /* SDL_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL_ttf.framework; sourceTree = "<group>"; };
+		C089D44C162BDF54009D2878 /* UbuntuMono-B.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "UbuntuMono-B.ttf"; path = "../UbuntuMono-B.ttf"; sourceTree = "<group>"; };
+		C089D44D162BDF54009D2878 /* UbuntuMono-BI.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "UbuntuMono-BI.ttf"; path = "../UbuntuMono-BI.ttf"; sourceTree = "<group>"; };
+		C089D44E162BDF54009D2878 /* UbuntuMono-R.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "UbuntuMono-R.ttf"; path = "../UbuntuMono-R.ttf"; sourceTree = "<group>"; };
+		C089D44F162BDF54009D2878 /* UbuntuMono-RI.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "UbuntuMono-RI.ttf"; path = "../UbuntuMono-RI.ttf"; sourceTree = "<group>"; };
+		C089D451162BDF7B009D2878 /* master-config.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "master-config.cfg"; path = "../master-config.cfg"; sourceTree = "<group>"; };
+		C089D453162BDF89009D2878 /* DejaVuSans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = DejaVuSans.ttf; path = ../DejaVuSans.ttf; sourceTree = "<group>"; };
+		C089D454162BDF89009D2878 /* FreeMono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FreeMono.ttf; path = ../FreeMono.ttf; sourceTree = "<group>"; };
 		C0EF2A5316215F78004CD227 /* libboost_iostreams.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libboost_iostreams.dylib; sourceTree = "<group>"; };
 		C0EF2A5416215F78004CD227 /* libboost_regex.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libboost_regex.dylib; sourceTree = "<group>"; };
 		C0EF2A5516215F78004CD227 /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libboost_system.dylib; sourceTree = "<group>"; };
@@ -639,6 +653,7 @@
 				C010C7FE160AFD82006E7D90 /* images */,
 				C010C7FF160AFD82006E7D90 /* modules */,
 				C010C5BC160AFD4C006E7D90 /* src */,
+				C089D450162BDF59009D2878 /* Other Resources */,
 				C010C595160AFB8F006E7D90 /* Resources */,
 				C010C570160AFAD9006E7D90 /* Frameworks */,
 				C010C56E160AFAD9006E7D90 /* Products */,
@@ -1067,6 +1082,20 @@
 			path = ../src;
 			sourceTree = "<group>";
 		};
+		C089D450162BDF59009D2878 /* Other Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C089D453162BDF89009D2878 /* DejaVuSans.ttf */,
+				C089D454162BDF89009D2878 /* FreeMono.ttf */,
+				C089D451162BDF7B009D2878 /* master-config.cfg */,
+				C089D44C162BDF54009D2878 /* UbuntuMono-B.ttf */,
+				C089D44D162BDF54009D2878 /* UbuntuMono-BI.ttf */,
+				C089D44E162BDF54009D2878 /* UbuntuMono-R.ttf */,
+				C089D44F162BDF54009D2878 /* UbuntuMono-RI.ttf */,
+			);
+			name = "Other Resources";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1124,6 +1153,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C089D45A162BDFC8009D2878 /* DejaVuSans.ttf in Resources */,
+				C089D459162BDFC5009D2878 /* FreeMono.ttf in Resources */,
+				C089D455162BDFBA009D2878 /* UbuntuMono-B.ttf in Resources */,
+				C089D456162BDFBD009D2878 /* UbuntuMono-BI.ttf in Resources */,
+				C089D457162BDFBF009D2878 /* UbuntuMono-R.ttf in Resources */,
+				C089D458162BDFC2009D2878 /* UbuntuMono-RI.ttf in Resources */,
 				C010C5A1160AFB8F006E7D90 /* InfoPlist.strings in Resources */,
 				C010C5A2160AFB8F006E7D90 /* icon.icns in Resources */,
 				C010C5A3160AFB8F006E7D90 /* Info.plist in Resources */,
@@ -1131,6 +1166,7 @@
 				C010C800160AFD82006E7D90 /* data in Resources */,
 				C010C801160AFD82006E7D90 /* images in Resources */,
 				C010C802160AFD82006E7D90 /* modules in Resources */,
+				C089D452162BDF7B009D2878 /* master-config.cfg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1338,7 +1374,6 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1404,6 +1439,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/dylibs\"",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-DIMPLEMENT_SAVE_PNG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -1440,6 +1476,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/dylibs\"",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-DIMPLEMENT_SAVE_PNG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
