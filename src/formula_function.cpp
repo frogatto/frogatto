@@ -208,7 +208,7 @@ FUNCTION_DEF(query_cache, 3, 3, "query_cache(ffl_cache, key, expr): ")
 //	return args()[2]->evaluate(variables);
 
 	const variant key = args()[1]->evaluate(variables);
-	if(key.is_null()) {
+	if(key.is_null() || key.is_int() || key.is_list()) {
 		return args()[2]->evaluate(variables);
 	}
 
