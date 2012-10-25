@@ -616,6 +616,7 @@
 		C089D451162BDF7B009D2878 /* master-config.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "master-config.cfg"; path = "../master-config.cfg"; sourceTree = "<group>"; };
 		C089D453162BDF89009D2878 /* DejaVuSans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = DejaVuSans.ttf; path = ../DejaVuSans.ttf; sourceTree = "<group>"; };
 		C089D454162BDF89009D2878 /* FreeMono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FreeMono.ttf; path = ../FreeMono.ttf; sourceTree = "<group>"; };
+		C0B397F71636666C00D010E0 /* Frogatto.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Frogatto.entitlements; sourceTree = "<group>"; };
 		C0EF2A5316215F78004CD227 /* libboost_iostreams.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libboost_iostreams.dylib; sourceTree = "<group>"; };
 		C0EF2A5416215F78004CD227 /* libboost_regex.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libboost_regex.dylib; sourceTree = "<group>"; };
 		C0EF2A5516215F78004CD227 /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libboost_system.dylib; sourceTree = "<group>"; };
@@ -649,6 +650,7 @@
 		C010C562160AFAD9006E7D90 = {
 			isa = PBXGroup;
 			children = (
+				C0B397F71636666C00D010E0 /* Frogatto.entitlements */,
 				C010C7FD160AFD82006E7D90 /* data */,
 				C010C7FE160AFD82006E7D90 /* images */,
 				C010C7FF160AFD82006E7D90 /* modules */,
@@ -1414,6 +1416,8 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CODE_SIGN_ENTITLEMENTS = Frogatto.entitlements;
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Benjamin Anderman";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/dylibs\"",
@@ -1442,6 +1446,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-DIMPLEMENT_SAVE_PNG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1451,6 +1456,8 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CODE_SIGN_ENTITLEMENTS = Frogatto.entitlements;
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Benjamin Anderman";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/dylibs\"",
@@ -1479,6 +1486,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-DIMPLEMENT_SAVE_PNG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
