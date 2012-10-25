@@ -70,7 +70,7 @@ bool up() {
 
 	foreach(SDL_Joystick* j, joysticks) {
 		Sint16  y = SDL_JoystickGetAxis(j, 1);
-		if (y != 0 && y < 0) {
+		if (y < -4096*2) {
 			return true;
 		}
 
@@ -97,7 +97,7 @@ bool down() {
 
 	foreach(SDL_Joystick* j, joysticks) {
 		Sint16  y = SDL_JoystickGetAxis(j, 1);
-		if (y != 0 && y > 0) {
+		if (y > 4096*2) {
 			return true;
 		}
 
@@ -124,7 +124,7 @@ bool left() {
 
 	foreach(SDL_Joystick* j, joysticks) {
 		Sint16  x = SDL_JoystickGetAxis(j, 0);
-		if (x != 0 && x < 0) {
+		if (x < -4096*2) {
 			return true;
 		}
 
@@ -151,7 +151,7 @@ bool right() {
 
 	foreach(SDL_Joystick* j, joysticks) {
 		Sint16  x = SDL_JoystickGetAxis(j, 0);
-		if (x != 0 && x > 0) {
+		if (x > 4096*2) {
 			return true;
 		}
 
