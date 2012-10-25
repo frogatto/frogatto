@@ -1,12 +1,13 @@
 #ifndef DISABLE_FORMULA_PROFILER
 
+#include <SDL_thread.h>
+
 #include <assert.h>
 #include <iostream>
 #include <map>
 #include <string>
 #include <sstream>
 
-#include <pthread.h>
 #include <signal.h>
 #include <stdio.h>
 #include <string.h>
@@ -33,7 +34,7 @@ namespace {
 bool handler_disabled = false;
 bool profiler_on = false;
 std::string output_fname;
-pthread_t main_thread;
+int main_thread;
 
 int empty_samples = 0;
 
@@ -63,7 +64,7 @@ void sigprof_handler(int sig)
 		return interval;
 	}
 #else
-	if(handler_disabled || !pthread_equal(main_thread, pthread_self())) {
+	if(handler_disabled || main_thread != SDL_GetThreadID(NULL)) {
 		return;
 	}
 #endif
@@ -99,7 +100,7 @@ manager::manager(const char* output_file)
 		current_expression_call_stack.reserve(10000);
 		event_call_stack_samples.resize(max_samples);
 
-		main_thread = pthread_self();
+		main_thread = SDL_GetThreadID(NULL);
 
 		fprintf(stderr, "SETTING UP PROFILING...\n");
 		profiler_on = true;

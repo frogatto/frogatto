@@ -165,6 +165,67 @@ variant formula_expression::execute_member(const formula_callable& variables, st
 
 namespace {
 
+class ffl_cache : public formula_callable
+{
+public:
+	explicit ffl_cache(int max_entries) : max_entries_(max_entries)
+	{}
+	const variant* get(const variant& key) const {
+		std::map<variant, variant>::const_iterator i = cache_.find(key);
+		if(i != cache_.end()) {
+			return &i->second;
+		} else {
+			return NULL;
+		}
+	}
+
+	void store(const variant& key, const variant& value) const {
+		if(cache_.size() == max_entries_) {
+			cache_.clear();
+		}
+
+		cache_[key] = value;
+	}
+private:
+	variant get_value(const std::string& key) const {
+		return variant();
+	}
+
+	mutable std::map<variant, variant> cache_;
+	int max_entries_;
+};
+
+FUNCTION_DEF(create_cache, 0, 1, "create_cache(max_entries=4096): makes an FFL cache object")
+	formula::fail_if_static_context();
+	int max_entries = 4096;
+	if(args().size() >= 1) {
+		max_entries = args()[0]->evaluate(variables).as_int();
+	}
+	return variant(new ffl_cache(max_entries));
+END_FUNCTION_DEF(create_cache)
+
+FUNCTION_DEF(query_cache, 3, 3, "query_cache(ffl_cache, key, expr): ")
+//	return args()[2]->evaluate(variables);
+
+	const variant key = args()[1]->evaluate(variables);
+	if(key.is_null()) {
+		return args()[2]->evaluate(variables);
+	}
+
+	const ffl_cache* cache = args()[0]->evaluate(variables).try_convert<ffl_cache>();
+	ASSERT_LOG(cache != NULL, "ILLEGAL CACHE ARGUMENT TO query_cache");
+	
+	const variant* result = cache->get(key);
+	if(result != NULL) {
+		return *result;
+	}
+
+	const variant value = args()[2]->evaluate(variables);
+	cache->store(key, value);
+	return value;
+	
+END_FUNCTION_DEF(query_cache)
+
 	class if_function : public function_expression {
 	public:
 		explicit if_function(const args_list& args)

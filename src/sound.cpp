@@ -2,8 +2,6 @@
 #include <map>
 #include <vector>
 
-#include <pthread.h>
-
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
 
