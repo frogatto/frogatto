@@ -47,11 +47,11 @@ const size_t max_samples = 10000;
 
 int nframes_profiled = 0;
 
-#ifdef _WINDOWS
+#if defined(_WINDOWS) || defined(TARGET_OS_IPHONE)
 SDL_TimerID sdl_profile_timer;
 #endif
 
-#ifdef _WINDOWS
+#if defined(_WINDOWS) || defined(TARGET_OS_IPHONE)
 Uint32 sdl_timer_callback(Uint32 interval, void *param)
 #else
 void sigprof_handler(int sig)
@@ -59,7 +59,7 @@ void sigprof_handler(int sig)
 {
 	//NOTE: Nothing in this function should allocate memory, since
 	//we might be called while allocating memory.
-#ifdef _WINDOWS
+#if defined(_WINDOWS) || defined(TARGET_OS_IPHONE)
 	if(handler_disabled) {
 		return interval;
 	}
@@ -75,7 +75,7 @@ void sigprof_handler(int sig)
 	}
 
 	if(num_samples == max_samples) {
-#ifdef _WINDOWS
+#if defined(_WINDOWS) || defined(TARGET_OS_IPHONE)
 		return interval;
 #else
 		return;
@@ -87,7 +87,7 @@ void sigprof_handler(int sig)
 	} else {
 		event_call_stack_samples[num_samples++] = event_call_stack.back();
 	}
-#ifdef _WINDOWS
+#if defined(_WINDOWS) || defined(TARGET_OS_IPHONE)
 	return interval;
 #endif
 }
@@ -106,7 +106,7 @@ manager::manager(const char* output_file)
 		profiler_on = true;
 		output_fname = output_file;
 
-#ifdef _WINDOWS
+#if defined(_WINDOWS) || defined(TARGET_OS_IPHONE)
 		// Crappy windows approximation.
 		sdl_profile_timer = SDL_AddTimer(10, sdl_timer_callback, 0);
 		if(sdl_profile_timer == NULL) {
@@ -127,7 +127,7 @@ manager::manager(const char* output_file)
 manager::~manager()
 {
 	if(profiler_on){
-#ifdef _WINDOWS
+#if defined(_WINDOWS) || defined(TARGET_OS_IPHONE)
 		SDL_RemoveTimer(sdl_profile_timer);
 #else
 		struct itimerval timer;
