@@ -409,7 +409,7 @@ extern "C" int main(int argcount, char** argvec)
 	
 #if !defined(__native_client__)
 	Uint32 sdl_init_flags = SDL_INIT_VIDEO | SDL_INIT_JOYSTICK;
-#ifdef _WINDOWS
+#if defined(_WINDOWS) || defined(TARGET_OS_IPHONE)
 	sdl_init_flags |= SDL_INIT_TIMER;
 #endif
 	if(SDL_Init(sdl_init_flags) < 0) {
