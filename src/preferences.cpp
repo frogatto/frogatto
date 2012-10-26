@@ -177,7 +177,7 @@ namespace preferences {
 		
 		bool load_compiled_ = true;
 		
-		bool use_16bpp_textures_ = true;
+		bool use_16bpp_textures_ = false;
 #elif defined(TARGET_OS_HARMATTAN)
 		
 		bool send_stats_ = false;
