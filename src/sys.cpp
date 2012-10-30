@@ -19,7 +19,7 @@ bool get_available_memory(available_memory_info* info)
 	host_page_size(host_port, &pagesize);
 
 	vm_statistics_data_t vm_stat;
-	if(host_statistics(host_port, HOST_VM_INFO, (host_info_t)&vm_stat, &host_size) !+ KERN_SUCCESS) {
+	if(host_statistics(host_port, HOST_VM_INFO, (host_info_t)&vm_stat, &host_size) != KERN_SUCCESS) {
 		return false;
 	}
 
