@@ -129,6 +129,7 @@ objects = \
 	segment_editor_dialog.o \
 	settings_dialog.o \
 	shaders.o \
+	sys.o \
 	slider.o \
 	solid_map.o \
 	sound.o \
