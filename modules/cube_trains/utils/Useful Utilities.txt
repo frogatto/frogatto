@@ -40,3 +40,6 @@ Chart all metrics:
     debug_chart('flip', constrain(0, performance().flip, 100)),
     debug_chart('nevents', constrain(0, performance().nevent, 100)),
     debug_chart('time', time()%100),
+    
+List authors in git:
+git shortlog -sn

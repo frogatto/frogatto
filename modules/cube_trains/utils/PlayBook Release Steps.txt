@@ -14,6 +14,10 @@ Releasing Cube Trains on the PlayBook:
 ⑫ Recompile everything in order, and upload the project to the PlayBook.
  -- Put back the bar-descriptor when you've finished. -- 
 
+To connect:
+① In 'storage & sharing', turn 'usb connections' to 'connect to windows' from 'automatic'.
+② In 'security', enable development mode.
+
 Steps for Playbook Setup:
 Follow this chat log:
 
