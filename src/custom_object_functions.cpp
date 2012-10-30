@@ -386,6 +386,24 @@ FUNCTION_DEF(can_load_game, 0, 0, "can_load_game(): returns true if there is a s
 	return variant(sys::file_exists(preferences::save_file_path()));
 END_FUNCTION_DEF(can_load_game)
 
+FUNCTION_DEF(available_save_slots, 0, 0, "available_save_slots(): returns a list of numeric indexes of available save slots")
+	std::vector<variant> result;
+	for(int slot = 0; slot != 4; ++slot) {
+
+		std::string fname = "save.cfg";
+		if(slot != 0) {
+			fname = formatter() << "save" << (slot+1) << ".cfg";
+		}
+
+		if(sys::file_exists(std::string(preferences::user_data_path()) + "/" + fname)) {
+			result.push_back(variant(slot));
+		}
+	}
+
+	return variant(&result);
+	
+END_FUNCTION_DEF(available_save_slots)
+
 class move_to_standing_command : public entity_command_callable
 {
 public:
