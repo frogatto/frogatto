@@ -13,7 +13,7 @@ namespace sys {
 bool get_available_memory(available_memory_info* info)
 {
 	const mach_port_t host_port = mach_host_self();
-	const mach_msg_type_number_t host_size = sizeof(vm_statistics_data_t) / sizeof(integer_t);
+	mach_msg_type_number_t host_size = sizeof(vm_statistics_data_t) / sizeof(integer_t);
 
 	vm_size_t pagesize;
 	host_page_size(host_port, &pagesize);
