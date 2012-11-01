@@ -127,6 +127,27 @@ bool is_tile_opaque(const graphics::texture& t, int tile_num)
 	return true;
 }
 
+bool is_tile_using_alpha_channel(const graphics::texture& t, int tile_num)
+{
+	const int width = std::max<int>(t.width(), t.height());
+	const int xpos = BaseTileSize*(tile_num%(width/BaseTileSize));
+	const int ypos = BaseTileSize*(tile_num/(width/BaseTileSize));
+	for(int y = 0; y != BaseTileSize; ++y) {
+		const int v = ypos + y;
+		for(int x = 0; x != BaseTileSize; ++x) {
+			const int u = xpos + x;
+			const unsigned char* color = t.color_at(u, v);
+			ASSERT_LOG(color != NULL, "COULD NOT FIND COLOR IN TEXTURE");
+			graphics::color new_color(color[0], color[1], color[2], color[3]);
+			if(new_color.a() != 0 && new_color.a() != 0xFF) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 bool is_tile_solid_color(const graphics::texture& t, int tile_num, graphics::color& col)
 {
 	bool first = true;

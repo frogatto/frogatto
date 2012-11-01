@@ -58,11 +58,17 @@ bool operator==(const animation_area& a, const animation_area& b)
 	return a.src_image == b.src_image && a.anim->area() == b.anim->area() && a.anim->pad() == b.anim->pad() && a.anim->num_frames() == b.anim->num_frames() && a.anim->num_frames_per_row() == b.anim->num_frames_per_row();
 }
 
+std::set<animation_area_ptr> animation_areas_with_alpha;
 bool animation_area_height_compare(animation_area_ptr a, animation_area_ptr b)
 {
 	if(a->is_particle != b->is_particle) {
 		return a->is_particle;
 	}
+
+	if(animation_areas_with_alpha.count(a) != animation_areas_with_alpha.count(b)) {
+		return animation_areas_with_alpha.count(a) != 0;
+	}
+
 	return a->height > b->height;
 }
 
@@ -97,6 +103,44 @@ rect use_output_area(const output_area& input, int width, int height, std::vecto
 
 namespace graphics {
 void set_alpha_for_transparent_colors_in_rgba_surface(SDL_Surface* s, int options=0);
+}
+
+namespace {
+bool animation_area_has_alpha_channel(animation_area_ptr anim)
+{
+	using namespace graphics;
+	surface surf = graphics::surface_cache::get(anim->src_image);
+	if(!surf || surf->format->BytesPerPixel != 4) {
+		return false;
+	}
+
+	const uint32_t* pixels = reinterpret_cast<const uint32_t*>(surf->pixels);
+
+	for(int f = 0; f != anim->anim->num_frames(); ++f) {
+		const frame::frame_info& info = anim->anim->frame_layout()[f];
+
+		const int x = f%anim->anim->num_frames_per_row();
+		const int y = f/anim->anim->num_frames_per_row();
+
+		const rect& base_area = anim->anim->area();
+		const int xpos = base_area.x() + (base_area.w()+anim->anim->pad())*x;
+		const int ypos = base_area.y() + (base_area.h()+anim->anim->pad())*y;
+		SDL_Rect blit_src = {xpos + info.x_adjust, ypos + info.y_adjust, info.area.w(), info.area.h()};
+
+		for(int x = 0; x != blit_src.w; ++x) {
+			for(int y = 0; y != blit_src.h; ++y) {
+				const int index = (blit_src.y + y)*surf->w + (blit_src.x + x);
+				const uint32_t pixel = pixels[index];
+				const uint32_t mask = (pixels[index]&surf->format->Amask);
+				if(mask != 0 && mask != surf->format->Amask) {
+					return true;
+				}
+			}
+		}
+	}
+	
+	return false;
+}
 }
 
 UTILITY(compile_objects)
@@ -212,11 +256,19 @@ UTILITY(compile_objects)
 				}
 
 				nodes_to_animation_areas[v] = anim;
+
+				if(animation_area_has_alpha_channel(anim)) {
+					animation_areas_with_alpha.insert(anim);
+				}
 			}
 		}
 	}
 
 	std::sort(animation_areas.begin(), animation_areas.end(), animation_area_height_compare);
+	{
+		std::vector<animation_area_ptr> animation_areas_alpha;
+
+	}
 
 	foreach(animation_area_ptr anim, animation_areas) {
 		ASSERT_LOG(anim->width <= 1024 && anim->height <= 1024,

@@ -3179,20 +3179,28 @@ void editor::draw_gui() const
 		   varray.push_back(x); varray.push_back(0);
 		   varray.push_back(x); varray.push_back(graphics::screen_height());
 	   }
-	}   
 
-	for(int y = -TileSize - (ypos_/zoom_)%TileSize; y < graphics::screen_height(); y += 32/zoom_) {
-		varray.push_back(0); varray.push_back(y);
-		varray.push_back(graphics::screen_width()); varray.push_back(y);
+		for(int y = -TileSize - (ypos_/zoom_)%TileSize; y < graphics::screen_height(); y += 32/zoom_) {
+			varray.push_back(0); varray.push_back(y);
+			varray.push_back(graphics::screen_width()); varray.push_back(y);
+		}
 	}
+
 #if defined(USE_GLES2)
 	{
 	gles2::manager gles2_manager(gles2::get_simple_shader());
-	gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
+	if(g_draw_grid) {
+		gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
+	}
 #else
-	glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+	if(g_draw_grid) {
+		glVertexPointer(2, GL_FLOAT, 0, &varray.front());
+	}
 #endif
-	glDrawArrays(GL_LINES, 0, varray.size()/2);
+
+	if(g_draw_grid) {
+		glDrawArrays(GL_LINES, 0, varray.size()/2);
+	}
 	
 	// draw level boundaries in clear white
 	{

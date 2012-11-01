@@ -111,6 +111,7 @@ public:
 
 	bool is_opaque() const { return opaque_; }
 	bool calculate_opaque() const;
+	bool calculate_uses_alpha_channel() const;
 	bool calculate_is_solid_color(graphics::color& col) const;
 
 	bool calculate_draw_area();

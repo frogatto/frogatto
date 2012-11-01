@@ -97,6 +97,8 @@ public:
 
 		bool init() const { return id != static_cast<unsigned int>(-1); }
 
+		std::string info;
+
 		unsigned int id;
 
 		//before we've constructed the ID, we can store the

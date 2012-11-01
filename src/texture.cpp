@@ -492,6 +492,7 @@ texture texture::get(const std::string& str, int options)
 			entry.mod_time = sys::file_mod_time(entry.path);
 		}
 		entry.t = result = texture(surfs, options);
+		result.id_->info = str;
 
 		fprintf(stderr, "LOADTEXTURE: %s -> %p\n", str.c_str(), result.id_.get());
 
@@ -749,6 +750,31 @@ texture::ID::~ID()
 
 namespace {
 
+const int table_8bits_to_5bits[256][2] = {
+{0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 8}, {-2, 7}, {-3, 6}, {-4, 5}, {4, -5}, {3, -6}, {2, -7}, {1, -8}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 8}, {-2, 7}, {-3, 6}, {-4, 5}, {4, -5}, {3, -6}, {2, -7}, {1, -8}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 8}, {-2, 7}, {-3, 6}, {-4, 5}, {4, -5}, {3, -6}, {2, -7}, {1, -8}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 8}, {-2, 7}, {-3, 6}, {-4, 5}, {4, -5}, {3, -6}, {2, -7}, {1, -8}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 8}, {-2, 7}, {-3, 6}, {-4, 5}, {4, -5}, {3, -6}, {2, -7}, {1, -8}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 8}, {-2, 7}, {-3, 6}, {-4, 5}, {4, -5}, {3, -6}, {2, -7}, {1, -8}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 8}, {-2, 7}, {-3, 6}, {-4, 5}, {4, -5}, {3, -6}, {2, -7}, {1, -8}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0}, {-1, 7}, {-2, 6}, {-3, 5}, {-4, 4}, {3, -5}, {2, -6}, {1, -7}, {0, 0},
+};
+
+void map_8bpp_to_5bpp(unsigned char* rgb)
+{
+	int luminance_shift = 0;
+	for(int i = 0; i != 3; ++i) {
+		luminance_shift += table_8bits_to_5bits[rgb[i]][0];
+	}
+
+	int best_alternative = -1;
+	for(int i = 0; i != 3; ++i) {
+		const int alternative_luminance = luminance_shift - table_8bits_to_5bits[rgb[i]][0] + table_8bits_to_5bits[rgb[i]][1];
+		if(abs(alternative_luminance) < abs(luminance_shift)) {
+			luminance_shift = alternative_luminance;
+			best_alternative = i;
+		}
+	}
+
+	for(int i = 0; i != 3; ++i) {
+		rgb[i] += table_8bits_to_5bits[rgb[i]][i == best_alternative ? 1 : 0];
+	}
+}
+
 //a table which maps an 8bit color channel to a 4bit one.
 const unsigned char table_8bits_to_4bits[256] = {
 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, };
@@ -776,31 +802,71 @@ void texture::ID::build_id()
 	if(preferences::use_16bpp_textures()) {
 		std::vector<GLushort> buf(s->w*s->h);
 		const unsigned int* src = reinterpret_cast<const unsigned int*>(s->pixels);
-		GLushort* dst = &*buf.begin();
+		bool has_alpha = false;
 		for(int n = 0; n != s->w*s->h; ++n) {
-			const unsigned int p =
-			  table_8bits_to_4bits[(*src >> 24)&0xFF] << 28 |
-			  table_8bits_to_4bits[(*src >> 16)&0xFF] << 20 |
-			  table_8bits_to_4bits[(*src >> 8)&0xFF] << 12 |
-			  table_8bits_to_4bits[(*src >> 0)&0xFF] << 4;
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-			*dst = (((p >> 28)&0xF) << 12) |
-			       (((p >> 20)&0xF) << 8) |
-			       (((p >> 12)&0xF) << 4) |
-			       (((p >> 4)&0xF) << 0);
-#else
-			*dst = (((p >> 28)&0xF) << 0) |
-			       (((p >> 20)&0xF) << 4) |
-			       (((p >> 12)&0xF) << 8) |
-			       (((p >> 4)&0xF) << 12);
-#endif
-			++dst;
+			unsigned int col = *src;
+			const unsigned int alpha = col >> 24;
+			if(alpha != 0 && alpha != 0xFF) {
+				has_alpha = true;
+				break;
+			}
+
 			++src;
 		}
-#ifndef WIN32
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, s->w, s->h, 0, GL_RGBA,
-		             GL_UNSIGNED_SHORT_4_4_4_4, &buf[0]);
+
+		src = reinterpret_cast<const unsigned int*>(s->pixels);
+
+		if(has_alpha) {
+			GLushort* dst = &*buf.begin();
+			for(int n = 0; n != s->w*s->h; ++n) {
+				const unsigned int col = *src;
+				const unsigned int p =
+				  table_8bits_to_4bits[(col >> 24)&0xFF] << 28 |
+				  table_8bits_to_4bits[(col >> 16)&0xFF] << 20 |
+				  table_8bits_to_4bits[(col >> 8)&0xFF] << 12 |
+				  table_8bits_to_4bits[(col >> 0)&0xFF] << 4;
+
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+				*dst = (((p >> 28)&0xF) << 12) |
+				       (((p >> 20)&0xF) << 8) |
+				       (((p >> 12)&0xF) << 4) |
+				       (((p >> 4)&0xF) << 0);
+#else
+				*dst = (((p >> 28)&0xF) << 0) |
+				       (((p >> 20)&0xF) << 4) |
+				       (((p >> 12)&0xF) << 8) |
+				       (((p >> 4)&0xF) << 12);
 #endif
+				++dst;
+				++src;
+			}
+#ifndef WIN32
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, s->w, s->h, 0, GL_RGBA,
+			             GL_UNSIGNED_SHORT_4_4_4_4, &buf[0]);
+#endif
+		} else {
+			GLushort* dst = &*buf.begin();
+			for(int n = 0; n != s->w*s->h; ++n) {
+				unsigned int p = *src;
+				unsigned char* rgb = reinterpret_cast<unsigned char*>(&p);
+				++rgb;
+
+				map_8bpp_to_5bpp(rgb);
+
+				*dst = (((p >> 31)&0x01) << 0) |
+				       (((p >> 19)&0x1F) << 1) |
+				       (((p >> 11)&0x1F) << 6) |
+				       (((p >> 3)&0x1F) << 11);
+
+				++dst;
+				++src;
+			}
+
+#ifndef WIN32
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, s->w, s->h, 0, GL_RGBA,
+			             GL_UNSIGNED_SHORT_5_5_5_1, &buf[0]);
+#endif
+		}
 	} else {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, s->w, s->h, 0, GL_RGBA,
 			GL_UNSIGNED_BYTE, s->pixels);

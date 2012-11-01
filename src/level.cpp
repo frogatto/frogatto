@@ -2109,10 +2109,10 @@ void level::apply_shader_to_frame_buffer_texture(gles2::shader_ptr shader, bool 
 
 	glPopMatrix();
 
-	if(!render_to_screen) {
-		texture_frame_buffer::switch_texture();
-		texture_frame_buffer::set_render_to_texture();
-	}
+//	if(!render_to_screen) {
+//		texture_frame_buffer::switch_texture();
+//		texture_frame_buffer::set_render_to_texture();
+//	}
 }
 
 void level::shaders_updated()

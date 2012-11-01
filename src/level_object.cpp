@@ -85,12 +85,20 @@ void create_compiled_tiles_image()
 	//the number of tiles that can fit in a tiesheet.
 	const int TilesInSheet = (1024*1024)/(BaseTileSize*BaseTileSize);
 
+	//which zorders require an alpha channel?
+	std::set<int> zorder_with_alpha_channel;
+
 	//calculate how many tiles are in each zorder
 	std::map<int, int> zorder_to_num_tiles;
 	for(std::map<obj_variant_ptr, int>::const_iterator i = tile_nodes_to_zorders.begin(); i != tile_nodes_to_zorders.end(); ++i) {
 		obj_variant_ptr node = i->first;
 		std::vector<std::string> tiles_vec = util::split((*node)["tiles"].as_string(), '|');
 		zorder_to_num_tiles[i->second] += tiles_vec.size();
+
+		const static std::string UsesAlphaChannelStr = "uses_alpha_channel";
+		if(i->first->has_key(UsesAlphaChannelStr)) {
+			zorder_with_alpha_channel.insert(i->second);
+		}
 	}
 
 	//now work out which zorders should go in which tilesheets.
@@ -100,34 +108,45 @@ void create_compiled_tiles_image()
 	std::vector<graphics::surface> sheets;
 	std::vector<int> sheet_next_image_index;
 
-	for(std::map<int, int>::const_iterator i = zorder_to_num_tiles.begin();
-	    i != zorder_to_num_tiles.end(); ++i) {
-		int sheet = 0;
-		for(; sheet != tiles_in_sheet.size(); ++sheet) {
-			if(tiles_in_sheet[sheet] + i->second <= TilesInSheet) {
-				std::cerr << "ZORDER_ALLOC " << i->first << " (" << i->second << ") -> " << sheet << "\n";
-				break;
+	//two passes, since we do all zorders with alpha channel first, so
+	//they'll go in the first tilesheet together, then those without.
+	for(int use_alpha_channel = 1; use_alpha_channel >= 0; --use_alpha_channel) {
+		fprintf(stderr, "ZORDER_PROC\n");
+		for(std::map<int, int>::const_iterator i = zorder_to_num_tiles.begin();
+		    i != zorder_to_num_tiles.end(); ++i) {
+			if(zorder_with_alpha_channel.count(i->first) != use_alpha_channel) {
+				continue;
 			}
-		}
 
+			fprintf(stderr, "ZORDER_PROC: %d %d\n", i->first, i->second);
 
-		if(sheet == tiles_in_sheet.size()) {
-			const int num_sheets = 1 + i->second/TilesInSheet;
-			std::cerr << "ZORDER_ALLOC " << i->first << " (" << i->second << ") -> NEW SHEET " << sheet << "(" << num_sheets << ")\n";
-			for(int n = 0; n != num_sheets; ++n) {
-				tiles_in_sheet.push_back(0);
-				sheet_next_image_index.push_back(0);
-				sheets.push_back(graphics::surface(SDL_CreateRGBSurface(SDL_SWSURFACE, 1024, 1024, 32, SURFACE_MASK)));
-				tiles_in_sheet[sheet+n] += i->second;
+			int sheet = 0;
+			for(; sheet != tiles_in_sheet.size(); ++sheet) {
+				if(tiles_in_sheet[sheet] + i->second <= TilesInSheet) {
+					std::cerr << "ZORDER_ALLOC " << i->first << " (" << i->second << ") -> " << sheet << "\n";
+					break;
+				}
 			}
-		} else {
-			tiles_in_sheet[sheet] += i->second;
-		}
+	
 
-		if(!(tiles_in_sheet[sheet] <= TilesInSheet)) {
-			std::cerr << "TOO MANY TILES IN SHEET " << sheet << "/" << tiles_in_sheet.size() << ": " << tiles_in_sheet[sheet] << "/" << TilesInSheet << " (zorder = " << i->first << ")\n";
+			if(sheet == tiles_in_sheet.size()) {
+				const int num_sheets = 1 + i->second/TilesInSheet;
+				std::cerr << "ZORDER_ALLOC " << i->first << " (" << i->second << ") -> NEW SHEET " << sheet << "(" << num_sheets << ")\n";
+				for(int n = 0; n != num_sheets; ++n) {
+					tiles_in_sheet.push_back(0);
+					sheet_next_image_index.push_back(0);
+					sheets.push_back(graphics::surface(SDL_CreateRGBSurface(SDL_SWSURFACE, 1024, 1024, 32, SURFACE_MASK)));
+					tiles_in_sheet[sheet+n] += i->second;
+				}
+			} else {
+				tiles_in_sheet[sheet] += i->second;
+			}
+
+			if(!(tiles_in_sheet[sheet] <= TilesInSheet)) {
+				std::cerr << "TOO MANY TILES IN SHEET " << sheet << "/" << tiles_in_sheet.size() << ": " << tiles_in_sheet[sheet] << "/" << TilesInSheet << " (zorder = " << i->first << ")\n";
+			}
+			zorder_to_sheet_number[i->first] = sheet;
 		}
-		zorder_to_sheet_number[i->first] = sheet;
 	}
 
 	std::cerr << "NUM_TILES: " << tile_nodes_to_zorders.size() << " / " << TilesInSheet << "\n";
@@ -179,6 +198,12 @@ void create_compiled_tiles_image()
 		if(num_sheets > 1) {
 			int offset = abs(tile_str_to_palette[(*node)["tiles"].as_string()])%num_sheets;
 			
+			const static std::string UsesAlphaChannelStr = "uses_alpha_channel";
+			if(i->first->has_key(UsesAlphaChannelStr)) {
+				//try to put all alpha tiles in the first sheet.
+				offset = 0;
+			}
+
 			int count = 0;
 			while(sheet_next_image_index[sheet + offset] >= TilesInSheet) {
 				offset = (offset+1)%num_sheets;
@@ -505,6 +530,8 @@ level_object::level_object(variant node)
 		//solid colors will confuse the compilation.
 		solid_color_ = boost::intrusive_ptr<graphics::color>();
 
+		const bool uses_alpha_channel = calculate_uses_alpha_channel();
+
 		std::vector<int> palettes;
 		palettes.push_back(-1);
 		get_palettes_used(palettes);
@@ -514,6 +541,10 @@ level_object::level_object(variant node)
 			if(calculate_opaque()) {
 				node_copy = node_copy.add_attr(variant("opaque"), variant(true));
 				opaque_ = true;
+			}
+
+			if(uses_alpha_channel) {
+				node_copy = node_copy.add_attr(variant("uses_alpha_channel"), variant(true));
 			}
 
 			graphics::color col;
@@ -780,6 +811,17 @@ bool level_object::calculate_opaque() const
 	}
 
 	return true;
+}
+
+bool level_object::calculate_uses_alpha_channel() const
+{
+	foreach(int tile, tiles_) {
+		if(is_tile_using_alpha_channel(t_, tile)) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 bool level_object::calculate_is_solid_color(graphics::color& col) const
