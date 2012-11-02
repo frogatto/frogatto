@@ -884,6 +884,7 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 	void push_clip(const SDL_Rect& r)
 	{
 		glEnable(GL_STENCIL_TEST);
+		glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 		glStencilMask(0xff);
 		glClear(GL_STENCIL_BUFFER_BIT);
 		
@@ -910,6 +911,7 @@ bool blit_queue::merge(const blit_queue& q, short begin, short end)
 		glEnable(GL_TEXTURE_2D);
 #endif
 		glStencilMask(0);
+		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 		glStencilFunc(GL_EQUAL, 0x1, 0x1);
 	}
 	

@@ -5,7 +5,7 @@ _frogatto()
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
-    opts="--config-path= --fullscreen --height --host --no-joystick --joystick --level --no-music --music --native --relay --no-resizable --resizable --scale --no-send-stats --send-stats --server= --user= --pass= --no-sound --sound --widescreen --width --windowed --wvga --no-debug --debug --fps --no-fps --set-fps= --potonly --textures16 --textures32 --benchmarks --benchmarks= --no-compiled --compiled --edit --show-hitboxes --show-controls --simipad --simiphone --no-autopause --tests --no-tests"
+    opts="--config-path= --fullscreen --height --host --no-joystick --joystick --level --no-music --music --native --relay --no-resizable --resizable --scale --no-send-stats --send-stats --server= --user= --pass= --no-sound --sound --widescreen --width --windowed --wvga --no-debug --debug --fps --no-fps --set-fps= --potonly --textures16 --textures32 --benchmarks --benchmarks= --no-compiled --compiled --edit --show-hitboxes --show-controls --simipad --simiphone --no-autopause --tests --no-tests --textures16"
     utils="codeedit compile_levels compile_objects correct_solidity document_ffl_functions generate_scaling_code hole_punch_test install_module list_modules module_server object_definition publish_module publish_module_stats query render_level sign_game_data stats_server tbs_server test_all_objects textedit"
     cd modules/
     module_names=$(ls -d -x --color=never -- */)

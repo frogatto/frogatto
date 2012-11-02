@@ -650,7 +650,12 @@ std::map<std::string,std::string>& get_music_paths() {
 }
 
 void load_music_paths() {
-	module::get_unique_filenames_under_dir("music/", &get_music_paths());
+    #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+        #define MUSIC_DIR_NAME "music_aac/"
+    #else
+        #define MUSIC_DIR_NAME "music/"
+    #endif
+	module::get_unique_filenames_under_dir(MUSIC_DIR_NAME, &get_music_paths());
 }
 
 void play_music(const std::string& file)
@@ -663,19 +668,24 @@ void play_music(const std::string& file)
 		return;
 	}
 
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
+    std::string song_file = file;
+
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+	song_file.replace(song_file.length()-3, song_file.length(), "m4a");
+#endif
 
 	if(get_music_paths().empty()) {
 		load_music_paths();
 	}
 
-	std::map<std::string, std::string>::const_iterator itor = module::find(get_music_paths(), file);
+	std::map<std::string, std::string>::const_iterator itor = module::find(get_music_paths(), song_file);
 	if(itor == get_music_paths().end()) {
-		std::cerr << "FILE NOT FOUND: " << file << std::endl;
+		std::cerr << "FILE NOT FOUND: " << song_file << std::endl;
 		return;
 	}
 	const std::string& path = itor->second;
 
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	if(current_mix_music) {
 		next_music() = file;
 		Mix_FadeOutMusic(500);
@@ -710,12 +720,10 @@ void play_music(const std::string& file)
 	}
 	
 	current_music_name() = file;
-	std::string aac_file = file;
-	aac_file.replace(aac_file.length()-3, aac_file.length(), "m4a");
-	if (!sys::file_exists("music_aac/" + aac_file)) return;
+	if (!sys::file_exists(path)) return;
 	track_music_volume = music_index[file].volume;
 	update_music_volume();
-	iphone_play_music(("music_aac/" + aac_file).c_str(), -1);
+	iphone_play_music((path).c_str(), -1);
 	iphone_fade_in_music(350);
 	playing_music = true;
 #endif
@@ -734,21 +742,27 @@ void play_music_interrupt(const std::string& file)
 	
 	next_music() = current_music_name();
 	
+    std::string song_file = file;
+    
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+	song_file.replace(song_file.length()-3, song_file.length(), "m4a");
+#endif
+
 	current_music_name() = file;
 
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 
 	if(get_music_paths().empty()) {
 		load_music_paths();
 	}
 
-	std::map<std::string, std::string>::const_iterator itor = module::find(get_music_paths(), file);
+	std::map<std::string, std::string>::const_iterator itor = module::find(get_music_paths(), song_file);
 	if(itor == get_music_paths().end()) {
-		std::cerr << "FILE NOT FOUND: " << file << std::endl;
+		std::cerr << "FILE NOT FOUND: " << song_file << std::endl;
 		return;
 	}
 	const std::string& path = itor->second;
 
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 	//note that calling HaltMusic will result in on_music_finished being
 	//called, which releases the current_music pointer.
 	Mix_HaltMusic();
@@ -769,9 +783,7 @@ void play_music_interrupt(const std::string& file)
 
 	Mix_PlayMusic(current_mix_music, 1);
 #else
-	std::string aac_file = file;
-	aac_file.replace(aac_file.length()-3, aac_file.length(), "m4a");
-	iphone_play_music(("music_aac/" + aac_file).c_str(), 0);
+	iphone_play_music((path).c_str(), 0);
 	playing_music = true;
 #endif
 }
