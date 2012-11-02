@@ -302,7 +302,7 @@ void level_object::set_current_palette(unsigned int palette)
 	}
 }
 
-level_object::level_object(variant node)
+level_object::level_object(variant node, const char* id)
   : id_(node["id"].as_string_default()), image_(node["image"].as_string()),
     info_(node["info"].as_string_default()),
     t_(graphics::texture::get(image_)),
@@ -318,6 +318,10 @@ level_object::level_object(variant node)
 	palettes_recognized_(current_palette_set),
 	current_palettes_(0)
 {
+	if(id_.empty() && id != NULL && *id) {
+		id_ = id;
+	}
+
 	if(node.has_key("palettes")) {
 		palettes_recognized_ = 0;
 		std::vector<std::string> p = parse_variant_list_or_csv_string(node["palettes"]);

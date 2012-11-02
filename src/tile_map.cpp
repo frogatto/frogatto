@@ -53,14 +53,10 @@ struct is_whitespace {
 struct tile_pattern {
 	explicit tile_pattern(variant node, const std::string& id)
 	  : tile_id(id),
-	    tile(new level_object(node)), reverse(node["reverse"].as_bool(true)),
+	    tile(new level_object(node, id.c_str())), reverse(node["reverse"].as_bool(true)),
 	    empty(node["empty"].as_bool(false)),
 		filter_formula(game_logic::formula::create_optional_formula(node["filter"]))
 	{
-		if(tile->id().empty()) {
-			tile->set_id(tile_id);
-		}
-
 		variations.push_back(tile);
 
 		pattern_str = node["pattern"].as_string();
@@ -105,18 +101,12 @@ struct tile_pattern {
 		}
 
 		foreach(variant var, node["variation"].as_list()) {
-			variations.push_back(level_object_ptr(new level_object(var)));
-			if(variations.back()->id().empty()) {
-				variations.back()->set_id(tile_id);
-			}
+			variations.push_back(level_object_ptr(new level_object(var, tile_id.c_str())));
 		}
 
 		foreach(variant var, node["tile"].as_list()) {
 			added_tile t;
-			level_object_ptr new_object(new level_object(var));
-			if(new_object->id().empty()) {
-				new_object->set_id(tile_id);
-			}
+			level_object_ptr new_object(new level_object(var, tile_id.c_str()));
 
 			t.object = new_object.get();
 			t.zorder = var["zorder"].as_int();

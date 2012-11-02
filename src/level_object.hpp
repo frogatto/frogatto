@@ -89,7 +89,7 @@ public:
 	static void write_compiled();
 
 	static void set_current_palette(unsigned int palette);
-	explicit level_object(variant node);
+	explicit level_object(variant node, const char* id=NULL);
 	~level_object();
 
 	int width() const;
@@ -100,7 +100,6 @@ public:
 	bool has_solid() const { return !solid_.empty(); }
 	bool all_solid() const { return all_solid_; }
 	const std::string& id() const { return id_; }
-	void set_id(const std::string& id) { id_ = id; }
 	const std::string& info() const { return info_; }
 	int friction() const { return friction_; }
 	int traction() const { return traction_; }

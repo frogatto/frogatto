@@ -240,10 +240,7 @@ multi_tile_pattern::multi_tile_pattern(variant node, const std::string& tile_id)
 
 			ASSERT_LOG(obj_node["image"].as_string().empty() == false, "object node has no image\n" << obj_node.write_json() << "\n");
 
-			level_object_ptr new_object(new level_object(obj_node));
-			if(new_object->id().empty()) {
-				new_object->set_id(default_tile_id_);
-			}
+			level_object_ptr new_object(new level_object(obj_node, default_tile_id_.c_str()));
 	
 			objects[value.first.as_string()] = new_object;
 			if(obj_node.has_key("zorder")) {
