@@ -126,6 +126,11 @@ manager::manager(const char* output_file)
 
 manager::~manager()
 {
+	end_profiling();
+}
+
+void end_profiling()
+{
 	if(profiler_on){
 #if defined(_WINDOWS) || defined(TARGET_OS_IPHONE)
 		SDL_RemoveTimer(sdl_profile_timer);
@@ -221,6 +226,8 @@ manager::~manager()
 			std::cerr << s.str();
 			std::cerr << "=== END PROFILE REPORT ===\n";
 		}
+
+		profiler_on = false;
 	}
 }
 

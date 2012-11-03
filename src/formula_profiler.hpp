@@ -56,6 +56,8 @@ public:
 	~manager();
 };
 
+void end_profiling();
+
 class suspend_scope
 {
 public:
