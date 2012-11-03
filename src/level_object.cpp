@@ -542,6 +542,7 @@ level_object::level_object(variant node, const char* id)
 
 		foreach(int palette, palettes) {
 			variant node_copy = node.add_attr(variant("palettes"), variant());
+			node_copy = node_copy.add_attr(variant("id"), variant(id_));
 			if(calculate_opaque()) {
 				node_copy = node_copy.add_attr(variant("opaque"), variant(true));
 				opaque_ = true;
