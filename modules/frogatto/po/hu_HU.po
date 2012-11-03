@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-10-22 01:42-0200\n"
-"PO-Revision-Date: 2012-10-22 03:44+0000\n"
+"POT-Creation-Date: 2012-10-28 03:25-0200\n"
+"PO-Revision-Date: 2012-10-28 05:25+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/Frogatto/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -43,7 +43,7 @@ msgstr "Vissza"
 msgid "Select save slot to use."
 msgstr "Válaszd ki a használni kívánt mentési helyet."
 
-#: ../../../src/custom_object_functions.cpp:335
+#: ../../../src/custom_object_functions.cpp:352
 msgid "Select save slot to load."
 msgstr "Válaszd ki a betöltendő állást."
 
@@ -597,15 +597,15 @@ msgstr "A Kalapom Nélkül Soha!"
 msgid "Start a level with no health left."
 msgstr "Kezdj egy pályát úgy, hogy nem maradt életerőd."
 
-#: ../data/level/airplane-boss.cfg:31
+#: ../data/level/airplane-boss.cfg:32
 msgid "Ambush!"
 msgstr "Csapda!"
 
-#: ../data/level/airplane-boss.cfg:40
+#: ../data/level/airplane-boss.cfg:41
 msgid "Victory!"
 msgstr "Győzelem!"
 
-#: ../data/level/airplane-boss.cfg:1166
+#: ../data/level/airplane-boss.cfg:1168
 msgid "Stonepipe Bridge"
 msgstr "Kőfúvó híd"
 
@@ -841,7 +841,7 @@ msgstr "Bon Bosque"
 msgid "Bug Mining"
 msgstr "Bogár bányászat"
 
-#: ../data/level/burn-and-bubble.cfg:3061
+#: ../data/level/burn-and-bubble.cfg:3063
 msgid "Burn and Bubble"
 msgstr "Égetés és pukkanás"
 
@@ -1241,7 +1241,7 @@ msgid "We can do that."
 msgstr "Ez menni fog."
 
 #: ../data/level/crevice-village-cave.cfg:1231
-#: ../data/level/crevice-village-central.cfg:4132
+#: ../data/level/crevice-village-central.cfg:4134
 #: ../data/level/crevice-village-heights.cfg:2246
 #: ../data/level/crevice-village.cfg:1647
 #: ../data/objects/playable/map-selector.cfg:17
@@ -1917,7 +1917,7 @@ msgid "We saw Milgram's lieutenant go in there."
 msgstr "Láttuk Milgram egyik hadnagyát\nbemenni oda."
 
 #: ../data/level/crevice-village-house-2.cfg:1395
-#: ../data/level/rock-a-fort.cfg:1654
+#: ../data/level/rock-a-fort.cfg:1641
 msgid "How interesting."
 msgstr "Milyen érdekes."
 
@@ -2455,7 +2455,7 @@ msgstr "Sőt, meg is mutatom neked az utat."
 msgid "The Elder's House"
 msgstr "A rangidős háza"
 
-#: ../data/level/crevice-village.cfg:76 ../data/level/to-nenes-house.cfg:334
+#: ../data/level/crevice-village.cfg:76 ../data/level/to-nenes-house.cfg:335
 msgid "I better leave this key here."
 msgstr "Jobb, ha itt hagyom ezt a kulcsot."
 
@@ -2519,7 +2519,7 @@ msgstr "Milgram ellen? Valóban?"
 msgid ""
 "I mean... on paper,\n"
 "that sounds like a good enough plan,"
-msgstr ""
+msgstr "Úgy értem... papíron, \nnekem ez egy elégséges tervnek tűnik."
 
 #: ../data/level/crevice-village.cfg:830
 msgid ""
@@ -2543,13 +2543,13 @@ msgstr "Először is, Milgramnak RENGETEG\nkövetője van. Tonnaszámnyi. Egy\ne
 msgid ""
 "I mean, even if we armed the whole town,\n"
 "they'd grossly outnumber us."
-msgstr ""
+msgstr "Úgy értem, még ha fel is fegyvereznénk az egész várost, \nakkor is jóval többen vannak mint mi."
 
 #: ../data/level/crevice-village.cfg:837
 msgid ""
 "Plus, they're pretty mobile, too.\n"
 "Planes and such."
-msgstr ""
+msgstr "És elég gyorsan is mozognak. Repülők és társaik."
 
 #: ../data/level/crevice-village.cfg:839
 msgid ""
@@ -2820,7 +2820,13 @@ msgstr "Vettem!"
 msgid "Dungeon Gateway"
 msgstr ""
 
-#: ../data/level/dungeon-storeroom-treasure-chamber.cfg:1524
+#: ../data/level/dungeon-storeroom-treasure-chamber.cfg:187
+msgid ""
+"It says, \"Treasure Storage.\n"
+"No entry without authorization.\""
+msgstr ""
+
+#: ../data/level/dungeon-storeroom-treasure-chamber.cfg:1523
 msgid "Storeroom Treasure Chamber"
 msgstr ""
 
@@ -2840,7 +2846,7 @@ msgstr "Gyorssáv"
 msgid "Flooded Caverns"
 msgstr "Elárasztott barlangok"
 
-#: ../data/level/foreboding-forest.cfg:2811
+#: ../data/level/foreboding-forest.cfg:2814
 #: ../data/objects/playable/map-selector.cfg:18
 msgid "Foreboding Forest"
 msgstr "Baljóslatú erdő"
@@ -2945,25 +2951,25 @@ msgstr "Frogatto háza"
 msgid "Pato's Room"
 msgstr "Pato szobája"
 
-#: ../data/level/frogatto-grotto.cfg:60
+#: ../data/level/frogatto-grotto.cfg:61
 msgid "I know!"
 msgstr "Tudom már!"
 
-#: ../data/level/frogatto-grotto.cfg:61
+#: ../data/level/frogatto-grotto.cfg:62
 msgid ""
 "I can stop in at Nene's house\n"
 "on the way to town!"
 msgstr "A városba menet benézek\nNenéhez a házába."
 
-#: ../data/level/frogatto-grotto.cfg:82
+#: ../data/level/frogatto-grotto.cfg:83
 msgid "Such a beautiful view from here."
 msgstr "Olyan gyönyörű a kilátás innen."
 
-#: ../data/level/frogatto-grotto.cfg:228
+#: ../data/level/frogatto-grotto.cfg:229
 msgid "Nothing to see in my backyard."
 msgstr "Semmi látnivaló a kertemben."
 
-#: ../data/level/frogatto-grotto.cfg:1872
+#: ../data/level/frogatto-grotto.cfg:1889
 #: ../data/objects/playable/map-selector.cfg:15
 msgid "Frogatto Grotto"
 msgstr "Frogatto grotta"
@@ -3094,7 +3100,7 @@ msgstr ""
 #: ../data/level/golden-glen.cfg:2358
 msgid ""
 "Yes, I'm aware.  Nevertheless,\n"
-"you CAN get some information, ASAP."
+"you <em>can</em> get some information, ASAP."
 msgstr ""
 
 #: ../data/level/golden-glen.cfg:2359
@@ -3111,319 +3117,319 @@ msgid ""
 "Dismissed."
 msgstr "Ez minden, uraim. \nOszolj!"
 
-#: ../data/level/golden-glen.cfg:3644
+#: ../data/level/golden-glen.cfg:3660
 msgid "Golden Glen"
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:396
+#: ../data/level/grassy-path.cfg:397
 msgid ""
 "On this level, we give advice on how to play.\n"
 "Each question mark has its own hint."
 msgstr "Ezen a pályán bemutatjuk a játékot.\nMinden kérdőjelhez tartozik egy kis tipp."
 
-#: ../data/level/grassy-path.cfg:397
+#: ../data/level/grassy-path.cfg:398
 msgid ""
 "If you already know how to play,\n"
 "then just walk to the next level."
 msgstr "Ha már tudod, hogyan kell játszani,\nakkor nyugodtan sétálj a következőre."
 
-#: ../data/level/grassy-path.cfg:415
+#: ../data/level/grassy-path.cfg:416
 msgid ""
 "To save your progress in the game,\n"
 "use one of these convenient restrooms."
 msgstr "A játékod elmentéséhez ezeket a\nkényelmes pihenőhelyeket használhatod."
 
-#: ../data/level/grassy-path.cfg:433
+#: ../data/level/grassy-path.cfg:434
 msgid ""
 "Some changes in elevation are too high\n"
 "to clear with just a normal jump."
 msgstr "Olykor a szintkülönbségek túl nagyok,\nhogy egy normál ugrással leküzdd."
 
-#: ../data/level/grassy-path.cfg:434
+#: ../data/level/grassy-path.cfg:435
 msgid "Fortunately, Frogatto can jump off of walls, too!"
 msgstr "Szerencsére, Frogatto elrugaszkodhat a falakról!"
 
-#: ../data/level/grassy-path.cfg:435
+#: ../data/level/grassy-path.cfg:436
 msgid "To do this, do a walking jump into the wall."
 msgstr "Ehhez sétálj a fal felé, és ugorj rá."
 
-#: ../data/level/grassy-path.cfg:436
+#: ../data/level/grassy-path.cfg:437
 msgid ""
 "If you bump into a wall at the crest of a jump,\n"
 "you will cling to the wall and slowly slide down."
 msgstr "Ha az ugrás tetőpontján ütközöl a falnak,\nhozzáragadsz és lassan lecsúszol."
 
-#: ../data/level/grassy-path.cfg:437
+#: ../data/level/grassy-path.cfg:438
 msgid ""
 "If you don't get a running start, you can still\n"
 "cling on, if you tap the arrow toward the wall,\n"
 "and press jump whilst it's held down."
 msgstr "Ha nem sikerült nekiszaladni, még mindig\nmegkapaszkodhatsz, ha a fal irányába mutató\nnyílat lenyomva tartod és ugrasz."
 
-#: ../data/level/grassy-path.cfg:438
+#: ../data/level/grassy-path.cfg:439
 msgid ""
 "Whilst you are clinging to the wall,\n"
 "pressing jump will make you rebound off."
 msgstr "Miközben a falra kapaszkodsz, az ugrás\nújboli megnyomására elrugaszkodsz ismét."
 
-#: ../data/level/grassy-path.cfg:439
+#: ../data/level/grassy-path.cfg:440
 msgid ""
 "This is especially useful, if two walls are\n"
 "facing each other, because then you can\n"
 "rebound over and over between them."
 msgstr "Ez kimondottan hasznos, amikor két szemben\nlevő fallal találkozol, mert oda-vissza\nfel tudsz ugrálni közöttük."
 
-#: ../data/level/grassy-path.cfg:440
+#: ../data/level/grassy-path.cfg:441
 msgid "This lets you ascend vertical columns."
 msgstr "Ennek segítségével feljuthatsz függőleges oszlopokra."
 
-#: ../data/level/grassy-path.cfg:458
+#: ../data/level/grassy-path.cfg:459
 msgid "Frogatto's world is a dangerous place."
 msgstr "Frogatto világa egy veszélyes hely."
 
-#: ../data/level/grassy-path.cfg:459
+#: ../data/level/grassy-path.cfg:460
 msgid ""
 "In his travels, you'll encounter\n"
 "many creatures who want to hurt you."
 msgstr "Az utazásaid során számos olyan lénnyel találkozol, \nakik ártani akarnak majd neked."
 
-#: ../data/level/grassy-path.cfg:460
+#: ../data/level/grassy-path.cfg:461
 msgid ""
 "It's often fine to just avoid them, but if you have\n"
 "to fight, Frogatto's best defense is his tongue."
 msgstr "Gyakran elegendő, ha kikerülöd őket, te ha már harcra kerül a sor, \nFrogatto legjobb védelme a nyelve."
 
-#: ../data/level/grassy-path.cfg:461
+#: ../data/level/grassy-path.cfg:462
 msgid ""
 "You can grab enemies with the tongue,\n"
 "and then spit them back out."
 msgstr "Megragadhatod az ellenséget a\nnyelveddel, majd vissza kiköpheted őket."
 
-#: ../data/level/grassy-path.cfg:462
+#: ../data/level/grassy-path.cfg:463
 msgid "Once spat out, they become a deadly projectile."
 msgstr "Kiköpve őket, veszélyes lövedékké válnak"
 
-#: ../data/level/grassy-path.cfg:463
+#: ../data/level/grassy-path.cfg:464
 msgid ""
 "If they don't hit anything, they'll be stunned\n"
 "momentarily, and then will flip upright again."
 msgstr "Ha nem ütköznek semmibe, egy pillanatra\nmegdermednek, majd újra visszafordulnak."
 
-#: ../data/level/grassy-path.cfg:464
+#: ../data/level/grassy-path.cfg:465
 msgid ""
 "Whilst on their backs,\n"
 "they're vulnerable to being stomped on."
 msgstr "Míg a hátukon fekszenek, addig\nnem bírják, ha rájuk ugrasz."
 
-#: ../data/level/grassy-path.cfg:465
+#: ../data/level/grassy-path.cfg:466
 msgid ""
 "Sticking out the tongue and spitting,\n"
 "are both done with the attack key."
 msgstr "A nyelv kiöltése és a kiköpés is\na támadás gombbal történik."
 
-#: ../data/level/grassy-path.cfg:466
+#: ../data/level/grassy-path.cfg:467
 msgid ""
 "There are a few ants just ahead.\n"
 "Feel free to try this on them."
 msgstr "Van is egy pár hangya pont előre.\nNyugodtan próbáld ki rajtuk."
 
-#: ../data/level/grassy-path.cfg:467
+#: ../data/level/grassy-path.cfg:468
 msgid ""
 "And don't worry - if you die,\n"
 "you'll restart right here."
 msgstr "És ne aggódj - ha meghalsz,\nugyaninnen folytathatod."
 
-#: ../data/level/grassy-path.cfg:505
+#: ../data/level/grassy-path.cfg:506
 msgid ""
 "A very useful fact is that you can control\n"
 "the direction in which enemies are spat."
 msgstr "Nagyon hasznos lehet, hogy tudod irányítani\nmerre is akarod kiköpni az ellenséget."
 
-#: ../data/level/grassy-path.cfg:506
+#: ../data/level/grassy-path.cfg:507
 msgid ""
 "If you hold down the up key while pressing\n"
 "the attack button, you'll spit in a high arc."
 msgstr "Ha a felfelé gombot nyomod a támadás gombbal\negyütt, akkor magasan ívelsz."
 
-#: ../data/level/grassy-path.cfg:507
+#: ../data/level/grassy-path.cfg:508
 msgid ""
 "If you hold down the down key while pressing\n"
 "the attack button, you'll spit with very little force."
 msgstr "Ha a lefelé gombot nyomod a támadás gombbal\negyütt, akkor kis erővel köpsz."
 
-#: ../data/level/grassy-path.cfg:509
+#: ../data/level/grassy-path.cfg:510
 msgid ""
 "You should also beware that not all enemies\n"
 "can be grabbed with the tongue."
 msgstr "Arra is figyelj, hogy nem minden fajta\nellenség fogható meg a nyelvvel."
 
-#: ../data/level/grassy-path.cfg:510
+#: ../data/level/grassy-path.cfg:511
 msgid ""
 "Different enemies present different challenges,\n"
 "and you'll need to get creative to deal with them."
 msgstr "A különféle ellenfelek más-más khívást jelentenek,\nkreatívan kell elbánni mindegyikükkel."
 
-#: ../data/level/grassy-path.cfg:511
+#: ../data/level/grassy-path.cfg:512
 msgid ""
 "Also, the tongue can grab useful items, like keys.\n"
 "This is how you carry them to the lock they open."
 msgstr "A nyelvvel hasznos tárgyak is megfoghatók, pl. kulcsok.\nÍgy tudod elvinni őket a zárt ajtókhoz."
 
-#: ../data/level/grassy-path.cfg:543
+#: ../data/level/grassy-path.cfg:544
 msgid ""
 "Fountains, and other water dispensers,\n"
 "are very helpful."
 msgstr "A szökőkútak és egyéb vízautomaták\nnagyon hasznosak."
 
-#: ../data/level/grassy-path.cfg:544
+#: ../data/level/grassy-path.cfg:545
 msgid ""
 "If you drink from them,\n"
 "you will restore all of your health!"
 msgstr "Ha iszol belőlük, akkor az\nösszes életerőd visszatöltődik."
 
-#: ../data/level/grassy-path.cfg:563
+#: ../data/level/grassy-path.cfg:564
 msgid ""
 "Certain bridges and stairways, like this one,\n"
 "allow you to jump up and pass through them."
 msgstr "Bizonyos hidak és lépcsősorok, mint ez is,\nlehetővé teszik, hogy átugorj rajtuk."
 
-#: ../data/level/grassy-path.cfg:564
+#: ../data/level/grassy-path.cfg:565
 msgid "You can also jump down through them."
 msgstr "Le is ugorhatsz rajtuk keresztül."
 
-#: ../data/level/grassy-path.cfg:565
+#: ../data/level/grassy-path.cfg:566
 msgid ""
 "A special button will appear,\n"
 "whenever this is possible."
 msgstr "Egy különleges gomb fog megjelenni,\namikor ez lehetséges."
 
-#: ../data/level/grassy-path.cfg:566
+#: ../data/level/grassy-path.cfg:567
 msgid ""
 "To do so, hold down the down key,\n"
 "and then press jump."
 msgstr "Ehhez nyomd meg a legfele gombot,\nmajd utána az ugrást."
 
-#: ../data/level/grassy-path.cfg:604
+#: ../data/level/grassy-path.cfg:605
 msgid ""
 "As you've played through this level,\n"
 "you've probably noticed the coins."
 msgstr "Ahogy áthaladtál ezen a pályán,\nbiztosan észrevetted az érméket."
 
-#: ../data/level/grassy-path.cfg:605
+#: ../data/level/grassy-path.cfg:606
 msgid ""
 "You can collect these\n"
 "and then use them to buy stuff!"
 msgstr "Összegyűjtheted őket, és\nvásárolhatsz belőlük cuccokat!"
 
-#: ../data/level/grassy-path.cfg:606
+#: ../data/level/grassy-path.cfg:607
 msgid ""
 "There is a store conveniently located\n"
 "outside of the town."
 msgstr "Van egy praktikusan elhelyezett üzlet\na városon kívül."
 
-#: ../data/level/grassy-path.cfg:625
+#: ../data/level/grassy-path.cfg:626
 msgid ""
 "Sometimes, you'll run into rather dangerous-\n"
 "looking terrain, such as these brambles."
 msgstr "Olykor találkozni fogsz veszélyesnek kinéző\ntereppel, mint ez tüskésszeder."
 
-#: ../data/level/grassy-path.cfg:626
+#: ../data/level/grassy-path.cfg:627
 msgid "As you'd expect, stepping on them would hurt a bit."
 msgstr "Ahogy gondolnád, fájni fog, ha rálépsz."
 
-#: ../data/level/grassy-path.cfg:627
+#: ../data/level/grassy-path.cfg:628
 msgid "However, they also hurt your enemies!"
 msgstr "Azonban, az ellenfeleket is megsebezheti!"
 
-#: ../data/level/grassy-path.cfg:628
+#: ../data/level/grassy-path.cfg:629
 msgid ""
 "Leading or spitting them onto harmful terrain\n"
 "is an excellent way to dispatch them."
 msgstr "Rávezetni vagy ráköpni őket a veszélyes\nterepre egy remek módja annak,\nhogy megszabadulj tőlük."
 
-#: ../data/level/grassy-path.cfg:629
+#: ../data/level/grassy-path.cfg:630
 msgid ""
 "Beware also, any bottomless pits you encounter.\n"
 "Those are immediately fatal."
 msgstr "Vigyázz a feneketlen szakadékokra.Azok\nazonnali véget jelentenek."
 
-#: ../data/level/grassy-path.cfg:735
+#: ../data/level/grassy-path.cfg:736
 msgid ""
 "Up ahead, you'll notice an anthill,\n"
 "which ants constantly come out of."
 msgstr "Előre felé láthatsz egy hangyabolyt,\nmelyből folyamatosan jönnek a hangyák."
 
-#: ../data/level/grassy-path.cfg:736
+#: ../data/level/grassy-path.cfg:737
 msgid ""
 "There is no way to stop this;\n"
 "you can't destroy the anthill."
 msgstr "Ezt nem tudod megállítani; nem\ntudod megsemmisíteni a hangyabolyt."
 
-#: ../data/level/grassy-path.cfg:737
+#: ../data/level/grassy-path.cfg:738
 msgid ""
 "Some hazards are like this.\n"
 "You simply have to work around them."
 msgstr "Egyesek akadályok ilyenek.\nEgyszerűen meg kell kerülnöd őket."
 
-#: ../data/level/grassy-path.cfg:756
+#: ../data/level/grassy-path.cfg:757
 msgid "That's it for this tutorial."
 msgstr "Ennyi volt az útmutató."
 
-#: ../data/level/grassy-path.cfg:757
+#: ../data/level/grassy-path.cfg:758
 msgid ""
 "Although there's more to playing the game,\n"
 "the rest, we can safely let you learn on your own."
 msgstr "Bár még sok minden tartozik a játékhoz,\nde azokat már bátran felfedezheted önmagad."
 
-#: ../data/level/grassy-path.cfg:758
+#: ../data/level/grassy-path.cfg:759
 msgid ""
 "Feel free to come back here,\n"
 "if you want to read a hint again."
 msgstr "Nyugodtan visszajöhetsz ide,\nha újra el szeretnéd olvasni\nvalamelyik útmutatót."
 
-#: ../data/level/grassy-path.cfg:759
+#: ../data/level/grassy-path.cfg:760
 msgid "Have fun!"
 msgstr "Jó szórakozást!"
 
-#: ../data/level/grassy-path.cfg:779
+#: ../data/level/grassy-path.cfg:780
 msgid ""
 "If you've seen a conversation before, it might\n"
 "be annoying to have to read it again."
 msgstr "Ha már láttál egy beszélgetést korábban,\nfárasztó lehet újra végig olvasni."
 
-#: ../data/level/grassy-path.cfg:780
+#: ../data/level/grassy-path.cfg:781
 msgid ""
 "You can skip a conversation, including parts\n"
 "of cutscenes, by pressing the \"escape\" key."
 msgstr "Átugorhatod a beszélgetéseket, ideértve az\nátvezető jelenteket is, ha megnyomod az\n\"escape\" billentyűt."
 
-#: ../data/level/grassy-path.cfg:781
+#: ../data/level/grassy-path.cfg:782
 msgid ""
 "And yes, this applies to the question\n"
 "marks on this level, too."
 msgstr "És igen, ez vonatkozik az itt található\nkérdőjelekre is."
 
-#: ../data/level/grassy-path.cfg:891
+#: ../data/level/grassy-path.cfg:892
 msgid ""
 "If you haven't already noticed, the red\n"
 "fruits you sometimes find nestled in\n"
 "the grass are spittable projectiles."
 msgstr "Ha még nem vetted volna észre, a piros\ngyümölcsök, amelyek néhol megrejtőznek\na fűben, szintén köphető tárgyak."
 
-#: ../data/level/grassy-path.cfg:892
+#: ../data/level/grassy-path.cfg:893
 msgid ""
 "You'll find many such objects of similar size\n"
 "in different areas of the game, such as crates\n"
 "inside of houses, or nuts hanging from trees."
 msgstr "Sok hasonló méretű tárgyat találsz majd a\nkülönböző helyszíneken, pl. a házakban\nládikák, vagy fákról lógó diók."
 
-#: ../data/level/grassy-path.cfg:893
+#: ../data/level/grassy-path.cfg:894
 msgid ""
 "These are an ample source of ammunition,\n"
 "that's almost always available."
 msgstr "Ezek kiváló lövedék források, amelyek\nszinte mindig elérhetőek."
 
-#: ../data/level/grassy-path.cfg:894
+#: ../data/level/grassy-path.cfg:895
 msgid ""
 "Note that these have an unusual property;\n"
 "if you use them up, walk away from the screen\n"
@@ -3431,7 +3437,7 @@ msgid ""
 "there will often be a new one waiting to use."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:3808
+#: ../data/level/grassy-path.cfg:3810
 msgid "Grassy Path"
 msgstr "Füves ösvény"
 
@@ -4878,11 +4884,11 @@ msgstr "Fertőzött bánya"
 msgid "Platform Peril"
 msgstr ""
 
-#: ../data/level/rock-a-fort-cave.cfg:1659 ../data/level/rock-a-fort.cfg:5436
+#: ../data/level/rock-a-fort-cave.cfg:1659 ../data/level/rock-a-fort.cfg:5423
 msgid "Rock-a-Fort"
 msgstr ""
 
-#: ../data/level/rock-a-fort.cfg:1653
+#: ../data/level/rock-a-fort.cfg:1640
 msgid "Woah! A flying plant!"
 msgstr "Hű! Egy repülő virág!"
 
@@ -5172,7 +5178,7 @@ msgstr "Egyszerű, csak szárnyalj!"
 msgid "You ... <em>do</em> realize I can't fly?"
 msgstr ""
 
-#: ../data/level/splash-hop.cfg:3055
+#: ../data/level/splash-hop.cfg:3057
 msgid "Splash, Hop"
 msgstr "Csobbanás, szökellés"
 
@@ -5180,7 +5186,7 @@ msgstr "Csobbanás, szökellés"
 msgid "Starlit Cave"
 msgstr "Csillagfényes barlang"
 
-#: ../data/level/stonepipe-meadow.cfg:2796
+#: ../data/level/stonepipe-meadow.cfg:2797
 msgid "Stonepipe Meadow"
 msgstr "Kőfúvó mező"
 
@@ -5319,7 +5325,7 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:129
 msgid "Level Designer • seaside, town, and forest"
-msgstr ""
+msgstr "Pályatervező • tengerpart, város, és erdő"
 
 #: ../data/level/tea-with-milgram.cfg:132
 msgid "Musician"
@@ -5651,7 +5657,7 @@ msgstr "Köszönöm Jeeves, ez így pompás."
 
 #: ../data/level/tea-with-milgram.cfg:292
 msgid "Anyhow, I'm quite unsure where to go from here."
-msgstr ""
+msgstr "Bárhogy is, elég bizonytalan vagyok abban, hogy merre tovább innen."
 
 #: ../data/level/tea-with-milgram.cfg:294
 msgid ""
@@ -5885,6 +5891,11 @@ msgstr "Érme verseny"
 msgid "COIN RACE"
 msgstr "ÉRME VERSENY"
 
+#: ../data/level/titlescreen-load-game-selector.cfg:122
+#: ../data/level/titlescreen-new-game-selector.cfg:236
+msgid "Play!"
+msgstr ""
+
 #: ../data/level/titlescreen-new-game-selector.cfg:24
 msgid "Select Save Slot:"
 msgstr "Válaszd ki a mentési helyet:"
@@ -5893,67 +5904,62 @@ msgstr "Válaszd ki a mentési helyet:"
 msgid "Select Difficulty:"
 msgstr "Válaszd ki a nehézséget:"
 
-#: ../data/level/titlescreen-new-game-selector.cfg:64
-#: ../data/level/titlescreen-new-game-selector.cfg:93
-#: ../data/level/titlescreen-new-game-selector.cfg:122
-#: ../data/level/titlescreen-new-game-selector.cfg:151
+#: ../data/level/titlescreen-new-game-selector.cfg:65
+#: ../data/level/titlescreen-new-game-selector.cfg:94
+#: ../data/level/titlescreen-new-game-selector.cfg:123
 msgid "empty"
 msgstr "üres"
 
-#: ../data/level/titlescreen-new-game-selector.cfg:192
+#: ../data/level/titlescreen-new-game-selector.cfg:163
 #: ../data/objects/playable/difficulty-selector.cfg:24
 msgid "Casual"
 msgstr "Laza"
 
-#: ../data/level/titlescreen-new-game-selector.cfg:220
+#: ../data/level/titlescreen-new-game-selector.cfg:191
 msgid "Challenging"
 msgstr ""
 
-#: ../data/level/titlescreen-new-game-selector.cfg:267
-msgid "Play!"
-msgstr ""
-
-#: ../data/level/titlescreen.cfg:56
+#: ../data/level/titlescreen.cfg:60
 msgid "LOAD GAME"
 msgstr "JÁTÉK BETÖLTÉSE"
 
-#: ../data/level/titlescreen.cfg:81
+#: ../data/level/titlescreen.cfg:85
 msgid "NEW GAME"
 msgstr "ÚJ JÁTÉK"
 
-#: ../data/level/titlescreen.cfg:121
+#: ../data/level/titlescreen.cfg:125
 msgid "Press ${LEFT_KEY} or ${RIGHT_KEY} to walk."
 msgstr ""
 
-#: ../data/level/titlescreen.cfg:122
+#: ../data/level/titlescreen.cfg:126
 msgid "Quickly press ${LEFT_KEY} or ${RIGHT_KEY} twice to run."
 msgstr ""
 
-#: ../data/level/titlescreen.cfg:124
+#: ../data/level/titlescreen.cfg:128
 msgid "Press ${DOWN_KEY} to crouch."
 msgstr ""
 
-#: ../data/level/titlescreen.cfg:124
+#: ../data/level/titlescreen.cfg:128
 msgid "Walk in front of a door or person, and press"
 msgstr "Sétálj egy ajtóhoz vagy szeméylhez és nyomd"
 
-#: ../data/level/titlescreen.cfg:125
+#: ../data/level/titlescreen.cfg:129
 msgid "Press ${UP_KEY} to talk, and use things like doors."
 msgstr ""
 
-#: ../data/level/titlescreen.cfg:125
+#: ../data/level/titlescreen.cfg:129
 msgid "the button that appears to interact with them."
 msgstr "meg a megjelenő billentyűt, hogy kapcsolatba lépj vele."
 
-#: ../data/level/titlescreen.cfg:126
+#: ../data/level/titlescreen.cfg:130
 msgid "Press ${JUMP_KEY} to jump."
 msgstr ""
 
-#: ../data/level/titlescreen.cfg:127
+#: ../data/level/titlescreen.cfg:131
 msgid "Press ${TONGUE_KEY} to use a character's attacks."
 msgstr ""
 
-#: ../data/level/titlescreen.cfg:166
+#: ../data/level/titlescreen.cfg:170
 msgid "ARCADE"
 msgstr "ARCADE"
 
@@ -6190,75 +6196,75 @@ msgstr "Nem tudom már manapság az ember\nbeosonni a szomszédja pincéjébe?"
 msgid "Nene's House"
 msgstr "Nene háza"
 
-#: ../data/level/to-nenes-house.cfg:172
+#: ../data/level/to-nenes-house.cfg:173
 msgid ""
 "It smells like Nene's cooking something nice,\n"
 "but I don't think she'd want any ants for lunch.\n"
 "I'd better throw it out before entering!"
 msgstr ""
 
-#: ../data/level/to-nenes-house.cfg:177
+#: ../data/level/to-nenes-house.cfg:178
 msgid ""
 "I guess that sneaking in with some bugs\n"
 "would be an easy way of getting a new job..."
 msgstr ""
 
-#: ../data/level/to-nenes-house.cfg:179
+#: ../data/level/to-nenes-house.cfg:180
 msgid ""
 "But what am I thinking?\n"
 "It would be just nasty of me if I did that."
 msgstr ""
 
-#: ../data/level/to-nenes-house.cfg:2144
+#: ../data/level/to-nenes-house.cfg:2146
 msgid "Hah!"
 msgstr "Hah!"
 
-#: ../data/level/to-nenes-house.cfg:2145
+#: ../data/level/to-nenes-house.cfg:2147
 msgid "There's Nene's house, right up there!"
 msgstr "Ott van Nene háza, pont arra!"
 
-#: ../data/level/to-nenes-house.cfg:2156
+#: ../data/level/to-nenes-house.cfg:2158
 msgid "A moment of your time sir?"
 msgstr "Egy percre feltarthatom, uram?"
 
-#: ../data/level/to-nenes-house.cfg:2158
+#: ../data/level/to-nenes-house.cfg:2160
 msgid ""
 "Sorry, I'm off to town!\n"
 "Not interested!"
 msgstr "Sajnálom, a város felé tartok!\nNem érdekel!"
 
-#: ../data/level/to-nenes-house.cfg:2159
+#: ../data/level/to-nenes-house.cfg:2161
 msgid "But the town, you see ..."
 msgstr "De pont ez az, a város, tudja..."
 
-#: ../data/level/to-nenes-house.cfg:2161
+#: ../data/level/to-nenes-house.cfg:2163
 msgid ""
 "Not. Interested.\n"
 "Buzz off."
 msgstr "Nem. Érdekel.\nTűnj el."
 
-#: ../data/level/to-nenes-house.cfg:2163
+#: ../data/level/to-nenes-house.cfg:2165
 msgid ""
 "I don't care what you're preaching,\n"
 "go sell it to someone else."
 msgstr "Nem érdekel, miről prédkiálsz,\nmenj sózd rá másra."
 
-#: ../data/level/to-nenes-house.cfg:2164
+#: ../data/level/to-nenes-house.cfg:2166
 msgid "Very well."
 msgstr "Hát legyen akkor."
 
-#: ../data/level/to-nenes-house.cfg:2167
+#: ../data/level/to-nenes-house.cfg:2169
 msgid ""
 "Someday, those door-to-door people\n"
 "will realize that kind of hard-sell tactic\n"
 "just annoys people."
 msgstr "Egy nap majd rájönnek ezek a\nházalók, hogy ez az izomból-\nárusító technika csak megörjíti\naz embereket."
 
-#: ../data/level/to-nenes-house.cfg:2169
+#: ../data/level/to-nenes-house.cfg:2171
 msgid "The sooner, the better."
 msgstr "Minél hamarabb, annál jobb."
 
-#: ../data/level/to-nenes-house.cfg:3214
+#: ../data/level/to-nenes-house.cfg:3216
 msgid "To Nene's House"
 msgstr "Nene házához"
 

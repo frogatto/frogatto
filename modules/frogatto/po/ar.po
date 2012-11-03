@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-10-22 01:42-0200\n"
-"PO-Revision-Date: 2012-10-22 03:44+0000\n"
+"POT-Creation-Date: 2012-10-28 03:25-0200\n"
+"PO-Revision-Date: 2012-10-28 05:25+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Arabic (http://www.transifex.com/projects/p/Frogatto/language/ar/)\n"
 "MIME-Version: 1.0\n"
@@ -43,7 +43,7 @@ msgstr "ظهر"
 msgid "Select save slot to use."
 msgstr ""
 
-#: ../../../src/custom_object_functions.cpp:335
+#: ../../../src/custom_object_functions.cpp:352
 msgid "Select save slot to load."
 msgstr ""
 
@@ -597,15 +597,15 @@ msgstr "لا يخلو قبعتي!"
 msgid "Start a level with no health left."
 msgstr "بدء المستوى ولم يبق مع الصحة."
 
-#: ../data/level/airplane-boss.cfg:31
+#: ../data/level/airplane-boss.cfg:32
 msgid "Ambush!"
 msgstr "مصيدة"
 
-#: ../data/level/airplane-boss.cfg:40
+#: ../data/level/airplane-boss.cfg:41
 msgid "Victory!"
 msgstr "نصر"
 
-#: ../data/level/airplane-boss.cfg:1166
+#: ../data/level/airplane-boss.cfg:1168
 msgid "Stonepipe Bridge"
 msgstr "جسر صخري"
 
@@ -841,7 +841,7 @@ msgstr "بون بوسكي"
 msgid "Bug Mining"
 msgstr "الشوائب التعدين"
 
-#: ../data/level/burn-and-bubble.cfg:3061
+#: ../data/level/burn-and-bubble.cfg:3063
 msgid "Burn and Bubble"
 msgstr "حرق والفقاعة"
 
@@ -1241,7 +1241,7 @@ msgid "We can do that."
 msgstr "يمكننا أن نفعل ذلك."
 
 #: ../data/level/crevice-village-cave.cfg:1231
-#: ../data/level/crevice-village-central.cfg:4132
+#: ../data/level/crevice-village-central.cfg:4134
 #: ../data/level/crevice-village-heights.cfg:2246
 #: ../data/level/crevice-village.cfg:1647
 #: ../data/objects/playable/map-selector.cfg:17
@@ -1917,7 +1917,7 @@ msgid "We saw Milgram's lieutenant go in there."
 msgstr "رأينا ملازم ابو طبر نذهب الى هناك."
 
 #: ../data/level/crevice-village-house-2.cfg:1395
-#: ../data/level/rock-a-fort.cfg:1654
+#: ../data/level/rock-a-fort.cfg:1641
 msgid "How interesting."
 msgstr "كيف للاهتمام."
 
@@ -2455,7 +2455,7 @@ msgstr "لماذا ، وأنا حتى تظهر لك الطريق..."
 msgid "The Elder's House"
 msgstr "الأكبر في البيت"
 
-#: ../data/level/crevice-village.cfg:76 ../data/level/to-nenes-house.cfg:334
+#: ../data/level/crevice-village.cfg:76 ../data/level/to-nenes-house.cfg:335
 msgid "I better leave this key here."
 msgstr "أفضل أن أترك هذا المفتاح هنا."
 
@@ -2820,7 +2820,13 @@ msgstr ""
 msgid "Dungeon Gateway"
 msgstr ""
 
-#: ../data/level/dungeon-storeroom-treasure-chamber.cfg:1524
+#: ../data/level/dungeon-storeroom-treasure-chamber.cfg:187
+msgid ""
+"It says, \"Treasure Storage.\n"
+"No entry without authorization.\""
+msgstr ""
+
+#: ../data/level/dungeon-storeroom-treasure-chamber.cfg:1523
 msgid "Storeroom Treasure Chamber"
 msgstr ""
 
@@ -2840,7 +2846,7 @@ msgstr "سريع لين"
 msgid "Flooded Caverns"
 msgstr "غمرت الكهوف"
 
-#: ../data/level/foreboding-forest.cfg:2811
+#: ../data/level/foreboding-forest.cfg:2814
 #: ../data/objects/playable/map-selector.cfg:18
 msgid "Foreboding Forest"
 msgstr "نذير الغابات"
@@ -2945,25 +2951,25 @@ msgstr "Frogatto في البيت"
 msgid "Pato's Room"
 msgstr "باتو للغرفة"
 
-#: ../data/level/frogatto-grotto.cfg:60
+#: ../data/level/frogatto-grotto.cfg:61
 msgid "I know!"
 msgstr "وأنا أعلم!"
 
-#: ../data/level/frogatto-grotto.cfg:61
+#: ../data/level/frogatto-grotto.cfg:62
 msgid ""
 "I can stop in at Nene's house\n"
 "on the way to town!"
 msgstr "لا أستطيع التوقف في نيني في منزل على الطريق الى المدينة!"
 
-#: ../data/level/frogatto-grotto.cfg:82
+#: ../data/level/frogatto-grotto.cfg:83
 msgid "Such a beautiful view from here."
 msgstr "مثل هذا المنظر الجميل من هنا."
 
-#: ../data/level/frogatto-grotto.cfg:228
+#: ../data/level/frogatto-grotto.cfg:229
 msgid "Nothing to see in my backyard."
 msgstr "لمعرفة أي شيء في عقر داري."
 
-#: ../data/level/frogatto-grotto.cfg:1872
+#: ../data/level/frogatto-grotto.cfg:1889
 #: ../data/objects/playable/map-selector.cfg:15
 msgid "Frogatto Grotto"
 msgstr "مغارة Frogatto"
@@ -3094,7 +3100,7 @@ msgstr ""
 #: ../data/level/golden-glen.cfg:2358
 msgid ""
 "Yes, I'm aware.  Nevertheless,\n"
-"you CAN get some information, ASAP."
+"you <em>can</em> get some information, ASAP."
 msgstr ""
 
 #: ../data/level/golden-glen.cfg:2359
@@ -3111,319 +3117,319 @@ msgid ""
 "Dismissed."
 msgstr ""
 
-#: ../data/level/golden-glen.cfg:3644
+#: ../data/level/golden-glen.cfg:3660
 msgid "Golden Glen"
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:396
+#: ../data/level/grassy-path.cfg:397
 msgid ""
 "On this level, we give advice on how to play.\n"
 "Each question mark has its own hint."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:397
+#: ../data/level/grassy-path.cfg:398
 msgid ""
 "If you already know how to play,\n"
 "then just walk to the next level."
 msgstr "إذا كنت تعرف كيفية اللعب ، ثم المشي للتو الى المستوى التالي."
 
-#: ../data/level/grassy-path.cfg:415
+#: ../data/level/grassy-path.cfg:416
 msgid ""
 "To save your progress in the game,\n"
 "use one of these convenient restrooms."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:433
+#: ../data/level/grassy-path.cfg:434
 msgid ""
 "Some changes in elevation are too high\n"
 "to clear with just a normal jump."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:434
+#: ../data/level/grassy-path.cfg:435
 msgid "Fortunately, Frogatto can jump off of walls, too!"
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:435
+#: ../data/level/grassy-path.cfg:436
 msgid "To do this, do a walking jump into the wall."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:436
+#: ../data/level/grassy-path.cfg:437
 msgid ""
 "If you bump into a wall at the crest of a jump,\n"
 "you will cling to the wall and slowly slide down."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:437
+#: ../data/level/grassy-path.cfg:438
 msgid ""
 "If you don't get a running start, you can still\n"
 "cling on, if you tap the arrow toward the wall,\n"
 "and press jump whilst it's held down."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:438
+#: ../data/level/grassy-path.cfg:439
 msgid ""
 "Whilst you are clinging to the wall,\n"
 "pressing jump will make you rebound off."
 msgstr "بينما كنت التشبث الجدار ، سوف يقفز الضغط تجعلك ترتد."
 
-#: ../data/level/grassy-path.cfg:439
+#: ../data/level/grassy-path.cfg:440
 msgid ""
 "This is especially useful, if two walls are\n"
 "facing each other, because then you can\n"
 "rebound over and over between them."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:440
+#: ../data/level/grassy-path.cfg:441
 msgid "This lets you ascend vertical columns."
 msgstr "يتيح لك هذا الصعود الأعمدة الرأسية."
 
-#: ../data/level/grassy-path.cfg:458
+#: ../data/level/grassy-path.cfg:459
 msgid "Frogatto's world is a dangerous place."
 msgstr "Frogatto العالم هو مكان خطير."
 
-#: ../data/level/grassy-path.cfg:459
+#: ../data/level/grassy-path.cfg:460
 msgid ""
 "In his travels, you'll encounter\n"
 "many creatures who want to hurt you."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:460
+#: ../data/level/grassy-path.cfg:461
 msgid ""
 "It's often fine to just avoid them, but if you have\n"
 "to fight, Frogatto's best defense is his tongue."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:461
+#: ../data/level/grassy-path.cfg:462
 msgid ""
 "You can grab enemies with the tongue,\n"
 "and then spit them back out."
 msgstr "يمكنك الاستيلاء على الأعداء مع اللسان ، ثم بصق عليها العودة."
 
-#: ../data/level/grassy-path.cfg:462
+#: ../data/level/grassy-path.cfg:463
 msgid "Once spat out, they become a deadly projectile."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:463
+#: ../data/level/grassy-path.cfg:464
 msgid ""
 "If they don't hit anything, they'll be stunned\n"
 "momentarily, and then will flip upright again."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:464
+#: ../data/level/grassy-path.cfg:465
 msgid ""
 "Whilst on their backs,\n"
 "they're vulnerable to being stomped on."
 msgstr "بينما على ظهورهم ، وأنهم عرضة للداس عليها."
 
-#: ../data/level/grassy-path.cfg:465
+#: ../data/level/grassy-path.cfg:466
 msgid ""
 "Sticking out the tongue and spitting,\n"
 "are both done with the attack key."
 msgstr "تخرج اللسان والبصق ، وكلاهما فعل مع مفتاح الهجوم."
 
-#: ../data/level/grassy-path.cfg:466
+#: ../data/level/grassy-path.cfg:467
 msgid ""
 "There are a few ants just ahead.\n"
 "Feel free to try this on them."
 msgstr "هناك النمل القليلة المقبلة فقط. لا تتردد في محاولة هذا عليها."
 
-#: ../data/level/grassy-path.cfg:467
+#: ../data/level/grassy-path.cfg:468
 msgid ""
 "And don't worry - if you die,\n"
 "you'll restart right here."
 msgstr "ولا تقلق -- إذا كنت تموت ، عليك إعادة الحق هنا."
 
-#: ../data/level/grassy-path.cfg:505
+#: ../data/level/grassy-path.cfg:506
 msgid ""
 "A very useful fact is that you can control\n"
 "the direction in which enemies are spat."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:506
+#: ../data/level/grassy-path.cfg:507
 msgid ""
 "If you hold down the up key while pressing\n"
 "the attack button, you'll spit in a high arc."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:507
+#: ../data/level/grassy-path.cfg:508
 msgid ""
 "If you hold down the down key while pressing\n"
 "the attack button, you'll spit with very little force."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:509
+#: ../data/level/grassy-path.cfg:510
 msgid ""
 "You should also beware that not all enemies\n"
 "can be grabbed with the tongue."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:510
+#: ../data/level/grassy-path.cfg:511
 msgid ""
 "Different enemies present different challenges,\n"
 "and you'll need to get creative to deal with them."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:511
+#: ../data/level/grassy-path.cfg:512
 msgid ""
 "Also, the tongue can grab useful items, like keys.\n"
 "This is how you carry them to the lock they open."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:543
+#: ../data/level/grassy-path.cfg:544
 msgid ""
 "Fountains, and other water dispensers,\n"
 "are very helpful."
 msgstr "النافورات ، ونافورات المياه الأخرى ، هي مفيدة جدا."
 
-#: ../data/level/grassy-path.cfg:544
+#: ../data/level/grassy-path.cfg:545
 msgid ""
 "If you drink from them,\n"
 "you will restore all of your health!"
 msgstr "إذا كنت تشرب منها ، وسوف تستعيد جميع صحتك!"
 
-#: ../data/level/grassy-path.cfg:563
+#: ../data/level/grassy-path.cfg:564
 msgid ""
 "Certain bridges and stairways, like this one,\n"
 "allow you to jump up and pass through them."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:564
+#: ../data/level/grassy-path.cfg:565
 msgid "You can also jump down through them."
 msgstr "يمكنك القفز أيضا باستمرار من خلالهم."
 
-#: ../data/level/grassy-path.cfg:565
+#: ../data/level/grassy-path.cfg:566
 msgid ""
 "A special button will appear,\n"
 "whenever this is possible."
 msgstr "وسوف يظهر زر خاص ، كلما كان ذلك ممكنا."
 
-#: ../data/level/grassy-path.cfg:566
+#: ../data/level/grassy-path.cfg:567
 msgid ""
 "To do so, hold down the down key,\n"
 "and then press jump."
 msgstr "للقيام بذلك ، اضغط باستمرار على مفتاح لأسفل ، ثم اضغط على القفز."
 
-#: ../data/level/grassy-path.cfg:604
+#: ../data/level/grassy-path.cfg:605
 msgid ""
 "As you've played through this level,\n"
 "you've probably noticed the coins."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:605
+#: ../data/level/grassy-path.cfg:606
 msgid ""
 "You can collect these\n"
 "and then use them to buy stuff!"
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:606
+#: ../data/level/grassy-path.cfg:607
 msgid ""
 "There is a store conveniently located\n"
 "outside of the town."
 msgstr "هناك متجر يقع خارج المدينة."
 
-#: ../data/level/grassy-path.cfg:625
+#: ../data/level/grassy-path.cfg:626
 msgid ""
 "Sometimes, you'll run into rather dangerous-\n"
 "looking terrain, such as these brambles."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:626
+#: ../data/level/grassy-path.cfg:627
 msgid "As you'd expect, stepping on them would hurt a bit."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:627
+#: ../data/level/grassy-path.cfg:628
 msgid "However, they also hurt your enemies!"
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:628
+#: ../data/level/grassy-path.cfg:629
 msgid ""
 "Leading or spitting them onto harmful terrain\n"
 "is an excellent way to dispatch them."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:629
+#: ../data/level/grassy-path.cfg:630
 msgid ""
 "Beware also, any bottomless pits you encounter.\n"
 "Those are immediately fatal."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:735
+#: ../data/level/grassy-path.cfg:736
 msgid ""
 "Up ahead, you'll notice an anthill,\n"
 "which ants constantly come out of."
 msgstr "حتى قبل ، فسوف تلاحظ وجود عش النمل ، والتي تأتي باستمرار النمل من أصل."
 
-#: ../data/level/grassy-path.cfg:736
+#: ../data/level/grassy-path.cfg:737
 msgid ""
 "There is no way to stop this;\n"
 "you can't destroy the anthill."
 msgstr "لا توجد وسيلة لوقف هذا ؛ لا يمكنك تدمير عش النمل."
 
-#: ../data/level/grassy-path.cfg:737
+#: ../data/level/grassy-path.cfg:738
 msgid ""
 "Some hazards are like this.\n"
 "You simply have to work around them."
 msgstr "بعض الأخطار مثل هذا. عليك ببساطة كمحاولة للتغلب عليها."
 
-#: ../data/level/grassy-path.cfg:756
+#: ../data/level/grassy-path.cfg:757
 msgid "That's it for this tutorial."
 msgstr "هذا كل شيء لهذا البرنامج التعليمي."
 
-#: ../data/level/grassy-path.cfg:757
+#: ../data/level/grassy-path.cfg:758
 msgid ""
 "Although there's more to playing the game,\n"
 "the rest, we can safely let you learn on your own."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:758
+#: ../data/level/grassy-path.cfg:759
 msgid ""
 "Feel free to come back here,\n"
 "if you want to read a hint again."
 msgstr "لا تتردد في العودة إلى هنا ، إذا كنت ترغب في قراءة التلميح مرة أخرى."
 
-#: ../data/level/grassy-path.cfg:759
+#: ../data/level/grassy-path.cfg:760
 msgid "Have fun!"
 msgstr "المتعة!"
 
-#: ../data/level/grassy-path.cfg:779
+#: ../data/level/grassy-path.cfg:780
 msgid ""
 "If you've seen a conversation before, it might\n"
 "be annoying to have to read it again."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:780
+#: ../data/level/grassy-path.cfg:781
 msgid ""
 "You can skip a conversation, including parts\n"
 "of cutscenes, by pressing the \"escape\" key."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:781
+#: ../data/level/grassy-path.cfg:782
 msgid ""
 "And yes, this applies to the question\n"
 "marks on this level, too."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:891
+#: ../data/level/grassy-path.cfg:892
 msgid ""
 "If you haven't already noticed, the red\n"
 "fruits you sometimes find nestled in\n"
 "the grass are spittable projectiles."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:892
+#: ../data/level/grassy-path.cfg:893
 msgid ""
 "You'll find many such objects of similar size\n"
 "in different areas of the game, such as crates\n"
 "inside of houses, or nuts hanging from trees."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:893
+#: ../data/level/grassy-path.cfg:894
 msgid ""
 "These are an ample source of ammunition,\n"
 "that's almost always available."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:894
+#: ../data/level/grassy-path.cfg:895
 msgid ""
 "Note that these have an unusual property;\n"
 "if you use them up, walk away from the screen\n"
@@ -3431,7 +3437,7 @@ msgid ""
 "there will often be a new one waiting to use."
 msgstr ""
 
-#: ../data/level/grassy-path.cfg:3808
+#: ../data/level/grassy-path.cfg:3810
 msgid "Grassy Path"
 msgstr "معشوشب الدرب"
 
@@ -4878,11 +4884,11 @@ msgstr "ابتليت الألغام"
 msgid "Platform Peril"
 msgstr ""
 
-#: ../data/level/rock-a-fort-cave.cfg:1659 ../data/level/rock-a-fort.cfg:5436
+#: ../data/level/rock-a-fort-cave.cfg:1659 ../data/level/rock-a-fort.cfg:5423
 msgid "Rock-a-Fort"
 msgstr "الصخور واحد في فورت"
 
-#: ../data/level/rock-a-fort.cfg:1653
+#: ../data/level/rock-a-fort.cfg:1640
 msgid "Woah! A flying plant!"
 msgstr "واو! نبات تحلق!"
 
@@ -5172,7 +5178,7 @@ msgstr "بسيطة ، فقط تأخذ على الهواء!"
 msgid "You ... <em>do</em> realize I can't fly?"
 msgstr ""
 
-#: ../data/level/splash-hop.cfg:3055
+#: ../data/level/splash-hop.cfg:3057
 msgid "Splash, Hop"
 msgstr "البداية ، هوب"
 
@@ -5180,7 +5186,7 @@ msgstr "البداية ، هوب"
 msgid "Starlit Cave"
 msgstr "مرصع بالنجوم كهف"
 
-#: ../data/level/stonepipe-meadow.cfg:2796
+#: ../data/level/stonepipe-meadow.cfg:2797
 msgid "Stonepipe Meadow"
 msgstr "Stonepipe المرج"
 
@@ -5885,6 +5891,11 @@ msgstr "عملة سباق"
 msgid "COIN RACE"
 msgstr "COIN RACE"
 
+#: ../data/level/titlescreen-load-game-selector.cfg:122
+#: ../data/level/titlescreen-new-game-selector.cfg:236
+msgid "Play!"
+msgstr ""
+
 #: ../data/level/titlescreen-new-game-selector.cfg:24
 msgid "Select Save Slot:"
 msgstr ""
@@ -5893,67 +5904,62 @@ msgstr ""
 msgid "Select Difficulty:"
 msgstr ""
 
-#: ../data/level/titlescreen-new-game-selector.cfg:64
-#: ../data/level/titlescreen-new-game-selector.cfg:93
-#: ../data/level/titlescreen-new-game-selector.cfg:122
-#: ../data/level/titlescreen-new-game-selector.cfg:151
+#: ../data/level/titlescreen-new-game-selector.cfg:65
+#: ../data/level/titlescreen-new-game-selector.cfg:94
+#: ../data/level/titlescreen-new-game-selector.cfg:123
 msgid "empty"
 msgstr ""
 
-#: ../data/level/titlescreen-new-game-selector.cfg:192
+#: ../data/level/titlescreen-new-game-selector.cfg:163
 #: ../data/objects/playable/difficulty-selector.cfg:24
 msgid "Casual"
 msgstr "عرضي"
 
-#: ../data/level/titlescreen-new-game-selector.cfg:220
+#: ../data/level/titlescreen-new-game-selector.cfg:191
 msgid "Challenging"
 msgstr ""
 
-#: ../data/level/titlescreen-new-game-selector.cfg:267
-msgid "Play!"
-msgstr ""
-
-#: ../data/level/titlescreen.cfg:56
+#: ../data/level/titlescreen.cfg:60
 msgid "LOAD GAME"
 msgstr "LOAD GAME"
 
-#: ../data/level/titlescreen.cfg:81
+#: ../data/level/titlescreen.cfg:85
 msgid "NEW GAME"
 msgstr "لعبة جديدة"
 
-#: ../data/level/titlescreen.cfg:121
+#: ../data/level/titlescreen.cfg:125
 msgid "Press ${LEFT_KEY} or ${RIGHT_KEY} to walk."
 msgstr ""
 
-#: ../data/level/titlescreen.cfg:122
+#: ../data/level/titlescreen.cfg:126
 msgid "Quickly press ${LEFT_KEY} or ${RIGHT_KEY} twice to run."
 msgstr ""
 
-#: ../data/level/titlescreen.cfg:124
+#: ../data/level/titlescreen.cfg:128
 msgid "Press ${DOWN_KEY} to crouch."
 msgstr ""
 
-#: ../data/level/titlescreen.cfg:124
+#: ../data/level/titlescreen.cfg:128
 msgid "Walk in front of a door or person, and press"
 msgstr "المشي أمام الباب أو شخص آخر ، والصحافة"
 
-#: ../data/level/titlescreen.cfg:125
+#: ../data/level/titlescreen.cfg:129
 msgid "Press ${UP_KEY} to talk, and use things like doors."
 msgstr ""
 
-#: ../data/level/titlescreen.cfg:125
+#: ../data/level/titlescreen.cfg:129
 msgid "the button that appears to interact with them."
 msgstr "الزر الذي يظهر على التفاعل معها."
 
-#: ../data/level/titlescreen.cfg:126
+#: ../data/level/titlescreen.cfg:130
 msgid "Press ${JUMP_KEY} to jump."
 msgstr ""
 
-#: ../data/level/titlescreen.cfg:127
+#: ../data/level/titlescreen.cfg:131
 msgid "Press ${TONGUE_KEY} to use a character's attacks."
 msgstr ""
 
-#: ../data/level/titlescreen.cfg:166
+#: ../data/level/titlescreen.cfg:170
 msgid "ARCADE"
 msgstr "العاب الورق"
 
@@ -6190,75 +6196,75 @@ msgstr "لا يمكن التسلل إلى الطابق السفلي الرجل �
 msgid "Nene's House"
 msgstr "نيني في البيت"
 
-#: ../data/level/to-nenes-house.cfg:172
+#: ../data/level/to-nenes-house.cfg:173
 msgid ""
 "It smells like Nene's cooking something nice,\n"
 "but I don't think she'd want any ants for lunch.\n"
 "I'd better throw it out before entering!"
 msgstr ""
 
-#: ../data/level/to-nenes-house.cfg:177
+#: ../data/level/to-nenes-house.cfg:178
 msgid ""
 "I guess that sneaking in with some bugs\n"
 "would be an easy way of getting a new job..."
 msgstr ""
 
-#: ../data/level/to-nenes-house.cfg:179
+#: ../data/level/to-nenes-house.cfg:180
 msgid ""
 "But what am I thinking?\n"
 "It would be just nasty of me if I did that."
 msgstr ""
 
-#: ../data/level/to-nenes-house.cfg:2144
+#: ../data/level/to-nenes-house.cfg:2146
 msgid "Hah!"
 msgstr "ههه!"
 
-#: ../data/level/to-nenes-house.cfg:2145
+#: ../data/level/to-nenes-house.cfg:2147
 msgid "There's Nene's house, right up there!"
 msgstr "هناك منزل نيني ، وهناك ما يصل الحق!"
 
-#: ../data/level/to-nenes-house.cfg:2156
+#: ../data/level/to-nenes-house.cfg:2158
 msgid "A moment of your time sir?"
 msgstr "لحظة من وقتك يا سيدي؟"
 
-#: ../data/level/to-nenes-house.cfg:2158
+#: ../data/level/to-nenes-house.cfg:2160
 msgid ""
 "Sorry, I'm off to town!\n"
 "Not interested!"
 msgstr "آسف ، أنا قبالة إلى المدينة! لا تهتم!"
 
-#: ../data/level/to-nenes-house.cfg:2159
+#: ../data/level/to-nenes-house.cfg:2161
 msgid "But the town, you see ..."
 msgstr "لكن المدينة ، كنت انظر..."
 
-#: ../data/level/to-nenes-house.cfg:2161
+#: ../data/level/to-nenes-house.cfg:2163
 msgid ""
 "Not. Interested.\n"
 "Buzz off."
 msgstr "لا. المهتمين. بهرب."
 
-#: ../data/level/to-nenes-house.cfg:2163
+#: ../data/level/to-nenes-house.cfg:2165
 msgid ""
 "I don't care what you're preaching,\n"
 "go sell it to someone else."
 msgstr "لا يهمني ما كنت الوعظ ، انتقل بيعه لشخص آخر."
 
-#: ../data/level/to-nenes-house.cfg:2164
+#: ../data/level/to-nenes-house.cfg:2166
 msgid "Very well."
 msgstr "جيد جدا."
 
-#: ../data/level/to-nenes-house.cfg:2167
+#: ../data/level/to-nenes-house.cfg:2169
 msgid ""
 "Someday, those door-to-door people\n"
 "will realize that kind of hard-sell tactic\n"
 "just annoys people."
 msgstr "يوما ما ، سيكون هؤلاء الناس من الباب إلى الباب تحقيق هذا النوع من الصعب بيع تكتيك فقط يزعج الناس."
 
-#: ../data/level/to-nenes-house.cfg:2169
+#: ../data/level/to-nenes-house.cfg:2171
 msgid "The sooner, the better."
 msgstr "وقبل ذلك ، كان ذلك أفضل."
 
-#: ../data/level/to-nenes-house.cfg:3214
+#: ../data/level/to-nenes-house.cfg:3216
 msgid "To Nene's House"
 msgstr "إلى البيت ونيني"
 
