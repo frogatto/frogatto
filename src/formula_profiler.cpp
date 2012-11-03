@@ -28,11 +28,68 @@
 namespace formula_profiler
 {
 
+namespace {
+bool profiler_on = false;
+
+struct InstrumentationRecord {
+	InstrumentationRecord() : time_us(0), nsamples(0)
+	{}
+	int time_us, nsamples;
+};
+
+std::map<const char*, InstrumentationRecord> g_instrumentation;
+}
+
+instrument::instrument(const char* id) : id_(id)
+{
+	if(profiler_on) {
+		gettimeofday(&tv_, NULL);
+	}
+}
+
+instrument::~instrument()
+{
+	if(profiler_on) {
+		struct timeval end_tv;
+		gettimeofday(&end_tv, NULL);
+		const int time_us = (end_tv.tv_sec - tv_.tv_sec)*1000000 + (end_tv.tv_usec - tv_.tv_usec);
+		InstrumentationRecord& r = g_instrumentation[id_];
+		r.time_us += (end_tv.tv_sec - tv_.tv_sec)*1000000 + (end_tv.tv_usec - tv_.tv_usec);
+		r.nsamples++;
+	}
+}
+
+void dump_instrumentation()
+{
+	static struct timeval prev_call;
+	static bool first_call = true;
+
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+
+	if(!first_call && g_instrumentation.empty() == false) {
+		const int time_us = (tv.tv_sec - prev_call.tv_sec)*1000000 + (tv.tv_usec - prev_call.tv_usec);
+		if(time_us) {
+			fprintf(stderr, "FRAME INSTRUMENTATION TOTAL TIME: %dus. INSTRUMENTS: ", time_us);
+			for(std::map<const char*,InstrumentationRecord>::const_iterator i = g_instrumentation.begin(); i != g_instrumentation.end(); ++i) {
+				const int percent = (i->second.time_us*100)/time_us;
+				fprintf(stderr, "%s: %dus (%d%%) in %d calls; ", i->first, i->second.time_us, percent, i->second.nsamples);
+			}
+
+			fprintf(stderr, "\n");
+		}
+
+		g_instrumentation.clear();
+	}
+
+	first_call = false;
+	prev_call = tv;
+}
+
 event_call_stack_type event_call_stack;
 
 namespace {
 bool handler_disabled = false;
-bool profiler_on = false;
 std::string output_fname;
 int main_thread;
 
@@ -233,6 +290,11 @@ void end_profiling()
 
 void pump()
 {
+	static int instr_count = 0;
+	if(++instr_count%50 == 0) {
+		dump_instrumentation();
+	}
+
 	if(current_expression_call_stack.empty() == false) {
 		expression_call_stack_samples[current_expression_call_stack]++;
 		current_expression_call_stack.clear();

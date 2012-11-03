@@ -3910,6 +3910,7 @@ bool custom_object::handle_event_internal(int event, const formula_callable* con
 		variant var;
 		
 		try {
+			formula_profiler::instrument instrumentation("FFL");
 			var = handler->execute(*this);
 		} catch(validation_failure_exception& e) {
 #ifndef DISABLE_FORMULA_PROFILER
@@ -3927,6 +3928,7 @@ bool custom_object::handle_event_internal(int event, const formula_callable* con
 		
 		try {
 			if(execute_commands_now) {
+				formula_profiler::instrument instrumentation("COMMANDS");
 				result = execute_command(var);
 			} else {
 				delayed_commands_.push_back(var);

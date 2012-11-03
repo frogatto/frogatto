@@ -8,6 +8,15 @@
 namespace formula_profiler
 {
 
+void dump_instrumentation() {}
+
+class instrument
+{
+public:
+	explicit instrument(const char* id) {}
+	~instrument() {}
+}
+
 //should be called every cycle while the profiler is running.
 void pump();
 
@@ -30,10 +39,25 @@ inline std::string get_profile_summary() { return ""; }
 
 #include <vector>
 
+#include <sys/time.h>
+
 class custom_object_type;
 
 namespace formula_profiler
 {
+
+//instruments inside a given scope.
+class instrument
+{
+public:
+	explicit instrument(const char* id);
+	~instrument();
+private:
+	const char* id_;
+	struct timeval tv_;
+};
+
+void dump_instrumentation();
 
 //should be called every cycle while the profiler is running.
 void pump();
