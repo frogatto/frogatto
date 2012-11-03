@@ -205,12 +205,7 @@ FUNCTION_DEF(create_cache, 0, 1, "create_cache(max_entries=4096): makes an FFL c
 END_FUNCTION_DEF(create_cache)
 
 FUNCTION_DEF(query_cache, 3, 3, "query_cache(ffl_cache, key, expr): ")
-//	return args()[2]->evaluate(variables);
-
 	const variant key = args()[1]->evaluate(variables);
-	if(key.is_null() || key.is_int() || key.is_list()) {
-		return args()[2]->evaluate(variables);
-	}
 
 	const ffl_cache* cache = args()[0]->evaluate(variables).try_convert<ffl_cache>();
 	ASSERT_LOG(cache != NULL, "ILLEGAL CACHE ARGUMENT TO query_cache");
