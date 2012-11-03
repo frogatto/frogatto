@@ -15,6 +15,7 @@
 #include "filesystem.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
+#include "formula_profiler.hpp"
 #include "gui_formula_functions.hpp"
 #include "hex_map.hpp"
 #include "hex_object.hpp"
@@ -2303,6 +2304,7 @@ void level::draw_background(int x, int y, int rotation) const
 
 void level::process()
 {
+	formula_profiler::instrument instrumentation("LEVEL_PROCESS");
 	if(!gui_algorithm_.empty()) {
 		foreach(gui_algorithm_ptr g, gui_algorithm_) {
 			g->process(*this);

@@ -15,6 +15,7 @@
 #include "editor.hpp"
 #include "font.hpp"
 #include "foreach.hpp"
+#include "formula_profiler.hpp"
 #include "globals.h"
 #include "graphical_font.hpp"
 #include "gui_section.hpp"
@@ -104,6 +105,7 @@ GLfloat hp_ratio = -1.0;
 void draw_scene(const level& lvl, screen_position& pos, const entity* focus, bool do_draw) {
 	const bool draw_ready = update_camera_position(lvl, pos, focus, do_draw);
 	if(draw_ready) {
+		formula_profiler::instrument instrumentation("DRAW");
 		render_scene(lvl, pos, focus, do_draw);
 	}
 }
