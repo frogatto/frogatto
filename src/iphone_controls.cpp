@@ -351,7 +351,7 @@ bool iphone_controls::right()
 
 bool iphone_controls::attack()
 {
-	return false; //remember, this is for *switching* attacks, not firing them.
+	return hittest_button(toggle_button); //remember, this is for *switching* attacks, not firing them.
 }
 
 bool iphone_controls::jump()
