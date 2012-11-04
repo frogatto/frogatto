@@ -19,7 +19,7 @@
 
 namespace
 {
-	rect left_arrow, right_arrow, down_arrow, up_arrow, a_button, c_button, interact_button, jumpdown_button, spin_button;
+	rect left_arrow, right_arrow, down_arrow, up_arrow, attack_button, attack_up_button, attack_down_button, toggle_button, jump_button, interact_button, jumpdown_button, spin_button;
 
 	int underwater_circle_rad, underwater_circle_x, underwater_circle_y;
 
@@ -66,10 +66,16 @@ namespace
 				up_arrow = hit_rect;
 			} else if (id == "down") {
 				down_arrow = hit_rect;
-			} else if (id == "b") {
-				c_button = hit_rect;
-			} else if (id == "a") {
-				a_button = hit_rect;
+			} else if (id == "jump") {
+				jump_button = hit_rect;
+			} else if (id == "toggle") {
+				toggle_button = hit_rect;
+			} else if (id == "attack") {
+				attack_button = hit_rect;
+			} else if (id == "attack_up") {
+				attack_up_button = hit_rect;
+			} else if (id == "attack_down") {
+				attack_down_button = hit_rect;
 			} else if (id == "interact") {
 				interact_button = hit_rect;
 			} else if (id == "jump_down") {
@@ -79,7 +85,6 @@ namespace
 			}
 		}
 		
-//		b_button = rect(vw - 102, vh - 300, 50*2, 60*2);
 	}
 
 	struct Mouse {
@@ -251,8 +256,8 @@ void iphone_controls::draw()
 			graphics::draw_rect(right_arrow, graphics::color(255, 0, 0, 64));
 			graphics::draw_rect(up_arrow, graphics::color(0, 255, 0, 64));
 			graphics::draw_rect(down_arrow, graphics::color(0, 0, 255, 64));
-			graphics::draw_rect(a_button, graphics::color(255, 0, 0, 64));
-			graphics::draw_rect(c_button, graphics::color(0, 255, 0, 64));
+			graphics::draw_rect(attack_button, graphics::color(255, 0, 0, 64));
+			graphics::draw_rect(jump_button, graphics::color(0, 255, 0, 64));
 			graphics::draw_rect(interact_button, graphics::color(0, 0, 255, 64));
 			graphics::draw_rect(jumpdown_button, graphics::color(255, 0, 255, 64));
 		}
@@ -310,7 +315,8 @@ bool iphone_controls::up()
 		return true;
 	}
 
-	return hittest_button(up_arrow);
+	return hittest_button(up_arrow) ||
+	hittest_button(attack_up_button);
 }
 
 bool iphone_controls::down()
@@ -320,6 +326,7 @@ bool iphone_controls::down()
 	}
 
 	return hittest_button(down_arrow) ||
+		hittest_button(attack_down_button) ||
 		(on_platform && hittest_button(jumpdown_button)) ||
 		(!is_standing && hittest_button(spin_button));
 }
@@ -344,7 +351,7 @@ bool iphone_controls::right()
 
 bool iphone_controls::attack()
 {
-	return false; //hittest_button(b_button);
+	return false; //remember, this is for *switching* attacks, not firing them.
 }
 
 bool iphone_controls::jump()
@@ -353,12 +360,12 @@ bool iphone_controls::jump()
 		return false;
 	}
 
-	return hittest_button(preferences::reverse_ab() ? c_button : a_button) || (on_platform && hittest_button(jumpdown_button));
+	return hittest_button(jump_button || (on_platform && hittest_button(jumpdown_button));
 }
 
 bool iphone_controls::tongue()
 {
-	return hittest_button(preferences::reverse_ab() ? a_button : c_button);
+	return hittest_button(attack_button) || hittest_button(attack_up_button) || hittest_button(attack_down_button);
 }
 
 #else // dummy functions for non-iPhone
