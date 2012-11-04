@@ -360,7 +360,7 @@ bool iphone_controls::jump()
 		return false;
 	}
 
-	return hittest_button(jump_button || (on_platform && hittest_button(jumpdown_button));
+	return hittest_button(jump_button) || (on_platform && hittest_button(jumpdown_button));
 }
 
 bool iphone_controls::tongue()
