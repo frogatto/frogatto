@@ -659,6 +659,8 @@ void custom_object_type::init_event_handlers(variant node,
 	}
 }
 
+void init_level_definition();
+
 custom_object_type::custom_object_type(variant node, const custom_object_type* base_type, const custom_object_type* old_type)
   : id_(node["id"].as_string()),
 	hitpoints_(node["hitpoints"].as_int(1)),
@@ -710,6 +712,9 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 	slot_properties_base_(-1), 
 	use_absolute_screen_coordinates_(node["use_absolute_screen_coordinates"].as_bool(false))
 {
+	custom_object_callable::instance();
+	init_level_definition();
+
 #ifndef NO_EDITOR
 	if(node.has_key("editor_info")) {
 		editor_info_.reset(new editor_entity_info(node["editor_info"]));

@@ -38,7 +38,7 @@ public:
 
 	entry* get_entry(int slot) {
 		if(base_ && slot < base_num_slots()) {
-			return NULL;
+			return const_cast<formula_callable_definition*>(base_)->get_entry(slot);
 		}
 
 		slot -= base_num_slots();

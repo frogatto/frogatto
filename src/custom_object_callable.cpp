@@ -1,5 +1,6 @@
 #include "asserts.hpp"
 #include "custom_object_callable.hpp"
+#include "level.hpp"
 
 namespace {
 std::vector<custom_object_callable::entry>& global_entries() {
@@ -71,6 +72,8 @@ custom_object_callable::custom_object_callable()
 			keys_to_slots()[global_entries()[n].id] = n;
 		}
 	}
+
+	global_entries()[CUSTOM_OBJECT_LEVEL].type_definition = &level::get_formula_definition();
 
 	entries_ = global_entries();
 }

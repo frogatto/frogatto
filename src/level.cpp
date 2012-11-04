@@ -3506,11 +3506,23 @@ enum LEVEL_PROPERTY_ID {
 	LEVEL_ACTIVE_CHARS, LEVEL_CHARS, LEVEL_PLAYERS, LEVEL_IN_EDITOR, LEVEL_ZOOM,
 	LEVEL_FOCUS, LEVEL_GUI, LEVEL_ID, LEVEL_DIMENSIONS, LEVEL_MUSIC_VOLUME,
 };
+
+game_logic::formula_callable_definition_ptr create_level_definition()
+{
+	game_logic::formula_callable_definition_ptr result = game_logic::create_formula_callable_definition(LevelProperties, LevelProperties + sizeof(LevelProperties)/sizeof(*LevelProperties));
+
+	return result;
+}
+}
+
+void init_level_definition()
+{
+	const_cast<game_logic::formula_callable_definition&>(level::get_formula_definition()).get_entry(LEVEL_PLAYER)->type_definition = &custom_object_callable::instance();
 }
 
 const game_logic::formula_callable_definition& level::get_formula_definition()
 {
-	static game_logic::formula_callable_definition_ptr result = game_logic::create_formula_callable_definition(LevelProperties, LevelProperties + sizeof(LevelProperties)/sizeof(*LevelProperties));
+	static game_logic::formula_callable_definition_ptr result = create_level_definition();
 	return *result;
 }
 

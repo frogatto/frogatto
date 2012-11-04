@@ -408,6 +408,7 @@ public:
 	slot_identifier_expression(const std::string& id, int slot, const formula_callable_definition* callable_def)
 	: formula_expression("_id"), slot_(slot), id_(id), callable_def_(callable_def)
 	{
+		ASSERT_LOG(callable_def_->get_entry(slot_) != NULL, "COULD NOT FIND DEFINITION IN SLOT CALLABLE: " << id);
 	}
 	
 	const std::string& id() const { return id_; }
@@ -1755,10 +1756,6 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 	if(op_name == ".") {
 		expression_ptr left(parse_expression(formula_str, i1,op,symbols, callable_def, can_optimize));
 		const formula_callable_definition* type_definition = left->get_type_definition();
-		//TODO: right now we don't give the right side of the dot
-		//a expression definition. We should work out if we can
-		//statically derive information from the left half to
-		//give the right half a definition.
 		return expression_ptr(new dot_expression(left,
 												 parse_expression(formula_str, op+1,i2,NULL, type_definition, can_optimize)));
 	}
