@@ -1411,9 +1411,18 @@ expression_ptr parse_function_def(const variant& formula_str, const token*& i1, 
 	//create a definition of the callable representing
 	//function arguments.
 	formula_callable_definition_ptr args_definition;
+	const formula_callable_definition* args_definition_ptr = NULL;
 	if(args.size()) {
 		args_definition = create_formula_callable_definition(&args[0], &args[0] + args.size(), formula_name.empty() ? callable_def : NULL /*only get the surrounding scope if we have a lambda function.*/);
+	} else if(formula_name.empty()) {
+		//empty arg lambda function. Give the definition as our context.
+		args_definition_ptr = callable_def;
 	}
+
+	if(args_definition) {
+		args_definition_ptr = args_definition.get();
+	}
+
 	if(formula_name.empty() == false) {
 		for(int n = 0; n != types.size(); ++n) {
 			if(types[n].empty()) {
@@ -1428,7 +1437,7 @@ expression_ptr parse_function_def(const variant& formula_str, const token*& i1, 
 		}
 	}
 
-	const_formula_ptr fml(new formula(function_var, &recursive_symbols, args_definition.get()));
+	const_formula_ptr fml(new formula(function_var, &recursive_symbols, args_definition_ptr));
 	recursive_symbols.resolve_recursive_calls(fml);
 	
 	if(formula_name.empty()) {

@@ -154,7 +154,7 @@ public:
 
 	static int get_key_slot(const std::string& key);
 
-	custom_object_callable();
+	explicit custom_object_callable(bool is_singleton=false);
 
 	int get_slot(const std::string& key) const;
 	entry* get_entry(int slot);

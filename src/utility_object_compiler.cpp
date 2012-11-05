@@ -201,6 +201,30 @@ UTILITY(compile_objects)
 		variant obj_node =  json::parse_from_file(*path);
 		obj_node = custom_object_type::merge_prototype(obj_node);
 		obj_node.remove_attr(variant("prototype"));
+
+		if(obj_node["editor_info"].is_map() && obj_node["editor_info"]["var"].is_list()) {
+			std::vector<std::string> names;
+			foreach(variant entry, obj_node["editor_info"]["var"].as_list()) {
+				names.push_back(entry["name"].as_string());
+			}
+
+			if(names.empty() == false) {
+				std::map<variant, variant> m;
+				if(obj_node["vars"].is_map()) {
+					m = obj_node["vars"].as_map();
+				}
+
+				foreach(const std::string& name, names) {
+					variant v(name);
+					if(m.count(v) == 0) {
+						m[v] = variant();
+					}
+				}
+
+				obj_node.add_attr(variant("vars"), variant(&m));
+			}
+		}
+
 		objects.push_back(obj_node);
 		nodes_to_files[obj_node] = "data/compiled/objects/" + type->id() + ".cfg";
 

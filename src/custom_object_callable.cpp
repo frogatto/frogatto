@@ -17,11 +17,11 @@ std::map<std::string, int>& keys_to_slots() {
 
 const custom_object_callable& custom_object_callable::instance()
 {
-	static const custom_object_callable obj;
+	static const custom_object_callable obj(true);
 	return obj;
 }
 
-custom_object_callable::custom_object_callable()
+custom_object_callable::custom_object_callable(bool is_singleton)
 {
 
 	static const std::string CustomObjectProperties[] = {
@@ -74,6 +74,7 @@ custom_object_callable::custom_object_callable()
 	}
 
 	global_entries()[CUSTOM_OBJECT_LEVEL].type_definition = &level::get_formula_definition();
+	global_entries()[CUSTOM_OBJECT_PARENT].type_definition = is_singleton ? this : &instance();
 
 	entries_ = global_entries();
 }
