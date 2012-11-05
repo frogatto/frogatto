@@ -803,15 +803,19 @@ void texture::ID::build_id()
 		std::vector<GLushort> buf(s->w*s->h);
 		const unsigned int* src = reinterpret_cast<const unsigned int*>(s->pixels);
 		bool has_alpha = false;
-		for(int n = 0; n != s->w*s->h; ++n) {
-			unsigned int col = *src;
-			const unsigned int alpha = col >> 24;
-			if(alpha != 0 && alpha != 0xFF) {
-				has_alpha = true;
-				break;
-			}
 
-			++src;
+		//We make sure that compiled tile atlases always use 5-5-5-1
+		if(strstr(info.c_str(), "tiles-compiled") == NULL) {
+			for(int n = 0; n != s->w*s->h; ++n) {
+				unsigned int col = *src;
+				const unsigned int alpha = col >> 24;
+				if(alpha != 0 && alpha != 0xFF) {
+					has_alpha = true;
+					break;
+				}
+
+				++src;
+			}
 		}
 
 		src = reinterpret_cast<const unsigned int*>(s->pixels);
