@@ -919,7 +919,7 @@ FUNCTION_DEF(solid, 3, 6, "solid(level, int x, int y, (optional)int w=1, (option
 	return variant(lvl->solid(r));
 END_FUNCTION_DEF(solid)
 
-FUNCTION_DEF(debug_rect, 2, 5, "debug_rect(int x, int y, (optional)int w=1, (optional) int h=1) -> Draws, for one frame, a rectangle on the level")
+FUNCTION_DEF(debug_rect, 2, 4, "debug_rect(int x, int y, (optional)int w=1, (optional) int h=1) -> Draws, for one frame, a rectangle on the level")
 	const int x = args()[0]->evaluate(variables).as_int();
 	const int y = args()[1]->evaluate(variables).as_int();
 
