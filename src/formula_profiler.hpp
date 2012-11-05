@@ -39,7 +39,11 @@ inline std::string get_profile_summary() { return ""; }
 
 #include <vector>
 
+#if defined(_WINDOWS)
+#include "utils.hpp"
+#else
 #include <sys/time.h>
+#endif
 
 class custom_object_type;
 
