@@ -73,7 +73,7 @@ custom_object_callable::custom_object_callable(bool is_singleton)
 		}
 	}
 
-	global_entries()[CUSTOM_OBJECT_LEVEL].type_definition = &level::get_formula_definition();
+//	global_entries()[CUSTOM_OBJECT_LEVEL].type_definition = &level::get_formula_definition();
 	global_entries()[CUSTOM_OBJECT_PARENT].type_definition = is_singleton ? this : &instance();
 
 	entries_ = global_entries();
