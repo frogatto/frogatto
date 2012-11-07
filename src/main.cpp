@@ -62,6 +62,10 @@
 #include "variant_utils.hpp"
 #include "wm.hpp"
 
+#if defined(__ANDROID__)
+#include "prof.h"
+#endif
+
 #if defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
 #include "eglport.h"
 #elif defined(TARGET_BLACKBERRY)
@@ -235,6 +239,10 @@ extern "C" int main(int argcount, char** argvec)
 
 	const char* profile_output = NULL;
 	std::string profile_output_buf;
+
+#if defined(__ANDROID__)
+	monstartup("libapplication.so");
+#endif
 
 	std::string orig_level_cfg = level_cfg;
 	std::string override_level_cfg = "";
@@ -425,7 +433,8 @@ extern "C" int main(int argcount, char** argvec)
 	i18n::init ();
 	LOG( "After i18n::init()" );
 
-	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 1);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
 #if defined(TARGET_OS_IPHONE) || defined(TARGET_BLACKBERRY) || defined(__ANDROID__)
 	//on the iPhone and PlayBook, try to restore the auto-save if it exists
@@ -534,7 +543,7 @@ extern "C" int main(int argcount, char** argvec)
 		preferences::set_control_scheme(r[0]->h >= 1024 ? "ipad_2d" : "android_med");
     }
 
-    if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),16,SDL_FULLSCREEN|SDL_OPENGL) == NULL) {
+    if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_FULLSCREEN|SDL_OPENGL) == NULL) {
 		std::cerr << "could not set video mode\n";
 		return -1;
     }
@@ -624,6 +633,10 @@ extern "C" int main(int argcount, char** argvec)
 	}
 #endif
 	std::cerr << std::endl;
+
+	GLint stencil_bits = 0;
+	glGetIntegerv(GL_STENCIL_BITS, &stencil_bits);
+	std::cerr << "Stencil bits: " << stencil_bits << std::endl;
 
 #if defined(USE_GLES2)
 	GLfloat min_pt_sz;

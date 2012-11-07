@@ -254,18 +254,18 @@ void create_compiled_tiles_image()
 
 		*node = node->add_attr(variant("tiles"), variant(tiles_val));
 
-		char buf[128];
-		sprintf(buf, "tiles-compiled-%d.png", sheet);
+		std::stringstream str;
+		str << "tiles-compiled-" << std::dec << sheet << ".png";
 
-		*node = node->add_attr(variant("image"), variant(buf));
+		*node = node->add_attr(variant("image"), variant(str.str()));
 	}
 
 	for(int n = 0; n != sheets.size(); ++n) {
-		char buf[64];
-		sprintf(buf, "images/tiles-compiled-%d.png", n);
-
+		std::stringstream str;
+		str << "images/tiles-compiled-" << std::dec << n << ".png";
+		
 #if !defined(__native_client__)
-		IMG_SavePNG(buf, sheets[n], 5);
+		IMG_SavePNG(module::map_file(str.str()).c_str(), sheets[n], 5);
 #endif
 	}
 }
