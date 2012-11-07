@@ -298,6 +298,8 @@ namespace preferences {
 		std::string preferences_path_ = PREFERENCES_PATH;
 		std::string save_file_path_ = PREFERENCES_PATH SAVE_FILENAME;
 		std::string auto_save_file_path_ = PREFERENCES_PATH AUTOSAVE_FILENAME;
+
+		bool editor_save_to_user_preferences_ = false;
 		
 		bool force_no_npot_textures_ = false;
 		
@@ -391,6 +393,10 @@ namespace preferences {
 	
 	const char *user_data_path() {
 		return preferences_path_.c_str();
+	}
+
+	bool editor_save_to_user_preferences() {
+		return editor_save_to_user_preferences_;
 	}
 	
 	namespace {
@@ -755,6 +761,8 @@ namespace preferences {
 		if(arg_name == "--level-path") {
 			level_path_ = arg_value + "/";
 			level_path_set_ = true;
+		} else if(s == "--editor_save_to_user_preferences") {
+			editor_save_to_user_preferences_ = true;
 		} else if(s == "--show-hitboxes") {
 			show_debug_hitboxes_ = true;
 		} else if(s == "--show-controls") {

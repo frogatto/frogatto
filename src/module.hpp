@@ -13,11 +13,17 @@
 
 namespace module {
 
+enum BASE_PATH_TYPE { BASE_PATH_GAME, BASE_PATH_USER, NUM_PATH_TYPES };
+
 struct modules {
 	std::string name_;
 	std::string pretty_name_;
 	std::string abbreviation_;
-	std::string base_path_;
+
+	//base_path_ is in the game data directory, user_path_ is in the user's
+	//preferences area and is mutable.
+	std::string base_path_[NUM_PATH_TYPES];
+
 	std::vector<int> version_;
 	std::vector<std::string> included_modules_;
 };
@@ -42,7 +48,7 @@ std::string get_id(const std::string& id);
 std::string get_module_id(const std::string& id);
 std::string make_module_id(const std::string& name);
 std::map<std::string, std::string>::const_iterator find(const std::map<std::string, std::string>& filemap, const std::string& name);
-const std::string& get_module_path(const std::string& abbrev="");
+const std::string& get_module_path(const std::string& abbrev="", BASE_PATH_TYPE type=BASE_PATH_GAME);
 std::vector<variant> get_all();
 variant get(const std::string& name);
 void load(const std::string& name, bool initial=true);

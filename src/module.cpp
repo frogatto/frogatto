@@ -67,9 +67,11 @@ std::string get_module_version() {
 std::string map_file(const std::string& fname)
 {
 	foreach(const modules& p, loaded_paths()) {
-		std::string path = sys::find_file(p.base_path_ + fname);
-		if(sys::file_exists(path)) {
-			return path;
+		foreach(const std::string& base_path, p.base_path_) {
+			const std::string path = sys::find_file(base_path + fname);
+			if(sys::file_exists(path)) {
+				return path;
+			}
 		}
 	}
 	return fname;
@@ -93,8 +95,10 @@ void get_unique_filenames_under_dir(const std::string& dir,
                                     std::map<std::string, std::string>* file_map)
 {
 	foreach(const modules& p, loaded_paths()) {
-		const std::string path = p.base_path_ + dir;
-		sys::get_unique_filenames_under_dir(path, file_map, p.abbreviation_ + ":");
+		foreach(const std::string& base_path, p.base_path_) {
+			const std::string path = base_path + dir;
+			sys::get_unique_filenames_under_dir(path, file_map, p.abbreviation_ + ":");
+		}
 	}
 }
 
@@ -104,8 +108,10 @@ void get_files_in_dir(const std::string& dir,
                       sys::FILE_NAME_MODE mode)
 {
 	foreach(const modules& p, loaded_paths()) {
-		const std::string path = p.base_path_ + dir;
-		sys::get_files_in_dir(path, files, dirs, mode);
+		foreach(const std::string& base_path, p.base_path_) {
+			const std::string path = base_path + dir;
+			sys::get_files_in_dir(path, files, dirs, mode);
+		}
 	}
 }
 
@@ -189,19 +195,19 @@ variant get(const std::string& mod_file_name)
 	return variant();
 }
 
-const std::string& get_module_path(const std::string& abbrev) {
+const std::string& get_module_path(const std::string& abbrev, BASE_PATH_TYPE type) {
 	if(abbrev == "") {
 		// No abbreviation returns path of first loaded module.
-		return loaded_paths().front().base_path_;
+		return loaded_paths().front().base_path_[type];
 	}
 	foreach(const modules& m, loaded_paths()) {
 		if(m.abbreviation_ == abbrev || m.name_ == abbrev) {
-			return m.base_path_;
+			return m.base_path_[type];
 		}
 	}
 	// If not found we return the path of the default module.
 	// XXX may change this behaviour, depending on how it's seen in practice.
-	return loaded_paths().front().base_path_;
+	return loaded_paths().front().base_path_[type];
 }
 
 const std::string make_base_module_path(const std::string& name) {
@@ -213,6 +219,11 @@ const std::string make_base_module_path(const std::string& name) {
 	}
 
 	return "";
+}
+
+const std::string make_user_module_path(const std::string& name) {
+	const std::string user_data = preferences::user_data_path();
+	return user_data + "/user_module_data/" + name + "/";
 }
 
 void load(const std::string& mod_file_name, bool initial)
@@ -249,7 +260,8 @@ void load(const std::string& mod_file_name, bool initial)
 			}
 		}
 	}
-	modules m = {name, pretty_name, abbrev, make_base_module_path(name)};
+	modules m = {name, pretty_name, abbrev,
+	             {make_base_module_path(name), make_user_module_path(name)}};
 	loaded_paths().insert(loaded_paths().begin(), m);
 }
 

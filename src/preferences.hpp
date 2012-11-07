@@ -38,6 +38,8 @@ namespace preferences {
 	const char* user_data_path();
 	const char* save_file_path();
 	const char* auto_save_file_path();
+	bool editor_save_to_user_preferences();
+
 	std::string dlc_path();
 	void expand_data_paths();
 	void set_save_slot(const std::string& fname);
