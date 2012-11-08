@@ -2901,7 +2901,7 @@ void editor::save_level()
 	} else {
 		std::string path = loadlevel::get_level_path(filename_);
 		if(preferences::editor_save_to_user_preferences()) {
-			path = module::get_module_path("", module::BASE_PATH_USER) + "/data/level/" + filename_;
+			path = module::get_module_path(module::get_module_name(), module::BASE_PATH_USER) + "/data/level/" + filename_;
 		}
 
 		std::cerr << "WRITE_LEVEL: " << path << "\n";
@@ -2919,7 +2919,7 @@ void editor::save_level()
 				if(preferences::is_level_path_set()) {
 					sys::write_file(preferences::level_path() + prev->id(), prev->write().write_json(true));
 				} else if(preferences::editor_save_to_user_preferences()) {
-					sys::write_file(module::get_module_path("", module::BASE_PATH_USER) + "/data/level/" + prev->id(), prev->write().write_json(true));
+					sys::write_file(module::get_module_path(module::get_module_name(), module::BASE_PATH_USER) + "/data/level/" + prev->id(), prev->write().write_json(true));
 				} else {
 					sys::write_file(module::map_file(prev->id()), prev->write().write_json(true));
 				}
