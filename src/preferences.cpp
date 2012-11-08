@@ -352,7 +352,8 @@ namespace preferences {
 #elif __APPLE__
 #include "TargetConditionals.h"
 #if TARGET_OS_MAC
-		preferences::set_preferences_path("~/Library/Application Support/" + module::get_module_name() + "/");
+		preferences::set_preferences_path("~/Library/Application Support/" + name + "/");
+		//preferences::set_preferences_path(std::string(getenv("HOME")) + "/Library/Application Support/" + name + "/");
 #endif
 #else
 		preferences::set_preferences_path("~/." + name + "/");
