@@ -264,7 +264,9 @@ void server::heartbeat()
 		return;
 	}
 
+#if !defined(__ANDROID__)
 	sys::pump_file_modifications();
+#endif
 
 	const bool send_heartbeat = nheartbeat_%100 == 0;
 
