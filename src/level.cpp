@@ -2391,7 +2391,7 @@ void level::set_active_chars()
 			}
 		}
 	}
-	
+
 	chars_.erase(std::remove(chars_.begin(), chars_.end(), entity_ptr()), chars_.end());
 
 	std::sort(active_chars_.begin(), active_chars_.end());
@@ -3517,7 +3517,7 @@ game_logic::formula_callable_definition_ptr create_level_definition()
 
 void init_level_definition()
 {
-	const_cast<game_logic::formula_callable_definition&>(level::get_formula_definition()).get_entry(LEVEL_PLAYER)->type_definition = &custom_object_callable::instance();
+	//const_cast<game_logic::formula_callable_definition&>(level::get_formula_definition()).get_entry(LEVEL_PLAYER)->type_definition = &custom_object_callable::instance();
 }
 
 const game_logic::formula_callable_definition& level::get_formula_definition()

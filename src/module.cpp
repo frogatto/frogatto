@@ -222,6 +222,7 @@ const std::string make_base_module_path(const std::string& name) {
 }
 
 const std::string make_user_module_path(const std::string& name) {
+	preferences::expand_data_paths();
 	const std::string user_data = preferences::user_data_path();
 	return user_data + "/user_module_data/" + name + "/";
 }
