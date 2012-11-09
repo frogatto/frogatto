@@ -1,7 +1,7 @@
 IDI_ICON1 ICON DISCARDABLE "../modules/frogatto/images/os/windows/frogatto.ico"
 
 VS_VERSION_INFO VERSIONINFO
-FILEVERSION     1,2,0,0
+FILEVERSION     1,3,0,0
 //FILEOS          VOS_WINDOWS32
 //FILETYPE        VFT_APP
 BEGIN
@@ -11,9 +11,9 @@ BEGIN
        BEGIN
            VALUE "CompanyName",      "frogatto.com\0"
            VALUE "FileDescription",  "Frogatto & Friends 2D Platform Game.\0"
-           VALUE "FileVersion",      "1.2.0.0\0"
+           VALUE "FileVersion",      "1.3.0.0\0"
            VALUE "ProductName",      "Frogatto\0"
-           VALUE "ProductVersion",   "1.2.0\0"
+           VALUE "ProductVersion",   "1.3.0\0"
            VALUE "LegalCopyright",   "\0"
        END
    END
