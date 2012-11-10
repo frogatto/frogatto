@@ -4,11 +4,14 @@ Universal Animation Modifier:
 This adds a little base tag to every cube trains object which sets its scale.
 ./game --utility=query modules/cube_trains 'map(filter(visit_objects(doc), value.animation != null), set(value.animation, [{"@base": true, scale: 1}] + if(is_list(value.animation), value.animation, [value.animation])))'
 
+
 Search the commit logs for a word, for a given file.
 git log --grep=word -- whatever/path
 
+
 Log Frogatto's console output to a file.
 ./game --level module-manager.cfg 2>&1 | tee log.txt
+
 
 Log objects outside the level dimensions.
 ./game --utility=query modules/cube_trains "
@@ -21,6 +24,7 @@ Log objects outside the level dimensions.
         )) where point_in_rect = def(point, rect) (rect[0] < point[0] and point[0] < rect[2] and //Cloned this function from functions-geometry.cfg sans safety.
                                                    rect[1] < point[1] and point[1] < rect[3])"
 
+
 Compile Frogatto with shaders:
 export CXXFLAGS=-DUSE_GLES2 && make clean && make
 
@@ -30,6 +34,7 @@ unset CXXFLAGS && make clean && make
 
 Chart Events Fired:
 debug_chart('events', performance().nevents),
+
 
 Chart all metrics:
     debug_chart('fps', constrain(0, performance().fps, 100)),
@@ -41,5 +46,11 @@ Chart all metrics:
     debug_chart('nevents', constrain(0, performance().nevent, 100)),
     debug_chart('time', time()%100),
     
+    
 List authors in git:
 git shortlog -sn
+
+
+Offset an entire Cube Trains map by x/y/z:
+set(ctm, <map data>)
+ctm + {'map': map(ctm['map'], list_replace_elements(value, 1, [list_add(value[1], offset)] ) )} where offset = [0,0,1]
