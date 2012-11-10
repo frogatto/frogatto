@@ -405,6 +405,8 @@ private:
 	//preferred screen dimensions to play the level on.
 	int x_resolution_, y_resolution_;
 
+	bool set_screen_resolution_on_entry_;
+
 	variant vars_;
 	
 	level_solid_map solid_;

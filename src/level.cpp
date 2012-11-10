@@ -128,7 +128,7 @@ void level::set_as_current_level()
 	static const int starting_virtual_x_resolution = preferences::virtual_screen_width();
 	static const int starting_virtual_y_resolution = preferences::virtual_screen_height();
 
-	if(!editor_ && !editor_resolution_manager::is_active() && starting_x_resolution == starting_virtual_x_resolution) {
+	if(!set_screen_resolution_on_entry_ && !editor_ && !editor_resolution_manager::is_active() && starting_x_resolution == starting_virtual_x_resolution) {
 		if(!x_resolution_) {
 			x_resolution_ = starting_x_resolution;
 		}
@@ -164,6 +164,7 @@ graphics::color_transform default_dark_color() {
 level::level(const std::string& level_cfg, variant node)
 	: id_(level_cfg),
 	  x_resolution_(0), y_resolution_(0),
+	  set_screen_resolution_on_entry_(true),
 	  highlight_layer_(INT_MIN),
 	  num_compiled_tiles_(0),
 	  entered_portal_active_(false), save_point_x_(-1), save_point_y_(-1),
@@ -248,6 +249,7 @@ level::level(const std::string& level_cfg, variant node)
 	time_freeze_ = 0;
 	x_resolution_ = node["x_resolution"].as_int();
 	y_resolution_ = node["y_resolution"].as_int();
+	set_screen_resolution_on_entry_ = node["set_screen_resolution_on_entry"].as_bool(true);
 	in_dialog_ = false;
 	title_ = node["title"].as_string_default();
 	if(node.has_key("dimensions")) {
@@ -1069,6 +1071,10 @@ variant level::write() const
 	if(x_resolution_ || y_resolution_) {
 		res.add("x_resolution", x_resolution_);
 		res.add("y_resolution", y_resolution_);
+	}
+
+	if(!set_screen_resolution_on_entry_) {
+		res.add("set_screen_resolution_on_entry", set_screen_resolution_on_entry_);
 	}
 
 	if(!gui_algo_str_.empty() && !(gui_algo_str_.front() == "default" && gui_algo_str_.size() == 1)) {
