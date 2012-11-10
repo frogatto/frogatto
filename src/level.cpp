@@ -837,12 +837,19 @@ void level::start_rebuild_tiles_in_background(const std::vector<int>& layers)
 	info.rebuild_tile_layers_worker_buffer = info.rebuild_tile_layers_buffer;
 	info.rebuild_tile_layers_buffer.clear();
 
+	std::map<int, tile_map> worker_tile_maps = tile_maps_;
+	for(std::map<int, tile_map>::iterator i = worker_tile_maps.begin();
+	    i != worker_tile_maps.end(); ++i) {
+		//make the tile maps safe to go into a worker thread.
+		i->second.prepare_for_copy_to_worker_thread();
+	}
+
 	static threading::mutex* sync = new threading::mutex;
 
 #if defined(__ANDROID__) && SDL_VERSION_ATLEAST(1, 3, 0)
-	info.rebuild_tile_thread = new threading::thread("rebuild_tiles", boost::bind(build_tiles_thread_function, &info, tile_maps_, *sync));
+	info.rebuild_tile_thread = new threading::thread("rebuild_tiles", boost::bind(build_tiles_thread_function, &info, worker_tile_maps, *sync));
 #else
-	info.rebuild_tile_thread = new threading::thread(boost::bind(build_tiles_thread_function, &info, tile_maps_, *sync));
+	info.rebuild_tile_thread = new threading::thread(boost::bind(build_tiles_thread_function, &info, worker_tile_maps, *sync));
 #endif
 }
 

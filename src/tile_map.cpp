@@ -694,6 +694,11 @@ void tile_map::flip_variation(int x, int y, int delta)
 	}
 }
 
+void tile_map::prepare_for_copy_to_worker_thread()
+{
+	node_ = variant();
+}
+
 namespace {
 
 //This function is a random hash. It takes an (x,y) position as well as a

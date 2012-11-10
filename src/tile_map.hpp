@@ -45,6 +45,10 @@ public:
 	int get_variations(int x, int y) const;
 	void flip_variation(int x, int y, int delta=0);
 
+	//variants are not thread-safe, so this function clears out variant
+	//info to prepare the tile map to be placed into a worker thread.
+	void prepare_for_copy_to_worker_thread();
+
 #ifndef NO_EDITOR
 	//Functions for rebuilding all live tile maps when there is a change
 	//to tile map data. prepare_rebuild_all() should be called before
