@@ -27,6 +27,27 @@
 namespace editor_dialogs
 {
 
+namespace 
+{
+	const char cube_img[266] = {137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 
+		73, 72, 68, 82, 0, 0, 0, 16, 0, 0, 0, 16, 8, 2, 0, 0, 0, 144, 145, 
+		104, 54, 0, 0, 0, 7, 116, 73, 77, 69, 7, 220, 4, 23, 9, 56, 22, 125, 
+		252, 141, 55, 0, 0, 0, 23, 116, 69, 88, 116, 83, 111, 102, 116, 119, 
+		97, 114, 101, 0, 71, 76, 68, 80, 78, 71, 32, 118, 101, 114, 32, 51, 
+		46, 52, 113, 133, 164, 225, 0, 0, 0, 8, 116, 112, 78, 71, 71, 76, 
+		68, 51, 0, 0, 0, 0, 74, 128, 41, 31, 0, 0, 0, 4, 103, 65, 77, 65, 0,
+		0, 177, 143, 11, 252, 97, 5, 0, 0, 0, 6, 98, 75, 71, 68, 0, 255, 0, 
+		255, 0, 255, 160, 189, 167, 147, 0, 0, 0, 101, 73, 68, 65, 84, 120, 
+		156, 221, 210, 209, 17, 128, 32, 12, 3, 208, 174, 232, 32, 30, 35, 
+		116, 177, 78, 226, 50, 202, 89, 225, 66, 83, 208, 111, 115, 252, 53, 
+		143, 175, 72, 217, 55, 126, 210, 146, 156, 210, 234, 209, 194, 76, 
+		102, 85, 12, 50, 89, 87, 153, 61, 64, 85, 207, 59, 105, 213, 79, 102,
+		54, 0, 79, 96, 189, 234, 73, 0, 50, 172, 190, 128, 154, 250, 189, 81, 
+		254, 5, 216, 48, 136, 243, 10, 12, 65, 156, 6, 143, 175, 131, 213, 
+		248, 62, 206, 251, 2, 161, 49, 129, 1, 89, 58, 130, 187, 0, 0, 0,
+		0, 73, 69, 78, 68, 174, 66, 96, 130};
+}
+
 editor_module_properties_dialog::editor_module_properties_dialog(editor& e)
   : dialog(0, 0, graphics::screen_width(), graphics::screen_height()), editor_(e), new_mod_(true)
 {
@@ -212,6 +233,19 @@ void editor_module_properties_dialog::create_new_module() {
 		// Create an empty titlescreen.cfg
 		variant empty_lvl = json::parse_from_file("data/level/empty.cfg");
 		empty_lvl.add_attr(variant("id"), variant("titlescreen.cfg"));
+
+		std::map<variant, variant> playable_m;
+		playable_m[variant("_addr")] = variant("1010101");
+		playable_m[variant("current_frame")] = variant("normal");
+		playable_m[variant("custom")] = variant("yes");
+		playable_m[variant("face_right")] = variant(1);
+		playable_m[variant("is_human")] = variant(1);
+		playable_m[variant("label")] = variant("_1111");
+		playable_m[variant("time_in_frame")] = variant(0);
+		playable_m[variant("type")] = variant("simple_playable");
+		playable_m[variant("x")] = variant(0);
+		playable_m[variant("y")] = variant(0);
+		empty_lvl.add_attr(variant("character"), variant(&playable_m));
 		sys::write_file(mod_path + preferences::level_path() + "titlescreen.cfg", empty_lvl.write_json());
 
 		// Module specifed as standalone, write out a few extra useful files.
@@ -224,11 +258,12 @@ void editor_module_properties_dialog::create_new_module() {
 			// data/tiles.cfg			-- {}
 			// data/gui/null.cfg		-- {}
 			sys::write_file(mod_path + "data/fonts.cfg", "{font:[\"@flatten\",\"@include data/dialog_font.cfg\",\"@include data/label_font.cfg\"]}");
-			sys::write_file(mod_path + "data/functions.cfg", "{\n}");
+			sys::write_file(mod_path + "data/functions.cfg", "[\n]");
 			sys::write_file(mod_path + "data/music.cfg", "{\n}");
 			sys::write_file(mod_path + "data/tiles.cfg", "{\n}");
 			sys::write_file(mod_path + "data/gui/null.cfg", "{\n}");
 			sys::write_file(mod_path + "data/preload.cfg", "{\npreload: [\n],\n}");
+			sys::write_file(mod_path + "data/gui/default.cfg", "{\n}");
 			sys::write_file(mod_path + "data/gui.cfg", 
 				"{\nsection:["
 				"\n\t\"@flatten\","
@@ -239,6 +274,21 @@ void editor_module_properties_dialog::create_new_module() {
 				"\n\t\"@flatten\","
 				"\n\t\"@include data/framed-gui-elements.cfg\""
 				"\n]\n}");
+			sys::write_file(mod_path + "data/objects/simple_playable.cfg", 
+				"{\n"
+				"\tid: \"simple_playable\",\n"
+				"\tis_human: true,\n"
+				"\thitpoints: 4,\n"
+				"\teditor_info: { category: \"player\" },\n"
+				"\tanimation: [\n"
+				"\t\t{\n"
+				"\t\tid: \"stand\",\n"
+				"\t\timage: \"cube.png\",\n"
+				"\t\trect: [0,0,15,15]\n"
+				"\t\t}\n"
+				"\t],\n"
+				"}");
+			sys::write_file(mod_path + "images/cube.png", std::string(cube_img, 266));
 		}
 	}
 }
