@@ -179,7 +179,7 @@ UTILITY(compile_objects)
 			continue;
 		}
 
-		gui_nodes[gui] = json::parse_from_file(module::map_file("data/gui/" + gui));
+		gui_nodes[gui] = json::parse_from_file(module::map_file("data/gui/" + gui), json::JSON_NO_PREPROCESSOR);
 		animation_containing_nodes.push_back(gui_nodes[gui]);
 		if(gui_nodes[gui].has_key("no_compile_image")) {
 			std::vector<std::string> images = util::split(gui_nodes[gui][variant("no_compile_image")].as_string());
