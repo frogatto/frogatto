@@ -6,6 +6,7 @@
 #include <string.h>
 #include <sstream>
 
+#include "boost/algorithm/string/replace.hpp"
 #include "boost/lexical_cast.hpp"
 
 #include "asserts.hpp"
@@ -1626,7 +1627,15 @@ void variant::write_json(std::ostream& s) const
 			if(i != map_->elements.begin()) {
 				s << ',';
 			}
-			s << '"' << (i->first.is_string() ? "" : "@eval ") << i->first.string_cast() << "\":";
+
+			if(i->first.is_string()) {
+				s << '"' << i->first.string_cast() << "\":";
+			} else {
+				std::string str = i->first.write_json();
+				boost::replace_all(str, "\"", "\\\"");
+				s << "\"@eval " << str << "\":";
+			}
+
 			i->second.write_json(s);
 		}
 
@@ -1726,7 +1735,18 @@ void variant::write_json_pretty(std::ostream& s, std::string indent) const
 			if(i != map_->elements.begin()) {
 				s << ',';
 			}
-			s << "\n" << indent << '"' << (i->first.is_string() ? "" : "@eval ") << i->first.string_cast() << "\": ";
+
+			s << "\n" << indent << '"';
+			if(i->first.is_string()) {
+				s << i->first.string_cast();
+			} else {
+				std::string str = i->first.write_json();
+				boost::replace_all(str, "\"", "\\\"");
+				s << "@eval " << str;
+			}
+
+			s << "\": ";
+
 			i->second.write_json_pretty(s, indent);
 		}
 		indent.resize(indent.size()-1);
