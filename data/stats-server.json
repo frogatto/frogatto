@@ -40,7 +40,7 @@
 			"tables": [
 				{
 					"global_scope": true,
-					"key": "msg",
+					"key": "[msg, level, editor]",
 					"name": "all_crashes"
 				},
 				{
