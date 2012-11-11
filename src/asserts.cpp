@@ -1,5 +1,8 @@
 #include <stdio.h>
 
+#ifndef NO_EDITOR
+#include "editor.hpp"
+#endif
 
 #include "asserts.hpp"
 #include "level.hpp"
@@ -17,6 +20,11 @@ void report_assert_msg(const std::string& m)
 		std::map<variant,variant> obj;
 		obj[variant("type")] = variant("crash");
 		obj[variant("msg")] = variant(m);
+#ifndef NO_EDITOR
+		obj[variant("editor")] = variant(editor::last_edited_level().empty() == false);
+#else
+		obj[variant("editor")] = variant(false);
+#endif
 		stats::record(variant(&obj), level::current_ptr()->id());
 		stats::flush_and_quit();
 	}
