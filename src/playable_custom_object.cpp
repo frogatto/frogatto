@@ -17,7 +17,8 @@ playable_custom_object::playable_custom_object(const custom_object& obj)
 }
 
 playable_custom_object::playable_custom_object(const playable_custom_object& obj)
-  : custom_object(obj), player_info_(obj.player_info_), difficulty_(0),
+  : custom_object(obj), player_info_(obj.player_info_),
+    difficulty_(obj.difficulty_),
     save_condition_(obj.save_condition_), vertical_look_(0),
     underwater_ctrl_x_(0), underwater_ctrl_y_(0), underwater_controls_(false),
 	can_interact_(0)
