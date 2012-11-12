@@ -395,7 +395,7 @@ FUNCTION_DEF(available_save_slots, 0, 0, "available_save_slots(): returns a list
 			fname = formatter() << "save" << (slot+1) << ".cfg";
 		}
 
-		if(sys::file_exists(std::string(preferences::user_data_path()) + "/" + fname)) {
+		if(json::file_exists_and_is_valid(std::string(preferences::user_data_path()) + "/" + fname)) {
 			result.push_back(variant(slot));
 		}
 	}
