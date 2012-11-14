@@ -323,10 +323,13 @@ void process_stats(const variant& doc)
 	try {
 	for(int n = 0; n != levels.num_elements(); ++n) {
 		variant lvl = levels[n];
-		variant level_id = lvl["level"];
+		variant level_id_v = lvl["level"];
+		variant level_id = level_id_v;
 		if(!level_id.is_string()) {
 			continue;
 		}
+
+		context_callable->add("level", level_id_v);
 
 		variant stats = lvl["stats"];
 		for(int m = 0; m != stats.num_elements(); ++m) {

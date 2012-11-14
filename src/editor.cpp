@@ -2745,6 +2745,7 @@ editor::EDIT_TOOL editor::tool() const
 
 void editor::change_tool(EDIT_TOOL tool)
 {
+	EDIT_TOOL last_tool = tool_;
 	tool_ = tool;
 	selected_segment_ = -1;
 
@@ -2786,11 +2787,17 @@ void editor::change_tool(EDIT_TOOL tool)
 		break;
 	}
 	case TOOL_EDIT_HEXES: {
-		if(!hex_tileset_dialog_) {
-			hex_tileset_dialog_.reset(new editor_dialogs::hex_tileset_editor_dialog(*this));
+		if(hex::hex_object::get_hex_tiles().size() > 0) {
+			if(!hex_tileset_dialog_) {
+				hex_tileset_dialog_.reset(new editor_dialogs::hex_tileset_editor_dialog(*this));
+			}
+			current_dialog_ = hex_tileset_dialog_.get();
+			lvl_->editor_clear_selection();
+		} else {
+			tool_ = last_tool;
+			debug_console::add_message("There isn't a hex tile definition file or file is empty/invalid!");
+			return;
 		}
-		current_dialog_ = hex_tileset_dialog_.get();
-		lvl_->editor_clear_selection();
 		break;
 	}
 	default: {

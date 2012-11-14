@@ -34,13 +34,60 @@
 					"nsamples": 0,
 					"mean": 0
 				}
-			},
 
-			{
-				"name": "unique_users",
-				"key": "user_id"
-			}
-		]
-	}
-]
+			]
+		},
+		{
+			"name": "die",
+			"tables": [
+				{
+					"global_scope": false,
+					"key": "[(x/32)*32 + 16, (y/32)*32 + 16]",
+					"name": "tile_group"
+				}
+			]
+		},
+		{
+			"name": "quit",
+			"tables": [
+				{
+					"global_scope": false,
+					"key": "[(x/32)*32 + 16, (y/32)*32 + 16]",
+					"name": "tile_group"
+				},
+				{
+					"global_scope": true,
+					"key": "user_id",
+					"name": "user_quits"
+				}
+			]
+		},
+		{
+			"name": "crash",
+			"tables": [
+				{
+					"global_scope": true,
+					"key": "[msg, level, editor]",
+					"name": "all_crashes"
+				},
+				{
+					"global_scope": false,
+					"key": "[msg, x, y]",
+					"name": "crash_locations"
+				}
+			]
+		}
+	],
+	"weregild": [
+		{
+			"name": "move",
+			"tables": [
+				{
+					"global_scope": false,
+					"key": "[(x/32)*32 + 16, (y/32)*32 + 16]",
+					"name": "tile_group"
+				}
+			]
+		}
+	]
 }

@@ -503,6 +503,16 @@ variant parse_from_file(const std::string& fname, JSON_PARSE_OPTIONS options)
 	}
 }
 
+bool file_exists_and_is_valid(const std::string& fname)
+{
+	try {
+		parse_from_file(fname);
+		return true;
+	} catch(parse_error& e) {
+		return false;
+	}
+}
+
 UNIT_TEST(json_base)
 {
 	std::string doc = "[{\"@base\": true, x: 5, y: 4}, {}, {a: 9, y: 2}, \"@eval {}\"]";
