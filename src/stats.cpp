@@ -12,6 +12,7 @@
 
 #include "checksum.hpp"
 #include "filesystem.hpp"
+#include "foreach.hpp"
 #include "formatter.hpp"
 #if !defined(__native_client__)
 #include "http_client.hpp"
@@ -32,6 +33,7 @@ std::string get_stats_dir() {
 namespace stats {
 
 namespace {
+variant program_args;
 std::map<std::string, std::vector<variant> > write_queue;
 
 std::vector<std::pair<std::string, std::string> > upload_queue;
@@ -59,6 +61,7 @@ void send_stats(std::map<std::string, std::vector<variant> >& queue) {
 	attr[variant("module")] = variant(module::get_module_name());
 	attr[variant("module_version")] = variant(module::get_module_version());
 	attr[variant("user_id")] = variant(preferences::get_unique_user_id());
+	attr[variant("program_args")] = program_args;
 
 	if(checksum::is_verified()) {
 		attr[variant("signature")] = variant(checksum::game_signature());
@@ -203,53 +206,6 @@ void flush_and_quit() {
 	}
 }
 
-/*
-void prepare_draw(const std::vector<record_ptr>& records)
-{
-	player_move_record_vertex_array.clear();
-	die_record_vertex_array.clear();
-	quit_record_vertex_array.clear();
-
-	foreach(const stats::const_record_ptr& record, records) {
-		record->prepare_draw();
-	}
-}
-*/
-
-		/*
-void draw_points(int r, int g, int b, const std::vector<GLfloat>& v) {
-	if(v.empty()) {
-		return;
-	}
-
-	glPointSize(5);
-	glDisable(GL_TEXTURE_2D);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glColor4ub(r, g, b, 255);
-	glVertexPointer(2, GL_FLOAT, 0, &v[0]);
-	glDrawArrays(GL_POINTS, 0, v.size()/2);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glEnable(GL_TEXTURE_2D);
-	glColor4ub(255, 255, 255, 255);
-}
-
-void draw_stats(const std::vector<record_ptr>& records)
-{
-	if(!player_move_record_vertex_array.empty()) {
-		glDisable(GL_TEXTURE_2D);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glColor4ub(0, 0, 255, 128);
-		glVertexPointer(2, GL_FLOAT, 0, &player_move_record_vertex_array[0]);
-		glDrawArrays(GL_LINES, 0, player_move_record_vertex_array.size()/2);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glEnable(GL_TEXTURE_2D);
-		glColor4ub(255, 255, 255, 255);
-	}
-
-	draw_points(255, 0, 0, die_record_vertex_array);
-	draw_points(255, 255, 0, quit_record_vertex_array);
-}
-*/
 void flush()
 {
 	send_stats(write_queue);
@@ -288,6 +244,16 @@ entry& entry::add_player_pos()
 	}
 
 	return *this;
+}
+
+void record_program_args(const std::vector<std::string>& args)
+{
+	std::vector<variant> v;
+	foreach(const std::string& s, args) {
+		v.push_back(variant(s));
+	}
+
+	program_args = variant(&v);
 }
 
 void record(const variant& value)

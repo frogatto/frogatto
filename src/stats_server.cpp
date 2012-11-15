@@ -303,6 +303,7 @@ void process_stats(const variant& doc)
 
 	game_logic::map_formula_callable* context_callable = new game_logic::map_formula_callable;
 	context_callable->add("user_id", variant(user_id));
+	context_callable->add("program_args", doc["program_args"]);
 	variant context_holder(context_callable);
 
 	std::vector<std::string> data_table_key(3);

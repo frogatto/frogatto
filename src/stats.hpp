@@ -38,6 +38,8 @@ private:
 	std::map<variant, variant> records_;
 };
 
+void record_program_args(const std::vector<std::string>& args);
+
 void record(const variant& value);
 void record(const variant& value, const std::string& level_id);
 

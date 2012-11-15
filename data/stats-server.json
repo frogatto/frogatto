@@ -7,6 +7,15 @@
 					"global_scope": false,
 					"key": "[(x/32)*32 + 16, (y/32)*32 + 16]",
 					"name": "tile_group"
+				},
+				{
+					"global_scope": true,
+					"key": "level",
+					"name": "time_played_by_level"
+				},
+				{
+					"global_scope": true,
+					"name": "time_played"
 				}
 			]
 		},
@@ -40,12 +49,12 @@
 			"tables": [
 				{
 					"global_scope": true,
-					"key": "[msg, level, editor]",
+					"key": "[program_args, msg, level, editor]",
 					"name": "all_crashes"
 				},
 				{
 					"global_scope": false,
-					"key": "[msg, x, y]",
+					"key": "[program_args, msg, x, y]",
 					"name": "crash_locations"
 				}
 			]
