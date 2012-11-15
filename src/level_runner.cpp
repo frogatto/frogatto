@@ -793,12 +793,9 @@ bool level_runner::play_cycle()
 		}
 	}
 
-	//record player movement every 100 cycles on average.
-	//TODO: currently disabled, since this takes up way too much space.
-	//later work out a nicer way to do move events.
+	//record player movement every minute on average.
 #if !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE
-	/*
-	if(rand()%100 == 0 && lvl_->player()) {
+	if(rand()%3000 == 0 && lvl_->player()) {
 		point p = lvl_->player()->get_entity().midpoint();
 
 		if(last_stats_point_level_ == lvl_->id()) {
@@ -807,7 +804,7 @@ bool level_runner::play_cycle()
 
 		last_stats_point_ = p;
 		last_stats_point_level_ = lvl_->id();
-	}*/
+	}
 #endif
 
 	if(die_at <= 0 && lvl_->players().size() == 1 && lvl_->player() && lvl_->player()->get_entity().hitpoints() <= 0) {

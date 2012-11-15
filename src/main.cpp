@@ -280,6 +280,8 @@ extern "C" int main(int argcount, char** argvec)
 		}
 	}
 
+	stats::record_program_args(argv);
+
 	for(size_t n = 0; n < argv.size(); ++n) {
 		const int argc = argv.size();
 		const std::string arg(argv[n]);

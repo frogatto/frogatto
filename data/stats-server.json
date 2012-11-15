@@ -1,38 +1,21 @@
 {
-"frogatto":
-[
-	{
-		"name": "move",
-		"tables": [
-			{
-				"name": "tile_group",
-				"key": "[(x/32)*32 + 16, (y/32)*32 + 16]",
-				"global_scope": false
-			}
-		]
-	},
-
-	{
-		"name": "die",
-		"tables": [
-			{
-				"name": "tile_group",
-				"key": "[(x/32)*32 + 16, (y/32)*32 + 16]",
-				"global_scope": false
-			}
-		]
-	},
-
-	{
-		"name": "load",
-		"tables": [
-			{
-				"name": "average_load_time",
-				"value": "{ 'nsamples' -> (value.nsamples+1), 'sum' -> value.sum + sample.time, 'mean' -> (value.sum+sample.time)/(value.nsamples+1) }",
-				"init_value": {
-					"sum": 0,
-					"nsamples": 0,
-					"mean": 0
+	"frogatto": [
+		{
+			"name": "move",
+			"tables": [
+				{
+					"global_scope": false,
+					"key": "[(x/32)*32 + 16, (y/32)*32 + 16]",
+					"name": "tile_group"
+				},
+				{
+					"global_scope": true,
+					"key": "level",
+					"name": "time_played_by_level"
+				},
+				{
+					"global_scope": true,
+					"name": "time_played"
 				}
 
 			]
@@ -67,12 +50,12 @@
 			"tables": [
 				{
 					"global_scope": true,
-					"key": "[msg, level, editor]",
+					"key": "[program_args, msg, level, editor]",
 					"name": "all_crashes"
 				},
 				{
 					"global_scope": false,
-					"key": "[msg, x, y]",
+					"key": "[program_args, msg, x, y]",
 					"name": "crash_locations"
 				}
 			]
