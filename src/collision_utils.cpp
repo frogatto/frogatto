@@ -549,8 +549,14 @@ class user_collision_callable : public game_logic::formula_callable {
 	entity_ptr a_, b_;
 	const std::string* area_a_;
 	const std::string* area_b_;
+	int index_;
+	variant all_collisions_;
 public:
-	user_collision_callable(entity_ptr a, entity_ptr b, const std::string& area_a, const std::string& area_b) : a_(a), b_(b), area_a_(&area_a), area_b_(&area_b) {
+	user_collision_callable(entity_ptr a, entity_ptr b, const std::string& area_a, const std::string& area_b, int index) : a_(a), b_(b), area_a_(&area_a), area_b_(&area_b), index_(index) {
+	}
+
+	void set_all_collisions(variant v) {
+		all_collisions_ = v;
 	}
 
 	variant get_value(const std::string& key) const {
@@ -560,6 +566,10 @@ public:
 			return variant(*area_a_);
 		} else if(key == "collide_with_area") {
 			return variant(*area_b_);
+		} else if(key == "collision_index") {
+			return variant(index_);
+		} else if(key == "all_collisions") {
+			return all_collisions_;
 		} else {
 			return variant();
 		}
@@ -590,6 +600,9 @@ void detect_user_collisions(level& lvl)
 		}
 	}
 
+	typedef std::pair<entity_ptr, const std::string*> collision_key;
+	std::map<collision_key, std::vector<collision_key> > collision_info;
+
 	static const int CollideObjectID = get_object_event_id("collide_object");
 
 	const int MaxCollisions = 16;
@@ -612,19 +625,35 @@ void detect_user_collisions(level& lvl)
 
 			for(int n = 0; n != ncollisions; ++n) {
 				{
-					user_collision_callable* callable = new user_collision_callable(a, b, *collision_buf[n].first, *collision_buf[n].second);
-					game_logic::formula_callable_ptr ptr(callable);
-					a->handle_event_delay(CollideObjectID, callable);
-					a->handle_event_delay(get_collision_event_id(*collision_buf[n].first), callable);
+					collision_info[collision_key(a, collision_buf[n].first)].push_back(collision_key(b, collision_buf[n].second));
 				}
 
 				{
-					user_collision_callable* callable = new user_collision_callable(b, a, *collision_buf[n].second, *collision_buf[n].first);
-					game_logic::formula_callable_ptr ptr(callable);
-					b->handle_event_delay(CollideObjectID, callable);
-					b->handle_event_delay(get_collision_event_id(*collision_buf[n].second), callable);
+					collision_info[collision_key(b, collision_buf[n].second)].push_back(collision_key(a, collision_buf[n].first));
 				}
 			}
+		}
+	}
+
+	for(std::map<collision_key, std::vector<collision_key> >::iterator i = collision_info.begin(); i != collision_info.end(); ++i) {
+		std::vector<boost::intrusive_ptr<user_collision_callable> > v;
+		std::vector<variant> all_callables;
+		v.reserve(i->second.size());
+		int index = 0;
+		foreach(const collision_key& k, i->second) {
+			v.push_back(boost::intrusive_ptr<user_collision_callable>(new user_collision_callable(i->first.first, k.first, *i->first.second, *k.second, index)));
+			all_callables.push_back(variant(v.back().get()));
+			++index;
+		}
+
+		variant all_callables_variant(&all_callables);
+
+		collision_key key = i->first;
+
+		foreach(const boost::intrusive_ptr<user_collision_callable>& p, v) {
+			p->set_all_collisions(all_callables_variant);
+			key.first->handle_event_delay(CollideObjectID, p.get());
+			key.first->handle_event_delay(get_collision_event_id(*i->first.second), p.get());
 		}
 	}
 
