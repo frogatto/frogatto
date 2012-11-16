@@ -49,7 +49,7 @@
 			"tables": [
 				{
 					"global_scope": true,
-					"key": "[program_args, msg, level, editor]",
+					"key": "[program_args, msg, level, if(editor, 'EDITOR IN USE')]",
 					"name": "all_crashes"
 				},
 				{
