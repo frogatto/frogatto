@@ -30,6 +30,7 @@
 #include "formula_callable_utils.hpp"
 #include "formula_function.hpp"
 #include "formula_function_registry.hpp"
+#include "formula_object.hpp"
 #include "geometry.hpp"
 #include "hex_map.hpp"
 #include "string_utils.hpp"
@@ -259,6 +260,17 @@ FUNCTION_DEF(bind_closure, 2, 2, "bind_closure(fn, obj): binds the given lambda 
 	return fn.bind_closure(args()[1]->evaluate(variables).as_callable());
 
 END_FUNCTION_DEF(bind_closure)
+
+FUNCTION_DEF(construct, 1, 2, "construct(string typename, arg): construct an object with the given typename")
+	formula::fail_if_static_context();
+	variant type = args()[0]->evaluate(variables);
+	variant arg;
+	if(args().size() >= 2) {
+		arg = args()[1]->evaluate(variables);
+	}
+
+	return variant(new formula_object(type.as_string(), arg));
+END_FUNCTION_DEF(construct)
 
 FUNCTION_DEF(delay_until_end_of_loading, 1, 1, "delay_until_end_of_loading(string): delays evaluation of the enclosed until loading is finished")
 	formula::fail_if_static_context();

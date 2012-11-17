@@ -620,9 +620,21 @@ void level::finish_loading()
 	game_logic::wml_formula_callable_read_scope read_scope;
 	foreach(variant node, serialized_objects_) {
 		foreach(variant obj_node, node["character"].as_list()) {
-			const intptr_t addr_id = strtoll(obj_node["_addr"].as_string().c_str(), NULL, 16);
-			entity_ptr obj(entity::build(obj_node));
-			objects_not_in_level.push_back(obj);
+			game_logic::wml_serializable_formula_callable_ptr obj;
+
+			std::string addr_str;
+
+			if(obj_node.is_map()) {
+				addr_str = obj_node["_addr"].as_string();
+				entity_ptr e(entity::build(obj_node));
+				objects_not_in_level.push_back(e);
+				obj = e;
+			} else {
+				obj = obj_node.try_convert<game_logic::wml_serializable_formula_callable>();
+				addr_str = obj->addr();
+			}
+			const intptr_t addr_id = strtoll(addr_str.c_str(), NULL, 16);
+
 			game_logic::wml_formula_callable_read_scope::register_serialized_object(addr_id, obj);
 		}
 	}

@@ -5,6 +5,7 @@
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "formula_callable.hpp"
+#include "formula_object.hpp"
 #include "json_parser.hpp"
 #include "json_tokenizer.hpp"
 #include "md5.hpp"
@@ -294,6 +295,9 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 				} else if(begin_macro) {
 					(*macros)[name.as_string()].reset(new json_macro(std::string(begin_macro, t.end), *macros));
 					use_preprocessor = true;
+				} else if(use_preprocessor && v.is_map() && v.has_key("@class")) {
+					v = variant(new game_logic::formula_object(v));
+					stack.back().add(name, v);
 				} else {
 					stack.back().add(name, v);
 				}

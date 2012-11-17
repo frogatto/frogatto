@@ -88,7 +88,14 @@ namespace game_logic
 
 	bool formula_callable::execute_command(const variant &v) 
 	{
-		v.try_convert<command_callable>()->execute(*this);
+		if(v.is_list()) {
+			for(int n = 0; n != v.num_elements(); ++n) {
+				execute_command(v[n]);
+			}
+		} else {
+			v.try_convert<command_callable>()->execute(*this);
+		}
+
 		return true;
 	}
 

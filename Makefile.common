@@ -62,6 +62,7 @@ objects = \
 	formula_constants.o \
 	formula_function.o \
 	formula_function_registry.o \
+	formula_object.o \
 	formula_profiler.o \
 	formula_tokenizer.o \
 	formula_variable_storage.o \

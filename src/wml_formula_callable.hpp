@@ -21,9 +21,13 @@ public:
 	variant write_to_wml() const {
 		return serialize_to_wml();
 	}
+
+	const std::string& addr() const { return addr_; }
+protected:
+	void set_addr(const std::string& addr) { addr_ = addr; }
 private:
 	virtual variant serialize_to_wml() const = 0;
-
+	std::string addr_;
 };
 
 typedef boost::intrusive_ptr<wml_serializable_formula_callable> wml_serializable_formula_callable_ptr;
