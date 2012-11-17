@@ -1,7 +1,0 @@
-[main]
-host = https://www.transifex.net
-
-[Frogatto.frogattopot]
-file_filter = po/<lang>.po
-source_file = po/frogatto.pot
-source_lang = en_US
