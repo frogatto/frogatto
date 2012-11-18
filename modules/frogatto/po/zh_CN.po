@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-10-28 03:25-0200\n"
-"PO-Revision-Date: 2012-10-28 05:25+0000\n"
+"POT-Creation-Date: 2012-11-18 16:25-0200\n"
+"PO-Revision-Date: 2012-11-18 18:27+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/Frogatto/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -50,27 +50,27 @@ msgstr "选择要使用的存档槽"
 msgid "Select save slot to load."
 msgstr "选择要读入的存档槽"
 
-#: ../../../src/draw_scene.cpp:426
+#: ../../../src/draw_scene.cpp:428
 msgid "Achievement Unlocked!"
 msgstr "成就达成！"
 
-#: ../../../src/main.cpp:691
+#: ../../../src/main.cpp:706
 msgid "Initializing custom object functions"
 msgstr "初始化自定义对象函数"
 
-#: ../../../src/main.cpp:693
+#: ../../../src/main.cpp:708
 msgid "Initializing textures"
 msgstr "初始化材质贴图"
 
-#: ../../../src/main.cpp:695
+#: ../../../src/main.cpp:710
 msgid "Initializing tiles"
 msgstr "初始化图块"
 
-#: ../../../src/main.cpp:697 ../../../src/main.cpp:701
+#: ../../../src/main.cpp:712 ../../../src/main.cpp:716
 msgid "Initializing GUI"
 msgstr "初始化界面"
 
-#: ../../../src/main.cpp:708
+#: ../../../src/main.cpp:723
 msgid "Loading level"
 msgstr "正在读取关卡"
 
@@ -4879,7 +4879,7 @@ msgstr "松果公园"
 msgid "These crazy bombers are everywhere!"
 msgstr "到处都是疯狂的炸弹客！"
 
-#: ../data/level/plagued-mine.cfg:4982
+#: ../data/level/plagued-mine.cfg:5058
 msgid "Plagued Mine"
 msgstr "瘟疫矿井"
 
@@ -5894,6 +5894,18 @@ msgstr "硬币采集赛"
 msgid "COIN RACE"
 msgstr "硬币采集赛"
 
+#: ../data/level/titlescreen-load-game-selector.cfg:23
+msgid "File 1:"
+msgstr ""
+
+#: ../data/level/titlescreen-load-game-selector.cfg:50
+msgid "File 2:"
+msgstr ""
+
+#: ../data/level/titlescreen-load-game-selector.cfg:77
+msgid "File 3:"
+msgstr ""
+
 #: ../data/level/titlescreen-load-game-selector.cfg:122
 #: ../data/level/titlescreen-new-game-selector.cfg:236
 msgid "Play!"
@@ -6547,6 +6559,12 @@ msgstr "你现在可以从手指尖射出有害的\n火球，它们会跟踪攻�
 msgid "Press ${ATTACK_KEY} to switch between abilities."
 msgstr ""
 
+#: ../data/objects/items/ability.cfg:12
+msgid ""
+"Tap the upper-left corner of the screen\n"
+"to switch between abilities."
+msgstr ""
+
 #: ../data/objects/items/max_heart_object.cfg:8
 msgid ""
 "You have acquired a heart capsule.\n"
@@ -6719,6 +6737,22 @@ msgstr "不公平"
 #: ../data/objects/playable/map-selector.cfg:21
 msgid "Milgram's Castle"
 msgstr "米格拉姆的城堡"
+
+#: ../data/objects/playable/menu_selector_load_game.cfg:84
+msgid "level"
+msgstr ""
+
+#: ../data/objects/playable/menu_selector_load_game.cfg:85
+msgid "coins"
+msgstr ""
+
+#: ../data/objects/playable/menu_selector_load_game.cfg:86
+msgid "visited levels"
+msgstr ""
+
+#: ../data/objects/playable/menu_selector_load_game.cfg:88
+msgid "hp"
+msgstr ""
 
 #: ../data/objects/props-interactive/misc/save_toilet.cfg:16
 #: ../data/objects/props-interactive/portals/dungeon_save_door.cfg:13

@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-10-28 03:25-0200\n"
-"PO-Revision-Date: 2012-10-28 16:03+0000\n"
+"POT-Creation-Date: 2012-11-18 16:25-0200\n"
+"PO-Revision-Date: 2012-11-18 23:25+0000\n"
 "Last-Translator: Cristián Arenas Ulloa <cristian.arenas@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/Frogatto/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -56,27 +56,27 @@ msgstr "Escoje una ranura para guardar la partida."
 msgid "Select save slot to load."
 msgstr "Escoje una ranura de donde cargar la partida."
 
-#: ../../../src/draw_scene.cpp:426
+#: ../../../src/draw_scene.cpp:428
 msgid "Achievement Unlocked!"
 msgstr "¡Logro desbloqueado!"
 
-#: ../../../src/main.cpp:691
+#: ../../../src/main.cpp:706
 msgid "Initializing custom object functions"
 msgstr "Inicializando funciones de objetos personalizados"
 
-#: ../../../src/main.cpp:693
+#: ../../../src/main.cpp:708
 msgid "Initializing textures"
 msgstr "Inicializando texturas"
 
-#: ../../../src/main.cpp:695
+#: ../../../src/main.cpp:710
 msgid "Initializing tiles"
 msgstr "Inicializando azulejos"
 
-#: ../../../src/main.cpp:697 ../../../src/main.cpp:701
+#: ../../../src/main.cpp:712 ../../../src/main.cpp:716
 msgid "Initializing GUI"
 msgstr "Inicializando Interfaz Gráfica de Usuario"
 
-#: ../../../src/main.cpp:708
+#: ../../../src/main.cpp:723
 msgid "Loading level"
 msgstr "Cargando nivel"
 
@@ -4885,7 +4885,7 @@ msgstr "Parque Pinar"
 msgid "These crazy bombers are everywhere!"
 msgstr "¡Estos bombarderos locos están\npor todas partes!"
 
-#: ../data/level/plagued-mine.cfg:4982
+#: ../data/level/plagued-mine.cfg:5058
 msgid "Plagued Mine"
 msgstr "Mina Plagada"
 
@@ -5266,7 +5266,7 @@ msgstr "Diseñador de niveles • Niveles del bosque, caverna y mazmorra"
 
 #: ../data/level/tea-with-milgram.cfg:102
 msgid "Programmer • Engine Development and Improvement"
-msgstr "Programador • Desarrollo y mejora del motor"
+msgstr "Programadora • Desarrollo y mejora del motor"
 
 #: ../data/level/tea-with-milgram.cfg:103
 msgid "User Interface Code"
@@ -5899,6 +5899,18 @@ msgstr "Carrera de Monedas"
 #: ../data/level/titlescreen-arcade.cfg:247
 msgid "COIN RACE"
 msgstr "CARRERA DE LAS MONEDAS"
+
+#: ../data/level/titlescreen-load-game-selector.cfg:23
+msgid "File 1:"
+msgstr "Archivo 1:"
+
+#: ../data/level/titlescreen-load-game-selector.cfg:50
+msgid "File 2:"
+msgstr "Archivo 2:"
+
+#: ../data/level/titlescreen-load-game-selector.cfg:77
+msgid "File 3:"
+msgstr "Archivo 3:"
 
 #: ../data/level/titlescreen-load-game-selector.cfg:122
 #: ../data/level/titlescreen-new-game-selector.cfg:236
@@ -6553,6 +6565,12 @@ msgstr "Ahora puedes disparar bolasde fuego\nde energía dañina desde tus dedos
 msgid "Press ${ATTACK_KEY} to switch between abilities."
 msgstr "Presiona ${ATTACK_KEY} para cambiar la habilidad."
 
+#: ../data/objects/items/ability.cfg:12
+msgid ""
+"Tap the upper-left corner of the screen\n"
+"to switch between abilities."
+msgstr "Toca la esquina superior-izquierda de la pantalla\npara cambiar la habilidad activa."
+
 #: ../data/objects/items/max_heart_object.cfg:8
 msgid ""
 "You have acquired a heart capsule.\n"
@@ -6725,6 +6743,22 @@ msgstr "Injusto"
 #: ../data/objects/playable/map-selector.cfg:21
 msgid "Milgram's Castle"
 msgstr "El Castillo de Milgram"
+
+#: ../data/objects/playable/menu_selector_load_game.cfg:84
+msgid "level"
+msgstr "nivel"
+
+#: ../data/objects/playable/menu_selector_load_game.cfg:85
+msgid "coins"
+msgstr "monedas"
+
+#: ../data/objects/playable/menu_selector_load_game.cfg:86
+msgid "visited levels"
+msgstr "niveles visitados"
+
+#: ../data/objects/playable/menu_selector_load_game.cfg:88
+msgid "hp"
+msgstr "hp"
 
 #: ../data/objects/props-interactive/misc/save_toilet.cfg:16
 #: ../data/objects/props-interactive/portals/dungeon_save_door.cfg:13
