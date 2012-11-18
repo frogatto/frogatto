@@ -7,7 +7,6 @@
 #include "filesystem.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
-#include "formula_object.hpp"
 #include "json_parser.hpp"
 #include "module.hpp"
 #include "string_utils.hpp"
@@ -155,7 +154,6 @@ void on_code_modified()
 {
 	fprintf(stderr, "code modified\n");
 	tbs::game::reload_game_types();
-	game_logic::formula_object::reload_classes();
 	throw code_modified_exception();
 }
 }
