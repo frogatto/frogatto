@@ -793,7 +793,7 @@ COMMAND_LINE_UTILITY(codeedit)
 	const font::manager font_manager;
 	graphics::texture::manager texture_manager;
 
-	variant gui_node = json::parse_from_file(module::map_file("data/gui.cfg"));
+	variant gui_node = json::parse_from_file("data/gui.cfg");
 	gui_section::init(gui_node);
 
 	framed_gui_element::init(gui_node);

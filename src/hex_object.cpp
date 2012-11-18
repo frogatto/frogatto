@@ -184,7 +184,7 @@ struct hex_engine
 
 hex_engine& generate_hex_engine()
 {
-	static hex_engine hexes (json::parse_from_file(module::map_file("data/hex_tiles.cfg")));
+	static hex_engine hexes (json::parse_from_file("data/hex_tiles.cfg"));
 	return hexes;
 }
 

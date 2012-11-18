@@ -21,7 +21,7 @@ diffculty_map_type& get_difficulty_map()
 
 void create_difficulty_map()
 {
-	variant diff = json::parse_from_file(module::map_file("data/difficulty.cfg"));
+	variant diff = json::parse_from_file("data/difficulty.cfg");
 	// Any option is always defined.
 	get_difficulty_map().insert(position("any", -1));
 	for(int i = 0; i < diff["difficulties"].num_elements(); i++) {
