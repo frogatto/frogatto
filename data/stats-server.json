@@ -49,7 +49,7 @@
 			"tables": [
 				{
 					"global_scope": true,
-					"key": "[program_args, msg, level, if(editor, 'EDITOR IN USE')]",
+					"key": "[build_description, program_args, msg, level, if(editor, 'EDITOR IN USE')]",
 					"name": "all_crashes"
 				},
 				{
@@ -73,7 +73,7 @@
 					"global_scope": false
 				},
 				{
-					"key": "user_id",
+					"key": "[user_id, build_description, signature]",
 					"name": "unique_users",
 					"global_scope": true
 				}

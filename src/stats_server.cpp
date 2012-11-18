@@ -281,6 +281,10 @@ variant write_stats()
 
 void process_stats(const variant& doc)
 {
+	if(!doc["signature"].is_string()) {
+		return;
+	}
+
 	variant version = doc["version"];
 	if(!version.is_string()) {
 		return;
@@ -304,6 +308,8 @@ void process_stats(const variant& doc)
 	game_logic::map_formula_callable* context_callable = new game_logic::map_formula_callable;
 	context_callable->add("user_id", variant(user_id));
 	context_callable->add("program_args", doc["program_args"]);
+	context_callable->add("build_description", doc["build_description"]);
+	context_callable->add("signature", doc["signature"]);
 	variant context_holder(context_callable);
 
 	std::vector<std::string> data_table_key(3);
