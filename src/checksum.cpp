@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include <stdio.h>
+
 #include "asserts.hpp"
 #include "checksum.hpp"
 #include "filesystem.hpp"
@@ -19,12 +21,24 @@ namespace {
 bool verified = false;
 std::map<std::string, std::string> hashes;
 std::string whole_game_signature;
+std::string	g_build_description;
 }
 
 manager::manager() {
 	try {
 		whole_game_signature = md5::sum(sys::read_file("./signature.cfg"));
 		variant v = json::parse_from_file("./signature.cfg");
+
+		if(!v.is_map()) {
+			verified = false;
+			return;
+		}
+
+		if(v[variant("description")].is_string()) {
+			g_build_description = v[variant("description")].as_string();
+		}
+
+		v = v[variant("signatures")];
 
 		if(!v.is_map()) {
 			verified = false;
@@ -46,6 +60,11 @@ manager::manager() {
 
 manager::~manager() {
 	std::cerr << "EXITING WITH " << (verified ? "VERIFIED" : "UNVERIFIED") << " SESSION\n";
+}
+
+const std::string& build_description()
+{
+	return g_build_description;
 }
 
 const std::string& game_signature()
@@ -115,6 +134,11 @@ void get_signatures(const std::string& dir, std::map<std::string, std::string>* 
 
 COMMAND_LINE_UTILITY(sign_game_data)
 {
+	if(args.size() != 1) {
+		fprintf(stderr, "ERROR: PLEASE PROVIDE A UNIQUE TEXT DESCRIPTION OF THE BUILD YOU ARE SIGNING AS AN ARGUMENT\n");
+		return;
+	}
+
 	std::map<std::string,std::string> signatures;
 	get_signatures("data", &signatures);
 
@@ -123,5 +147,9 @@ COMMAND_LINE_UTILITY(sign_game_data)
 		output[variant(i->first)] = variant(i->second);
 	}
 
-	sys::write_file("signature.cfg", variant(&output).write_json());
+	std::map<variant,variant> info;
+	info[variant("signatures")] = variant(&output);
+	info[variant("description")] = variant(args.front());
+
+	sys::write_file("signature.cfg", variant(&info).write_json());
 }
