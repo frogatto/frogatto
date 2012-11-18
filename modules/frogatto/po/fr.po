@@ -13,9 +13,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-10-28 03:25-0200\n"
-"PO-Revision-Date: 2012-10-28 17:46+0000\n"
-"Last-Translator: Chookrut <pascal.mazon+transifex@mailz.org>\n"
+"POT-Creation-Date: 2012-11-18 16:25-0200\n"
+"PO-Revision-Date: 2012-11-18 18:27+0000\n"
+"Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/Frogatto/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,27 +51,27 @@ msgstr "Choisissez un emplacement\nde sauvegarde à utiliser."
 msgid "Select save slot to load."
 msgstr "Choisissez un emplacement\nde sauvegarde à charger."
 
-#: ../../../src/draw_scene.cpp:426
+#: ../../../src/draw_scene.cpp:428
 msgid "Achievement Unlocked!"
 msgstr "Accomplissement débloqué !"
 
-#: ../../../src/main.cpp:691
+#: ../../../src/main.cpp:706
 msgid "Initializing custom object functions"
 msgstr "Initialisation des fonctions\npersonnalisées de l'objet"
 
-#: ../../../src/main.cpp:693
+#: ../../../src/main.cpp:708
 msgid "Initializing textures"
 msgstr "Initialisation des textures"
 
-#: ../../../src/main.cpp:695
+#: ../../../src/main.cpp:710
 msgid "Initializing tiles"
 msgstr "Initialisation des cases"
 
-#: ../../../src/main.cpp:697 ../../../src/main.cpp:701
+#: ../../../src/main.cpp:712 ../../../src/main.cpp:716
 msgid "Initializing GUI"
 msgstr "Initialisation de l'interface graphique"
 
-#: ../../../src/main.cpp:708
+#: ../../../src/main.cpp:723
 msgid "Loading level"
 msgstr "Chargement du niveau"
 
@@ -1094,7 +1094,7 @@ msgstr "C'est très noble de ta part."
 msgid ""
 "Ha, well, we're also going to find out\n"
 "if it's very foolish, as well."
-msgstr "Ha, et bien, nous allons bientôt\ndécouvrir si c'est très stupide aussi."
+msgstr "Ha, eh bien, nous allons bientôt\ndécouvrir si c'est très stupide aussi."
 
 #: ../data/level/crevice-bridge.cfg:369
 msgid ""
@@ -3418,7 +3418,7 @@ msgid ""
 "If you haven't already noticed, the red\n"
 "fruits you sometimes find nestled in\n"
 "the grass are spittable projectiles."
-msgstr "Si vous n'avez pas déjà remarqué, les fruits rouges\nque vous trouverez parfois nichés dans l'herbe\nsont des projectiles crachables."
+msgstr "Si vous n'aviez pas déjà remarqué, les fruits rouges\nque vous trouverez parfois nichés dans l'herbe\nsont des projectiles crachables."
 
 #: ../data/level/grassy-path.cfg:893
 msgid ""
@@ -3485,7 +3485,7 @@ msgid ""
 "It says, \"Attention:\n"
 "Please clean up when you are done,\n"
 "and no standing on the filing cabinet.\""
-msgstr "Ça dit, \"Attention :\nMerci de nettoyer après utilisation,\net interdiction de monter sur l'armoire."
+msgstr "Ça dit, \"Attention :\nMerci de nettoyer après utilisation,\net interdiction de monter sur l'armoire.\""
 
 #: ../data/level/kitty-dormitory.cfg:1896
 msgid ""
@@ -3625,7 +3625,7 @@ msgstr "Heu... Comment ça \"on vous a fait\" ?\nDrôle de façon de choisir les
 msgid ""
 "Yes, that's right - I'm implying we are \"made\".\n"
 "We're made, not born, like you ... presumably are."
-msgstr "Oui, c'est bien ça : je sous-entend\nque nous sommes \"faits\".\nNous sommes fabriqués, pas né comme...\non peut présumer que tu sois."
+msgstr "Oui, c'est bien ça : je sous-entend\nque nous sommes \"faits\".\nNous sommes fabriqués, pas nés comme...\non peut présumer que tu sois."
 
 #: ../data/level/kitty-dormitory.cfg:1977
 msgid ""
@@ -3655,7 +3655,7 @@ msgstr "Eh bien, Milgram bien sûr.\nSinon pourquoi serait-il si important ?"
 msgid ""
 "I confess, I really don't know -how-\n"
 "he creates us,  but I know that he does."
-msgstr "J'avoue, je n'ai aucune idée de *comment*\nil nous fabrique, mais je sais qu'il le fait."
+msgstr "J'avoue, je n'ai aucune idée de -comment-\nil nous fabrique, mais je sais qu'il le fait."
 
 #: ../data/level/kitty-dormitory.cfg:1987
 msgid "So then... are you robots or something?"
@@ -3677,7 +3677,7 @@ msgstr "Ah, donc c'est votre parent, c'est ça ?\nEt il a juste un paquet d'enfa
 msgid ""
 "Well, I guess we consider him a parent,\n"
 "but we're very much made."
-msgstr "Hum, j'imagine qu'on le considère comme\nun parent, mais le plus important,\nc'est que nous sommes fabriqués."
+msgstr "Hum, j'imagine qu'on le considère comme\nun père, mais le plus important,\nc'est que nous sommes fabriqués."
 
 #: ../data/level/kitty-dormitory.cfg:1995
 msgid ""
@@ -3728,11 +3728,11 @@ msgstr "Mais c'est comme ça que ça marche\nles grenouilles, pas vrai ?"
 msgid ""
 "It is.\n"
 "It's just a crazy world we live in, huh?"
-msgstr "C'est ça.\nOn vit vraiment dans un monde de fou, hein ?"
+msgstr "C'est ça.\nOn vit vraiment dans un monde de fous, hein ?"
 
 #: ../data/level/kitty-dormitory.cfg:2010
 msgid "Madness and wonder every step of the way."
-msgstr "Folie et merveilles où qu'on aille."
+msgstr "Il y a des choses folles et\nmerveilleuses où qu'on aille."
 
 #: ../data/level/kitty-dormitory.cfg:2013
 msgid ""
@@ -3813,7 +3813,7 @@ msgstr "Merci, mais je suis un peu pressé.\nJ'apprécie la proposition en tout 
 
 #: ../data/level/kitty-dormitory.cfg:2809
 msgid "WHOA!"
-msgstr "WHOA !"
+msgstr "WOUAH !"
 
 #: ../data/level/kitty-dormitory.cfg:2812
 msgid "What's wrong?!"
@@ -3886,7 +3886,7 @@ msgstr "C'est-à-dire ?"
 msgid ""
 "Well, this machine here is a router.\n"
 "It drills holes or grinds out shapes in metal pieces."
-msgstr "Et bien, cette machine là est une détoureuse.\nÇa perce des trous et façonne des formes dans\ndes pièces de métal."
+msgstr "Eh bien, cette machine là est une détoureuse.\nÇa perce des trous et façonne des formes dans\ndes pièces de métal."
 
 #: ../data/level/kitty-dormitory.cfg:2900
 msgid "It's controlled by this computer."
@@ -4168,7 +4168,7 @@ msgstr "Ouais, des fois j'ai juste l'impression\nque c'est tout ce que je fais."
 msgid ""
 "Well, sometimes what you do is important.\n"
 "Don't ever forget that."
-msgstr "Hé bien des fois, ce que tu fais est important.\nN'oublie jamais ça."
+msgstr "Eh bien des fois, ce que tu fais est important.\nN'oublie jamais ça."
 
 #: ../data/level/kitty-dormitory.cfg:3128
 msgid ""
@@ -4233,7 +4233,7 @@ msgstr "Salut par ici,\nquoi de neuf ?"
 
 #: ../data/level/kitty-dormitory.cfg:3215
 msgid "Eh, trying to get this fire going."
-msgstr "Et bien, j'essaie d'allumer ce feu."
+msgstr "Eh bien, j'essaie d'allumer ce feu."
 
 #: ../data/level/kitty-dormitory.cfg:3218
 msgid ""
@@ -4436,7 +4436,7 @@ msgstr "C'est une possibilité, en effet."
 msgid ""
 "Well, hey - you be careful, alright?\n"
 "Stay cool."
-msgstr "Et bien, fais attention, d'accord ?\nPorte-toi bien."
+msgstr "Eh bien, fais attention, d'accord ?\nPorte-toi bien."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:604
 msgid "Hey, what's new?"
@@ -4880,13 +4880,13 @@ msgstr "Parc des Pommes de Pin"
 msgid "These crazy bombers are everywhere!"
 msgstr "Ces bombardiers fous sont partout !"
 
-#: ../data/level/plagued-mine.cfg:4982
+#: ../data/level/plagued-mine.cfg:5058
 msgid "Plagued Mine"
 msgstr "Mine du Fléau"
 
 #: ../data/level/platform-peril.cfg:1825
 msgid "Platform Peril"
-msgstr "Péril Plateforme"
+msgstr "Péril sur Plateformes"
 
 #: ../data/level/rock-a-fort-cave.cfg:1659 ../data/level/rock-a-fort.cfg:5423
 msgid "Rock-a-Fort"
@@ -4894,7 +4894,7 @@ msgstr "Fort Mica"
 
 #: ../data/level/rock-a-fort.cfg:1640
 msgid "Woah! A flying plant!"
-msgstr "Waouh! Une plante volante !"
+msgstr "Waouh ! Une plante volante !"
 
 #: ../data/level/rocky-roots.cfg:149
 msgid "Bleh. A locked door."
@@ -5144,7 +5144,7 @@ msgstr "Je ne pense pas pouvoir promettre\nquoi que ce soit mais si l'occasion\n
 msgid ""
 "Yes, it's unreasonable to expect\n"
 "someone to just charge in there."
-msgstr "Oui, il est déraisonnable de s'attendre à\nce quelqu'un fonce la tête la première\ndans ce pétrin."
+msgstr "Oui, il est déraisonnable de s'attendre à\nce que quelqu'un fonce la tête la première\ndans ce pétrin."
 
 #: ../data/level/secluded-hut.cfg:1418
 msgid "I'm at a loss for a plan, myself."
@@ -5180,7 +5180,7 @@ msgstr "Facile, par les airs !"
 
 #: ../data/level/secluded-hut.cfg:1430
 msgid "You ... <em>do</em> realize I can't fly?"
-msgstr "Vous vous <em>rendez compte</em> que...\nmoi, je peux pas voler ?"
+msgstr "Vous vous <em>rendez compte</em> que...\nmoi, je ne peux pas voler ?"
 
 #: ../data/level/splash-hop.cfg:3057
 msgid "Splash, Hop"
@@ -5456,7 +5456,7 @@ msgstr "Pour commencer, euh... Ce n'est <em>PAS</em> notre maire."
 msgid ""
 "Now, as for who <em>is</em> our mayor...\n"
 "well..."
-msgstr "Et justement, pour ce qui est du maire...\nEt bien..."
+msgstr "Et justement, pour ce qui est du maire...\nEh bien..."
 
 #: ../data/level/tea-with-milgram.cfg:197
 msgid ""
@@ -5894,6 +5894,18 @@ msgstr "Course aux Pièces"
 #: ../data/level/titlescreen-arcade.cfg:247
 msgid "COIN RACE"
 msgstr "COURSE AUX PIÈCES"
+
+#: ../data/level/titlescreen-load-game-selector.cfg:23
+msgid "File 1:"
+msgstr ""
+
+#: ../data/level/titlescreen-load-game-selector.cfg:50
+msgid "File 2:"
+msgstr ""
+
+#: ../data/level/titlescreen-load-game-selector.cfg:77
+msgid "File 3:"
+msgstr ""
 
 #: ../data/level/titlescreen-load-game-selector.cfg:122
 #: ../data/level/titlescreen-new-game-selector.cfg:236
@@ -6548,6 +6560,12 @@ msgstr "Vous pouvez maintenant cracher des boules\nd'énergie dévastatrice qui 
 msgid "Press ${ATTACK_KEY} to switch between abilities."
 msgstr "Appuyez sur ${ATTACK_KEY} pour changer de capacité."
 
+#: ../data/objects/items/ability.cfg:12
+msgid ""
+"Tap the upper-left corner of the screen\n"
+"to switch between abilities."
+msgstr "Appyez sur le coin en haut à gauche de l'écran\npour changer de pouvoir."
+
 #: ../data/objects/items/max_heart_object.cfg:8
 msgid ""
 "You have acquired a heart capsule.\n"
@@ -6720,6 +6738,22 @@ msgstr "Injuste"
 #: ../data/objects/playable/map-selector.cfg:21
 msgid "Milgram's Castle"
 msgstr "Château de Milgram"
+
+#: ../data/objects/playable/menu_selector_load_game.cfg:84
+msgid "level"
+msgstr ""
+
+#: ../data/objects/playable/menu_selector_load_game.cfg:85
+msgid "coins"
+msgstr ""
+
+#: ../data/objects/playable/menu_selector_load_game.cfg:86
+msgid "visited levels"
+msgstr ""
+
+#: ../data/objects/playable/menu_selector_load_game.cfg:88
+msgid "hp"
+msgstr ""
 
 #: ../data/objects/props-interactive/misc/save_toilet.cfg:16
 #: ../data/objects/props-interactive/portals/dungeon_save_door.cfg:13

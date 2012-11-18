@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-10-28 03:25-0200\n"
-"PO-Revision-Date: 2012-10-29 06:06+0000\n"
+"POT-Creation-Date: 2012-11-18 16:25-0200\n"
+"PO-Revision-Date: 2012-11-18 18:34+0000\n"
 "Last-Translator: peschio <michele.pesco@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/Frogatto/language/it/)\n"
 "MIME-Version: 1.0\n"
@@ -52,27 +52,27 @@ msgstr "Seleziona slot di salvataggio."
 msgid "Select save slot to load."
 msgstr "Seleziona slot da caricare."
 
-#: ../../../src/draw_scene.cpp:426
+#: ../../../src/draw_scene.cpp:428
 msgid "Achievement Unlocked!"
 msgstr "Obiettivo Sbloccato!"
 
-#: ../../../src/main.cpp:691
+#: ../../../src/main.cpp:706
 msgid "Initializing custom object functions"
 msgstr "Inizializzazione delle funzioni dell'oggetto personalizzato"
 
-#: ../../../src/main.cpp:693
+#: ../../../src/main.cpp:708
 msgid "Initializing textures"
 msgstr "Inizializzazione delle texture"
 
-#: ../../../src/main.cpp:695
+#: ../../../src/main.cpp:710
 msgid "Initializing tiles"
 msgstr "Inizializzazione delle immagini"
 
-#: ../../../src/main.cpp:697 ../../../src/main.cpp:701
+#: ../../../src/main.cpp:712 ../../../src/main.cpp:716
 msgid "Initializing GUI"
 msgstr "Inizializzazione dell'Interfaccia Grafica"
 
-#: ../../../src/main.cpp:708
+#: ../../../src/main.cpp:723
 msgid "Loading level"
 msgstr "Caricamento Livello"
 
@@ -512,7 +512,7 @@ msgstr "Numismatico"
 
 #: ../data/achievements.cfg:27
 msgid "Collect a thousand coins."
-msgstr "Raccogli mille gettoni."
+msgstr "Raccogli mille monete."
 
 #: ../data/achievements.cfg:33
 msgid "Speed Trader"
@@ -4881,7 +4881,7 @@ msgstr "Il Parco delle Pigne"
 msgid "These crazy bombers are everywhere!"
 msgstr "Questi bombardieri pazzi sono ovunque!"
 
-#: ../data/level/plagued-mine.cfg:4982
+#: ../data/level/plagued-mine.cfg:5058
 msgid "Plagued Mine"
 msgstr "La Miniera Infestata"
 
@@ -5896,6 +5896,18 @@ msgstr "Gara delle monete"
 msgid "COIN RACE"
 msgstr "CORSA DELLE MONETE"
 
+#: ../data/level/titlescreen-load-game-selector.cfg:23
+msgid "File 1:"
+msgstr "File 1:"
+
+#: ../data/level/titlescreen-load-game-selector.cfg:50
+msgid "File 2:"
+msgstr "File 2:"
+
+#: ../data/level/titlescreen-load-game-selector.cfg:77
+msgid "File 3:"
+msgstr "File 3:"
+
 #: ../data/level/titlescreen-load-game-selector.cfg:122
 #: ../data/level/titlescreen-new-game-selector.cfg:236
 msgid "Play!"
@@ -6549,6 +6561,12 @@ msgstr "Ora puoi sparare palle di nociva energia,\ne andranno addosso al nemico 
 msgid "Press ${ATTACK_KEY} to switch between abilities."
 msgstr "Premi ${ATTACK_KEY} per passare da un'abilità a un'altra."
 
+#: ../data/objects/items/ability.cfg:12
+msgid ""
+"Tap the upper-left corner of the screen\n"
+"to switch between abilities."
+msgstr "Clicca l'angolo in alto a sinistra dello schermo\nper passare da un'abilità all'altra."
+
 #: ../data/objects/items/max_heart_object.cfg:8
 msgid ""
 "You have acquired a heart capsule.\n"
@@ -6721,6 +6739,22 @@ msgstr "Sleale"
 #: ../data/objects/playable/map-selector.cfg:21
 msgid "Milgram's Castle"
 msgstr "Castello di Milgram"
+
+#: ../data/objects/playable/menu_selector_load_game.cfg:84
+msgid "level"
+msgstr "livello"
+
+#: ../data/objects/playable/menu_selector_load_game.cfg:85
+msgid "coins"
+msgstr "monete"
+
+#: ../data/objects/playable/menu_selector_load_game.cfg:86
+msgid "visited levels"
+msgstr "livelli visitati"
+
+#: ../data/objects/playable/menu_selector_load_game.cfg:88
+msgid "hp"
+msgstr "hp"
 
 #: ../data/objects/props-interactive/misc/save_toilet.cfg:16
 #: ../data/objects/props-interactive/portals/dungeon_save_door.cfg:13
