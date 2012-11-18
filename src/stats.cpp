@@ -51,7 +51,7 @@ threading::condition& send_stats_signal() {
 bool send_stats_should_exit = false;
 
 void send_stats(std::map<std::string, std::vector<variant> >& queue) {
-	if(queue.empty()) {
+	if(queue.empty() || !checksum::is_verified()) {
 		return;
 	}
 
@@ -65,6 +65,7 @@ void send_stats(std::map<std::string, std::vector<variant> >& queue) {
 
 	if(checksum::is_verified()) {
 		attr[variant("signature")] = variant(checksum::game_signature());
+		attr[variant("build_description")] = variant(checksum::build_description());
 	}
 
 	std::vector<variant> level_vec;

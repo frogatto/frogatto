@@ -10,6 +10,7 @@ struct manager {
 	~manager();
 };
 
+const std::string& build_description();
 const std::string& game_signature();
 bool is_verified();
 void verify_file(const std::string& fname, const std::string& contents);
