@@ -7,6 +7,7 @@
 #include "filesystem.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
+#include "formula_object.hpp"
 #include "json_parser.hpp"
 #include "module.hpp"
 #include "string_utils.hpp"
@@ -154,6 +155,7 @@ void on_code_modified()
 {
 	fprintf(stderr, "code modified\n");
 	tbs::game::reload_game_types();
+	game_logic::formula_object::reload_classes();
 	throw code_modified_exception();
 }
 }
@@ -182,7 +184,7 @@ COMMAND_LINE_UTILITY(tbs_server) {
 		}
 	}
 
-	const std::string MonitorDirs[] = { "data/tbs", "data/tbs_test" };
+	const std::string MonitorDirs[] = { "data/tbs", "data/tbs_test", "data/classes" };
 	foreach(const std::string& dir, MonitorDirs) {
 		std::vector<std::string> files;
 		module::get_files_in_dir(dir, &files);

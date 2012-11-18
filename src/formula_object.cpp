@@ -2,8 +2,6 @@
 #include <string>
 #include <stdio.h>
 
-#include <boost/shared_ptr.hpp>
-
 #include "formula.hpp"
 #include "formula_object.hpp"
 #include "json_parser.hpp"
@@ -15,7 +13,7 @@ namespace game_logic
 {
 
 namespace {
-const formula_class& get_class(const std::string& type);
+boost::intrusive_ptr<const formula_class> get_class(const std::string& type);
 
 struct property_entry {
 	property_entry() {
@@ -45,11 +43,11 @@ struct property_entry {
 	game_logic::const_formula_ptr getter, setter;
 };
 
-typedef std::map<std::string, boost::shared_ptr<formula_class> > classes_map;
+typedef std::map<std::string, boost::intrusive_ptr<formula_class> > classes_map;
 
 }
 
-class formula_class
+class formula_class : public reference_counted_object
 {
 public:
 	explicit formula_class(const variant& node);
@@ -69,30 +67,30 @@ private:
 
 formula_class::formula_class(const variant& node)
 {
-	std::vector<const formula_class*> bases;
+	std::vector<boost::intrusive_ptr<const formula_class> > bases;
 	variant bases_v = node["bases"];
 	if(bases_v.is_null() == false) {
 		for(int n = 0; n != bases_v.num_elements(); ++n) {
-			bases.push_back(&get_class(bases_v[n].as_string()));
+			bases.push_back(get_class(bases_v[n].as_string()));
 		}
 	}
 
 	std::map<variant, variant> m;
 	private_data_ = variant(&m);
 
-	foreach(const formula_class* base, bases) {
+	foreach(boost::intrusive_ptr<const formula_class> base, bases) {
 		merge_variant_over(&private_data_, base->private_data_);
 	}
 
-	if(node["data"].is_map()) {
-		merge_variant_over(&private_data_, node["data"]);
+	if(node["private"].is_map()) {
+		merge_variant_over(&private_data_, node["private"]);
 	}
 
 	if(node["constructor"].is_string()) {
 		constructor_.push_back(game_logic::formula::create_optional_formula(node["constructor"]));
 	}
 
-	foreach(const formula_class* base, bases) {
+	foreach(boost::intrusive_ptr<const formula_class> base, bases) {
 		for(std::map<std::string, property_entry>::const_iterator i = base->properties_.begin(); i != base->properties_.end(); ++i) {
 			properties_[i->first] = i->second;
 		}
@@ -152,38 +150,43 @@ private:
 
 classes_map classes_;
 
-const formula_class& get_class(const std::string& type)
+boost::intrusive_ptr<const formula_class> get_class(const std::string& type)
 {
 	if(std::find(type.begin(), type.end(), '.') != type.end()) {
 		std::vector<std::string> v = util::split(type, '.');
-		const formula_class* c = &get_class(v.front());
+		boost::intrusive_ptr<const formula_class> c = get_class(v.front());
 		for(int n = 1; n < v.size(); ++n) {
 			classes_map::const_iterator itor = c->sub_classes().find(v[n]);
 			ASSERT_LOG(itor != c->sub_classes().end(), "COULD NOT FIND FFL CLASS: " << type);
 			c = itor->second.get();
 		}
 
-		return *c;
+		return c;
 	}
 
 	classes_map::const_iterator itor = classes_.find(type);
 	if(itor != classes_.end()) {
-		return *itor->second;
+		return itor->second;
 	}
 
-	const variant v = json::parse_from_file(module::map_file("data/classes/" + type + ".cfg"));
+	const variant v = json::parse_from_file("data/classes/" + type + ".cfg");
 	ASSERT_LOG(v.is_map(), "COULD NOT FIND FFL CLASS: " << type);
 
-	formula_class* const result = new formula_class(v);
+	boost::intrusive_ptr<formula_class> result(new formula_class(v));
 	result->set_name(type);
-	classes_[type].reset(result);
-	return *result;
+	classes_[type] = result;
+	return boost::intrusive_ptr<const formula_class>(result.get());
 }
 
+}
+
+void formula_object::reload_classes()
+{
+	classes_.clear();
 }
 
 formula_object::formula_object(const std::string& type, variant args)
-  : class_(&get_class(type))
+  : class_(get_class(type))
 {
 	private_data_ = deep_copy_variant(class_->private_data());
 	if(args.is_map()) {
@@ -201,7 +204,7 @@ formula_object::formula_object(const std::string& type, variant args)
 }
 
 formula_object::formula_object(variant data)
-  : class_(&get_class(data["@class"].as_string()))
+  : class_(get_class(data["@class"].as_string()))
 {
 	if(data.is_map()) {
 		private_data_ = deep_copy_variant(data);

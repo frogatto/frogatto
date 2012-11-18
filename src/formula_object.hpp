@@ -14,6 +14,8 @@ class formula_class;
 class formula_object : public game_logic::wml_serializable_formula_callable
 {
 public:
+	static void reload_classes();
+
 	//construct with type and constructor parameters.
 	explicit formula_object(const std::string& type, variant args=variant());
 
@@ -29,7 +31,7 @@ private:
 
 	void get_inputs(std::vector<formula_input>* inputs) const;
 
-	const formula_class* class_;
+	boost::intrusive_ptr<const formula_class> class_;
 	variant private_data_;
 
 	variant tmp_value_;

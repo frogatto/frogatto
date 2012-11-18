@@ -92,7 +92,7 @@ variant preprocess_string_value(const std::string& input, const game_logic::form
 		std::string::const_iterator colon = std::find(fname.begin(), fname.end(), ':');
 		if(colon != fname.end() && std::count(fname.begin(), colon, ' ') == 0) {
 			const std::string file(fname.begin(), colon);
-			variant doc = json::parse_from_file(module::map_file(file));
+			variant doc = json::parse_from_file(file);
 			const std::string expr(colon+1, fname.end());
 			const variant expr_variant(expr);
 			const game_logic::formula f(expr_variant);
@@ -105,13 +105,13 @@ variant preprocess_string_value(const std::string& input, const game_logic::form
 
 		std::vector<std::string> includes = util::split(fname, ' ');
 		if(includes.size() == 1) {
-			return json::parse_from_file(module::map_file(fname));
+			return json::parse_from_file(fname);
 		} else {
 			//treatment of a list of @includes is to make non-list items
 			//into singleton lists, and then concatenate all lists together.
 			std::vector<variant> res;
 			foreach(const std::string& inc, includes) {
-				variant v = json::parse_from_file(module::map_file(inc));
+				variant v = json::parse_from_file(inc);
 				if(v.is_list()) {
 					foreach(const variant& item, v.as_list()) {
 						res.push_back(item);

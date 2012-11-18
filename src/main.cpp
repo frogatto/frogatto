@@ -692,26 +692,27 @@ extern "C" int main(int argcount, char** argvec)
 	variant preloads;
 	loading_screen loader;
 	try {
-		sound::init_music(json::parse_from_file(module::map_file("data/music.cfg")));
+		sound::init_music(json::parse_from_file("data/music.cfg"));
 
 		std::string filename = "data/fonts." + i18n::get_locale() + ".cfg";
 		if (!sys::file_exists(filename))
 			filename = "data/fonts.cfg";
-		graphical_font::init(json::parse_from_file(module::map_file(filename)));
+		std::cerr << "LOADING FONT: " << filename << " -> " << module::map_file(filename) << "\n";
+		graphical_font::init(json::parse_from_file(filename));
 
-		preloads = json::parse_from_file(module::map_file("data/preload.cfg"));
+		preloads = json::parse_from_file("data/preload.cfg");
 		int preload_items = preloads["preload"].num_elements();
 		loader.set_number_of_items(preload_items+7); // 7 is the number of items that will be loaded below
 		custom_object::init();
 		loader.draw_and_increment(_("Initializing custom object functions"));
-		init_custom_object_functions(json::parse_from_file(module::map_file("data/functions.cfg")));
+		init_custom_object_functions(json::parse_from_file("data/functions.cfg"));
 		loader.draw_and_increment(_("Initializing textures"));
 		loader.load(preloads);
 		loader.draw_and_increment(_("Initializing tiles"));
-		tile_map::init(json::parse_from_file(module::map_file("data/tiles.cfg")));
+		tile_map::init(json::parse_from_file("data/tiles.cfg"));
 		loader.draw_and_increment(_("Initializing GUI"));
 
-		variant gui_node = json::parse_from_file(module::map_file(preferences::load_compiled() ? "data/compiled/gui.cfg" : "data/gui.cfg"));
+		variant gui_node = json::parse_from_file(preferences::load_compiled() ? "data/compiled/gui.cfg" : "data/gui.cfg");
 		gui_section::init(gui_node);
 		loader.draw_and_increment(_("Initializing GUI"));
 		framed_gui_element::init(gui_node);
