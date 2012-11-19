@@ -122,7 +122,7 @@ void send_stats_thread() {
 
 		bool done = false;
 		for(int n = 0; n != queue.size(); ++n) {
-			http_client client("localhost", "5000");
+			http_client client("theargentlark.com", "5000");
 			client.send_request("POST /cgi-bin/" + queue[n].first, 
 				queue[n].second, 
 				boost::bind(finish_upload, _1, &done),
