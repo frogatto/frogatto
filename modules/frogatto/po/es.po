@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2012-11-19 01:43-0200\n"
-"PO-Revision-Date: 2012-11-19 03:56+0000\n"
+"PO-Revision-Date: 2012-11-19 04:10+0000\n"
 "Last-Translator: Cristián Arenas Ulloa <cristian.arenas@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/Frogatto/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -2078,7 +2078,7 @@ msgstr "¡Oh, no lo hagas!"
 msgid ""
 "You're not going out that door first.\n"
 "I'm not <em>that</em> stupid."
-msgstr "No vas a salir por esa puerta antes.\nNo soy *tan* estúpido."
+msgstr "No vas a salir por esa puerta antes.\nNo soy <em>tan</em> estúpido."
 
 #: ../data/level/crevice-village-house-elder.cfg:352
 msgid ""
@@ -2090,7 +2090,7 @@ msgstr "Ahora, escucha, estás *realmente*\nponiendo a prueba mi paciencia."
 msgid ""
 "You're gonna <em>sit down,</em>\n"
 "and tell me...  uh..."
-msgstr "Te vas a *sentar*,\ny decirme… eh…"
+msgstr "Te vas a <em>sentar</em>,\ny decirme… eh…"
 
 #: ../data/level/crevice-village-house-elder.cfg:358
 msgid "Oh, hi, what's going on here?"
@@ -2114,7 +2114,7 @@ msgstr "Perdonen mientras ventilo una pequeña frustración."
 
 #: ../data/level/crevice-village-house-elder.cfg:405
 msgid "<em>ouch</em>"
-msgstr "*ouch*"
+msgstr "<em>ouch</em>"
 
 #: ../data/level/crevice-village-house-elder.cfg:406
 msgid "Okay, I've had enough!  I'm going home."
@@ -2170,7 +2170,7 @@ msgstr "Supongo que te tengo que preguntar:\n¿Por qué razón construiste esto?
 msgid ""
 "This HAD to be expensive.\n"
 "I mean ... <em>really</em> ... expensive."
-msgstr "Esto TUVO que ser costoso.\nQuiero decir… *muy*… costoso."
+msgstr "Esto TUVO que ser costoso.\nQuiero decir… <em>muy</em>… costoso."
 
 #: ../data/level/crevice-village-house-elder.cfg:492
 msgid ""
@@ -2224,7 +2224,7 @@ msgstr "Y por la conversación que acabo de escuchar,\nYO SE que tienes algo que
 msgid ""
 "I insist - it's the <em>least</em> you can do\n"
 "to thank me for saving your hide."
-msgstr "Insisto - es lo *menos* que puedes hacer\npara agradecerme por haberte salvado."
+msgstr "Insisto - es lo <em>menos</em> que puedes hacer\npara agradecerme por haberte salvado."
 
 #: ../data/level/crevice-village-house-elder.cfg:516
 msgid "Ugh, I suppose you're right."
@@ -2254,7 +2254,7 @@ msgstr "Bueno, después de todo soy el alcalde,\ny los alcaldes suelen tienen ba
 msgid ""
 "No.  Don't do this.  <em>Not</em> today.\n"
 "I'm not putting up with your usual shit."
-msgstr "No. No hagas eso.\n*No* hoy, no te voy a aceptar la mierda de siempre"
+msgstr "No. No hagas eso.\n<em>No</em> hoy, no te voy a aceptar la mierda de siempre"
 
 #: ../data/level/crevice-village-house-elder.cfg:528
 msgid ""
@@ -2276,7 +2276,7 @@ msgstr "Nop.\n¡No hasta que contestes mi pregunta!"
 msgid ""
 "Seriously - <em>I'm on your side,</em> here!\n"
 "I just risked my butt fighting that guy off."
-msgstr "En serio - ¡estoy de *tu* lado!\nArriesgué mi pellejo luchando contra ese tipo."
+msgstr "En serio - ¡estoy de <em>tu</em> lado!\nArriesgué mi pellejo luchando contra ese tipo."
 
 #: ../data/level/crevice-village-house-elder.cfg:536
 msgid ""
@@ -2288,7 +2288,7 @@ msgstr "Yo se que estás tratando de esconder algo,\npero dame una pista."
 msgid ""
 "Maybe ...\n"
 "I can actually <em>help</em> you?"
-msgstr "Tal vez… ¿en verdad puedo *ayudarte*?"
+msgstr "Tal vez… ¿en verdad puedo <em>ayudarte</em>?"
 
 #: ../data/level/crevice-village-house-elder.cfg:540
 msgid ""
@@ -2300,7 +2300,7 @@ msgstr "De acuerdo.\nNo tengo nada que perder, eh?"
 msgid ""
 "I'm afraid if this gets out,\n"
 "the town might blame <em>me</em> for this incident."
-msgstr "Me temo que si esto sale a la luz,\nel pueblo me culpará a *mi* de este incidente."
+msgstr "Me temo que si esto sale a la luz,\nel pueblo me culpará a <em>mi</em> de este incidente."
 
 #: ../data/level/crevice-village-house-elder.cfg:544
 msgid ""
@@ -2329,7 +2329,7 @@ msgid ""
 "Anyhow, I was all too happy to accept,\n"
 "but it wasn't long before I realized\n"
 "what was <em>really</em> afoot."
-msgstr "De cualquier modo, acepté felizmente,\npero no tardé mucho en darme cuenta\nlo que *realmente* se me venía encima."
+msgstr "De cualquier modo, acepté felizmente,\npero no tardé mucho en darme cuenta\nlo que <em>realmente</em> se me venía encima."
 
 #: ../data/level/crevice-village-house-elder.cfg:554
 msgid ""
@@ -2397,7 +2397,7 @@ msgid ""
 "No!\n"
 "You <em>always</em> need an excuse.\n"
 "Otherwise, no one would support your claim!"
-msgstr "¡No! Uno *siempre* necesita una excusa.\nDe otra forma, ¡nadie te apoyaría!"
+msgstr "¡No! Uno <em>siempre</em> necesita una excusa.\nDe otra forma, ¡nadie te apoyaría!"
 
 #: ../data/level/crevice-village-house-elder.cfg:578
 msgid ""
@@ -2865,7 +2865,7 @@ msgstr "Bosque Siniestro"
 msgid ""
 "Ahh, what a beautiful ...\n"
 "<em>...afternoon?!</em>"
-msgstr "Ahh, que bella m… ¡¿*tarde*?!"
+msgstr "Ahh, que bella m… ¡¿<em>tarde</em>?!"
 
 #: ../data/level/frogatto-grotto-frogattos-room.cfg:293
 msgid "Oh geez! I overslept!"
@@ -2931,7 +2931,7 @@ msgstr "Umm... ¿Sí?"
 msgid ""
 "At least <em>try</em> to get a job today,\n"
 "alright?"
-msgstr "Al menos *intenta* conseguir un trabajo hoy, ¿ok?"
+msgstr "Al menos <em>intenta</em> conseguir un trabajo hoy, ¿ok?"
 
 #: ../data/level/frogatto-grotto-inside.cfg:641
 msgid "We need some help around here."
@@ -3111,7 +3111,7 @@ msgstr "Entiendo. Pero debo enfatizar que\nno tuvimos nada que ver con esto, se�
 msgid ""
 "Yes, I'm aware.  Nevertheless,\n"
 "you <em>can</em> get some information, ASAP."
-msgstr "Sí, lo se.\nSin embargo, PUEDES traerme algo de información,\nDE INMEDIATO."
+msgstr "Sí, lo se.\nSin embargo, <em>puedes</em> traerme algo de información,\nDE INMEDIATO."
 
 #: ../data/level/golden-glen.cfg:2359
 msgid "Don't take no for an answer."
@@ -3784,7 +3784,7 @@ msgstr "Algunos de ellos son sutiles advertencias\nen forma de moralejas…"
 msgid ""
 "...but some of the other ones\n"
 "are just plain <em>strange.</em>"
-msgstr "… pero algunos de los otros\nson simplemente *extraños*."
+msgstr "… pero algunos de los otros\nson simplemente <em>extraños</em>."
 
 #: ../data/level/kitty-dormitory.cfg:2053
 msgid "I can't decide which ones I like better."
@@ -4947,7 +4947,7 @@ msgstr "Me gusta eso."
 msgid ""
 "Uhm, I hope you don't mind my asking,\n"
 "but what on earth <em>are</em> you, anyway?"
-msgstr "Uhm, espero no ofenderte con esta pregunta,\npero… ¿*qué* demonios eres?"
+msgstr "Uhm, espero no ofenderte con esta pregunta,\npero… ¿<em>qué</em> demonios eres?"
 
 #: ../data/level/secluded-hut-interior.cfg:320
 msgid "Ostensibly, I am a mole."
@@ -4993,7 +4993,7 @@ msgid ""
 "If you could bring me a golden ant\n"
 "and stick it in one of my cages,\n"
 "I'd reward you <em>handsomely.</em>"
-msgstr "Tú pareces alguien que ha viajado mucho.\nSi pudieras traerme una hormiga dorada\ny ponerla en una de mis jaulas,\nte recompensaría *generosamente*."
+msgstr "Tú pareces alguien que ha viajado mucho.\nSi pudieras traerme una hormiga dorada\ny ponerla en una de mis jaulas,\nte recompensaría <em>generosamente</em>."
 
 #: ../data/level/secluded-hut-interior.cfg:332
 msgid ""
@@ -5005,13 +5005,13 @@ msgstr "¿Generosamente has dicho?\n¡Cuenta conmigo!"
 msgid ""
 "Oh! You got the golden ant for me.\n"
 "It's beautiful, <em>beautiful!</em>"
-msgstr "¡Oh! Me conseguiste la hormiga dorada.\n¡Es hermosa, *hermosa*!"
+msgstr "¡Oh! Me conseguiste la hormiga dorada.\n¡Es hermosa, <em>hermosa</em>!"
 
 #: ../data/level/secluded-hut-interior.cfg:337
 msgid ""
 "Mmmmmhmmmm.\n"
 "Now you were talking about a <em>reward?</em>"
-msgstr "Mmmmmmhmmmm.\n¿Creo que mencionaste una *recompensa*?"
+msgstr "Mmmmmmhmmmm.\n¿Creo que mencionaste una <em>recompensa</em>?"
 
 #: ../data/level/secluded-hut-interior.cfg:338
 msgid ""
@@ -5085,7 +5085,7 @@ msgstr "Estoy trabajando en ello.\nEsas cosas muerden muy fuerte, ¿sabes?"
 msgid ""
 "I do hope you are enjoying exploring the island.\n"
 "There are <em>so</em> many wonderful creatures on it."
-msgstr "Ojalá estés disfrutando explorar la isla.\nHay *muchas* criaturas maravillosas en ella."
+msgstr "Ojalá estés disfrutando explorar la isla.\nHay <em>muchas</em> criaturas maravillosas en ella."
 
 #: ../data/level/secluded-hut-interior.cfg:359
 msgid "... most of which seem inclined to kill me."
@@ -5129,7 +5129,7 @@ msgstr "Espera, ¿qué? ¿Milgram?"
 msgid ""
 "What's <em>he</em> doing\n"
 "on this side of the island?"
-msgstr "¿Que está *él* haciendo\nen este lado de la isla?"
+msgstr "¿Que está <em>él</em> haciendo\nen este lado de la isla?"
 
 #: ../data/level/secluded-hut.cfg:1408
 msgid "You still haven't heard, then."
@@ -5147,7 +5147,7 @@ msgid ""
 "Unfortunately, I don't know the details.\n"
 "I just flew out of there as soon as I could,\n"
 "looking for <em>anyone</em> who could help."
-msgstr "Desafortunadamente, no sé los detalles.\nYo solo volé hasta aquí tan pronto pude,\nen busca de *cualquiera* que pudiera ayudar."
+msgstr "Desafortunadamente, no sé los detalles.\nYo solo volé hasta aquí tan pronto pude,\nen busca de <em>cualquiera</em> que pudiera ayudar."
 
 #: ../data/level/secluded-hut.cfg:1412
 msgid ""
@@ -5402,7 +5402,7 @@ msgstr "De hecho, fue a mí a quien se le ocurrió\nla idea. Iba a ser un acto d
 msgid ""
 "I thought a 'mayor' would be responsible,\n"
 "but instead he's spending it all <em>on himself!</em>"
-msgstr "Pensé que un \"alcalde\" sería responsable,\n¡pero se lo gasta todo en *sí mismo*!"
+msgstr "Pensé que un \"alcalde\" sería responsable,\n¡pero se lo gasta todo en <em>sí mismo</em>!"
 
 #: ../data/level/tea-with-milgram.cfg:159
 msgid "And now he's refusing to repay you?"
@@ -5420,7 +5420,7 @@ msgstr "Auch."
 msgid ""
 "You know, I really think there are some <em>big</em>\n"
 "misunderstandings that need to get cleared up."
-msgstr "Sabes, yo realmente creo que hay unos *grandes*\nmalentendidos que hay que resolver ahora."
+msgstr "Sabes, yo realmente creo que hay unos <em>grandes</em>\nmalentendidos que hay que resolver ahora."
 
 #: ../data/level/tea-with-milgram.cfg:169
 msgid "Almost all of which are his fault."
@@ -5430,7 +5430,7 @@ msgstr "Casi todo es culpa del anciano."
 msgid ""
 "This might not be obvious from talking to him,\n"
 "but that elder guy is really just ... <em>crazy.</em>"
-msgstr "Puede que no sea obvio solo con hablar con él,\npero ese anciano en verdad... está *loco*."
+msgstr "Puede que no sea obvio solo con hablar con él,\npero ese anciano en verdad... está <em>loco</em>."
 
 #: ../data/level/tea-with-milgram.cfg:173
 msgid ""
@@ -5479,13 +5479,13 @@ msgstr "Interesante.\nEso explica unas cuantas cosas."
 
 #: ../data/level/tea-with-milgram.cfg:191
 msgid "For starters, uh ... he's <em>NOT</em> our mayor."
-msgstr "Para empezar, ehh... él *NO ES* nuestro alcalde."
+msgstr "Para empezar, ehh... él <em>NO ES</em> nuestro alcalde."
 
 #: ../data/level/tea-with-milgram.cfg:194
 msgid ""
 "Now, as for who <em>is</em> our mayor...\n"
 "well..."
-msgstr "Ahora, acerca de quien *es* nuestro alcalde…\nbien…"
+msgstr "Ahora, acerca de quien <em>es</em> nuestro alcalde…\nbien…"
 
 #: ../data/level/tea-with-milgram.cfg:197
 msgid ""
@@ -5531,7 +5531,7 @@ msgstr "Podemos levantar una casa,\npero no podemos construir una carretera."
 msgid ""
 "Nevertheless this sounds\n"
 "<em>idyllically</em> free of bureaucracy."
-msgstr "Sin embargo esto suena\n*idílicamente* libre de burocracia."
+msgstr "Sin embargo esto suena\n<em>idílicamente</em> libre de burocracia."
 
 #: ../data/level/tea-with-milgram.cfg:215
 msgid ""
@@ -5555,7 +5555,7 @@ msgstr "Así que no sé de que cosa te convenció\nel anciano, pero está casi g
 msgid ""
 "Yes.\n"
 "No <em>wonder</em> we were confused!"
-msgstr "Sí.\n¡Con *razón* estábamos confundidos!"
+msgstr "Sí.\n¡Con <em>razón</em> estábamos confundidos!"
 
 #: ../data/level/tea-with-milgram.cfg:226
 msgid "Ah, there we are..."
@@ -5722,7 +5722,7 @@ msgstr "Una o dos."
 msgid ""
 "Probably the craziest and most helpful is...\n"
 "I actually think <em>he still has</em> that money."
-msgstr "Tal vez lo más alocada y útil es que...\nen verdad creo que aún tiene ese dinero."
+msgstr "Tal vez lo más alocada y útil es que...\nen verdad creo que <em>aún tiene</em> ese dinero."
 
 #: ../data/level/tea-with-milgram.cfg:310
 msgid ""
@@ -5831,7 +5831,7 @@ msgstr "Yo... no... utilicé un vehículo.\nCaminé."
 msgid ""
 "...\n"
 "I'm amazed that's even <em>possible.</em>"
-msgstr "…\nMe asombra que eso sea *posible*."
+msgstr "…\nMe asombra que eso sea <em>posible</em>."
 
 #: ../data/level/tea-with-milgram.cfg:354
 msgid ""
@@ -6613,7 +6613,7 @@ msgid ""
 "You've found part of a heart capsule.\n"
 "Collect another two to increase\n"
 "your maximum HP by one!"
-msgstr "Has encontrado parte de una cápsula de corazón.\n¡Recoge otras dos y aumentarás tus PS máximos en uno!"
+msgstr "Has encontrado parte de\nuna cápsula de corazón.\n¡Recoge otras dos y aumentarás\ntus PS máximos en uno!"
 
 #: ../data/objects/items/partial_max_heart_object.cfg:15
 msgid ""
