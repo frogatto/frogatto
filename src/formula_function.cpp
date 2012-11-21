@@ -1629,6 +1629,18 @@ END_FUNCTION_DEF(decompress)
 		}
 	};
 
+	class is_bool_function : public function_expression {
+	public:
+		explicit is_bool_function(const args_list& args)
+			: function_expression("is_bool", args, 1, 1)
+		{}
+
+	private:
+		variant execute(const formula_callable& variables) const {
+			return variant(args()[0]->evaluate(variables).is_bool());
+		}
+	};
+
 	class is_decimal_function : public function_expression {
 	public:
 		explicit is_decimal_function(const args_list& args)
