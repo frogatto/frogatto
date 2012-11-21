@@ -1,9 +1,0 @@
-Jet's 10.7/XCode 4 setup for building on macs.
-Use at your own risk; you're encouraged to use Ben's setup in ./MacOS/ instead.
-
-Ideally, this should be as simple as opening the project file, and clicking build.  All dependencies and prebuilt libs are inside this folder, or are a symlink to a reliable OS-level folder.
-
-
-Well-maintained general instructions for building on OS X, which are NOT directly relevant to this particular project file, are here:
-https://github.com/frogatto/frogatto/wiki/Compiling-Frogatto-on-Mac-OS-10.7
-
