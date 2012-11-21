@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-11-18 16:25-0200\n"
-"PO-Revision-Date: 2012-11-18 18:34+0000\n"
+"POT-Creation-Date: 2012-11-19 01:43-0200\n"
+"PO-Revision-Date: 2012-11-19 04:08+0000\n"
 "Last-Translator: peschio <michele.pesco@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/Frogatto/language/it/)\n"
 "MIME-Version: 1.0\n"
@@ -56,23 +56,23 @@ msgstr "Seleziona slot da caricare."
 msgid "Achievement Unlocked!"
 msgstr "Obiettivo Sbloccato!"
 
-#: ../../../src/main.cpp:706
+#: ../../../src/main.cpp:707
 msgid "Initializing custom object functions"
 msgstr "Inizializzazione delle funzioni dell'oggetto personalizzato"
 
-#: ../../../src/main.cpp:708
+#: ../../../src/main.cpp:709
 msgid "Initializing textures"
 msgstr "Inizializzazione delle texture"
 
-#: ../../../src/main.cpp:710
+#: ../../../src/main.cpp:711
 msgid "Initializing tiles"
 msgstr "Inizializzazione delle immagini"
 
-#: ../../../src/main.cpp:712 ../../../src/main.cpp:716
+#: ../../../src/main.cpp:713 ../../../src/main.cpp:717
 msgid "Initializing GUI"
 msgstr "Inizializzazione dell'Interfaccia Grafica"
 
-#: ../../../src/main.cpp:723
+#: ../../../src/main.cpp:724
 msgid "Loading level"
 msgstr "Caricamento Livello"
 
@@ -807,7 +807,7 @@ msgstr "... e ho messo le mani sul Talismano Forzesco.\nA tua disposizione."
 msgid ""
 "I'm not exactly sure what it will do, but\n"
 "I'm told it has somewhat of a mind of its own."
-msgstr "Non so di certo cosa fa, ma\nmi hanno detto che ha una specie di mente tutta sua."
+msgstr "Non so di certo cosa fa, ma mi han detto\nche ha una specie di mente tutta sua."
 
 #: ../data/level/bon-bosque.cfg:205
 msgid "I'm not sure I understand..."
@@ -967,7 +967,6 @@ msgid ""
 msgstr "Allora lui racconta questa storia\nstravagante su come tutto sia un\ncomplotto di Milgram per ottenere la città."
 
 #: ../data/level/crevice-bridge.cfg:321
-#: ../data/level/crevice-village-house-elder.cfg:480
 msgid "Wow."
 msgstr "Wow."
 
@@ -1693,7 +1692,6 @@ msgid ""
 msgstr "Bene, questo sistema le cose per me.\nBuona giornata."
 
 #: ../data/level/crevice-village-house-1.cfg:955
-#: ../data/level/kitty-dormitory.cfg:3171
 msgid "Who are you?"
 msgstr "Chi sei?"
 
@@ -1922,7 +1920,6 @@ msgid "We saw Milgram's lieutenant go in there."
 msgstr "Abbiamo visto il luogotenente di Milgram\nlaggiù."
 
 #: ../data/level/crevice-village-house-2.cfg:1395
-#: ../data/level/rock-a-fort.cfg:1641
 msgid "How interesting."
 msgstr "Interresante."
 
@@ -2144,6 +2141,10 @@ msgstr "Infatti lo è, ragazzo mio!"
 #: ../data/level/crevice-village-house-elder.cfg:478
 msgid "It's my very own safe room."
 msgstr "Questa è la mia stanza segreta."
+
+#: ../data/level/crevice-village-house-elder.cfg:480
+msgid "^Wow."
+msgstr "^Wow."
 
 #: ../data/level/crevice-village-house-elder.cfg:482
 msgid "Built it for exactly this sort of crisis."
@@ -3821,9 +3822,8 @@ msgid "What's wrong?!"
 msgstr "Che succede?!"
 
 #: ../data/level/kitty-dormitory.cfg:2814
-#: ../data/level/kitty-dormitory.cfg:3115
-msgid "Uh..."
-msgstr "Uh..."
+msgid "^Uh..."
+msgstr "^Uh..."
 
 #: ../data/level/kitty-dormitory.cfg:2815
 msgid "Was I asleep?"
@@ -3933,14 +3933,16 @@ msgid "Anyways, I'd better get back to work."
 msgstr "Comunque, è ora di tornare al lavoro."
 
 #: ../data/level/kitty-dormitory.cfg:2963
-#: ../data/level/kitty-dormitory.cfg:2967
-#: ../data/level/secluded-hut-interior.cfg:312
-msgid "Hello there."
-msgstr "Hey, ciao!"
+msgid "^Hello there."
+msgstr "^Ehilà."
 
 #: ../data/level/kitty-dormitory.cfg:2965
 msgid "Uh... hi?"
 msgstr "Uh... ciao?"
+
+#: ../data/level/kitty-dormitory.cfg:2967
+msgid "^^Hello there."
+msgstr "^^Ehilà."
 
 #: ../data/level/kitty-dormitory.cfg:2970
 msgid ""
@@ -4141,6 +4143,10 @@ msgid ""
 "cut the threads, too."
 msgstr "Stabilisce quanto a fondo deve andare la punta.\nSe fai andare il bullone alla velocità giusta, puoi\nusarlo anche per filettare."
 
+#: ../data/level/kitty-dormitory.cfg:3115
+msgid "Uh..."
+msgstr "Uh..."
+
 #: ../data/level/kitty-dormitory.cfg:3116
 msgid ""
 "Do I sound like I spend too much\n"
@@ -4211,8 +4217,11 @@ msgstr "Comunque, ti prego passa a trovarmi quando\nl'ho rimessa a posto, così 
 msgid "Of course."
 msgstr "Sicuro."
 
+#: ../data/level/kitty-dormitory.cfg:3171
+msgid "^Who are you?"
+msgstr "^E tu chi sei?"
+
 #: ../data/level/kitty-dormitory.cfg:3176
-#: ../data/level/secluded-hut-interior.cfg:317
 msgid "That's nice."
 msgstr "Ottimo."
 
@@ -4713,7 +4722,6 @@ msgid "No!  You can't be..."
 msgstr "No! Tu non puoi essere..."
 
 #: ../data/level/milgrams-throne-room.cfg:44
-#: ../data/level/secluded-hut-interior.cfg:314
 msgid "Hi, I'm Frogatto."
 msgstr "Ciao, sono Frogatto."
 
@@ -4897,6 +4905,10 @@ msgstr "Rocca-Forte"
 msgid "Woah! A flying plant!"
 msgstr "Wow! Una pianta volante!"
 
+#: ../data/level/rock-a-fort.cfg:1641
+msgid "^How interesting."
+msgstr "^Interessante."
+
 #: ../data/level/rocky-roots.cfg:149
 msgid "Bleh. A locked door."
 msgstr "Bleh. Una porta chiusa."
@@ -4909,11 +4921,23 @@ msgstr "Ci deve essere un modo per passarla."
 msgid "Rocky Roots"
 msgstr "Radici di Pietra"
 
+#: ../data/level/secluded-hut-interior.cfg:312
+msgid "Hello there."
+msgstr "Hey, ciao!"
+
+#: ../data/level/secluded-hut-interior.cfg:314
+msgid "^Hi, I'm Frogatto."
+msgstr "^Ciao, io sono Frogatto."
+
 #: ../data/level/secluded-hut-interior.cfg:315
 msgid ""
 "A pleasure to meet you.\n"
 "I am Mortimer."
 msgstr "Piacere di conoscerti.\nSono Mortimer."
+
+#: ../data/level/secluded-hut-interior.cfg:317
+msgid "^That's nice."
+msgstr "^È carino."
 
 #: ../data/level/secluded-hut-interior.cfg:319
 msgid ""
@@ -5521,7 +5545,7 @@ msgstr "Sì comunque, in qualche modo tiriamo avanti,\nma è un tritello per dav
 msgid ""
 "So I don't know what the elder talked you into,\n"
 "but it's almost guaranteed to be lunacy."
-msgstr "Quindi non di cosa il vecchio ti abbia parlato,\nma è preticamente sicuro che sia una follia."
+msgstr "Quindi non so di cosa il vecchio ti abbia parlato,\nma è praticamente sicuro che sia una follia."
 
 #: ../data/level/tea-with-milgram.cfg:222
 msgid ""

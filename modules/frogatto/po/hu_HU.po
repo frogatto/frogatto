@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-11-18 16:25-0200\n"
-"PO-Revision-Date: 2012-11-18 18:27+0000\n"
+"POT-Creation-Date: 2012-11-19 01:43-0200\n"
+"PO-Revision-Date: 2012-11-19 03:46+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Hungarian (Hungary) (http://www.transifex.com/projects/p/Frogatto/language/hu_HU/)\n"
 "MIME-Version: 1.0\n"
@@ -51,23 +51,23 @@ msgstr "Válaszd ki a betöltendő állást."
 msgid "Achievement Unlocked!"
 msgstr "Achievement feloldva!"
 
-#: ../../../src/main.cpp:706
+#: ../../../src/main.cpp:707
 msgid "Initializing custom object functions"
 msgstr "Egyedi objektumok működésének betöltése"
 
-#: ../../../src/main.cpp:708
+#: ../../../src/main.cpp:709
 msgid "Initializing textures"
 msgstr "Textúrák betöltése"
 
-#: ../../../src/main.cpp:710
+#: ../../../src/main.cpp:711
 msgid "Initializing tiles"
 msgstr "Csempék betöltése"
 
-#: ../../../src/main.cpp:712 ../../../src/main.cpp:716
+#: ../../../src/main.cpp:713 ../../../src/main.cpp:717
 msgid "Initializing GUI"
 msgstr "GUI betöltése"
 
-#: ../../../src/main.cpp:723
+#: ../../../src/main.cpp:724
 msgid "Loading level"
 msgstr "Pálya betöltése"
 
@@ -962,7 +962,6 @@ msgid ""
 msgstr "Aztán előjött ezzel a fura történettel,\nhogy azért jön Milgram, hogy átvegye\na város felett az uralmat."
 
 #: ../data/level/crevice-bridge.cfg:321
-#: ../data/level/crevice-village-house-elder.cfg:480
 msgid "Wow."
 msgstr "Tyűha!"
 
@@ -1688,7 +1687,6 @@ msgid ""
 msgstr "Nos, ez nekem lezárja az ügyet.\nJó szórakozást kettőtöknek."
 
 #: ../data/level/crevice-village-house-1.cfg:955
-#: ../data/level/kitty-dormitory.cfg:3171
 msgid "Who are you?"
 msgstr "Te ki vagy?"
 
@@ -1917,7 +1915,6 @@ msgid "We saw Milgram's lieutenant go in there."
 msgstr "Láttuk Milgram egyik hadnagyát\nbemenni oda."
 
 #: ../data/level/crevice-village-house-2.cfg:1395
-#: ../data/level/rock-a-fort.cfg:1641
 msgid "How interesting."
 msgstr "Milyen érdekes."
 
@@ -2139,6 +2136,10 @@ msgstr "Valóban az, fiacskám!"
 #: ../data/level/crevice-village-house-elder.cfg:478
 msgid "It's my very own safe room."
 msgstr "A különbejáratú biztonságiszobám!"
+
+#: ../data/level/crevice-village-house-elder.cfg:480
+msgid "^Wow."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:482
 msgid "Built it for exactly this sort of crisis."
@@ -3816,9 +3817,8 @@ msgid "What's wrong?!"
 msgstr "Mi a baj?!"
 
 #: ../data/level/kitty-dormitory.cfg:2814
-#: ../data/level/kitty-dormitory.cfg:3115
-msgid "Uh..."
-msgstr "Uh..."
+msgid "^Uh..."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2815
 msgid "Was I asleep?"
@@ -3928,13 +3928,15 @@ msgid "Anyways, I'd better get back to work."
 msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2963
-#: ../data/level/kitty-dormitory.cfg:2967
-#: ../data/level/secluded-hut-interior.cfg:312
-msgid "Hello there."
-msgstr "Üdv néked."
+msgid "^Hello there."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2965
 msgid "Uh... hi?"
+msgstr ""
+
+#: ../data/level/kitty-dormitory.cfg:2967
+msgid "^^Hello there."
 msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2970
@@ -4136,6 +4138,10 @@ msgid ""
 "cut the threads, too."
 msgstr ""
 
+#: ../data/level/kitty-dormitory.cfg:3115
+msgid "Uh..."
+msgstr "Uh..."
+
 #: ../data/level/kitty-dormitory.cfg:3116
 msgid ""
 "Do I sound like I spend too much\n"
@@ -4206,8 +4212,11 @@ msgstr ""
 msgid "Of course."
 msgstr "Természetesen."
 
+#: ../data/level/kitty-dormitory.cfg:3171
+msgid "^Who are you?"
+msgstr ""
+
 #: ../data/level/kitty-dormitory.cfg:3176
-#: ../data/level/secluded-hut-interior.cfg:317
 msgid "That's nice."
 msgstr "Ez kedves."
 
@@ -4708,7 +4717,6 @@ msgid "No!  You can't be..."
 msgstr "Nem! Te nem lehetsz..."
 
 #: ../data/level/milgrams-throne-room.cfg:44
-#: ../data/level/secluded-hut-interior.cfg:314
 msgid "Hi, I'm Frogatto."
 msgstr "Hello, Frogatto vagyok."
 
@@ -4892,6 +4900,10 @@ msgstr ""
 msgid "Woah! A flying plant!"
 msgstr "Hű! Egy repülő virág!"
 
+#: ../data/level/rock-a-fort.cfg:1641
+msgid "^How interesting."
+msgstr ""
+
 #: ../data/level/rocky-roots.cfg:149
 msgid "Bleh. A locked door."
 msgstr "Bleh. Egy zárt ajtó."
@@ -4904,11 +4916,23 @@ msgstr "Csak van egy megkerülő út."
 msgid "Rocky Roots"
 msgstr "Köves gyökérzet"
 
+#: ../data/level/secluded-hut-interior.cfg:312
+msgid "Hello there."
+msgstr "Üdv néked."
+
+#: ../data/level/secluded-hut-interior.cfg:314
+msgid "^Hi, I'm Frogatto."
+msgstr ""
+
 #: ../data/level/secluded-hut-interior.cfg:315
 msgid ""
 "A pleasure to meet you.\n"
 "I am Mortimer."
 msgstr "Örülök, hogy találkoztunk.\nMortimer vagyok."
+
+#: ../data/level/secluded-hut-interior.cfg:317
+msgid "^That's nice."
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:319
 msgid ""

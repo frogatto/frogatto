@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-11-18 16:25-0200\n"
-"PO-Revision-Date: 2012-11-18 18:27+0000\n"
+"POT-Creation-Date: 2012-11-19 01:43-0200\n"
+"PO-Revision-Date: 2012-11-19 03:46+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/Frogatto/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -57,23 +57,23 @@ msgstr "Wähle einen Spielstand zum Laden."
 msgid "Achievement Unlocked!"
 msgstr "Erfolg freigeschaltet!"
 
-#: ../../../src/main.cpp:706
+#: ../../../src/main.cpp:707
 msgid "Initializing custom object functions"
 msgstr "Initialisiere benutzerdefinierte Objektfunktionen"
 
-#: ../../../src/main.cpp:708
+#: ../../../src/main.cpp:709
 msgid "Initializing textures"
 msgstr "Initialisiere Texturen"
 
-#: ../../../src/main.cpp:710
+#: ../../../src/main.cpp:711
 msgid "Initializing tiles"
 msgstr "Initialisiere Kacheln"
 
-#: ../../../src/main.cpp:712 ../../../src/main.cpp:716
+#: ../../../src/main.cpp:713 ../../../src/main.cpp:717
 msgid "Initializing GUI"
 msgstr "Initialisiere grafische Benutzeroberfläche"
 
-#: ../../../src/main.cpp:723
+#: ../../../src/main.cpp:724
 msgid "Loading level"
 msgstr "Lade Level"
 
@@ -968,7 +968,6 @@ msgid ""
 msgstr "Dann erzählte er diese verrückte\nGeschichte, dass alles eine\nVerschwörung seitens Milgrams\nsei, um die Stadt zu übernehmen."
 
 #: ../data/level/crevice-bridge.cfg:321
-#: ../data/level/crevice-village-house-elder.cfg:480
 msgid "Wow."
 msgstr "Wow."
 
@@ -1694,7 +1693,6 @@ msgid ""
 msgstr "Nun, das erspart mir einiges.\nIhr beide scheint Spaß zu haben."
 
 #: ../data/level/crevice-village-house-1.cfg:955
-#: ../data/level/kitty-dormitory.cfg:3171
 msgid "Who are you?"
 msgstr "Wer bist du?"
 
@@ -1923,7 +1921,6 @@ msgid "We saw Milgram's lieutenant go in there."
 msgstr "Wir haben Milgrams Leutnant da reingehen gesehen."
 
 #: ../data/level/crevice-village-house-2.cfg:1395
-#: ../data/level/rock-a-fort.cfg:1641
 msgid "How interesting."
 msgstr "Wie interessant."
 
@@ -2145,6 +2142,10 @@ msgstr "Das ist es, mein Junge!"
 #: ../data/level/crevice-village-house-elder.cfg:478
 msgid "It's my very own safe room."
 msgstr "Mein eigener Tresorraum."
+
+#: ../data/level/crevice-village-house-elder.cfg:480
+msgid "^Wow."
+msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:482
 msgid "Built it for exactly this sort of crisis."
@@ -3822,9 +3823,8 @@ msgid "What's wrong?!"
 msgstr "Stimmt was nicht?!"
 
 #: ../data/level/kitty-dormitory.cfg:2814
-#: ../data/level/kitty-dormitory.cfg:3115
-msgid "Uh..."
-msgstr "Äh…"
+msgid "^Uh..."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2815
 msgid "Was I asleep?"
@@ -3934,14 +3934,16 @@ msgid "Anyways, I'd better get back to work."
 msgstr "Jedenfalls muss ich wieder an die Arbeit."
 
 #: ../data/level/kitty-dormitory.cfg:2963
-#: ../data/level/kitty-dormitory.cfg:2967
-#: ../data/level/secluded-hut-interior.cfg:312
-msgid "Hello there."
-msgstr "Hallo zusammen."
+msgid "^Hello there."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2965
 msgid "Uh... hi?"
 msgstr "Äh… hi?"
+
+#: ../data/level/kitty-dormitory.cfg:2967
+msgid "^^Hello there."
+msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2970
 msgid ""
@@ -4142,6 +4144,10 @@ msgid ""
 "cut the threads, too."
 msgstr "Sie bestimmen, wie tief die Schleifscheiben\nschneiden müssen. Wird die Schraube mit\nder richtigen Geschwindigkeit gedreht, wird\nauch das ganze Gewinde geschnitten."
 
+#: ../data/level/kitty-dormitory.cfg:3115
+msgid "Uh..."
+msgstr "Äh…"
+
 #: ../data/level/kitty-dormitory.cfg:3116
 msgid ""
 "Do I sound like I spend too much\n"
@@ -4212,8 +4218,11 @@ msgstr "Jedenfalls solltest du ab und zu\nmal wieder vorbeischauen."
 msgid "Of course."
 msgstr "Natürlich."
 
+#: ../data/level/kitty-dormitory.cfg:3171
+msgid "^Who are you?"
+msgstr ""
+
 #: ../data/level/kitty-dormitory.cfg:3176
-#: ../data/level/secluded-hut-interior.cfg:317
 msgid "That's nice."
 msgstr "Das ist gut."
 
@@ -4714,7 +4723,6 @@ msgid "No!  You can't be..."
 msgstr "Nein!  Du kannst nicht…"
 
 #: ../data/level/milgrams-throne-room.cfg:44
-#: ../data/level/secluded-hut-interior.cfg:314
 msgid "Hi, I'm Frogatto."
 msgstr "Hallo, ich bin Frogatto."
 
@@ -4898,6 +4906,10 @@ msgstr "Felsenfestung"
 msgid "Woah! A flying plant!"
 msgstr "Woah! Eine fliegende Pflanze!"
 
+#: ../data/level/rock-a-fort.cfg:1641
+msgid "^How interesting."
+msgstr ""
+
 #: ../data/level/rocky-roots.cfg:149
 msgid "Bleh. A locked door."
 msgstr "Bäh. Eine verschlossene Tür."
@@ -4910,11 +4922,23 @@ msgstr "Da muss es einen Weg drum herum geben."
 msgid "Rocky Roots"
 msgstr "Wackliges Wurzelwerk"
 
+#: ../data/level/secluded-hut-interior.cfg:312
+msgid "Hello there."
+msgstr "Hallo zusammen."
+
+#: ../data/level/secluded-hut-interior.cfg:314
+msgid "^Hi, I'm Frogatto."
+msgstr ""
+
 #: ../data/level/secluded-hut-interior.cfg:315
 msgid ""
 "A pleasure to meet you.\n"
 "I am Mortimer."
 msgstr "Es ist mir eine wahre Freude,\nSie kennenzulernen.\nIch bin Mortimer."
+
+#: ../data/level/secluded-hut-interior.cfg:317
+msgid "^That's nice."
+msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:319
 msgid ""
