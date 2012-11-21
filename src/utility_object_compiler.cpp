@@ -22,6 +22,8 @@
 #include "variant_utils.hpp"
 #include "IMG_savepng.h"
 
+void UTILITY_query(const std::vector<std::string>& args);
+
 namespace {
 const int TextureImageSize = 1024;
 
@@ -179,7 +181,7 @@ UTILITY(compile_objects)
 			continue;
 		}
 
-		gui_nodes[gui] = json::parse_from_file("data/gui/" + gui, json::JSON_NO_PREPROCESSOR);
+		gui_nodes[gui] = json::parse_from_file("data/gui/" + gui);
 		animation_containing_nodes.push_back(gui_nodes[gui]);
 		if(gui_nodes[gui].has_key("no_compile_image")) {
 			std::vector<std::string> images = util::split(gui_nodes[gui][variant("no_compile_image")].as_string());
@@ -426,5 +428,19 @@ UTILITY(compile_objects)
 	for(std::map<std::string, variant>::iterator i = gui_nodes.begin();
 	    i != gui_nodes.end(); ++i) {
 		module::write_file("data/compiled/gui/" + i->first, i->second.write_json());
+	}
+
+	if(sys::file_exists("./compile-objects.cfg")) {
+		variant script = json::parse(sys::read_file("./compile-objects.cfg"));
+		if(script["query"].is_list()) {
+			foreach(variant query, script["query"].as_list()) {
+				std::vector<std::string> args;
+				foreach(variant arg, query.as_list()) {
+					args.push_back(arg.as_string());
+				}
+
+				UTILITY_query(args);
+			}
+		}
 	}
 }
