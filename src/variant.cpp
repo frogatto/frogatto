@@ -1062,6 +1062,10 @@ bool variant::operator==(const variant& v) const
 {
 	if(type_ != v.type_) {
 		if(type_ == VARIANT_TYPE_DECIMAL || v.type_ == VARIANT_TYPE_DECIMAL) {
+			if(!is_numeric() && !is_null() || !v.is_numeric() && !v.is_null()) {
+				return false;
+			}
+
 			return as_decimal() == v.as_decimal();
 		}
 
