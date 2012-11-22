@@ -1,0 +1,95 @@
+{
+	"frogatto": [
+		{
+			"name": "move",
+			"tables": [
+				{
+					"global_scope": false,
+					"key": "[(x/32)*32 + 16, (y/32)*32 + 16]",
+					"name": "tile_group"
+				},
+				{
+					"global_scope": true,
+					"key": "level",
+					"name": "time_played_by_level"
+				},
+				{
+					"global_scope": true,
+					"name": "time_played"
+				}
+			]
+		},
+		{
+			"name": "die",
+			"tables": [
+				{
+					"global_scope": false,
+					"key": "[(x/32)*32 + 16, (y/32)*32 + 16]",
+					"name": "tile_group"
+				}
+			]
+		},
+		{
+			"name": "quit",
+			"tables": [
+				{
+					"global_scope": false,
+					"key": "[(x/32)*32 + 16, (y/32)*32 + 16]",
+					"name": "tile_group"
+				},
+				{
+					"global_scope": true,
+					"key": "user_id",
+					"name": "user_quits"
+				}
+			]
+		},
+		{
+			"name": "crash",
+			"tables": [
+				{
+					"global_scope": true,
+					"key": "[program_args, msg, level, if(editor, 'EDITOR IN USE')]",
+					"name": "all_crashes"
+				},
+				{
+					"global_scope": false,
+					"key": "[program_args, msg, x, y]",
+					"name": "crash_locations"
+				}
+			]
+		},
+		{
+			"name": "load",
+			"tables": [
+				{
+					"init_value": {
+						"mean": 0,
+						"nsamples": 0,
+						"sum": 0
+					},
+					"name": "average_load_time",
+					"value": "{ 'nsamples' -> (value.nsamples+1), 'sum' -> value.sum + sample.time, 'mean' -> (value.sum+sample.time)/(value.nsamples+1) }",
+					"global_scope": false
+				},
+				{
+					"key": "user_id",
+					"name": "unique_users",
+					"global_scope": true
+				}
+			]
+		}
+	],
+	"weregild": [
+		{
+			"name": "move",
+			"tables": [
+				{
+					"global_scope": false,
+					"key": "[(x/32)*32 + 16, (y/32)*32 + 16]",
+					"name": "tile_group"
+				}
+			]
+		}
+	]
+}

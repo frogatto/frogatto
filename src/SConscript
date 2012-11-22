@@ -1,0 +1,26 @@
+# vi: syntax=python:et:ts=4
+
+Import("*")
+
+makefile = file(File('#/Makefile.common').abspath)
+target = None
+sources_map = {}
+
+contents = makefile.read()
+objectlines = [line for line in contents.replace("\\\n","").split("\n") if "objects =" in line]
+for line in objectlines:
+    (target, rest) = line.split("objects =")
+    if len(target) == 0:
+        target = "game"
+    else:
+        target = target.rstrip("_")
+    sources_map[target] = [o for o in [object.strip().replace(".o", ".cpp") for object in rest.strip().split()] if o not in env["exclude"]]
+
+binaries = []
+
+for key in sources_map:
+    prog = env.Program("#/" + key + build_suffix, sources_map[key])
+    binaries.append(env.Alias(key, prog))
+
+all = env.Alias("all", binaries)
+env.Default(all)
