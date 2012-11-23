@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2012-11-19 01:43-0200\n"
-"PO-Revision-Date: 2012-11-19 03:46+0000\n"
+"PO-Revision-Date: 2012-11-23 01:46+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/Frogatto/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -3821,7 +3821,7 @@ msgstr "O que houve?!"
 
 #: ../data/level/kitty-dormitory.cfg:2814
 msgid "^Uh..."
-msgstr ""
+msgstr "Hã..."
 
 #: ../data/level/kitty-dormitory.cfg:2815
 msgid "Was I asleep?"
@@ -3932,69 +3932,69 @@ msgstr "Bom,\né melhor eu voltar ao trabalho agora."
 
 #: ../data/level/kitty-dormitory.cfg:2963
 msgid "^Hello there."
-msgstr ""
+msgstr "Boa noite."
 
 #: ../data/level/kitty-dormitory.cfg:2965
 msgid "Uh... hi?"
-msgstr ""
+msgstr "Hã... oi?"
 
 #: ../data/level/kitty-dormitory.cfg:2967
 msgid "^^Hello there."
-msgstr ""
+msgstr "Boa noite."
 
 #: ../data/level/kitty-dormitory.cfg:2970
 msgid ""
 "You know, I'm not gonna lie - it's really weird\n"
 "to fight you guys in one place and ... uh"
-msgstr ""
+msgstr "Sabe, eu não vou mentir - é bem esquisito\nlutar com vocês por aí e... hã..."
 
 #: ../data/level/kitty-dormitory.cfg:2972
 msgid ""
 "... and then just talk, peaceably, here?\n"
 "I still don't get it.  What gives?"
-msgstr ""
+msgstr "...e depois conversar aqui... tranquilamente?\nEu ainda não entendo como. O que que há?"
 
 #: ../data/level/kitty-dormitory.cfg:2974
 msgid ""
 "Well, the fact that I'm unarmed\n"
 "is a pretty big factor."
-msgstr ""
+msgstr "Bom, o fato de eu estar desarmado\né um fator importante."
 
 #: ../data/level/kitty-dormitory.cfg:2975
 msgid ""
 "I wouldn't stand a chance, so I'm willing\n"
 "to hinge my hopes on your being civil."
-msgstr ""
+msgstr "Eu não teria chance, então eu apenas\nfico torcendo pela sua civilidade."
 
 #: ../data/level/kitty-dormitory.cfg:2976
 msgid "Here we are, after all, aren't we?"
-msgstr ""
+msgstr "E cá estamos, não é mesmo?"
 
 #: ../data/level/kitty-dormitory.cfg:2979
 msgid "This is true."
-msgstr ""
+msgstr "Isso é verdade."
 
 #: ../data/level/kitty-dormitory.cfg:2981
 msgid "If you don't mind my asking, where are we?"
-msgstr ""
+msgstr "Mas se me perdoa a pergunta...\nO que que é aqui, mesmo?"
 
 #: ../data/level/kitty-dormitory.cfg:2983
 msgid ""
 "Residential Quarters.\n"
 "It's really a dormitory-like arrangement."
-msgstr ""
+msgstr "Setor Residencial.\nÉ como um dormitório, basicamente."
 
 #: ../data/level/kitty-dormitory.cfg:2984
 msgid "And don't worry, none of us here work security."
-msgstr ""
+msgstr "E nem se preocupe,\nninguém aqui trabalha na segurança."
 
 #: ../data/level/kitty-dormitory.cfg:2985
 msgid "I hear you have those guys in a royal fit."
-msgstr ""
+msgstr "Ouvi dizer que você tem deixado eles\ndoidos de raiva."
 
 #: ../data/level/kitty-dormitory.cfg:2988
 msgid "Yeah, that doesn't surprise me."
-msgstr ""
+msgstr "É, isso não me surpreende."
 
 #: ../data/level/kitty-dormitory.cfg:2990
 msgid ""

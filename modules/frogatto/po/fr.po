@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2012-11-19 01:43-0200\n"
-"PO-Revision-Date: 2012-11-19 03:46+0000\n"
-"Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
+"PO-Revision-Date: 2012-11-19 12:21+0000\n"
+"Last-Translator: Chookrut <pascal.mazon+transifex@mailz.org>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/Frogatto/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -881,7 +881,7 @@ msgid ""
 "He had asked me to go to the village\n"
 "to know what was going on, with all that noise\n"
 "that was coming from beyond the cave."
-msgstr "Ah, ouais, j'aide Chopple à prendre soin de la boutique.\nIl m'avait demandé d'aller au village\npour savoir ce qui se passait, avec tout ce bruit\nqui venait d'au-delà de la grotte."
+msgstr "Ah, ouais, j'aide Chopple à prendre soin\nde la boutique. Il m'avait demandé d'aller au village\npour savoir ce qui se passait, avec tout ce bruit\nqui venait d'au-delà de la grotte."
 
 #: ../data/level/chopple-shop-interior.cfg:164
 msgid ""
@@ -923,7 +923,7 @@ msgid ""
 "Naturally, we wouldn't be having\n"
 "this conversation if I hadn't gotten\n"
 "the better of him."
-msgstr "Naturellement, nous n'aurions pas cette conversation,\nsi je ne l'avais pas emporté."
+msgstr "Naturellement, nous n'aurions pas\ncette conversation si je ne l'avais pas emporté."
 
 #: ../data/level/crevice-bridge.cfg:306
 msgid ""
@@ -2143,7 +2143,7 @@ msgstr "C'est ma propre cachette blindée."
 
 #: ../data/level/crevice-village-house-elder.cfg:480
 msgid "^Wow."
-msgstr ""
+msgstr "^Waouh."
 
 #: ../data/level/crevice-village-house-elder.cfg:482
 msgid "Built it for exactly this sort of crisis."
@@ -2348,7 +2348,7 @@ msgstr "Pas exactement."
 msgid ""
 "See, Milgram was being\n"
 "what's called a 'loan shark'."
-msgstr "Vois-tu, Milgram était ce qu'on appelle un \"usurier\"."
+msgstr "Vois-tu, Milgram était ce qu'on appelle\nun \"usurier\"."
 
 #: ../data/level/crevice-village-house-elder.cfg:564
 msgid ""
@@ -3106,7 +3106,7 @@ msgstr "Compris. Mais j'aimerais juste souligner\nque nous n'avons rien à voir 
 msgid ""
 "Yes, I'm aware.  Nevertheless,\n"
 "you <em>can</em> get some information, ASAP."
-msgstr "Oui, je suis au courant. Néanmoins, vous <em>pouvez</em>\nobtenir des informations. Tout de suite."
+msgstr "Oui, je suis au courant. Néanmoins, vous <em>pouvez</em>\nobtenir des informations. Immédiatement."
 
 #: ../data/level/golden-glen.cfg:2359
 msgid "Don't take no for an answer."
@@ -3822,7 +3822,7 @@ msgstr "Qu'est-ce qui ne va pas ?"
 
 #: ../data/level/kitty-dormitory.cfg:2814
 msgid "^Uh..."
-msgstr ""
+msgstr "^Heu..."
 
 #: ../data/level/kitty-dormitory.cfg:2815
 msgid "Was I asleep?"
@@ -3933,7 +3933,7 @@ msgstr "Enfin bref, je ferais mieux\nde retourner travailler."
 
 #: ../data/level/kitty-dormitory.cfg:2963
 msgid "^Hello there."
-msgstr ""
+msgstr "^Bonjour."
 
 #: ../data/level/kitty-dormitory.cfg:2965
 msgid "Uh... hi?"
@@ -3941,7 +3941,7 @@ msgstr "Heu... Salut ?"
 
 #: ../data/level/kitty-dormitory.cfg:2967
 msgid "^^Hello there."
-msgstr ""
+msgstr "^^Salut !"
 
 #: ../data/level/kitty-dormitory.cfg:2970
 msgid ""
@@ -4210,7 +4210,7 @@ msgstr "Bah."
 msgid ""
 "Anyways, please do visit anytime this is\n"
 "actually working, for a tour."
-msgstr "Bref, organise des visites dès que\nça marchera vraiment, pour voir."
+msgstr "En tout cas, n'hésite pas à revenir visiter\ndès que ça marchera vraiment, pour voir."
 
 #: ../data/level/kitty-dormitory.cfg:3139
 msgid "Of course."
@@ -4218,7 +4218,7 @@ msgstr "Bien sûr."
 
 #: ../data/level/kitty-dormitory.cfg:3171
 msgid "^Who are you?"
-msgstr ""
+msgstr "^Qui es-tu ?"
 
 #: ../data/level/kitty-dormitory.cfg:3176
 msgid "That's nice."
@@ -4906,7 +4906,7 @@ msgstr "Waouh ! Une plante volante !"
 
 #: ../data/level/rock-a-fort.cfg:1641
 msgid "^How interesting."
-msgstr ""
+msgstr "^Intéressant."
 
 #: ../data/level/rocky-roots.cfg:149
 msgid "Bleh. A locked door."
@@ -4926,7 +4926,7 @@ msgstr "Bonjour."
 
 #: ../data/level/secluded-hut-interior.cfg:314
 msgid "^Hi, I'm Frogatto."
-msgstr ""
+msgstr "^Salut, moi c'est Frogatto."
 
 #: ../data/level/secluded-hut-interior.cfg:315
 msgid ""
@@ -4936,7 +4936,7 @@ msgstr "Enchanté.\nJe m'appelle Mortimer."
 
 #: ../data/level/secluded-hut-interior.cfg:317
 msgid "^That's nice."
-msgstr ""
+msgstr "^Très bien."
 
 #: ../data/level/secluded-hut-interior.cfg:319
 msgid ""
@@ -5921,15 +5921,15 @@ msgstr "COURSE AUX PIÈCES"
 
 #: ../data/level/titlescreen-load-game-selector.cfg:23
 msgid "File 1:"
-msgstr ""
+msgstr "Fichier 1 :"
 
 #: ../data/level/titlescreen-load-game-selector.cfg:50
 msgid "File 2:"
-msgstr ""
+msgstr "Fichier 2 :"
 
 #: ../data/level/titlescreen-load-game-selector.cfg:77
 msgid "File 3:"
-msgstr ""
+msgstr "Fichier 3 :"
 
 #: ../data/level/titlescreen-load-game-selector.cfg:122
 #: ../data/level/titlescreen-new-game-selector.cfg:236
@@ -6622,7 +6622,7 @@ msgid ""
 "You've collected enough parts to\n"
 "make a whole new heart capsule!\n"
 "Your maximum HP has increased by one!"
-msgstr "Vous avez ramassé suffisamment de morceaux de capsule\nde santé pour en faire une entière !\nVos points de vie maximaux ont augmenté de un !"
+msgstr "Vous avez ramassé suffisamment de morceaux de\ncapsule de santé pour en faire une entière !\nVos points de vie maximaux ont augmenté de un !"
 
 #: ../data/objects/items/store-items/buyable_gliding_wings.cfg:5
 msgid "gliding wings"
@@ -6653,13 +6653,13 @@ msgstr "cœur"
 msgid ""
 "The heart will give you\n"
 "an extra health point."
-msgstr "Le cœur vous donne un point de santé supplémentaire."
+msgstr "Le cœur vous donne\nun point de santé supplémentaire."
 
 #: ../data/objects/items/store-items/buyable_jumping_boots.cfg:7
 msgid ""
 "The power boots will\n"
 "make you jump higher."
-msgstr "Les super bottes vous\npermettent de sauter plus haut."
+msgstr "Les super bottes vous permettent\nde sauter plus haut."
 
 #: ../data/objects/items/store-items/buyable_lesser_mana_talisman.cfg:5
 msgid "lesser mana talisman"
@@ -6765,19 +6765,19 @@ msgstr "Château de Milgram"
 
 #: ../data/objects/playable/menu_selector_load_game.cfg:84
 msgid "level"
-msgstr ""
+msgstr "niveau"
 
 #: ../data/objects/playable/menu_selector_load_game.cfg:85
 msgid "coins"
-msgstr ""
+msgstr "pièces"
 
 #: ../data/objects/playable/menu_selector_load_game.cfg:86
 msgid "visited levels"
-msgstr ""
+msgstr "niveaux visités"
 
 #: ../data/objects/playable/menu_selector_load_game.cfg:88
 msgid "hp"
-msgstr ""
+msgstr "pv"
 
 #: ../data/objects/props-interactive/misc/save_toilet.cfg:16
 #: ../data/objects/props-interactive/portals/dungeon_save_door.cfg:13
