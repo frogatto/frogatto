@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2012-11-19 01:43-0200\n"
-"PO-Revision-Date: 2012-11-19 03:47+0000\n"
-"Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
+"PO-Revision-Date: 2012-11-22 22:16+0000\n"
+"Last-Translator: GunChleoc <fios@foramnagaidhlig.net>\n"
 "Language-Team: Gaelic, Scottish (http://www.transifex.com/projects/p/Frogatto/language/gd/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -150,7 +150,7 @@ msgstr "A' chuid as motha dhen chòmhradh air ath-sgrìobhadh."
 msgid ""
 "Collectible items like coins can be collected by being touched by the "
 "tongue, besides just frogatto's body."
-msgstr "'S urrainn dhut nìthean a leithid \nbuinn oìr a chruinneachadh le \nbeantainn do theanga seach le \nbodhaig Fhrogatto a-mhàin."
+msgstr "'S urrainn dhut nithean a leithid \nbuinn oìr a chruinneachadh le \nbeantainn do theanga seach le \nbodhaig Fhrogatto a-mhàin."
 
 #: ../CHANGELOG:12 ../iOS_CHANGELOG:12
 msgid "Redrew the world map."
@@ -328,7 +328,7 @@ msgstr "Slànaichidh cridhean cridhe slàn a-nis seach leth-chridhe a-mhàin."
 
 #: ../CHANGELOG:56
 msgid "Changed tilesets to make water look better."
-msgstr "Buidhnean leacan air an atharrachadh ach am bi coltas nas fheàrr air uisge."
+msgstr "Buidhnean leacan air an atharrachadh \nach am bi coltas nas fheàrr air uisge."
 
 #: ../CHANGELOG:57
 msgid "Many small bug fixes."
@@ -795,7 +795,7 @@ msgstr ""
 msgid ""
 "...and got my hands on a Force Talisman.\n"
 "For your use."
-msgstr ""
+msgstr "... fhuair mi greim air seon cùmhachd.\nAir do shonsa."
 
 #: ../data/level/bon-bosque.cfg:203
 msgid ""
@@ -1134,7 +1134,7 @@ msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:384
 msgid "Awesome!"
-msgstr ""
+msgstr "Sgoinneil!"
 
 #: ../data/level/crevice-bridge.cfg:387
 msgid ""
@@ -1222,7 +1222,7 @@ msgstr "Uill, chann urrainn dhomh duine leigeil\ntron gheata seo."
 msgid ""
 "Without this key,\n"
 "you're not getting anywhere."
-msgstr "Chan fhaigh tu ann\nàs aonais na h-uichrach seo."
+msgstr "Chan fhaigh tu ann\nàs aonais na h-iuchrach seo."
 
 #: ../data/level/crevice-village-cave.cfg:761
 msgid ""
@@ -2373,7 +2373,7 @@ msgstr ""
 msgid ""
 "Okay... I guess that sorta makes sense,\n"
 "although it's a bit convoluted."
-msgstr "Ceart ma-thà, saoilidh mi gu bheil ciall dha ann an dòigh,\nged a tha e beagan toinnte."
+msgstr "Ceart ma-thà, saoilidh mi gu bheil ciall dha \nann an dòigh, ged a tha e beagan toinnte."
 
 #: ../data/level/crevice-village-house-elder.cfg:574
 msgid ""
@@ -2855,7 +2855,7 @@ msgstr "Frìth na Fàisneachd"
 msgid ""
 "Ahh, what a beautiful ...\n"
 "<em>...afternoon?!</em>"
-msgstr ""
+msgstr "À, nach e ...\n... feasgar brèagha a th' ann?!"
 
 #: ../data/level/frogatto-grotto-frogattos-room.cfg:293
 msgid "Oh geez! I overslept!"
@@ -2921,7 +2921,7 @@ msgstr "È ... seadh?"
 msgid ""
 "At least <em>try</em> to get a job today,\n"
 "alright?"
-msgstr ""
+msgstr "Feuch gum faigh thu obair an-diugh,\na laochain."
 
 #: ../data/level/frogatto-grotto-inside.cfg:641
 msgid "We need some help around here."
@@ -3125,7 +3125,7 @@ msgstr "Gleann Òir"
 msgid ""
 "On this level, we give advice on how to play.\n"
 "Each question mark has its own hint."
-msgstr "Air an leibheil seo, bheir sinn còmhairle dhut\nair ciamar a chluicheas tu an geama.\nTha gliocas air cùlaibh gabh comharradh-ceiste."
+msgstr "Air an leibheil seo, bheir sinn còmhairle dhut\nair ciamar a chluicheas tu an geama.\nTha gliocas air cùlaibh gach comharra-ceiste."
 
 #: ../data/level/grassy-path.cfg:398
 msgid ""
@@ -3137,34 +3137,34 @@ msgstr "Ma tha fios agad mu thràth\nciamar a chluicheas tu,\ncoisich dhan ath l
 msgid ""
 "To save your progress in the game,\n"
 "use one of these convenient restrooms."
-msgstr "Gus an adhartas agad sa gheama a shàbhaladh,\ncleachd aon dhe na taighean-beaga goireasach seo."
+msgstr "Gus an t-adhartas agad sa gheama a shàbhaladh,\ncleachd aon dhe na taighean-beaga goireasach seo."
 
 #: ../data/level/grassy-path.cfg:434
 msgid ""
 "Some changes in elevation are too high\n"
 "to clear with just a normal jump."
-msgstr "Aig amannan, feumaidh tu dìreadh ro àrd \nach an dèanadh leum a-mhàin a chùis."
+msgstr "Aig amannan, feumaidh tu dìreadh ro àrd \nach an dèanadh leum a-mhàin a' chùis."
 
 #: ../data/level/grassy-path.cfg:435
 msgid "Fortunately, Frogatto can jump off of walls, too!"
-msgstr "Gu fortanach, 's urrainn dho Fhrogatto \nleum far bhallaichean cuideachd!"
+msgstr "Gu fortanach, 's urrainn dha Fhrogatto \nleum far bhallachan cuideachd!"
 
 #: ../data/level/grassy-path.cfg:436
 msgid "To do this, do a walking jump into the wall."
-msgstr "Gus seo a' dhèanamh, coisich is leum dhan bhalla."
+msgstr "Gus seo a' dhèanamh, coisich is leum ris a' bhalla."
 
 #: ../data/level/grassy-path.cfg:437
 msgid ""
 "If you bump into a wall at the crest of a jump,\n"
 "you will cling to the wall and slowly slide down."
-msgstr "Ma bhuaileas tu balla aig puing àrd an leum,\ngreimichidh tu dhan bhalla is slìobaidh tu sìos gu slaodach."
+msgstr "Ma bhuaileas tu balla aig puing àrd an leum,\ngreimichidh tu dhan bhalla is\nslìobaidh tu sìos gu slaodach."
 
 #: ../data/level/grassy-path.cfg:438
 msgid ""
 "If you don't get a running start, you can still\n"
 "cling on, if you tap the arrow toward the wall,\n"
 "and press jump whilst it's held down."
-msgstr "Mura faigh thu tòiseachadh a' ruith, 's urrainn dhut fhathast \ngreim a chumail air ma bhrùthas tu air an t-saighad \nan comhair a' bhalla is ma bhrùthas tu air leum \nfhad 's a tha thu a' cumail air an t-saighead."
+msgstr "Mura faigh thu tòiseachadh a' ruith, 's urrainn dhut \nfhathast greim a chumail air ma bhrùthas tu \nair an t-saighead an comhair a' bhalla is \nma bhrùthas tu air leum fhad 's a tha thu \na' cumail air an t-saighead."
 
 #: ../data/level/grassy-path.cfg:439
 msgid ""
@@ -3177,7 +3177,7 @@ msgid ""
 "This is especially useful, if two walls are\n"
 "facing each other, because then you can\n"
 "rebound over and over between them."
-msgstr "Tha seo feumail gu h-araidh ma tha dà bhalla \nan comhair a chèile is 's urrainn dhut leum \neadarra mu seach."
+msgstr "Tha seo feumail gu h-araidh ma tha dà bhalla \nan comhair a chèile is 's urrainn dhut leum \neatorra mu seach."
 
 #: ../data/level/grassy-path.cfg:441
 msgid "This lets you ascend vertical columns."
@@ -3197,7 +3197,7 @@ msgstr "Thachraidh tu air iomadach creutair a tha airson \ndo mhilleadh fhad 's 
 msgid ""
 "It's often fine to just avoid them, but if you have\n"
 "to fight, Frogatto's best defense is his tongue."
-msgstr "Gabhaidh iad seachnadh gu tric, ach ma tha agad ri sabaid,\nis a theanga an dìon as fhearr aig Frogatto."
+msgstr "Gabhaidh iad seachnadh gu tric, ach ma tha agad ri \nsabaid, is a theanga an dìon as fhearr aig Frogatto."
 
 #: ../data/level/grassy-path.cfg:462
 msgid ""
@@ -3225,7 +3225,7 @@ msgstr "Nuair a bhios iad nan laighe, \ngabhaidh iad leòn is tu a' leum orra."
 msgid ""
 "Sticking out the tongue and spitting,\n"
 "are both done with the attack key."
-msgstr "Cuiridh tu an dà chuid do theanga a-mach \nis tilgidh thu smugaid leis an iuchair ionnsaighe."
+msgstr "Cuiridh tu an dà chuid do theanga a-mach \nis tilgidh tu smugaid leis an iuchair ionnsaighe."
 
 #: ../data/level/grassy-path.cfg:467
 msgid ""
@@ -3243,19 +3243,19 @@ msgstr "Is na gabh dragh, ma gheibh thu bàs,\ncha dèan thu ach ath-thòiseacha
 msgid ""
 "A very useful fact is that you can control\n"
 "the direction in which enemies are spat."
-msgstr "Tha e glè fhaumail gu bheil smachd ort \nair an comhair a thilgeas tu nàimhdean."
+msgstr "Tha e glè fheumail gu bheil smachd agad\nair an comhair a thilgeas tu nàimhdean."
 
 #: ../data/level/grassy-path.cfg:507
 msgid ""
 "If you hold down the up key while pressing\n"
 "the attack button, you'll spit in a high arc."
-msgstr "Ma bhrùthas tu air an iuchair ionnsaighe fhad 's a tha thu a' cumail an t-saighead suas, tilgidh tu smugaid gu àrd."
+msgstr "Ma nì thu brùthadh air an iuchair ionnsaighe\nfhad 's a tha thu a' cumail an t-saighead suas,\ntilgidh tu smugaid gu àrd."
 
 #: ../data/level/grassy-path.cfg:508
 msgid ""
 "If you hold down the down key while pressing\n"
 "the attack button, you'll spit with very little force."
-msgstr "Ma bhrùthas tu air an iuchair ionnsaighe \nfhad 's a tha thu a' cumail an t-saighead sìos, \ntilgidh tu smugaid gu lag."
+msgstr "Ma nì thu brùthadh air an iuchair ionnsaighe \nfhad 's a tha thu a' cumail an t-saighead sìos, \ntilgidh tu smugaid gu lag."
 
 #: ../data/level/grassy-path.cfg:510
 msgid ""
@@ -3273,7 +3273,7 @@ msgstr "Thig dùbhlain eadar-dhealaichte an cois \ngach nàmhad is feumaidh tu a
 msgid ""
 "Also, the tongue can grab useful items, like keys.\n"
 "This is how you carry them to the lock they open."
-msgstr "Cuideachd, 's urrainn dhan teanga greim\n fhaighinn air nìthean feumail a leithid \niuchraichean. Seo mar a ghiùilaineas tu iad \ndhan ghlas a tha thu airson fosgladh."
+msgstr "Cuideachd, 's urrainn dhan teanga greim\n fhaighinn air nithean feumail a leithid \niuchraichean. Seo mar a ghiùlaineas tu iad \ndhan ghlas a tha thu airson fosgladh."
 
 #: ../data/level/grassy-path.cfg:544
 msgid ""
@@ -3285,13 +3285,13 @@ msgstr "Tha fuarain is tobraichean eile glè fheumail."
 msgid ""
 "If you drink from them,\n"
 "you will restore all of your health!"
-msgstr "Ma dh'òlas tu uapa,\nbidh thu slàn fallain a-rithist!"
+msgstr "Ma dh'òlas tu bhuapa,\nbidh thu slàn fallain a-rithist!"
 
 #: ../data/level/grassy-path.cfg:564
 msgid ""
 "Certain bridges and stairways, like this one,\n"
 "allow you to jump up and pass through them."
-msgstr "Leigidh cuid the dhrochaidean is staidhrichean \na leithid an tè seo leat leum suas ir dol tromhpa."
+msgstr "Leigidh cuid the dhrochaidean is staidhrichean \na leithid an tè seo leat leum suas is dol tromhpa."
 
 #: ../data/level/grassy-path.cfg:565
 msgid "You can also jump down through them."
@@ -3319,7 +3319,7 @@ msgstr "Fhad 's a bha thu a' cluiche \nan leibheil seo, mhothaich thu \nna buinn
 msgid ""
 "You can collect these\n"
 "and then use them to buy stuff!"
-msgstr "'s urrainn dhut an cruinneachadh\nis an cleachadh gus stuth a cheannach."
+msgstr "'S urrainn dhut an cruinneachadh\nis an cleachdadh gus stuth a cheannach."
 
 #: ../data/level/grassy-path.cfg:607
 msgid ""
@@ -3335,7 +3335,7 @@ msgstr "Aig amannan, tachraidh tu air \ncruth-tìre cunnartach a leithid\nnan dr
 
 #: ../data/level/grassy-path.cfg:627
 msgid "As you'd expect, stepping on them would hurt a bit."
-msgstr "Mar am biodh tu an dùil, bidh e \ncaran goirt ma sheasas tu air."
+msgstr "Mar am biodh tu an dùil, bidh e \ncaran goirt ma sheasas tu orra."
 
 #: ../data/level/grassy-path.cfg:628
 msgid "However, they also hurt your enemies!"
@@ -3351,13 +3351,13 @@ msgstr "'S e deagh dhòigh a th' ann gus cuidhteas \nfhaighinn dhiubh ma chuirea
 msgid ""
 "Beware also, any bottomless pits you encounter.\n"
 "Those are immediately fatal."
-msgstr "Thoir an aire cuideachd ait na slocan gun bhonn\nris an tachair thu. Gheibh thu bàs sa bhad annta."
+msgstr "Thoir an aire cuideachd air na slocan gun bhonn\nris an tachair thu. Gheibh thu bàs sa bhad annta."
 
 #: ../data/level/grassy-path.cfg:736
 msgid ""
 "Up ahead, you'll notice an anthill,\n"
 "which ants constantly come out of."
-msgstr "Air do bheulaibh, chì thu \ndùn-sheangan, is seangan \na' tighinn a-mach às gun sgur."
+msgstr "Air do bheulaibh, chì thu \ndùn-sheangan, is seanganan \na' tighinn a-mach às gun sgur."
 
 #: ../data/level/grassy-path.cfg:737
 msgid ""
@@ -3379,7 +3379,7 @@ msgstr "Sin agad e airson an oideachaidh."
 msgid ""
 "Although there's more to playing the game,\n"
 "the rest, we can safely let you learn on your own."
-msgstr ""
+msgstr "Ged a tha barrachd ri ionnsachadh gus\nan geama a' chluiche, ionnsaichidh tu\nan corr leat fhèin gun trioblaid."
 
 #: ../data/level/grassy-path.cfg:759
 msgid ""
@@ -3401,33 +3401,33 @@ msgstr "Ma tha thu air còmhradh fhaicinn roimhe,\nfaodaidh e conas a chur ort m
 msgid ""
 "You can skip a conversation, including parts\n"
 "of cutscenes, by pressing the \"escape\" key."
-msgstr "'S urrainn dhut còmhradh a sheachnadh, a' gabhail a-steach \npàirtean dhe sheallaidhean ma bhrùthas tu eir an iuchair Esc."
+msgstr "'S urrainn dhut còmhradh a sheachnadh,\na' gabhail a-steach pàirtean dhe sheallaidhean\nma nì thu brùthadh air an iuchair Esc."
 
 #: ../data/level/grassy-path.cfg:782
 msgid ""
 "And yes, this applies to the question\n"
 "marks on this level, too."
-msgstr "Is tha seo fìor cuideachd airson nan \ncomharraidhean-ceiste san leibheil seo."
+msgstr "Is tha seo fìor cuideachd airson nan \ncomharran-ceiste san leibheil seo."
 
 #: ../data/level/grassy-path.cfg:892
 msgid ""
 "If you haven't already noticed, the red\n"
 "fruits you sometimes find nestled in\n"
 "the grass are spittable projectiles."
-msgstr "Mura mhothaich thu mu thràth, \n's e peilearan a ghabhas tilgeil \nle smugaid a th' anns na measan dearga \na lorgas tu san fheur aig amannan."
+msgstr "Mur an do mhothaich thu mu thràth, \n's e peilearan a ghabhas tilgeil le smugaid\na th' anns na measan dearga\na lorgas tu san fheur aig amannan."
 
 #: ../data/level/grassy-path.cfg:893
 msgid ""
 "You'll find many such objects of similar size\n"
 "in different areas of the game, such as crates\n"
 "inside of houses, or nuts hanging from trees."
-msgstr ""
+msgstr "Lorgaidh tu iomadh oibseact le meud \ncoltach ris ann an roinnean \neadar-dhealaichte dhen gheama, a leithid \ncreataichean taobh a-staigh thaighean \nno cnòthan a' crochadh bho chraobhan"
 
 #: ../data/level/grassy-path.cfg:894
 msgid ""
 "These are an ample source of ammunition,\n"
 "that's almost always available."
-msgstr ""
+msgstr "'S e tobar pailt dhe pheilearan a th' annta\na tha ri fhaighinn mar as trice."
 
 #: ../data/level/grassy-path.cfg:895
 msgid ""
@@ -3435,7 +3435,7 @@ msgid ""
 "if you use them up, walk away from the screen\n"
 "where you found them, and then return again,\n"
 "there will often be a new one waiting to use."
-msgstr ""
+msgstr "Thoir an aire gu bheil buadh àraidh aca;\nma tha thu air an caitheamh, coisich air falbh\nàs an sgrìn far an do lorgh thu iad\nis an uairsin till is bidh fear ùr\na' feitheamh ort gu tric."
 
 #: ../data/level/grassy-path.cfg:3810
 msgid "Grassy Path"
@@ -3583,7 +3583,7 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:1958
 msgid "Not that anyone's asking me."
-msgstr ""
+msgstr "Cha e 's gum biodh duine sam bith \na' faighneachd bhuamsa."
 
 #: ../data/level/kitty-dormitory.cfg:1960
 msgid "Well, thanks, I do appreciate that."
@@ -3972,7 +3972,7 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2981
 msgid "If you don't mind my asking, where are we?"
-msgstr ""
+msgstr "Tha mi n dòchas gum faod mi faighneachd,\nach càit' a bheil sinn?"
 
 #: ../data/level/kitty-dormitory.cfg:2983
 msgid ""
@@ -4937,7 +4937,7 @@ msgstr ""
 msgid ""
 "Uhm, I hope you don't mind my asking,\n"
 "but what on earth <em>are</em> you, anyway?"
-msgstr ""
+msgstr "Èm, tha mi n dòchas gum faod mi faighneachd,\nach dè fon ghrèin a tha thusa co-dhiù?"
 
 #: ../data/level/secluded-hut-interior.cfg:320
 msgid "Ostensibly, I am a mole."
@@ -4953,25 +4953,25 @@ msgstr "...\nCeart ma-thà."
 msgid ""
 "Perhaps more importantly, I am a bit of\n"
 "an astronomer and biologist, by trade."
-msgstr "Rud as cudromaiche 's dòcha, tha mi nam reuladair is 's e bith-eòlas an ceàrd agam."
+msgstr "Rud as cudromaiche 's dòcha, tha mi nam \nreuladair is 's e bith-eòlas an ceàrd agam."
 
 #: ../data/level/secluded-hut-interior.cfg:324
 msgid ""
 "That is why I live all the way up here.\n"
 "You can see quite a bit from this height."
-msgstr "Seo as adhbhar gu bheil mi a' fuireach fada shuas an-seo.\n'S urrainn dhut tòrr fhaicinn on àirde seo."
+msgstr "Seo as adhbhar gu bheil mi a' fuireach fada shuas \nan-seo. 'S urrainn dhut tòrr fhaicinn on àirde seo."
 
 #: ../data/level/secluded-hut-interior.cfg:326
 msgid ""
 "...and I guess you have these\n"
 "ants in cages to study them?"
-msgstr "... 's tha mi 'n dùil gu bheil na \nseangan seo ann an cliabhan\nach an dèan thu sgrùdadh orra."
+msgstr "... 's tha mi 'n dùil gu bheil na \nseangan seo ann an cèidsichean\nach an dèan thu sgrùdadh orra."
 
 #: ../data/level/secluded-hut-interior.cfg:327
 msgid ""
 "That's right.  Unfortunately,\n"
 "my collection lacks the rarer golden ant."
-msgstr ""
+msgstr "Gu mì-fhortanach, tha an seangan òr\nainneamh a dhìth sa chruinneachadh agam."
 
 #: ../data/level/secluded-hut-interior.cfg:329
 msgid "Oh, what a shame."
@@ -4983,7 +4983,7 @@ msgid ""
 "If you could bring me a golden ant\n"
 "and stick it in one of my cages,\n"
 "I'd reward you <em>handsomely.</em>"
-msgstr ""
+msgstr "Fhios a'd, tha coltas an taistealaich ort.\nMas urrainn dhut seangan òr a thoirt \nthugam is a chur ann an cèidse dhomh,\n's mòr a bhios an duais a bheir mi dhut."
 
 #: ../data/level/secluded-hut-interior.cfg:332
 msgid ""
@@ -4995,7 +4995,7 @@ msgstr "Duais mhòr, an e? Bheir mi fear dhut!"
 msgid ""
 "Oh! You got the golden ant for me.\n"
 "It's beautiful, <em>beautiful!</em>"
-msgstr ""
+msgstr "Ò! Fhuair thu an seangan òr dhomh.\nTha e brèagha àlainn!"
 
 #: ../data/level/secluded-hut-interior.cfg:337
 msgid ""
@@ -5069,7 +5069,7 @@ msgstr "Saoil an deach leat seangan òr fhaighinn \ndhomh fhathast?"
 msgid ""
 "I'm working on it.\n"
 "Those things pack a pretty mean bite, you know."
-msgstr ""
+msgstr "Tha mi ag obair air fhathast. Tha bìdeag fiadhaich\nair an treud a tha ud."
 
 #: ../data/level/secluded-hut-interior.cfg:357
 msgid ""
@@ -5083,7 +5083,7 @@ msgstr ""
 
 #: ../data/level/secluded-hut-interior.cfg:643
 msgid "I say! Who's there?"
-msgstr "Na can rium! Cò th' ann?"
+msgstr "Halò! Cò th' ann?"
 
 #: ../data/level/secluded-hut-interior.cfg:1063
 #: ../data/level/secluded-hut.cfg:2238
@@ -5093,7 +5093,7 @@ msgstr "Bothan Iomallach"
 
 #: ../data/level/secluded-hut.cfg:1398
 msgid "Are you quite alright?"
-msgstr "A bheil thu ceart gu leòr?"
+msgstr "A bheil sibh ceart gu leòr?"
 
 #: ../data/level/secluded-hut.cfg:1400
 msgid ""
@@ -5109,7 +5109,7 @@ msgstr "Gille cas-fhliuch Mhilgram gun teagamh."
 msgid ""
 "They may have seen me talking to you,\n"
 "I can't be sure."
-msgstr "'S dòcha gum faca iad mi a' bruidhinn riut.\nChan eil mi cinnteach."
+msgstr "'S dòcha gum faca iad mi a' bruidhinn ruibh.\nChan eil mi cinnteach."
 
 #: ../data/level/secluded-hut.cfg:1404
 msgid "Wait, what?  Milgram?"
@@ -5119,31 +5119,31 @@ msgstr "B' àill leat? Milgram?"
 msgid ""
 "What's <em>he</em> doing\n"
 "on this side of the island?"
-msgstr ""
+msgstr "Dè tha esan ris taobh seo an eilein?"
 
 #: ../data/level/secluded-hut.cfg:1408
 msgid "You still haven't heard, then."
-msgstr "Cha chuala tu mu dheidhinn fhathast, ma-thà."
+msgstr "Cha chuala sibh mu dheidhinn fhathast, ma-thà."
 
 #: ../data/level/secluded-hut.cfg:1409
 msgid ""
 "Milgram's men showed up\n"
 "early this morning, in town.\n"
 "They've taken the whole place hostage!"
-msgstr ""
+msgstr "Noch muinntir Mhilgram tràth sa mhadainn\nan-diugh sa bhaile. Rinn iad bràighdean\ndhen a h-uile duine!"
 
 #: ../data/level/secluded-hut.cfg:1410
 msgid ""
 "Unfortunately, I don't know the details.\n"
 "I just flew out of there as soon as I could,\n"
 "looking for <em>anyone</em> who could help."
-msgstr ""
+msgstr "Gu mì-fhortanach, chan eil barrachd fiosrachaidh \nagam. Dh'itealaich mi a-mach à siud cho luath 's\na b' urrainn dhomh, a' sireadh duine sam bith\na bheireadh cobhair dhuinn."
 
 #: ../data/level/secluded-hut.cfg:1412
 msgid ""
 "That certainly...\n"
 "changes my plans for the day."
-msgstr "Nì seo ...\natharrachadh air na bha fainear dhomh airson an-diugh."
+msgstr "Nì seo ... atharrachadh air \nna bha fainear dhomh airson an-diugh."
 
 #: ../data/level/secluded-hut.cfg:1414
 msgid ""
@@ -5157,7 +5157,7 @@ msgid ""
 "I don't think I can promise anything,\n"
 "but if the opportunity presents itself,\n"
 "who knows?"
-msgstr "Cha chreid mi gur urrainn dhomh dad a ghealltainn dhut,\nach ma gheibh mi cothrom air,\ncò aige a tha fios?"
+msgstr "Cha chreid mi gur urrainn dhomh dad a ghealltainn \ndhut, ach ma gheibh mi cothrom air,\ncò aige tha fios?"
 
 #: ../data/level/secluded-hut.cfg:1417
 msgid ""
@@ -5175,31 +5175,31 @@ msgid ""
 "Hopefully, we'll fix that bridge soon.\n"
 "Impressive how fast they can do that,\n"
 "with modular construction and all."
-msgstr "Co-dhiù no co-dheth, b' fheàirrde mi falbh.\nTha mi 'n dòchas gun càraich sinn an drochaid a dh'aithghearr.\nCha chreideadh tu dè cho luath 's a nì iad seo\nle togail mòidealach 's a h-uile sian."
+msgstr "Co-dhiù no co-dheth, b' fheàirrde mi falbh.\nTha mi 'n dùil gun càraich sinn an drochaid\na dh'aithghearr. Cha chreideadh tu dè cho luath \n's a nì iad seo le togail mòidealach 's a h-uile sian."
 
 #: ../data/level/secluded-hut.cfg:1420
 msgid ""
 "In the meantime, you might benefit from\n"
 "visiting the fellow who lives here."
-msgstr "San eadar-àm, carson nach tadhail thu\nair an duine a tha a' fuireach an-seo?\nGheibh thu buannachd às, 's dòcha."
+msgstr "San eadar-àm, carson nach tadhail sibh\nair an duine a tha a' fuireach an-seo?\nGheibheadh sibh buannachd às, 's dòcha."
 
 #: ../data/level/secluded-hut.cfg:1421
 msgid ""
 "Bit of a recluse, but he's quite sharp.\n"
 "He lives on top of this rock column."
-msgstr "'S e seòrsa dhe dh'aonaran a th' ann,\nach tha e caran tapaidh.\nTha e a' fuireach air muin na creige a tha seo."
+msgstr "'S e seòrsa dhe dh'aonaran a th' ann,\nach tha e caran tapaidh.\nTha e a' fuireach air muin na creige ud."
 
 #: ../data/level/secluded-hut.cfg:1423
 msgid "And I get up there... how?"
-msgstr "Is gheibh mu suas ... ciamar?"
+msgstr "Is gheibh mi suas ... ciamar?"
 
 #: ../data/level/secluded-hut.cfg:1427
 msgid "Simple, just take to the air!"
-msgstr "Simplidh, thèid dhan adhair."
+msgstr "Simplidh, rachaibh dhan adhair."
 
 #: ../data/level/secluded-hut.cfg:1430
 msgid "You ... <em>do</em> realize I can't fly?"
-msgstr ""
+msgstr "Tha fhios agaibh nach eil sgiathan agamsa, a bheil?"
 
 #: ../data/level/splash-hop.cfg:3057
 msgid "Splash, Hop"
@@ -5676,7 +5676,7 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:288
 msgid "Thank you Jeeves, that will do nicely."
-msgstr "Tapadh leat, Jeeves, nì seo a chùis gu dearbh."
+msgstr "Tapadh leat, Jeeves, nì seo a' chùis gu dearbh."
 
 #: ../data/level/tea-with-milgram.cfg:292
 msgid "Anyhow, I'm quite unsure where to go from here."
@@ -5964,15 +5964,15 @@ msgstr "GEAMA ÙR"
 
 #: ../data/level/titlescreen.cfg:125
 msgid "Press ${LEFT_KEY} or ${RIGHT_KEY} to walk."
-msgstr "Brùth air ${LEFT_KEY} no ${RIGHT_KEY} airson coiseachd."
+msgstr "Brùth air ${LEFT_KEY} no ${RIGHT_KEY} gus coiseachd."
 
 #: ../data/level/titlescreen.cfg:126
 msgid "Quickly press ${LEFT_KEY} or ${RIGHT_KEY} twice to run."
-msgstr "Brùth air ${LEFT_KEY} no ${RIGHT_KEY} dà thuras gu luath airson ruith."
+msgstr "Brùth air ${LEFT_KEY} no ${RIGHT_KEY} dà thuras gu luath gus ruith."
 
 #: ../data/level/titlescreen.cfg:128
 msgid "Press ${DOWN_KEY} to crouch."
-msgstr "Brùth air ${DOWN_KEY} airson crùbadh."
+msgstr "Brùth air ${DOWN_KEY} gus crùbadh."
 
 #: ../data/level/titlescreen.cfg:128
 msgid "Walk in front of a door or person, and press"
@@ -5980,7 +5980,7 @@ msgstr "Coisich air beulaibh doras no neach is brùth"
 
 #: ../data/level/titlescreen.cfg:129
 msgid "Press ${UP_KEY} to talk, and use things like doors."
-msgstr "Brùth air ${UP_KEY} gus bruidhinn is rudan a leithid dorsan a chleachdadh."
+msgstr "Brùth air ${UP_KEY} gus bruidhinn no rudan a leithid dorsan a chleachdadh."
 
 #: ../data/level/titlescreen.cfg:129
 msgid "the button that appears to interact with them."
@@ -6042,32 +6042,32 @@ msgstr "Seadh, seo an t-iuchair.\nTha senaganan shìos an-siud."
 msgid ""
 "I've been meaning to get rid of them,\n"
 "but I just can't find the time."
-msgstr ""
+msgstr "Bha mi fhìn airson cuidhteas fhaighinn \ndhiubh, ach tha mi ro thrang."
 
 #: ../data/level/to-nenes-house-inside.cfg:53
 msgid ""
 "And now, they've gone and\n"
 "ruined a whole bag of flour!"
-msgstr ""
+msgstr "Is dè rinn iad a-nis ach baga slàn \ndhe mhin a mhilleadh!"
 
 #: ../data/level/to-nenes-house-inside.cfg:56
 msgid "Ick."
-msgstr ""
+msgstr "Iochd."
 
 #: ../data/level/to-nenes-house-inside.cfg:58
 msgid "I know, right?"
-msgstr ""
+msgstr "Seadh, shin agad e."
 
 #: ../data/level/to-nenes-house-inside.cfg:59
 msgid ""
 "So you showed up, and I thought ...\n"
 "hey, maybe you could be a gentleman,\n"
 "and help me out here, hm?"
-msgstr ""
+msgstr "Nise, on a tha thu an-seo, fhios a'd...\nnach e balach coibhneil a th' annad\nis bheireadh tu cobhair dhomh?"
 
 #: ../data/level/to-nenes-house-inside.cfg:61
 msgid "Yeah, that sounds ... opportune."
-msgstr ""
+msgstr "Seadh, abair ... fortan."
 
 #: ../data/level/to-nenes-house-inside.cfg:63
 msgid ""
@@ -6085,18 +6085,18 @@ msgstr "Murt, is mise dhen bheachd gun dèanadh \ntu an asgaidh e airson caraid!
 msgid ""
 "Also, come back and\n"
 "talk to me when you're done."
-msgstr ""
+msgstr "Cuideachd, till is thig bruidhinn rium\nnuair a bhios tu deiseil."
 
 #: ../data/level/to-nenes-house-inside.cfg:65
 msgid ""
 "But if you're going to be like that\n"
 "I think I left a health capsule down there.\n"
 "If you can clear it out, it's yours."
-msgstr "Ach ma tha thu airson bhith mar seo,\ndh'fhàg mi capsail chridhe shìos.\nTha e agadsa ma thogras tu."
+msgstr "Ach mas e seo do dhòigh, dh'fhàg mi capsail \nchridhe shìos. Tha e agadsa ma thogras tu."
 
 #: ../data/level/to-nenes-house-inside.cfg:65
 msgid "I might have something else for you."
-msgstr ""
+msgstr "'S dòcha gum bi rudeigin eile agam dhut."
 
 #: ../data/level/to-nenes-house-inside.cfg:70
 msgid ""
@@ -6119,87 +6119,87 @@ msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:80
 msgid "Here, I have another little surprise for you."
-msgstr ""
+msgstr "Seo thu, tha tìodhlac beag eile agam dhut."
 
 #: ../data/level/to-nenes-house-inside.cfg:80
 msgid ""
 "You really did do it.\n"
 "You rock!"
-msgstr ""
+msgstr "Rinn thu e!\n'S tusa am balach!"
 
 #: ../data/level/to-nenes-house-inside.cfg:83
 msgid "Is it cake?"
-msgstr ""
+msgstr "An e cèic a th' ann?"
 
 #: ../data/level/to-nenes-house-inside.cfg:85
 msgid ""
 "Ha.  No, it's quite a bit better.\n"
 "It's a little souvenir from the IDF."
-msgstr ""
+msgstr "Ha. Chan e, tha e fada nas fhearr.\nSeo cuimhneachan beag bhon IDF."
 
 #: ../data/level/to-nenes-house-inside.cfg:86
 msgid "It's a Fire Talisman, and I'd like you to have it."
-msgstr ""
+msgstr "'S e seun teine a th' ann, is tha mi\nag iarraidh gum bi e agadsa."
 
 #: ../data/level/to-nenes-house-inside.cfg:89
 msgid ""
 "Wow... That's... awesome, but\n"
 "why on earth are you giving this to me?"
-msgstr ""
+msgstr "Ò ... tha seo ... fìor sgoinneil, ach carson \nfon ghrèin a tha thu ga thoirt dhomhsa?"
 
 #: ../data/level/to-nenes-house-inside.cfg:91
 msgid "It's a bit much for getting rid of a few ants!"
-msgstr ""
+msgstr "Tha e caran cus is cha d' rinn mi ach\ncuidhteas fhaighinn dhe sheangan no dhà!"
 
 #: ../data/level/to-nenes-house-inside.cfg:93
 msgid ""
 "Honestly?  I had originally meant to\n"
 "give it to you as a birthday present."
-msgstr ""
+msgstr "Dha-rìribh? Bha fainear dhomh seo a thoirt \ndhut airson do cho-là-breith co-dhiù."
 
 #: ../data/level/to-nenes-house-inside.cfg:94
 msgid "I just never got around to it."
-msgstr ""
+msgstr "Ach bha mi ro thrang, fhios a'd?"
 
 #: ../data/level/to-nenes-house-inside.cfg:95
 msgid ""
 "I don't need it myself, and I know\n"
 "you'd get a LOT of use out of it."
-msgstr ""
+msgstr "Chan eil feum agam fhèin air, is tha fhios a'm\ngum faigheadh tusa mòran feum às."
 
 #: ../data/level/to-nenes-house-inside.cfg:96
 msgid "So...  Happy (rather belated) Birthday!"
-msgstr ""
+msgstr "Mar sin ... Co-là-breith sona (caran anmoch) dhut!"
 
 #: ../data/level/to-nenes-house-inside.cfg:99
 msgid ""
 "You know, I'm really lucky to\n"
 "have friends like you!"
-msgstr ""
+msgstr "Nach fortanach a tha mise gu bheil\ncaraiden mar a tha thusa agam!"
 
 #: ../data/level/to-nenes-house-inside.cfg:102
 msgid ""
 "Say, that wouldn't also happen\n"
 "to be <em>Birthday</em> Cake, would it?"
-msgstr ""
+msgstr "Saoil, chan e cèic co-là-breith a tha seo,\nan e?"
 
 #: ../data/level/to-nenes-house-inside.cfg:104
 msgid ""
 "...\n"
 "What?  No!"
-msgstr ""
+msgstr "... Dè? Chan è!"
 
 #: ../data/level/to-nenes-house-inside.cfg:105
 msgid ""
 "Just take the present,\n"
 "you silly, silly frog."
-msgstr ""
+msgstr "Gabh an tìodhlac ma-thà, amadain losgainn."
 
 #: ../data/level/to-nenes-house-inside.cfg:111
 msgid ""
 "Hey, thanks for taking care\n"
 "of those ants down there!"
-msgstr "Taing airson an gòthach a \ndhèanamh air na seangan \nshìos an siud."
+msgstr "Taing airson an gnòthach a dhèanamh \nair na seangan shìos an siud."
 
 #: ../data/level/to-nenes-house-inside.cfg:113
 msgid ""
@@ -6242,13 +6242,13 @@ msgstr ""
 msgid ""
 "I guess that sneaking in with some bugs\n"
 "would be an easy way of getting a new job..."
-msgstr ""
+msgstr "Saoil nan goideadh mi a-steach le bògas no dhà\nan e dòigh fhurasta a bhiodh ann gus obair fhaighinn?"
 
 #: ../data/level/to-nenes-house.cfg:180
 msgid ""
 "But what am I thinking?\n"
 "It would be just nasty of me if I did that."
-msgstr ""
+msgstr "Ach dè tha fainear dhomh a-rèist?\nCha bhiodh seo ach mosach!"
 
 #: ../data/level/to-nenes-house.cfg:2146
 msgid "Hah!"
@@ -6260,7 +6260,7 @@ msgstr "Seo an taigh aig Nannag, \ndìreach shuas an-siud!"
 
 #: ../data/level/to-nenes-house.cfg:2158
 msgid "A moment of your time sir?"
-msgstr "An stad sibh oirbh mionaid?"
+msgstr "Am fuirich sibh oirbh mionaid?"
 
 #: ../data/level/to-nenes-house.cfg:2160
 msgid ""
@@ -6537,24 +6537,24 @@ msgstr "Is ${registry.arcade_coin_race_high_score} an leibheil as àirde a chaid
 
 #: ../data/objects/items/ability.cfg:8
 msgid "This has very little range, but is quite damaging."
-msgstr ""
+msgstr "Chan eil ach astar glè bheag aige, ach \nfaodaidh e dochann mòr a dhèanamh."
 
 #: ../data/objects/items/ability.cfg:8
 msgid ""
 "You can now breathe out a\n"
 "short stream of intense flame."
-msgstr ""
+msgstr "Is urrainn dhut anail a shèideadh le\nsruth lasrach goirid glè theth."
 
 #: ../data/objects/items/ability.cfg:8 ../data/objects/items/ability.cfg:9
 #: ../data/objects/items/ability.cfg:10
 msgid "You gained a new ability!"
-msgstr ""
+msgstr "Bhuannaich thu comas ùr!"
 
 #: ../data/objects/items/ability.cfg:9
 msgid ""
 "This has excellent range,\n"
 "and does decent damage."
-msgstr ""
+msgstr "Tha glè mhath aige is nì e dochann math."
 
 #: ../data/objects/items/ability.cfg:9
 msgid ""
@@ -6566,7 +6566,7 @@ msgstr ""
 msgid ""
 "These have excellent range and decent damage,\n"
 "but are somewhat draining to use."
-msgstr ""
+msgstr "Tha glè mhath aca is nì iad dochann math,\nach fàsaidh tu sgìth an cleachdadh."
 
 #: ../data/objects/items/ability.cfg:10
 msgid ""
@@ -6577,19 +6577,19 @@ msgstr ""
 
 #: ../data/objects/items/ability.cfg:12
 msgid "Press ${ATTACK_KEY} to switch between abilities."
-msgstr ""
+msgstr "Dèan brùthadh air ${ATTACK_KEY} gus \nsuids a dhèanamh eadar comasan."
 
 #: ../data/objects/items/ability.cfg:12
 msgid ""
 "Tap the upper-left corner of the screen\n"
 "to switch between abilities."
-msgstr ""
+msgstr "Thoir gnogadh air oisean clì gu h-àird air an \nsgrìn gus suids a dhèanamh eadar comasan."
 
 #: ../data/objects/items/max_heart_object.cfg:8
 msgid ""
 "You have acquired a heart capsule.\n"
 "Your maximum HP has increased by one!"
-msgstr "Fhuair thu capsail chridhe.\nTha puing-bheatha as motha\na bharrachd agad!"
+msgstr "Fhuair thu capsail chridhe. Tha puing-bheatha \nas motha a bharrachd agad!"
 
 #: ../data/objects/items/partial_max_heart_object.cfg:11
 msgid ""
@@ -6631,7 +6631,7 @@ msgstr "Leig na sgiathan slìobaidh leat\nslìobadh tron adhair."
 
 #: ../data/objects/items/store-items/buyable_greater_mana_talisman.cfg:5
 msgid "greater mana talisman"
-msgstr ""
+msgstr "mòr-sheun mana"
 
 #: ../data/objects/items/store-items/buyable_greater_mana_talisman.cfg:7
 msgid ""
@@ -6658,7 +6658,7 @@ msgstr "Leig na botannan cumhachd leat\nleum nas àirde."
 
 #: ../data/objects/items/store-items/buyable_lesser_mana_talisman.cfg:5
 msgid "lesser mana talisman"
-msgstr ""
+msgstr "seun mana beag"
 
 #: ../data/objects/items/store-items/buyable_lesser_mana_talisman.cfg:7
 msgid ""
@@ -6812,7 +6812,7 @@ msgstr "A' luchdadh pearsa Frogatto"
 
 #: ../iOS_APP_STORE_METADATA:15
 msgid "- OpenFeint and Achievement support"
-msgstr ""
+msgstr "- Taic dha OpenFeint is coileanasan"
 
 #: ../iOS_CHANGELOG:19
 msgid "Fixed The Long Haul (arcade level)"
