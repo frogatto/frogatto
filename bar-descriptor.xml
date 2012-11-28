@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
+
+
+
+
+
+
+
+
 <qnx xmlns="http://www.qnx.com/schemas/application/1.0">
 
 <!-- BlackBerry Tablet OS application descriptor file.
@@ -9,11 +17,11 @@
 
     <!-- A universally unique application identifier. Must be unique across all BlackBerry Tablet OS applications.
          Using a reverse DNS-style name as the id is recommended. (Eg. com.example.ExampleApplication.) Required. -->
-    <id>com.example.frogatto</id>
+    <id>com.example.cube_trains</id>
 
     <!-- The name that is displayed in the BlackBerry Tablet OS application installer. 
          May have multiple values for each language. See samples or xsd schema file. Optional. -->
-    <name>Frogatto</name>
+    <name>Cube Trains</name>
     
     <!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade. 
          Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
@@ -29,19 +37,18 @@
 
     <!-- Description, displayed in the BlackBerry Tablet OS application installer.
          May have multiple values for each language. See samples or xsd schema file. Optional. -->
-    <description>An old-school platformer with beautiful hand-pixeled art.</description>
+    <description>3D puzzle goodness, development version.</description>
 
     <!-- Copyright information. Optional. -->
     <!-- <copyright></copyright> -->
 
     <!--  Name of author which is used for signing. Must match the developer name of your development certificate. -->
-    <author>Lost Pixel</author>
+    <author>DDR</author>
     <authorId>gYAAgKcS3iwxeR4EtD7lFv8ijqs</authorId>
     <platformVersion>2.0.0.0</platformVersion>
     <icon>
-       <image>bbicon.png</image>
+       <image>window-icon.png</image>
     </icon>
-    <splashscreen>bbsplash.jpg</splashscreen>
     
     <!--  Unique author ID assigned by signing authority. Required if using debug tokens. -->
     <!-- <authorId>ABC1234YjsnUk235h</authorId> -->
@@ -59,15 +66,15 @@
     <asset path="images">images</asset>
     <asset path="DejaVuSans.ttf">DejaVuSans.ttf</asset>
     <asset path="FreeMono.ttf">FreeMono.ttf</asset>
-    <asset path="modules/frogatto/images/os/blackberry/bbicon.png">bbicon.png</asset>
-    <asset path="modules/frogatto/images/os/blackberry/bbsplash.jpg">bbsplash.jpg</asset>
-    <asset path="modules/frogatto/module.cfg">modules/frogatto/module.cfg</asset>
-    <asset path="modules/frogatto/data">modules/frogatto/data</asset>
-    <asset path="modules/frogatto/images">modules/frogatto/images</asset>
-    <asset path="modules/frogatto/locale">modules/frogatto/locale</asset>
-    <asset path="modules/frogatto/music">modules/frogatto/music</asset>
-    <asset path="modules/frogatto/sounds">modules/frogatto/sounds</asset>
-    <asset path="master-config.cfg">master-config.cfg</asset>
+   <asset path="modules/cube_trains/data">modules/cube_trains/data</asset>
+   <asset path="modules/cube_trains/images">modules/cube_trains/images</asset>
+   <asset path="modules/cube_trains/module.cfg">modules/cube_trains/module.cfg</asset>
+   <asset path="modules/cube_trains/images/window-icon.png">window-icon.png</asset>
+   <asset path="modules/cube_trains/utils/master-config.cfg">master-config.cfg</asset>
+   <asset path="UbuntuMono-B.ttf">UbuntuMono-B.ttf</asset>
+   <asset path="UbuntuMono-BI.ttf">UbuntuMono-BI.ttf</asset>
+   <asset path="UbuntuMono-R.ttf">UbuntuMono-R.ttf</asset>
+   <asset path="UbuntuMono-RI.ttf">UbuntuMono-RI.ttf</asset>
     <configuration id="com.qnx.qcc.configuration.exe.debug.925317493" name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="Device-Debug/frogatto" entry="true" type="Qnx/Elf">frogatto</asset>
@@ -136,9 +143,8 @@
 
     <!-- Request permission to execute native code.  Required for native applications. -->
     <action system="true">run_native</action>
-    <action>play_audio</action>
-    <action>set_audio_volume</action>
     <action>access_internet</action>
+    <action>play_audio</action>
     
     <!--  The permissions requested by your application. -->
     <!--  <action>access_shared</action> -->
