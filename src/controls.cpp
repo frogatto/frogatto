@@ -220,7 +220,7 @@ void read_local_controls()
 		return;
 	}
 
-	if(preferences::no_iphone_controls() == false || level::current().allow_touch_controls() == false) {
+	if(preferences::no_iphone_controls() == false && level::current().allow_touch_controls() == true) {
 		iphone_controls::read_controls();
 	}
 
@@ -246,7 +246,7 @@ void read_local_controls()
 		}
 #endif
 
-		if(preferences::no_iphone_controls() == false || level::current().allow_touch_controls() == false) {
+		if(preferences::no_iphone_controls() == false && level::current().allow_touch_controls() == true) {
 			if(iphone_controls::up()) { state |= (1 << CONTROL_UP);}
 			if(iphone_controls::down()) { state |= (1 << CONTROL_DOWN);}
 			if(iphone_controls::left()) { state |= (1 << CONTROL_LEFT);}
