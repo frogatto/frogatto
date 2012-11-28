@@ -1,3 +1,16 @@
+Version 1.3:
+ * Expansion and improvements to the plot and dialogue, adding new cutscenes that give you a closer look at the antagonists' motives.
+ * Several new levels were added to the dungeon environment; with some of them being optional, there's much more to explore now.
+ * Some new enemies to be vanquished: a red bat that's much more tenacious than the regular ones, and the hard-hitting ninja-kitty, that has many tools at his disposal to fight you. And these are just a few examples!
+ * New difficulty level: Challenging. Some enemies will be faster, hardier, smarter, or all of those put together.
+ * A better "New Game/Load Game" screen, that allows the selection of save slots.
+ * New power-up system, based on a common "mana" resource - now players can choose what powers to use at any time, if they've acquired them and have enough mana to use them.
+ * Two new power-ups: Fire-breath attack and an energy shot that homes in on enemies.
+ * Graphical improvements abound: ground tiles on most environments were reworked, adding better perspective, and being improved on in general.
+ * Lots of new objects show up in the foreground and background, giving more depth and diversity to each map.
+ * Many new tracks were added to the soundtrack, while most of the previous repertoire has been enhanced.
+ * A much wider and smarter usage of sound effects; now you'll be able to notice flying enemies' wings flapping, kitties running around, and even the sounds Frogatto make are when moving around are dependent on terrain.
+
 Version 1.2:
  * Complete redo of attack logic; frogatto now is free to walk around whilst he attacks, and in general is much more responsive.
  * Frogatto's tongue-grabbing is MUCH more forgiving
