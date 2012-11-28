@@ -1813,7 +1813,7 @@ void level::draw_status() const
 		foreach(gui_algorithm_ptr g, gui_algorithm_) {
 			g->draw(*this);
 		}
-		if(preferences::no_iphone_controls() == false || level::current().allow_touch_controls() == false) {
+		if(preferences::no_iphone_controls() == false && level::current().allow_touch_controls() == true) {
 			iphone_controls::draw();
 		}
 	}
