@@ -75,6 +75,8 @@
    <asset path="UbuntuMono-BI.ttf">UbuntuMono-BI.ttf</asset>
    <asset path="UbuntuMono-R.ttf">UbuntuMono-R.ttf</asset>
    <asset path="UbuntuMono-RI.ttf">UbuntuMono-RI.ttf</asset>
+   <asset path="modules/cube_trains/music">modules/cube_trains/music</asset>
+   <asset path="modules/cube_trains/sounds">modules/cube_trains/sounds</asset>
     <configuration id="com.qnx.qcc.configuration.exe.debug.925317493" name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="Device-Debug/frogatto" entry="true" type="Qnx/Elf">frogatto</asset>
