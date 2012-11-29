@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "formula.hpp"
+#include "formula_callable.hpp"
 #include "formula_object.hpp"
 #include "json_parser.hpp"
 #include "module.hpp"
@@ -45,6 +46,9 @@ struct property_entry {
 
 typedef std::map<std::string, boost::intrusive_ptr<formula_class> > classes_map;
 
+bool in_unit_test = false;
+std::vector<formula_class*> unit_test_queue;
+
 }
 
 class formula_class : public reference_counted_object
@@ -57,12 +61,17 @@ public:
 	const std::vector<game_logic::const_formula_ptr>& constructor() const { return constructor_; }
 	const std::map<std::string, property_entry>& properties() const { return properties_; }
 	const classes_map& sub_classes() const { return sub_classes_; }
+
+	void run_unit_tests();
+
 private:
 	std::string name_;
 	variant private_data_;
 	std::vector<game_logic::const_formula_ptr> constructor_;
 	std::map<std::string, property_entry> properties_;
 	classes_map sub_classes_;
+
+	variant unit_test_;
 };
 
 formula_class::formula_class(const variant& node)
@@ -115,6 +124,8 @@ formula_class::formula_class(const variant& node)
 			sub_classes_[key.as_string()].reset(new formula_class(class_node));
 		}
 	}
+
+	unit_test_ = node["test"];
 }
 
 void formula_class::set_name(const std::string& name)
@@ -122,6 +133,61 @@ void formula_class::set_name(const std::string& name)
 	name_ = name;
 	for(classes_map::iterator i = sub_classes_.begin(); i != sub_classes_.end(); ++i) {
 		i->second->set_name(name + "." + i->first);
+	}
+}
+
+void formula_class::run_unit_tests()
+{
+	if(unit_test_.is_null()) {
+		return;
+	}
+
+	if(in_unit_test) {
+		unit_test_queue.push_back(this);
+		return;
+	}
+
+	variant unit_test = unit_test_;
+	unit_test_ = variant();
+
+	in_unit_test = true;
+
+	boost::intrusive_ptr<game_logic::map_formula_callable> callable(new game_logic::map_formula_callable);
+	std::map<variant,variant> attr;
+	callable->add("vars", variant(&attr));
+
+	for(int n = 0; n != unit_test.num_elements(); ++n) {
+		variant test = unit_test[n];
+		game_logic::formula_ptr cmd = game_logic::formula::create_optional_formula(test["command"]);
+		if(cmd) {
+			variant v = cmd->execute(*callable);
+			callable->execute_command(v);
+		}
+
+		game_logic::formula_ptr predicate = game_logic::formula::create_optional_formula(test["assert"]);
+		if(predicate) {
+			game_logic::formula_ptr message = game_logic::formula::create_optional_formula(test["message"]);
+
+			std::string msg;
+			if(message) {
+				msg += ": " + message->execute(*callable).write_json();
+			}
+
+			ASSERT_LOG(predicate->execute(*callable).as_bool(), "UNIT TEST FAILURE FOR CLASS " << name_ << " TEST " << n << " FAILED: " << test["assert"].write_json() << msg << "\n");
+		}
+
+	}
+
+	in_unit_test = false;
+
+	for(classes_map::iterator i = sub_classes_.begin(); i != sub_classes_.end(); ++i) {
+		i->second->run_unit_tests();
+	}
+
+	if(unit_test_queue.empty() == false) {
+		formula_class* c = unit_test_queue.back();
+		unit_test_queue.pop_back();
+		c->run_unit_tests();
 	}
 }
 
@@ -175,9 +241,47 @@ boost::intrusive_ptr<const formula_class> get_class(const std::string& type)
 	boost::intrusive_ptr<formula_class> result(new formula_class(v));
 	result->set_name(type);
 	classes_[type] = result;
+	result->run_unit_tests();
 	return boost::intrusive_ptr<const formula_class>(result.get());
 }
 
+}
+
+void formula_object::visit_variants(variant node, boost::function<void (variant)> fn, std::vector<formula_object*>* seen)
+{
+	std::vector<formula_object*> seen_buf;
+	if(!seen) {
+		seen = &seen_buf;
+	}
+
+	if(node.try_convert<formula_object>()) {
+		formula_object* obj = node.try_convert<formula_object>();
+		if(std::count(seen->begin(), seen->end(), obj)) {
+			return;
+		}
+
+		fn(node);
+
+		const_wml_serializable_formula_callable_ptr ptr(obj);
+		wml_formula_callable_serialization_scope::register_serialized_object(ptr);
+		seen->push_back(obj);
+
+		visit_variants(obj->private_data_, fn, seen);
+		seen->pop_back();
+		return;
+	}
+	
+	fn(node);
+
+	if(node.is_list()) {
+		foreach(const variant& item, node.as_list()) {
+			formula_object::visit_variants(item, fn, seen);
+		}
+	} else if(node.is_map()) {
+		foreach(const variant_pair& item, node.as_map()) {
+			formula_object::visit_variants(item.second, fn, seen);
+		}
+	}
 }
 
 void formula_object::reload_classes()
@@ -190,14 +294,14 @@ formula_object::formula_object(const std::string& type, variant args)
 {
 	private_data_ = deep_copy_variant(class_->private_data());
 	if(args.is_map()) {
+		foreach(const variant& key, args.get_keys().as_list()) {
+			set_value(key.as_string(), args[key]);
+		}
+
 		if(class_->constructor().empty() == false) {
 			foreach(const game_logic::const_formula_ptr f, class_->constructor()) {
 				private_data_scope scope(expose_private_data_, &tmp_value_, &args);
 				execute_command(f->execute(*this));
-			}
-		} else {
-			foreach(const variant& key, args.get_keys().as_list()) {
-				set_value(key.as_string(), args[key]);
 			}
 		}
 	}

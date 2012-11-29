@@ -1,6 +1,7 @@
 #include <boost/bind.hpp>
 
 #include "asserts.hpp"
+#include "foreach.hpp"
 #include "formula.hpp"
 #include "tbs_bot.hpp"
 #include "tbs_web_server.hpp"
@@ -59,10 +60,16 @@ void bot::handle_response(const std::string& type, game_logic::formula_callable_
 		variant validate = script["validate"];
 		for(int n = 0; n != validate.num_elements(); ++n) {
 			std::map<variant,variant> m;
-			m[variant("validate")] = validate[n];
-			game_logic::formula f(validate[n]);
-			variant result = f.execute(*callable);
-			m[variant("success")] = variant(result.as_bool());
+			m[variant("validate")] = validate[n][variant("expression")] + variant(" EQUALS ") + validate[n][variant("equals")];
+
+			game_logic::formula f(validate[n][variant("expression")]);
+			variant expression_result = f.execute(*callable);
+
+			if(expression_result != validate[n][variant("equals")]) {
+				m[variant("error")] = variant(1);
+			}
+			m[variant("value")] = expression_result;
+
 			validations.push_back(variant(&m));
 		}
 	}

@@ -8,6 +8,7 @@
 
 #include "asserts.hpp"
 #include "foreach.hpp"
+#include "formula_object.hpp"
 #include "variant_utils.hpp"
 #include "wml_formula_callable.hpp"
 
@@ -23,7 +24,7 @@ std::stack<scope_info, std::vector<scope_info> > scopes;
 
 }
 
-void wml_formula_callable_serialization_scope::register_serialized_object(const_wml_serializable_formula_callable_ptr ptr, variant& node)
+void wml_formula_callable_serialization_scope::register_serialized_object(const_wml_serializable_formula_callable_ptr ptr)
 {
 	ASSERT_LOG(scopes.empty() == false, "register_serialized_object() called when there is no wml_formula_callable_serialization_scope");
 	scopes.top().objects_written.insert(ptr);
@@ -71,7 +72,7 @@ variant wml_formula_callable_serialization_scope::write_objects(variant obj) con
 	std::map<variant, variant> res;
 	std::set<wml_serializable_formula_callable*> objects;
 	std::set<std::string> already_known;
-	visit_variants(obj, boost::bind(add_object_to_set, _1, &objects, &already_known));
+	game_logic::formula_object::visit_variants(obj, boost::bind(add_object_to_set, _1, &objects, &already_known));
 
 	std::vector<variant> results_list;
 	foreach(wml_serializable_formula_callable* item, objects) {

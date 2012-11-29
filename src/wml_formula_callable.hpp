@@ -36,7 +36,7 @@ typedef boost::intrusive_ptr<const wml_serializable_formula_callable> const_wml_
 class wml_formula_callable_serialization_scope
 {
 public:
-	static void register_serialized_object(const_wml_serializable_formula_callable_ptr ptr, variant& node);
+	static void register_serialized_object(const_wml_serializable_formula_callable_ptr ptr);
 	static bool is_active();
 
 	wml_formula_callable_serialization_scope();

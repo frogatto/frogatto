@@ -1364,7 +1364,7 @@ variant level::write() const
 		}
 
 		variant node(ch->write());
-		game_logic::wml_formula_callable_serialization_scope::register_serialized_object(ch, node);
+		game_logic::wml_formula_callable_serialization_scope::register_serialized_object(ch);
 		res.add("character", node);
 	}
 
