@@ -5,13 +5,13 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleDisplayName</key>
-	<string></string>
+	<string>Frogatto</string>
 	<key>CFBundleDocumentTypes</key>
 	<array/>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
-	<string>icon.icns</string>
+	<string>icon</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.frogatto.frogatto-mac</string>
 	<key>CFBundleInfoDictionaryVersion</key>
