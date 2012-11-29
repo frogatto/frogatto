@@ -368,6 +368,8 @@ public:
 	void shaders_updated();
 #endif
 
+	unsigned int palettes_used() const { return palettes_used_; }
+
 private:
 
 	void read_compiled_tiles(variant node, std::vector<level_tile>::iterator& out);

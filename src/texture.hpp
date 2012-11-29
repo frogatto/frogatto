@@ -46,6 +46,8 @@ public:
 	//in the main thread.
 	static void build_textures_from_worker_threads();
 
+	static void trim_caches(unsigned int palettes_in_use);
+
 	texture();
 	texture(const texture& t);
 	~texture();
@@ -61,6 +63,7 @@ public:
 	static texture get(const std::string& str, int options=0);
 	static texture get(const std::string& str, const std::string& algorithm);
 	static texture get_palette_mapped(const std::string& str, int palette);
+	static texture get_palette_mapped_no_cache(const std::string& str, int palette=-1);
 	static texture get_no_cache(const surface& surf);
 	static GLfloat get_coord_x(GLfloat x);
 	static GLfloat get_coord_y(GLfloat y);

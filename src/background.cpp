@@ -386,11 +386,17 @@ void background::draw_layer(int x, int y, const rect& area, int rotation, const 
 	}
 
 	if(!bg.texture.valid()) {
+		//currently do not cache loaded textures making them get reloaded
+		//on every level.
+#if 1
+		bg.texture = graphics::texture::get_palette_mapped_no_cache(bg.image, palette_);
+#else
 		if(palette_ == -1) {
 			bg.texture = graphics::texture::get(bg.image, bg.image_formula);
 		} else {
 			bg.texture = graphics::texture::get_palette_mapped(bg.image, palette_);
 		}
+#endif
 
 		if(bg.y2 == 0) {
 			bg.y2 = bg.texture.height();

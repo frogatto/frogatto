@@ -444,6 +444,22 @@ void texture::build_textures_from_worker_threads()
 	id_to_build_.clear();
 }
 
+void texture::trim_caches(unsigned int palettes_in_use)
+{
+	std::vector<std::pair<std::string,int> > keys = palette_texture_cache().get_keys();
+	for(int n = 0; n != keys.size(); ++n) {
+		if(palettes_in_use & (1 << keys[n].second)) {
+			continue;
+		}
+
+		const CacheEntry& e = palette_texture_cache().get(keys[n]);
+		if(e.t.id_.unique()) {
+			palette_texture_cache().erase(keys[n]);
+		}
+	}
+	
+}
+
 void texture::set_current_texture(unsigned int id)
 {
 	if(!id || current_texture == id) {
@@ -550,6 +566,24 @@ texture texture::get_palette_mapped(const std::string& str, int palette)
 	}
 
 	return result;
+}
+
+texture texture::get_palette_mapped_no_cache(const std::string& str, int palette)
+{
+	//std::cerr << "get palette mapped: " << str << "," << palette << "\n";
+	std::string path;
+	surface s = surface_cache::get_no_cache(str, &path);
+	if(palette != -1) {
+		s = map_palette(s, palette);
+	}
+	if(s.get() != NULL) {
+		key surfs;
+		surfs.push_back(s);
+		return texture(surfs);
+	} else {
+		std::cerr << "COULD NOT FIND IMAGE FOR PALETTE MAPPING: '" << str << "'\n";
+		return texture();
+	}
 }
 
 texture texture::get_no_cache(const key& surfs)

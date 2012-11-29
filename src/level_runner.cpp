@@ -666,6 +666,8 @@ void level_runner::close_editor()
 
 bool level_runner::play_level()
 {
+	graphics::texture::trim_caches(lvl_->palettes_used());
+
 	const current_level_runner_scope current_level_runner_setter(this);
 
 	sound::stop_looped_sounds(NULL);
@@ -1006,6 +1008,7 @@ bool level_runner::play_cycle()
 
 			//garbage collect objects from the last level.
 			custom_object::run_garbage_collection();
+			graphics::texture::trim_caches(lvl_->palettes_used());
 
 			if(transition == "flip") {
 				transition_scene(*lvl_, last_draw_position(), false, flip_scene);
