@@ -1,16 +1,20 @@
 #include <algorithm>
 #include <string>
 
+#include <stdio.h>
+
 #include "asserts.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "formula.hpp"
+#include "formula_object.hpp"
 #include "json_parser.hpp"
 #include "module.hpp"
 #include "tbs_ai_player.hpp"
 #include "tbs_game.hpp"
 #include "string_utils.hpp"
 #include "variant_utils.hpp"
+#include "wml_formula_callable.hpp"
 
 namespace tbs {
 
@@ -122,7 +126,8 @@ boost::intrusive_ptr<game> game::create(const variant& v)
 
 game::game(const game_type& type)
   : type_(type), game_id_(generate_game_id()),
-    started_(false), state_(STATE_SETUP), state_id_(0)
+    started_(false), state_(STATE_SETUP), state_id_(0),
+	backup_callable_(NULL)
 {
 }
 
@@ -131,7 +136,8 @@ game::game(const variant& value)
     game_id_(generate_game_id()),
     started_(value["started"].as_bool(false)),
 	state_(STATE_SETUP),
-	state_id_(0)
+	state_id_(0),
+	backup_callable_(NULL)
 {
 }
 
@@ -142,6 +148,8 @@ game::~game()
 
 variant game::write(int nplayer) const
 {
+	game_logic::wml_formula_callable_serialization_scope serialization_scope;
+
 	variant_builder result;
 	result.add("id", game_id_);
 	result.add("type", "game");
@@ -178,7 +186,9 @@ variant game::write(int nplayer) const
 
 	result.add("log", variant(log_str));
 
-	return result.build();
+	variant res = result.build();
+	res.add_attr(variant("serialized_objects"), serialization_scope.write_objects(res));
+	return res;
 }
 
 void game::start_game()

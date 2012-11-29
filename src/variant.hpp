@@ -132,6 +132,8 @@ public:
 	std::vector<variant> as_list() const;
 	const std::map<variant,variant>& as_map() const;
 
+	typedef std::pair<variant,variant> map_pair;
+
 	std::vector<std::string> as_list_string() const;
 	std::vector<std::string> as_list_string_optional() const;
 	std::vector<int> as_list_int() const;

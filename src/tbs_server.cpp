@@ -148,6 +148,7 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 void server::clear_games()
 {
 	games_.clear();
+	clients_.clear();
 }
 
 void server::handle_message_internal(socket_ptr socket, client_info& cli_info, const variant& msg)

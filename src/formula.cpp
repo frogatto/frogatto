@@ -93,7 +93,10 @@ namespace game_logic
 				execute_command(v[n]);
 			}
 		} else {
-			v.try_convert<command_callable>()->execute(*this);
+			command_callable* callable = v.try_convert<command_callable>();
+			if(callable) {
+				callable->execute(*this);
+			}
 		}
 
 		return true;

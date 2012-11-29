@@ -2,8 +2,10 @@
 #include <boost/algorithm/string/replace.hpp>
 
 #include "asserts.hpp"
+#include "foreach.hpp"
 #include "json_parser.hpp"
 #include "tbs_client.hpp"
+#include "wml_formula_callable.hpp"
 
 namespace tbs {
 
@@ -22,7 +24,24 @@ void client::send_request(const std::string& request, game_logic::map_formula_ca
 void client::recv_handler(const std::string& msg)
 {
 	if(handler_) {
-		callable_->add("message", json::parse(msg, json::JSON_NO_PREPROCESSOR));
+		variant v;
+		{
+			const game_logic::wml_formula_callable_read_scope read_scope;
+			v = json::parse(msg);
+			if(v.has_key(variant("serialized_objects"))) {
+				foreach(variant obj_node, v["serialized_objects"]["character"].as_list()) {
+					game_logic::wml_serializable_formula_callable_ptr obj = obj_node.try_convert<game_logic::wml_serializable_formula_callable>();
+					ASSERT_LOG(obj.get() != NULL, "ILLEGAL OBJECT FOUND IN SERIALIZATION");
+					std::string addr_str = obj->addr();
+					const intptr_t addr_id = strtoll(addr_str.c_str(), NULL, 16);
+
+					game_logic::wml_formula_callable_read_scope::register_serialized_object(addr_id, obj);
+				}
+			}
+		}
+		fprintf(stderr, "RECV: (((%s)))\n", msg.c_str());
+		fprintf(stderr, "SERIALIZE: (((%s)))\n", v.write_json().c_str());
+		callable_->add("message", v);
 		handler_("message_received");
 	}
 }

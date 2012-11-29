@@ -1,7 +1,11 @@
 #ifndef FORMULA_OBJECT_HPP_INCLUDED
 #define FORMULA_OBJECT_HPP_INCLUDED
 
+#include <set>
 #include <string>
+#include <vector>
+
+#include <boost/function.hpp>
 
 #include "variant.hpp"
 #include "wml_formula_callable.hpp"
@@ -14,6 +18,8 @@ class formula_class;
 class formula_object : public game_logic::wml_serializable_formula_callable
 {
 public:
+	static void visit_variants(variant v, boost::function<void (variant)> fn, std::vector<formula_object*>* seen=NULL);
+
 	static void reload_classes();
 
 	//construct with type and constructor parameters.
