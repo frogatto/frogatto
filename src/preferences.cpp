@@ -299,7 +299,14 @@ namespace preferences {
 		std::string save_file_path_ = PREFERENCES_PATH SAVE_FILENAME;
 		std::string auto_save_file_path_ = PREFERENCES_PATH AUTOSAVE_FILENAME;
 
+#ifdef __APPLE__
+#include "TargetConditionals.h"
+#if TARGET_OS_MAC
+		bool editor_save_to_user_preferences_ = true;
+#endif
+#else
 		bool editor_save_to_user_preferences_ = false;
+#endif
 		
 		bool force_no_npot_textures_ = false;
 		
