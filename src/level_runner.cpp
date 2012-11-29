@@ -1135,7 +1135,7 @@ bool level_runner::play_cycle()
 			case SDL_ACTIVEEVENT:
 				if (event.active.state & SDL_APPINPUTFOCUS && event.active.gain == 0)
 				{
-					write_autosave();
+					//write_autosave();
 					preferences::save_preferences();
 
 					SDL_Event e;
