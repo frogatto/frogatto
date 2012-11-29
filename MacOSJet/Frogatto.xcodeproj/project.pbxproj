@@ -194,9 +194,7 @@
 		C089D458162BDFC2009D2878 /* UbuntuMono-RI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C089D44F162BDF54009D2878 /* UbuntuMono-RI.ttf */; };
 		C089D459162BDFC5009D2878 /* FreeMono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C089D454162BDF89009D2878 /* FreeMono.ttf */; };
 		C089D45A162BDFC8009D2878 /* DejaVuSans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C089D453162BDF89009D2878 /* DejaVuSans.ttf */; };
-		C0B87BBA166603C300D66B15 /* icon.iconset in Resources */ = {isa = PBXBuildFile; fileRef = C0B87BB9166603C300D66B15 /* icon.iconset */; };
-		C0B87BC0166622BA00D66B15 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = C0B87BBF166622BA00D66B15 /* icon.icns */; };
-		C0C2918E1665DFFC00DB88A6 /* signature.cfg in Resources */ = {isa = PBXBuildFile; fileRef = C0C2918D1665DFFC00DB88A6 /* signature.cfg */; };
+		C0B87BD4166725A700D66B15 /* formula_object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0B87BD21667256F00D66B15 /* formula_object.cpp */; };
 		C0DDFDC6163F7FF800F727DD /* sys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0406533163F790000F84F94 /* sys.cpp */; };
 		C0EF2A5616215F78004CD227 /* libboost_iostreams.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0EF2A5316215F78004CD227 /* libboost_iostreams.dylib */; };
 		C0EF2A5716215F78004CD227 /* libboost_regex.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0EF2A5416215F78004CD227 /* libboost_regex.dylib */; };
@@ -621,6 +619,8 @@
 		C0B397F71636666C00D010E0 /* Frogatto.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Frogatto.entitlements; sourceTree = "<group>"; };
 		C0B87BB9166603C300D66B15 /* icon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = icon.iconset; sourceTree = "<group>"; };
 		C0B87BBF166622BA00D66B15 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
+		C0B87BD21667256F00D66B15 /* formula_object.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = formula_object.cpp; sourceTree = "<group>"; };
+		C0B87BD31667256F00D66B15 /* formula_object.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = formula_object.hpp; sourceTree = "<group>"; };
 		C0C2918D1665DFFC00DB88A6 /* signature.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = signature.cfg; path = ../../signature.cfg; sourceTree = "<group>"; };
 		C0C2918F1665F20100DB88A6 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C0C291901665F21600DB88A6 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -858,6 +858,8 @@
 				C010C63C160AFD4C006E7D90 /* formula_function_registry.cpp */,
 				C010C63D160AFD4C006E7D90 /* formula_function_registry.hpp */,
 				C010C63E160AFD4C006E7D90 /* formula_fwd.hpp */,
+				C0B87BD21667256F00D66B15 /* formula_object.cpp */,
+				C0B87BD31667256F00D66B15 /* formula_object.hpp */,
 				C010C63F160AFD4C006E7D90 /* formula_profiler.cpp */,
 				C010C640160AFD4C006E7D90 /* formula_profiler.hpp */,
 				C010C641160AFD4C006E7D90 /* formula_test.cpp */,
@@ -1180,9 +1182,6 @@
 				C010C801160AFD82006E7D90 /* images in Resources */,
 				C010C802160AFD82006E7D90 /* modules in Resources */,
 				C089D452162BDF7B009D2878 /* master-config.cfg in Resources */,
-				C0C2918E1665DFFC00DB88A6 /* signature.cfg in Resources */,
-				C0B87BBA166603C300D66B15 /* icon.iconset in Resources */,
-				C0B87BC0166622BA00D66B15 /* icon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1252,6 +1251,7 @@
 				C010C77C160AFD4D006E7D90 /* formula_constants.cpp in Sources */,
 				C010C77D160AFD4D006E7D90 /* formula_function.cpp in Sources */,
 				C010C77E160AFD4D006E7D90 /* formula_function_registry.cpp in Sources */,
+				C0B87BD4166725A700D66B15 /* formula_object.cpp in Sources */,
 				C010C77F160AFD4D006E7D90 /* formula_profiler.cpp in Sources */,
 				C010C780160AFD4D006E7D90 /* formula_test.cpp in Sources */,
 				C010C781160AFD4D006E7D90 /* formula_tokenizer.cpp in Sources */,
@@ -1432,8 +1432,6 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
-				CODE_SIGN_ENTITLEMENTS = Frogatto.entitlements;
-				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/dylibs\"",
@@ -1472,8 +1470,6 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
-				CODE_SIGN_ENTITLEMENTS = Frogatto.entitlements;
-				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/dylibs\"",
