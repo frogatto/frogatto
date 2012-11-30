@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2012-11-28 22:10-0200\n"
-"PO-Revision-Date: 2012-11-29 00:11+0000\n"
-"Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
+"PO-Revision-Date: 2012-11-29 21:24+0000\n"
+"Last-Translator: peschio <michele.pesco@gmail.com>\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/Frogatto/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -110,76 +110,76 @@ msgstr "OpenFeint"
 
 #: ../CHANGELOG:1 ../iOS_CHANGELOG:1
 msgid "Version 1.3:"
-msgstr ""
+msgstr "Versione 1.3:"
 
 #: ../CHANGELOG:2 ../iOS_CHANGELOG:2
 msgid ""
 "Expansion and improvements to the plot and dialogue, adding new cutscenes "
 "that give you a closer look at the antagonists' motives."
-msgstr ""
+msgstr "Aggiunte e migliorie alla trama e al dialogo, nuove scene che danno profondità alle motivazioni dell'antagonista."
 
 #: ../CHANGELOG:3 ../iOS_CHANGELOG:3
 msgid ""
 "Several new levels were added to the dungeon environment; with some of them "
 "being optional, there's much more to explore now."
-msgstr ""
+msgstr "Aggiunti diversi nuovi livelli ai sotterranei, di cui alcuni opzionali; ora c'è molto di più da esplorare."
 
 #: ../CHANGELOG:4 ../iOS_CHANGELOG:4
 msgid ""
 "Some new enemies to be vanquished: a red bat that's much more tenacious than"
 " the regular ones, and the hard-hitting ninja-kitty, that has many tools at "
 "his disposal to fight you. And these are just a few examples!"
-msgstr ""
+msgstr "Nemici nuovi pronti per essere mazziati: un pipistrello rosso molto più tenace dei cugini normali, e i mici-ninja che menano forte, con la pletora di armi di cui dispongono. E solo per dirne alcuni!"
 
 #: ../CHANGELOG:5 ../iOS_CHANGELOG:5
 msgid ""
 "New difficulty level: Challenging. Some enemies will be faster, hardier, "
 "smarter, or all of those put together."
-msgstr ""
+msgstr "Nuovo livello di difficoltà: Grave. Alcuni nemici saranno più veloci, più arditi, più scaltri, o tutto insieme."
 
 #: ../CHANGELOG:6 ../iOS_CHANGELOG:6
 msgid ""
 "A better \"New Game/Load Game\" screen, that allows the selection of save "
 "slots."
-msgstr ""
+msgstr "Una migliore schermata \"Salva / Carica\", con selezione degli slot di salvataggio."
 
 #: ../CHANGELOG:7 ../iOS_CHANGELOG:7
 msgid ""
 "New power-up system, based on a common \"mana\" resource - now players can "
 "choose what powers to use at any time, if they've acquired them and have "
 "enough mana to use them."
-msgstr ""
+msgstr "Nuovo sistema di power-up, basato su una risorsa \"mana\" comune - ora potete scegliere che poteri usare in ogni momento, basta averli acquisiti e avere abbastanza mana per usarli."
 
 #: ../CHANGELOG:8 ../iOS_CHANGELOG:8
 msgid ""
 "Two new power-ups: Fire-breath attack and an energy shot that homes in on "
 "enemies."
-msgstr ""
+msgstr "Due nuovi attacchi: Soffio di Fuoco e un dardo energetico a inseguimento."
 
 #: ../CHANGELOG:9 ../iOS_CHANGELOG:9
 msgid ""
 "Graphical improvements abound: ground tiles on most environments were "
 "reworked, adding better perspective, and being improved on in general."
-msgstr ""
+msgstr "Migliorie grafiche che pare Pasqua: le caselle del terreno sono state rielaborate, migliorando la prospettiva e molti dettagli."
 
 #: ../CHANGELOG:10 ../iOS_CHANGELOG:10
 msgid ""
 "Lots of new objects show up in the foreground and background, giving more "
 "depth and diversity to each map."
-msgstr ""
+msgstr "Molti nuovi oggetti di fronte e sullo sfondo, danno maggiore profondità e diversità a ogni mappa."
 
 #: ../CHANGELOG:11 ../iOS_CHANGELOG:11
 msgid ""
 "Many new tracks were added to the soundtrack, while most of the previous "
 "repertoire has been enhanced."
-msgstr ""
+msgstr "Molte nuove tracce aggiunte alla colonna sonora, e arricchito il repertorio esistente."
 
 #: ../CHANGELOG:12 ../iOS_CHANGELOG:12
 msgid ""
 "A much wider and smarter usage of sound effects; now you'll be able to "
 "notice flying enemies' wings flapping, kitties running around, and even the "
 "sounds Frogatto make are when moving around are dependent on terrain."
-msgstr ""
+msgstr "Uso più ampio e ponderato degli effetti sonori; da notare il frullio delle bestie alate, i mici che si muovono con passo felpato, anche il rumore dei passi di Frogatto ora dipende dal suolo dove cammina."
 
 #: ../CHANGELOG:14 ../iOS_CHANGELOG:14
 msgid "Version 1.2:"
@@ -520,7 +520,7 @@ msgstr "- imponente colonna sonora: oltre un'ora di musiche originali"
 msgid ""
 "- sprawling, complex world with over 70 levels to explore, and tons of "
 "secrets to find"
-msgstr ""
+msgstr " - mondo complesso, abbarbicato, con oltre 70 livelli da esplorare, e segreti a iosa da scovare."
 
 #: ../MAC_APP_STORE_METADATA:14 ../iOS_APP_STORE_METADATA:15
 msgid "To find out more about the game please visit http://www.frogatto.com/"
@@ -909,7 +909,7 @@ msgstr "Certo che sì!\nGrazie ancora!"
 #: ../data/level/bon-bosque.cfg:4698
 #: ../data/objects/playable/map-selector.cfg:19
 msgid "Bon Bosque"
-msgstr "Il Buon Bosco"
+msgstr "Buon Bosco"
 
 #: ../data/level/bug-mining.cfg:4115
 msgid "Bug Mining"
@@ -927,7 +927,7 @@ msgstr "Devo salire ... Ci deve essere un \nmodo per attivare quest'ascensore."
 
 #: ../data/level/burning-stone.cfg:3748
 msgid "Burning Stone"
-msgstr "La Roccia Rovente"
+msgstr "Roccia Rovente"
 
 #: ../data/level/catfactory-catwalk.cfg:2459
 msgid "The Cat-Factory's Catwalks"
@@ -943,7 +943,7 @@ msgstr "Servizi Centrali"
 
 #: ../data/level/chopple-shop-interior.cfg:161
 msgid "Oh hey, I hadn't seen you here before."
-msgstr "Oh, hey, non ti avevo mai visto da queste parti."
+msgstr "Oh, ehi, non ti avevo mai visto da queste parti."
 
 #: ../data/level/chopple-shop-interior.cfg:162
 msgid ""
@@ -1037,7 +1037,7 @@ msgstr "Allora, lui ci racconta questa storia un po'\nstravagante su come tutto 
 
 #: ../data/level/crevice-bridge.cfg:321
 msgid "Wow."
-msgstr "Wow."
+msgstr "Uah."
 
 #: ../data/level/crevice-bridge.cfg:322
 msgid "I've never heard of any of this."
@@ -1404,7 +1404,7 @@ msgstr "Ehi! Di qua!"
 msgid ""
 "Wow, so they seriously just packed up and left?\n"
 "That's amazing!"
-msgstr "Wow, sono veramente partiti in fretta e furia?\nQuesto è incredibile!"
+msgstr "Uao, sono veramente partiti in fretta e furia?\nQuesto è incredibile!"
 
 #: ../data/level/crevice-village-heights.cfg:242
 msgid "Tell me about it."
@@ -1548,7 +1548,7 @@ msgid ""
 "It's probably for the best, really,\n"
 "I can't imagine the mess if people actually\n"
 "got to fighting over stuff they disagreed about."
-msgstr "È di sicuro meglio così, davvero, non posso\nimmaginare che putiferio se la gente avesse\nla forza di combattere su ogni disaccordo."
+msgstr "È meglio così, davvero, non posso\nimmaginare che putiferio se la gente avesse\nla forza di combattere su ogni disaccordo."
 
 #: ../data/level/crevice-village-heights.cfg:282
 msgid ""
@@ -1839,7 +1839,7 @@ msgstr "Ok.  Ci vediamo."
 msgid ""
 "HEY, WAIT!\n"
 "What about me?!"
-msgstr "EHI, ASPETTA!\nE io?!"
+msgstr "OHÉ, ASPETTA!\nE io?!"
 
 #: ../data/level/crevice-village-house-1.cfg:975
 msgid "Does it look like I have a key for your cage?"
@@ -1968,7 +1968,7 @@ msgstr "Non ancora.\nMi dispiace."
 msgid ""
 "Hey,\n"
 "I'm trying to help save the town."
-msgstr "Hey, sto cercando di contribuire\na salvare la città. "
+msgstr "Ahó, sto cercando di aiutare\na salvare la città. "
 
 #: ../data/level/crevice-village-house-2.cfg:1390
 msgid "Can you give me any advice?"
@@ -2213,7 +2213,7 @@ msgstr "È la mia camera segreta personale."
 
 #: ../data/level/crevice-village-house-elder.cfg:480
 msgid "^Wow."
-msgstr "^Wow."
+msgstr "^Uao."
 
 #: ../data/level/crevice-village-house-elder.cfg:482
 msgid "Built it for exactly this sort of crisis."
@@ -2803,7 +2803,7 @@ msgstr "Sto cercando di intrufolarmi, perché ho sentito che\nè quasi impossibi
 msgid ""
 "Wow.\n"
 "That's pretty bold!"
-msgstr "Wow.\nÈ audace da parte tua."
+msgstr "Uao.\nÈ audace da parte tua."
 
 #: ../data/level/dungeon-gateway.cfg:160
 msgid "What business do you have with him?"
@@ -2986,7 +2986,7 @@ msgstr "Va bene, uhm, grazie."
 
 #: ../data/level/frogatto-grotto-inside.cfg:634
 msgid "Hey, Frogatto."
-msgstr "Hey, Frogatto"
+msgstr "Uhe, Frogatto"
 
 #: ../data/level/frogatto-grotto-inside.cfg:638
 msgid "Uhm... yes?"
@@ -4519,7 +4519,7 @@ msgstr "Beh, ehi - fai attenzione, d'accordo?\nStai manzo."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:604
 msgid "Hey, what's new?"
-msgstr "Hey, novità?"
+msgstr "Ciao, novità?"
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:605
 msgid "Oh, just cleaning up after that ruckus."
@@ -5921,7 +5921,7 @@ msgid ""
 "We should keep in touch - hopefully,\n"
 "through you, I can meet some of the\n"
 "more 'level-headed' members of your town."
-msgstr "Dovremmo tenerci in contatto - vorrei che,\ngrazie a te, io possa incontrare alcune delle\nmenti più \"illuminate\" nel paese."
+msgstr "Dovremmo tenerci in contatto - vorrei che,\ngrazie a te, io possa incontrare alcune delle\nmenti più \"illuminate\" del paese."
 
 #: ../data/level/tea-with-milgram.cfg:363
 msgid "So ... all's well that ends well?"
@@ -6027,7 +6027,7 @@ msgstr "Casual"
 
 #: ../data/level/titlescreen-new-game-selector.cfg:191
 msgid "Challenging"
-msgstr "Impegnativo"
+msgstr "Grave"
 
 #: ../data/level/titlescreen.cfg:60
 msgid "LOAD GAME"
@@ -6081,7 +6081,7 @@ msgstr "Se quello finisce nell'impasto,\nGiuro..."
 
 #: ../data/level/to-nenes-house-inside.cfg:36
 msgid "Hey Nene, what's cooking?"
-msgstr "Hey Nene, cosa stai cucinando?"
+msgstr "Ciao Nene, cosa stai cucinando?"
 
 #: ../data/level/to-nenes-house-inside.cfg:37
 msgid ""
@@ -6220,7 +6220,7 @@ msgstr "È un Talismano Bruciante e vorrei che lo avessi tu."
 msgid ""
 "Wow... That's... awesome, but\n"
 "why on earth are you giving this to me?"
-msgstr "Wow... È... fantastico, ma\nperché mai lo stai dando a me?"
+msgstr "Uao... È... fantastico, ma\nperché mai lo stai dando a me?"
 
 #: ../data/level/to-nenes-house-inside.cfg:91
 msgid "It's a bit much for getting rid of a few ants!"
@@ -6783,7 +6783,7 @@ msgstr "Il Cristallo Elettrono\nsblocca i Bonus Elettrici.\nI Bonus Elettrici\nt
 msgid ""
 "The energy shield protects you\n"
 "from damage when you crouch."
-msgstr "Lo Scudo Impatto ti protegge\ndai danni quando ti accovacci."
+msgstr "Lo Scudo Impatto ti protegge\ndai danni quando ti abbassi."
 
 #: ../data/objects/items/store-items/buyable_speed_boots.cfg:7
 msgid ""
@@ -6863,7 +6863,7 @@ msgstr "Ciao, Chopple."
 msgid ""
 "Hey.\n"
 "Welcome to the store."
-msgstr "Hey.\nBenvenuto al negozio."
+msgstr "Ciao.\nBenvenuto al negozio."
 
 #: ../data/objects/props-interactive/npcs/chopple_npc.cfg:8
 msgid "Take your time, look around."
