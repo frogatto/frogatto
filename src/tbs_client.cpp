@@ -7,6 +7,10 @@
 #include "tbs_client.hpp"
 #include "wml_formula_callable.hpp"
 
+#if defined(_MSC_VER)
+#define strtoll _strtoi64
+#endif
+
 namespace tbs {
 
 void client::send_request(const std::string& request, game_logic::map_formula_callable_ptr callable, boost::function<void(std::string)> handler)
