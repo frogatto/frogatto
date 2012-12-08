@@ -40,17 +40,25 @@ image_widget::image_widget(const variant& v, game_logic::formula_callable* e)
 
 	texture_ = graphics::texture::get(v["image"].as_string());
 	rotate_ = v.has_key("rotation") ? v["rotation"].as_decimal().as_float() : 0.0;
-	init(v["image_width"].as_int(), v["image_height"].as_int());
+	init(v["image_width"].as_int(-1), v["image_height"].as_int(-1));
 }
 
 void image_widget::init(int w, int h)
 {
 	if(w < 0) {
-		w = texture_.width();
+		if(area_.w()) {
+			w = area_.w()*2;
+		} else {
+			w = texture_.width();
+		}
 	}
 
 	if(h < 0) {
-		h = texture_.height();
+		if(area_.h()) {
+			h = area_.h()*2;
+		} else {
+			h = texture_.height();
+		}
 	}
 
 	set_dim(w,h);
