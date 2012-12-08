@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2012-11-28 22:10-0200\n"
-"PO-Revision-Date: 2012-12-07 02:00-0300\n"
+"PO-Revision-Date: 2012-12-08 05:21-0300\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
 "Frogatto/language/pt_BR/)\n"
@@ -110,19 +110,23 @@ msgstr "OpenFeint"
 
 #: ../CHANGELOG:1 ../iOS_CHANGELOG:1
 msgid "Version 1.3:"
-msgstr ""
+msgstr "Versão 1.3:"
 
 #: ../CHANGELOG:2 ../iOS_CHANGELOG:2
 msgid ""
 "Expansion and improvements to the plot and dialogue, adding new cutscenes "
 "that give you a closer look at the antagonists' motives."
 msgstr ""
+"Expansão e melhorias ao enredo e aos diálogos, incluindo novas cutscenes que "
+"te dão uma visão mais próxima das motivações dos antagonistas."
 
 #: ../CHANGELOG:3 ../iOS_CHANGELOG:3
 msgid ""
 "Several new levels were added to the dungeon environment; with some of them "
 "being optional, there's much more to explore now."
 msgstr ""
+"Várias novas fases foram adicionadas ao ambiente \"masmorra\"; algumas são "
+"opcionais, assim, há muito mais a explorar e descobrir agora."
 
 #: ../CHANGELOG:4 ../iOS_CHANGELOG:4
 msgid ""
@@ -130,18 +134,25 @@ msgid ""
 "the regular ones, and the hard-hitting ninja-kitty, that has many tools at "
 "his disposal to fight you. And these are just a few examples!"
 msgstr ""
+"Alguns novos inimigos para enfrentar: um morcego vermelho que é muito mais "
+"voraz que os normais, e o poderoso gato ninja, que tem várias armas à "
+"disposição para atacá-lo. E esses são apenas alguns exemplos!"
 
 #: ../CHANGELOG:5 ../iOS_CHANGELOG:5
 msgid ""
 "New difficulty level: Challenging. Some enemies will be faster, hardier, "
 "smarter, or all of those put together."
 msgstr ""
+"Novo nível de dificuldade: Complicado. Alguns inimigos serão mais rápidos, "
+"mais resistentes, mais espertos, ou tudo isso ao mesmo tempo."
 
 #: ../CHANGELOG:6 ../iOS_CHANGELOG:6
 msgid ""
 "A better \"New Game/Load Game\" screen, that allows the selection of save "
 "slots."
 msgstr ""
+"Uma tela de \"Novo Jogo/Carregar\" melhor, que permite escolher o arquivo de "
+"salvamento."
 
 #: ../CHANGELOG:7 ../iOS_CHANGELOG:7
 msgid ""
@@ -149,30 +160,41 @@ msgid ""
 "choose what powers to use at any time, if they've acquired them and have "
 "enough mana to use them."
 msgstr ""
+"Novo sistema de power-ups, baseado num recurso de \"mana\" que é comum a "
+"todos eles - agora o jogador pode escolher qual poder usar a qualquer tempo, "
+"se tiverem já adquirido esse poder e tiverem a quantidade de mana necessária."
 
 #: ../CHANGELOG:8 ../iOS_CHANGELOG:8
 msgid ""
 "Two new power-ups: Fire-breath attack and an energy shot that homes in on "
 "enemies."
 msgstr ""
+"Dois novos power-ups: Um ataque de cuspir fogo e uma esfera de energia que "
+"persegue os inimigos."
 
 #: ../CHANGELOG:9 ../iOS_CHANGELOG:9
 msgid ""
 "Graphical improvements abound: ground tiles on most environments were "
 "reworked, adding better perspective, and being improved on in general."
 msgstr ""
+"Melhorias gráficas por toda a parte: tilesets da maioria dos ambientes foram "
+"melhoradas, trazendo mais perspectiva, além de outros ajustes."
 
 #: ../CHANGELOG:10 ../iOS_CHANGELOG:10
 msgid ""
 "Lots of new objects show up in the foreground and background, giving more "
 "depth and diversity to each map."
 msgstr ""
+"Muitos novos objetos aparecem no primeiro plano e no plano de fundo, "
+"trazendo mais profundidade e diversidade às fases."
 
 #: ../CHANGELOG:11 ../iOS_CHANGELOG:11
 msgid ""
 "Many new tracks were added to the soundtrack, while most of the previous "
 "repertoire has been enhanced."
 msgstr ""
+"Muitas músicas novas foram adicionadas à trilha sonora, enquanto grande "
+"parte do repertório existente foi melhorada."
 
 #: ../CHANGELOG:12 ../iOS_CHANGELOG:12
 msgid ""
@@ -180,6 +202,10 @@ msgid ""
 "notice flying enemies' wings flapping, kitties running around, and even the "
 "sounds Frogatto make are when moving around are dependent on terrain."
 msgstr ""
+"Um uso mais amplo e inteligente de efeitos sonoros; agora você poderá notar "
+"o bater de asas de inimigos que voam, os gatos correndo pelas fases, e até "
+"os sons que o Frogatto faz ao se mover mudam conforme o terreno em que ele "
+"se encontra."
 
 #: ../CHANGELOG:14 ../iOS_CHANGELOG:14
 msgid "Version 1.2:"
@@ -1297,7 +1323,8 @@ msgid ""
 "and ask what was wrong, so nothing bad happens."
 msgstr ""
 "<em>Alguém</em> tem que ir lá falar com o Milgram,\n"
-"perguntar o que houve, para que nada de mal aconteça."
+"perguntar o que houve,\n"
+"pra que nada de mal aconteça."
 
 #: ../data/level/crevice-bridge.cfg:361
 msgid ""
@@ -1719,7 +1746,9 @@ msgstr ""
 msgid ""
 "Yeah, one of their head guys showed me\n"
 "a drawing of him."
-msgstr "Era, um dos chefes deles me mostrou um desenho dele."
+msgstr ""
+"Era, um dos da tropa\n"
+"me mostrou um desenho dele."
 
 #: ../data/level/crevice-village-heights.cfg:263
 msgid "He asked me if I knew who it was."
@@ -3439,7 +3468,7 @@ msgid ""
 "our security systems, unfortunately."
 msgstr ""
 "E também acho que eles devem ter acionado\n"
-"os nossos sistemas de segurança, infelizmente."
+"os nossos sistemas de proteção, infelizmente."
 
 #: ../data/level/dungeon-gateway.cfg:185
 msgid ""
@@ -4022,8 +4051,9 @@ msgid ""
 "Also, the tongue can grab useful items, like keys.\n"
 "This is how you carry them to the lock they open."
 msgstr ""
-"Além disso, a língua pode agarrar itens importantes,\n"
-"como chaves, para que sejam levadas até a fechadura."
+"Além disso, a língua pode agarrar\n"
+"itens importantes, como chaves,\n"
+"para que sejam levadas até a fechadura."
 
 #: ../data/level/grassy-path.cfg:544
 msgid ""
@@ -4039,7 +4069,7 @@ msgid ""
 "you will restore all of your health!"
 msgstr ""
 "Se você beber delas,\n"
-"terá toda a sua energia recuperada!"
+"terá toda a sua vida recuperada!"
 
 #: ../data/level/grassy-path.cfg:564
 msgid ""
@@ -4127,8 +4157,8 @@ msgid ""
 "Beware also, any bottomless pits you encounter.\n"
 "Those are immediately fatal."
 msgstr ""
-"Tome cuidado, também, com os abismos que encontrar.\n"
-"Cair neles é fatal."
+"Tome cuidado, também,\n"
+"com os abismos que encontrar. Cair neles é fatal."
 
 #: ../data/level/grassy-path.cfg:736
 msgid ""
@@ -5405,7 +5435,8 @@ msgid ""
 "You must excuse me, but I'm terribly busy.\n"
 "I don't have any time to speak right now."
 msgstr ""
-"Você terá que me desculpar, mas estou muito ocupado.\n"
+"Você terá que me desculpar,\n"
+"mas estou muito ocupado.\n"
 "Não tenho tempo pra ficar conversando agora."
 
 #: ../data/level/kitty-kitchen.cfg:402
@@ -6340,6 +6371,9 @@ msgid ""
 "I just flew out of there as soon as I could,\n"
 "looking for <em>anyone</em> who could help."
 msgstr ""
+"Infelizmente, não peguei os detalhes.\n"
+"Saí voando de lá o mais cedo que pude,\n"
+"procurando por alguém que pudesse ajudar."
 
 #: ../data/level/secluded-hut.cfg:1412
 msgid ""
@@ -6625,6 +6659,8 @@ msgid ""
 "I thought a 'mayor' would be responsible,\n"
 "but instead he's spending it all <em>on himself!</em>"
 msgstr ""
+"Eu achei que um 'prefeito' seria responsável,\n"
+"mas, em vez disso, ele ficou esbanjando tudo!"
 
 #: ../data/level/tea-with-milgram.cfg:159
 msgid "And now he's refusing to repay you?"
@@ -6643,10 +6679,12 @@ msgid ""
 "You know, I really think there are some <em>big</em>\n"
 "misunderstandings that need to get cleared up."
 msgstr ""
+"Sabe, me parece que estamos com uns <em>grandes</em>\n"
+"desentendimentos que deveríamos corrigir."
 
 #: ../data/level/tea-with-milgram.cfg:169
 msgid "Almost all of which are his fault."
-msgstr "A maior parte é culpa do ancião."
+msgstr "A maior parte desses é culpa do ancião."
 
 #: ../data/level/tea-with-milgram.cfg:171
 msgid ""
@@ -6661,7 +6699,8 @@ msgid ""
 "He's just plain nuts.\n"
 "He's got a lot of bizarre delusions about things..."
 msgstr ""
-"Ele é bem doido. Ele vive cheio de ilusões,\n"
+"Ele é totalmente caduco.\n"
+"Ele vive cheio de ilusões,\n"
 "com relação a todo tipo de coisa..."
 
 #: ../data/level/tea-with-milgram.cfg:175
@@ -6725,64 +6764,85 @@ msgid ""
 "Now, as for who <em>is</em> our mayor...\n"
 "well..."
 msgstr ""
+"Agora, quanto à questão de\n"
+"<em>quem</em> é o nosso prefeito, bem..."
 
 #: ../data/level/tea-with-milgram.cfg:197
 msgid ""
 "Let's just say the political situation in\n"
 "Crevice Village is a little confusing."
 msgstr ""
+"Digamos que a situação política\n"
+"na Vila da Fenda é meio confusa."
 
 #: ../data/level/tea-with-milgram.cfg:199
 msgid ""
 "I wouldn't call it anarchy, but we're a\n"
 "little weak when it comes to \"social institutions\"."
 msgstr ""
+"Eu não chamaria de anarquia,\n"
+"mas não temos grande coisa\n"
+"no que se refere a \"instituições sociais\"."
 
 #: ../data/level/tea-with-milgram.cfg:201
 msgid ""
 "Which as you can guess, has good sides,\n"
 "but also has bad sides."
 msgstr ""
+"O que, pelo que você pode imaginar,\n"
+"tem um lado bom e um lado ruim."
 
 #: ../data/level/tea-with-milgram.cfg:203
 msgid ""
 "I'll presume this contributes\n"
 "to the poor infrastructure?"
 msgstr ""
+"Imagino que isso ajuda a explicar\n"
+"os seus problemas de infraestrutura?"
 
 #: ../data/level/tea-with-milgram.cfg:205
 msgid "Yup!"
-msgstr ""
+msgstr "Pois é!"
 
 #: ../data/level/tea-with-milgram.cfg:208
 msgid ""
 "It's very, very hard to get people\n"
 "to work on anything big or long-term."
 msgstr ""
+"É muito, mas muito difícil juntar o pessoal\n"
+"pra trabalhar em algo maior, ou a longo prazo."
 
 #: ../data/level/tea-with-milgram.cfg:211
 msgid ""
 "We can raise a house,\n"
 "but we couldn't build a highway."
 msgstr ""
+"Dá pra construirmos uma casa,\n"
+"mas pra fazer uma estrada já não daria certo."
 
 #: ../data/level/tea-with-milgram.cfg:213
 msgid ""
 "Nevertheless this sounds\n"
 "<em>idyllically</em> free of bureaucracy."
 msgstr ""
+"Por outro lado, a parte de não parecer\n"
+"ter burocracia deve ser um sonho."
 
 #: ../data/level/tea-with-milgram.cfg:215
 msgid ""
 "Hah, right ... unless you count\n"
 "\"dumb arguments with stubborn people\"."
 msgstr ""
+"Heh, é... a não ser que você conte\n"
+"\"discussões tolas com gente teimosa\"."
 
 #: ../data/level/tea-with-milgram.cfg:217
 msgid ""
 "Anyways, we do manage to get by,\n"
 "but it really is a mess."
 msgstr ""
+"Então, a gente vai levando,\n"
+"mas é uma bagunça mesmo."
 
 #: ../data/level/tea-with-milgram.cfg:219
 msgid ""
@@ -6797,6 +6857,8 @@ msgid ""
 "Yes.\n"
 "No <em>wonder</em> we were confused!"
 msgstr ""
+"É...\n"
+"Não me espanta que ficamos confusos!"
 
 #: ../data/level/tea-with-milgram.cfg:226
 msgid "Ah, there we are..."
@@ -6895,7 +6957,7 @@ msgid ""
 "some of our security guys were\n"
 "a little overzealous about recovering assets."
 msgstr ""
-"Então, quando perceberam que nada estava sendo feito,\n"
+"Então, quando viram que nada estava sendo feito,\n"
 "uma parte da nossa tropa de segurança\n"
 "cometeu alguns exageros na hora de recuperar\n"
 "o dinheiro que tínhamos investido..."
@@ -6921,6 +6983,8 @@ msgid ""
 "I didn't authorize that operation,\n"
 "but I <em>will</em> take responsibility for it!"
 msgstr ""
+"Eu não autorizei essa operação,\n"
+"mas eu <em>irei</em> assumir a responsabilidade por isso!"
 
 #: ../data/level/tea-with-milgram.cfg:271
 msgid ""
@@ -6928,6 +6992,9 @@ msgid ""
 "Sooner or later, they're going to\n"
 "cause me some <em>serious</em> problems!"
 msgstr ""
+"Esses gatos estão virando uns valentões.\n"
+"Mais cedo ou mais tarde, eles ainda acabarão\n"
+"me trazendo algum problema <em>sério!</em>"
 
 #: ../data/level/tea-with-milgram.cfg:273
 msgid ""
@@ -6938,7 +7005,7 @@ msgstr ""
 "Eu ainda não te dei uma chance\n"
 "de pedir desculpas, mas não precisa.\n"
 "Eu tenho é que agradecer\n"
-"por você ter dado uma surra neles."
+"pela surra que você deu neles."
 
 #: ../data/level/tea-with-milgram.cfg:276
 msgid "I hope they've learned a lesson from this."
@@ -6992,7 +7059,8 @@ msgid ""
 "Then again, I'm almost tempted to cut my\n"
 "losses and leave you guys well enough alone."
 msgstr ""
-"Mas, por outro lado, também tenho uma certa vontade\n"
+"Mas, por outro lado,\n"
+"também tenho uma certa vontade\n"
 "de dar por encerrada essa situação,\n"
 "e ir cada um para o seu lado."
 
@@ -7009,6 +7077,9 @@ msgid ""
 "Probably the craziest and most helpful is...\n"
 "I actually think <em>he still has</em> that money."
 msgstr ""
+"Provavelmente a sugestão mais maluca,\n"
+"mas a mais útil de todas...\n"
+"Eu acho que <em>ele ainda tem</em> o dinheiro."
 
 #: ../data/level/tea-with-milgram.cfg:310
 msgid ""
@@ -7042,7 +7113,8 @@ msgid ""
 msgstr ""
 "E nós nunca vimos ele aparentar\n"
 "ter mais dinheiro do que o normal;\n"
-"então é uma teoria maluca, mas as peças se encaixam."
+"então é uma teoria meio maluca,\n"
+"mas as peças bem que se encaixam."
 
 #: ../data/level/tea-with-milgram.cfg:318
 msgid "I ... didn't see that coming."
@@ -7154,6 +7226,8 @@ msgid ""
 "...\n"
 "I'm amazed that's even <em>possible.</em>"
 msgstr ""
+"...\n"
+"Eu nem achava que isso fosse possível."
 
 #: ../data/level/tea-with-milgram.cfg:354
 msgid ""
@@ -7200,7 +7274,7 @@ msgid ""
 "an equitable outcome to this whole mess."
 msgstr ""
 "Sim, eu acho que todo mundo vai sair ganhando\n"
-"quando tivermos solucionado essa encrenca."
+"com a solução dessa encrenca toda."
 
 #: ../data/level/tea-with-milgram.cfg:367
 msgid "Except the elder."
@@ -7212,7 +7286,7 @@ msgstr "Fim"
 
 #: ../data/level/test-multiplayer.cfg:127
 msgid "Staging Forest"
-msgstr ""
+msgstr "Ponto de Partida na Floresta"
 
 #: ../data/level/the-north-tower.cfg:2089
 msgid "The North Tower"
@@ -7260,15 +7334,15 @@ msgstr "CORRIDA DAS MOEDAS"
 
 #: ../data/level/titlescreen-load-game-selector.cfg:23
 msgid "File 1:"
-msgstr ""
+msgstr "Arquivo 1:"
 
 #: ../data/level/titlescreen-load-game-selector.cfg:50
 msgid "File 2:"
-msgstr ""
+msgstr "Arquivo 2:"
 
 #: ../data/level/titlescreen-load-game-selector.cfg:77
 msgid "File 3:"
-msgstr ""
+msgstr "Arquivo 3:"
 
 #: ../data/level/titlescreen-load-game-selector.cfg:122
 #: ../data/level/titlescreen-new-game-selector.cfg:236
@@ -7394,7 +7468,7 @@ msgid ""
 "There're some ants down there."
 msgstr ""
 "É, aqui está a chave.\n"
-"Tem umas formigas lá em baixo."
+"Tem umas formigas lá embaixo."
 
 #: ../data/level/to-nenes-house-inside.cfg:52
 msgid ""
@@ -7465,7 +7539,7 @@ msgid ""
 "If you can clear it out, it's yours."
 msgstr ""
 "Mas se é assim, eu acho que\n"
-"deixei uma cápsula de vida lá em baixo.\n"
+"deixei uma cápsula de vida lá embaixo.\n"
 "Se você conseguir limpar tudo, é sua."
 
 #: ../data/level/to-nenes-house-inside.cfg:65
@@ -7548,7 +7622,8 @@ msgid ""
 "Honestly?  I had originally meant to\n"
 "give it to you as a birthday present."
 msgstr ""
-"Pra falar a verdade?A minha ideia seria ter te dado isso\n"
+"Pra falar a verdade?\n"
+"A minha ideia seria ter te dado isso\n"
 "de presente de aniversário."
 
 #: ../data/level/to-nenes-house-inside.cfg:94
@@ -7648,18 +7723,27 @@ msgid ""
 "but I don't think she'd want any ants for lunch.\n"
 "I'd better throw it out before entering!"
 msgstr ""
+"Pelo cheiro, parece que a Nenê\n"
+"tá cozinhando alguma coisa boa,\n"
+"mas acho que ela não iria querer\n"
+"convidar formigas pro almoço.\n"
+"Melhor jogar esse bicho fora antes de entrar!"
 
 #: ../data/level/to-nenes-house.cfg:178
 msgid ""
 "I guess that sneaking in with some bugs\n"
 "would be an easy way of getting a new job..."
 msgstr ""
+"Acho que entrar de fininho trazendo uns insetos\n"
+"seria um jeito fácil de conseguir mais um trabalho..."
 
 #: ../data/level/to-nenes-house.cfg:180
 msgid ""
 "But what am I thinking?\n"
 "It would be just nasty of me if I did that."
 msgstr ""
+"Mas o que que eu estou pensando?\n"
+"Seria uma canalhice se eu fizesse isso."
 
 #: ../data/level/to-nenes-house.cfg:2146
 msgid "Hah!"
@@ -8011,35 +8095,45 @@ msgstr "O recorde atual é a ${registry.arcade_coin_race_high_score}ª fase."
 #: ../data/objects/items/ability.cfg:8
 msgid "This has very little range, but is quite damaging."
 msgstr ""
+"O alcance é bem limitado,\n"
+"mas o potencial de dano é bastante alto."
 
 #: ../data/objects/items/ability.cfg:8
 msgid ""
 "You can now breathe out a\n"
 "short stream of intense flame."
 msgstr ""
+"Você agora pode cuspir chamas intensas\n"
+"por um período curto."
 
 #: ../data/objects/items/ability.cfg:8 ../data/objects/items/ability.cfg:9
 #: ../data/objects/items/ability.cfg:10
 msgid "You gained a new ability!"
-msgstr ""
+msgstr "Você ganhou uma nova habilidade!"
 
 #: ../data/objects/items/ability.cfg:9
 msgid ""
 "This has excellent range,\n"
 "and does decent damage."
 msgstr ""
+"O alcance é excelente,\n"
+"e o potencial de dano é razoável."
 
 #: ../data/objects/items/ability.cfg:9
 msgid ""
 "You can now fire balls of harmful\n"
 "energy from your fingertips."
 msgstr ""
+"Você agora pode liberar esferas de energia\n"
+"da ponta dos dedos para atacar os inimigos."
 
 #: ../data/objects/items/ability.cfg:10
 msgid ""
 "These have excellent range and decent damage,\n"
 "but are somewhat draining to use."
 msgstr ""
+"O alcance é ótimo e o dano causado é razoável,\n"
+"mas o custo de energia é um pouco pesado."
 
 #: ../data/objects/items/ability.cfg:10
 msgid ""
@@ -8047,16 +8141,21 @@ msgid ""
 "energy from your fingertips,\n"
 "which home in on your enemies."
 msgstr ""
+"Você agora pode liberar esferas de energia\n"
+"da ponta dos dedos.\n"
+"Essas aí perseguem e atacam os inimigos."
 
 #: ../data/objects/items/ability.cfg:12
 msgid "Press ${ATTACK_KEY} to switch between abilities."
-msgstr ""
+msgstr "Pressione ${ATTACK_KEY} para trocar de habilidade."
 
 #: ../data/objects/items/ability.cfg:12
 msgid ""
 "Tap the upper-left corner of the screen\n"
 "to switch between abilities."
 msgstr ""
+"Toque no canto superior esquerdo da tela\n"
+"para trocar de habilidade."
 
 #: ../data/objects/items/max_heart_object.cfg:8
 msgid ""
@@ -8064,8 +8163,7 @@ msgid ""
 "Your maximum HP has increased by one!"
 msgstr ""
 "Você conseguiu uma cápsula de vida.\n"
-"Com isso, você tem um ponto de vida\n"
-"adicional!"
+"Com isso, você tem um ponto de vida adicional!"
 
 #: ../data/objects/items/partial_max_heart_object.cfg:11
 msgid ""
@@ -8125,7 +8223,7 @@ msgstr ""
 
 #: ../data/objects/items/store-items/buyable_greater_mana_talisman.cfg:5
 msgid "greater mana talisman"
-msgstr ""
+msgstr "grande talismã de mana"
 
 #: ../data/objects/items/store-items/buyable_greater_mana_talisman.cfg:7
 msgid ""
@@ -8133,6 +8231,9 @@ msgid ""
 "will boost your mana recharge rate.\n"
 "This one is quite strong, but the price is steep."
 msgstr ""
+"Esse é um talismã de mana que aumenta a velocidade\n"
+"com que você recupera sua energia mágica.\n"
+"O efeito desse é bem intenso, mas o preço é alto."
 
 #: ../data/objects/items/store-items/buyable_heart_container.cfg:5
 msgid "heart"
@@ -8156,7 +8257,7 @@ msgstr ""
 
 #: ../data/objects/items/store-items/buyable_lesser_mana_talisman.cfg:5
 msgid "lesser mana talisman"
-msgstr ""
+msgstr "pequeno talismã de mana"
 
 #: ../data/objects/items/store-items/buyable_lesser_mana_talisman.cfg:7
 msgid ""
@@ -8164,6 +8265,9 @@ msgid ""
 "will boost your mana recharge rate.\n"
 "It's weak, but you can't beat the price."
 msgstr ""
+"Esse é um talismã de mana que aumenta a velocidade\n"
+"com que você recupera sua energia mágica.\n"
+"O efeito desse é bem sutil, mas está em promoção..."
 
 #: ../data/objects/items/store-items/buyable_powerup_invincible.cfg:5
 msgid "invincibility crystal"
