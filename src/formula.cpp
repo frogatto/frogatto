@@ -1970,7 +1970,7 @@ void formula::check_brackets_match(const std::vector<token>& tokens) const
 		}
 	}
 
-	if(brackets.empty() == false) {
+	if(error_msg.empty() && brackets.empty() == false) {
 		const int m = brackets_locs.top();
 		error_msg = "UNMATCHED BRACKET: " + std::string(tokens[m].begin, tokens[m].end);
 		error_loc = m;
