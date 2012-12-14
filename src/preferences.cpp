@@ -108,7 +108,7 @@ WindowsPrefs winPrefs;
 
 namespace preferences {
 	const std::string& version() {
-		static const std::string Version = "1.3";
+		static const std::string Version = "1.3.1";
 		return Version;
 	}
 	
