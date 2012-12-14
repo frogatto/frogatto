@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2012-11-28 22:10-0200\n"
-"PO-Revision-Date: 2012-12-04 20:30+0000\n"
+"PO-Revision-Date: 2012-12-12 03:23+0000\n"
 "Last-Translator: GunChleoc <fios@foramnagaidhlig.net>\n"
 "Language-Team: Gaelic, Scottish (http://www.transifex.com/projects/p/Frogatto/language/gd/)\n"
 "MIME-Version: 1.0\n"
@@ -1066,7 +1066,7 @@ msgid ""
 "He's such a miser, you know -\n"
 "the man would probably burn his\n"
 "furniture just to save on firewood."
-msgstr "'S e fìor spìocair a th' ann, fhios agad -\ncha chreid mi nach losgadh e an àirneis aige\ngus sàbhaladh air fiodh-connaidh."
+msgstr "'S e fìor spìocair a th' ann, fhios a'd -\ncha chreid mi nach losgadh e an àirneis aige\ngus sàbhaladh air fiodh-connaidh."
 
 #: ../data/level/crevice-bridge.cfg:334
 msgid ""
@@ -1849,7 +1849,7 @@ msgstr "Seadh, a-nis ...\nLean ort ma-thà."
 
 #: ../data/level/crevice-village-house-1.cfg:991
 msgid "Thank god it's you!"
-msgstr "Taing do dhia gur e tusa a th' ann!"
+msgstr "Taing do dhia gur e tus' a th' ann!"
 
 #: ../data/level/crevice-village-house-1.cfg:993
 msgid "Hey, Hedge, you alright?"
@@ -1886,7 +1886,7 @@ msgstr "Nach buidhe dhomhsa?"
 msgid ""
 "Hmm, you know, I know one thing\n"
 "that might help you.."
-msgstr "Uill, fhios agad, tha rud ann\na b' urrainn taic a thoirt dhut ..."
+msgstr "Uill, fhios a'd, tha rud ann\na b' urrainn taic a thoirt dhut ..."
 
 #: ../data/level/crevice-village-house-1.cfg:1004
 msgid ""
@@ -1908,7 +1908,7 @@ msgstr "Nan robh fios a'm, chan e\nrùn-dìomhair a bhiodh ann, am biodh?"
 msgid ""
 "Figures.\n"
 "Well, thanks for the help!"
-msgstr "Cha chreid mi nach biodh.\nUill, taing co-dhiù!"
+msgstr "Cha chreid mi gum biodh.\nUill, taing co-dhiù!"
 
 #: ../data/level/crevice-village-house-1.cfg:1010
 msgid "Good luck!"
@@ -2396,7 +2396,7 @@ msgstr "Co-dhiù no co-dheth, bha mi ro dhèidheil gabhail ris\nach cha robh e f
 msgid ""
 "I realized this was all a scam.\n"
 "He was establishing a claim, you see."
-msgstr "Thàinig e steach orm chan e ach mealladh a bh' ann.\nBha e cosnadh tagraidhean, fhios agad."
+msgstr "Thàinig e steach orm chan e ach mealladh a bh' ann.\nBha e cosnadh tagraidhean, fhios a'd."
 
 #: ../data/level/crevice-village-house-elder.cfg:556
 msgid "I'm not sure I follow you..."
@@ -5201,7 +5201,7 @@ msgid ""
 "Milgram's men showed up\n"
 "early this morning, in town.\n"
 "They've taken the whole place hostage!"
-msgstr "Noch muinntir Chaluim tràth sa mhadainn\nan-diugh sa bhaile. Rinn iad bràighdean\ndhen a h-uile duine!"
+msgstr "Nochd muinntir Chaluim tràth sa mhadainn\nan-diugh sa bhaile. Rinn iad bràighdean\ndhen a h-uile duine!"
 
 #: ../data/level/secluded-hut.cfg:1410
 msgid ""
