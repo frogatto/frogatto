@@ -24,7 +24,7 @@
 #include "formula_profiler.hpp"
 #include "formula_callable.hpp"
 #include "http_client.hpp"
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY) || defined(__ANDROID__)
+#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY) || defined(__ANDROID__) || TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 #include "iphone_controls.hpp"
 #endif
 #ifdef TARGET_BLACKBERRY
@@ -310,6 +310,7 @@ void show_end_game()
 
 void translate_mouse_event(SDL_Event *ev)
 {
+    std::cerr << "translating_mouse_event\n";
 	if(ev->type == SDL_MOUSEMOTION) {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 		ev->motion.x = (ev->motion.x*graphics::screen_width())/preferences::virtual_screen_width() + last_draw_position().x/100;
@@ -322,6 +323,7 @@ void translate_mouse_event(SDL_Event *ev)
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 		ev->button.x = (ev->button.x*graphics::screen_width())/preferences::virtual_screen_width() + last_draw_position().x/100;
 		ev->button.y = (ev->button.y*graphics::screen_height())/preferences::virtual_screen_height() + last_draw_position().y/100;
+
 #else
 		ev->button.x = (ev->button.x*preferences::virtual_screen_width())/preferences::actual_screen_width() + last_draw_position().x/100;
 		ev->button.y = (ev->button.y*preferences::virtual_screen_height())/preferences::actual_screen_height() + last_draw_position().y/100;
@@ -448,7 +450,13 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 			int event_type = event.type;
 			int event_button_button = event.button.button;
 #endif
-			const int basic_evt = event_type == SDL_MOUSEBUTTONDOWN 
+            
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+            translate_mouse_coords(&x,&y);
+            translate_mouse_coords(&mx,&my);
+            //std::cerr << x << ", " << y << " x, y\n";
+#endif
+			const int basic_evt = event_type == SDL_MOUSEBUTTONDOWN
 				? MouseDownEventID 
 				: event_type == SDL_MOUSEMOTION
 					? MouseMoveEventID : MouseUpEventID;
@@ -1283,6 +1291,12 @@ bool level_runner::play_cycle()
 				iphone_controls::handle_event(event);
 				handle_mouse_events(event);
 				break;
+#elif defined(TARGET_IPHONE_SIMULATOR) || defined(TARGET_OS_IPHONE)                    
+                case SDL_MOUSEMOTION:
+                case SDL_MOUSEBUTTONDOWN:
+                case SDL_MOUSEBUTTONUP:
+                    handle_mouse_events(event);
+                    break;
 #else
 #ifndef NO_EDITOR
 			case SDL_MOUSEBUTTONDOWN:
