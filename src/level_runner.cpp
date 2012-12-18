@@ -310,9 +310,9 @@ void show_end_game()
 
 void translate_mouse_event(SDL_Event *ev)
 {
-    std::cerr << "translating_mouse_event\n";
 	if(ev->type == SDL_MOUSEMOTION) {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+        translate_mouse_coords(&ev->motion.x, &ev->motion.y);
 		ev->motion.x = (ev->motion.x*graphics::screen_width())/preferences::virtual_screen_width() + last_draw_position().x/100;
 		ev->motion.y = (ev->motion.y*graphics::screen_height())/preferences::virtual_screen_height() + last_draw_position().y/100;
 #else
@@ -321,9 +321,9 @@ void translate_mouse_event(SDL_Event *ev)
 #endif
 	} else if(ev->type == SDL_MOUSEBUTTONDOWN || ev->type == SDL_MOUSEBUTTONUP) {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+        translate_mouse_coords(&ev->button.x, &ev->button.y);
 		ev->button.x = (ev->button.x*graphics::screen_width())/preferences::virtual_screen_width() + last_draw_position().x/100;
 		ev->button.y = (ev->button.y*graphics::screen_height())/preferences::virtual_screen_height() + last_draw_position().y/100;
-
 #else
 		ev->button.x = (ev->button.x*preferences::virtual_screen_width())/preferences::actual_screen_width() + last_draw_position().x/100;
 		ev->button.y = (ev->button.y*preferences::virtual_screen_height())/preferences::actual_screen_height() + last_draw_position().y/100;
