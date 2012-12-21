@@ -254,7 +254,7 @@ token get_token(iterator& i1, iterator i2) {
 			}
 		}
 
-		static const std::string Operators[] = { "not", "and", "or", "where", "in" };
+		static const std::string Operators[] = { "not", "and", "or", "where", "in", "asserting" };
 		foreach(const std::string& str, Operators) {
 			if(str.size() == (t.end - t.begin) && std::equal(str.begin(), str.end(), t.begin)) {
 				t.type = TOKEN_OPERATOR;

@@ -921,7 +921,7 @@ private:
 	}
 };
 
-class where_expression: public formula_expression {
+class where_expression : public formula_expression {
 public:
 	where_expression(expression_ptr body, where_variables_info_ptr info)
 	: formula_expression("_where"), body_(body), info_(info)
@@ -935,6 +935,27 @@ private:
 	variant execute(const formula_callable& variables) const {
 		formula_callable_ptr wrapped_variables(new where_variables(variables, info_));
 		return body_->evaluate(*wrapped_variables);
+	}
+};
+
+class assert_expression : public formula_expression {
+public:
+	assert_expression(expression_ptr body, const std::vector<expression_ptr> asserts)
+	  : formula_expression("_assert"), body_(body), asserts_(asserts)
+	{
+	}
+
+private:
+	expression_ptr body_;
+	std::vector<expression_ptr> asserts_;
+
+	variant execute(const formula_callable& variables) const {
+		foreach(const expression_ptr& a, asserts_) {
+			ASSERT_LOG(a->evaluate(variables).as_bool(),
+			           "FORMULA ASSERTION FAILED: " << a->str() << " -- " << a->debug_pinpoint_location());
+		}
+
+		return body_->evaluate(variables);
 	}
 };
 
@@ -1064,6 +1085,7 @@ int operator_precedence(const token& t)
 		precedence_map["->"] = ++n;
 		precedence_map["not"] = ++n;
 		precedence_map["where"] = ++n;
+		precedence_map["asserting"] = ++n;
 		precedence_map["or"]    = ++n;
 		precedence_map["and"]   = ++n;
 		precedence_map["in"] = ++n;
@@ -1793,6 +1815,12 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 
 		const_formula_callable_definition_ptr callable_where_def = create_where_definition(table, callable_def);
 		return expression_ptr(new where_expression(parse_expression(formula_str, i1, op, symbols, callable_where_def.get(), can_optimize), where_info));
+	} else if(op_name == "asserting") {
+		expression_ptr base_expr(parse_expression(formula_str, i1, op, symbols, callable_def, can_optimize));
+		std::vector<expression_ptr> asserts;
+		parse_args(formula_str,op+1,i2,&asserts,symbols, callable_def, can_optimize);
+
+		return expression_ptr(new assert_expression(base_expr, asserts));
 	}
 
 	const bool is_dot = op_name == ".";
