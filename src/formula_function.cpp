@@ -498,18 +498,18 @@ FUNCTION_DEF(tan, 1, 1, "tan(x): Standard tangent function.")
 END_FUNCTION_DEF(tan)
 
 FUNCTION_DEF(asin, 1, 1, "asin(x): Standard arc sine function.")
-	const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
-	return variant(static_cast<decimal>(asin(angle/radians_to_degrees)));
+	const float ratio = args()[0]->evaluate(variables).as_decimal().as_float();
+	return variant(static_cast<decimal>(asin(ratio)*radians_to_degrees));
 END_FUNCTION_DEF(asin)
 
 FUNCTION_DEF(acos, 1, 1, "acos(x): Standard arc cosine function.")
-	const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
-	return variant(static_cast<decimal>(acos(angle/radians_to_degrees)));
+	const float ratio = args()[0]->evaluate(variables).as_decimal().as_float();
+	return variant(static_cast<decimal>(acos(ratio)*radians_to_degrees));
 END_FUNCTION_DEF(acos)
 
 FUNCTION_DEF(atan, 1, 1, "atan(x): Standard arc tangent function.")
-	const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
-	return variant(static_cast<decimal>(atan(angle/radians_to_degrees)));
+	const float ratio = args()[0]->evaluate(variables).as_decimal().as_float();
+	return variant(static_cast<decimal>(atan(ratio)*radians_to_degrees));
 END_FUNCTION_DEF(atan)
 
 FUNCTION_DEF(sinh, 1, 1, "sinh(x): Standard hyperbolic sine function.")
@@ -528,18 +528,18 @@ FUNCTION_DEF(tanh, 1, 1, "tanh(x): Standard hyperbolic tangent function.")
 END_FUNCTION_DEF(tanh)
 
 FUNCTION_DEF(asinh, 1, 1, "asinh(x): Standard arc hyperbolic sine function.")
-	const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
-	return variant(static_cast<decimal>(asinh(angle)));
+	const float ratio = args()[0]->evaluate(variables).as_decimal().as_float();
+	return variant(static_cast<decimal>(asinh(ratio)));
 END_FUNCTION_DEF(asinh)
 
 FUNCTION_DEF(acosh, 1, 1, "acosh(x): Standard arc hyperbolic cosine function.")
-	const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
-	return variant(static_cast<decimal>(acosh(angle)));
+	const float ratio = args()[0]->evaluate(variables).as_decimal().as_float();
+	return variant(static_cast<decimal>(acosh(ratio)));
 END_FUNCTION_DEF(acosh)
 
 FUNCTION_DEF(atanh, 1, 1, "atanh(x): Standard arc hyperbolic tangent function.")
-	const float angle = args()[0]->evaluate(variables).as_decimal().as_float();
-	return variant(static_cast<decimal>(atanh(angle)));
+	const float ratio = args()[0]->evaluate(variables).as_decimal().as_float();
+	return variant(static_cast<decimal>(atanh(ratio)));
 END_FUNCTION_DEF(atanh)
 
 FUNCTION_DEF(sqrt, 1, 1, "sqrt(x): Returns the square root of x.")
