@@ -585,7 +585,9 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 
 void level_runner::show_pause_title()
 {
-	set_scene_title("Paused\n\n\n(ctrl-p)", paused ? INT_MAX : 25);
+	if(!editor_) {
+		set_scene_title("Paused\n\n\n(ctrl-p)", paused ? INT_MAX : 25);
+	}
 }
 
 level_runner* level_runner::get_current()
