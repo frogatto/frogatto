@@ -2882,6 +2882,37 @@ bool editor::confirm_quit(bool allow_cancel)
 	return true;
 }
 
+void editor::autosave_level()
+{
+	controls::control_backup_scope ctrl_backup;
+
+	toggle_active_level();
+
+	remove_ghost_objects();
+	ghost_objects_.clear();
+
+	std::string data;
+	variant lvl_node = lvl_->write();
+	std::map<variant,variant> attr = lvl_node.as_map();
+	attr.erase(variant("cycle"));  //levels saved in the editor should never
+	                               //have a cycle attached to them so that
+								   //all levels start at cycle 0.
+	lvl_node = variant(&attr);
+	const std::string target_path = std::string(preferences::user_data_path()) + "/autosave.cfg";
+	if(sys::file_exists(target_path)) {
+		const std::string backup_path = target_path + ".1";
+		if(sys::file_exists(backup_path)) {
+			sys::remove_file(backup_path);
+		}
+
+		sys::move_file(target_path, backup_path);
+	}
+
+	sys::write_file(target_path, lvl_node.write_json(true));
+
+	toggle_active_level();
+}
+
 void editor::save_level()
 {
 	controls::control_backup_scope ctrl_backup;
@@ -3466,6 +3497,8 @@ void editor::execute_command(boost::function<void()> command, boost::function<vo
 	cmd.type = type;
 	undo_.push_back(cmd);
 	redo_.clear();
+
+	autosave_level();
 }
 
 void editor::begin_command_group()
