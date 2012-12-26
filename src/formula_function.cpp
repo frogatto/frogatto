@@ -269,7 +269,8 @@ FUNCTION_DEF(construct, 1, 2, "construct(string typename, arg): construct an obj
 		arg = args()[1]->evaluate(variables);
 	}
 
-	return variant(new formula_object(type.as_string(), arg));
+	boost::intrusive_ptr<formula_object> obj(formula_object::create(type.as_string(), arg));
+	return variant(obj.get());
 END_FUNCTION_DEF(construct)
 
 FUNCTION_DEF(delay_until_end_of_loading, 1, 1, "delay_until_end_of_loading(string): delays evaluation of the enclosed until loading is finished")
@@ -970,7 +971,7 @@ END_FUNCTION_DEF(flatten)
 class map_callable : public formula_callable {
 	public:
 		explicit map_callable(const formula_callable& backup)
-		: backup_(backup)
+		: backup_(&backup)
 		{}
 
 		void set(const variant& v, int i)
@@ -985,17 +986,17 @@ class map_callable : public formula_callable {
 			} else if(key == "index") {
 				return variant(index_);
 			} else if(key == "context") {
-				return variant(&backup_);
+				return variant(backup_.get());
 			} else {
-				return backup_.query_value(key);
+				return backup_->query_value(key);
 			}
 		}
 
 		variant get_value_by_slot(int slot) const {
-			return backup_.query_value_by_slot(slot);
+			return backup_->query_value_by_slot(slot);
 		}
 
-		const formula_callable& backup_;
+		const const_formula_callable_ptr backup_;
 		variant value_;
 		int index_;
 };
