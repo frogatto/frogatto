@@ -141,6 +141,7 @@ public:
 	void save_level_as(const std::string& filename);
 	void quit();
 	bool confirm_quit(bool allow_cancel=true);
+	void autosave_level();
 	void zoom_in();
 	void zoom_out();
 	int zoom() const { return zoom_; }
