@@ -9,10 +9,13 @@ use strict;
 
 # appending --show_heart_pieces after utils/graph-levels.pl will write the number of max heart piece objects in the level, by type
 
+# to make a graph starting from a specific level at the top, move that level to a folder that would be the first in the alphabetical order, e.g., put frogatto-grotto-frogattos-room.cfg inside _Seaside
+
 my $show_music = 0;
 my $show_heart_pieces = 0;
 my $show_coins = 0;
 my $show_palettes = 0;
+my $show_pathnames = 1;
 
 while(my $arg = shift @ARGV) {
 	if($arg eq '--show_music') {
@@ -23,6 +26,8 @@ while(my $arg = shift @ARGV) {
 		$show_coins = 1;
 	} elsif($arg eq '--show_palettes') {
 		$show_palettes = 1;
+	} elsif($arg eq '--hide_pathnames') {
+		$show_pathnames = 0;
 	} else {
 		die "Unrecognized argument: $arg";
 	}
@@ -31,7 +36,10 @@ while(my $arg = shift @ARGV) {
 
 
 
-my @levels = glob("data/level/*");
+my @levels = glob("data/level/Seaside/*");
+push @levels, glob("data/level/Forest/*");
+push @levels, glob("data/level/Cave/*");
+push @levels, glob("data/level/Dungeon/*");
 
 my %index = ();
 my $index = 1;
@@ -154,8 +162,14 @@ foreach my $level (@levels) {
 foreach my $adj (@adj) {
 	my ($src, $dst, $door) = @$adj;
 	my ($a, $b) = ($index{$src}, $index{$dst});
-	print qq~N$a -> N$b [label="$door", weight=1, style="setlinewidth(1.0)"];\n~
-	   if $a and $b;
+		if($show_pathnames) {
+		print qq~N$a -> N$b [label="$door", weight=1, style="setlinewidth(1.0)"];\n~
+	   		if $a and $b;
+	   		}
+	   	else {
+	   	print qq~N$a -> N$b [weight=1, style="setlinewidth(1.0)"];\n~
+	   		if $a and $b;
+	   	}
 }
 
 print "}";
