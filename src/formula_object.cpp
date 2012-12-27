@@ -289,6 +289,13 @@ void formula_object::reload_classes()
 	classes_.clear();
 }
 
+boost::intrusive_ptr<formula_object> formula_object::create(const std::string& type, variant args)
+{
+	boost::intrusive_ptr<formula_object> res(new formula_object(type, args));
+	res->call_constructors(args);
+	return res;
+}
+
 formula_object::formula_object(const std::string& type, variant args)
   : class_(get_class(type))
 {
@@ -297,13 +304,14 @@ formula_object::formula_object(const std::string& type, variant args)
 		foreach(const variant& key, args.get_keys().as_list()) {
 			set_value(key.as_string(), args[key]);
 		}
+	}
+}
 
-		if(class_->constructor().empty() == false) {
-			foreach(const game_logic::const_formula_ptr f, class_->constructor()) {
-				private_data_scope scope(expose_private_data_, &tmp_value_, &args);
-				execute_command(f->execute(*this));
-			}
-		}
+void formula_object::call_constructors(variant args)
+{
+	foreach(const game_logic::const_formula_ptr f, class_->constructor()) {
+		private_data_scope scope(expose_private_data_, &tmp_value_, &args);
+		execute_command(f->execute(*this));
 	}
 }
 
@@ -335,12 +343,17 @@ variant formula_object::serialize_to_wml() const
 
 variant formula_object::get_value(const std::string& key) const
 {
-	if(expose_private_data_) {
+	/*TODO: MAKE DATA HIDING WORK
+	if(expose_private_data_) */ {
 		if(key == "private") {
 			return private_data_;
 		} else if(key == "value") {
 			return tmp_value_;
 		}
+	}
+
+	if(key == "self" || key == "me") {
+		return variant(this);
 	}
 
 	std::map<std::string, property_entry>::const_iterator itor = class_->properties().find(key);
@@ -373,7 +386,7 @@ void formula_object::set_value(const std::string& key, const variant& value)
 		private_data_scope scope(expose_private_data_, &tmp_value_, &value);
 		execute_command(itor->second.setter->execute(*this));
 	} else if(itor->second.variable.is_null() == false) {
-		private_data_.add_attr(itor->second.variable, value);
+		private_data_.add_attr_mutation(itor->second.variable, value);
 	} else {
 		ASSERT_LOG(false, "ILLEGAL WRITE PROPERTY ACCESS OF NON-WRITABLE VARIABLE " << key << " IN CLASS " << class_->name());
 	}

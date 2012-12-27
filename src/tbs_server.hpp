@@ -76,6 +76,7 @@ private:
 	variant create_lobby_msg() const;
 	variant create_game_info_msg(game_info_ptr g) const;
 
+	std::map<int, socket_ptr> sessions_to_waiting_connections_;
 	std::map<socket_ptr, std::string> waiting_connections_;
 
 	std::map<socket_ptr, socket_info> connections_;

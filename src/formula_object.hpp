@@ -22,13 +22,17 @@ public:
 
 	static void reload_classes();
 
-	//construct with type and constructor parameters.
-	explicit formula_object(const std::string& type, variant args=variant());
+	static boost::intrusive_ptr<formula_object> create(const std::string& type, variant args=variant());
+
 
 	//construct with data representing private/internal represenation.
 	explicit formula_object(variant data);
 	virtual ~formula_object();
 private:
+	//construct with type and constructor parameters.
+	//Don't call directly, use create() instead.
+	explicit formula_object(const std::string& type, variant args=variant());
+	void call_constructors(variant args);
 
 	variant serialize_to_wml() const;
 

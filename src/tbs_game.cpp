@@ -463,6 +463,13 @@ void game::execute_command(variant cmd)
 		if(command) {
 			command->execute(*this);
 		}
+	} else if(cmd.is_map()) {
+		if(cmd.has_key("execute")) {
+			game_logic::formula f(cmd["execute"]);
+			game_logic::formula_callable_ptr callable(map_into_callable(cmd["arg"]));
+			variant v = f.execute(*callable);
+			execute_command(v);
+		}
 	}
 }
 

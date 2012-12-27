@@ -192,12 +192,23 @@ void server::close_ajax(socket_ptr socket, client_info& cli_info)
 		cli_info.msg_queue.pop_front();
 	} else {
 		waiting_connections_[socket] = info.nick;
+		sessions_to_waiting_connections_[cli_info.session_id] = socket;
 	}
 }
 
 void server::queue_msg(int session_id, const std::string& msg)
 {
 	if(session_id == -1) {
+		return;
+	}
+
+	std::map<int, socket_ptr>::iterator itor = sessions_to_waiting_connections_.find(session_id);
+	if(itor != sessions_to_waiting_connections_.end()) {
+		const int session_id = itor->first;
+		const socket_ptr sock = itor->second;
+		send_msg(sock, msg);
+		waiting_connections_.erase(sock);
+		sessions_to_waiting_connections_.erase(session_id);
 		return;
 	}
 
@@ -246,8 +257,17 @@ void server::handle_send(socket_ptr socket, const boost::system::error_code& e, 
 
 void server::disconnect(socket_ptr socket)
 {
+	std::map<socket_ptr, socket_info>::iterator itor = connections_.find(socket);
+	if(itor != connections_.end()) {
+		std::map<int, socket_ptr>::iterator sessions_itor = sessions_to_waiting_connections_.find(itor->second.session_id);
+		if(sessions_itor != sessions_to_waiting_connections_.end() && sessions_itor->second == socket) {
+			sessions_to_waiting_connections_.erase(sessions_itor);
+		}
+
+		connections_.erase(itor);
+	}
+
 	waiting_connections_.erase(socket);
-	connections_.erase(socket);
 	socket->close();
 }
 
@@ -271,6 +291,8 @@ void server::heartbeat()
 
 	const bool send_heartbeat = nheartbeat_%100 == 0;
 
+	std::vector<socket_ptr> connections_to_remove;
+
 	for(std::map<socket_ptr, std::string>::iterator i = waiting_connections_.begin(); i != waiting_connections_.end(); ++i) {
 		socket_ptr socket = i->first;
 
@@ -279,6 +301,9 @@ void server::heartbeat()
 		if(cli_info.msg_queue.empty() == false) {
 			send_msg(socket, cli_info.msg_queue.front());
 			cli_info.msg_queue.pop_front();
+
+			connections_to_remove.push_back(i->first);
+			sessions_to_waiting_connections_.erase(info.session_id);
 		} else if(send_heartbeat) {
 			if(!cli_info.game) {
 				send_msg(socket, "{ \"type\": \"heartbeat\" }");
@@ -313,7 +338,14 @@ void server::heartbeat()
 
 				send_msg(socket, doc.build());
 			}
+
+			connections_to_remove.push_back(i->first);
+			sessions_to_waiting_connections_.erase(info.session_id);
 		}
+	}
+
+	foreach(const socket_ptr& s, connections_to_remove) {
+		waiting_connections_.erase(s);
 	}
 
 	if(send_heartbeat) {

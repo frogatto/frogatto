@@ -3825,6 +3825,10 @@ void level::set_value(const std::string& key, const variant& value)
 			e.end_zorder = v["end_zorder"].as_int();
 			e.shader_node = v["shader_info"];
 
+			if(v.has_key("shader")) {
+				e.shader.reset(v["shader"].try_convert<gles2::shader_program>());
+			}
+
 			if(!e.shader) {
 				e.shader.reset(new gles2::shader_program(e.shader_node));
 				e.shader->configure(e.shader_node);
