@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-11-19 01:43-0200\n"
-"PO-Revision-Date: 2012-11-19 03:46+0000\n"
-"Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
+"POT-Creation-Date: 2012-11-28 22:10-0200\n"
+"PO-Revision-Date: 2012-12-29 18:23+0000\n"
+"Last-Translator: Yaohan Chen <yaohan.chen@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/projects/p/Frogatto/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -107,295 +107,364 @@ msgid "OpenFeint"
 msgstr "OpenFeint"
 
 #: ../CHANGELOG:1 ../iOS_CHANGELOG:1
+msgid "Version 1.3:"
+msgstr "1.3版："
+
+#: ../CHANGELOG:2 ../iOS_CHANGELOG:2
+msgid ""
+"Expansion and improvements to the plot and dialogue, adding new cutscenes "
+"that give you a closer look at the antagonists' motives."
+msgstr "情节和对话的扩展和改进，增添了新的过场动画，让你更了解反角的动机。"
+
+#: ../CHANGELOG:3 ../iOS_CHANGELOG:3
+msgid ""
+"Several new levels were added to the dungeon environment; with some of them "
+"being optional, there's much more to explore now."
+msgstr "地下牢区域增添了几个新关，有些是可选，更多探索的地方。"
+
+#: ../CHANGELOG:4 ../iOS_CHANGELOG:4
+msgid ""
+"Some new enemies to be vanquished: a red bat that's much more tenacious than"
+" the regular ones, and the hard-hitting ninja-kitty, that has many tools at "
+"his disposal to fight you. And these are just a few examples!"
+msgstr "新的敌人：比平常的蝙蝠更顽强的红色蝙蝠，具有高杀伤力，用多种武器的忍者猫，等等！"
+
+#: ../CHANGELOG:5 ../iOS_CHANGELOG:5
+msgid ""
+"New difficulty level: Challenging. Some enemies will be faster, hardier, "
+"smarter, or all of those put together."
+msgstr "新的难度：挑战。有些敌人会更快，更顽强，更智能。"
+
+#: ../CHANGELOG:6 ../iOS_CHANGELOG:6
+msgid ""
+"A better \"New Game/Load Game\" screen, that allows the selection of save "
+"slots."
+msgstr "更好的“新游戏/读取游戏”屏幕，允许选择存档槽。"
+
+#: ../CHANGELOG:7 ../iOS_CHANGELOG:7
+msgid ""
+"New power-up system, based on a common \"mana\" resource - now players can "
+"choose what powers to use at any time, if they've acquired them and have "
+"enough mana to use them."
+msgstr "使用“魔力”资源的新的能力系统。玩家可以随时选择用哪一种学会的能力。"
+
+#: ../CHANGELOG:8 ../iOS_CHANGELOG:8
+msgid ""
+"Two new power-ups: Fire-breath attack and an energy shot that homes in on "
+"enemies."
+msgstr "两种新的能力：喷火攻击和追踪能量弹"
+
+#: ../CHANGELOG:9 ../iOS_CHANGELOG:9
+msgid ""
+"Graphical improvements abound: ground tiles on most environments were "
+"reworked, adding better perspective, and being improved on in general."
+msgstr "大幅度的图像改善：重制了大多数环境的地面图像，增加了立体感，以及总体的改善。"
+
+#: ../CHANGELOG:10 ../iOS_CHANGELOG:10
+msgid ""
+"Lots of new objects show up in the foreground and background, giving more "
+"depth and diversity to each map."
+msgstr "前景和背景出现新的物体，让关卡增添深度和色彩。"
+
+#: ../CHANGELOG:11 ../iOS_CHANGELOG:11
+msgid ""
+"Many new tracks were added to the soundtrack, while most of the previous "
+"repertoire has been enhanced."
+msgstr "增加了多首背景音乐，并改进了已有的音乐。"
+
+#: ../CHANGELOG:12 ../iOS_CHANGELOG:12
+msgid ""
+"A much wider and smarter usage of sound effects; now you'll be able to "
+"notice flying enemies' wings flapping, kitties running around, and even the "
+"sounds Frogatto make are when moving around are dependent on terrain."
+msgstr "更广泛，精巧的利用音效；你可以注意到飞行敌人的翅膀闪动，猫咪跑动，甚至阿土走动的声音也随地形改变。"
+
+#: ../CHANGELOG:14 ../iOS_CHANGELOG:14
 msgid "Version 1.2:"
 msgstr "1.2 版本:"
 
-#: ../CHANGELOG:2 ../iOS_CHANGELOG:2
+#: ../CHANGELOG:15 ../iOS_CHANGELOG:15
 msgid ""
 "Complete redo of attack logic; frogatto now is free to walk around whilst he"
 " attacks, and in general is much more responsive."
 msgstr "全新攻击方式：阿土现在可以畅快地自由移动，攻击时也不例外。"
 
-#: ../CHANGELOG:3 ../iOS_CHANGELOG:3
+#: ../CHANGELOG:16 ../iOS_CHANGELOG:16
 msgid "Frogatto's tongue-grabbing is MUCH more forgiving"
 msgstr "阿土的舌头变得更灵活"
 
-#: ../CHANGELOG:4 ../iOS_CHANGELOG:4
+#: ../CHANGELOG:17 ../iOS_CHANGELOG:17
 msgid ""
 "Complete rewrite of damage handling; much more consistent now, and "
 "categorically eliminates some bugs where damage wouldn't get dealt."
 msgstr "重写伤害关系；更加均衡，以及取消了某些无法造成伤害的bug"
 
-#: ../CHANGELOG:5 ../iOS_CHANGELOG:5
+#: ../CHANGELOG:18 ../iOS_CHANGELOG:18
 msgid "Reworked some tilesets to eliminate tiling errors."
 msgstr "重制某些图块，修正错误"
 
-#: ../CHANGELOG:6 ../iOS_CHANGELOG:6
+#: ../CHANGELOG:19 ../iOS_CHANGELOG:19
 msgid "Further enhancements to dungeon wall graphics (added edges)."
 msgstr "进一步加强地下墙壁图像（添加边缘）"
 
-#: ../CHANGELOG:7 ../iOS_CHANGELOG:7
+#: ../CHANGELOG:20 ../iOS_CHANGELOG:20
 msgid "New, more readable dialogue font."
 msgstr "新的对话框字体。"
 
-#: ../CHANGELOG:8 ../iOS_CHANGELOG:8
+#: ../CHANGELOG:21 ../iOS_CHANGELOG:21
 msgid "Lots of small graphical tweaks."
 msgstr "很多细微的图像增强。"
 
-#: ../CHANGELOG:9 ../iOS_CHANGELOG:9
+#: ../CHANGELOG:22 ../iOS_CHANGELOG:22
 msgid "Maps are now strewn with spittable props within easy reach."
 msgstr "关卡中现在散落了可以吐出的道具。"
 
-#: ../CHANGELOG:10 ../iOS_CHANGELOG:10
+#: ../CHANGELOG:23 ../iOS_CHANGELOG:23
 msgid "Rewrote most of the dialogue."
 msgstr "重写了多数对话。"
 
-#: ../CHANGELOG:11 ../iOS_CHANGELOG:11
+#: ../CHANGELOG:24 ../iOS_CHANGELOG:24
 msgid ""
 "Collectible items like coins can be collected by being touched by the "
 "tongue, besides just frogatto's body."
 msgstr "收集物品可以使用舌头"
 
-#: ../CHANGELOG:12 ../iOS_CHANGELOG:12
+#: ../CHANGELOG:25 ../iOS_CHANGELOG:25
 msgid "Redrew the world map."
 msgstr "重画世界地图。"
 
-#: ../CHANGELOG:13 ../iOS_CHANGELOG:13
+#: ../CHANGELOG:26 ../iOS_CHANGELOG:26
 msgid ""
 "Added a few new monsters, like the red hornbugs, and completely rewrote how "
 "bats behave."
 msgstr "添加几种新怪物，好像红色甲虫；蝙蝠的举动也变了。"
 
-#: ../CHANGELOG:14 ../iOS_CHANGELOG:14
+#: ../CHANGELOG:27 ../iOS_CHANGELOG:27
 msgid ""
 "Fixed a bug that caused a black line in the seaside background during "
 "dialogues."
 msgstr "修复了一个bug：在海边背景的对话框中出现黑线的情况"
 
-#: ../CHANGELOG:15 ../iOS_CHANGELOG:15
+#: ../CHANGELOG:28 ../iOS_CHANGELOG:28
 msgid ""
 "Fixed a bug that caused some tiles to incorrectly be flagged as opaque."
 msgstr "修复了一个bug：某些图块被错误的标记为不透明"
 
-#: ../CHANGELOG:17 ../iOS_CHANGELOG:17
+#: ../CHANGELOG:30 ../iOS_CHANGELOG:30
 msgid "Version 1.1.1:"
 msgstr "版本 1.1.1:"
 
-#: ../CHANGELOG:18 ../iOS_CHANGELOG:18
+#: ../CHANGELOG:31 ../iOS_CHANGELOG:31
 msgid "Fixed some crashing bugs."
 msgstr "修复了一些导致崩溃的bug"
 
-#: ../CHANGELOG:19
+#: ../CHANGELOG:32
 msgid "Fixed The Long Haul (compiled mode)"
 msgstr "修正了长时间停滞（编译模式）"
 
-#: ../CHANGELOG:20
+#: ../CHANGELOG:33
 msgid "Fixed instructions on titlescreen (iOS)"
 msgstr "修正了标题页面的提示（iOS）"
 
-#: ../CHANGELOG:21 ../iOS_CHANGELOG:21
+#: ../CHANGELOG:34 ../iOS_CHANGELOG:34
 msgid "New translation: Italian"
 msgstr "新翻译: 意大利语"
 
-#: ../CHANGELOG:22
+#: ../CHANGELOG:35
 msgid "Added automatic language selection for Windows"
 msgstr "Windows下添加自动语言选择"
 
-#: ../CHANGELOG:23 ../iOS_CHANGELOG:22
+#: ../CHANGELOG:36 ../iOS_CHANGELOG:35
 msgid ""
 "Complete redo of iOS controls, switching to a 2-button dpad from a 4-button."
 "  Eliminates all problems with mispressed up or down keys interrupting other"
 " actions."
 msgstr "iOS 控制的重新制作，改为2键操控。驱除全部误按上下键干扰其他动作的行为。"
 
-#: ../CHANGELOG:25
+#: ../CHANGELOG:38
 msgid "Version 1.1:"
 msgstr "版本 1.1"
 
-#: ../CHANGELOG:26
+#: ../CHANGELOG:39
 msgid "Added arcade mode."
 msgstr "添加了街机模式"
 
-#: ../CHANGELOG:27
+#: ../CHANGELOG:40
 msgid "Redid graphics for forest trees."
 msgstr "重制森林树木的图象"
 
-#: ../CHANGELOG:28
+#: ../CHANGELOG:41
 msgid "Redid graphics for forest background"
 msgstr "重制森林背景的图象"
 
-#: ../CHANGELOG:29
+#: ../CHANGELOG:42
 msgid "Redid graphics for dungeon wall tiles"
 msgstr "重制地下场景墙壁图象"
 
-#: ../CHANGELOG:30
+#: ../CHANGELOG:43
 msgid "Redid graphics for basement wall tiles"
 msgstr "重制堡垒场景墙壁图象"
 
-#: ../CHANGELOG:31
+#: ../CHANGELOG:44
 msgid "Added a bunch of interior props"
 msgstr "添加了多件室内道具"
 
-#: ../CHANGELOG:32
+#: ../CHANGELOG:45
 msgid "Reworked \"darkness\" for improved appearance"
 msgstr "重制“黑暗”"
 
-#: ../CHANGELOG:33
+#: ../CHANGELOG:46
 msgid "Added new palettes to forest and seaside areas."
 msgstr "添加了森林和海边地区的新调色板"
 
-#: ../CHANGELOG:34
+#: ../CHANGELOG:47
 msgid "Added some unique enemies to the forest."
 msgstr "添加几种森林里独特的敌人"
 
-#: ../CHANGELOG:35
+#: ../CHANGELOG:48
 msgid ""
 "Refactored damage and monster type systems to make behavior more consistent "
 "and eliminate some rare buggy behavior."
 msgstr "重构了损伤和怪物种类系统，以消除一些少见的错误，增加一致性。"
 
-#: ../CHANGELOG:36
+#: ../CHANGELOG:49
 msgid ""
 "Added translation support, with 4 complete translations: French, Brazilian "
 "Portuguese, Chinese (Simplified), and Japanese."
 msgstr "添加4种完整语言翻译支持：法语、葡萄牙语-巴西、汉语（简体）和日本语。"
 
-#: ../CHANGELOG:38
+#: ../CHANGELOG:51
 msgid "Version 1.0.3:"
 msgstr "1.0.3版本："
 
-#: ../CHANGELOG:39
+#: ../CHANGELOG:52
 msgid "Fixed crash when picking up max heart pieces."
 msgstr "修复了捡起回复心时出现的崩溃问题"
 
-#: ../CHANGELOG:40
+#: ../CHANGELOG:53
 msgid "Other small bug fixes."
 msgstr "一些小的bug修正"
 
-#: ../CHANGELOG:42
+#: ../CHANGELOG:55
 msgid "Version 1.0.2:"
 msgstr "1.0.2版本："
 
-#: ../CHANGELOG:43
+#: ../CHANGELOG:56
 msgid "Added support for \"darkness\" in levels."
 msgstr "在关卡里添加“黑暗”支持"
 
-#: ../CHANGELOG:44
+#: ../CHANGELOG:57
 msgid "Added support for WVGA."
 msgstr "添加 WVGA 支持"
 
-#: ../CHANGELOG:45
+#: ../CHANGELOG:58
 msgid "Made player status not show on the titlescreen or world map."
 msgstr "使得玩家状态不在标题界面或世界地图显示"
 
-#: ../CHANGELOG:46
+#: ../CHANGELOG:59
 msgid "Made golden ants less ambiguous."
 msgstr "让黄金蚂蚁少些"
 
-#: ../CHANGELOG:47
+#: ../CHANGELOG:60
 msgid "Fixed bug making certain music always play at full volume (iPhone)."
 msgstr "改正了个别音乐总是以满音量播放的错误(iPhone)。"
 
-#: ../CHANGELOG:48
+#: ../CHANGELOG:61
 msgid "Added option to reverse positions of A and B buttons (iPhone)."
 msgstr "添加了颠倒A与B按钮的选项(iPhone)。"
 
-#: ../CHANGELOG:49
+#: ../CHANGELOG:62
 msgid "Added support for repeating levels (for arcade modes)."
 msgstr "添加重复关卡支持（对应街机模式）"
 
-#: ../CHANGELOG:50
+#: ../CHANGELOG:63
 msgid ""
 "Pressing jump while in the air pressing against a wall now makes you cling "
 "to the wall."
 msgstr "在空中依附墙壁是按下跳跃可以再次跳起。"
 
-#: ../CHANGELOG:51
+#: ../CHANGELOG:64
 msgid "Made it so you can skip dialogs sequences."
 msgstr "这样略过对话场景。"
 
-#: ../CHANGELOG:52
+#: ../CHANGELOG:65
 msgid "Fixed lots of z-order issues."
 msgstr "改正了多个z-order的问题。"
 
-#: ../CHANGELOG:53
+#: ../CHANGELOG:66
 msgid "Fixed bug causing ambient sounds to not work."
 msgstr "修复了造成背景音效不工作的bug"
 
-#: ../CHANGELOG:54
+#: ../CHANGELOG:67
 msgid "Improved forest background, and made it go upwards infinitely."
 msgstr "改进森林背景，使其能无限向上延伸。"
 
-#: ../CHANGELOG:55
+#: ../CHANGELOG:68
 msgid "Made hearts heal a full heart, rather than just half."
 msgstr "使得回复心恢复一格心，以前是半格"
 
-#: ../CHANGELOG:56
+#: ../CHANGELOG:69
 msgid "Changed tilesets to make water look better."
 msgstr "改变图块让水的效果更好"
 
-#: ../CHANGELOG:57
+#: ../CHANGELOG:70
 msgid "Many small bug fixes."
 msgstr "很多小bug修复"
 
-#: ../CHANGELOG:59
+#: ../CHANGELOG:72
 msgid "Version 1.0.1 (iPhone only):"
 msgstr "仅iPhone的1.01版本："
 
-#: ../CHANGELOG:60
+#: ../CHANGELOG:73
 msgid ""
 "Significantly improved controls, both functionally and graphically (iPhone)."
 msgstr "显著的改良了控制系统的功能和外表(iPhone)。"
 
-#: ../CHANGELOG:61
+#: ../CHANGELOG:74
 msgid "Fixed auto-saving on iOS4 where multitasking is supported (iPhone)."
 msgstr "改正了支持多任务的iOS4上自动保存的问题(iPhone)。"
 
-#: ../CHANGELOG:62
+#: ../CHANGELOG:75
 msgid "Fixed bug where a dialog could repeat forever."
 msgstr "修复了一个导致对话无限重复的bug"
 
-#: ../CHANGELOG:63
+#: ../CHANGELOG:76
 msgid "Fixed crash in world map when you hold down while entering it."
 msgstr "修正了世界地图的崩溃，当你按下键进入之后。"
 
-#: ../CHANGELOG:64
+#: ../CHANGELOG:77
 msgid "Fixed fullscreen mode (Mac/Windows)."
 msgstr "修复Mac/Windows的全屏模式。"
 
-#: ../CHANGELOG:65
+#: ../CHANGELOG:78
 msgid "Fixed controlpad issues for computers."
 msgstr "修正了计算机控制板的问题。"
 
-#: ../CHANGELOG:66
+#: ../CHANGELOG:79
 msgid "Added music and sound volume controls to pause screen."
 msgstr "暂停画面添加了音乐和音效的音量调节"
 
-#: ../CHANGELOG:67
+#: ../CHANGELOG:80
 msgid "Added customizable controls."
 msgstr "添加自定义控制。"
 
-#: ../CHANGELOG:68
+#: ../CHANGELOG:81
 msgid "Added half-hearts."
 msgstr "添加半颗心"
 
-#: ../CHANGELOG:69
+#: ../CHANGELOG:82
 msgid "Added scons script for compiling."
 msgstr "添加 scons 脚本编译。"
 
-#: ../CHANGELOG:70
+#: ../CHANGELOG:83
 msgid "Minor level changes."
 msgstr "细微关卡变动。"
 
-#: ../CHANGELOG:71
+#: ../CHANGELOG:84
 msgid "Updated music."
 msgstr "更新音乐。"
 
 #: ../MAC_APP_STORE_METADATA:1 ../iOS_APP_STORE_METADATA:1
-msgid "NOW WITH BETTER CONTROLS:"
-msgstr "更好的操控："
-
-#: ../MAC_APP_STORE_METADATA:3 ../iOS_APP_STORE_METADATA:3
 msgid ""
 "Frogatto is a classic-style 2d adventure game, starring a certain quixotic "
 "frog.  It's made by the same team that brought you Battle for Wesnoth, and "
@@ -404,7 +473,7 @@ msgid ""
 "character on a humdrum errand that turns into a daring adventure."
 msgstr "青蛙阿土是一个典型的二维平面动作冒险游戏，标志角色就是这只自大的青蛙阿土。游戏制作团队同时也是韦诺之战的作者，一直沉浸于高质量的像素艺术。这个游戏的主要举动就是四处奔跑和蹦蹦跳跳，拖着此青蛙完成他的历“闲”活动。"
 
-#: ../MAC_APP_STORE_METADATA:5 ../iOS_APP_STORE_METADATA:5
+#: ../MAC_APP_STORE_METADATA:3 ../iOS_APP_STORE_METADATA:3
 msgid ""
 "Frogatto's key mechanic is an unusual twist; like any frog, he jumps, swims,"
 " and snags bugs with his tongue, but unlike any frog before him, can spit "
@@ -413,69 +482,69 @@ msgid ""
 "puzzles to solve, and a wide, complex world to explore."
 msgstr "阿土的角色鲜明：他会蹦、会游、会用舌头捉虫子，不过他还有吐虫子的强大力量。这个游戏同样有购买，解密，探索成分——也是一个繁杂的世界。"
 
-#: ../MAC_APP_STORE_METADATA:7 ../iOS_APP_STORE_METADATA:7
+#: ../MAC_APP_STORE_METADATA:5 ../iOS_APP_STORE_METADATA:5
 msgid "Features:"
 msgstr "特点"
 
-#: ../MAC_APP_STORE_METADATA:8 ../iOS_APP_STORE_METADATA:8
+#: ../MAC_APP_STORE_METADATA:6 ../iOS_APP_STORE_METADATA:6
 msgid "- grab enemies with your tongue and spit them to deal damage"
 msgstr "- 捉住敌人用舌头吐出进行迫害"
 
-#: ../MAC_APP_STORE_METADATA:9 ../iOS_APP_STORE_METADATA:9
+#: ../MAC_APP_STORE_METADATA:7 ../iOS_APP_STORE_METADATA:7
 msgid "- buy powerups to enhance and unlock new abilities"
 msgstr "- 购买能力"
 
-#: ../MAC_APP_STORE_METADATA:10 ../iOS_APP_STORE_METADATA:10
+#: ../MAC_APP_STORE_METADATA:8 ../iOS_APP_STORE_METADATA:8
 msgid ""
 "- arcade mode, giving instant access to action-only gameplay on randomized "
 "levels"
 msgstr "- 街机模式，立即进入随机游戏关卡活动"
 
-#: ../MAC_APP_STORE_METADATA:11 ../iOS_APP_STORE_METADATA:11
+#: ../MAC_APP_STORE_METADATA:9 ../iOS_APP_STORE_METADATA:9
 msgid ""
 "- forgiving savegame/respawn system so you don't have to be afraid of losing"
 " progress"
 msgstr "- 不用担心丢失进度"
 
-#: ../MAC_APP_STORE_METADATA:12 ../iOS_APP_STORE_METADATA:12
+#: ../MAC_APP_STORE_METADATA:10 ../iOS_APP_STORE_METADATA:10
 msgid "- playful dialogue writing that tries not to insult your intelligence"
 msgstr "- 欢乐的对话"
 
-#: ../MAC_APP_STORE_METADATA:13 ../iOS_APP_STORE_METADATA:13
+#: ../MAC_APP_STORE_METADATA:11 ../iOS_APP_STORE_METADATA:11
 msgid "- massive soundtrack with over an hour of original music"
 msgstr "- 大量音轨，超过一小时原创音乐"
 
-#: ../MAC_APP_STORE_METADATA:14 ../iOS_APP_STORE_METADATA:14
+#: ../MAC_APP_STORE_METADATA:12 ../iOS_APP_STORE_METADATA:12
 msgid ""
-"- sprawling, complex world with over 50 levels to explore, and tons of "
+"- sprawling, complex world with over 70 levels to explore, and tons of "
 "secrets to find"
-msgstr "- 超过 50 个场景的旅程，秘密隐藏其中。"
+msgstr "- 广阔，复杂的世界，超过70个关卡，并含很多的秘密"
 
-#: ../MAC_APP_STORE_METADATA:16 ../iOS_APP_STORE_METADATA:17
+#: ../MAC_APP_STORE_METADATA:14 ../iOS_APP_STORE_METADATA:15
 msgid "To find out more about the game please visit http://www.frogatto.com/"
 msgstr "访问 http://www.frogatto.com/ 了解更多"
 
-#: ../MAC_APP_STORE_METADATA:18 ../iOS_APP_STORE_METADATA:19
+#: ../MAC_APP_STORE_METADATA:16 ../iOS_APP_STORE_METADATA:17
 msgid "Reviews:"
 msgstr "评论："
 
-#: ../MAC_APP_STORE_METADATA:19 ../iOS_APP_STORE_METADATA:20
+#: ../MAC_APP_STORE_METADATA:17 ../iOS_APP_STORE_METADATA:18
 msgid "- [3/4 SlideToPlay.com] \"a fun and surprisingly deep platformer\""
 msgstr "- [3/4 SlideToPlay.com] \"a fun and surprisingly deep platformer\""
 
-#: ../MAC_APP_STORE_METADATA:20 ../iOS_APP_STORE_METADATA:21
+#: ../MAC_APP_STORE_METADATA:18 ../iOS_APP_STORE_METADATA:19
 msgid "- [4/5 AppSpy.com] \"boy-howdy is this an amazing visual feast!\""
 msgstr "- [4/5 AppSpy.com] \"boy-howdy is this an amazing visual feast!\""
 
-#: ../MAC_APP_STORE_METADATA:21 ../iOS_APP_STORE_METADATA:22
+#: ../MAC_APP_STORE_METADATA:19 ../iOS_APP_STORE_METADATA:20
 msgid "- [n/a TouchArcade.com] \"totally worth checking out.\""
 msgstr "- [n/a TouchArcade.com] \"totally worth checking out.\""
 
-#: ../MAC_APP_STORE_METADATA:23 ../iOS_APP_STORE_METADATA:24
+#: ../MAC_APP_STORE_METADATA:21 ../iOS_APP_STORE_METADATA:22
 msgid "keywords:"
 msgstr "keywords:"
 
-#: ../MAC_APP_STORE_METADATA:24 ../iOS_APP_STORE_METADATA:25
+#: ../MAC_APP_STORE_METADATA:22 ../iOS_APP_STORE_METADATA:23
 msgid ""
 "platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
 msgstr "platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
@@ -506,7 +575,7 @@ msgstr "不过这可不是啥秘密地点。"
 
 #: ../data/achievements.cfg:26
 msgid "Numismatologist"
-msgstr ""
+msgstr "硬币收集家"
 
 #: ../data/achievements.cfg:27
 msgid "Collect a thousand coins."
@@ -934,7 +1003,7 @@ msgstr "那么一切都好\n我猜没问题。"
 msgid ""
 "I did find out what was going on, at least,\n"
 "that is, what the elder <em>says</em> is going on."
-msgstr ""
+msgstr "我明白事情的来由了，\n至少，根据长老所说的。"
 
 #: ../data/level/crevice-bridge.cfg:310
 msgid ""
@@ -992,7 +1061,7 @@ msgstr "他显示过证据吗？\n比如突然花出很多钱？"
 msgid ""
 "Well, he's <em>bragged</em> about being rich,\n"
 "but that's just his \"dignified family\" schtick."
-msgstr ""
+msgstr "他是炫富，尽管那是\n“富庶家庭”的一瓶油。"
 
 #: ../data/level/crevice-bridge.cfg:333
 msgid ""
@@ -1076,7 +1145,7 @@ msgstr "这样。我去了，决定下：民主还是好主意。"
 msgid ""
 "<em>Someone</em> needs to go talk to Milgram,\n"
 "and ask what was wrong, so nothing bad happens."
-msgstr ""
+msgstr "有人得和米格拉姆谈谈，\n问问什么情况，避免麻烦。"
 
 #: ../data/level/crevice-bridge.cfg:361
 msgid ""
@@ -1311,7 +1380,7 @@ msgstr "而且我不认为门边上会有个守卫\n等着你从他身上偷走�
 msgid ""
 "In fact I don't think there IS a key.\n"
 "I think that door might be machine-controlled."
-msgstr ""
+msgstr "其实我觉得<em>没有</em>钥匙，\n那扇门可能是机械控制的。"
 
 #: ../data/level/crevice-village-central.cfg:143
 msgid ""
@@ -1782,7 +1851,7 @@ msgstr "啊，我知道了……\n那您继续吧。"
 
 #: ../data/level/crevice-village-house-1.cfg:991
 msgid "Thank god it's you!"
-msgstr ""
+msgstr "谢天谢地！是你！"
 
 #: ../data/level/crevice-village-house-1.cfg:993
 msgid "Hey, Hedge, you alright?"
@@ -2028,7 +2097,7 @@ msgstr "啊。"
 msgid ""
 "For the last time, we <em>know</em> you've\n"
 "got the money somewhere."
-msgstr ""
+msgstr "我最后说一遍，我们<em>知道</em>你\n把钱藏在某个地方了。"
 
 #: ../data/level/crevice-village-house-elder.cfg:330
 msgid "Make this easy on yourself."
@@ -2040,29 +2109,29 @@ msgstr "我完全不知道你在说什么。"
 
 #: ../data/level/crevice-village-house-elder.cfg:334
 msgid "Are you <em>absolutely</em> sure about that?"
-msgstr ""
+msgstr "你<em>绝对</em>肯定吗？"
 
 #: ../data/level/crevice-village-house-elder.cfg:336
 msgid ""
 "Er... no, I'm not.  I ... lied.\n"
 "Listen, I'm sorry... I'm just scared, here!"
-msgstr ""
+msgstr "呃…不是。我刚才撒谎了。\n对不起…我就是太害怕了！"
 
 #: ../data/level/crevice-village-house-elder.cfg:338
 msgid ""
 "I've never been threatened like this!\n"
 "I just can't think straight."
-msgstr ""
+msgstr "我从没受过这样的威胁！\n脑子不会转了。"
 
 #: ../data/level/crevice-village-house-elder.cfg:340
 msgid "Go on..."
-msgstr ""
+msgstr "接着说…"
 
 #: ../data/level/crevice-village-house-elder.cfg:342
 msgid ""
 "Listen... if you just follow me,\n"
 "I'll lead you to it."
-msgstr ""
+msgstr "好…你跟着我，\n我带你去那里。"
 
 #: ../data/level/crevice-village-house-elder.cfg:350
 msgid "Oh, no you don't!"
@@ -2072,19 +2141,19 @@ msgstr "哦，你不能这么干！"
 msgid ""
 "You're not going out that door first.\n"
 "I'm not <em>that</em> stupid."
-msgstr ""
+msgstr "我才不让你先出门。\n我可没<em>那么</em>傻。"
 
 #: ../data/level/crevice-village-house-elder.cfg:352
 msgid ""
 "Now, listen up,\n"
 "You're SERIOUSLY testing my patience."
-msgstr ""
+msgstr "听清楚了，\n你<em>真的</em>在实验我的耐心。"
 
 #: ../data/level/crevice-village-house-elder.cfg:353
 msgid ""
 "You're gonna <em>sit down,</em>\n"
 "and tell me...  uh..."
-msgstr ""
+msgstr "你老实的<em>坐下</em>，\n告诉我…呃…"
 
 #: ../data/level/crevice-village-house-elder.cfg:358
 msgid "Oh, hi, what's going on here?"
@@ -2096,7 +2165,7 @@ msgstr "你他妈的是谁？"
 
 #: ../data/level/crevice-village-house-elder.cfg:365
 msgid "I sometimes ask myself that question."
-msgstr ""
+msgstr "我有时候自己也\n问那个问题。"
 
 #: ../data/level/crevice-village-house-elder.cfg:369
 msgid "I don't have to put up with this."
@@ -2108,7 +2177,7 @@ msgstr "抱歉我得宣泄一下挫折感。"
 
 #: ../data/level/crevice-village-house-elder.cfg:405
 msgid "<em>ouch</em>"
-msgstr ""
+msgstr "<em>嗷！</em>"
 
 #: ../data/level/crevice-village-house-elder.cfg:406
 msgid "Okay, I've had enough!  I'm going home."
@@ -2142,7 +2211,7 @@ msgstr "这是我自己的安全屋。"
 
 #: ../data/level/crevice-village-house-elder.cfg:480
 msgid "^Wow."
-msgstr ""
+msgstr "啊。"
 
 #: ../data/level/crevice-village-house-elder.cfg:482
 msgid "Built it for exactly this sort of crisis."
@@ -2164,7 +2233,7 @@ msgstr "看来我一定要问：\n谁准你建这个的？"
 msgid ""
 "This HAD to be expensive.\n"
 "I mean ... <em>really</em> ... expensive."
-msgstr ""
+msgstr "<em>绝对</em>很贵。我说...真的...<em>非常</em>费钱。"
 
 #: ../data/level/crevice-village-house-elder.cfg:492
 msgid ""
@@ -2218,7 +2287,7 @@ msgstr "根据我刚才听到的谈话，\n我知道这跟你有关。"
 msgid ""
 "I insist - it's the <em>least</em> you can do\n"
 "to thank me for saving your hide."
-msgstr ""
+msgstr "看在我救了你的分上，\n你<em>至少</em>得做这一点。"
 
 #: ../data/level/crevice-village-house-elder.cfg:516
 msgid "Ugh, I suppose you're right."
@@ -2248,13 +2317,13 @@ msgstr "额，我是这里的·首领，至少，这个职位一般\n富庶。"
 msgid ""
 "No.  Don't do this.  <em>Not</em> today.\n"
 "I'm not putting up with your usual shit."
-msgstr ""
+msgstr "不行。\n我不能再让你唬弄了。"
 
 #: ../data/level/crevice-village-house-elder.cfg:528
 msgid ""
 "Please, just stop playing games, okay?\n"
 "Don't convince me that you're actually crazy."
-msgstr ""
+msgstr "就不要在装傻了，行吗？\n不要让我相信你真的疯了。"
 
 #: ../data/level/crevice-village-house-elder.cfg:530
 msgid "Are you done insulting me, yet?"
@@ -2270,7 +2339,7 @@ msgstr "不行。你要先回答我的问题！"
 msgid ""
 "Seriously - <em>I'm on your side,</em> here!\n"
 "I just risked my butt fighting that guy off."
-msgstr ""
+msgstr "我是认真的 - 我是你这边的！\n我刚冒险把那个家伙打跑。"
 
 #: ../data/level/crevice-village-house-elder.cfg:536
 msgid ""
@@ -2282,7 +2351,7 @@ msgstr "我知道你在藏着东西！但是给我点线索。"
 msgid ""
 "Maybe ...\n"
 "I can actually <em>help</em> you?"
-msgstr ""
+msgstr "也许…\n我其实可以<em>帮</em>你解决问题？"
 
 #: ../data/level/crevice-village-house-elder.cfg:540
 msgid ""
@@ -2294,7 +2363,7 @@ msgstr "好吧。\n我得给你什么？"
 msgid ""
 "I'm afraid if this gets out,\n"
 "the town might blame <em>me</em> for this incident."
-msgstr ""
+msgstr "我怕这事传出去，\n整个镇会把责任推到<em>我</em>身上。"
 
 #: ../data/level/crevice-village-house-elder.cfg:544
 msgid ""
@@ -2323,7 +2392,7 @@ msgid ""
 "Anyhow, I was all too happy to accept,\n"
 "but it wasn't long before I realized\n"
 "what was <em>really</em> afoot."
-msgstr ""
+msgstr "不论怎么说，我很高兴的接受了，\n但是没多久我就意识到会发生的事。"
 
 #: ../data/level/crevice-village-house-elder.cfg:554
 msgid ""
@@ -2391,7 +2460,7 @@ msgid ""
 "No!\n"
 "You <em>always</em> need an excuse.\n"
 "Otherwise, no one would support your claim!"
-msgstr ""
+msgstr "不！\n你总需要个理由。\n否则没人支持！"
 
 #: ../data/level/crevice-village-house-elder.cfg:578
 msgid ""
@@ -2409,7 +2478,7 @@ msgstr "我想我们应该武装联合起来，对抗米格拉\n姆！"
 msgid ""
 "I don't think that's a good idea!\n"
 "Let's not jump the gun, here."
-msgstr ""
+msgstr "我可不认为是个好主意！\n我们不要操之过急。"
 
 #: ../data/level/crevice-village-house-elder.cfg:584
 msgid ""
@@ -2742,7 +2811,7 @@ msgstr "你找他有什么是？"
 msgid ""
 "Well, some of you came to my hometown a little\n"
 "while ago, and went after someone I know."
-msgstr ""
+msgstr "你们这的一伙人不久以前去我镇里，\n找我认识的一个人的麻烦。"
 
 #: ../data/level/dungeon-gateway.cfg:165
 msgid ""
@@ -2828,11 +2897,11 @@ msgstr "地牢出入口"
 msgid ""
 "It says, \"Treasure Storage.\n"
 "No entry without authorization.\""
-msgstr ""
+msgstr "上面写着：“宝物存储区。\n进入必需许可。“"
 
 #: ../data/level/dungeon-storeroom-treasure-chamber.cfg:1523
 msgid "Storeroom Treasure Chamber"
-msgstr ""
+msgstr "储藏间宝物室"
 
 #: ../data/level/dungeon-storerooms.cfg:1354
 msgid "Storerooms"
@@ -2859,7 +2928,7 @@ msgstr "不详之森"
 msgid ""
 "Ahh, what a beautiful ...\n"
 "<em>...afternoon?!</em>"
-msgstr ""
+msgstr "啊，多么美妙的……<em>下午</em>？！"
 
 #: ../data/level/frogatto-grotto-frogattos-room.cfg:293
 msgid "Oh geez! I overslept!"
@@ -2925,7 +2994,7 @@ msgstr "啊……啥事？"
 msgid ""
 "At least <em>try</em> to get a job today,\n"
 "alright?"
-msgstr ""
+msgstr "今天至少<em>试着</em>去找个工作，\n行么？"
 
 #: ../data/level/frogatto-grotto-inside.cfg:641
 msgid "We need some help around here."
@@ -3012,17 +3081,17 @@ msgstr "我看看…厄…\n对了，29区的前途。"
 msgid ""
 "Ah, yes.\n"
 "Do we have any news there?"
-msgstr ""
+msgstr "啊，是。\n那里有新消息吗？"
 
 #: ../data/level/golden-glen.cfg:2318
 msgid ""
 "Mittens?\n"
 "You were the one in charge of that."
-msgstr ""
+msgstr "手套子？\n你是负责那件事的。"
 
 #: ../data/level/golden-glen.cfg:2322
 msgid "Right..."
-msgstr ""
+msgstr "对…"
 
 #: ../data/level/golden-glen.cfg:2323
 msgid ""
@@ -3045,81 +3114,81 @@ msgstr "如果你点头，\n我们下星期就开工。"
 
 #: ../data/level/golden-glen.cfg:2332
 msgid "Yes, I think so."
-msgstr ""
+msgstr "是的。"
 
 #: ../data/level/golden-glen.cfg:2334
 msgid ""
 "One other order of business:\n"
 "What's going on with the 7th Airborne?"
-msgstr ""
+msgstr "还有一件事：\n第七空袭队是怎么回事？"
 
 #: ../data/level/golden-glen.cfg:2336
 msgid ""
 "Uh...  I haven't the faintest idea.\n"
 "Guys?"
-msgstr ""
+msgstr "呃…我一点也不知道。\n你们呢？"
 
 #: ../data/level/golden-glen.cfg:2338
 msgid "Anybody?"
-msgstr ""
+msgstr "有谁知道吗？"
 
 #: ../data/level/golden-glen.cfg:2342
 msgid ""
 "The 7th took off this morning\n"
 "with a full combat group."
-msgstr ""
+msgstr "第七队今天早晨带着\n一整个做战团起飞了。"
 
 #: ../data/level/golden-glen.cfg:2344
 msgid "Where they were going, I don't know."
-msgstr ""
+msgstr "去哪里，我也不知道。"
 
 #: ../data/level/golden-glen.cfg:2346
 msgid ""
 "I understand I often complain about\n"
 "having to authorize every little maneuver,"
-msgstr ""
+msgstr "我知道我经常抱怨\n需要审查每一个细节，"
 
 #: ../data/level/golden-glen.cfg:2348
 msgid ""
 "but actions outside our territory\n"
 "really need some discretion."
-msgstr ""
+msgstr "在我们领地之外行动\n一定要谨慎。"
 
 #: ../data/level/golden-glen.cfg:2350
 msgid ""
 "Just because people can't say no to us\n"
 "doesn't mean it's a good way to make friends."
-msgstr ""
+msgstr "即使强迫让别人不敢拒绝，\n那总不是交朋友的方法。"
 
 #: ../data/level/golden-glen.cfg:2352
 msgid "I'd really like it if I personally reviewed these."
-msgstr ""
+msgstr "以后这些行动我得亲自审查。"
 
 #: ../data/level/golden-glen.cfg:2355
 msgid ""
 "Understood.  Though I must emphasize that\n"
 "we had nothing to do with this, sir."
-msgstr ""
+msgstr "明白了。不过我得强调，\n这件事跟我们没关，头。"
 
 #: ../data/level/golden-glen.cfg:2358
 msgid ""
 "Yes, I'm aware.  Nevertheless,\n"
 "you <em>can</em> get some information, ASAP."
-msgstr ""
+msgstr "是，我知道。但是你们还是\n可以获得一些信息。要尽快。"
 
 #: ../data/level/golden-glen.cfg:2359
 msgid "Don't take no for an answer."
-msgstr ""
+msgstr "不要让我失望。"
 
 #: ../data/level/golden-glen.cfg:2361
 msgid "Yes, sir!"
-msgstr ""
+msgstr "没问题，头！"
 
 #: ../data/level/golden-glen.cfg:2364
 msgid ""
 "That will be all, gentlemen.\n"
 "Dismissed."
-msgstr ""
+msgstr "会议结束。\n解散！"
 
 #: ../data/level/golden-glen.cfg:3660
 msgid "Golden Glen"
@@ -3778,7 +3847,7 @@ msgstr "有些说白了是警世故事…"
 msgid ""
 "...but some of the other ones\n"
 "are just plain <em>strange.</em>"
-msgstr ""
+msgstr "…而有些其他的\n就纯粹的古怪。"
 
 #: ../data/level/kitty-dormitory.cfg:2053
 msgid "I can't decide which ones I like better."
@@ -3821,7 +3890,7 @@ msgstr "怎么了？！"
 
 #: ../data/level/kitty-dormitory.cfg:2814
 msgid "^Uh..."
-msgstr ""
+msgstr "呃…"
 
 #: ../data/level/kitty-dormitory.cfg:2815
 msgid "Was I asleep?"
@@ -3861,15 +3930,15 @@ msgstr "每时每刻。"
 msgid ""
 "I probably give into it\n"
 "too often for my own good, though..."
-msgstr ""
+msgstr "不过我是需要一点\n自控…"
 
 #: ../data/level/kitty-dormitory.cfg:2861
 msgid "Ha."
-msgstr ""
+msgstr "哈。"
 
 #: ../data/level/kitty-dormitory.cfg:2892
 msgid "Hey, what's up?"
-msgstr ""
+msgstr "你好。"
 
 #: ../data/level/kitty-dormitory.cfg:2894
 msgid ""
@@ -3932,7 +4001,7 @@ msgstr "好，我得继续工作了。"
 
 #: ../data/level/kitty-dormitory.cfg:2963
 msgid "^Hello there."
-msgstr ""
+msgstr "你好。"
 
 #: ../data/level/kitty-dormitory.cfg:2965
 msgid "Uh... hi?"
@@ -3940,7 +4009,7 @@ msgstr "厄…你好？"
 
 #: ../data/level/kitty-dormitory.cfg:2967
 msgid "^^Hello there."
-msgstr ""
+msgstr "你好。"
 
 #: ../data/level/kitty-dormitory.cfg:2970
 msgid ""
@@ -4084,54 +4153,54 @@ msgstr "没问题！"
 
 #: ../data/level/kitty-dormitory.cfg:3097
 msgid "Hi.  Haven't seen you around before."
-msgstr ""
+msgstr "你好，\n我没有见过你。"
 
 #: ../data/level/kitty-dormitory.cfg:3100
 msgid ""
 "Yeah, I'm rather far from home\n"
 "at the moment."
-msgstr ""
+msgstr "是，我是从远方来的。"
 
 #: ../data/level/kitty-dormitory.cfg:3102
 msgid "So what are you doing?"
-msgstr ""
+msgstr "你在干什么？"
 
 #: ../data/level/kitty-dormitory.cfg:3104
 msgid "Eh, trying to get this stupid machine working."
-msgstr ""
+msgstr "唉，在琢磨怎么修好\n这台破机器。"
 
 #: ../data/level/kitty-dormitory.cfg:3105
 msgid ""
 "It's supposed to cut these metal bolts,\n"
 "but the timing's off and they have no heads."
-msgstr ""
+msgstr "本来是用来切金属螺栓的，\n但是校时不准，弄得螺栓\n都没有头。"
 
 #: ../data/level/kitty-dormitory.cfg:3108
 msgid "No heads?"
-msgstr ""
+msgstr "没有头？"
 
 #: ../data/level/kitty-dormitory.cfg:3110
 msgid ""
 "Yeah, uh ... I don't have an example\n"
 "on-hand, but yeah, there's nothing\n"
 "to screw them in with."
-msgstr ""
+msgstr "是…我没有现成的样本，\n意思就是没有拧的部分。"
 
 #: ../data/level/kitty-dormitory.cfg:3111
 msgid "Nothing you can put a ratchet on."
-msgstr ""
+msgstr "没有放棘轮的地方。"
 
 #: ../data/level/kitty-dormitory.cfg:3112
 msgid ""
 "Anyways we program this machine with\n"
 "these little tin sheets."
-msgstr ""
+msgstr "我们用这些锡纸给\n这台机器编程。"
 
 #: ../data/level/kitty-dormitory.cfg:3113
 msgid ""
 "We cut these slots in them that control\n"
 "how long it goes for a certain grind."
-msgstr ""
+msgstr "在锡纸上划出空槽，\n控制研磨的时间。"
 
 #: ../data/level/kitty-dormitory.cfg:3114
 msgid ""
@@ -4139,7 +4208,7 @@ msgid ""
 "If you set the bolt to turn at just the\n"
 "right speed, you can use it to\n"
 "cut the threads, too."
-msgstr ""
+msgstr "这也决定砂轮切的深度。\n如果螺栓旋转速度合适，\n螺纹也可以用它刻出来。"
 
 #: ../data/level/kitty-dormitory.cfg:3115
 msgid "Uh..."
@@ -4149,75 +4218,75 @@ msgstr "厄…"
 msgid ""
 "Do I sound like I spend too much\n"
 "time doing this stuff?"
-msgstr ""
+msgstr "我是不是听起来在这方面\n花了太多时间？"
 
 #: ../data/level/kitty-dormitory.cfg:3119
 msgid ""
 "Eh... \n"
 "I wouldn't be too hard on yourself."
-msgstr ""
+msgstr "啊…那也不是坏事。"
 
 #: ../data/level/kitty-dormitory.cfg:3121
 msgid ""
 "I mean, someone has to make these things?\n"
 "Right?"
-msgstr ""
+msgstr "我是说，总得有人来\n做这些事，不对吗？"
 
 #: ../data/level/kitty-dormitory.cfg:3123
 msgid ""
 "Yeah, sometimes I just feel\n"
 "like this is all I do."
-msgstr ""
+msgstr "是。不过有时候我觉得\n我成天都在干这个。"
 
 #: ../data/level/kitty-dormitory.cfg:3126
 msgid ""
 "Well, sometimes what you do is important.\n"
 "Don't ever forget that."
-msgstr ""
+msgstr "有时候你干的事是很重要的。\n绝不要忘记这一点。"
 
 #: ../data/level/kitty-dormitory.cfg:3128
 msgid ""
 "It may be tedious, but given enough time,\n"
 "everything involves tedium."
-msgstr ""
+msgstr "也许很乏味，但是什么活\n干久了都是这样。"
 
 #: ../data/level/kitty-dormitory.cfg:3130
 msgid "And anything important tends to take time."
-msgstr ""
+msgstr "重要的活都需要时间。"
 
 #: ../data/level/kitty-dormitory.cfg:3132
 msgid "Hmm..."
-msgstr ""
+msgstr "嗯…"
 
 #: ../data/level/kitty-dormitory.cfg:3133
 msgid ""
 "I guess for obvious reasons\n"
 "I'm not going to contradict you."
-msgstr ""
+msgstr "我无法抗辩，原因也很明显。"
 
 #: ../data/level/kitty-dormitory.cfg:3134
 msgid ""
 "Sometimes I wish I spent\n"
 "more time outside, though."
-msgstr ""
+msgstr "但是我还是希望有时间到\n外面逛一逛。"
 
 #: ../data/level/kitty-dormitory.cfg:3135
 msgid "Bah."
-msgstr ""
+msgstr "呸。"
 
 #: ../data/level/kitty-dormitory.cfg:3136
 msgid ""
 "Anyways, please do visit anytime this is\n"
 "actually working, for a tour."
-msgstr ""
+msgstr "不管怎样，等着机器修好了，\n你一定来参观一下。"
 
 #: ../data/level/kitty-dormitory.cfg:3139
 msgid "Of course."
-msgstr ""
+msgstr "当然。"
 
 #: ../data/level/kitty-dormitory.cfg:3171
 msgid "^Who are you?"
-msgstr ""
+msgstr "你是谁？"
 
 #: ../data/level/kitty-dormitory.cfg:3176
 msgid "That's nice."
@@ -4227,92 +4296,92 @@ msgstr "好极了。"
 msgid ""
 "If you don't mind,\n"
 "I'd kinda like to be left alone."
-msgstr ""
+msgstr "如果你不介意，\n我想单独呆着。"
 
 #: ../data/level/kitty-dormitory.cfg:3180
 msgid "Sure, okay..."
-msgstr ""
+msgstr "啊，好…"
 
 #: ../data/level/kitty-dormitory.cfg:3213
 msgid ""
 "Hey there,\n"
 "what's up?"
-msgstr ""
+msgstr "你好，\n有什么问题吗？"
 
 #: ../data/level/kitty-dormitory.cfg:3215
 msgid "Eh, trying to get this fire going."
-msgstr ""
+msgstr "唉，我想把火炉点着。"
 
 #: ../data/level/kitty-dormitory.cfg:3218
 msgid ""
 "Really?\n"
 "I don't see any wood."
-msgstr ""
+msgstr "真的吗？\n看不到柴火啊。"
 
 #: ../data/level/kitty-dormitory.cfg:3220
 msgid "Oh yeah, haha - it's a gas fire."
-msgstr ""
+msgstr "哦，哈哈—是天然气火。"
 
 #: ../data/level/kitty-dormitory.cfg:3221
 msgid ""
 "There's something wrong, though.\n"
 "Not enough gas is flowing."
-msgstr ""
+msgstr "但是有点问题。\n气流量不够。"
 
 #: ../data/level/kitty-dormitory.cfg:3222
 msgid "It'll burn for a moment and then go out."
-msgstr ""
+msgstr "烧一会就灭了。"
 
 #: ../data/level/kitty-dormitory.cfg:3223
 msgid ""
 "Which makes me think there's a\n"
 "small trickle building up,\n"
 "but it's only that - a trickle."
-msgstr ""
+msgstr "所以我觉得有一点\n燃气流，但是只有\n那一点。"
 
 #: ../data/level/kitty-dormitory.cfg:3224
 msgid ""
 "I think the gas flow is\n"
 "way lower than it should be."
-msgstr ""
+msgstr "流量远远不够正常的。"
 
 #: ../data/level/kitty-dormitory.cfg:3227
 msgid "What could cause that?"
-msgstr ""
+msgstr "原因大概是什么？"
 
 #: ../data/level/kitty-dormitory.cfg:3229
 msgid ""
 "Mmm, might be a clog.\n"
 "Might be some kind of corrosion."
-msgstr ""
+msgstr "嗯，也许那里堵住了。\n或者有腐蚀。"
 
 #: ../data/level/kitty-dormitory.cfg:3231
 msgid ""
 "Or some butthead down in a service closet\n"
 "might have turned a valve down."
-msgstr ""
+msgstr "或者那个混蛋到勤务间\n里把阀门关小了。"
 
 #: ../data/level/kitty-dormitory.cfg:3234
 msgid "Uh... how many valves lead up to this?"
-msgstr ""
+msgstr "呃…到这里有多少个阀门？"
 
 #: ../data/level/kitty-dormitory.cfg:3236
 msgid ""
 "A lot.  I don't even know.\n"
 "I really don't want to have to find out."
-msgstr ""
+msgstr "好多。我都不知道，\n也不想研究那个。"
 
 #: ../data/level/kitty-dormitory.cfg:3239
 msgid ""
 "Wow, that really sucks.\n"
 "I hope you can fix this."
-msgstr ""
+msgstr "啊，真是糟糕。\n希望你能修好。"
 
 #: ../data/level/kitty-dormitory.cfg:3241
 msgid ""
 "Yeah, thanks.\n"
 "This ... could get difficult."
-msgstr ""
+msgstr "谢谢。\n这大概很困难…"
 
 #: ../data/level/kitty-dormitory.cfg:4111
 msgid "Kitty Dormitory"
@@ -4362,7 +4431,7 @@ msgstr "这活向个压力锅，没有双关语意，但他并不以此为借口
 
 #: ../data/level/kitty-kitchen.cfg:359
 msgid "Yeah, that beats the alternative."
-msgstr ""
+msgstr "是，那比其他的选择好。"
 
 #: ../data/level/kitty-kitchen.cfg:361
 msgid "Do you guys get a lot of traffic?"
@@ -4560,126 +4629,126 @@ msgstr "上面写着：“注意：本室为单向通行“"
 msgid ""
 "Sir, there's something we need\n"
 "to bring to your attention."
-msgstr ""
+msgstr "长官，\n有一件事需要你的注意。"
 
 #: ../data/level/milgrams-basement-junction.cfg:395
 msgid ""
 "Can it wait?\n"
 "I was just winding down."
-msgstr ""
+msgstr "不能等吗？\n我正准备休息呢。"
 
 #: ../data/level/milgrams-basement-junction.cfg:396
 msgid "I've had a pretty rough day."
-msgstr ""
+msgstr "今天麻烦太多了。"
 
 #: ../data/level/milgrams-basement-junction.cfg:398
 msgid "No, I don't believe it can."
-msgstr ""
+msgstr "不行，我认为不能等。"
 
 #: ../data/level/milgrams-basement-junction.cfg:399
 msgid ""
 "Cameras have picked up an intruder,\n"
 "which we believe has somehow entered\n"
 "from the cave outlet."
-msgstr ""
+msgstr "摄像头拍到了一个侵入者，\n我们认为是从洞窟进来的。"
 
 #: ../data/level/milgrams-basement-junction.cfg:401
 msgid ""
 "So?  I mean, what the hell?\n"
 "Just do the usual protocol..."
-msgstr ""
+msgstr "那有怎么了？区区小事，\n按平常的手续处理…"
 
 #: ../data/level/milgrams-basement-junction.cfg:403
 msgid ""
 "No.. sir, you don't understand.\n"
 "We think it's HIM."
-msgstr ""
+msgstr "不是…头，你不明白。\n我们认为是<em>他</em>。"
 
 #: ../data/level/milgrams-basement-junction.cfg:405
 msgid "Him...?"
-msgstr ""
+msgstr "他…？"
 
 #: ../data/level/milgrams-basement-junction.cfg:407
 msgid ""
 "As in \"Frogatto\".\n"
 "It matches the profile you gave us."
-msgstr ""
+msgstr "我是说“阿土”。\n跟你描述的一模一样。"
 
 #: ../data/level/milgrams-basement-junction.cfg:409
 msgid ""
 "...\n"
 "Mother of god."
-msgstr ""
+msgstr "...天啊。"
 
 #: ../data/level/milgrams-basement-junction.cfg:410
 msgid ""
 "How is that even possible?\n"
 "How did he get here?"
-msgstr ""
+msgstr "这怎么可能？\n他怎么进来的？"
 
 #: ../data/level/milgrams-basement-junction.cfg:412
 msgid ""
 "Beats me.  More to the point, though,\n"
 "what should we do?"
-msgstr ""
+msgstr "我也不知道。\n重要的是，我们该怎么办？"
 
 #: ../data/level/milgrams-basement-junction.cfg:413
 msgid "Should we try to negotiate with him?"
-msgstr ""
+msgstr "也许应该跟他交涉？"
 
 #: ../data/level/milgrams-basement-junction.cfg:415
 msgid ""
 "Are you kidding me?  With him?\n"
 "Good god no...just kill it!"
-msgstr ""
+msgstr "你说什么傻话？跟<em>他</em>交涉？\n别想了…赶快消灭它！"
 
 #: ../data/level/milgrams-basement-junction.cfg:416
 msgid "Use any means necessary!"
-msgstr ""
+msgstr "用任何必要的手段！"
 
 #: ../data/level/milgrams-basement-junction.cfg:417
 msgid ""
 "That thing's not gonna negotiate.\n"
 "It's clearly out for BLOOD."
-msgstr ""
+msgstr "那家伙才不会交涉。\n它明显是想要我们的命。"
 
 #: ../data/level/milgrams-basement-junction.cfg:418
 msgid ""
 "I mean, holy hell, if it came this far...\n"
 "ON FOOT?  That's just nuts."
-msgstr ""
+msgstr "你想想，它一直走到这里…\n步行！真是可怕。"
 
 #: ../data/level/milgrams-basement-junction.cfg:419
 msgid ""
 "There's only one thing that can\n"
 "drive a man like that:  Revenge."
-msgstr ""
+msgstr "只有一个东西能给人\n这样的动力：复仇。"
 
 #: ../data/level/milgrams-basement-junction.cfg:421
 msgid ""
 "Uh... I never said he walked...\n"
 "Listen, aren't we jumping to conclusions here?"
-msgstr ""
+msgstr "呃…我可没说它步行…\n我们是不是有点\n过早下结论？"
 
 #: ../data/level/milgrams-basement-junction.cfg:423
 msgid ""
 "No, trust me on this,\n"
 "I've seen this guy firsthand."
-msgstr ""
+msgstr "相信我，\n我跟着家伙打过交道。"
 
 #: ../data/level/milgrams-basement-junction.cfg:424
 msgid ""
 "Shoot first or you might not\n"
 "get a second chance."
-msgstr ""
+msgstr "见了它就开火，\n否则你就没有机会了。"
 
 #: ../data/level/milgrams-basement-junction.cfg:425
 msgid "That's an order."
-msgstr ""
+msgstr "这是命令。"
 
 #: ../data/level/milgrams-basement-junction.cfg:428
 msgid "Fine."
-msgstr ""
+msgstr "好。"
 
 #: ../data/level/milgrams-basement-junction.cfg:1069
 msgid "Basement Junction"
@@ -4689,27 +4758,27 @@ msgstr "地窖连接点"
 msgid ""
 "Ugh.\n"
 "..."
-msgstr ""
+msgstr "呃。\n…"
 
 #: ../data/level/milgrams-throne-room-entrance.cfg:46
 msgid ""
 "Remember, if I'm wrong about this,\n"
 "I won't live to regret it."
-msgstr ""
+msgstr "记着，如果我的想法错了，\n就没有后悔的机会了。"
 
 #: ../data/level/milgrams-throne-room-entrance.cfg:48
 msgid "We can do this."
-msgstr ""
+msgstr "我们能过这一关。"
 
 #: ../data/level/milgrams-throne-room-entrance.cfg:50
 msgid ""
 "Blithe audacity might kill us, but\n"
 "at least someone will laugh about it later."
-msgstr ""
+msgstr "即使因为盲目大胆丧命，\n也至少能留下让人笑的故事。"
 
 #: ../data/level/milgrams-throne-room-entrance.cfg:52
 msgid "Right?"
-msgstr ""
+msgstr "是不是？"
 
 #: ../data/level/milgrams-throne-room-entrance.cfg:417
 msgid "Milgram's Throne Room Entrance"
@@ -4905,7 +4974,7 @@ msgstr "喔哈！飞在天上的植物！"
 
 #: ../data/level/rock-a-fort.cfg:1641
 msgid "^How interesting."
-msgstr ""
+msgstr "真有趣。"
 
 #: ../data/level/rocky-roots.cfg:149
 msgid "Bleh. A locked door."
@@ -4925,7 +4994,7 @@ msgstr "哈罗～"
 
 #: ../data/level/secluded-hut-interior.cfg:314
 msgid "^Hi, I'm Frogatto."
-msgstr ""
+msgstr "嗨，我是阿土。"
 
 #: ../data/level/secluded-hut-interior.cfg:315
 msgid ""
@@ -4935,13 +5004,13 @@ msgstr "很高兴见到你。\n我是摩塔莫。"
 
 #: ../data/level/secluded-hut-interior.cfg:317
 msgid "^That's nice."
-msgstr ""
+msgstr "不错。"
 
 #: ../data/level/secluded-hut-interior.cfg:319
 msgid ""
 "Uhm, I hope you don't mind my asking,\n"
 "but what on earth <em>are</em> you, anyway?"
-msgstr ""
+msgstr "咳咳，但愿你别介意我的问题，\n不过你到底是何方神圣啊？"
 
 #: ../data/level/secluded-hut-interior.cfg:320
 msgid "Ostensibly, I am a mole."
@@ -4987,7 +5056,7 @@ msgid ""
 "If you could bring me a golden ant\n"
 "and stick it in one of my cages,\n"
 "I'd reward you <em>handsomely.</em>"
-msgstr ""
+msgstr "你知道不，你看着像个云游四方的人。\n如果你能给我搞到只金蚂蚁放笼子里，\n我会<em>好好地</em>答谢你的。"
 
 #: ../data/level/secluded-hut-interior.cfg:332
 msgid ""
@@ -4999,69 +5068,69 @@ msgstr "你说“好好的”？\n我这就去！"
 msgid ""
 "Oh! You got the golden ant for me.\n"
 "It's beautiful, <em>beautiful!</em>"
-msgstr ""
+msgstr "哦！你替我抓来了金蚂蚁！\n它真是太美了！<em>太美了！</em>"
 
 #: ../data/level/secluded-hut-interior.cfg:337
 msgid ""
 "Mmmmmhmmmm.\n"
 "Now you were talking about a <em>reward?</em>"
-msgstr ""
+msgstr "唔。貌似你说过有啥<em>答谢</em>的？"
 
 #: ../data/level/secluded-hut-interior.cfg:338
 msgid ""
 "Yes, yes, a reward!\n"
 "I think I have just the thing."
-msgstr ""
+msgstr "啊，是，你的奖励！\n我有个正好的东西。"
 
 #: ../data/level/secluded-hut-interior.cfg:339
 msgid ""
 "Some time ago, I bartered my way\n"
 "into the possession of an Energy Talisman."
-msgstr ""
+msgstr "前一段时间，\n我交换得到了一个能量宝物。"
 
 #: ../data/level/secluded-hut-interior.cfg:340
 msgid ""
 "A most interesting artifact, but I think\n"
 "I've exhausted what I can learn from it."
-msgstr ""
+msgstr "这是一个很有意思的东西，\n但是我认为我在它上能做的\n研究已经做完了。"
 
 #: ../data/level/secluded-hut-interior.cfg:341
 msgid ""
 "It's not useful to me, anymore,\n"
 "and I think it could be very useful to you."
-msgstr ""
+msgstr "它对我已经没有用了，\n可是我觉得对你应该有帮助。"
 
 #: ../data/level/secluded-hut-interior.cfg:342
 msgid ""
 "If I am correct, I believe it would\n"
 "react with your anatomy by allowing you\n"
 "to externally manifest energy."
-msgstr ""
+msgstr "如果我的猜想正确，\n他会和你的身体反应，\n让你能发射能量。"
 
 #: ../data/level/secluded-hut-interior.cfg:343
 msgid ""
 "That is, taking your inner physical energy,\n"
 "and allowing you to directly channel\n"
 "it outside your body."
-msgstr ""
+msgstr "也就是说，把你体内的能量\n直接发射出来。"
 
 #: ../data/level/secluded-hut-interior.cfg:344
 msgid ""
 "You'll have to try it to see exactly\n"
 "what happens, but I'm sure something will."
-msgstr ""
+msgstr "具体会有什么效果，\n你得实际用它才会知道，\n但是我确定会有作用。"
 
 #: ../data/level/secluded-hut-interior.cfg:345
 msgid ""
 "Good luck,\n"
 "and I hope it serves you well!"
-msgstr ""
+msgstr "祝你好运，\n希望它能帮你的忙！"
 
 #: ../data/level/secluded-hut-interior.cfg:351
 msgid ""
 "Oh <em>my!</em> If that's a golden ant in your stomach,\n"
 "then quick, spit it out into the cage!"
-msgstr ""
+msgstr "如果那是一只金蚂蚁在你胃里，\n快点吐到笼子里去！"
 
 #: ../data/level/secluded-hut-interior.cfg:352
 msgid ""
@@ -5079,7 +5148,7 @@ msgstr "我在努力。\n那些家伙长着厉害的嘴巴，你也知道。"
 msgid ""
 "I do hope you are enjoying exploring the island.\n"
 "There are <em>so</em> many wonderful creatures on it."
-msgstr ""
+msgstr "祝你旅游愉快。\n岛上有很多奇妙的生物。"
 
 #: ../data/level/secluded-hut-interior.cfg:359
 msgid "... most of which seem inclined to kill me."
@@ -5123,7 +5192,7 @@ msgstr "等等，你说啥？米格拉姆？"
 msgid ""
 "What's <em>he</em> doing\n"
 "on this side of the island?"
-msgstr ""
+msgstr "<em>他</em>在小岛的这边搞什么？"
 
 #: ../data/level/secluded-hut.cfg:1408
 msgid "You still haven't heard, then."
@@ -5141,7 +5210,7 @@ msgid ""
 "Unfortunately, I don't know the details.\n"
 "I just flew out of there as soon as I could,\n"
 "looking for <em>anyone</em> who could help."
-msgstr ""
+msgstr "不过我不清楚细节。\n我只是尽力飞出来，找人帮忙。"
 
 #: ../data/level/secluded-hut.cfg:1412
 msgid ""
@@ -5203,7 +5272,7 @@ msgstr "简单得很，飞过去就是了！"
 
 #: ../data/level/secluded-hut.cfg:1430
 msgid "You ... <em>do</em> realize I can't fly?"
-msgstr ""
+msgstr "你……知道我不会飞么？"
 
 #: ../data/level/splash-hop.cfg:3057
 msgid "Splash, Hop"
@@ -5223,7 +5292,7 @@ msgstr "次优设计"
 
 #: ../data/level/tea-with-milgram.cfg:54
 msgid "Sound • Foley Artist"
-msgstr ""
+msgstr "音效制作者"
 
 #: ../data/level/tea-with-milgram.cfg:60
 msgid "Webmaster"
@@ -5396,7 +5465,7 @@ msgstr "实际上是我带着这点子去找他的。\n这本该算是慈善事�
 msgid ""
 "I thought a 'mayor' would be responsible,\n"
 "but instead he's spending it all <em>on himself!</em>"
-msgstr ""
+msgstr "我本以为一个“镇长”会很有责任感，\n但他却把钱都花在<em>自己</em>身上了！"
 
 #: ../data/level/tea-with-milgram.cfg:159
 msgid "And now he's refusing to repay you?"
@@ -5414,7 +5483,7 @@ msgstr "哦。"
 msgid ""
 "You know, I really think there are some <em>big</em>\n"
 "misunderstandings that need to get cleared up."
-msgstr ""
+msgstr "你知道，我觉得这里有一个\n<em>重大</em>的误解需要澄清。"
 
 #: ../data/level/tea-with-milgram.cfg:169
 msgid "Almost all of which are his fault."
@@ -5424,7 +5493,7 @@ msgstr "都是他的错。"
 msgid ""
 "This might not be obvious from talking to him,\n"
 "but that elder guy is really just ... <em>crazy.</em>"
-msgstr ""
+msgstr "跟他谈话可能不明显， \n但是那个长老实在是...<em>疯了</em>。"
 
 #: ../data/level/tea-with-milgram.cfg:173
 msgid ""
@@ -5473,71 +5542,71 @@ msgstr "可以想象。\n这样也说的通。"
 
 #: ../data/level/tea-with-milgram.cfg:191
 msgid "For starters, uh ... he's <em>NOT</em> our mayor."
-msgstr ""
+msgstr "首先，...他 从来<em>不是</em> 我们的镇长。"
 
 #: ../data/level/tea-with-milgram.cfg:194
 msgid ""
 "Now, as for who <em>is</em> our mayor...\n"
 "well..."
-msgstr ""
+msgstr "要说到谁<em>是</em>村长…\n呃…"
 
 #: ../data/level/tea-with-milgram.cfg:197
 msgid ""
 "Let's just say the political situation in\n"
 "Crevice Village is a little confusing."
-msgstr ""
+msgstr "这样说吧，裂口村的\n政治情况比较混乱。"
 
 #: ../data/level/tea-with-milgram.cfg:199
 msgid ""
 "I wouldn't call it anarchy, but we're a\n"
 "little weak when it comes to \"social institutions\"."
-msgstr ""
+msgstr "也不算是无政府状态，\n但是我们在”社会机构“\n这方面有一点缺乏。"
 
 #: ../data/level/tea-with-milgram.cfg:201
 msgid ""
 "Which as you can guess, has good sides,\n"
 "but also has bad sides."
-msgstr ""
+msgstr "你也能猜到，\n这有利也有弊。"
 
 #: ../data/level/tea-with-milgram.cfg:203
 msgid ""
 "I'll presume this contributes\n"
 "to the poor infrastructure?"
-msgstr ""
+msgstr "我猜这也是设施贫乏\n的一个原因？"
 
 #: ../data/level/tea-with-milgram.cfg:205
 msgid "Yup!"
-msgstr ""
+msgstr "没错！"
 
 #: ../data/level/tea-with-milgram.cfg:208
 msgid ""
 "It's very, very hard to get people\n"
 "to work on anything big or long-term."
-msgstr ""
+msgstr "找人来做任何一件大型或\n长期的工程非常，非常难。"
 
 #: ../data/level/tea-with-milgram.cfg:211
 msgid ""
 "We can raise a house,\n"
 "but we couldn't build a highway."
-msgstr ""
+msgstr "我们盖一座房子还行，\n但是修高速公路就别想。"
 
 #: ../data/level/tea-with-milgram.cfg:213
 msgid ""
 "Nevertheless this sounds\n"
 "<em>idyllically</em> free of bureaucracy."
-msgstr ""
+msgstr "不过，这种没有官僚的生活\n听起来很诗情画意。"
 
 #: ../data/level/tea-with-milgram.cfg:215
 msgid ""
 "Hah, right ... unless you count\n"
 "\"dumb arguments with stubborn people\"."
-msgstr ""
+msgstr "哈…除非你包括\n”与固执的人愚蠢的争吵“。"
 
 #: ../data/level/tea-with-milgram.cfg:217
 msgid ""
 "Anyways, we do manage to get by,\n"
 "but it really is a mess."
-msgstr ""
+msgstr "不管怎么说，\n我们日子还过得去，\n就是有点麻烦。"
 
 #: ../data/level/tea-with-milgram.cfg:219
 msgid ""
@@ -5549,7 +5618,7 @@ msgstr "我不知道那个家伙对你说了什么，不过肯定\n是废话。"
 msgid ""
 "Yes.\n"
 "No <em>wonder</em> we were confused!"
-msgstr ""
+msgstr "是啊。\n<em>难怪</em>我们这么混乱！"
 
 #: ../data/level/tea-with-milgram.cfg:226
 msgid "Ah, there we are..."
@@ -5646,14 +5715,14 @@ msgstr "好吧...\n他们只是强盗，简单明了。"
 msgid ""
 "I didn't authorize that operation,\n"
 "but I <em>will</em> take responsibility for it!"
-msgstr ""
+msgstr "我没有批准这个行动，\n不过我<em>会</em>承担责任！"
 
 #: ../data/level/tea-with-milgram.cfg:271
 msgid ""
 "Those cats are turning into bullies.\n"
 "Sooner or later, they're going to\n"
 "cause me some <em>serious</em> problems!"
-msgstr ""
+msgstr "那些猫变成了流氓集团。\n迟早要给我带来<em>大</em>麻烦！"
 
 #: ../data/level/tea-with-milgram.cfg:273
 msgid ""
@@ -5716,7 +5785,7 @@ msgstr "算有吧。"
 msgid ""
 "Probably the craziest and most helpful is...\n"
 "I actually think <em>he still has</em> that money."
-msgstr ""
+msgstr "或许最疯狂也最有利的是...\n我认为他还<em>存着</em>那笔钱。"
 
 #: ../data/level/tea-with-milgram.cfg:310
 msgid ""
@@ -5825,7 +5894,7 @@ msgstr "我...没...用什么工具。\n走着来的。"
 msgid ""
 "...\n"
 "I'm amazed that's even <em>possible.</em>"
-msgstr ""
+msgstr "...\n不敢相信。"
 
 #: ../data/level/tea-with-milgram.cfg:354
 msgid ""
@@ -5872,7 +5941,7 @@ msgstr "剧终"
 
 #: ../data/level/test-multiplayer.cfg:127
 msgid "Staging Forest"
-msgstr ""
+msgstr "平台森林"
 
 #: ../data/level/the-north-tower.cfg:2089
 msgid "The North Tower"
@@ -5920,15 +5989,15 @@ msgstr "硬币采集赛"
 
 #: ../data/level/titlescreen-load-game-selector.cfg:23
 msgid "File 1:"
-msgstr ""
+msgstr "第1存档："
 
 #: ../data/level/titlescreen-load-game-selector.cfg:50
 msgid "File 2:"
-msgstr ""
+msgstr "第2存档："
 
 #: ../data/level/titlescreen-load-game-selector.cfg:77
 msgid "File 3:"
-msgstr ""
+msgstr "第3存档："
 
 #: ../data/level/titlescreen-load-game-selector.cfg:122
 #: ../data/level/titlescreen-new-game-selector.cfg:236
@@ -6006,7 +6075,7 @@ msgstr "街机模式"
 msgid ""
 "If that gets in the batter,\n"
 "I swear..."
-msgstr ""
+msgstr "如果它们进了面糊，我可…"
 
 #: ../data/level/to-nenes-house-inside.cfg:36
 msgid "Hey Nene, what's cooking?"
@@ -6046,32 +6115,32 @@ msgstr "是啊，这是钥匙。\n下面有些蚂蚁爬来爬去的。"
 msgid ""
 "I've been meaning to get rid of them,\n"
 "but I just can't find the time."
-msgstr ""
+msgstr "我一直想消灭它们，\n但是就是找不出时间。"
 
 #: ../data/level/to-nenes-house-inside.cfg:53
 msgid ""
 "And now, they've gone and\n"
 "ruined a whole bag of flour!"
-msgstr ""
+msgstr "结果，它们把\n一整包面粉都毁了！"
 
 #: ../data/level/to-nenes-house-inside.cfg:56
 msgid "Ick."
-msgstr ""
+msgstr "真恶心。"
 
 #: ../data/level/to-nenes-house-inside.cfg:58
 msgid "I know, right?"
-msgstr ""
+msgstr "不是吗？"
 
 #: ../data/level/to-nenes-house-inside.cfg:59
 msgid ""
 "So you showed up, and I thought ...\n"
 "hey, maybe you could be a gentleman,\n"
 "and help me out here, hm?"
-msgstr ""
+msgstr "正好你来了，我想…\n也许你能做个绅士，\n帮帮我的忙？"
 
 #: ../data/level/to-nenes-house-inside.cfg:61
 msgid "Yeah, that sounds ... opportune."
-msgstr ""
+msgstr "是，听起来…有利。"
 
 #: ../data/level/to-nenes-house-inside.cfg:63
 msgid ""
@@ -6089,7 +6158,7 @@ msgstr "呃，我还以为你会免费\n帮朋友的忙呢！"
 msgid ""
 "Also, come back and\n"
 "talk to me when you're done."
-msgstr ""
+msgstr "另外，完工了回来告诉我。"
 
 #: ../data/level/to-nenes-house-inside.cfg:65
 msgid ""
@@ -6100,110 +6169,110 @@ msgstr "但如果你非要不可，\n我记得在那下面留了一个生命胶�
 
 #: ../data/level/to-nenes-house-inside.cfg:65
 msgid "I might have something else for you."
-msgstr ""
+msgstr "我有一个东西给你。"
 
 #: ../data/level/to-nenes-house-inside.cfg:70
 msgid ""
 "Ah, so you're carrying one of the ants.\n"
 "You'll get rid of it, won't you?"
-msgstr ""
+msgstr "哦，你嘴里有一只蚂蚁。\n你会把它除掉吧？"
 
 #: ../data/level/to-nenes-house-inside.cfg:72
 msgid ""
 "I don't know, now that I think of it...\n"
 "It's not their fault they're here,\n"
 "the ants are just playing to their instincts."
-msgstr ""
+msgstr "我不知道，回头想一想…\n蚂蚁来这里也不是它们的错，\n它们只是跟从本能而已。"
 
 #: ../data/level/to-nenes-house-inside.cfg:74
 msgid ""
 "If you say so... Just throw it outside.\n"
 "As long as they're out of my food, I'm good."
-msgstr ""
+msgstr "你要这么说…\n那就把它扔到房外。\n只要它们不进我的\n食物里就没问题。"
 
 #: ../data/level/to-nenes-house-inside.cfg:80
 msgid "Here, I have another little surprise for you."
-msgstr ""
+msgstr "我还有一个给你的惊喜。"
 
 #: ../data/level/to-nenes-house-inside.cfg:80
 msgid ""
 "You really did do it.\n"
 "You rock!"
-msgstr ""
+msgstr "你真的搞定了。\n太棒了！"
 
 #: ../data/level/to-nenes-house-inside.cfg:83
 msgid "Is it cake?"
-msgstr ""
+msgstr "是蛋糕吗？"
 
 #: ../data/level/to-nenes-house-inside.cfg:85
 msgid ""
 "Ha.  No, it's quite a bit better.\n"
 "It's a little souvenir from the IDF."
-msgstr ""
+msgstr "哈哈。\n不是，比那好多了。\n是从IDF得到的一个纪念品。"
 
 #: ../data/level/to-nenes-house-inside.cfg:86
 msgid "It's a Fire Talisman, and I'd like you to have it."
-msgstr ""
+msgstr "它是一个火焰法宝，\n我想给你。"
 
 #: ../data/level/to-nenes-house-inside.cfg:89
 msgid ""
 "Wow... That's... awesome, but\n"
 "why on earth are you giving this to me?"
-msgstr ""
+msgstr "哇…那真是…太好了，\n但是为很么要给我呢？"
 
 #: ../data/level/to-nenes-house-inside.cfg:91
 msgid "It's a bit much for getting rid of a few ants!"
-msgstr ""
+msgstr "作为消除蚂蚁的奖励\n是不是太贵重了？"
 
 #: ../data/level/to-nenes-house-inside.cfg:93
 msgid ""
 "Honestly?  I had originally meant to\n"
 "give it to you as a birthday present."
-msgstr ""
+msgstr "说实话，我本来要拿它作\n你的生日礼物的。"
 
 #: ../data/level/to-nenes-house-inside.cfg:94
 msgid "I just never got around to it."
-msgstr ""
+msgstr "但是一直没有空给你。"
 
 #: ../data/level/to-nenes-house-inside.cfg:95
 msgid ""
 "I don't need it myself, and I know\n"
 "you'd get a LOT of use out of it."
-msgstr ""
+msgstr "它对我没什么用，\n但是我知道你会有帮助。"
 
 #: ../data/level/to-nenes-house-inside.cfg:96
 msgid "So...  Happy (rather belated) Birthday!"
-msgstr ""
+msgstr "所以…\n（迟来的）生日快乐！"
 
 #: ../data/level/to-nenes-house-inside.cfg:99
 msgid ""
 "You know, I'm really lucky to\n"
 "have friends like you!"
-msgstr ""
+msgstr "有你这样的朋友\n真是太幸运了！"
 
 #: ../data/level/to-nenes-house-inside.cfg:102
 msgid ""
 "Say, that wouldn't also happen\n"
 "to be <em>Birthday</em> Cake, would it?"
-msgstr ""
+msgstr "对了，这块蛋糕会不会\n碰巧是<em>生日</em>蛋糕？"
 
 #: ../data/level/to-nenes-house-inside.cfg:104
 msgid ""
 "...\n"
 "What?  No!"
-msgstr ""
+msgstr "…\n什么？不是！"
 
 #: ../data/level/to-nenes-house-inside.cfg:105
 msgid ""
 "Just take the present,\n"
 "you silly, silly frog."
-msgstr ""
+msgstr "快拿着礼物走吧，\n你这个傻青蛙。"
 
 #: ../data/level/to-nenes-house-inside.cfg:111
 msgid ""
 "Hey, thanks for taking care\n"
 "of those ants down there!"
-msgstr ""
+msgstr "嘿，谢谢你帮我\n消灭楼下的蚂蚁！"
 
 #: ../data/level/to-nenes-house-inside.cfg:113
 msgid ""
@@ -6240,19 +6309,19 @@ msgid ""
 "It smells like Nene's cooking something nice,\n"
 "but I don't think she'd want any ants for lunch.\n"
 "I'd better throw it out before entering!"
-msgstr ""
+msgstr "闻起来像奈奈在做好吃的，\n但是我想她不会喜欢吃蚂蚁。\n最好把它喷出来再进屋！"
 
 #: ../data/level/to-nenes-house.cfg:178
 msgid ""
 "I guess that sneaking in with some bugs\n"
 "would be an easy way of getting a new job..."
-msgstr ""
+msgstr "我想如果把蚂蚁偷着带进屋，\n也许是个容易的找到新工作的\n方法…"
 
 #: ../data/level/to-nenes-house.cfg:180
 msgid ""
 "But what am I thinking?\n"
 "It would be just nasty of me if I did that."
-msgstr ""
+msgstr "不过我在想什么啊？\n这样做就太可耻了。"
 
 #: ../data/level/to-nenes-house.cfg:2146
 msgid "Hah!"
@@ -6315,188 +6384,188 @@ msgstr "缠绕绿树"
 msgid ""
 "But it was horrible!  And green!\n"
 "I've never seen something move that fast!"
-msgstr ""
+msgstr "可是它太恐怖了！还是绿色的！\n我从来没见过移动那么快的东西！"
 
 #: ../data/level/underground-pool.cfg:2461
 msgid ""
 "... And let me guess -\n"
 "it stomped on your squishy kitty head?"
-msgstr ""
+msgstr "…让我猜—\n它还在你软软的猫头上蹦跳了？"
 
 #: ../data/level/underground-pool.cfg:2463
 msgid "Yes, how did you ... know that?"
-msgstr ""
+msgstr "是的，你怎么…猜到的？"
 
 #: ../data/level/underground-pool.cfg:2466
 msgid "A certain design decision I've been regretting."
-msgstr ""
+msgstr "这是一个令我后悔的设计决定。"
 
 #: ../data/level/underground-pool.cfg:2468
 msgid ""
 "It seemed like a cute idea at the time, but it's\n"
 "turned out to be a consistent point of failure."
-msgstr ""
+msgstr "当时我觉得这样可爱，\n但是结果它导致了很多失败 。"
 
 #: ../data/level/underground-pool.cfg:2470
 msgid "My head still hurts..."
-msgstr ""
+msgstr "我的头还在疼…"
 
 #: ../data/level/underground-pool.cfg:2474
 msgid ""
 "Frankly, I'm almost glad it does!\n"
 "You need to learn a lesson from this."
-msgstr ""
+msgstr "说实话，我觉得那是好事！\n你应该吸取教训。"
 
 #: ../data/level/underground-pool.cfg:2476
 msgid ""
 "Just because it's convenient, does not\n"
 "mean you can just push people around."
-msgstr ""
+msgstr "即使你有能力，\n也不应该欺负别人。"
 
 #: ../data/level/underground-pool.cfg:2478
 msgid ""
 "It's tempting when you're strong.\n"
 "People can't say no."
-msgstr ""
+msgstr "用暴力也许有诱惑，\n别人无法拒绝你的要求。"
 
 #: ../data/level/underground-pool.cfg:2480
 msgid ""
 "And sometimes,\n"
 "it's much faster to do things that way."
-msgstr ""
+msgstr "有时候\n这种方式也许最快。"
 
 #: ../data/level/underground-pool.cfg:2482
 msgid ""
 "But even if you have good intentions, people\n"
 "don't like it when you're mean to them."
-msgstr ""
+msgstr "但是即使你的意图是好的，\n人们不喜欢强暴。"
 
 #: ../data/level/underground-pool.cfg:2484
 msgid "I'm sorry, sir."
-msgstr ""
+msgstr "对不起，头。"
 
 #: ../data/level/underground-pool.cfg:2487
 msgid "Noted."
-msgstr ""
+msgstr "行了。"
 
 #: ../data/level/underground-pool.cfg:2489
 msgid ""
 "We're lucky in this case that\n"
 "no real damage was done."
-msgstr ""
+msgstr "幸运的是这次没有\n造成真的损伤。"
 
 #: ../data/level/underground-pool.cfg:2491
 msgid ""
 "You've seen the danger of raising the ire\n"
 "of something stronger than yourself."
-msgstr ""
+msgstr "你也看见激怒比你自己强\n的人的危险。"
 
 #: ../data/level/underground-pool.cfg:2493
 msgid ""
 "Now, the consequences, there,\n"
 "are limited to yourself."
-msgstr ""
+msgstr "当然，这件事的结果\n只影响到你自己。"
 
 #: ../data/level/underground-pool.cfg:2495
 msgid "However, I cannot stress this enough:"
-msgstr ""
+msgstr "但是，我还是必需强调："
 
 #: ../data/level/underground-pool.cfg:2497
 msgid ""
 "I am afraid of angering\n"
 "something stronger than all of us."
-msgstr ""
+msgstr "我害怕惹怒一个比我们\n全体都强的人。"
 
 #: ../data/level/underground-pool.cfg:2499
 msgid ""
 "Huh? You mean ... something stronger\n"
 "than all the Milgramen put together?"
-msgstr ""
+msgstr " 啊？你是说…比所有的\n米格拉姆部下合起来都强？"
 
 #: ../data/level/underground-pool.cfg:2502
 msgid "Yup."
-msgstr ""
+msgstr "没错"
 
 #: ../data/level/underground-pool.cfg:2504
 msgid ""
 "But what would ... ever qualify?\n"
 "We're the biggest group on this island."
-msgstr ""
+msgstr "但是谁有那个可能性？\n我们是这个岛上最大的集团。"
 
 #: ../data/level/underground-pool.cfg:2507
 msgid "I have no idea."
-msgstr ""
+msgstr "我也不知道。"
 
 #: ../data/level/underground-pool.cfg:2509
 msgid ""
 "But there are so many things\n"
 "we don't know about the world."
-msgstr ""
+msgstr "但是这世界里还有很多\n我们不知道的东西。"
 
 #: ../data/level/underground-pool.cfg:2511
 msgid ""
 "Hell, there's so little we even\n"
 "know about this island's history..."
-msgstr ""
+msgstr "连这个岛的历史\n我们都不很清楚。"
 
 #: ../data/level/underground-pool.cfg:2513
 msgid "Who knows what we'll run into?"
-msgstr ""
+msgstr "谁知道将来会遇上什么人？"
 
 #: ../data/level/underground-pool.cfg:2515
 msgid ""
 "Don't get me wrong - I have no illusions\n"
 "that it can neutralize ALL threats."
-msgstr ""
+msgstr "别误解了，我不是说以这种方式\n对待所有的威胁。"
 
 #: ../data/level/underground-pool.cfg:2517
 msgid ""
 "But being nice will prevent MOST\n"
 "from even happening in the first place."
-msgstr ""
+msgstr "但是，友好的交涉一般会防止\n产生这些威胁。"
 
 #: ../data/level/underground-pool.cfg:2519
 msgid ""
 "Furthermore, it tends to do one thing\n"
 "that cruelty and aggression doesn't:"
-msgstr ""
+msgstr "而且，这可以达到残酷和侵略\n不能达到的效果："
 
 #: ../data/level/underground-pool.cfg:2521
 msgid "It makes friends."
-msgstr ""
+msgstr "交朋友。"
 
 #: ../data/level/underground-pool.cfg:2523
 msgid ""
 "We might someday find ourselves in\n"
 "a situation where having the island\n"
 "on our side becomes indispensable."
-msgstr ""
+msgstr "也许有一天，我们会遇到\n需要小岛居民帮助的情况。"
 
 #: ../data/level/underground-pool.cfg:2525
 msgid "Understood, sir."
-msgstr ""
+msgstr "明白了，头。"
 
 #: ../data/level/underground-pool.cfg:2528
 msgid "Good."
-msgstr ""
+msgstr "好。"
 
 #: ../data/level/underground-pool.cfg:2530
 msgid ""
 "Sorry about dressing you down like\n"
 "this, you generally do your job well."
-msgstr ""
+msgstr "对不起，我可能口气重了，\n你一般还是干得很好。"
 
 #: ../data/level/underground-pool.cfg:2532
 msgid ""
 "Just understand that being overzealous\n"
 "isn't going to impress me."
-msgstr ""
+msgstr "不过你要明白，我并不希望\n你们过度热心。"
 
 #: ../data/level/underground-pool.cfg:2535
 msgid ""
 "Tact and discretion, my good man.\n"
 "Remember that.  Dismissed!"
-msgstr ""
+msgstr "要机智并慎重，明白了吗？\n下去吧。"
 
 #: ../data/level/underground-pool.cfg:3965
 msgid "Underground Pool"
@@ -6541,13 +6610,13 @@ msgstr "最高纪录是第 ${registry.arcade_coin_race_high_score} 关。 "
 
 #: ../data/objects/items/ability.cfg:8
 msgid "This has very little range, but is quite damaging."
-msgstr ""
+msgstr "它的射程很短，\n但是杀伤力很强。"
 
 #: ../data/objects/items/ability.cfg:8
 msgid ""
 "You can now breathe out a\n"
 "short stream of intense flame."
-msgstr ""
+msgstr "你从此可以喷出\n短程的强力火焰。"
 
 #: ../data/objects/items/ability.cfg:8 ../data/objects/items/ability.cfg:9
 #: ../data/objects/items/ability.cfg:10
@@ -6581,13 +6650,13 @@ msgstr "你现在可以从手指尖射出有害的\n火球，它们会跟踪攻�
 
 #: ../data/objects/items/ability.cfg:12
 msgid "Press ${ATTACK_KEY} to switch between abilities."
-msgstr ""
+msgstr "按${ATTACK_KEY}切换不同的攻击。"
 
 #: ../data/objects/items/ability.cfg:12
 msgid ""
 "Tap the upper-left corner of the screen\n"
 "to switch between abilities."
-msgstr ""
+msgstr "按屏幕左上角切换不同的攻击。"
 
 #: ../data/objects/items/max_heart_object.cfg:8
 msgid ""
@@ -6635,14 +6704,14 @@ msgstr "滑翔翼使得你可以在空中滑翔。"
 
 #: ../data/objects/items/store-items/buyable_greater_mana_talisman.cfg:5
 msgid "greater mana talisman"
-msgstr ""
+msgstr "优质魔力宝物"
 
 #: ../data/objects/items/store-items/buyable_greater_mana_talisman.cfg:7
 msgid ""
 "This is a crystal talisman which\n"
 "will boost your mana recharge rate.\n"
 "This one is quite strong, but the price is steep."
-msgstr ""
+msgstr "这个水晶宝物会加快\n魔力充满的速度。\n效力很强，但是价钱也高。"
 
 #: ../data/objects/items/store-items/buyable_heart_container.cfg:5
 msgid "heart"
@@ -6662,14 +6731,14 @@ msgstr "动力靴让你跳得更高。"
 
 #: ../data/objects/items/store-items/buyable_lesser_mana_talisman.cfg:5
 msgid "lesser mana talisman"
-msgstr ""
+msgstr "劣质魔力宝物"
 
 #: ../data/objects/items/store-items/buyable_lesser_mana_talisman.cfg:7
 msgid ""
 "This is a crystal talisman which\n"
 "will boost your mana recharge rate.\n"
 "It's weak, but you can't beat the price."
-msgstr ""
+msgstr "这个水晶宝物会加快\n魔力充满的速度。\n效力较弱，但是廉价。"
 
 #: ../data/objects/items/store-items/buyable_powerup_invincible.cfg:5
 msgid "invincibility crystal"
@@ -6764,19 +6833,19 @@ msgstr "米格拉姆的城堡"
 
 #: ../data/objects/playable/menu_selector_load_game.cfg:84
 msgid "level"
-msgstr ""
+msgstr "关"
 
 #: ../data/objects/playable/menu_selector_load_game.cfg:85
 msgid "coins"
-msgstr ""
+msgstr "硬币"
 
 #: ../data/objects/playable/menu_selector_load_game.cfg:86
 msgid "visited levels"
-msgstr ""
+msgstr "已探索的关卡"
 
 #: ../data/objects/playable/menu_selector_load_game.cfg:88
 msgid "hp"
-msgstr ""
+msgstr "体力"
 
 #: ../data/objects/props-interactive/misc/save_toilet.cfg:16
 #: ../data/objects/props-interactive/portals/dungeon_save_door.cfg:13
@@ -6814,14 +6883,14 @@ msgstr "读取材质贴图..."
 msgid "Loading Frogatto character"
 msgstr "正在读取角色：阿土"
 
-#: ../iOS_APP_STORE_METADATA:15
+#: ../iOS_APP_STORE_METADATA:13
 msgid "- OpenFeint and Achievement support"
 msgstr "- OpenFeint和成就支持"
 
-#: ../iOS_CHANGELOG:19
+#: ../iOS_CHANGELOG:32
 msgid "Fixed The Long Haul (arcade level)"
 msgstr "修复了长时间停滞问题（街机模式）"
 
-#: ../iOS_CHANGELOG:20
+#: ../iOS_CHANGELOG:33
 msgid "Fixed instructions on titlescreen"
 msgstr "修复了标题界面的指导"

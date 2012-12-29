@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-11-19 01:43-0200\n"
-"PO-Revision-Date: 2012-11-19 03:47+0000\n"
+"POT-Creation-Date: 2012-11-28 22:10-0200\n"
+"PO-Revision-Date: 2012-11-29 00:12+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/projects/p/Frogatto/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
@@ -103,295 +103,364 @@ msgid "OpenFeint"
 msgstr "OpenFeint"
 
 #: ../CHANGELOG:1 ../iOS_CHANGELOG:1
+msgid "Version 1.3:"
+msgstr ""
+
+#: ../CHANGELOG:2 ../iOS_CHANGELOG:2
+msgid ""
+"Expansion and improvements to the plot and dialogue, adding new cutscenes "
+"that give you a closer look at the antagonists' motives."
+msgstr ""
+
+#: ../CHANGELOG:3 ../iOS_CHANGELOG:3
+msgid ""
+"Several new levels were added to the dungeon environment; with some of them "
+"being optional, there's much more to explore now."
+msgstr ""
+
+#: ../CHANGELOG:4 ../iOS_CHANGELOG:4
+msgid ""
+"Some new enemies to be vanquished: a red bat that's much more tenacious than"
+" the regular ones, and the hard-hitting ninja-kitty, that has many tools at "
+"his disposal to fight you. And these are just a few examples!"
+msgstr ""
+
+#: ../CHANGELOG:5 ../iOS_CHANGELOG:5
+msgid ""
+"New difficulty level: Challenging. Some enemies will be faster, hardier, "
+"smarter, or all of those put together."
+msgstr ""
+
+#: ../CHANGELOG:6 ../iOS_CHANGELOG:6
+msgid ""
+"A better \"New Game/Load Game\" screen, that allows the selection of save "
+"slots."
+msgstr ""
+
+#: ../CHANGELOG:7 ../iOS_CHANGELOG:7
+msgid ""
+"New power-up system, based on a common \"mana\" resource - now players can "
+"choose what powers to use at any time, if they've acquired them and have "
+"enough mana to use them."
+msgstr ""
+
+#: ../CHANGELOG:8 ../iOS_CHANGELOG:8
+msgid ""
+"Two new power-ups: Fire-breath attack and an energy shot that homes in on "
+"enemies."
+msgstr ""
+
+#: ../CHANGELOG:9 ../iOS_CHANGELOG:9
+msgid ""
+"Graphical improvements abound: ground tiles on most environments were "
+"reworked, adding better perspective, and being improved on in general."
+msgstr ""
+
+#: ../CHANGELOG:10 ../iOS_CHANGELOG:10
+msgid ""
+"Lots of new objects show up in the foreground and background, giving more "
+"depth and diversity to each map."
+msgstr ""
+
+#: ../CHANGELOG:11 ../iOS_CHANGELOG:11
+msgid ""
+"Many new tracks were added to the soundtrack, while most of the previous "
+"repertoire has been enhanced."
+msgstr ""
+
+#: ../CHANGELOG:12 ../iOS_CHANGELOG:12
+msgid ""
+"A much wider and smarter usage of sound effects; now you'll be able to "
+"notice flying enemies' wings flapping, kitties running around, and even the "
+"sounds Frogatto make are when moving around are dependent on terrain."
+msgstr ""
+
+#: ../CHANGELOG:14 ../iOS_CHANGELOG:14
 msgid "Version 1.2:"
 msgstr "Version 1.2:"
 
-#: ../CHANGELOG:2 ../iOS_CHANGELOG:2
+#: ../CHANGELOG:15 ../iOS_CHANGELOG:15
 msgid ""
 "Complete redo of attack logic; frogatto now is free to walk around whilst he"
 " attacks, and in general is much more responsive."
 msgstr "Complete redo of attack logic; Frogatto now is free to walk around whilst he attacks, and in general, is much more responsive."
 
-#: ../CHANGELOG:3 ../iOS_CHANGELOG:3
+#: ../CHANGELOG:16 ../iOS_CHANGELOG:16
 msgid "Frogatto's tongue-grabbing is MUCH more forgiving"
 msgstr "Frogatto's tongue grabbing is much more forgiving"
 
-#: ../CHANGELOG:4 ../iOS_CHANGELOG:4
+#: ../CHANGELOG:17 ../iOS_CHANGELOG:17
 msgid ""
 "Complete rewrite of damage handling; much more consistent now, and "
 "categorically eliminates some bugs where damage wouldn't get dealt."
 msgstr "Complete rewrite of damage handling; now much more consistent, and categorically eliminates some bugs where damage wouldn't be dealt"
 
-#: ../CHANGELOG:5 ../iOS_CHANGELOG:5
+#: ../CHANGELOG:18 ../iOS_CHANGELOG:18
 msgid "Reworked some tilesets to eliminate tiling errors."
 msgstr "Reworked some tile sets to eliminate tiling errors"
 
-#: ../CHANGELOG:6 ../iOS_CHANGELOG:6
+#: ../CHANGELOG:19 ../iOS_CHANGELOG:19
 msgid "Further enhancements to dungeon wall graphics (added edges)."
 msgstr "Further enhancements to dungeon wall graphics (added edges)"
 
-#: ../CHANGELOG:7 ../iOS_CHANGELOG:7
+#: ../CHANGELOG:20 ../iOS_CHANGELOG:20
 msgid "New, more readable dialogue font."
 msgstr "New, more readable dialogue font"
 
-#: ../CHANGELOG:8 ../iOS_CHANGELOG:8
+#: ../CHANGELOG:21 ../iOS_CHANGELOG:21
 msgid "Lots of small graphical tweaks."
 msgstr "Lots of small graphical tweaks."
 
-#: ../CHANGELOG:9 ../iOS_CHANGELOG:9
+#: ../CHANGELOG:22 ../iOS_CHANGELOG:22
 msgid "Maps are now strewn with spittable props within easy reach."
 msgstr "Maps are now strewn with spittable props within easy reach"
 
-#: ../CHANGELOG:10 ../iOS_CHANGELOG:10
+#: ../CHANGELOG:23 ../iOS_CHANGELOG:23
 msgid "Rewrote most of the dialogue."
 msgstr "Rewrote most of the dialogue"
 
-#: ../CHANGELOG:11 ../iOS_CHANGELOG:11
+#: ../CHANGELOG:24 ../iOS_CHANGELOG:24
 msgid ""
 "Collectible items like coins can be collected by being touched by the "
 "tongue, besides just frogatto's body."
 msgstr "Collectible items like coins can be collected by being touched by the tongue, as well as frogatto's body"
 
-#: ../CHANGELOG:12 ../iOS_CHANGELOG:12
+#: ../CHANGELOG:25 ../iOS_CHANGELOG:25
 msgid "Redrew the world map."
 msgstr "Redrew the world map."
 
-#: ../CHANGELOG:13 ../iOS_CHANGELOG:13
+#: ../CHANGELOG:26 ../iOS_CHANGELOG:26
 msgid ""
 "Added a few new monsters, like the red hornbugs, and completely rewrote how "
 "bats behave."
 msgstr "Added a few new monsters, like the red hornbugs, and completely rewrote how bats behave."
 
-#: ../CHANGELOG:14 ../iOS_CHANGELOG:14
+#: ../CHANGELOG:27 ../iOS_CHANGELOG:27
 msgid ""
 "Fixed a bug that caused a black line in the seaside background during "
 "dialogues."
 msgstr "Fixed a bug that caused a black line in the seaside background during dialogues."
 
-#: ../CHANGELOG:15 ../iOS_CHANGELOG:15
+#: ../CHANGELOG:28 ../iOS_CHANGELOG:28
 msgid ""
 "Fixed a bug that caused some tiles to incorrectly be flagged as opaque."
 msgstr "Fixed a bug that caused some tiles to incorrectly be flagged as opaque."
 
-#: ../CHANGELOG:17 ../iOS_CHANGELOG:17
+#: ../CHANGELOG:30 ../iOS_CHANGELOG:30
 msgid "Version 1.1.1:"
 msgstr "Version 1.1.1:"
 
-#: ../CHANGELOG:18 ../iOS_CHANGELOG:18
+#: ../CHANGELOG:31 ../iOS_CHANGELOG:31
 msgid "Fixed some crashing bugs."
 msgstr "Fixed some fatal bugs."
 
-#: ../CHANGELOG:19
+#: ../CHANGELOG:32
 msgid "Fixed The Long Haul (compiled mode)"
 msgstr "Fixed 'The Long Haul' (compiled mode)"
 
-#: ../CHANGELOG:20
+#: ../CHANGELOG:33
 msgid "Fixed instructions on titlescreen (iOS)"
 msgstr "Fixed the instructions on titlescreen (iOS)"
 
-#: ../CHANGELOG:21 ../iOS_CHANGELOG:21
+#: ../CHANGELOG:34 ../iOS_CHANGELOG:34
 msgid "New translation: Italian"
 msgstr "New translation: Italian"
 
-#: ../CHANGELOG:22
+#: ../CHANGELOG:35
 msgid "Added automatic language selection for Windows"
 msgstr "Added automatic language selection for Windows"
 
-#: ../CHANGELOG:23 ../iOS_CHANGELOG:22
+#: ../CHANGELOG:36 ../iOS_CHANGELOG:35
 msgid ""
 "Complete redo of iOS controls, switching to a 2-button dpad from a 4-button."
 "  Eliminates all problems with mispressed up or down keys interrupting other"
 " actions."
 msgstr "Complete redo of iOS controls, switching to a two button 'dpad' from a four button 'dpad', which eliminates all problems with mispressed up or down keys interrupting other actions"
 
-#: ../CHANGELOG:25
+#: ../CHANGELOG:38
 msgid "Version 1.1:"
 msgstr "Version 1.1:"
 
-#: ../CHANGELOG:26
+#: ../CHANGELOG:39
 msgid "Added arcade mode."
 msgstr "Added arcade mode."
 
-#: ../CHANGELOG:27
+#: ../CHANGELOG:40
 msgid "Redid graphics for forest trees."
 msgstr "Redid the graphics for forest trees."
 
-#: ../CHANGELOG:28
+#: ../CHANGELOG:41
 msgid "Redid graphics for forest background"
 msgstr "Redid the graphics for forest background."
 
-#: ../CHANGELOG:29
+#: ../CHANGELOG:42
 msgid "Redid graphics for dungeon wall tiles"
 msgstr "Redid the graphics for dungeon wall tiles."
 
-#: ../CHANGELOG:30
+#: ../CHANGELOG:43
 msgid "Redid graphics for basement wall tiles"
 msgstr "Redid the graphics for basement wall tiles."
 
-#: ../CHANGELOG:31
+#: ../CHANGELOG:44
 msgid "Added a bunch of interior props"
 msgstr "Added some interior props."
 
-#: ../CHANGELOG:32
+#: ../CHANGELOG:45
 msgid "Reworked \"darkness\" for improved appearance"
 msgstr "Reworked 'darkness' for improved appearance."
 
-#: ../CHANGELOG:33
+#: ../CHANGELOG:46
 msgid "Added new palettes to forest and seaside areas."
 msgstr "Added new palettes to the forest and seaside areas."
 
-#: ../CHANGELOG:34
+#: ../CHANGELOG:47
 msgid "Added some unique enemies to the forest."
 msgstr "Added some enemies unique to the forest."
 
-#: ../CHANGELOG:35
+#: ../CHANGELOG:48
 msgid ""
 "Refactored damage and monster type systems to make behavior more consistent "
 "and eliminate some rare buggy behavior."
 msgstr "Refactored damage and monster type systems to make behavior more consistent and eliminate some rare buggy behavior."
 
-#: ../CHANGELOG:36
+#: ../CHANGELOG:49
 msgid ""
 "Added translation support, with 4 complete translations: French, Brazilian "
 "Portuguese, Chinese (Simplified), and Japanese."
 msgstr "Added translation support and four complete translations: Brazilian Portuguese, Simplified Chinese, French,  and Japanese."
 
-#: ../CHANGELOG:38
+#: ../CHANGELOG:51
 msgid "Version 1.0.3:"
 msgstr "Version 1.0.3:"
 
-#: ../CHANGELOG:39
+#: ../CHANGELOG:52
 msgid "Fixed crash when picking up max heart pieces."
 msgstr "Fixed crash after picking up the maximum number of heart pieces."
 
-#: ../CHANGELOG:40
+#: ../CHANGELOG:53
 msgid "Other small bug fixes."
 msgstr "Fixed other small bugs."
 
-#: ../CHANGELOG:42
+#: ../CHANGELOG:55
 msgid "Version 1.0.2:"
 msgstr "Version 1.0.2:"
 
-#: ../CHANGELOG:43
+#: ../CHANGELOG:56
 msgid "Added support for \"darkness\" in levels."
 msgstr "Added support for 'darkness' in levels."
 
-#: ../CHANGELOG:44
+#: ../CHANGELOG:57
 msgid "Added support for WVGA."
 msgstr "Added support for widescreen displays."
 
-#: ../CHANGELOG:45
+#: ../CHANGELOG:58
 msgid "Made player status not show on the titlescreen or world map."
 msgstr "Removed player status from the titlescreen and world map."
 
-#: ../CHANGELOG:46
+#: ../CHANGELOG:59
 msgid "Made golden ants less ambiguous."
 msgstr "Made golden ants less ambiguous."
 
-#: ../CHANGELOG:47
+#: ../CHANGELOG:60
 msgid "Fixed bug making certain music always play at full volume (iPhone)."
 msgstr "Fixed bug making certain music always play at full volume (iPhone)"
 
-#: ../CHANGELOG:48
+#: ../CHANGELOG:61
 msgid "Added option to reverse positions of A and B buttons (iPhone)."
 msgstr "Added option to reverse positions of A and B buttons (iPhone)"
 
-#: ../CHANGELOG:49
+#: ../CHANGELOG:62
 msgid "Added support for repeating levels (for arcade modes)."
 msgstr "Added support for repeating levels (for arcade modes)"
 
-#: ../CHANGELOG:50
+#: ../CHANGELOG:63
 msgid ""
 "Pressing jump while in the air pressing against a wall now makes you cling "
 "to the wall."
 msgstr "Pressing jump while in the air pressing against a wall now makes you cling to the wall."
 
-#: ../CHANGELOG:51
+#: ../CHANGELOG:64
 msgid "Made it so you can skip dialogs sequences."
 msgstr "Made it so that you can skip dialogue sequences."
 
-#: ../CHANGELOG:52
+#: ../CHANGELOG:65
 msgid "Fixed lots of z-order issues."
 msgstr "Fixed lots of z-order issues."
 
-#: ../CHANGELOG:53
+#: ../CHANGELOG:66
 msgid "Fixed bug causing ambient sounds to not work."
 msgstr "Fixed a bug causing ambient sounds to not work."
 
-#: ../CHANGELOG:54
+#: ../CHANGELOG:67
 msgid "Improved forest background, and made it go upwards infinitely."
 msgstr "Improved forest background, and made it go upwards infinitely."
 
-#: ../CHANGELOG:55
+#: ../CHANGELOG:68
 msgid "Made hearts heal a full heart, rather than just half."
 msgstr "Made hearts heal a full heart, instead of just a half."
 
-#: ../CHANGELOG:56
+#: ../CHANGELOG:69
 msgid "Changed tilesets to make water look better."
 msgstr "Changed tilesets to make the water look better."
 
-#: ../CHANGELOG:57
+#: ../CHANGELOG:70
 msgid "Many small bug fixes."
 msgstr "Fixed other small bugs."
 
-#: ../CHANGELOG:59
+#: ../CHANGELOG:72
 msgid "Version 1.0.1 (iPhone only):"
 msgstr "Version 1.0.1 (iPhone only):"
 
-#: ../CHANGELOG:60
+#: ../CHANGELOG:73
 msgid ""
 "Significantly improved controls, both functionally and graphically (iPhone)."
 msgstr "Significantly improved controls, both functionally and graphically (iPhone)"
 
-#: ../CHANGELOG:61
+#: ../CHANGELOG:74
 msgid "Fixed auto-saving on iOS4 where multitasking is supported (iPhone)."
 msgstr "Fixed auto-saving on iOS4 where multitasking is supported (iPhone)"
 
-#: ../CHANGELOG:62
+#: ../CHANGELOG:75
 msgid "Fixed bug where a dialog could repeat forever."
 msgstr "Fixed a bug whereby a dialog could be repeated forever."
 
-#: ../CHANGELOG:63
+#: ../CHANGELOG:76
 msgid "Fixed crash in world map when you hold down while entering it."
 msgstr "Fixed a crash in the world map when you hold the down button while entering it."
 
-#: ../CHANGELOG:64
+#: ../CHANGELOG:77
 msgid "Fixed fullscreen mode (Mac/Windows)."
 msgstr "Fixed fullscreen mode (Mac/Windows)"
 
-#: ../CHANGELOG:65
+#: ../CHANGELOG:78
 msgid "Fixed controlpad issues for computers."
 msgstr "Fixed controlpad issues on computers."
 
-#: ../CHANGELOG:66
+#: ../CHANGELOG:79
 msgid "Added music and sound volume controls to pause screen."
 msgstr "Added music and sound volume controls to the pause screen."
 
-#: ../CHANGELOG:67
+#: ../CHANGELOG:80
 msgid "Added customizable controls."
 msgstr "Added customisable controls."
 
-#: ../CHANGELOG:68
+#: ../CHANGELOG:81
 msgid "Added half-hearts."
 msgstr "Added half hearts."
 
-#: ../CHANGELOG:69
+#: ../CHANGELOG:82
 msgid "Added scons script for compiling."
 msgstr "Added scons script for compiling"
 
-#: ../CHANGELOG:70
+#: ../CHANGELOG:83
 msgid "Minor level changes."
 msgstr "Made some minor level changes."
 
-#: ../CHANGELOG:71
+#: ../CHANGELOG:84
 msgid "Updated music."
 msgstr "Updated the music."
 
 #: ../MAC_APP_STORE_METADATA:1 ../iOS_APP_STORE_METADATA:1
-msgid "NOW WITH BETTER CONTROLS:"
-msgstr "Now with better controls:"
-
-#: ../MAC_APP_STORE_METADATA:3 ../iOS_APP_STORE_METADATA:3
 msgid ""
 "Frogatto is a classic-style 2d adventure game, starring a certain quixotic "
 "frog.  It's made by the same team that brought you Battle for Wesnoth, and "
@@ -400,7 +469,7 @@ msgid ""
 "character on a humdrum errand that turns into a daring adventure."
 msgstr "Frogatto is a classic style 2d adventure game, starring a certain quixotic frog.  It's made by the same team that brought you Battle for Wesnoth, and features the same handcrafted love of top end pixel art.  Frogatto is a side-on \"platformer\" or \"jump and run\" game, where you lead our titular character on a humdrum errand that turns into a daring adventure."
 
-#: ../MAC_APP_STORE_METADATA:5 ../iOS_APP_STORE_METADATA:5
+#: ../MAC_APP_STORE_METADATA:3 ../iOS_APP_STORE_METADATA:3
 msgid ""
 "Frogatto's key mechanic is an unusual twist; like any frog, he jumps, swims,"
 " and snags bugs with his tongue, but unlike any frog before him, can spit "
@@ -409,69 +478,69 @@ msgid ""
 "puzzles to solve, and a wide, complex world to explore."
 msgstr "Frogatto's key mechanic is an unusual twist; like any frog, he jumps, swims, and traps bugs with his tongue, but unlike any frog before him, can spit those bugs out with deadly force.  Not merely an action game, frogatto is a full, classic, adventure game, with characters to talk to, things to buy, puzzles to solve, and a wide, complex world to explore."
 
-#: ../MAC_APP_STORE_METADATA:7 ../iOS_APP_STORE_METADATA:7
+#: ../MAC_APP_STORE_METADATA:5 ../iOS_APP_STORE_METADATA:5
 msgid "Features:"
 msgstr "Features:"
 
-#: ../MAC_APP_STORE_METADATA:8 ../iOS_APP_STORE_METADATA:8
+#: ../MAC_APP_STORE_METADATA:6 ../iOS_APP_STORE_METADATA:6
 msgid "- grab enemies with your tongue and spit them to deal damage"
 msgstr "- grab enemies with your tongue, and spit them to deal damage"
 
-#: ../MAC_APP_STORE_METADATA:9 ../iOS_APP_STORE_METADATA:9
+#: ../MAC_APP_STORE_METADATA:7 ../iOS_APP_STORE_METADATA:7
 msgid "- buy powerups to enhance and unlock new abilities"
 msgstr "- buy powerups to enhance and unlock new abilities"
 
-#: ../MAC_APP_STORE_METADATA:10 ../iOS_APP_STORE_METADATA:10
+#: ../MAC_APP_STORE_METADATA:8 ../iOS_APP_STORE_METADATA:8
 msgid ""
 "- arcade mode, giving instant access to action-only gameplay on randomized "
 "levels"
 msgstr "- arcade mode, giving instant access to action-only gameplay on randomised levels"
 
-#: ../MAC_APP_STORE_METADATA:11 ../iOS_APP_STORE_METADATA:11
+#: ../MAC_APP_STORE_METADATA:9 ../iOS_APP_STORE_METADATA:9
 msgid ""
 "- forgiving savegame/respawn system so you don't have to be afraid of losing"
 " progress"
 msgstr "- forgiving savegame/respawn system so you don't have to be afraid of losing progress"
 
-#: ../MAC_APP_STORE_METADATA:12 ../iOS_APP_STORE_METADATA:12
+#: ../MAC_APP_STORE_METADATA:10 ../iOS_APP_STORE_METADATA:10
 msgid "- playful dialogue writing that tries not to insult your intelligence"
 msgstr "- playful dialogue writing that tries not to insult your intelligence"
 
-#: ../MAC_APP_STORE_METADATA:13 ../iOS_APP_STORE_METADATA:13
+#: ../MAC_APP_STORE_METADATA:11 ../iOS_APP_STORE_METADATA:11
 msgid "- massive soundtrack with over an hour of original music"
 msgstr "- massive soundtrack with over an hour of original music"
 
-#: ../MAC_APP_STORE_METADATA:14 ../iOS_APP_STORE_METADATA:14
+#: ../MAC_APP_STORE_METADATA:12 ../iOS_APP_STORE_METADATA:12
 msgid ""
-"- sprawling, complex world with over 50 levels to explore, and tons of "
+"- sprawling, complex world with over 70 levels to explore, and tons of "
 "secrets to find"
-msgstr "- sprawling, complex world with over 50 levels to explore, and tonnes of secrets to find"
+msgstr ""
 
-#: ../MAC_APP_STORE_METADATA:16 ../iOS_APP_STORE_METADATA:17
+#: ../MAC_APP_STORE_METADATA:14 ../iOS_APP_STORE_METADATA:15
 msgid "To find out more about the game please visit http://www.frogatto.com/"
 msgstr "To find out more about the game, please visit http://www.frogatto.com/"
 
-#: ../MAC_APP_STORE_METADATA:18 ../iOS_APP_STORE_METADATA:19
+#: ../MAC_APP_STORE_METADATA:16 ../iOS_APP_STORE_METADATA:17
 msgid "Reviews:"
 msgstr "Reviews:"
 
-#: ../MAC_APP_STORE_METADATA:19 ../iOS_APP_STORE_METADATA:20
+#: ../MAC_APP_STORE_METADATA:17 ../iOS_APP_STORE_METADATA:18
 msgid "- [3/4 SlideToPlay.com] \"a fun and surprisingly deep platformer\""
 msgstr "- [3/4 SlideToPlay.com] \"a fun and surprisingly deep platformer\""
 
-#: ../MAC_APP_STORE_METADATA:20 ../iOS_APP_STORE_METADATA:21
+#: ../MAC_APP_STORE_METADATA:18 ../iOS_APP_STORE_METADATA:19
 msgid "- [4/5 AppSpy.com] \"boy-howdy is this an amazing visual feast!\""
 msgstr "- [4/5 AppSpy.com] \"boy-howdy is this an amazing visual feast!\""
 
-#: ../MAC_APP_STORE_METADATA:21 ../iOS_APP_STORE_METADATA:22
+#: ../MAC_APP_STORE_METADATA:19 ../iOS_APP_STORE_METADATA:20
 msgid "- [n/a TouchArcade.com] \"totally worth checking out.\""
 msgstr "- [n/a TouchArcade.com] \"totally worth checking out.\""
 
-#: ../MAC_APP_STORE_METADATA:23 ../iOS_APP_STORE_METADATA:24
+#: ../MAC_APP_STORE_METADATA:21 ../iOS_APP_STORE_METADATA:22
 msgid "keywords:"
 msgstr "keywords:"
 
-#: ../MAC_APP_STORE_METADATA:24 ../iOS_APP_STORE_METADATA:25
+#: ../MAC_APP_STORE_METADATA:22 ../iOS_APP_STORE_METADATA:23
 msgid ""
 "platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
 msgstr "platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
@@ -6810,14 +6879,14 @@ msgstr "Loading textures..."
 msgid "Loading Frogatto character"
 msgstr "Loading Frogatto character"
 
-#: ../iOS_APP_STORE_METADATA:15
+#: ../iOS_APP_STORE_METADATA:13
 msgid "- OpenFeint and Achievement support"
 msgstr "- OpenFeint and Achievement support"
 
-#: ../iOS_CHANGELOG:19
+#: ../iOS_CHANGELOG:32
 msgid "Fixed The Long Haul (arcade level)"
 msgstr "Fixed The Long Haul (arcade level)"
 
-#: ../iOS_CHANGELOG:20
+#: ../iOS_CHANGELOG:33
 msgid "Fixed instructions on titlescreen"
 msgstr "Fixed instructions on titlescreen"
