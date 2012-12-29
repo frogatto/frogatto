@@ -152,12 +152,14 @@ LANGUAGES.each_pair do |language, font|
   file fonts_cfg(language) do |t|
     File.open(t.name, 'w') do |file|
       file.write <<-EOF
-[fonts]
-	@include "data/number_font.cfg"
-	@include "data/outline_font.#{language}.cfg"
-	@include "data/label_font.#{language}.cfg"
-	@include "data/dialog_font.#{language}.cfg"
-[/fonts]
+      {
+      font: ["@flatten",
+	"@include data/number_font_large.cfg",
+	"@include data/outline_font.#{language}.cfg",
+	"@include data/label_font.#{language}.cfg",
+	"@include data/dialog_font.#{language}.cfg"
+      ],
+      }
       EOF
     end
   end
