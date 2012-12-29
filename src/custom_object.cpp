@@ -680,7 +680,7 @@ variant custom_object::write() const
 		}
 	}
 	   
-	if(zsub_order_ != 0) {
+	if(zsub_order_ != type_->zsub_order()) {
 		res.add("zsub_order", zsub_order_);
 	}
 	
