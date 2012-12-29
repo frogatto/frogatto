@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2012-11-28 22:10-0200\n"
-"PO-Revision-Date: 2012-12-13 11:15+0000\n"
-"Last-Translator: jui <appukonrad@gmail.com>\n"
+"PO-Revision-Date: 2012-12-24 13:02+0000\n"
+"Last-Translator: lukasf.92 <lukasf.92@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/projects/p/Frogatto/language/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -100,7 +100,7 @@ msgstr "Obrátit A a B"
 
 #: ../../../src/pause_game_dialog.cpp:79
 msgid "OpenFeint"
-msgstr ""
+msgstr "OpenFeint"
 
 #: ../CHANGELOG:1 ../iOS_CHANGELOG:1
 msgid "Version 1.3:"
@@ -966,7 +966,7 @@ msgstr "Chopplův obchod se smíšeným zbožím"
 
 #: ../data/level/crevice-bridge.cfg:297
 msgid "Hi, again."
-msgstr "Ahoj, ztnovu."
+msgstr "Ahoj, znovu."
 
 #: ../data/level/crevice-bridge.cfg:298
 msgid "So, how did it go?"
@@ -1045,7 +1045,7 @@ msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:327
 msgid "Never."
-msgstr ""
+msgstr "Nikdy."
 
 #: ../data/level/crevice-bridge.cfg:330
 msgid ""
@@ -1203,7 +1203,7 @@ msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:384
 msgid "Awesome!"
-msgstr ""
+msgstr "Úžasné!"
 
 #: ../data/level/crevice-bridge.cfg:387
 msgid ""
@@ -1229,11 +1229,11 @@ msgstr ""
 
 #: ../data/level/crevice-bridge.cfg:1277
 msgid "Ahh, there you are!"
-msgstr ""
+msgstr "Ahh, tady jsi!"
 
 #: ../data/level/crevice-bridge.cfg:1794
 msgid "Crevice Bridge"
-msgstr ""
+msgstr "Potrhaný most"
 
 #: ../data/level/crevice-village-cave.cfg:749
 msgid "What the..."
@@ -1250,11 +1250,11 @@ msgstr "Ano"
 
 #: ../data/level/crevice-village-cave.cfg:750
 msgid "You're an intruder, aren't you?!"
-msgstr "Jsi vetřelec, nebo nejsi?!"
+msgstr "Přítel či nepřítel?!"
 
 #: ../data/level/crevice-village-cave.cfg:751
 msgid "I thought so!"
-msgstr ""
+msgstr "Myslel jsem si to!"
 
 #: ../data/level/crevice-village-cave.cfg:752
 #: ../data/object_prototypes/buyable_item.cfg:31
@@ -1305,7 +1305,7 @@ msgstr "V žádném případě! Jen přes mou mrtvolu!"
 
 #: ../data/level/crevice-village-cave.cfg:764
 msgid "We can do that."
-msgstr ""
+msgstr "To můžeme udělat."
 
 #: ../data/level/crevice-village-cave.cfg:1231
 #: ../data/level/crevice-village-central.cfg:4134
@@ -1313,7 +1313,7 @@ msgstr ""
 #: ../data/level/crevice-village.cfg:1647
 #: ../data/objects/playable/map-selector.cfg:17
 msgid "Crevice Village"
-msgstr ""
+msgstr "Potrhaná vesnice."
 
 #: ../data/level/crevice-village-central-side-cave.cfg:1111
 msgid "Hidden Cave"
@@ -1420,7 +1420,7 @@ msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:248
 msgid "^Yeah."
-msgstr ""
+msgstr "^Jo."
 
 #: ../data/level/crevice-village-heights.cfg:250
 msgid ""
@@ -1746,7 +1746,7 @@ msgstr ""
 msgid ""
 "Amazing...  if you don't mind,\n"
 "I have a few questions for you."
-msgstr "ǔžasné ...  pokud vám to nevadí, \nmám na vás pár otázek."
+msgstr "Ůžasné ...  pokud vám to nevadí, \nmám na vás pár otázek."
 
 #: ../data/level/crevice-village-heights.cfg:1544
 msgid ""
@@ -1833,7 +1833,7 @@ msgstr ""
 msgid ""
 "HEY, WAIT!\n"
 "What about me?!"
-msgstr ""
+msgstr "HEJ, POČKEJ!\nA co já?!"
 
 #: ../data/level/crevice-village-house-1.cfg:975
 msgid "Does it look like I have a key for your cage?"
@@ -1847,11 +1847,11 @@ msgstr ""
 
 #: ../data/level/crevice-village-house-1.cfg:991
 msgid "Thank god it's you!"
-msgstr ""
+msgstr "Díky bohu, jsi to ty!"
 
 #: ../data/level/crevice-village-house-1.cfg:993
 msgid "Hey, Hedge, you alright?"
-msgstr ""
+msgstr "Hej, Ježek, mám pravdu?"
 
 #: ../data/level/crevice-village-house-1.cfg:994
 msgid "Eh, I've been better, but yeah, I'm okay."
@@ -1925,7 +1925,7 @@ msgstr ""
 #: ../data/level/crevice-village-house-1.cfg:2348
 #: ../data/level/liberated-crevice-village-house-1.cfg:1503
 msgid "The Elevator House"
-msgstr ""
+msgstr "Výtahový dům"
 
 #: ../data/level/crevice-village-house-2-basement-backroom.cfg:1976
 #: ../data/level/crevice-village-house-2-basement.cfg:1682
@@ -1970,17 +1970,17 @@ msgstr "Můžete mi dát nějakou radu?"
 
 #: ../data/level/crevice-village-house-2.cfg:1391
 msgid "Yeah."
-msgstr ""
+msgstr "Jo"
 
 #: ../data/level/crevice-village-house-2.cfg:1392
 msgid ""
 "The elder's house is off to the east,\n"
 "past the town gate."
-msgstr "Dům stařešinů je úplně na východ, \nod městské brány."
+msgstr "Dům stařešiny je úplně na východ, \nod městské brány."
 
 #: ../data/level/crevice-village-house-2.cfg:1393
 msgid "We saw Milgram's lieutenant go in there."
-msgstr "Viděli jsme tam jít poručíka Milgrama."
+msgstr "Viděli jsme tam jít Milgramova poručíka."
 
 #: ../data/level/crevice-village-house-2.cfg:1395
 msgid "How interesting."
@@ -2381,7 +2381,7 @@ msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:550
 msgid "YES!"
-msgstr ""
+msgstr "Ano!"
 
 #: ../data/level/crevice-village-house-elder.cfg:552
 msgid ""
@@ -2530,7 +2530,7 @@ msgstr ""
 
 #: ../data/level/crevice-village.cfg:177
 msgid "Hey!"
-msgstr ""
+msgstr "Hej!"
 
 #: ../data/level/crevice-village.cfg:815
 msgid ""
@@ -2582,7 +2582,7 @@ msgstr ""
 
 #: ../data/level/crevice-village.cfg:826
 msgid "Against Milgram? Really?"
-msgstr ""
+msgstr "Proti Milgramovi? Opravdu?"
 
 #: ../data/level/crevice-village.cfg:828
 msgid ""
@@ -2681,11 +2681,11 @@ msgstr "Co teď?"
 
 #: ../data/level/dark-corridor.cfg:1673
 msgid "Dark Corridor"
-msgstr ""
+msgstr "Temná Chodba"
 
 #: ../data/level/darkness-central.cfg:3588
 msgid "Darkness Central"
-msgstr ""
+msgstr "Temný střed"
 
 #: ../data/level/descent-to-town.cfg:367
 msgid ""
@@ -2716,11 +2716,11 @@ msgstr ""
 
 #: ../data/level/dungeon-entrance.cfg:2831
 msgid "The Entrance"
-msgstr ""
+msgstr "Vstup"
 
 #: ../data/level/dungeon-gateway.cfg:126
 msgid "h... Hello?"
-msgstr ""
+msgstr "A... Ahoj?"
 
 #: ../data/level/dungeon-gateway.cfg:130
 msgid "Is everything alright?"
@@ -2769,7 +2769,7 @@ msgstr ""
 #: ../data/level/dungeon-gateway.cfg:148
 #: ../data/level/kitty-dormitory.cfg:3174
 msgid "I'm Frogatto."
-msgstr ""
+msgstr "Já jsem Frogatto"
 
 #: ../data/level/dungeon-gateway.cfg:150
 msgid "Do Frogattoes live in caves?"
@@ -2928,7 +2928,7 @@ msgstr ""
 
 #: ../data/level/frogatto-grotto-frogattos-room.cfg:293
 msgid "Oh geez! I overslept!"
-msgstr ""
+msgstr "Á sakra! Zaspal jsem!"
 
 #: ../data/level/frogatto-grotto-frogattos-room.cfg:890
 msgid "Frogatto's Room"
@@ -2976,7 +2976,7 @@ msgstr ""
 
 #: ../data/level/frogatto-grotto-inside.cfg:252
 msgid "Okay, uhm, thanks."
-msgstr ""
+msgstr "Dobře, uhm, díky."
 
 #: ../data/level/frogatto-grotto-inside.cfg:634
 msgid "Hey, Frogatto."
@@ -3018,7 +3018,7 @@ msgstr "Frogattův dům"
 
 #: ../data/level/frogatto-grotto-patos-room.cfg:789
 msgid "Pato's Room"
-msgstr ""
+msgstr "Patův pokoj"
 
 #: ../data/level/frogatto-grotto.cfg:61
 msgid "I know!"
@@ -3508,7 +3508,7 @@ msgstr ""
 
 #: ../data/level/grassy-path.cfg:3810
 msgid "Grassy Path"
-msgstr ""
+msgstr "Travnatá pěšina"
 
 #: ../data/level/hanging-platforms.cfg:5780
 #: ../data/level/test-background_flicker.cfg:4265
@@ -3525,7 +3525,7 @@ msgstr "To to je velmi hluboká propast ..."
 
 #: ../data/level/hidden-depths.cfg:322
 msgid "AAAAAAH! I CAN'T FLY!"
-msgstr "AAAAAAH!  nemůže létat!"
+msgstr "AAAAAAH!  nemůžu létat!"
 
 #: ../data/level/hidden-depths.cfg:5194
 msgid "Hidden Depths"
@@ -3537,7 +3537,7 @@ msgstr ""
 
 #: ../data/level/killer-bunnies.cfg:4377
 msgid "Killer Bunnies"
-msgstr ""
+msgstr "Zabiják králíčků"
 
 #: ../data/level/kitty-dormitory.cfg:232
 msgid ""
@@ -3807,31 +3807,31 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2015
 msgid "No problem."
-msgstr ""
+msgstr "Bez problému."
 
 #: ../data/level/kitty-dormitory.cfg:2042
 msgid "Hi, what are you doing?"
-msgstr ""
+msgstr "Ahoj, co děláš?"
 
 #: ../data/level/kitty-dormitory.cfg:2044
 msgid ""
 "Oh, hello there.\n"
 "I haven't met you before."
-msgstr ""
+msgstr "Á, vítej\nTebe neznám"
 
 #: ../data/level/kitty-dormitory.cfg:2045
 msgid "I'm reading a book."
-msgstr ""
+msgstr "Čtu si knížku."
 
 #: ../data/level/kitty-dormitory.cfg:2048
 msgid ""
 "That's nice.\n"
 "What's it about?"
-msgstr ""
+msgstr "Milé.\no čem je?"
 
 #: ../data/level/kitty-dormitory.cfg:2050
 msgid "Ahh, it's a collection of old fairy tales."
-msgstr ""
+msgstr "Je to sbírka starých pohádek."
 
 #: ../data/level/kitty-dormitory.cfg:2051
 msgid ""
@@ -3882,7 +3882,7 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2812
 msgid "What's wrong?!"
-msgstr ""
+msgstr "Něco se děje?"
 
 #: ../data/level/kitty-dormitory.cfg:2814
 msgid "^Uh..."
@@ -3898,7 +3898,7 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2820
 msgid "I see..."
-msgstr ""
+msgstr "vidím..."
 
 #: ../data/level/kitty-dormitory.cfg:2821
 msgid "I think I'm going to go back to sleep."
@@ -3979,7 +3979,7 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2908
 msgid "Yeah, it isn't bad."
-msgstr ""
+msgstr "Jo, to není špatný."
 
 #: ../data/level/kitty-dormitory.cfg:2909
 msgid ""
@@ -4001,7 +4001,7 @@ msgstr "^ Nazdárek."
 
 #: ../data/level/kitty-dormitory.cfg:2965
 msgid "Uh... hi?"
-msgstr ""
+msgstr "Uh...ahoj?"
 
 #: ../data/level/kitty-dormitory.cfg:2967
 msgid "^^Hello there."
@@ -4037,7 +4037,7 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2979
 msgid "This is true."
-msgstr ""
+msgstr "To je pravda"
 
 #: ../data/level/kitty-dormitory.cfg:2981
 msgid "If you don't mind my asking, where are we?"
@@ -4085,15 +4085,15 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2999
 msgid "That's nice to hear."
-msgstr ""
+msgstr "To rád slyším"
 
 #: ../data/level/kitty-dormitory.cfg:3045
 msgid "Oh, hi there!"
-msgstr ""
+msgstr "Oh, vítej!"
 
 #: ../data/level/kitty-dormitory.cfg:3047
 msgid "Hello?"
-msgstr ""
+msgstr "Ahoj?"
 
 #: ../data/level/kitty-dormitory.cfg:3049
 msgid "Yes, hi."
@@ -4145,7 +4145,7 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:3065
 msgid "No problem!"
-msgstr ""
+msgstr "Bez problému!"
 
 #: ../data/level/kitty-dormitory.cfg:3097
 msgid "Hi.  Haven't seen you around before."
@@ -4441,7 +4441,7 @@ msgstr ""
 
 #: ../data/level/kitty-kitchen.cfg:366
 msgid "Sure thing."
-msgstr ""
+msgstr "Jasná věc."
 
 #: ../data/level/kitty-kitchen.cfg:399
 msgid ""
@@ -4451,7 +4451,7 @@ msgstr ""
 
 #: ../data/level/kitty-kitchen.cfg:402
 msgid "I understand."
-msgstr ""
+msgstr "Rozumím."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:206
 msgid "Hey, man, look at you!"
@@ -4575,7 +4575,7 @@ msgstr ""
 
 #: ../data/level/long-plastic-hallway.cfg:287
 msgid "A Long Plastic Hallway"
-msgstr ""
+msgstr "Dlouhá Plastiková Chodba"
 
 #: ../data/level/main-map.cfg:398
 msgid "World Map"
@@ -4583,19 +4583,19 @@ msgstr "Mapa světa"
 
 #: ../data/level/milgrams-basement-junction.cfg:170
 msgid "It says, \"This leads to the cave entrance."
-msgstr ""
+msgstr "Říká, \"To vede ke vchodu do jeskyně."
 
 #: ../data/level/milgrams-basement-junction.cfg:172
 msgid "Be careful about venturing into the caves!\""
-msgstr ""
+msgstr "Buď opatrný při cestování jeskyněmi!\""
 
 #: ../data/level/milgrams-basement-junction.cfg:191
 msgid "It says, \"This leads to the North Tower.\""
-msgstr ""
+msgstr "Říká, \" To vede k Severní Věži.\""
 
 #: ../data/level/milgrams-basement-junction.cfg:193
 msgid "\"Still under construction, wear your hard hat!\""
-msgstr ""
+msgstr "\"Je stále ve výstavbě, nos helmu!\""
 
 #: ../data/level/milgrams-basement-junction.cfg:212
 msgid ""
@@ -4744,7 +4744,7 @@ msgstr ""
 
 #: ../data/level/milgrams-basement-junction.cfg:428
 msgid "Fine."
-msgstr ""
+msgstr "Dobře"
 
 #: ../data/level/milgrams-basement-junction.cfg:1069
 msgid "Basement Junction"
@@ -4820,7 +4820,7 @@ msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:65
 msgid "Get out of the way!"
-msgstr ""
+msgstr "Uhni mi z cesty!"
 
 #: ../data/level/milgrams-throne-room.cfg:113
 msgid ""
@@ -4886,7 +4886,7 @@ msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:145
 msgid "I am?"
-msgstr ""
+msgstr "Já jsem?"
 
 #: ../data/level/milgrams-throne-room.cfg:147
 msgid ""
@@ -4902,7 +4902,7 @@ msgstr ""
 
 #: ../data/level/milgrams-throne-room.cfg:151
 msgid "Sure..."
-msgstr ""
+msgstr "Jistě..."
 
 #: ../data/level/milgrams-throne-room.cfg:153
 msgid ""
@@ -4954,7 +4954,7 @@ msgstr "Tyto bláznivé bombardéry jsou všude!"
 
 #: ../data/level/plagued-mine.cfg:5058
 msgid "Plagued Mine"
-msgstr ""
+msgstr "Zamořený Důl"
 
 #: ../data/level/platform-peril.cfg:1825
 msgid "Platform Peril"
@@ -5469,7 +5469,7 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:162
 msgid "That's right!"
-msgstr ""
+msgstr "To je pravda!"
 
 #: ../data/level/tea-with-milgram.cfg:165
 msgid "Ouch."
@@ -5572,7 +5572,7 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:205
 msgid "Yup!"
-msgstr ""
+msgstr "Jo!"
 
 #: ../data/level/tea-with-milgram.cfg:208
 msgid ""
@@ -5837,7 +5837,7 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:330
 msgid "Incredible."
-msgstr ""
+msgstr "Neuvěřitelné."
 
 #: ../data/level/tea-with-milgram.cfg:332
 msgid ""
@@ -5929,7 +5929,7 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:367
 msgid "Except the elder."
-msgstr ""
+msgstr "Kromě staršího"
 
 #: ../data/level/tea-with-milgram.cfg:373
 msgid "The End"
@@ -5937,19 +5937,19 @@ msgstr "Konec"
 
 #: ../data/level/test-multiplayer.cfg:127
 msgid "Staging Forest"
-msgstr ""
+msgstr "Jelení Les"
 
 #: ../data/level/the-north-tower.cfg:2089
 msgid "The North Tower"
-msgstr ""
+msgstr "Severní věž"
 
 #: ../data/level/titlescreen-arcade.cfg:61
 msgid "Each machine has a different arcade-style challenge."
-msgstr ""
+msgstr "Každý automat představuje jinou arkádovou výzvu."
 
 #: ../data/level/titlescreen-arcade.cfg:89
 msgid "Show us what you can do!"
-msgstr ""
+msgstr "Ukaž nám co umíš!"
 
 #: ../data/level/titlescreen-arcade.cfg:114
 msgid "EXIT"
@@ -5998,21 +5998,21 @@ msgstr "Soubor 3:"
 #: ../data/level/titlescreen-load-game-selector.cfg:122
 #: ../data/level/titlescreen-new-game-selector.cfg:236
 msgid "Play!"
-msgstr ""
+msgstr "Hraj!"
 
 #: ../data/level/titlescreen-new-game-selector.cfg:24
 msgid "Select Save Slot:"
-msgstr ""
+msgstr "Vyber si slot pro uložení"
 
 #: ../data/level/titlescreen-new-game-selector.cfg:50
 msgid "Select Difficulty:"
-msgstr ""
+msgstr "Vyber si obtížnost"
 
 #: ../data/level/titlescreen-new-game-selector.cfg:65
 #: ../data/level/titlescreen-new-game-selector.cfg:94
 #: ../data/level/titlescreen-new-game-selector.cfg:123
 msgid "empty"
-msgstr ""
+msgstr "Prázdné"
 
 #: ../data/level/titlescreen-new-game-selector.cfg:163
 #: ../data/objects/playable/difficulty-selector.cfg:24
@@ -6033,15 +6033,15 @@ msgstr "NOVÁ HRA"
 
 #: ../data/level/titlescreen.cfg:125
 msgid "Press ${LEFT_KEY} or ${RIGHT_KEY} to walk."
-msgstr ""
+msgstr "Stiskni ${LEFT_KEY} nebo ${RIGHT_KEY} k chůzi."
 
 #: ../data/level/titlescreen.cfg:126
 msgid "Quickly press ${LEFT_KEY} or ${RIGHT_KEY} twice to run."
-msgstr ""
+msgstr "Dvakrát rychle stiskni ${LEFT_KEY} nebo ${RIGHT_KEY} pro běh"
 
 #: ../data/level/titlescreen.cfg:128
 msgid "Press ${DOWN_KEY} to crouch."
-msgstr ""
+msgstr "Stiskni ${DOWN_KEY} pro skrčení"
 
 #: ../data/level/titlescreen.cfg:128
 msgid "Walk in front of a door or person, and press"
@@ -6099,7 +6099,7 @@ msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:47
 msgid "Your basement?"
-msgstr ""
+msgstr "Tvůj sklep?"
 
 #: ../data/level/to-nenes-house-inside.cfg:51
 msgid ""
@@ -6136,7 +6136,7 @@ msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:61
 msgid "Yeah, that sounds ... opportune."
-msgstr ""
+msgstr "Jo, to zní ... vhodně"
 
 #: ../data/level/to-nenes-house-inside.cfg:63
 msgid ""
@@ -6198,7 +6198,7 @@ msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:83
 msgid "Is it cake?"
-msgstr ""
+msgstr "To je dort?"
 
 #: ../data/level/to-nenes-house-inside.cfg:85
 msgid ""
@@ -6224,7 +6224,7 @@ msgstr ""
 msgid ""
 "Honestly?  I had originally meant to\n"
 "give it to you as a birthday present."
-msgstr "Upřímně?  Původně jsem chtěal \ndát ti to jako dárek k narozeninám."
+msgstr "Upřímně?  Původně jsem  ti to chtěla \ndát jako dárek k narozeninám."
 
 #: ../data/level/to-nenes-house-inside.cfg:94
 msgid "I just never got around to it."
@@ -6256,7 +6256,7 @@ msgstr ""
 msgid ""
 "...\n"
 "What?  No!"
-msgstr ""
+msgstr "...\nCo? Ne!"
 
 #: ../data/level/to-nenes-house-inside.cfg:105
 msgid ""
@@ -6335,17 +6335,17 @@ msgstr "Okamžik vašeho času pane?"
 msgid ""
 "Sorry, I'm off to town!\n"
 "Not interested!"
-msgstr ""
+msgstr "Promiň, jsem mimo město!\nNemám zájem!"
 
 #: ../data/level/to-nenes-house.cfg:2161
 msgid "But the town, you see ..."
-msgstr ""
+msgstr "Ale město, podívej..."
 
 #: ../data/level/to-nenes-house.cfg:2163
 msgid ""
 "Not. Interested.\n"
 "Buzz off."
-msgstr ""
+msgstr "Nemám. Zájem.\nodprejskni"
 
 #: ../data/level/to-nenes-house.cfg:2165
 msgid ""
@@ -6370,7 +6370,7 @@ msgstr "Čím dříve, tím lépe."
 
 #: ../data/level/to-nenes-house.cfg:3216
 msgid "To Nene's House"
-msgstr ""
+msgstr "K Nenině domu"
 
 #: ../data/level/twisted-trees.cfg:5217
 msgid "Twisted Trees"
@@ -6438,11 +6438,11 @@ msgstr ""
 
 #: ../data/level/underground-pool.cfg:2484
 msgid "I'm sorry, sir."
-msgstr ""
+msgstr "Omlouvám se, pane."
 
 #: ../data/level/underground-pool.cfg:2487
 msgid "Noted."
-msgstr ""
+msgstr "Beru na vědomí."
 
 #: ../data/level/underground-pool.cfg:2489
 msgid ""
@@ -6480,7 +6480,7 @@ msgstr ""
 
 #: ../data/level/underground-pool.cfg:2502
 msgid "Yup."
-msgstr ""
+msgstr "Jo."
 
 #: ../data/level/underground-pool.cfg:2504
 msgid ""
@@ -6490,7 +6490,7 @@ msgstr ""
 
 #: ../data/level/underground-pool.cfg:2507
 msgid "I have no idea."
-msgstr ""
+msgstr "Tak teď nevím."
 
 #: ../data/level/underground-pool.cfg:2509
 msgid ""
@@ -6528,22 +6528,22 @@ msgstr ""
 
 #: ../data/level/underground-pool.cfg:2521
 msgid "It makes friends."
-msgstr ""
+msgstr "To dělá přátelé."
 
 #: ../data/level/underground-pool.cfg:2523
 msgid ""
 "We might someday find ourselves in\n"
 "a situation where having the island\n"
 "on our side becomes indispensable."
-msgstr ""
+msgstr "Jednoho dne bychom se mohli nacházet\nv situaci, kdy se vlastnictví naší\nstrany ostrova stane nepostradatelným."
 
 #: ../data/level/underground-pool.cfg:2525
 msgid "Understood, sir."
-msgstr ""
+msgstr "Rozumím, pane"
 
 #: ../data/level/underground-pool.cfg:2528
 msgid "Good."
-msgstr ""
+msgstr "Dobrý."
 
 #: ../data/level/underground-pool.cfg:2530
 msgid ""
@@ -6555,13 +6555,13 @@ msgstr ""
 msgid ""
 "Just understand that being overzealous\n"
 "isn't going to impress me."
-msgstr ""
+msgstr "Jen pochop, že horlivost\nna mě dojem neudělá."
 
 #: ../data/level/underground-pool.cfg:2535
 msgid ""
 "Tact and discretion, my good man.\n"
 "Remember that.  Dismissed!"
-msgstr ""
+msgstr "Taktnost a diskrétnost, mí dobří muži.\npamatuj si to. Rozchod!"
 
 #: ../data/level/underground-pool.cfg:3965
 msgid "Underground Pool"
@@ -6569,7 +6569,7 @@ msgstr "Podzemní bazén"
 
 #: ../data/level/wandering-passage.cfg:2653
 msgid "Wandering Passage"
-msgstr ""
+msgstr "Toulavý Průchod"
 
 #: ../data/level/watery-alley.cfg:1841
 #: ../data/objects/playable/map-selector.cfg:20
@@ -6579,7 +6579,7 @@ msgstr "Vodní ulička"
 #: ../data/object_prototypes/buyable_item.cfg:19
 #: ../data/object_prototypes/buyable_item.cfg:22
 msgid "The price is ${final_price} coins."
-msgstr ""
+msgstr "Bude tě to stát ${final_price} mincí."
 
 #: ../data/object_prototypes/buyable_item.cfg:19
 msgid "You don't have enough money."
@@ -6587,11 +6587,11 @@ msgstr "Nemáte dost peněz."
 
 #: ../data/object_prototypes/buyable_item.cfg:23
 msgid "Do you want to buy the ${consts.name}?"
-msgstr ""
+msgstr "Opravdu chceš koupit ${consts.name}?"
 
 #: ../data/object_prototypes/door.cfg:21
 msgid "Nope, it's locked."
-msgstr ""
+msgstr "Sakra, je zamčeno."
 
 #: ../data/objects/effects/control/level_controller_coin_race.cfg:15
 #: ../data/objects/effects/control/level_controller_coin_race.cfg:17
@@ -6602,51 +6602,51 @@ msgstr ""
 msgid ""
 "The furthest that has been reached is level "
 "${registry.arcade_coin_race_high_score}."
-msgstr ""
+msgstr "Nejdelší dosažená úroveň je ${registry.arcade_coin_race_high_score}."
 
 #: ../data/objects/items/ability.cfg:8
 msgid "This has very little range, but is quite damaging."
-msgstr ""
+msgstr "Ten má velmi slabý dosah, ale výborné poškození."
 
 #: ../data/objects/items/ability.cfg:8
 msgid ""
 "You can now breathe out a\n"
 "short stream of intense flame."
-msgstr ""
+msgstr "Nyní můžeš plivat\nkrátký, ale intenzivní plamen."
 
 #: ../data/objects/items/ability.cfg:8 ../data/objects/items/ability.cfg:9
 #: ../data/objects/items/ability.cfg:10
 msgid "You gained a new ability!"
-msgstr ""
+msgstr "Získal jsi novou schopnost"
 
 #: ../data/objects/items/ability.cfg:9
 msgid ""
 "This has excellent range,\n"
 "and does decent damage."
-msgstr ""
+msgstr "Ty mají vynikajicí dosah a slušné požkození."
 
 #: ../data/objects/items/ability.cfg:9
 msgid ""
 "You can now fire balls of harmful\n"
 "energy from your fingertips."
-msgstr ""
+msgstr "Nyní můžeš střílet ohnivé koule\nškodlivé energie z tvých prstů."
 
 #: ../data/objects/items/ability.cfg:10
 msgid ""
 "These have excellent range and decent damage,\n"
 "but are somewhat draining to use."
-msgstr ""
+msgstr "Ty mají vynikajicí dosah a slušné požkození,\nale je vyčerpávající je používat."
 
 #: ../data/objects/items/ability.cfg:10
 msgid ""
 "You can now fire balls of harmful\n"
 "energy from your fingertips,\n"
 "which home in on your enemies."
-msgstr ""
+msgstr "Nyní můžeš střílet ohnivé koule\nškodlivé energie z tvých prstů \nna tvé protivníky."
 
 #: ../data/objects/items/ability.cfg:12
 msgid "Press ${ATTACK_KEY} to switch between abilities."
-msgstr ""
+msgstr "Stiskni ${ATTACK_KEY} pro výběr mezi schopnostmi."
 
 #: ../data/objects/items/ability.cfg:12
 msgid ""
@@ -6881,12 +6881,12 @@ msgstr "načítání postavy Frogatta"
 
 #: ../iOS_APP_STORE_METADATA:13
 msgid "- OpenFeint and Achievement support"
-msgstr ""
+msgstr "-OpenFeint a Achievement podpora"
 
 #: ../iOS_CHANGELOG:32
 msgid "Fixed The Long Haul (arcade level)"
-msgstr ""
+msgstr "Opravena Dlouhé tažení (arkádová úroveň)"
 
 #: ../iOS_CHANGELOG:33
 msgid "Fixed instructions on titlescreen"
-msgstr ""
+msgstr "Opraveny instrukce na úvodní stránce"
