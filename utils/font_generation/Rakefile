@@ -236,7 +236,7 @@ LANGUAGES.each_pair do |language, font|
             left = column * grid_width
             top = row * grid_height
             right = left + widths[character] - 1
-            bottom = top + grid_width - 1
+            bottom = top + grid_height - 1
             cfg.write <<-CHARS
               {
                 chars: #{fml_quote(character)},
