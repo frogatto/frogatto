@@ -223,6 +223,7 @@ LANGUAGES.each_pair do |language, font|
       File.open(font_cfg_snippet, 'w') do |cfg|
         cfg.write <<-HEAD
           {
+            kerning: -1,
             id: "#{FONT_CFG_IDS[style]}",
             texture: "#{font_texture.sub %r'^.*images/', ''}",
             pad: 0,
