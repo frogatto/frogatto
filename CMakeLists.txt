@@ -35,8 +35,11 @@ include_directories(src/game src/server)
 aux_source_directory(src/game game_src)
 aux_source_directory(src/server server_src)
 
-add_executable(game ${game_src})
-add_executable(server ${server_src})
+add_executable(frogatto ${game_src})
+add_executable(frogatto-server ${server_src})
 
-target_link_libraries(game ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} ${SDL_LIBRARY} ${SDLIMAGE_LIBRARY} ${SDLTTF_LIBRARY} ${SDLMIXER_LIBRARY} ${ZLIB_LIBRARIES})
-target_link_libraries(server ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(frogatto ${Boost_LIBRARIES} ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES} ${SDL_LIBRARY} ${SDLIMAGE_LIBRARY} ${SDLTTF_LIBRARY} ${SDLMIXER_LIBRARY} ${ZLIB_LIBRARIES})
+target_link_libraries(frogatto-server ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+
+install(TARGETS frogatto frogatto-server DESTINATION bin/)
+install(DIRECTORY data images music modules DESTINATION share/frogatto)
