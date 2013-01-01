@@ -25,7 +25,7 @@ opts.AddVariables(
 env = Environment(options = opts)
 
 env.ParseConfig("sdl-config --libs --cflags")
-env.Append(LIBS = ["GL", "GLU", "GLEW", "SDL_mixer", "SDL_image", "SDL_ttf", "boost_regex", "boost_system", "boost_iostreams", "png"])
+env.Append(LIBS = ["GL", "GLU", "GLEW", "SDL_mixer", "SDL_image", "SDL_ttf", "boost_regex", "boost_system", "boost_iostreams", "png", "X11", "z"])
 env.Append(CXXFLAGS= ["-pthread", "-DIMPLEMENT_SAVE_PNG"], LINKFLAGS = ["-pthread"])
 
 opts.Save('.scons-option-cache', env)
