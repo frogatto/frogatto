@@ -1,5 +1,5 @@
-game
-server
+./game
+./server
 test
 .DS_Store
 *.o

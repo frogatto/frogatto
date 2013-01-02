@@ -20,7 +20,7 @@ class TTF_Font;
 #endif
 
 namespace {
-const char* FontFile = "UbuntuMono-R.ttf";
+const char* FontFile = "data/UbuntuMono-R.ttf";
 
 std::map<int, TTF_Font*> font_table;
 

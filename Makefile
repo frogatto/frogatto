@@ -37,7 +37,7 @@ endif
 BASE_CXXFLAGS += -g -fno-inline-functions -fthreadsafe-statics -Wnon-virtual-dtor -Werror -Wignored-qualifiers -Wformat -Wswitch
 
 # Compiler include options, used after CXXFLAGS and CPPFLAGS.
-INC := $(shell pkg-config --cflags x11 sdl glu glew SDL_image libpng zlib)
+INC := -Isrc/game -Isrc/server $(shell pkg-config --cflags x11 sdl glu glew SDL_image libpng zlib)
 
 # Linker library options.
 LIBS := $(shell pkg-config --libs x11 ) -lSDLmain \
@@ -45,22 +45,27 @@ LIBS := $(shell pkg-config --libs x11 ) -lSDLmain \
 
 include Makefile.common
 
-%.o : src/%.cpp
-	$(CCACHE) $(CXX) \
-		$(BASE_CXXFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(INC) -DIMPLEMENT_SAVE_PNG \
-		-c $<
+define compile-stuff
+	$(CCACHE) $(CXX) $(BASE_CXXFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(INC) -DIMPLEMENT_SAVE_PNG -c -o $@ $<
 	$(CXX) $(BASE_CXXFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(INC) -DIMPLEMENT_SAVE_PNG -MM $< > $*.d
 	@mv -f $*.d $*.d.tmp
 	@sed -e 's|.*:|$*.o:|' < $*.d.tmp > $*.d
 	@sed -e 's/.*://' -e 's/\\$$//' < $*.d.tmp | fmt -1 | \
 		sed -e 's/^ *//' -e 's/$$/:/' >> $*.d
 	@rm -f $*.d.tmp
+endef
+
+src/game/%.o : src/game/%.cpp
+	$(compile-stuff)
+
+src/server/%.o : src/server/%.cpp
+	$(compile-stuff)
 
 game: $(objects)
 	$(CCACHE) $(CXX) \
 		$(BASE_CXXFLAGS) $(LDFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(INC) \
 		$(objects) -o game \
-		$(LIBS) -lboost_regex-mt -lboost_system-mt -lpthread -fthreadsafe-statics
+		$(LIBS) -lboost_regex -lboost_system -lpthread -fthreadsafe-statics
 
 # pull in dependency info for *existing* .o files
 -include $(objects:.o=.d)
@@ -69,10 +74,10 @@ server: $(server_objects)
 	$(CCACHE) $(CXX) \
 		$(BASE_CXXFLAGS) $(LDFLAGS) $(CXXFLAGS) $(CPPFLAGS) \
 		$(server_objects) -o server \
-		$(LIBS) -lboost_regex-mt -lboost_system-mt -lboost_thread-mt -lboost_iostreams-mt
+		$(LIBS) -lboost_regex -lboost_system -lboost_thread -lboost_iostreams
 
 clean:
-	rm -f *.o *.d game
+	rm -f src/game/*.o src/game/*.d src/server/*.o src/server/*.d *.o *.d game server
 	
 assets:
 	./game --utility=compile_levels
