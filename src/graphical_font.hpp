@@ -19,6 +19,7 @@ class graphical_font
 {
 public:
 	static void init(variant node);
+	static void init_for_locale(const std::string& locale);
 	static const_graphical_font_ptr get(const std::string& id);
 	explicit graphical_font(variant node);
 	const std::string& id() const { return id_; }
