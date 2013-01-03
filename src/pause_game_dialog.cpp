@@ -34,7 +34,7 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	
 	const int button_width = 232;
 	const int button_height = 50;
-	const int padding = 20;
+	const int padding = 16;
 	bool show_exit = true;
 	bool show_controls = true;
 	bool show_button_swap = false;
@@ -56,7 +56,7 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	widget_ptr t2(new graphical_font_label(_("Sound Volume:"), "door_label", 2));
 	widget_ptr s2(new slider(200, boost::bind(sound::set_sound_volume, _1), sound::get_sound_volume()));
 	
-	const int num_buttons = 2 + show_exit + show_controls + show_button_swap + show_of;
+	const int num_buttons = 3 + show_exit + show_controls + show_button_swap + show_of;
 	int window_w, window_h;
 	if(preferences::virtual_screen_height() >= 600) {
 		window_w = button_width + padding*4;
@@ -91,15 +91,15 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	b6->set_dim(button_width, button_height);
 #endif
 	
-	d.set_padding(padding-16);
+	d.set_padding(padding-12);
 	d.add_widget(t1, padding*2, padding*2);
-	d.set_padding(padding+16);
+	d.set_padding(padding+12);
 	d.add_widget(s1);
 
 	if(preferences::virtual_screen_height() >= 600) {
-		d.set_padding(padding-16);
+		d.set_padding(padding-12);
 		d.add_widget(t2);
-		d.set_padding(padding+16);
+		d.set_padding(padding+12);
 		d.add_widget(s2);
 		d.set_padding(padding);
 		if (show_button_swap) d.add_widget(b5);
@@ -115,9 +115,9 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 		d.set_padding(padding);
 		d.add_widget(b1);
 		if (show_controls) d.add_widget(b2);
-		d.set_padding(padding-16);
+		d.set_padding(padding-12);
 		d.add_widget(t2, padding*3 + button_width, padding*2);
-		d.set_padding(padding+16);
+		d.set_padding(padding+12);
 		d.add_widget(s2);
 		d.set_padding(padding);
 		d.add_widget(language_button);
