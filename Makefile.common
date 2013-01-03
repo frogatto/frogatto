@@ -93,6 +93,7 @@ objects = \
 	key.o \
 	key_button.o \
 	label.o \
+	language_dialog.o \
 	level.o \
 	level_logic.o \
 	level_object.o \
