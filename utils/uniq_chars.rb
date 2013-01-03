@@ -7,9 +7,12 @@
 # all languages need these characters for missing translations and
 # untranslatable strings
 add = ['a'..'z', 'A'..'Z', '0'..'9',
-       ' `~!@#$%^&*()-_=+[]{};:",.<>/?|→←↑↓'.chars].map(&:to_a).reduce(&:+) +
+       ' `~!#$%^&*()-_=+[]{};:",.<>/?|→←↑↓'.chars,
+      File.read('../../data/languages.cfg').chars
+].map(&:to_a).reduce(&:+) +
 
-# these don't need glyphs, and will just mess up the font texture
-minus = ["\n"]
+# these don't need glyphs, and/or cause the texture generation scripts
+# to fail
+minus = ["\n" "\\" '@']
 
 STDOUT.write (ARGF.read.chars.to_a.uniq + add - minus).join
