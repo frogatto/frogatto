@@ -63,8 +63,13 @@ const std::string FunctionModule = "custom_object";
 
 FUNCTION_DEF(set_language, 1, 1, "set_language(str): set the language using a new locale code")
 	std::string locale = args()[0]->evaluate(variables).as_string();
-	i18n::set_locale(locale);
-	graphical_font::init_for_locale(locale);
+	if(locale == "system") {
+		i18n::use_system_locale();
+		graphical_font::init_for_locale(i18n::get_locale());
+	} else {
+		i18n::set_locale(locale);
+		graphical_font::init_for_locale(locale);
+	}
 	return variant(0);
 END_FUNCTION_DEF(set_language)
 
