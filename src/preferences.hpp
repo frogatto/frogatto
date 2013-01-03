@@ -88,6 +88,10 @@ namespace preferences {
 	void set_edit_on_start(bool value);
 	bool edit_on_start();
 
+	// Configured language
+	const std::string& locale();
+	void set_locale(const std::string& value);
+
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 bool use_fbo();
 bool use_bequ();

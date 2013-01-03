@@ -5,6 +5,7 @@
 
 #include "filesystem.hpp"
 #include "module.hpp"
+#include "preferences.hpp"
 
 #ifdef __APPLE__
 #include <CoreFoundation/CoreFoundation.h>
@@ -180,7 +181,12 @@ void use_system_locale() {
 
 
 	void init() {
-		i18n::use_system_locale();
+		locale = preferences::locale();
+		if(locale == "system" || locale == "") {
+			i18n::use_system_locale();
+		} else {
+			i18n::set_locale(locale);
+		}
 	}
 
 }

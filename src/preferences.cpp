@@ -156,6 +156,8 @@ namespace preferences {
 		
 		std::string username_;
 		std::string password_;
+
+		std::string locale_;
 		
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 		
@@ -693,6 +695,8 @@ namespace preferences {
 		
 		sound::set_music_volume(node["music_volume"].as_int(1000)/1000.0);
 		sound::set_sound_volume(node["sound_volume"].as_int(1000)/1000.0);
+
+		locale_ = node["locale"].as_string_default("system");
 		
 		const variant registry_node = node["registry"];
 		if(registry_node.is_null() == false) {
@@ -733,6 +737,7 @@ namespace preferences {
 		node.add("key_jump", controls::get_sdlkey(controls::CONTROL_JUMP));
 		node.add("key_tongue", controls::get_sdlkey(controls::CONTROL_TONGUE));
 		node.add("show_iphone_controls", variant::from_bool(show_iphone_controls_));
+		node.add("locale", locale_);
 		
 		if(external_code_editor_.is_null() == false) {
 			node.add("code_editor", external_code_editor_);
@@ -950,6 +955,13 @@ namespace preferences {
 		return serialize_bad_objects_;
 	}
 	
+	const std::string& locale() {
+		return locale_;
+	}
+
+	void set_locale(const std::string& value) {
+		locale_ = value;
+	}
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 	PFNGLBLENDEQUATIONOESPROC           glBlendEquationOES;
 	PFNGLGENFRAMEBUFFERSOESPROC         glGenFramebuffersOES;
