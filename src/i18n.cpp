@@ -67,7 +67,8 @@ const std::string& get_locale() {
 	return locale;
 }
 
-        void load_translations() {
+void load_translations() {
+	hashmap.clear();
 	//strip the charset part of the country and language code,
 	//e.g. "pt_BR.UTF8" --> "pt_BR"
 	size_t found = locale.find(".");
@@ -105,7 +106,6 @@ const std::string& get_locale() {
 	mo_entry* translated = (mo_entry*) (content.c_str() + header->t_offset);
 
 
-	hashmap.clear();
 	for (int i = 0; i < header->number; ++i) {
 		if (original[i].offset + original[i].length > size ||
 		    translated[i].offset + translated[i].length > size)
@@ -114,7 +114,7 @@ const std::string& get_locale() {
 		const std::string msgstr = content.substr(translated[i].offset, translated[i].length);
 		hashmap[msgid] = msgstr;
 	}
-	}
+}
 
 void set_locale(const std::string& l) {
 	locale = l;
