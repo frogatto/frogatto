@@ -4,6 +4,7 @@
 #include "controls_dialog.hpp"
 #include "slider.hpp"
 #include "checkbox.hpp"
+#include "dropdown_widget.hpp"
 #include "dialog.hpp"
 #include "draw_scene.hpp"
 #include "graphical_font_label.hpp"
@@ -26,6 +27,14 @@ void do_draw_scene() {
 	draw_scene(level::current(), last_draw_position());
 }
 
+std::vector<std::string> locale_codes;
+std::vector<std::string> language_names;
+void handle_locale_change(int selection, const std::string& language_name) {
+	const std::string& locale = locale_codes[selection];
+	preferences::set_locale(locale);
+	i18n::init();
+	graphical_font::init_for_locale(i18n::get_locale());
+}
 }
 
 PAUSE_GAME_RESULT show_pause_game_dialog()
@@ -73,7 +82,12 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	
 	widget_ptr b1(new button(widget_ptr(new graphical_font_label(_("Resume"), "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_CONTINUE), BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
 	widget_ptr b2(new button(widget_ptr(new graphical_font_label(_("Controls..."), "door_label", 2)), show_controls_dialog, BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
-	widget_ptr language_button(new button(widget_ptr(new graphical_font_label(_("Language..."), "door_label", 2)), show_language_dialog, BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
+
+	i18n::get_available_locales(locale_codes, language_names);
+	dropdown_widget* language_list_widget = new dropdown_widget(language_names, button_width, button_height);
+	language_list_widget->set_on_select_handler(handle_locale_change);
+	widget_ptr language_list(language_list_widget);
+
 	widget_ptr b3(new button(widget_ptr(new graphical_font_label(_("Return to Titlescreen"), "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_GO_TO_TITLESCREEN), BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
 	widget_ptr b4(new button(widget_ptr(new graphical_font_label(_("Exit Game"), "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_QUIT), BUTTON_STYLE_DEFAULT, BUTTON_SIZE_DOUBLE_RESOLUTION));
 	widget_ptr b5(new checkbox(_("Reverse A and B"), preferences::reverse_ab(), boost::bind(preferences::set_reverse_ab, _1), BUTTON_SIZE_DOUBLE_RESOLUTION));
@@ -86,7 +100,6 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	b3->set_dim(button_width, button_height);
 	b4->set_dim(button_width, button_height);
 	b5->set_dim(button_width, button_height);
-	language_button->set_dim(button_width, button_height);
 #ifdef ENABLE_OPENFEINT
 	b6->set_dim(button_width, button_height);
 #endif
@@ -108,7 +121,7 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 #ifdef ENABLE_OPENFEINT
 		if (show_of) d.add_widget(b6);
 #endif
-		d.add_widget(language_button);
+		d.add_widget(language_list);
 		d.add_widget(b3);
 		if (show_exit) d.add_widget(b4);
 	} else {
@@ -120,7 +133,7 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 		d.set_padding(padding+12);
 		d.add_widget(s2);
 		d.set_padding(padding);
-		d.add_widget(language_button);
+		d.add_widget(language_list);
 		d.add_widget(b3);
 		if (show_exit) d.add_widget(b4);
 	}

@@ -6,6 +6,8 @@
 #include "filesystem.hpp"
 #include "module.hpp"
 #include "preferences.hpp"
+#include "json_parser.hpp"
+#include "foreach.hpp"
 
 #ifdef __APPLE__
 #include <CoreFoundation/CoreFoundation.h>
@@ -189,4 +191,19 @@ void use_system_locale() {
 		}
 	}
 
+	void get_available_locales(std::vector<std::string>& codes, std::vector<std::string>& names) {
+		codes.clear();
+		names.clear();
+		typedef std::map<variant, variant> variant_map;
+		variant_map data = json::parse_from_file("data/languages.cfg").as_map();
+
+		foreach(variant_map::value_type pair, data) {
+			codes.push_back(pair.first.as_string());
+			names.push_back(pair.second.as_string());
+		}
+
+		codes.push_back("system");
+		names.push_back(i18n::tr("Use system language"));
+	}
 }
+
