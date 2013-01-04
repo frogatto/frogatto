@@ -86,6 +86,7 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	i18n::get_available_locales(locale_codes, language_names);
 	dropdown_widget* language_list_widget = new dropdown_widget(language_names, button_width, button_height);
 	language_list_widget->set_on_select_handler(handle_locale_change);
+	language_list_widget->set_selection(std::find(locale_codes.begin(), locale_codes.end(), i18n::get_locale()) - locale_codes.begin());
 	widget_ptr language_list(language_list_widget);
 
 	widget_ptr b3(new button(widget_ptr(new graphical_font_label(_("Return to Titlescreen"), "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_GO_TO_TITLESCREEN), BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
