@@ -35,27 +35,29 @@ class grid {
 	int cell_height_;
 	int h_padding_;
 	int v_padding_;
+	int start_x_;
+	int start_y_;
 	int column_count_;
 	int widget_count_;
 
 	public:
-	grid(gui::dialog& dialog, int cell_width, int cell_height, int h_padding, int v_padding, int column_count) :
-   dialog_(dialog), cell_width_(cell_width), cell_height_(cell_height), h_padding_(h_padding), v_padding_(v_padding), column_count_(column_count), widget_count_(0) {
+	grid(gui::dialog& dialog, int cell_width, int cell_height, int h_padding, int v_padding, int start_x, int start_y, int column_count) :
+   dialog_(dialog), cell_width_(cell_width), cell_height_(cell_height), h_padding_(h_padding), v_padding_(v_padding), start_x_(start_x), start_y_(start_y), column_count_(column_count), widget_count_(0) {
 	}
 
 	void add_widget(gui::widget_ptr widget) {
 		dialog_.add_widget(widget,
-			h_padding_ + (widget_count_ % column_count_) * (cell_width_ + h_padding_),
-			v_padding_ + (widget_count_ / column_count_) * (cell_height_ + v_padding_));
+			start_x_ + h_padding_ + (widget_count_ % column_count_) * (cell_width_ + h_padding_),
+			start_y_ + v_padding_ + (widget_count_ / column_count_) * (cell_height_ + v_padding_));
 		widget_count_++;
 	}
 
 	int total_width() {
-		return column_count_ * (cell_width_ + h_padding_);
+		return start_x_ + column_count_ * (cell_width_ + h_padding_);
 	}
 
 	int total_height() {
-		return (widget_count_ / column_count_) * (cell_height_ + v_padding_);
+		return start_y_ + (widget_count_ / column_count_) * (cell_height_ + v_padding_);
 	}
 };
 }
@@ -73,7 +75,10 @@ void show_language_dialog()
 	const int button_width = 300;
 	const int button_height = 50;
 	const int padding = 20;
-	grid g(d, button_width, button_height, padding, padding, 2);
+
+	d.add_widget(widget_ptr(new graphical_font_label(_("Language change will take effect in next level."), "door_label", 2)), padding, padding);
+
+	grid g(d, button_width, button_height, padding, padding, 0, 40, 2);
 
 	typedef std::map<variant, variant> variant_map;
 	variant_map languages = json::parse_from_file("data/languages.cfg").as_map();
