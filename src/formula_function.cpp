@@ -41,6 +41,7 @@
 #include "preferences.hpp"
 #include "level.hpp"
 #include "json_parser.hpp"
+#include "variant_utils.hpp"
 
 #include "graphics.hpp"
 #include "module.hpp"
@@ -166,6 +167,22 @@ variant formula_expression::execute_member(const formula_callable& variables, st
 
 namespace {
 
+variant split_variant_if_str(const variant& s)
+{
+	if(!s.is_string()) {
+		return s;
+	}
+
+	std::vector<std::string> v = util::split(s.as_string(), "");
+	std::vector<variant> res;
+	res.reserve(v.size());
+	foreach(const std::string& str, v) {
+		res.push_back(variant(str));
+	}
+
+	return variant(&res);
+}
+
 class ffl_cache : public formula_callable
 {
 public:
@@ -286,7 +303,39 @@ FUNCTION_DEF(delay_until_end_of_loading, 1, 1, "delay_until_end_of_loading(strin
 	return variant::create_delayed(f, callable);
 END_FUNCTION_DEF(delay_until_end_of_loading)
 
-FUNCTION_DEF(eval, 1, 1, "eval(str): evaluate the given string as FFL")
+FUNCTION_DEF(eval_no_recover, 1, 2, "eval_no_recover(str, [arg]): evaluate the given string as FFL")
+	const_formula_callable_ptr callable(&variables);
+
+	if(args().size() > 1) {
+		const variant v = args()[1]->evaluate(variables);
+		if(v.is_map()) {
+			callable = map_into_callable(v);
+		} else {
+			callable.reset(v.try_convert<const formula_callable>());
+			ASSERT_LOG(callable.get() != NULL, "COULD NOT CONVERT TO CALLABLE: " << v.string_cast());
+		}
+	}
+
+	variant s = args()[0]->evaluate(variables);
+
+	const_formula_ptr f(formula::create_optional_formula(s));
+	ASSERT_LOG(f.get() != NULL, "ILLEGAL FORMULA GIVEN TO eval: " << s.as_string());
+	return f->execute(*callable);
+END_FUNCTION_DEF(eval_no_recover)
+
+FUNCTION_DEF(eval, 1, 2, "eval(str, [arg]): evaluate the given string as FFL")
+	const_formula_callable_ptr callable(&variables);
+
+	if(args().size() > 1) {
+		const variant v = args()[1]->evaluate(variables);
+		if(v.is_map()) {
+			callable = map_into_callable(v);
+		} else {
+			callable.reset(v.try_convert<const formula_callable>());
+			ASSERT_LOG(callable.get() != NULL, "COULD NOT CONVERT TO CALLABLE: " << v.string_cast());
+		}
+	}
+
 	variant s = args()[0]->evaluate(variables);
 	try {
 		const assert_recover_scope recovery_scope;
@@ -295,7 +344,7 @@ FUNCTION_DEF(eval, 1, 1, "eval(str): evaluate the given string as FFL")
 			return variant();
 		}
 
-		return f->execute(variables);
+		return f->execute(*callable);
 	} catch(type_error&) {
 	} catch(validation_failure_exception&) {
 	}
@@ -945,6 +994,13 @@ FUNCTION_DEF(shuffle, 1, 1, "shuffle(list) - Returns a shuffled version of the l
 
 	return variant(&vars);
 END_FUNCTION_DEF(shuffle)
+
+FUNCTION_DEF(remove_from_map, 2, 2, "remove_from_map(map, key): Removes the given key from the map and returns it.")
+	variant m = args()[0]->evaluate(variables);
+	ASSERT_LOG(m.is_map(), "ARG PASSED TO remove_from_map() IS NOT A MAP");
+	variant key = args()[1]->evaluate(variables);
+	return m.remove_attr(key);
+END_FUNCTION_DEF(remove_from_map)
 	
 namespace {
 	void flatten_items( variant items, std::vector<variant>* output){
@@ -1000,6 +1056,38 @@ class map_callable : public formula_callable {
 		variant value_;
 		int index_;
 };
+
+FUNCTION_DEF(count, 2, 2, "count(list, expr): Returns an integer count of how many items in the list 'expr' returns true for.")
+	const variant items = split_variant_if_str(args()[0]->evaluate(variables));
+	if(items.is_map()) {
+		int res = 0;
+		map_formula_callable_ptr callable(new map_formula_callable(&variables));
+		callable->add("context", variant(&variables));
+		foreach(const variant_pair& p, items.as_map()) {
+			callable->add("key", p.first);
+			callable->add("value", p.second);
+			const variant val = args().back()->evaluate(*callable);
+			if(val.as_bool()) {
+				++res;
+			}
+		}
+
+		return variant(res);
+	} else {
+		int res = 0;
+		boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
+		for(size_t n = 0; n != items.num_elements(); ++n) {
+			callable->set(items[n], n);
+			const variant val = args().back()->evaluate(*callable);
+			if(val.as_bool()) {
+				++res;
+			}
+		}
+
+		return variant(res);
+	}
+
+END_FUNCTION_DEF(count)
 
 class filter_function : public function_expression {
 public:
