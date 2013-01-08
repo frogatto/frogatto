@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 
+#include "formula.hpp"
 #include "formula_callable.hpp"
 #include "tbs_client.hpp"
 #include "variant.hpp"
@@ -24,6 +25,7 @@ public:
 private:
 	void handle_response(const std::string& type, game_logic::formula_callable_ptr callable);
 	variant get_value(const std::string& key) const;
+	void set_value(const std::string& key, const variant& value);
 
 	variant generate_report() const;
 
@@ -34,6 +36,13 @@ private:
 
 	boost::asio::io_service& service_;
 	boost::asio::deadline_timer timer_;
+
+	game_logic::formula_ptr on_create_, on_message_;
+
+	variant data_;
+
+	std::string message_type_;
+	game_logic::formula_callable_ptr message_callable_;
 };
 
 }

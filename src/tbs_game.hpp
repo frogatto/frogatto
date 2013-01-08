@@ -7,6 +7,7 @@
 #include <set>
 
 #include "tbs_ai_player.hpp"
+#include "tbs_bot.hpp"
 #include "formula_callable.hpp"
 #include "variant.hpp"
 
@@ -121,6 +122,8 @@ private:
 	variant doc_;
 
 	game_logic::formula_callable* backup_callable_;
+
+	std::vector<boost::intrusive_ptr<tbs::bot> > bots_;
 
 	void handle_event(const std::string& name, game_logic::formula_callable* variables=NULL);
 	void execute_command(variant cmd);

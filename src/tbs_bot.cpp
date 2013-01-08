@@ -10,7 +10,10 @@ namespace tbs
 {
 
 bot::bot(boost::asio::io_service& service, const std::string& host, const std::string& port, variant v)
-  : service_(service), timer_(service), host_(host), port_(port), script_(v["script"].as_list())
+  : service_(service), timer_(service), host_(host), port_(port), script_(v["script"].as_list()),
+    on_create_(game_logic::formula::create_optional_formula(v["on_create"])),
+    on_message_(game_logic::formula::create_optional_formula(v["on_message"]))
+
 {
 	std::cerr << "CREATE BOT\n";
 	timer_.expires_from_now(boost::posix_time::milliseconds(100));
@@ -24,6 +27,11 @@ bot::~bot()
 
 void bot::process()
 {
+	if(on_create_) {
+		execute_command(on_create_->execute(*this));
+		on_create_.reset();
+	}
+
 	if(!client_ && response_.size() < script_.size()) {
 		variant script = script_[response_.size()];
 		variant send = script["send"];
@@ -50,6 +58,19 @@ void bot::process()
 
 void bot::handle_response(const std::string& type, game_logic::formula_callable_ptr callable)
 {
+	std::cerr << "BOT HANDLE RESPONSE...\n";
+	if(on_create_) {
+		execute_command(on_create_->execute(*this));
+		on_create_.reset();
+	}
+
+	if(on_message_) {
+		std::cerr << "BOT ON MESSAGE\n";
+		message_type_ = type;
+		message_callable_ = callable;
+		execute_command(on_message_->execute(*this));
+	}
+
 	ASSERT_LOG(type != "connection_error", "GOT ERROR BACK WHEN SENDING REQUEST: " << callable->query_value("message").write_json());
 
 	ASSERT_LOG(type == "message_received", "UNRECOGNIZED RESPONSE: " << type);
@@ -87,7 +108,31 @@ void bot::handle_response(const std::string& type, game_logic::formula_callable_
 
 variant bot::get_value(const std::string& key) const
 {
+	if(key == "script") {
+		std::vector<variant> s = script_;
+		return variant(&s);
+	} else if(key == "data") {
+		return data_;
+	} else if(key == "type") {
+		return variant(message_type_);
+	} else if(key == "me") {
+		return variant(this);
+	} else if(message_callable_) {
+		return message_callable_->query_value(key);
+	}
 	return variant();
+}
+
+void bot::set_value(const std::string& key, const variant& value)
+{
+	if(key == "script") {
+		std::cerr << "BOT SET SCRIPT\n";
+		script_ = value.as_list();
+	} else if(key == "data") {
+		data_ = value;
+	} else {
+		ASSERT_LOG(false, "ILLEGAL VALUE SET IN TBS BOT: " << key);
+	}
 }
 
 variant bot::generate_report() const

@@ -46,7 +46,13 @@ void client::recv_handler(const std::string& msg)
 		fprintf(stderr, "RECV: (((%s)))\n", msg.c_str());
 		fprintf(stderr, "SERIALIZE: (((%s)))\n", v.write_json().c_str());
 		callable_->add("message", v);
-		handler_("message_received");
+
+//		try {
+			handler_("message_received");
+//		} catch(...) {
+//			std::cerr << "ERROR PROCESSING TBS MESSAGE\n";
+//			throw;
+//		}
 	}
 }
 

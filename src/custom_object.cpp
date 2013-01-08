@@ -2587,7 +2587,7 @@ void custom_object::set_value(const std::string& key, const variant& value)
 	std::map<std::string, custom_object_type::property_entry>::const_iterator property_itor = type_->properties().find(key);
 	if(property_itor != type_->properties().end() && property_itor->second.setter) {
 			
-		game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
+		game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable(this));
 		callable->add("value", value);
 		variant value = property_itor->second.setter->execute(*callable);
 		execute_command(value);

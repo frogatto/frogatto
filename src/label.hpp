@@ -15,6 +15,7 @@
 
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
+#include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include "graphics.hpp"
@@ -68,9 +69,11 @@ private:
 	void reformat_text();
 
 	std::string text_, formatted_;
-	graphics::texture texture_;
+	graphics::texture texture_, border_texture_;
+	int border_size_;
 	SDL_Color color_;
 	SDL_Color highlight_color_;
+	boost::scoped_ptr<SDL_Color> border_color_;
 	int size_;
 	bool fixed_width_;
 

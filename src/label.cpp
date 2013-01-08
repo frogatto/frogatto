@@ -20,7 +20,7 @@
 namespace gui {
 
 label::label(const std::string& text, int size)
-	: text_(i18n::tr(text)), size_(size), down_(false),
+	: text_(i18n::tr(text)), border_size_(0), size_(size), down_(false),
 	  fixed_width_(false), highlight_color_(graphics::color_red()),
 	  highlight_on_mouseover_(false), draw_highlight_(false)
 {
@@ -30,7 +30,8 @@ label::label(const std::string& text, int size)
 }
 
 label::label(const std::string& text, const SDL_Color& color, int size)
-	: text_(i18n::tr(text)), color_(color), size_(size), down_(false),
+	: text_(i18n::tr(text)), color_(color), border_size_(0),
+	  size_(size), down_(false),
 	  fixed_width_(false), highlight_color_(graphics::color_red()),
 	  highlight_on_mouseover_(false), draw_highlight_(false)
 {
@@ -46,6 +47,16 @@ label::label(const variant& v, game_logic::formula_callable* e)
 	color_ = v.has_key("color") 
 		? graphics::color(v["color"]).as_sdl_color() 
 		: graphics::color(255,255,255,255).as_sdl_color();
+	
+	if(v.has_key("border_color")) {
+		border_color_.reset(new SDL_Color(graphics::color(v["border_color"]).as_sdl_color()));
+		if(v.has_key("border_size")) {
+			border_size_ = v["border_size"].as_int();
+		} else {
+			border_size_ = 2;
+		}
+	}
+
 	size_ = v.has_key("size") ? v["size"].as_int() : 14;
 	if(v.has_key("on_click")) {
 		ASSERT_LOG(get_environment() != 0, "You must specify a callable environment");
@@ -125,6 +136,10 @@ void label::recalculate_texture()
 {
 	texture_ = font::render_text(current_text(), color_, size_);
 	inner_set_dim(texture_.width(),texture_.height());
+
+	if(border_color_.get()) {
+		border_texture_ = font::render_text(current_text(), *border_color_, size_);
+	}
 }
 
 void label::handle_draw() const
@@ -133,6 +148,14 @@ void label::handle_draw() const
 		SDL_Rect rect = {x(), y(), width(), height()};
 		graphics::draw_rect(rect, highlight_color_, highlight_color_.unused);
 	}
+
+	if(border_texture_.valid()) {
+		graphics::blit_texture(border_texture_, x() - border_size_, y());
+		graphics::blit_texture(border_texture_, x() + border_size_, y());
+		graphics::blit_texture(border_texture_, x(), y() - border_size_);
+		graphics::blit_texture(border_texture_, x(), y() + border_size_);
+	}
+
 	graphics::blit_texture(texture_, x(), y());
 }
 

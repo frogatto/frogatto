@@ -790,6 +790,9 @@ public:
 
 		return expression_ptr();
 	}
+
+	expression_ptr get_left() const { return left_; }
+	expression_ptr get_right() const { return right_; }
 	
 private:
 	variant execute(const formula_callable& variables) const {
@@ -951,8 +954,17 @@ private:
 
 	variant execute(const formula_callable& variables) const {
 		foreach(const expression_ptr& a, asserts_) {
-			ASSERT_LOG(a->evaluate(variables).as_bool(),
-			           "FORMULA ASSERTION FAILED: " << a->str() << " -- " << a->debug_pinpoint_location());
+			if(!a->evaluate(variables).as_bool()) {
+				operator_expression* op_expr = dynamic_cast<operator_expression*>(a.get());
+
+				std::ostringstream expr_info;
+				if(op_expr) {
+					expr_info << "  " << op_expr->get_left()->str() << ": " << op_expr->get_left()->evaluate(variables).to_debug_string() << "\n";
+					expr_info << "  " << op_expr->get_right()->str() << ": " << op_expr->get_right()->evaluate(variables).to_debug_string() << "\n";
+				}
+				ASSERT_LOG(false,
+			               "FORMULA ASSERTION FAILED: " << a->str() << " -- " << a->debug_pinpoint_location() << "\n" << expr_info.str());
+			}
 		}
 
 		return body_->evaluate(variables);
@@ -2030,10 +2042,10 @@ void formula::check_brackets_match(const std::vector<token>& tokens) const
 		std::fill(whitespace.begin(), whitespace.end(), ' ');
 		std::string error_line(begin_line, end_line);
 
-		if(whitespace.size() > 40) {
+		if(whitespace.size() > 60) {
 			const int erase_size = whitespace.size() - 60;
 			whitespace.erase(whitespace.begin(), whitespace.begin() + erase_size);
-			ASSERT_LOG(erase_size <= error_line.size(), "ERROR WHILE PARSING ERROR MESSAGE");
+			ASSERT_LOG(erase_size <= error_line.size(), "ERROR WHILE PARSING ERROR MESSAGE: " << erase_size << " <= " << error_line.size() << " IN " << error_line);
 			error_line.erase(error_line.begin(), error_line.begin() + erase_size);
 			std::fill(error_line.begin(), error_line.begin() + 3, '.');
 		}

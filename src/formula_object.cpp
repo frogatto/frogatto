@@ -300,15 +300,22 @@ formula_object::formula_object(const std::string& type, variant args)
   : class_(get_class(type))
 {
 	private_data_ = deep_copy_variant(class_->private_data());
-	if(args.is_map()) {
-		foreach(const variant& key, args.get_keys().as_list()) {
-			set_value(key.as_string(), args[key]);
-		}
-	}
 }
 
 void formula_object::call_constructors(variant args)
 {
+	if(args.is_map()) {
+		foreach(const variant& key, args.get_keys().as_list()) {
+			std::map<std::string, property_entry>::const_iterator itor = class_->properties().find(key.as_string());
+			if(itor != class_->properties().end() && itor->second.setter.get() == NULL && itor->second.variable.is_null()) {
+				//A read-only property. Set the formula to what is passed in.
+				property_overrides_.insert(std::pair<std::string, formula_ptr>(key.as_string(), formula_ptr(new formula(args[key]))));
+			} else {
+				set_value(key.as_string(), args[key]);
+			}
+		}
+	}
+
 	foreach(const game_logic::const_formula_ptr f, class_->constructor()) {
 		private_data_scope scope(expose_private_data_, &tmp_value_, &args);
 		execute_command(f->execute(*this));
@@ -318,10 +325,17 @@ void formula_object::call_constructors(variant args)
 formula_object::formula_object(variant data)
   : class_(get_class(data["@class"].as_string()))
 {
-	if(data.is_map()) {
-		private_data_ = deep_copy_variant(data);
+	if(data.is_map() && data["private"].is_map()) {
+		private_data_ = deep_copy_variant(data["private"]);
 	} else {
 		private_data_ = deep_copy_variant(class_->private_data());
+	}
+
+	if(data.is_map() && data["property_overrides"].is_map()) {
+		const variant overrides = data["property_overrides"];
+		foreach(const variant::map_pair& p, overrides.as_map()) {
+			property_overrides_[p.first.as_string()].reset(new formula(p.second));
+		}
 	}
 
 	set_addr(data["_addr"].as_string());
@@ -332,13 +346,23 @@ formula_object::~formula_object()
 
 variant formula_object::serialize_to_wml() const
 {
-	variant result = deep_copy_variant(private_data_);
-	result.add_attr(variant("@class"), variant(class_->name()));
+	std::map<variant, variant> result;
+	result[variant("@class")] = variant(class_->name());
+	result[variant("private")] = deep_copy_variant(private_data_);
+
+	if(property_overrides_.empty() == false) {
+		std::map<variant, variant> properties;
+		for(std::map<std::string, formula_ptr>::const_iterator i = property_overrides_.begin(); i != property_overrides_.end(); ++i) {
+			properties[variant(i->first)] = variant(i->second->str());
+		}
+		result[variant("property_overrides")] = variant(&properties);
+	}
 
 	char addr_buf[256];
 	sprintf(addr_buf, "%p", this);
-	result.add_attr(variant("_addr"), variant(addr_buf));
-	return result;
+	result[variant("_addr")] = variant(addr_buf);
+
+	return variant(&result);
 }
 
 variant formula_object::get_value(const std::string& key) const
@@ -354,6 +378,12 @@ variant formula_object::get_value(const std::string& key) const
 
 	if(key == "self" || key == "me") {
 		return variant(this);
+	}
+
+	std::map<std::string, formula_ptr>::const_iterator override_itor = property_overrides_.find(key);
+	if(override_itor != property_overrides_.end()) {
+		private_data_scope scope(expose_private_data_);
+		return override_itor->second->execute(*this);
 	}
 
 	std::map<std::string, property_entry>::const_iterator itor = class_->properties().find(key);

@@ -21,12 +21,17 @@
 namespace tbs {
 
 namespace {
+boost::asio::io_service* g_service;
+int g_listening_port = -1;
 web_server* web_server_instance = NULL;
 }
 
 std::string global_debug_str;
 
 using boost::asio::ip::tcp;
+
+boost::asio::io_service* web_server::service() { return g_service; }
+int web_server::port() { return g_listening_port; }
 
 web_server::web_server(server& serv, boost::asio::io_service& io_service, int port)
 	: http::web_server(io_service, port), server_(serv), timer_(io_service)
@@ -149,6 +154,7 @@ void web_server::handle_get(socket_ptr socket,
 }
 
 namespace {
+
 struct code_modified_exception {};
 
 void on_code_modified()
@@ -159,6 +165,7 @@ void on_code_modified()
 	throw code_modified_exception();
 }
 }
+
 
 COMMAND_LINE_UTILITY(tbs_server) {
 	int port = 23456;
@@ -202,6 +209,9 @@ COMMAND_LINE_UTILITY(tbs_server) {
 	boost::asio::io_service io_service;
 
 	std::cerr << "tbs_server(): Listening on port " << std::dec << port << std::endl;
+	tbs::g_service = &io_service;
+	tbs::g_listening_port = port;
+
 	tbs::server s(io_service);
 	tbs::web_server ws(s, io_service, port);
 

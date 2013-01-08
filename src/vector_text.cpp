@@ -55,9 +55,9 @@ void vector_text::recalculate_texture()
 	int letter_size = font::char_width(size());
 	std::vector<std::string> lines;
 
-	if(text_.find('\n') == std::string::npos) {
+	foreach(const std::string& paragraph, util::split(text_, '\n')) {
 		std::vector<std::string> words;
-		boost::split(words, text_, std::bind2nd(std::equal_to<char>(), ' '));
+		boost::split(words, paragraph, std::bind2nd(std::equal_to<char>(), ' '));
 		size_t current_line_length = 0;
 		std::string current_line;
 		foreach(const std::string& word, words) {
@@ -73,8 +73,6 @@ void vector_text::recalculate_texture()
 		if(current_line.empty() == false) {
 			lines.push_back(current_line);
 		}
-	} else {
-		lines = util::split(text_, '\n');
 	}
 
 	foreach(const std::string line, lines) {

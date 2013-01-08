@@ -7,6 +7,7 @@
 
 #include <boost/function.hpp>
 
+#include "formula.hpp"
 #include "variant.hpp"
 #include "wml_formula_callable.hpp"
 
@@ -40,6 +41,9 @@ private:
 	void set_value(const std::string& key, const variant& value);
 
 	void get_inputs(std::vector<formula_input>* inputs) const;
+
+	//overrides of the class's read-only properties.
+	std::map<std::string, formula_ptr> property_overrides_;
 
 	boost::intrusive_ptr<const formula_class> class_;
 	variant private_data_;

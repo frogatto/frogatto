@@ -14,6 +14,9 @@ class server;
 class web_server : public http::web_server
 {
 public:
+	static boost::asio::io_service* service();
+	static int port();
+
 	//set the debug state that will be sent out as a web page to see what's
 	//happening in the server.
 	static void set_debug_state(variant v);

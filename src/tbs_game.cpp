@@ -12,6 +12,7 @@
 #include "module.hpp"
 #include "tbs_ai_player.hpp"
 #include "tbs_game.hpp"
+#include "tbs_web_server.hpp"
 #include "string_utils.hpp"
 #include "variant_utils.hpp"
 #include "wml_formula_callable.hpp"
@@ -322,6 +323,7 @@ int game::get_player_index(const std::string& nick) const
 
 void game::send_game_state(int nplayer)
 {
+	std::cerr << "SEND GAME STATE: " << nplayer << "\n";
 	if(nplayer == -1) {
 		++state_id_;
 
@@ -392,6 +394,12 @@ void game::set_value(const std::string& key, const variant& value)
 	} else if(key == "log_message") {
 		if(!value.is_null()) {
 			log_.push_back(value.as_string());
+		}
+	} else if(key == "bots") {
+		bots_.clear();
+		for(int n = 0; n != value.num_elements(); ++n) {
+			boost::intrusive_ptr<bot> new_bot(new bot(*web_server::service(), "localhost", formatter() << web_server::port(), value[n]));
+			bots_.push_back(new_bot);
 		}
 	} else if(backup_callable_) {
 		backup_callable_->mutate_value(key, value);
