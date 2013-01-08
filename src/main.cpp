@@ -693,13 +693,7 @@ extern "C" int main(int argcount, char** argvec)
 	loading_screen loader;
 	try {
 		sound::init_music(json::parse_from_file("data/music.cfg"));
-
-		std::string filename = "data/fonts." + i18n::get_locale() + ".cfg";
-		if (!sys::file_exists(filename))
-			filename = "data/fonts.cfg";
-		std::cerr << "LOADING FONT: " << filename << " -> " << module::map_file(filename) << "\n";
-		graphical_font::init(json::parse_from_file(filename));
-
+		graphical_font::init_for_locale(i18n::get_locale());
 		preloads = json::parse_from_file("data/preload.cfg");
 		int preload_items = preloads["preload"].num_elements();
 		loader.set_number_of_items(preload_items+7); // 7 is the number of items that will be loaded below

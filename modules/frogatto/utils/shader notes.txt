@@ -1,0 +1,50 @@
+From http://www.youtube.com/watch?feature=endscreen&NR=1&v=GTWuZx4leM0 (Shaders in Frogatto)
+
+/////////////////// SHADERS ///////////////////
+{
+
+shaders: {
+	vertex: {
+		test_v: "
+		uniform float u_time;
+		attribute vec4 a_position;
+		attribute vec2 a_texcoord;
+		varying vec2 v_texcoord;
+		void main() {
+			v_texcoord = a_texcoord;
+			gl_Position = a_position;
+			gl_Position[0] = gl_Position[0];
+		}",
+	},
+
+	fragment: {
+		test_f: "
+			uniform sampler2D u_tex_map;
+			uniform float u_time;
+			varying vec2 v_texcoord;
+			void main() {
+				vec2 v = v_texcoord;
+				vec4 col = texture2D(u_tex_map, v);
+				col[0] = 1.0;
+				gl_FragColor = col;
+			}",	
+	},
+},
+
+programs: [{
+	name: "test",
+	vertex: "test_v",
+	fragment: "test_f",
+	attributes: {
+		vertex: "a_position",
+		texcoord: "a_texcoord",
+	},
+},
+],
+
+}
+
+
+/////////////////// COMMAND ///////////////////
+Setup: set(level.frame_buffer_shaders, [{begin_zorder: -1000, end_zorder: 1000, shader_info: {program: 'test'}}])
+Update: set(level.frame_buffer_shaders[0].shader.uniforms.u_time, 0.5)

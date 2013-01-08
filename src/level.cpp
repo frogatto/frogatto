@@ -4569,17 +4569,19 @@ UTILITY(compile_levels)
 
 	std::cerr << "COMPILING LEVELS...\n";
 
-	std::vector<std::string> files;
-	module::get_files_in_dir(preferences::level_path(), &files);
+	std::map<std::string, std::string> file_paths;
+	module::get_unique_filenames_under_dir(preferences::level_path(), &file_paths);
 
 	variant_builder index_node;
 
-	foreach(const std::string& file, files) {
+	for(std::map<std::string, std::string>::const_iterator i = file_paths.begin(); i != file_paths.end(); ++i) {
+		const std::string& file = module::get_id(i->first);
 		std::cerr << "LOADING LEVEL '" << file << "'\n";
 		boost::intrusive_ptr<level> lvl(new level(file));
 		lvl->finish_loading();
 		lvl->record_zorders();
 		module::write_file("data/compiled/level/" + file, lvl->write().write_json(true));
+		std::cerr << "SAVING LEVEL TO MODULE: data/compiled/level/" + file + "\n";
 
 		variant_builder level_summary;
 		level_summary.add("level", lvl->id());

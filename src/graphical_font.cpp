@@ -4,6 +4,9 @@
 #include "graphical_font.hpp"
 #include "raster.hpp"
 #include "variant_utils.hpp"
+#include "filesystem.hpp"
+#include "module.hpp"
+#include "json_parser.hpp"
 
 namespace {
 typedef std::map<std::string, graphical_font_ptr> cache_map;
@@ -254,5 +257,14 @@ rect graphical_font::do_draw(int x, int y, const std::string& text, bool draw_te
 rect graphical_font::dimensions(const std::string& text, int size) const
 {
 	return do_draw(0, 0, text, false, size);
+}
+
+// Initialize the graphical font for the given locale
+void graphical_font::init_for_locale(const std::string& locale) {
+	std::string filename = "data/fonts." + locale + ".cfg";
+	if (!sys::file_exists(filename))
+		filename = "data/fonts.cfg";
+	std::cerr << "LOADING FONT: " << filename << " -> " << module::map_file(filename) << "\\n";
+	graphical_font::init(json::parse_from_file(filename));
 }
 

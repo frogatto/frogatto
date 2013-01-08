@@ -5,6 +5,7 @@
 
 #include "filesystem.hpp"
 #include "module.hpp"
+#include "preferences.hpp"
 
 #ifdef __APPLE__
 #include <CoreFoundation/CoreFoundation.h>
@@ -52,7 +53,6 @@ std::string locale;
 }
 
 namespace i18n {
-
 const std::string& tr(const std::string& msgid) {
 	//do not attempt to translate empty strings ("") since that returns metadata
 	if (msgid.empty())
@@ -68,7 +68,61 @@ const std::string& get_locale() {
 	return locale;
 }
 
-	void init() {
+void load_translations() {
+	hashmap.clear();
+	//strip the charset part of the country and language code,
+	//e.g. "pt_BR.UTF8" --> "pt_BR"
+	size_t found = locale.find(".");
+	if (found != std::string::npos) {
+		locale = locale.substr(0, found);
+	}
+	if (locale.size() < 2)
+		return;
+	
+	std::string filename = "./locale/" + locale + "/LC_MESSAGES/frogatto.mo";
+	found = locale.find("@");
+	if (!sys::file_exists(module::map_file(filename)) && found != std::string::npos) {
+		locale = locale.substr(0, found);
+		filename = "./locale/" + locale + "/LC_MESSAGES/frogatto.mo";
+	}
+	//strip the country code, e.g. "de_DE" --> "de"
+	found = locale.find("_");
+	if (!sys::file_exists(module::map_file(filename)) && found != std::string::npos) {
+		locale = locale.substr(0, found);
+		filename = "./locale/" + locale + "/LC_MESSAGES/frogatto.mo";
+	}
+	if (!sys::file_exists(module::map_file(filename)))
+		return;
+	const std::string content = sys::read_file(module::map_file(filename));
+	size_t size = content.size();
+	if (size < sizeof(mo_header))
+		return;
+	mo_header* header = (mo_header*) content.c_str();
+	if (header->magic != 0x950412de ||
+	    header->version != 0 ||
+	    header->o_offset + 8*header->number > size ||
+	    header->t_offset + 8*header->number > size)
+		return;
+	mo_entry* original = (mo_entry*) (content.c_str() + header->o_offset);
+	mo_entry* translated = (mo_entry*) (content.c_str() + header->t_offset);
+
+
+	for (int i = 0; i < header->number; ++i) {
+		if (original[i].offset + original[i].length > size ||
+		    translated[i].offset + translated[i].length > size)
+			return;
+		const std::string msgid = content.substr(original[i].offset, original[i].length);
+		const std::string msgstr = content.substr(translated[i].offset, translated[i].length);
+		hashmap[msgid] = msgstr;
+	}
+}
+
+void set_locale(const std::string& l) {
+	locale = l;
+	i18n::load_translations();
+}
+
+void use_system_locale() {
 #ifdef _WIN32
 	{
 		char c[1024];
@@ -122,49 +176,17 @@ const std::string& get_locale() {
 	if (locale == "zh-Hans") locale = "zh_CN"; //hack to make it work on iOS
 	if (locale == "zh-Hant") locale = "zh_TW";
 #endif
-	//strip the charset part of the country and language code,
-	//e.g. "pt_BR.UTF8" --> "pt_BR"
-	size_t found = locale.find(".");
-	if (found != std::string::npos) {
-		locale = locale.substr(0, found);
-	}
-	if (locale.size() < 2)
-		return;
-	
-	std::string filename = "./locale/" + locale + "/LC_MESSAGES/frogatto.mo";
-	found = locale.find("@");
-	if (!sys::file_exists(module::map_file(filename)) && found != std::string::npos) {
-		locale = locale.substr(0, found);
-		filename = "./locale/" + locale + "/LC_MESSAGES/frogatto.mo";
-	}
-	//strip the country code, e.g. "de_DE" --> "de"
-	found = locale.find("_");
-	if (!sys::file_exists(module::map_file(filename)) && found != std::string::npos) {
-		locale = locale.substr(0, found);
-		filename = "./locale/" + locale + "/LC_MESSAGES/frogatto.mo";
-	}
-	if (!sys::file_exists(module::map_file(filename)))
-		return;
-	const std::string content = sys::read_file(module::map_file(filename));
-	size_t size = content.size();
-	if (size < sizeof(mo_header))
-		return;
-	mo_header* header = (mo_header*) content.c_str();
-	if (header->magic != 0x950412de ||
-	    header->version != 0 ||
-	    header->o_offset + 8*header->number > size ||
-	    header->t_offset + 8*header->number > size)
-		return;
-	mo_entry* original = (mo_entry*) (content.c_str() + header->o_offset);
-	mo_entry* translated = (mo_entry*) (content.c_str() + header->t_offset);
-	for (int i = 0; i < header->number; ++i) {
-		if (original[i].offset + original[i].length > size ||
-		    translated[i].offset + translated[i].length > size)
-			return;
-		const std::string msgid = content.substr(original[i].offset, original[i].length);
-		const std::string msgstr = content.substr(translated[i].offset, translated[i].length);
-		hashmap[msgid] = msgstr;
-	}
+	i18n::load_translations(); 
 }
+
+
+	void init() {
+		locale = preferences::locale();
+		if(locale == "system" || locale == "") {
+			i18n::use_system_locale();
+		} else {
+			i18n::set_locale(locale);
+		}
+	}
 
 }

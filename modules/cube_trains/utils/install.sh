@@ -9,7 +9,7 @@ return_code=0 #Used internally to record the returned code of the last operation
 
 _install_frogatto_dependancies()
 {
-	sudo apt-get install --no-upgrade --no-remove ccache libboost-dev libboost-regex-dev libboost-system-dev libglew1.5-dev libsdl-image1.2-dev libsdl-mixer1.2-dev libsdl-ttf2.0-dev libsdl1.2-dev libz-dev libpng12-dev g++ 
+	sudo apt-get install --no-upgrade --no-remove ccache libboost-dev libboost-regex-dev libboost-system-dev libglew1.5-dev libsdl-image1.2-dev libsdl-mixer1.2-dev libsdl-ttf2.0-dev libsdl1.2-dev libz-dev libpng12-dev g++ build-essential
 	return_code=$?
 }
 

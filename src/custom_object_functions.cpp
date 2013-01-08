@@ -53,12 +53,21 @@
 #include "module.hpp"
 #include "variant_utils.hpp"
 #include "widget_factory.hpp"
+#include "graphical_font.hpp"
 
 using namespace game_logic;
 
 namespace {
 
 const std::string FunctionModule = "custom_object";
+
+FUNCTION_DEF(set_language, 1, 1, "set_language(str): set the language using a new locale code")
+	std::string locale = args()[0]->evaluate(variables).as_string();
+	preferences::set_locale(locale);
+	i18n::init();
+	graphical_font::init_for_locale(i18n::get_locale());
+	return variant(0);
+END_FUNCTION_DEF(set_language)
 
 FUNCTION_DEF(time, 0, 0, "time() -> timestamp: returns the current real time")
 	formula::fail_if_static_context();
@@ -1045,6 +1054,29 @@ FUNCTION_DEF(tiles_at, 2, 2, "tiles_at(x, y): gives a list of the tiles at the g
 	return variant(&v);
 END_FUNCTION_DEF(tiles_at)
 
+FUNCTION_DEF(get_objects_at_point, 2, 2, "get_objects_at_point(x, y): Returns all objects which intersect the specified x,y point, in absolute level-coordinates.")
+	level* lvl = &level::current();
+	std::vector<entity_ptr> v;
+	v = lvl->get_characters_at_point(args()[0]->evaluate(variables).as_int(),
+													 args()[1]->evaluate(variables).as_int(),
+													 (last_draw_position().x/100 * lvl->zoom_level()).as_int(),
+													 (last_draw_position().y/100 * lvl->zoom_level()).as_int());
+	if(!v.empty()){
+		std::vector<variant> res;
+		res.reserve(v.size());
+		foreach(const entity_ptr& e, v){
+			res.push_back(variant(e.get()));
+		}
+		//for(int n = 0; n != v.size(); ++n) {
+		//	res.push_back(variant(v[n].get()));
+		//}
+		return variant(&res);
+	} else {
+		return variant();
+	}
+END_FUNCTION_DEF(get_objects_at_point)
+	
+	
 FUNCTION_DEF(scroll_to, 1, 1, "scroll_to(object target): scrolls the screen to the target object")
 	return variant(new scroll_to_command(args()[0]->evaluate(variables).try_convert<entity>()));
 END_FUNCTION_DEF(scroll_to)
@@ -1607,7 +1639,7 @@ public:
 	}
 };
 
-FUNCTION_DEF(add_object, 1, 1, "add_object(object): inserts the given object into the level. The object should not currently be persent in the level. The position of the object is tweaked to make sure there are no solid overlaps, however if it is not possible to reasonably place the object without a solid overlap, then the object will not be placed and the object and caller will both receive the event add_object_fail.")
+FUNCTION_DEF(add_object, 1, 1, "add_object(object): inserts the given object into the level. The object should not currently be present in the level. The position of the object is tweaked to make sure there are no solid overlaps, however if it is not possible to reasonably place the object without a solid overlap, then the object will not be placed and the object and caller will both receive the event add_object_fail.")
 
 	entity_ptr e(args()[0]->evaluate(variables).try_convert<entity>());
 	if(e) {
