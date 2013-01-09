@@ -29,14 +29,12 @@ ifneq ($(USE_CCACHE),yes)
 CCACHE=
 endif
 
-CCACHE=ccache
-
 ifeq ($(OPTIMIZE),yes)
 BASE_CXXFLAGS += -O2
 endif
 
 # Initial compiler options, used before CXXFLAGS and CPPFLAGS.
-BASE_CXXFLAGS += -g -fno-inline-functions -fthreadsafe-statics -Wnon-virtual-dtor -Werror -Wignored-qualifiers -Wformat -Wswitch -DUSE_GLES2
+BASE_CXXFLAGS += -g -fno-inline-functions -fthreadsafe-statics -Wnon-virtual-dtor -Werror -Wignored-qualifiers -Wformat -Wswitch -DUSE_GLES2 
 
 # Compiler include options, used after CXXFLAGS and CPPFLAGS.
 INC := $(shell pkg-config --cflags x11 sdl glu glew SDL_image libpng zlib)
