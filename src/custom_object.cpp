@@ -3509,6 +3509,20 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		break;
 	}
 
+	case CUSTOM_OBJECT_WIDGETS: {
+		std::vector<gui::widget_ptr> w;
+		clear_widgets();
+		if(value.is_list()) {
+			foreach(const variant& v, value.as_list()) {
+				w.push_back(widget_factory::create(v, this));
+			}
+		} else {
+			w.push_back(widget_factory::create(value, this));
+		}
+		add_widgets(&w);
+		break;
+	}
+
 	case CUSTOM_OBJECT_CUSTOM_DRAW: {
 		if(value.is_null()) {
 			custom_draw_.reset();
