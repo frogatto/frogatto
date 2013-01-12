@@ -855,10 +855,6 @@ void custom_object::draw(int xx, int yy) const
 		driver_->draw(xx, yy);
 	}
 
-	foreach(const entity_ptr& attached, attached_objects()) {
-		attached->draw(xx, yy);
-	}
-
 	if(draw_color_) {
 		draw_color_->to_color().set_as_current_color();
 	}
@@ -901,6 +897,10 @@ void custom_object::draw(int xx, int yy) const
 //	if(draw_color_int_ != DefaultColor) {
 //		glColor4ub(255, 255, 255, 255);
 //	}
+
+	foreach(const entity_ptr& attached, attached_objects()) {
+		attached->draw(xx, yy);
+	}
 
 	draw_debug_rects();
 

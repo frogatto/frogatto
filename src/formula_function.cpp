@@ -2122,7 +2122,8 @@ FUNCTION_DEF(get_document, 1, 1, "get_document(string filename): return referenc
 	try {
 		const variant v = json::parse_from_file(docname);
 		return v;
-	} catch(json::parse_error&) {
+	} catch(json::parse_error& e) {
+		ASSERT_LOG(false, "COULD NOT LOAD DOCUMENT: " << e.error_message());
 		return variant();
 	}
 END_FUNCTION_DEF(get_document)
