@@ -4586,7 +4586,9 @@ bool custom_object::handle_sdl_event(const SDL_Event& event, bool claimed)
 			ev.button.y -= adjusted_draw_position_.y;
 		}
 	}
-	foreach(const gui::widget_ptr& w, widgets_) {
+
+	const std::vector<gui::widget_ptr> v = widgets_;
+	foreach(const gui::widget_ptr& w, v) {
 		claimed = w->process_event(ev, claimed);
 	}
 	return claimed;
