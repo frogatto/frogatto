@@ -352,6 +352,18 @@ FUNCTION_DEF(eval, 1, 2, "eval(str, [arg]): evaluate the given string as FFL")
 	return variant();
 END_FUNCTION_DEF(eval)
 
+FUNCTION_DEF(handle_errors, 2, 2, "handle_errors(expr, failsafe): evaluates 'expr' and returns it. If expr has fatal errors in evaluation, return failsafe instead. 'failsafe' is an expression which receives 'error_msg' and 'context' as parameters.")
+	const assert_recover_scope recovery_scope;
+	try {
+		return args()[0]->evaluate(variables);
+	} catch(validation_failure_exception& e) {
+		boost::intrusive_ptr<map_formula_callable> callable(new map_formula_callable(&variables));
+		callable->add("context", variant(&variables));
+		callable->add("error_msg", variant(e.msg));
+		return args()[1]->evaluate(*callable);
+	}
+END_FUNCTION_DEF(handle_errors)
+
 FUNCTION_DEF(switch, 3, -1, "switch(value, case1, result1, case2, result2 ... casen, resultn, default) -> value: returns resultn where value = casen, or default otherwise.")
 	variant var = args()[0]->evaluate(variables);
 	for(size_t n = 1; n < args().size()-1; n += 2) {
