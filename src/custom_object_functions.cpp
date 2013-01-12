@@ -95,13 +95,13 @@ FUNCTION_DEF(time, 0, 0, "time() -> timestamp: returns the current real time")
 		
 		std::string weekday = "";
 		switch(time->tm_wday) {
-			case 0: weekday = "Saturday";
-			case 1: weekday = "Sunday";
-			case 2: weekday = "Monday";
-			case 3: weekday = "Tuesday";
-			case 4: weekday = "Wednesday";
-			case 5: weekday = "Thursday";
-			case 6: weekday = "Friday";
+			case 0: weekday = "Sunday"; break;
+			case 1: weekday = "Monday"; break;
+			case 2: weekday = "Tuesday"; break;
+			case 3: weekday = "Wednesday"; break;
+			case 4: weekday = "Thursday"; break;
+			case 5: weekday = "Friday"; break;
+			case 6: weekday = "Saturday"; break;
 		};
 		time_->add("weekday", variant(weekday));
 		
