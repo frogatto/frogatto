@@ -68,12 +68,44 @@ FUNCTION_DEF(set_language, 1, 1, "set_language(str): set the language using a ne
 	graphical_font::init_for_locale(i18n::get_locale());
 	return variant(0);
 END_FUNCTION_DEF(set_language)
-
+/*
 FUNCTION_DEF(time, 0, 0, "time() -> timestamp: returns the current real time")
 	formula::fail_if_static_context();
 	time_t t1;
 	time(&t1);
 	return variant(static_cast<int>(t1));
+END_FUNCTION_DEF(time)
+*/
+FUNCTION_DEF(time, 0, 0, "time() -> timestamp: returns the current real time")
+	formula::fail_if_static_context();
+	game_logic::map_formula_callable* time_(new game_logic::map_formula_callable);
+	
+		time_t t1;
+		time(&t1);
+		time_->add("unix", variant(static_cast<int>(t1)));
+		
+		tm *time = localtime(&t1);
+		time_->add("second",	variant(time->tm_sec));
+		time_->add("minute",	variant(time->tm_min));
+		time_->add("hour", 		variant(time->tm_hour));
+		time_->add("day", 		variant(time->tm_mday));
+		time_->add("month", 	variant(time->tm_mon + 1));
+		time_->add("year", 		variant(time->tm_year + 1900));
+		time_->add("daylight savings time", 	variant(time->tm_isdst));
+		
+		std::string weekday = "";
+		switch(time->tm_wday) {
+			case 0: weekday = "Saturday";
+			case 1: weekday = "Sunday";
+			case 2: weekday = "Monday";
+			case 3: weekday = "Tuesday";
+			case 4: weekday = "Wednesday";
+			case 5: weekday = "Thursday";
+			case 6: weekday = "Friday";
+		};
+		time_->add("weekday", variant(weekday));
+		
+	return variant(time_);
 END_FUNCTION_DEF(time)
 
 FUNCTION_DEF(translate, 1, 1, "translate(str): returns the translated version of the given string")
