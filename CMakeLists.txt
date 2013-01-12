@@ -30,10 +30,10 @@ include_directories(${SDL_MIXER_INCLUDE_DIR})
 include_directories(${SDL_IMAGE_INCLUDE_DIR})
 include_directories(${SDL_TTF_INCLUDE_DIR})
 include_directories(${ZLIB_INCLUDE_DIRS})
-include_directories(src/game src/server)
+include_directories(src src/server)
 
-aux_source_directory(src/game game_src)
-aux_source_directory(src/server server_src)
+file(GLOB game_src src/*.cpp)
+file(GLOB server_src src/server/*.cpp)
 
 add_executable(frogatto ${game_src})
 add_executable(frogatto-server ${server_src})

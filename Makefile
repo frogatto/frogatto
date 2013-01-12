@@ -37,7 +37,7 @@ endif
 BASE_CXXFLAGS += -g -fno-inline-functions -fthreadsafe-statics -Wnon-virtual-dtor -Werror -Wignored-qualifiers -Wformat -Wswitch
 
 # Compiler include options, used after CXXFLAGS and CPPFLAGS.
-INC := -Isrc/game -Isrc/server $(shell pkg-config --cflags x11 sdl glu glew SDL_image libpng zlib)
+INC := -Isrc -Isrc/server $(shell pkg-config --cflags x11 sdl glu glew SDL_image libpng zlib)
 
 # Linker library options.
 LIBS := $(shell pkg-config --libs x11 ) -lSDLmain \
@@ -55,7 +55,7 @@ define compile-stuff
 	@rm -f $*.d.tmp
 endef
 
-src/game/%.o : src/game/%.cpp
+src/%.o : src/%.cpp
 	$(compile-stuff)
 
 src/server/%.o : src/server/%.cpp
@@ -77,7 +77,7 @@ server: $(server_objects)
 		$(LIBS) -lboost_regex -lboost_system -lboost_thread -lboost_iostreams
 
 clean:
-	rm -f src/game/*.o src/game/*.d src/server/*.o src/server/*.d *.o *.d game server
+	rm -f src/*.o src/*.d src/server/*.o src/server/*.d *.o *.d game server
 	
 assets:
 	./game --utility=compile_levels
