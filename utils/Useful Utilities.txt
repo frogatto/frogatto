@@ -1,4 +1,4 @@
-Used Utilities for Frogatto
+Useful Utilities for Anura:
 
 Due to the transient nature of utilities, their intrinsic one-off nature, we lack a body of examples of code. This file aims to remedy that by collecting written utilities – even if they're not useful again in themselves, they might be useful to modify later. To use these modules, collapse the code into one line, copy, and undo. (ctrl-j, -c, and -z here)
 
@@ -17,3 +17,9 @@ Remove all ants and moths in the forest levels.
 		debug('Removed \${size(ants)} ants/moths from \${doc.id}.')]
 		where ants = filter(doc.character, is_map(value) and value.type in ['ant_black', 'ant_flying_black', 'ant_flying_glow', 'ant_flying_gold', 'no ant_flying_platform_red', 'ant_flying_red', 'ant_flying_wallcling', 'ant_gold', 'no ant_platform_red', 'ant_red', 'anthill', 'no moth_big', 'moth_black', 'moth_brown', 'no moth_small'])
 	)"
+	
+Search for a string ("time()") in a module ("frogatto"):
+grep -Hnr 'time()' modules/frogatto/
+
+And replace:
+cd modules; find . -type f -print0 | xargs -0 sed -i 's/time()/time().unix/g'
