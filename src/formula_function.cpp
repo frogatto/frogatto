@@ -386,6 +386,12 @@ FUNCTION_DEF(query, 2, 2, "query(object, str): evaluates object.str")
 	return callable.as_callable()->query_value(str.as_string());
 END_FUNCTION_DEF(query)
 
+FUNCTION_DEF(call, 2, 2, "call(fn, list): calls the given function with 'list' as the arguments")
+	variant fn = args()[0]->evaluate(variables);
+	variant a = args()[1]->evaluate(variables);
+	return fn(a.as_list());
+END_FUNCTION_DEF(call)
+
 
 FUNCTION_DEF(abs, 1, 1, "abs(value) -> value: evaluates the absolute value of the value given")
 	variant v = args()[0]->evaluate(variables);
