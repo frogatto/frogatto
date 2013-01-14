@@ -20,3 +20,6 @@ Remove all ants and moths in the forest levels.
 	
 Search for a string ("time()") in a module ("frogatto"):
 grep -Hnr 'time()' modules/frogatto/
+
+And replace:
+cd modules; find . -type f -print0 | xargs -0 sed -i 's/time()/time().unix/g'
