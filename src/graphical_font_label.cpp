@@ -15,10 +15,10 @@ graphical_font_label::graphical_font_label(
 graphical_font_label::graphical_font_label(const variant& v, game_logic::formula_callable* e)
 	: widget(v,e)
 {
-	text_ = v["text"].as_string();
-	font_ = graphical_font::get(v["font"].as_string());
+	text_ = v["text"].as_string_default("TEXT");
+	font_ = graphical_font::get(v.has_key("font") ? v["font"].as_string() : "door_label");
 	ASSERT_LOG(font_.get(), "UNKNOWN FONT: " << v["font"].as_string());
-	size_ = v["size"].as_int();
+	size_ = v["size"].as_int(12);
 	reset_text_dimensions();
 }
 
