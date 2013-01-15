@@ -413,7 +413,7 @@ void game::handle_message(int nplayer, const variant& msg)
 		start_game();
 		return;
 	} else if(type == "request_updates") {
-		if(msg.has_key("state_id")) {
+		if(msg.has_key("state_id") && !doc_.is_null()) {
 			const variant state_id = msg["state_id"];
 			if(state_id.as_int() != state_id_) {
 				send_game_state(nplayer);
