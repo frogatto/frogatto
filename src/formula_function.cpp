@@ -1670,9 +1670,15 @@ END_FUNCTION_DEF(decompress)
 		{}
 	private:
 		variant execute(const formula_callable& variables) const {
-			const variant haystack = args()[0]->evaluate(variables);
-			const variant needle = args()[1]->evaluate(variables);
-			return variant(strstr(haystack.as_string().c_str(), needle.as_string().c_str()) != NULL);
+			const char* haystack = args()[0]->evaluate(variables).as_string().c_str();
+			const char* needle = args()[1]->evaluate(variables).as_string().c_str();
+			const char* result = strstr(haystack, needle);
+			//std::cout << "strstr: " << (void*) haystack << " - " << (void*) result << " = " << (int)(result-haystack)+1 << "\n";
+			if(result == NULL) {
+				return variant(0);
+			} else {
+				return variant((int)(result-haystack)+1);
+			}
 		}
 	};
 
