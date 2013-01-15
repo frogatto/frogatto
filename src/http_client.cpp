@@ -2,12 +2,14 @@
 #include <boost/algorithm/string/replace.hpp>
 
 #include "asserts.hpp"
+#include "foreach.hpp"
 #include "http_client.hpp"
 
 http_client::http_client(const std::string& host, const std::string& port, int session, boost::asio::io_service* service)
   : session_id_(session),
     io_service_buf_(service ? NULL : new boost::asio::io_service),
 	io_service_(service ? *service : *io_service_buf_),
+	resolution_state_(RESOLUTION_NOT_STARTED),
     resolver_(io_service_),
 	host_(host),
 	resolver_query_(host.c_str(), port.c_str()),
@@ -25,11 +27,20 @@ void http_client::send_request(const std::string& method_path, const std::string
 	conn->error_handler = error_handler;
 	conn->progress_handler = progress_handler;
 
-	resolver_.async_resolve(resolver_query_,
-		boost::bind(&http_client::handle_resolve, this,
-			boost::asio::placeholders::error,
-			boost::asio::placeholders::iterator,
-			conn));
+	if(resolution_state_ == RESOLUTION_NOT_STARTED) {
+		resolution_state_ = RESOLUTION_IN_PROGRESS;
+
+		resolver_.async_resolve(resolver_query_,
+			boost::bind(&http_client::handle_resolve, this,
+				boost::asio::placeholders::error,
+				boost::asio::placeholders::iterator,
+				conn));
+	} else if(resolution_state_ == RESOLUTION_IN_PROGRESS) {
+		connections_waiting_on_dns_.push_back(conn);
+	} else {
+		ASSERT_EQ(resolution_state_, RESOLUTION_DONE);
+		async_connect(conn);
+	}
 }
 
 void http_client::handle_resolve(const boost::system::error_code& error, tcp::resolver::iterator endpoint_iterator, connection_ptr conn)
@@ -39,6 +50,17 @@ void http_client::handle_resolve(const boost::system::error_code& error, tcp::re
 		endpoint_iterator_ = endpoint_iterator;
 		// Attempt a connection to each endpoint in the list until we
 		// successfully establish a connection.
+		async_connect(conn);
+
+	} else {
+		--in_flight_;
+		conn->error_handler("Error resolving connection");
+	}
+}
+
+void http_client::async_connect(connection_ptr conn)
+{
+
 #if BOOST_VERSION >= 104700
 		boost::asio::async_connect(conn->socket, 
 			endpoint_iterator_,
@@ -49,10 +71,6 @@ void http_client::handle_resolve(const boost::system::error_code& error, tcp::re
 			boost::bind(&http_client::handle_connect, this,
 				boost::asio::placeholders::error, conn, endpoint_iterator_));
 #endif
-	} else {
-		--in_flight_;
-		conn->error_handler("Error resolving connection");
-	}
 }
 
 void http_client::handle_connect(const boost::system::error_code& error, connection_ptr conn, tcp::resolver::iterator resolve_itor)
@@ -64,22 +82,27 @@ void http_client::handle_connect(const boost::system::error_code& error, connect
 		}
 		//ASSERT_LOG(endpoint_iterator_ != tcp::resolver::iterator(), "COULD NOT RESOLVE TBS SERVER: " << resolve_itor->endpoint().address().to_string() << ":" << resolve_itor->endpoint().port());
 		if(endpoint_iterator_ == tcp::resolver::iterator()) {
+			resolution_state_ = RESOLUTION_NOT_STARTED;
 			--in_flight_;
 			conn->error_handler("Error establishing connection");
 			return;
 		}
 
-#if BOOST_VERSION >= 104700
-		boost::asio::async_connect(conn->socket, 
-			endpoint_iterator_,
-			boost::bind(&http_client::handle_connect, this,
-				boost::asio::placeholders::error, conn, endpoint_iterator_));
-#else
-		conn->socket.async_connect(*endpoint_iterator_,
- 	       boost::bind(&http_client::handle_connect, this,
-	          boost::asio::placeholders::error, conn, endpoint_iterator_));
-#endif
+		async_connect(conn);
+
 		return;
+	}
+
+	//we've connected okay, mark DNS resolution as good.
+	if(resolution_state_ != RESOLUTION_DONE) {
+		resolution_state_ = RESOLUTION_DONE;
+
+		//all those connections waiting on DNS resolution can now connect.
+		foreach(const connection_ptr conn, connections_waiting_on_dns_) {
+			async_connect(conn);
+		}
+
+		connections_waiting_on_dns_.clear();
 	}
 
 	//do async write.

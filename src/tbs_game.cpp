@@ -481,6 +481,7 @@ void game::execute_command(variant cmd)
 		if(cmd.has_key("execute")) {
 			game_logic::formula f(cmd["execute"]);
 			game_logic::formula_callable_ptr callable(map_into_callable(cmd["arg"]));
+			ASSERT_LOG(callable.get(), "NO ARG SPECIFIED IN EXECUTE AT " << cmd.debug_location());
 			variant v = f.execute(*callable);
 			execute_command(v);
 		}
