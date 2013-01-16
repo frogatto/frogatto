@@ -1855,7 +1855,6 @@ formula_ptr formula::create_optional_formula(const variant& val, function_symbol
 		return formula_ptr();
 	}
 	
-	fprintf(stderr, "MAKE FORMULA: %s\n", val.as_string().c_str());
 	return formula_ptr(new formula(val, symbols, callable_definition));
 }
 

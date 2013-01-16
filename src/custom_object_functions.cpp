@@ -2034,8 +2034,8 @@ public:
 		custom_object* custom_obj = target_ ? dynamic_cast<custom_object*>(target_.get()) : &ob;
 		custom_obj->clear_vector_text();
 		foreach(const variant& v, textv_) {
-			if(v.is_null() == false) {
-				gui::vector_text_ptr txtp(new gui::vector_text(v));
+			gui::vector_text_ptr txtp(new gui::vector_text(v));
+			if(txtp) {
 				custom_obj->add_vector_text(txtp);
 			}
 		}
