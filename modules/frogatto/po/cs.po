@@ -3,13 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#   <appukonrad@gmail.com>, 2012.
+#   <appukonrad@gmail.com>, 2012-2013.
+#   <lukasf.92@gmail.com>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2012-11-28 22:10-0200\n"
-"PO-Revision-Date: 2012-12-24 13:02+0000\n"
+"PO-Revision-Date: 2013-01-15 11:53+0000\n"
 "Last-Translator: lukasf.92 <lukasf.92@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/projects/p/Frogatto/language/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -110,32 +111,32 @@ msgstr "Verze 1.3:"
 msgid ""
 "Expansion and improvements to the plot and dialogue, adding new cutscenes "
 "that give you a closer look at the antagonists' motives."
-msgstr ""
+msgstr "Rozšíření a zlepšení pozemků i dialogů, přidány nové filmové scény, které vám pomůžou blíže se podívat na motivy protivníků."
 
 #: ../CHANGELOG:3 ../iOS_CHANGELOG:3
 msgid ""
 "Several new levels were added to the dungeon environment; with some of them "
 "being optional, there's much more to explore now."
-msgstr ""
+msgstr "Bylo přidáno několik nových úrovní v prostředí žaláře, některé z nich jsou dobrovolné, je tu toho teď mnohem více k prozkoumání."
 
 #: ../CHANGELOG:4 ../iOS_CHANGELOG:4
 msgid ""
 "Some new enemies to be vanquished: a red bat that's much more tenacious than"
 " the regular ones, and the hard-hitting ninja-kitty, that has many tools at "
 "his disposal to fight you. And these are just a few examples!"
-msgstr ""
+msgstr "Někteří nový nepřátelé k přemožení: červený netopýr, který je mnohem více houževnatý, než ten běžný a úderné ninja-koťátko, které má k dispozici celou řadu nástrojů pro boj s tebou. A to je jen několik příkladů!"
 
 #: ../CHANGELOG:5 ../iOS_CHANGELOG:5
 msgid ""
 "New difficulty level: Challenging. Some enemies will be faster, hardier, "
 "smarter, or all of those put together."
-msgstr ""
+msgstr "Nová úroveň obtížnosti: Náročné. Někteří nepřátelé budou rychlejší, odolnější, inteligentnější, nebo všechno ty dohromady."
 
 #: ../CHANGELOG:6 ../iOS_CHANGELOG:6
 msgid ""
 "A better \"New Game/Load Game\" screen, that allows the selection of save "
 "slots."
-msgstr ""
+msgstr "Lepší  zobrazení \"Nová hra / Nahrát hru\" , které umožňuje výběr uložených slotů."
 
 #: ../CHANGELOG:7 ../iOS_CHANGELOG:7
 msgid ""
@@ -154,13 +155,13 @@ msgstr ""
 msgid ""
 "Graphical improvements abound: ground tiles on most environments were "
 "reworked, adding better perspective, and being improved on in general."
-msgstr ""
+msgstr "Grafické vylepšení : pozemní dlaždice na většině prostředí byly přepracovány, přidána lepší perspektiva, a jsou všeobecně lepší."
 
 #: ../CHANGELOG:10 ../iOS_CHANGELOG:10
 msgid ""
 "Lots of new objects show up in the foreground and background, giving more "
 "depth and diversity to each map."
-msgstr ""
+msgstr "Oběví se spousta nových objektů v popředí a pozadí, což dává větší hloubku a rozmanitost každé mapě."
 
 #: ../CHANGELOG:11 ../iOS_CHANGELOG:11
 msgid ""
@@ -268,7 +269,7 @@ msgstr "Nový překlad: Italsky"
 
 #: ../CHANGELOG:35
 msgid "Added automatic language selection for Windows"
-msgstr ""
+msgstr "Přidán automatický výběr jazyka pro Windows"
 
 #: ../CHANGELOG:36 ../iOS_CHANGELOG:35
 msgid ""
@@ -543,7 +544,7 @@ msgstr "klíčová slova:"
 #: ../MAC_APP_STORE_METADATA:22 ../iOS_APP_STORE_METADATA:23
 msgid ""
 "platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
-msgstr ""
+msgstr "plošinovka, pixelart, oldschool, platforma, hra, pixel, arkády, akční, dobrodružné, žába"
 
 #: ../data/achievements.cfg:5
 msgid "Pocket Money"
@@ -699,7 +700,7 @@ msgstr ""
 #: ../data/level/arcade-blocks.cfg:756
 #: ../data/level/titlescreen-arcade.cfg:152
 msgid "Blocks Run"
-msgstr ""
+msgstr "Překážkový běh"
 
 #: ../data/level/arcade-down-the-rabbit-hall.cfg:13
 #: ../data/level/titlescreen-arcade.cfg:151
@@ -719,7 +720,7 @@ msgstr ""
 #: ../data/level/arcade-maintenance-shaft.cfg:13
 #: ../data/level/titlescreen-arcade.cfg:132
 msgid "Maintenance Shaft"
-msgstr ""
+msgstr "Hlavní šachta"
 
 #: ../data/level/arcade-maintenance-shaft.cfg:2559
 #: ../data/level/arcade-maintenance-shaft.cfg:2562
@@ -1388,7 +1389,7 @@ msgstr ""
 msgid ""
 "Asking one of the prisoners is probably\n"
 "our best bet for a clue."
-msgstr ""
+msgstr "Zeptám se některého z vězňů, to bude⏎ snad nejlepší vodítko."
 
 #: ../data/level/crevice-village-central.cfg:2811
 msgid "Hey! Over here!"
@@ -1490,7 +1491,7 @@ msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:265
 msgid "That's very interesting..."
-msgstr ""
+msgstr "To je velmi zajímavé ..."
 
 #: ../data/level/crevice-village-heights.cfg:267
 msgid ""
@@ -1639,7 +1640,7 @@ msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:1489
 msgid "So!  I've unlocked this gate, here."
-msgstr ""
+msgstr "Tak! Otevřel jsem tuhle bránu"
 
 #: ../data/level/crevice-village-heights.cfg:1493
 msgid "Finally, a chance to use your degree..."
@@ -1669,7 +1670,7 @@ msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:1504
 msgid "Watch your head in there."
-msgstr ""
+msgstr "Tady jdi pořád dopředu"
 
 #: ../data/level/crevice-village-heights.cfg:1506
 msgid "Past that, and you come to the forest."
@@ -1878,7 +1879,7 @@ msgstr "Jo."
 
 #: ../data/level/crevice-village-house-1.cfg:1001
 msgid "Phooey."
-msgstr ""
+msgstr "fuj."
 
 #: ../data/level/crevice-village-house-1.cfg:1003
 msgid ""
@@ -2131,7 +2132,7 @@ msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:350
 msgid "Oh, no you don't!"
-msgstr ""
+msgstr "Ou, ne ty ne!"
 
 #: ../data/level/crevice-village-house-elder.cfg:351
 msgid ""
@@ -2177,19 +2178,19 @@ msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:406
 msgid "Okay, I've had enough!  I'm going home."
-msgstr ""
+msgstr "Dobře, už mám dost! Jdu domu. "
 
 #: ../data/level/crevice-village-house-elder.cfg:456
 msgid ""
 "Well!\n"
 "That went better than expected."
-msgstr ""
+msgstr "Dobře!⏎ To šlo líp, než jsem myslel."
 
 #: ../data/level/crevice-village-house-elder.cfg:459
 msgid ""
 "Say ...\n"
 "What happened to the elder?"
-msgstr ""
+msgstr "řekni mi...⏎ Co se stalo staršímu"
 
 #: ../data/level/crevice-village-house-elder.cfg:464
 msgid ""
@@ -2203,7 +2204,7 @@ msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:478
 msgid "It's my very own safe room."
-msgstr ""
+msgstr "To je má vlastní velmi bezpečná místnost."
 
 #: ../data/level/crevice-village-house-elder.cfg:480
 msgid "^Wow."
@@ -2211,7 +2212,7 @@ msgstr "^ Wow."
 
 #: ../data/level/crevice-village-house-elder.cfg:482
 msgid "Built it for exactly this sort of crisis."
-msgstr ""
+msgstr "Postavena pro případ takovéto krize."
 
 #: ../data/level/crevice-village-house-elder.cfg:486
 msgid ""
@@ -2526,7 +2527,7 @@ msgstr "Dům starců"
 
 #: ../data/level/crevice-village.cfg:76 ../data/level/to-nenes-house.cfg:335
 msgid "I better leave this key here."
-msgstr ""
+msgstr "Bude lepší, když tady ten klíč nechám."
 
 #: ../data/level/crevice-village.cfg:177
 msgid "Hey!"
@@ -2640,7 +2641,7 @@ msgstr ""
 msgid ""
 "Yes... oh dear.\n"
 "I see what you mean."
-msgstr ""
+msgstr "Ano... drahý.⏎ Vím co si myslíš."
 
 #: ../data/level/crevice-village.cfg:846
 msgid ""
@@ -2673,7 +2674,7 @@ msgstr ""
 msgid ""
 "I do hope so.\n"
 "Good luck!"
-msgstr ""
+msgstr "To doufám.⏎ Hodně štěstí!"
 
 #: ../data/level/dark-corridor.cfg:218
 msgid "Now what?"
@@ -2893,7 +2894,7 @@ msgstr ""
 msgid ""
 "It says, \"Treasure Storage.\n"
 "No entry without authorization.\""
-msgstr ""
+msgstr "stojí tu, \"sklad pokladů.⏎ Nepovolaným vstup zakázán.\""
 
 #: ../data/level/dungeon-storeroom-treasure-chamber.cfg:1523
 msgid "Storeroom Treasure Chamber"
@@ -2936,19 +2937,19 @@ msgstr "Frogattův pokoj"
 
 #: ../data/level/frogatto-grotto-inside.cfg:236
 msgid "Hey, how's breakfast coming?"
-msgstr "Hej, kdy přijde snídaně?"
+msgstr "Hej, kdy bude snídaně?"
 
 #: ../data/level/frogatto-grotto-inside.cfg:237
 msgid "Breakfast? ..bud, we're on lunch."
-msgstr "Snídaně? .. kámo, už jsme u oběda."
+msgstr "Snídaně? .. kámo, už bude oběd."
 
 #: ../data/level/frogatto-grotto-inside.cfg:238
 msgid "You need to get up earlier."
-msgstr "Musíš vstávat dříve."
+msgstr "Musíš vstávat dřív."
 
 #: ../data/level/frogatto-grotto-inside.cfg:241
 msgid "Okay, then how's lunch coming?"
-msgstr "OK, tak kdy přijde oběd?"
+msgstr "OK, tak kdy bude oběd?"
 
 #: ../data/level/frogatto-grotto-inside.cfg:242
 msgid ""
@@ -2958,11 +2959,11 @@ msgstr ""
 
 #: ../data/level/frogatto-grotto-inside.cfg:244
 msgid "I'll check back later, then."
-msgstr ""
+msgstr "Já se vrátím."
 
 #: ../data/level/frogatto-grotto-inside.cfg:247
 msgid "So, what happened to lunch?"
-msgstr ""
+msgstr "Tak, co bude k obědu?"
 
 #: ../data/level/frogatto-grotto-inside.cfg:248
 msgid ""
@@ -3028,7 +3029,7 @@ msgstr "Já vím!"
 msgid ""
 "I can stop in at Nene's house\n"
 "on the way to town!"
-msgstr ""
+msgstr "Mohl bych se stavit u Nene doma⏎ Je to na cestě do města!"
 
 #: ../data/level/frogatto-grotto.cfg:83
 msgid "Such a beautiful view from here."
@@ -3041,7 +3042,7 @@ msgstr "Na mém dvorku není nic k vidění."
 #: ../data/level/frogatto-grotto.cfg:1889
 #: ../data/objects/playable/map-selector.cfg:15
 msgid "Frogatto Grotto"
-msgstr ""
+msgstr "Frogattova sluj"
 
 #: ../data/level/gloomy-glade.cfg:3628
 msgid "Gloomy Glade"
@@ -3110,7 +3111,7 @@ msgstr ""
 
 #: ../data/level/golden-glen.cfg:2332
 msgid "Yes, I think so."
-msgstr ""
+msgstr "Ano, myslím, že ano."
 
 #: ../data/level/golden-glen.cfg:2334
 msgid ""
@@ -3126,7 +3127,7 @@ msgstr "Uh ... Nemám nejmenší tušení. \nChlapci?"
 
 #: ../data/level/golden-glen.cfg:2338
 msgid "Anybody?"
-msgstr ""
+msgstr "Někdo?"
 
 #: ../data/level/golden-glen.cfg:2342
 msgid ""
@@ -3200,7 +3201,7 @@ msgstr ""
 msgid ""
 "If you already know how to play,\n"
 "then just walk to the next level."
-msgstr ""
+msgstr "Jestliže víš jak hrát,⏎ pokračuj do další úrovně"
 
 #: ../data/level/grassy-path.cfg:416
 msgid ""
@@ -3294,13 +3295,13 @@ msgstr ""
 msgid ""
 "Sticking out the tongue and spitting,\n"
 "are both done with the attack key."
-msgstr ""
+msgstr "Pro vystřelení jazyka i plivání⏎ stiskni útočné tlačítko"
 
 #: ../data/level/grassy-path.cfg:467
 msgid ""
 "There are a few ants just ahead.\n"
 "Feel free to try this on them."
-msgstr ""
+msgstr "Před tebou je pár mravenců.⏎ Zkus si to na nich."
 
 #: ../data/level/grassy-path.cfg:468
 msgid ""
@@ -3432,7 +3433,7 @@ msgstr ""
 msgid ""
 "There is no way to stop this;\n"
 "you can't destroy the anthill."
-msgstr ""
+msgstr "Toto nejde zastavit;⏎ Nemůžeš zničit mraveniště"
 
 #: ../data/level/grassy-path.cfg:738
 msgid ""
@@ -4521,7 +4522,7 @@ msgstr ""
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:606
 msgid "So nice to have things back to normal."
-msgstr ""
+msgstr "Jak milé, když se věci vracejí do normálu."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:608
 msgid "You bet."
@@ -4537,7 +4538,7 @@ msgstr ""
 msgid ""
 "Of course not.\n"
 "That's just nutty."
-msgstr ""
+msgstr "Samozřejmě že ne⏎ je to jen oříšek."
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:191
 msgid "Hey there - is everything going alright?"
@@ -4674,13 +4675,13 @@ msgstr ""
 msgid ""
 "...\n"
 "Mother of god."
-msgstr ""
+msgstr "... \nMatko Boží."
 
 #: ../data/level/milgrams-basement-junction.cfg:410
 msgid ""
 "How is that even possible?\n"
 "How did he get here?"
-msgstr ""
+msgstr "Jak je to vůbec možné? \nJak se sem dostal?"
 
 #: ../data/level/milgrams-basement-junction.cfg:412
 msgid ""
@@ -4792,11 +4793,11 @@ msgstr "Ahoj, já jsem Frogatto."
 msgid ""
 "Oh crap, oh crap!\n"
 "Boss! He's here!"
-msgstr ""
+msgstr "Á sakra, á sakra!⏎ Šéfe! Je tady!"
 
 #: ../data/level/milgrams-throne-room.cfg:57
 msgid "Who's here?"
-msgstr "Kdo je to?"
+msgstr "Kdo je tady?"
 
 #: ../data/level/milgrams-throne-room.cfg:58
 msgid ""
@@ -4917,7 +4918,7 @@ msgstr "Boj!"
 #: ../data/level/milgrams-throne-room.cfg:991
 #: ../data/objects/playable/map-selector.cfg:22
 msgid "Milgram's Throne Room"
-msgstr ""
+msgstr "Milgramova Trůnní Místnost"
 
 #: ../data/level/moonlit-ramparts.cfg:2112
 msgid ""
@@ -5316,11 +5317,11 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:72
 msgid "Lead Programmer"
-msgstr ""
+msgstr "Vedoucí programátor"
 
 #: ../data/level/tea-with-milgram.cfg:73
 msgid "Scripting Language Designer"
-msgstr ""
+msgstr "Designer skriptovacího jazyka"
 
 #: ../data/level/tea-with-milgram.cfg:74 ../data/level/tea-with-milgram.cfg:97
 #: ../data/level/tea-with-milgram.cfg:109
@@ -6105,7 +6106,7 @@ msgstr "Tvůj sklep?"
 msgid ""
 "Yes, here's the key.\n"
 "There're some ants down there."
-msgstr ""
+msgstr "Ano, tady je klíč.⏎ Jsou tam nějací mravenci."
 
 #: ../data/level/to-nenes-house-inside.cfg:52
 msgid ""

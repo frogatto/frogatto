@@ -4,14 +4,14 @@
 # 
 # Translators:
 # <fios@foramnagaidhlig.net>, 2012.
-#   <fios@foramnagaidhlig.net>, 2012.
+#   <fios@foramnagaidhlig.net>, 2012-2013.
 # GunChleoc <fios@foramnagaidhlig.net>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2012-11-28 22:10-0200\n"
-"PO-Revision-Date: 2012-12-15 21:03+0000\n"
+"PO-Revision-Date: 2013-01-13 16:05+0000\n"
 "Last-Translator: GunChleoc <fios@foramnagaidhlig.net>\n"
 "Language-Team: Gaelic, Scottish (http://www.transifex.com/projects/p/Frogatto/language/gd/)\n"
 "MIME-Version: 1.0\n"
@@ -1583,7 +1583,7 @@ msgstr "Chan urrainn dha bhith nas miosa\nna 'n cac ris a tha agam ri dèiligead
 msgid ""
 "Who knows?\n"
 "Maybe something good will come of it?"
-msgstr "Cò aige tha fios? 'S dòcha gun tig dad math às?"
+msgstr "Cò aig' a tha fios? 'S dòcha gun tig dad math às?"
 
 #: ../data/level/crevice-village-heights.cfg:294
 msgid ""
@@ -6508,7 +6508,7 @@ msgstr "Thia, chan eil ach glè bheag dhe dh'eòlas againn\nfiù 's mu eachdraid
 
 #: ../data/level/underground-pool.cfg:2513
 msgid "Who knows what we'll run into?"
-msgstr "Cò aige tha fios air na lorgas sinn ann fhathast?"
+msgstr "Cò aig' a tha fios air na lorgas sinn ann fhathast?"
 
 #: ../data/level/underground-pool.cfg:2515
 msgid ""
@@ -6537,7 +6537,7 @@ msgid ""
 "We might someday find ourselves in\n"
 "a situation where having the island\n"
 "on our side becomes indispensable."
-msgstr "'S dòcha gun tig a' latha a bhios e riatanach\ndhuinn gun seasadh an eilean ri ar taobh."
+msgstr "'S dòcha gun tig a' latha a bhios e riatanach\ndhuinn gun seasadh an eilean ri 'r taobh."
 
 #: ../data/level/underground-pool.cfg:2525
 msgid "Understood, sir."
