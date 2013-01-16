@@ -1670,9 +1670,16 @@ END_FUNCTION_DEF(decompress)
 		{}
 	private:
 		variant execute(const formula_callable& variables) const {
-			const variant haystack = args()[0]->evaluate(variables);
-			const variant needle = args()[1]->evaluate(variables);
-			return variant(strstr(haystack.as_string().c_str(), needle.as_string().c_str()) != NULL);
+			const std::string haystack = args()[0]->evaluate(variables).as_string();
+			const std::string needle = args()[1]->evaluate(variables).as_string();
+
+			const size_t pos = haystack.find(needle);
+
+			if(pos == std::string::npos) {
+				return variant(0);
+			} else {
+				return variant(pos + 1);
+			}
 		}
 	};
 
