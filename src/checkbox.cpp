@@ -49,7 +49,7 @@ checkbox::checkbox(const variant& v, game_logic::formula_callable* e)
 		hpadding_ = v["padding"][0].as_int();
 	}
 	checked_ = v["checked"].as_bool(false);
-	variant label_var = v["label"];
+	variant label_var = v["text"];
 	label_ = label_var.is_map() ? "" : label_var.as_string_default("Button");
 	label_widget_ = label_var.is_map() 
 		? widget_factory::create(label_var, e) 
