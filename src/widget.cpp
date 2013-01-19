@@ -73,9 +73,11 @@ widget::widget(const variant& v, game_logic::formula_callable* e)
 	}
 	if(v.has_key("tooltip")) {
 		if(v["tooltip"].is_string()) {
-			set_tooltip(v["tooltip"].as_string(), v["tooltip_size"].as_int(18));
+			SDL_Color color = v.has_key("tooltip_color") ? graphics::color(v["tooltip_color"]).as_sdl_color() : graphics::color_yellow();
+			set_tooltip(v["tooltip"].as_string(), v["tooltip_size"].as_int(18), color, v["tooltip_font"].as_string_default());
 		} else if(v["tooltip"].is_map()) {
-			set_tooltip(v["tooltip"]["text"].as_string(), v["tooltip"]["size"].as_int(18));
+			SDL_Color color = v["tooltip"].has_key("color") ? graphics::color(v["tooltip"]["color"]).as_sdl_color() : graphics::color_yellow();
+			set_tooltip(v["tooltip"]["text"].as_string(), v["tooltip"]["size"].as_int(18), color, v["tooltip"]["font"].as_string_default());
 		} else {
 			ASSERT_LOG(false, "Specify the tooltip as a string, e.g. \"tooltip\":\"Text to display on mouseover\", "
 				"or a map, e.g. \"tooltip\":{\"text\":\"Text to display.\", \"size\":14}");
@@ -193,7 +195,7 @@ void widget::normalize_event(SDL_Event* event, bool translate_coords)
 	}
 }
 
-void widget::set_tooltip(const std::string& str, int fontsize)
+void widget::set_tooltip(const std::string& str, int fontsize, const SDL_Color& color, const std::string& font)
 {
 	if(tooltip_displayed_ && tooltip_ != NULL) {
 		if(tooltip_->text == str) {
@@ -202,7 +204,7 @@ void widget::set_tooltip(const std::string& str, int fontsize)
 		gui::remove_tooltip(tooltip_);
 		tooltip_displayed_ = false;
 	}
-	tooltip_.reset(new gui::tooltip_item(std::string(i18n::tr(str)), fontsize));
+	tooltip_.reset(new gui::tooltip_item(std::string(i18n::tr(str)), fontsize, color, font));
 }
 
 bool widget::process_event(const SDL_Event& event, bool claimed)

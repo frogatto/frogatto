@@ -30,7 +30,7 @@ graphics::texture& text() {
 void set_tooltip(const boost::shared_ptr<tooltip_item>& tip)
 {
 	cur_tooltip = tip;
-	text() = font::render_text(cur_tooltip->text, graphics::color_yellow(), cur_tooltip->font_size);
+	text() = font::render_text(cur_tooltip->text, cur_tooltip->font_color, cur_tooltip->font_size, cur_tooltip->font_name);
 }
 
 void remove_tooltip(const boost::shared_ptr<tooltip_item>& tip)

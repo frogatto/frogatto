@@ -19,19 +19,19 @@
 
 namespace gui {
 
-label::label(const std::string& text, int size)
+label::label(const std::string& text, int size, const std::string& font)
 	: text_(i18n::tr(text)), border_size_(0), size_(size), down_(false),
 	  fixed_width_(false), highlight_color_(graphics::color_red()),
-	  highlight_on_mouseover_(false), draw_highlight_(false)
+	  highlight_on_mouseover_(false), draw_highlight_(false), font_(font)
 {
 	set_environment();
 	color_.r = color_.g = color_.b = 255;
 	recalculate_texture();
 }
 
-label::label(const std::string& text, const SDL_Color& color, int size)
+label::label(const std::string& text, const SDL_Color& color, int size, const std::string& font)
 	: text_(i18n::tr(text)), color_(color), border_size_(0),
-	  size_(size), down_(false),
+	  size_(size), down_(false), font_(font),
 	  fixed_width_(false), highlight_color_(graphics::color_red()),
 	  highlight_on_mouseover_(false), draw_highlight_(false)
 {
@@ -41,7 +41,8 @@ label::label(const std::string& text, const SDL_Color& color, int size)
 
 label::label(const variant& v, game_logic::formula_callable* e)
 	: widget(v,e), fixed_width_(false), down_(false), 
-	highlight_color_(graphics::color_red()), draw_highlight_(false)
+	highlight_color_(graphics::color_red()), draw_highlight_(false),
+	font_(v["font"].as_string_default())
 {
 	text_ = i18n::tr(v["text"].as_string());
 	color_ = v.has_key("color") 
@@ -92,6 +93,12 @@ void label::set_font_size(int size)
 	recalculate_texture();
 }
 
+void label::set_font(const std::string& font)
+{
+	font_ = font;
+	recalculate_texture();
+}
+
 void label::set_text(const std::string& text)
 {
 	text_ = i18n::tr(text);
@@ -134,11 +141,11 @@ void label::reformat_text()
 
 void label::recalculate_texture()
 {
-	texture_ = font::render_text(current_text(), color_, size_);
+	texture_ = font::render_text(current_text(), color_, size_, font_);
 	inner_set_dim(texture_.width(),texture_.height());
 
 	if(border_color_.get()) {
-		border_texture_ = font::render_text(current_text(), *border_color_, size_);
+		border_texture_ = font::render_text(current_text(), *border_color_, size_, font_);
 	}
 }
 
@@ -217,6 +224,8 @@ variant label::get_value(const std::string& key) const
 		return graphics::color(color_.r, color_.g, color_.b, color_.unused).write();
 	} else if(key == "size") {
 		return variant(size_);
+	} else if(key == "font") {
+		return variant(font_);
 	}
 	return widget::get_value(key);
 }
@@ -229,6 +238,8 @@ void label::set_value(const std::string& key, const variant& v)
 		set_color(graphics::color(v).as_sdl_color());
 	} else if(key == "size") {
 		set_font_size(v.as_int());
+	} else if(key == "font") {
+		set_font(v.as_string());
 	}
 	widget::set_value(key, v);
 }
@@ -261,7 +272,7 @@ void dialog_label::recalculate_texture()
 	std::string txt = current_text().substr(0, prog);
 
 	if(prog > 0) {
-		set_texture(font::render_text(txt, color(), size()));
+		set_texture(font::render_text(txt, color(), size(), font()));
 	} else {
 		set_texture(graphics::texture());
 	}

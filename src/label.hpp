@@ -18,6 +18,7 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 
+#include "color_chart.hpp"
 #include "graphics.hpp"
 #include "texture.hpp"
 #include "widget.hpp"
@@ -36,19 +37,24 @@ class label : public widget
 {
 public:
 	static label_ptr create(const std::string& text,
-	                        const SDL_Color& color, int size=14) {
-		return label_ptr(new label(text, color, size));
+	                        const SDL_Color& color, 
+							int size=14, 
+							const std::string& font="") 
+	{
+		return label_ptr(new label(text, color, size, font));
 	}
-	explicit label(const std::string& text, const SDL_Color& color, int size=14);
-	explicit label(const std::string& text, int size=14);
+	explicit label(const std::string& text, const SDL_Color& color, int size=14, const std::string& font="");
+	explicit label(const std::string& text, int size=14, const std::string& font="");
 	explicit label(const variant& v, game_logic::formula_callable* e);
 
 	void set_font_size(int font_size);
+	void set_font(const std::string& font);
 	void set_color(const SDL_Color& color);
 	void set_text(const std::string& text);
 	void set_fixed_width(bool fixed_width);
 	virtual void set_dim(int x, int y);
 	SDL_Color color() { return color_; }
+	std::string font() const { return font_; }
 	int size() { return size_; }
 	std::string text() { return text_; }
 	void set_click_handler(boost::function<void()> click) { on_click_ = click; }
@@ -75,6 +81,7 @@ private:
 	SDL_Color highlight_color_;
 	boost::scoped_ptr<SDL_Color> border_color_;
 	int size_;
+	std::string font_;
 	bool fixed_width_;
 
 	bool in_label(int xloc, int yloc) const;
