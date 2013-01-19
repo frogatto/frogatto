@@ -5,7 +5,10 @@ OPT = -O2 -lX11 -lz -fno-inline-functions
 
 include Makefile.common
 
-%.o : src/%.cpp
+src/%.o : src/%.cpp
+	$(CXX) $(CCFLAGS) -DIMPLEMENT_SAVE_PNG -fno-inline-functions `sdl-config --cflags` -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Werror=return-type -fthreadsafe-statics -g $(OPT) -c $<
+
+src/server/%.o: src/server/%.cpp
 	$(CXX) $(CCFLAGS) -DIMPLEMENT_SAVE_PNG -fno-inline-functions `sdl-config --cflags` -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Werror=return-type -fthreadsafe-statics -g $(OPT) -c $<
 
 game: $(objects)

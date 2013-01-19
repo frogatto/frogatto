@@ -1,5 +1,4 @@
 //use non-threaded loading unless/until we can fix threaded loading.
-#include "load_level_nothread.cpp"
 
 #if 0
 #include <assert.h>
