@@ -28,10 +28,22 @@ const char* FontFile = "UbuntuMono-R";
 typedef std::map<std::pair<std::string, int>, TTF_Font*> font_map;
 font_map font_table;
 
+const std::string& get_font_path(const std::string& name) {
+	static std::map<std::string,std::string> res;
+	if(res.empty()) {
+		module::get_unique_filenames_under_dir("data/fonts/", &res);
+	}
+	std::map<std::string, std::string>::const_iterator itor = module::find(res, name);
+	if(itor == res.end()) {
+		ASSERT_LOG(false, "FONT FILE NOT FOUND: " << name);
+	}
+	return itor->second;
+}
+
 TTF_Font* get_font(int size, const std::string& font_name="")
 {
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE
-	std::string fontn = module::map_file("data/fonts/" + (font_name.empty() ? FontFile : font_name) + ".ttf");
+	std::string fontn = get_font_path((font_name.empty() ? FontFile : font_name) + ".ttf");
 	TTF_Font* font = NULL;
 	font_map::const_iterator it = font_table.find(std::pair<std::string,int>(fontn,size));
 	if(it == font_table.end()) {
