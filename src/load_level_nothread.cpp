@@ -34,7 +34,6 @@ const std::string& get_level_path(const std::string& name) {
 	}
 	std::map<std::string, std::string>::const_iterator itor = module::find(get_level_paths(), name);
 	if(itor == get_level_paths().end()) {
-		std::cerr << "FILE NOT FOUND: " << name << std::endl;
 		ASSERT_LOG(false, "FILE NOT FOUND: " << name);
 	}
 	return itor->second;
