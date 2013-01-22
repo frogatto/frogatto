@@ -413,6 +413,12 @@ void game::handle_message(int nplayer, const variant& msg)
 		start_game();
 		return;
 	} else if(type == "request_updates") {
+		if(msg.has_key("state_id") && !doc_.is_null()) {
+			const variant state_id = msg["state_id"];
+			if(state_id.as_int() != state_id_) {
+				send_game_state(nplayer);
+			}
+		}
 		return;
 	}
 
@@ -475,6 +481,7 @@ void game::execute_command(variant cmd)
 		if(cmd.has_key("execute")) {
 			game_logic::formula f(cmd["execute"]);
 			game_logic::formula_callable_ptr callable(map_into_callable(cmd["arg"]));
+			ASSERT_LOG(callable.get(), "NO ARG SPECIFIED IN EXECUTE AT " << cmd.debug_location());
 			variant v = f.execute(*callable);
 			execute_command(v);
 		}

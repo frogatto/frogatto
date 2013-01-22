@@ -13,7 +13,7 @@ vector_text::vector_text(const variant& node)
 	: text_(i18n::tr(node["text"].as_string())), 
 	visible_(node["visible"].as_bool(true)),
 	size_(node["size"].as_int(12)),
-	font_(node["font"].as_string_default("UbuntuMono-R"))
+	font_(node["font"].as_string_default())
 {
 	std::vector<int> r = node["rect"].as_list_int();
 	draw_area_ = rect(r[0], r[1], r[2], r[3]);
@@ -52,7 +52,7 @@ void vector_text::recalculate_texture()
 	textures_.clear();
 
 	size_t tex_y = 0;
-	int letter_size = font::char_width(size());
+	int letter_size = font::char_width(size(), font_);
 	std::vector<std::string> lines;
 
 	foreach(const std::string& paragraph, util::split(text_, '\n')) {
@@ -77,7 +77,7 @@ void vector_text::recalculate_texture()
 
 	foreach(const std::string line, lines) {
 		if(tex_y < height()) {
-			graphics::texture tex = font::render_text(line, color_, size_);
+			graphics::texture tex = font::render_text(line, color_, size_, font_);
 			if(align_ == ALIGN_LEFT) {
 				textures_.push_back(offset_texture(tex, point(0,tex_y)));
 			} else if(align_ == ALIGN_CENTER) {

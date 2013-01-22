@@ -14,10 +14,16 @@ include Makefile.common
 
 extra_objects = eglport-tegra.o
 
-%.o : src/%.cpp
+src/%.o : src/%.cpp
 	$(CXX) -DIMPLEMENT_SAVE_PNG -g $(OPT) -I$(INCLUDE) -I$(INCLUDE)/SDL -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -fthreadsafe-statics -c $<
 
-%.o : src/%.c
+src/%.o : src/%.c
+
+src/server/%.o : src/server/%.cpp
+	$(CXX) -DIMPLEMENT_SAVE_PNG -g $(OPT) -I$(INCLUDE) -I$(INCLUDE)/SDL -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -fthreadsafe-statics -c $<
+
+src/server/%.o : src/server/%.c
+	$(CC) -DIMPLEMENT_SAVE_PNG -fno-inline-functions -g $(OPT) -I$(INCLUDE) -I$(INCLUDE)/SDL -D_GNU_SOURCE=1 -D_REENTRANT -Wreturn-type -c $<
 	$(CC) -DIMPLEMENT_SAVE_PNG -fno-inline-functions -g $(OPT) -I$(INCLUDE) -I$(INCLUDE)/SDL -D_GNU_SOURCE=1 -D_REENTRANT -Wreturn-type -c $<
 
 game: $(objects) $(extra_objects)

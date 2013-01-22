@@ -1,6 +1,7 @@
 # vi: syntax=python:et:ts=4
 
 import os.path
+import sys
 
 # Warn user of current set of build options.
 if os.path.exists('.scons-option-cache'):
@@ -22,11 +23,13 @@ opts.AddVariables(
     ('jobs', 'Set the number of parallel compilations', "1", lambda key, value, env: int(value), int),
     )
 
-env = Environment(options = opts)
+env = Environment(options = opts, CPPPATH = ".")
 
 env.ParseConfig("sdl-config --libs --cflags")
-env.Append(LIBS = ["GL", "GLU", "GLEW", "SDL_mixer", "SDL_image", "SDL_ttf", "boost_regex", "boost_system", "boost_iostreams", "png"])
+env.Append(LIBS = ["GL", "GLU", "GLEW", "SDL_mixer", "SDL_image", "SDL_ttf", "boost_regex", "boost_system", "boost_iostreams", "png", "z"])
 env.Append(CXXFLAGS= ["-pthread", "-DIMPLEMENT_SAVE_PNG"], LINKFLAGS = ["-pthread"])
+if sys.platform.startswith('linux'):
+    env.Append(LIBS = ["X11"])
 
 opts.Save('.scons-option-cache', env)
 

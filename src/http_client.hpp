@@ -58,12 +58,24 @@ private:
 	void handle_send(connection_ptr conn, const boost::system::error_code& e, size_t nbytes);
 	void handle_receive(connection_ptr conn, const boost::system::error_code& e, size_t nbytes);
 
+	void async_connect(connection_ptr conn);
+
+	//enum which represents whether the endpoint_iterator_ points to a
+	//valid endpoint that we can connect to.
+	enum RESOLUTION_STATE { RESOLUTION_NOT_STARTED,
+	                        RESOLUTION_IN_PROGRESS,
+							RESOLUTION_DONE };
+	
+	RESOLUTION_STATE resolution_state_;
+
 	tcp::resolver resolver_;
 	tcp::resolver::query resolver_query_;
 	tcp::resolver::iterator endpoint_iterator_;
 	std::string host_;
 
 	int in_flight_;
+
+	std::vector<connection_ptr> connections_waiting_on_dns_;
 };
 
 

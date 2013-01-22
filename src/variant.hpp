@@ -241,6 +241,7 @@ public:
 
 	void set_debug_info(const debug_info& info);
 	const debug_info* get_debug_info() const;
+	std::string debug_location() const;
 
 	std::pair<variant*,variant*> range() const;
 

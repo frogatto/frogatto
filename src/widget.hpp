@@ -44,7 +44,7 @@ public:
 	int y() const;
 	int width() const;
 	int height() const;
-	void set_tooltip(const std::string& str, int fontsize=18);
+	void set_tooltip(const std::string& str, int fontsize=18, const SDL_Color& color=graphics::color_yellow(), const std::string& font="");
 	bool visible() { return visible_; }
 	void set_visible(bool visible) { visible_ = visible; }
 	std::string id() const { return id_; }
@@ -89,6 +89,8 @@ private:
 	boost::shared_ptr<gui::tooltip_item> tooltip_;
 	bool tooltip_displayed_;
 	int tooltip_fontsize_;
+	SDL_Color tooltip_color_;
+	std::string tooltip_font_;
 	bool visible_;
 	game_logic::formula_callable* environ_;
 	void process_delegate();

@@ -591,7 +591,7 @@ extern "C" int main(int argcount, char** argvec)
 		if(glGetString && (glstrings = glGetString(GL_VERSION)) != NULL) {
 			std::cerr << "OpenGL version: " << reinterpret_cast<const char *>(glstrings) << std::endl;
 		}
-		std::cerr << "glCreateShader is NULL. Check that your current video card drivers support"
+		std::cerr << "glCreateShader is NULL. Check that your current video card drivers support "
 			<< "an OpenGL version >= 2. Exiting." << std::endl;
 		return 0;
 	}

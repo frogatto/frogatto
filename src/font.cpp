@@ -8,11 +8,14 @@
 #include "font.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
+#include "module.hpp"
 #include "string_utils.hpp"
 #include "surface.hpp"
 
 /*  This manages the TTF loading library, and allows you to use fonts.
-	The only thing one will normally need to use is render_text(), and possibly char_width(), char_height() if you need to know the size of the resulting text. */
+	The only thing one will normally need to use is render_text(), and 
+	possibly char_width(), char_height() if you need to know the size 
+	of the resulting text. */
 
 namespace font {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_HARMATTAN || TARGET_OS_IPHONE
@@ -20,23 +23,41 @@ class TTF_Font;
 #endif
 
 namespace {
-const char* FontFile = "UbuntuMono-R.ttf";
+const char* FontFile = "UbuntuMono-R";
 
-std::map<int, TTF_Font*> font_table;
+typedef std::map<std::pair<std::string, int>, TTF_Font*> font_map;
+font_map font_table;
 
-TTF_Font* get_font(int size)
+const std::string& get_font_path(const std::string& name) {
+	static std::map<std::string,std::string> res;
+	if(res.empty()) {
+		module::get_unique_filenames_under_dir("data/fonts/", &res);
+	}
+	std::map<std::string, std::string>::const_iterator itor = module::find(res, name);
+	if(itor == res.end()) {
+		ASSERT_LOG(false, "FONT FILE NOT FOUND: " << name);
+	}
+	return itor->second;
+}
+
+TTF_Font* get_font(int size, const std::string& font_name="")
 {
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE
-	TTF_Font*& font = font_table[size];
-	if(font == NULL) {
-		font = TTF_OpenFont(FontFile, size);
+	std::string fontn = get_font_path((font_name.empty() ? FontFile : font_name) + ".ttf");
+	TTF_Font* font = NULL;
+	font_map::const_iterator it = font_table.find(std::pair<std::string,int>(fontn,size));
+	if(it == font_table.end()) {
+		font = TTF_OpenFont(fontn.c_str(), size);
 		if(font == NULL) {
 			std::ostringstream s;
 
-			s << "Failed to open font: " << FontFile;
+			s << "Failed to open font: " << fontn;
 			ASSERT_LOG(false, s.str());
 			exit(0);
 		}
+		font_table[std::pair<std::string,int>(fontn,size)] = font;
+	} else {
+		font = it->second;
 	}
 
 	return font;
@@ -49,10 +70,12 @@ struct CacheKey {
 	std::string text;
 	graphics::color color;
 	int font_size;
+	std::string font_name;
 
 	bool operator<(const CacheKey& k) const {
-		return text < k.text || text == k.text && color < k.color ||
-		       text == k.text && color == k.color && font_size < k.font_size;
+		return text < k.text || text == k.text && color < k.color 
+			|| text == k.text && color == k.color && font_size < k.font_size 
+			|| text == k.text && color == k.color && font_size == k.font_size && font_name < k.font_name;
 	}
 };
 
@@ -90,15 +113,21 @@ manager::manager()
 manager::~manager()
 {
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE
+	font_map::iterator it = font_table.begin();
+	while(it != font_table.end()) {
+		TTF_CloseFont(it->second);
+		font_table.erase(it++);
+	}
+
 	TTF_Quit();
 #endif
 }
 
 graphics::texture render_text_uncached(const std::string& text,
-                                       const SDL_Color& color, int size)
+                                       const SDL_Color& color, int size, const std::string& font_name)
 {
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE
-	TTF_Font* font = get_font(size);
+	TTF_Font* font = get_font(size, font_name);
 
 	graphics::surface s;
 	if(std::find(text.begin(), text.end(), '\n') == text.end()) {
@@ -138,15 +167,15 @@ graphics::texture render_text_uncached(const std::string& text,
 }
 
 graphics::texture render_text(const std::string& text,
-                              const SDL_Color& color, int size)
+                              const SDL_Color& color, int size, const std::string& font_name)
 {
-	CacheKey key = {text, graphics::color(color.r, color.g, color.b), size};
+	CacheKey key = {text, graphics::color(color.r, color.g, color.b), size, font_name};
 	RenderCache::const_iterator cache_itor = cache().find(key);
 	if(cache_itor != cache().end()) {
 		return cache_itor->second;
 	}
 
-	graphics::texture res = render_text_uncached(text, color, size);
+	graphics::texture res = render_text_uncached(text, color, size, font_name);
 
 	if(res.width()*res.height() <= 256*256) {
 		if(cache().size() > 512) {
@@ -159,7 +188,7 @@ graphics::texture render_text(const std::string& text,
 	return res;
 }
 
-int char_width(int size)
+int char_width(int size, const std::string& fn)
 {
 	static std::map<int, int> size_cache;
 	int& width = size_cache[size];
@@ -167,12 +196,12 @@ int char_width(int size)
 		return width;
 	}
 	SDL_Color color = {0, 0, 0, 0};
-	graphics::texture t(render_text("ABCDEFABCDEF", color, size));
+	graphics::texture t(render_text("ABCDEFABCDEF", color, size, fn));
 	width = t.width()/12;
 	return width;
 }
 
-int char_height(int size)
+int char_height(int size, const std::string& fn)
 {
 	static std::map<int, int> size_cache;
 	int& height = size_cache[size];
@@ -180,7 +209,7 @@ int char_height(int size)
 		return height;
 	}
 	SDL_Color color = {0, 0, 0, 0};
-	graphics::texture t(render_text("A", color, size));
+	graphics::texture t(render_text("A", color, size, fn));
 	height = t.height();
 	return height;
 }

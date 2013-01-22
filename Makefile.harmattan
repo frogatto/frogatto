@@ -8,7 +8,10 @@ include Makefile.common
 
 LDADD=-lGLES_CM -lSDLmain -lSDL -lSDL_image -lSDL_mixer
 
-%.o : src/%.cpp
+src/%.o : src/%.cpp
+	$(CXX) -DIMPLEMENT_SAVE_PNG -fno-inline-functions -g $(OPT) `sdl-config --cflags` `pkg-config gconf-2.0 --cflags` -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -fthreadsafe-statics -c $<
+
+src/server%.o : src/server/%.cpp
 	$(CXX) -DIMPLEMENT_SAVE_PNG -fno-inline-functions -g $(OPT) `sdl-config --cflags` `pkg-config gconf-2.0 --cflags` -D_GNU_SOURCE=1 -D_REENTRANT -Wnon-virtual-dtor -Wreturn-type -fthreadsafe-statics -c $<
 
 game: $(objects)

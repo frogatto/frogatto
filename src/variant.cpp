@@ -345,6 +345,16 @@ const variant::debug_info* variant::get_debug_info() const
 	return NULL;
 }
 
+std::string variant::debug_location() const
+{
+	const variant::debug_info* info = get_debug_info();
+	if(!info) {
+		return "(unknown location)";
+	} else {
+		return info->message();
+	}
+}
+
 variant variant::create_delayed(game_logic::const_formula_ptr f, game_logic::const_formula_callable_ptr callable)
 {
 	variant v;
