@@ -195,6 +195,7 @@
 		C089D458162BDFC2009D2878 /* UbuntuMono-RI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C089D44F162BDF54009D2878 /* UbuntuMono-RI.ttf */; };
 		C089D459162BDFC5009D2878 /* FreeMono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C089D454162BDF89009D2878 /* FreeMono.ttf */; };
 		C089D45A162BDFC8009D2878 /* DejaVuSans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C089D453162BDF89009D2878 /* DejaVuSans.ttf */; };
+		C09DDC5416AF330D005CE110 /* language_dialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C09DDC5216AF330D005CE110 /* language_dialog.cpp */; };
 		C0B87BBA166603C300D66B15 /* icon.iconset in Resources */ = {isa = PBXBuildFile; fileRef = C0B87BB9166603C300D66B15 /* icon.iconset */; };
 		C0B87BC0166622BA00D66B15 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = C0B87BBF166622BA00D66B15 /* icon.icns */; };
 		C0DDFDC6163F7FF800F727DD /* sys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0406533163F790000F84F94 /* sys.cpp */; };
@@ -619,6 +620,8 @@
 		C089D451162BDF7B009D2878 /* master-config.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "master-config.cfg"; path = "../master-config.cfg"; sourceTree = "<group>"; };
 		C089D453162BDF89009D2878 /* DejaVuSans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = DejaVuSans.ttf; path = ../DejaVuSans.ttf; sourceTree = "<group>"; };
 		C089D454162BDF89009D2878 /* FreeMono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FreeMono.ttf; path = ../FreeMono.ttf; sourceTree = "<group>"; };
+		C09DDC5216AF330D005CE110 /* language_dialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = language_dialog.cpp; sourceTree = "<group>"; };
+		C09DDC5316AF330D005CE110 /* language_dialog.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = language_dialog.hpp; sourceTree = "<group>"; };
 		C0B397F71636666C00D010E0 /* Frogatto.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Frogatto.entitlements; sourceTree = "<group>"; };
 		C0B87BB9166603C300D66B15 /* icon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = icon.iconset; sourceTree = "<group>"; };
 		C0B87BBF166622BA00D66B15 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
@@ -732,6 +735,8 @@
 		C010C5BC160AFD4C006E7D90 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				C09DDC5216AF330D005CE110 /* language_dialog.cpp */,
+				C09DDC5316AF330D005CE110 /* language_dialog.hpp */,
 				C0406533163F790000F84F94 /* sys.cpp */,
 				C0406534163F790000F84F94 /* sys.hpp */,
 				C010C5BD160AFD4C006E7D90 /* achievements.cpp */,
@@ -1357,6 +1362,7 @@
 				C010C7F9160AFD4E006E7D90 /* widget.cpp in Sources */,
 				C010C7FA160AFD4E006E7D90 /* widget_factory.cpp in Sources */,
 				C010C7FC160AFD4E006E7D90 /* wml_formula_callable.cpp in Sources */,
+				C09DDC5416AF330D005CE110 /* language_dialog.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
