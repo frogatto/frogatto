@@ -11,6 +11,7 @@
 		C00160CD16A2991D001DAEB9 /* tbs_server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C00160C916A2991D001DAEB9 /* tbs_server.cpp */; };
 		C00160CE16A2991D001DAEB9 /* tbs_web_server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C00160CB16A2991D001DAEB9 /* tbs_web_server.cpp */; };
 		C00160CF16A2A8A7001DAEB9 /* http_server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C66E160AFD4C006E7D90 /* http_server.cpp */; };
+		C00160D116AF2E00001DAEB9 /* load_level_nothread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C00160D016AF2E00001DAEB9 /* load_level_nothread.cpp */; };
 		C00E2A9D1687D11100DEB111 /* icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = C00E2A9C1687D11000DEB111 /* icon.icns */; };
 		C010C572160AFAD9006E7D90 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C010C571160AFAD9006E7D90 /* Cocoa.framework */; };
 		C010C5A1160AFB8F006E7D90 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C010C596160AFB8F006E7D90 /* InfoPlist.strings */; };
@@ -193,12 +194,6 @@
 		C010C82C160C69BB006E7D90 /* SDL_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C010C82B160C69BB006E7D90 /* SDL_ttf.framework */; };
 		C010C835160C750C006E7D90 /* SDL_ttf.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C010C82B160C69BB006E7D90 /* SDL_ttf.framework */; };
 		C089D452162BDF7B009D2878 /* master-config.cfg in Resources */ = {isa = PBXBuildFile; fileRef = C089D451162BDF7B009D2878 /* master-config.cfg */; };
-		C089D455162BDFBA009D2878 /* UbuntuMono-B.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C089D44C162BDF54009D2878 /* UbuntuMono-B.ttf */; };
-		C089D456162BDFBD009D2878 /* UbuntuMono-BI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C089D44D162BDF54009D2878 /* UbuntuMono-BI.ttf */; };
-		C089D457162BDFBF009D2878 /* UbuntuMono-R.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C089D44E162BDF54009D2878 /* UbuntuMono-R.ttf */; };
-		C089D458162BDFC2009D2878 /* UbuntuMono-RI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C089D44F162BDF54009D2878 /* UbuntuMono-RI.ttf */; };
-		C089D459162BDFC5009D2878 /* FreeMono.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C089D454162BDF89009D2878 /* FreeMono.ttf */; };
-		C089D45A162BDFC8009D2878 /* DejaVuSans.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C089D453162BDF89009D2878 /* DejaVuSans.ttf */; };
 		C0B87BD4166725A700D66B15 /* formula_object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0B87BD21667256F00D66B15 /* formula_object.cpp */; };
 		C0DDFDC6163F7FF800F727DD /* sys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0406533163F790000F84F94 /* sys.cpp */; };
 		C0EF2A5616215F78004CD227 /* libboost_iostreams.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0EF2A5316215F78004CD227 /* libboost_iostreams.dylib */; };
@@ -242,6 +237,7 @@
 		C00160CA16A2991D001DAEB9 /* tbs_server.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = tbs_server.hpp; sourceTree = "<group>"; };
 		C00160CB16A2991D001DAEB9 /* tbs_web_server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tbs_web_server.cpp; sourceTree = "<group>"; };
 		C00160CC16A2991D001DAEB9 /* tbs_web_server.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = tbs_web_server.hpp; sourceTree = "<group>"; };
+		C00160D016AF2E00001DAEB9 /* load_level_nothread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = load_level_nothread.cpp; sourceTree = "<group>"; };
 		C00E2A9C1687D11000DEB111 /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = "<group>"; };
 		C010C56D160AFAD9006E7D90 /* Frogatto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Frogatto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C010C571160AFAD9006E7D90 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -622,13 +618,7 @@
 		C010C82B160C69BB006E7D90 /* SDL_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL_ttf.framework; sourceTree = "<group>"; };
 		C0406533163F790000F84F94 /* sys.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sys.cpp; sourceTree = "<group>"; };
 		C0406534163F790000F84F94 /* sys.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sys.hpp; sourceTree = "<group>"; };
-		C089D44C162BDF54009D2878 /* UbuntuMono-B.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "UbuntuMono-B.ttf"; path = "../UbuntuMono-B.ttf"; sourceTree = "<group>"; };
-		C089D44D162BDF54009D2878 /* UbuntuMono-BI.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "UbuntuMono-BI.ttf"; path = "../UbuntuMono-BI.ttf"; sourceTree = "<group>"; };
-		C089D44E162BDF54009D2878 /* UbuntuMono-R.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "UbuntuMono-R.ttf"; path = "../UbuntuMono-R.ttf"; sourceTree = "<group>"; };
-		C089D44F162BDF54009D2878 /* UbuntuMono-RI.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "UbuntuMono-RI.ttf"; path = "../UbuntuMono-RI.ttf"; sourceTree = "<group>"; };
 		C089D451162BDF7B009D2878 /* master-config.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "master-config.cfg"; path = "../master-config.cfg"; sourceTree = "<group>"; };
-		C089D453162BDF89009D2878 /* DejaVuSans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = DejaVuSans.ttf; path = ../DejaVuSans.ttf; sourceTree = "<group>"; };
-		C089D454162BDF89009D2878 /* FreeMono.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FreeMono.ttf; path = ../FreeMono.ttf; sourceTree = "<group>"; };
 		C0B397F71636666C00D010E0 /* Frogatto.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Frogatto.entitlements; sourceTree = "<group>"; };
 		C0B87BB9166603C300D66B15 /* icon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = icon.iconset; sourceTree = "<group>"; };
 		C0B87BD21667256F00D66B15 /* formula_object.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = formula_object.cpp; sourceTree = "<group>"; };
@@ -958,6 +948,7 @@
 				C010C697160AFD4C006E7D90 /* light.hpp */,
 				C010C698160AFD4C006E7D90 /* load_level.cpp */,
 				C010C699160AFD4C006E7D90 /* load_level.hpp */,
+				C00160D016AF2E00001DAEB9 /* load_level_nothread.cpp */,
 				C010C69B160AFD4C006E7D90 /* loading_screen.cpp */,
 				C010C69C160AFD4C006E7D90 /* loading_screen.hpp */,
 				C010C69D160AFD4C006E7D90 /* main.cpp */,
@@ -1121,13 +1112,7 @@
 		C089D450162BDF59009D2878 /* Other Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C089D453162BDF89009D2878 /* DejaVuSans.ttf */,
-				C089D454162BDF89009D2878 /* FreeMono.ttf */,
 				C089D451162BDF7B009D2878 /* master-config.cfg */,
-				C089D44C162BDF54009D2878 /* UbuntuMono-B.ttf */,
-				C089D44D162BDF54009D2878 /* UbuntuMono-BI.ttf */,
-				C089D44E162BDF54009D2878 /* UbuntuMono-R.ttf */,
-				C089D44F162BDF54009D2878 /* UbuntuMono-RI.ttf */,
 			);
 			name = "Other Resources";
 			sourceTree = "<group>";
@@ -1191,12 +1176,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C089D45A162BDFC8009D2878 /* DejaVuSans.ttf in Resources */,
-				C089D459162BDFC5009D2878 /* FreeMono.ttf in Resources */,
-				C089D455162BDFBA009D2878 /* UbuntuMono-B.ttf in Resources */,
-				C089D456162BDFBD009D2878 /* UbuntuMono-BI.ttf in Resources */,
-				C089D457162BDFBF009D2878 /* UbuntuMono-R.ttf in Resources */,
-				C089D458162BDFC2009D2878 /* UbuntuMono-RI.ttf in Resources */,
 				C010C5A1160AFB8F006E7D90 /* InfoPlist.strings in Resources */,
 				C010C5A4160AFB8F006E7D90 /* SDLMain.nib in Resources */,
 				C010C800160AFD82006E7D90 /* data in Resources */,
@@ -1385,6 +1364,7 @@
 				C010C7FA160AFD4E006E7D90 /* widget_factory.cpp in Sources */,
 				C010C7FC160AFD4E006E7D90 /* wml_formula_callable.cpp in Sources */,
 				C00160C716A29908001DAEB9 /* tbs_bot.cpp in Sources */,
+				C00160D116AF2E00001DAEB9 /* load_level_nothread.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
