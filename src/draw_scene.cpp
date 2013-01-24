@@ -29,6 +29,10 @@
 #include "texture.hpp"
 #include "texture_frame_buffer.hpp"
 
+#ifndef NO_EDITOR
+#include "tooltip.hpp"
+#endif
+
 namespace {
 
 std::vector<rect> current_debug_rects;
@@ -391,6 +395,7 @@ void render_scene(const level& lvl, screen_position& pos, const entity* focus, b
 
 #ifndef NO_EDITOR
 	debug_console::draw();
+	gui::draw_tooltip();
 #endif
 
 	debug_console::draw_graph();
