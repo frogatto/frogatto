@@ -167,7 +167,7 @@ void http_client::handle_receive(connection_ptr conn, const boost::system::error
 {
 	if(e) {
 		--in_flight_;
-		fprintf(stderr, "ERROR WITH (%d, %s)\n", e.value(), conn->response.c_str());
+		fprintf(stderr, "ERROR IN HTTP RECEIVE: (%d, %s)\n", e.value(), conn->response.c_str());
 		if(e.value() == 2) {
 			const char* end_headers = strstr(conn->response.c_str(), "\n\n");
 			const char* end_headers2 = strstr(conn->response.c_str(), "\n\r\n\n");
