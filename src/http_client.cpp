@@ -170,7 +170,7 @@ void http_client::handle_receive(connection_ptr conn, const boost::system::error
 		fprintf(stderr, "ERROR IN HTTP RECEIVE: (%d, %s)\n", e.value(), conn->response.c_str());
 		if(e.value() == 2) {
 			const char* end_headers = strstr(conn->response.c_str(), "\n\n");
-			const char* end_headers2 = strstr(conn->response.c_str(), "\n\r\n\n");
+			const char* end_headers2 = strstr(conn->response.c_str(), "\r\n\r\n");
 			if(end_headers2 && (end_headers == NULL || end_headers2 < end_headers)) {
 				end_headers = end_headers2 + 2;
 			}
@@ -192,8 +192,9 @@ void http_client::handle_receive(connection_ptr conn, const boost::system::error
 	if(conn->expected_len == -1) {
 		int header_term_len = 2;
 		const char* end_headers = strstr(conn->response.c_str(), "\n\n");
-		if(!end_headers) {
-			end_headers = strstr(conn->response.c_str(), "\r\n\r\n");
+		const char* end_headers2 = strstr(conn->response.c_str(), "\r\n\r\n");
+		if(end_headers2 && (end_headers == NULL || end_headers2 < end_headers)) {
+			end_headers = end_headers2;
 			header_term_len = 4;
 		}
 		if(end_headers) {
@@ -222,9 +223,10 @@ void http_client::handle_receive(connection_ptr conn, const boost::system::error
 		//We have the full response now -- handle it.
 		const char* end_headers = strstr(conn->response.c_str(), "\n\n");
 		int header_term_len = 2;
-		if(!end_headers) {
+		const char* end_headers2 = strstr(conn->response.c_str(), "\r\n\r\n");
+		if(end_headers2 && (end_headers == NULL || end_headers2 < end_headers)) {
+			end_headers = end_headers2;
 			header_term_len = 4;
-			end_headers = strstr(conn->response.c_str(), "\r\n\r\n");
 		}
 		ASSERT_LOG(end_headers, "COULD NOT FIND END OF HEADERS IN MESSAGE: " << conn->response);
 		--in_flight_;

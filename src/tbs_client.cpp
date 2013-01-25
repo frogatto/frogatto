@@ -31,7 +31,11 @@ void client::recv_handler(const std::string& msg)
 		variant v;
 		{
 			const game_logic::wml_formula_callable_read_scope read_scope;
-			v = json::parse(msg);
+			try {
+				v = json::parse(msg);
+			} catch(json::parse_error& e) {
+				ASSERT_LOG(false, "ERROR PROCESSING MESSAGE RETURNED FROM TBS SERVER DOC: --BEGIN--" << msg << "--END-- ERROR: " << e.error_message());
+			}
 			if(v.has_key(variant("serialized_objects"))) {
 				foreach(variant obj_node, v["serialized_objects"]["character"].as_list()) {
 					game_logic::wml_serializable_formula_callable_ptr obj = obj_node.try_convert<game_logic::wml_serializable_formula_callable>();
