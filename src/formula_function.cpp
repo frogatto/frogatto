@@ -278,6 +278,19 @@ FUNCTION_DEF(bind_closure, 2, 2, "bind_closure(fn, obj): binds the given lambda 
 
 END_FUNCTION_DEF(bind_closure)
 
+FUNCTION_DEF(singleton, 1, 1, "singleton(string typename): create a singleton object with the given typename")
+	variant type = args()[0]->evaluate(variables);
+
+	static std::map<variant, boost::intrusive_ptr<formula_object> > cache;
+	if(cache.count(type)) {
+		return variant(cache[type].get());
+	}
+
+	boost::intrusive_ptr<formula_object> obj(formula_object::create(type.as_string(), variant()));
+	cache[type] = obj;
+	return variant(obj.get());
+END_FUNCTION_DEF(singleton)
+
 FUNCTION_DEF(construct, 1, 2, "construct(string typename, arg): construct an object with the given typename")
 	formula::fail_if_static_context();
 	variant type = args()[0]->evaluate(variables);

@@ -126,6 +126,7 @@ objects = \
 	src/raster.o \
 	src/raster_distortion.o \
 	src/rectangle_rotator.o \
+	src/rich_text_label.o \
 	src/scrollbar_widget.o \
 	src/scrollable_widget.o \
 	src/segment_editor_dialog.o \
