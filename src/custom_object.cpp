@@ -319,6 +319,12 @@ custom_object::custom_object(variant node)
 	}
 #endif
 
+#ifdef USE_BOX2D
+	if(node.has_key("body")) {
+		body_.reset(new box2d::body(node["body"]));
+	}
+#endif
+
 	//fprintf(stderr, "object address= %p, ", this);
 	//fprintf(stderr, "zsub_order=%d,", zsub_order_);
 }
@@ -364,6 +370,12 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	}
 	for(size_t n = 0; n < type_->effects().size(); ++n) {
 		effects_.push_back(new gles2::shader_program(*type_->effects()[n]));
+	}
+#endif
+
+#ifdef USE_BOX2D
+	if(type_->body()) {
+		body_.reset(new box2d::body(*type_->body()));
 	}
 #endif
 
@@ -464,6 +476,26 @@ custom_object::custom_object(const custom_object& o) :
 		effects_.push_back(new gles2::shader_program(*o.effects_[n]));
 	}
 #endif
+
+#ifdef USE_BOX2D
+	std::stringstream ss;
+	if(o.body_ && o.body_->get_body_ptr()) {
+		ss << intptr_t(o.body_->get_body_ptr());
+	} else {
+		ss << "NULL";
+	}
+	std::cerr 
+		<< "COPY: << " 
+		<< label() 
+		<< " " 
+		<< intptr_t(o.body_.get()) 
+		<< " " 
+		<< ss
+		<< std::endl;
+	if(o.body_) {
+		body_.reset(new box2d::body(*o.body_));
+	}
+#endif
 }
 
 custom_object::~custom_object()
@@ -474,7 +506,7 @@ custom_object::~custom_object()
 	sound::stop_looped_sounds(this);
 }
 
-void custom_object::finish_loading()
+void custom_object::finish_loading(level* lvl)
 {
 	if(parent_loading_.is_null() == false) {
 		entity_ptr p = parent_loading_.try_convert<entity>();
@@ -487,6 +519,11 @@ void custom_object::finish_loading()
 	if(shader_) { shader_->init(this); }
 	for(size_t n = 0; n < effects_.size(); ++n) {
 		effects_[n]->init(this);
+	}
+#endif
+#ifdef USE_BOX2D
+	if(body_) {
+		body_->finish_loading(this);
 	}
 #endif
 }
@@ -666,6 +703,12 @@ variant custom_object::write() const
 	if(shader_) { res.add("shader", shader_->write()); }
 	for(size_t n = 0; n < effects_.size(); ++n) {
 		res.add("effects", effects_[n]->write());
+	}
+#endif
+
+#if defined(USE_BOX2D)
+	if(body_) {
+		res.add("body", body_->write()); 
 	}
 #endif
 
@@ -1038,6 +1081,24 @@ void custom_object::create_object()
 
 void custom_object::process(level& lvl)
 {
+#if defined(USE_BOX2D)
+	box2d::world_ptr world = box2d::world::our_world_ptr();
+	if(body_) {
+		const b2Vec2 v = body_->get_body_ptr()->GetPosition();
+		const float a = body_->get_body_ptr()->GetAngle();
+		rotate_ = decimal(double(a) * 180.0 / M_PI);
+		set_x(int(v.x * world->scale() - (solid_rect().w() ? (solid_rect().w()/2) : current_frame().width()/2)));
+		set_y(int(v.y * world->scale() - (solid_rect().h() ? (solid_rect().h()/2) : current_frame().height()/2)));
+		//set_y(graphics::screen_height() - v.y * world->scale() - current_frame().height());
+		/*set_x((v.x + world->x1()) * graphics::screen_width() / (world->x2() - world->x1()));
+		if(world->y2() < 0) {
+			set_y(graphics::screen_height() - (v.y + world->y1()) * graphics::screen_height() / -(world->y2() + world->y1()));
+		} else {
+			set_y((v.y + world->y1()) * graphics::screen_height() / (world->y2() - world->y1()));
+		}*/
+	}
+#endif
+
 	if(type_->use_image_for_collisions()) {
 		//anything that uses their image for collisions is a static,
 		//un-moving object that will stay immobile.
@@ -1755,6 +1816,26 @@ void custom_object::process(level& lvl)
 		}
 	}
 
+#if defined(USE_BOX2D)
+	if(body_) {
+		for(b2ContactEdge* ce = body_->get_body_ptr()->GetContactList(); ce != NULL; ce = ce->next) {
+			b2Contact* c = ce->contact;
+			// process c
+			if(c->IsTouching()) {
+				using namespace game_logic;
+				//std::cerr << "bodies touching: 0x" << std::hex << uint32_t(body_->get_body_ptr()) << " 0x" << uint32_t(ce->other) << std::dec << std::endl;
+				//b2WorldManifold wmf;
+				//c->GetWorldManifold(&wmf);
+				//std::cerr << "Collision points: " << wmf.points[0].x << ", " << wmf.points[0].y << "; " << wmf.points[1].x << "," << wmf.points[1].y << "; " << wmf.normal.x << "," << wmf.normal.y << std::endl;
+				map_formula_callable_ptr fc = map_formula_callable_ptr(new map_formula_callable);
+				fc->add("collide_with", variant((box2d::body*)ce->other->GetUserData()));
+				handle_event("b2collide", fc.get());
+			}
+			//c->GetManifold()->
+		}
+	}
+#endif
+
 	foreach(const gui::widget_ptr& w, widgets_) {
 		w->process();
 	}
@@ -2080,6 +2161,28 @@ void custom_object::run_garbage_collection()
 	}
 
 	std::cerr << "RAN GARBAGE COLLECTION IN " << (SDL_GetTicks() - starting_ticks) << "ms. Releasing " << (get_all().size() - safe.size()) << "/" << get_all().size() << " OBJECTS\n";
+}
+
+void custom_object::being_removed()
+{
+	std::cerr << "BEING REMOVED: " << label() << std::endl;
+	handle_event(OBJECT_EVENT_BEING_REMOVED);
+#if defined(USE_BOX2D)
+	if(body_) {
+		body_->set_active(false);
+	}
+#endif
+}
+
+void custom_object::being_added()
+{
+	std::cerr << "BEING ADDED: " << label() << std::endl;
+#if defined(USE_BOX2D)
+	if(body_) {
+		body_->set_active();
+	}
+#endif
+	handle_event(OBJECT_EVENT_BEING_ADDED);
 }
 
 namespace {
@@ -2475,6 +2578,12 @@ variant custom_object::get_value_by_slot(int slot) const
 		return variant(new widgets_callable(*this));
 	}
 
+#if defined(USE_BOX2D)
+	case CUSTOM_OBJECT_BODY: {
+		return variant(body_.get());
+	}
+#endif
+
 	case CUSTOM_OBJECT_TEXTV: {
 		std::vector<variant> v;
 		foreach(const gui::vector_text_ptr& vt, vector_text_) {
@@ -2848,6 +2957,14 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		}
 	} else if(key == "use_absolute_screen_coordinates") {
 		use_absolute_screen_coordinates_ = value.as_bool();
+#if defined(USE_BOX2D)
+	} else if(key == "body") {
+		//if(body_) {
+		//	box2d::world::our_world_ptr()->destroy_body(body_);
+		//}
+		body_.reset(new box2d::body(value));
+		body_->finish_loading(this);
+#endif
 	} else {
 		vars_->add(key, value);
 	}
@@ -3523,6 +3640,17 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		break;
 	}
 
+#if defined(USE_BOX2D)
+	case CUSTOM_OBJECT_BODY: {
+		//if(body_) {
+		//	box2d::world::our_world_ptr()->destroy_body(body_);
+		//}
+		body_.reset(new box2d::body(value));
+		body_->finish_loading(this);
+		break;
+	}
+#endif
+
 	case CUSTOM_OBJECT_CUSTOM_DRAW: {
 		if(value.is_null()) {
 			custom_draw_.reset();
@@ -3668,11 +3796,24 @@ void custom_object::die()
 {
 	hitpoints_ = 0;
 	handle_event(OBJECT_EVENT_DIE);
+
+	if(body_) {
+		//std::cerr << "body_ reset on die: " << std::hex << intptr_t(level::current().get_world_ptr().get())  << ":" << intptr_t(&level::current().get_world_ptr()->get_world()) << std::dec << std::endl;
+		//box2d::world::our_world_ptr()->destroy_body(body_);
+		//body_.reset();
+		body_->set_active(false);
+	}
 }
 
 void custom_object::die_with_no_event()
 {
 	hitpoints_ = 0;
+
+	if(body_) {
+		std::cerr << "body_ reset on die_with_no_event" << std::endl;
+		box2d::world::our_world_ptr()->destroy_body(body_);
+		body_.reset();
+	}
 }
 
 
@@ -4614,6 +4755,12 @@ void custom_object::add_to_level()
 {
 	entity::add_to_level();
 	standing_on_.reset();
+#if defined(USE_BOX2D)
+	std::cerr << "add_tolevel(): " << label() << std::endl;
+	if(body_) {
+		body_->set_active();
+	}
+#endif
 }
 
 BENCHMARK(custom_object_spike) {

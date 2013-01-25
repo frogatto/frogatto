@@ -946,6 +946,12 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 	}
 #endif
 
+#ifdef USE_BOX2D
+	if(node.has_key("body")) {
+		body_.reset(new box2d::body(node["body"]));
+	}
+#endif
+
 	if(base_type) {
 		//if we're a variation, just get the functions from our base type.
 		//variations can't define new functions.

@@ -48,7 +48,7 @@ public:
 
 	//finish_loading(): called when a level finishes loading all objects,
 	//and allows us to do any final setup such as finding our parent.
-	void finish_loading();
+	void finish_loading(level* lvl);
 	virtual variant write() const;
 	virtual void setup_drawing() const;
 	virtual void draw(int x, int y) const;
@@ -262,6 +262,8 @@ protected:
 
 	virtual bool solid_platform() const;
 
+	virtual void being_removed();
+	virtual void being_added();
 
 private:
 	custom_object& operator=(const custom_object& o);
@@ -377,6 +379,10 @@ private:
 	gles2::shader_ptr shader_;
 	// List of shader effects to run.
 	std::vector<gles2::shader_ptr> effects_;
+#endif
+
+#ifdef USE_BOX2D
+	box2d::body_ptr body_;
 #endif
 
 	bool always_active_;

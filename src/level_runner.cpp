@@ -757,6 +757,16 @@ bool level_runner::play_cycle()
 	if(controls::num_players() > 1) {
 		lvl_->backup();
 	}
+	
+#if defined(USE_BOX2D)
+	box2d::world_ptr world = box2d::world::our_world_ptr();
+	if(world) {
+		world->step(1.0f/50.0f);
+		if(world->draw_debug_data()) {
+			world->current_ptr()->DrawDebugData();
+		}
+	}
+#endif
 
 	boost::scoped_ptr<controls::local_controls_lock> controls_lock;
 #ifndef NO_EDITOR

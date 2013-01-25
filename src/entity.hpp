@@ -40,7 +40,7 @@ public:
 
 	virtual void add_to_level();
 
-	virtual void finish_loading() {}
+	virtual void finish_loading(level*) {}
 	virtual variant write() const = 0;
 	virtual void setup_drawing() const {}
 	virtual void draw(int x, int y) const = 0;
@@ -278,6 +278,9 @@ public:
 
 	virtual bool use_absolute_screen_coordinates() const = 0;
 
+	virtual void being_removed() = 0;
+	virtual void being_added() = 0;
+
 protected:
 	virtual const_solid_info_ptr calculate_solid() const = 0;
 	virtual const_solid_info_ptr calculate_platform() const = 0;
@@ -305,7 +308,6 @@ protected:
 
 	int prev_feet_x() const { return prev_feet_x_; }
 	int prev_feet_y() const { return prev_feet_y_; }
-
 
 private:
 	std::string label_;

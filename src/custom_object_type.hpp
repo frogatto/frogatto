@@ -15,6 +15,9 @@
 #include "particle_system.hpp"
 #include "solid_map_fwd.hpp"
 #include "variant.hpp"
+#ifdef USE_BOX2D
+#include "b2d_ffl.hpp"
+#endif
 
 class custom_object_type;
 
@@ -112,6 +115,11 @@ public:
 	bool body_harmful() const { return body_harmful_; }
 	bool body_passthrough() const { return body_passthrough_; }
 	bool ignore_collide() const { return ignore_collide_; }
+
+#ifdef USE_BOX2D
+	box2d::body_ptr body() { return body_; }
+	box2d::const_body_ptr body() const { return body_; }
+#endif
 
 	bool object_level_collisions() const { return object_level_collisions_; }
 
@@ -323,6 +331,10 @@ private:
 #ifdef USE_GLES2
 	gles2::shader_ptr shader_;
 	std::vector<gles2::shader_ptr> effects_;
+#endif
+
+#ifdef USE_BOX2D
+	box2d::body_ptr body_;
 #endif
 };
 

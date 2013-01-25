@@ -71,7 +71,7 @@ void checkbox::on_click()
 	const int w = width();
 	const int h = height();
 	if(label_widget_) {
-		set_label(create_checkbox_widget(label_widget_, checked_, button_resolution()));
+		set_label(create_checkbox_widget(label_widget_, checked_, button_resolution(), hpadding_));
 	} else {
 		set_label(create_checkbox_widget(label_, checked_, button_resolution()));
 	}
