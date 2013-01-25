@@ -43,8 +43,8 @@ void client::recv_handler(const std::string& msg)
 				}
 			}
 		}
-		fprintf(stderr, "RECV: (((%s)))\n", msg.c_str());
-		fprintf(stderr, "SERIALIZE: (((%s)))\n", v.write_json().c_str());
+		//fprintf(stderr, "RECV: (((%s)))\n", msg.c_str());
+		//fprintf(stderr, "SERIALIZE: (((%s)))\n", v.write_json().c_str());
 		callable_->add("message", v);
 
 //		try {
