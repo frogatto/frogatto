@@ -51,6 +51,9 @@ public:
 	bool disabled() const { return disabled_; }
 	void enable(bool val=true) { disabled_ = val; }
 
+	unsigned get_tooltip_delay() const { return tooltip_display_delay_; }
+	void set_tooltip_delay(unsigned tooltip_delay) { tooltip_display_delay_ = tooltip_delay; }
+
 	virtual void set_value(const std::string& key, const variant& v);
 	virtual variant get_value(const std::string& key) const;
 
@@ -69,7 +72,8 @@ protected:
 	widget() 
 		: x_(0), y_(0), w_(0), h_(0), align_h_(HALIGN_LEFT), align_v_(VALIGN_TOP),
 		true_x_(0), true_y_(0), disabled_(false), disabled_opacity_(127),
-		tooltip_displayed_(false), visible_(true), zorder_(0), environ_(0)
+		tooltip_displayed_(false), visible_(true), zorder_(0), environ_(0),
+		tooltip_display_delay_(0), tooltip_ticks_(MAXINT)
 	{}
 	explicit widget(const variant& v, game_logic::formula_callable* e);
 	virtual ~widget();
@@ -101,6 +105,8 @@ private:
 	std::string id_;
 	bool disabled_;
 	uint8_t disabled_opacity_;
+	unsigned tooltip_display_delay_;
+	unsigned tooltip_ticks_;
 
 	HORIZONTAL_ALIGN align_h_;
 	VERTICAL_ALIGN   align_v_;
