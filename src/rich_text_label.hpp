@@ -22,7 +22,8 @@ private:
 
 	variant get_value(const std::string& key) const;
 	void set_value(const std::string& key, const variant& v);
-	std::vector<widget_ptr> children_;
+
+	std::vector<std::vector<widget_ptr> > children_;
 };
 
 }

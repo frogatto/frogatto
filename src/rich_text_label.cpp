@@ -27,6 +27,9 @@ void flatten_recursively(const std::vector<variant>& v, std::vector<variant>* re
 rich_text_label::rich_text_label(const variant& v, game_logic::formula_callable* e)
 	: widget(v,e)
 {
+	children_.resize(1);
+	children_.front().clear();
+
 	int xpos = 0, ypos = 0;
 	int line_height = 0;
 	std::vector<variant> items;
@@ -43,6 +46,7 @@ rich_text_label::rich_text_label(const variant& v, game_logic::formula_callable*
 					xpos = 0;
 					ypos += line_height;
 					line_height = 0;
+					children_.resize(children_.size()+1);
 				}
 
 				std::string candidate;
@@ -62,6 +66,7 @@ rich_text_label::rich_text_label(const variant& v, game_logic::formula_callable*
 						ypos += line_height;
 						line_height = 0;
 						skip_leading_space = true;
+						children_.resize(children_.size()+1);
 					}
 
 
@@ -89,7 +94,7 @@ rich_text_label::rich_text_label(const variant& v, game_logic::formula_callable*
 
 					xpos += label_widget->width();
 
-					children_.push_back(label_widget);
+					children_.back().push_back(label_widget);
 				}
 			}
 		} else {
@@ -100,6 +105,7 @@ rich_text_label::rich_text_label(const variant& v, game_logic::formula_callable*
 				xpos = 0;
 				ypos += line_height;
 				line_height = 0;
+				children_.resize(children_.size()+1);
 			}
 
 			if(w->height() > line_height) {
@@ -110,7 +116,7 @@ rich_text_label::rich_text_label(const variant& v, game_logic::formula_callable*
 
 			xpos += w->width();
 
-			children_.push_back(w);
+			children_.back().push_back(w);
 		}
 	}
 
@@ -122,8 +128,10 @@ void rich_text_label::handle_draw() const
 	glPushMatrix();
 	glTranslatef(x() & ~1, y() & ~1, 0.0);
 
-	foreach(const widget_ptr& widget, children_) {
-		widget->draw();
+	foreach(const std::vector<widget_ptr>& v, children_) {
+		foreach(const widget_ptr& widget, v) {
+			widget->draw();
+		}
 	}
 
 	glPopMatrix();
@@ -135,8 +143,10 @@ bool rich_text_label::handle_event(const SDL_Event& event, bool claimed)
 
 	SDL_Event ev = event;
 	normalize_event(&ev);
-	reverse_foreach(widget_ptr widget, children_) {
-		claimed = widget->process_event(ev, claimed);
+	foreach(const std::vector<widget_ptr>& v, children_) {
+		foreach(const widget_ptr& widget, v) {
+			claimed = widget->process_event(ev, claimed);
+		}
 	}
 
 	return claimed;
