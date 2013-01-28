@@ -943,13 +943,13 @@ private:
 
 class assert_expression : public formula_expression {
 public:
-	assert_expression(expression_ptr body, const std::vector<expression_ptr> asserts)
-	  : formula_expression("_assert"), body_(body), asserts_(asserts)
+	assert_expression(expression_ptr body, const std::vector<expression_ptr> asserts, expression_ptr debug_expr)
+	  : formula_expression("_assert"), body_(body), asserts_(asserts), debug_(debug_expr)
 	{
 	}
 
 private:
-	expression_ptr body_;
+	expression_ptr body_, debug_;
 	std::vector<expression_ptr> asserts_;
 
 	variant execute(const formula_callable& variables) const {
@@ -962,6 +962,11 @@ private:
 					expr_info << "  " << op_expr->get_left()->str() << ": " << op_expr->get_left()->evaluate(variables).to_debug_string() << "\n";
 					expr_info << "  " << op_expr->get_right()->str() << ": " << op_expr->get_right()->evaluate(variables).to_debug_string() << "\n";
 				}
+
+				if(debug_) {
+					expr_info << "DEBUG EXPRESSION: " << debug_->str() << " -> " << debug_->evaluate(variables).to_debug_string() << "\n";
+				}
+
 				ASSERT_LOG(false,
 			               "FORMULA ASSERTION FAILED: " << a->str() << " -- " << a->debug_pinpoint_location() << "\n" << expr_info.str());
 			}
@@ -1828,11 +1833,19 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 		const_formula_callable_definition_ptr callable_where_def = create_where_definition(table, callable_def);
 		return expression_ptr(new where_expression(parse_expression(formula_str, i1, op, symbols, callable_where_def.get(), can_optimize), where_info));
 	} else if(op_name == "asserting") {
+		expression_ptr debug_expr;
+
+		const token* pipe = op+1;
+		if(token_matcher().add(TOKEN_PIPE).find_match(pipe, i2)) {
+			debug_expr = parse_expression(formula_str, pipe+1, i2, symbols, callable_def, can_optimize);
+			i2 = pipe;
+		}
+
 		expression_ptr base_expr(parse_expression(formula_str, i1, op, symbols, callable_def, can_optimize));
 		std::vector<expression_ptr> asserts;
 		parse_args(formula_str,op+1,i2,&asserts,symbols, callable_def, can_optimize);
 
-		return expression_ptr(new assert_expression(base_expr, asserts));
+		return expression_ptr(new assert_expression(base_expr, asserts, debug_expr));
 	}
 
 	const bool is_dot = op_name == ".";
