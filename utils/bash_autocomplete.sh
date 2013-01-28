@@ -24,7 +24,7 @@ _frogatto()
     	if [ -d "${i}" ]; then
     		opts="${opts} --level-path=${i}"
     		cd "${i}"
-    		levels=$(ls -x --color=never)
+    		levels=$(find . -type f -printf "%f\n")
     		level_names="${level_names} ${levels}"
     		cd "${current_directory}"
     	fi

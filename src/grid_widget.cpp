@@ -43,6 +43,7 @@ grid::grid(const variant& v, game_logic::formula_callable* e)
 		on_select_ = boost::bind(&grid::select_delegate, this, _1);
 	}
 	if(v.has_key("on_mouseover")) {
+		allow_selection_ = true;
 		ffl_on_mouseover_ = get_environment()->create_formula(v["on_mouseover"]);
 		on_mouseover_ = boost::bind(&grid::mouseover_delegate, this, _1);
 	}
@@ -103,7 +104,7 @@ grid::grid(const variant& v, game_logic::formula_callable* e)
 		col_aligns_.assign(ncols_, ALIGN_LEFT);
 	}
 
-	allow_selection_ = v["allow_selection"].as_bool(false);
+	allow_selection_ = v["allow_selection"].as_bool(allow_selection_);
 	if(v.has_key("must_select")) {
 		must_select_ = v["must_select_"].as_bool();
 		if(v.has_key("must_select_row")) {
@@ -143,6 +144,10 @@ grid::grid(const variant& v, game_logic::formula_callable* e)
 
 	set_h_ = height();
 	set_w_ = width();
+
+	if(v["scroll_to_bottom"].as_bool(false) && virtual_height() > height()) {
+		set_yscroll(virtual_height() - height());
+	}
 }
 
 void grid::set_dim(int w, int h)
