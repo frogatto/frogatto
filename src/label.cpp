@@ -233,7 +233,11 @@ variant label::get_value(const std::string& key) const
 void label::set_value(const std::string& key, const variant& v)
 {
 	if(key == "text") {
-		set_text(v.as_string());
+		if(v.is_null()) {
+			set_text("");
+		} else {
+			set_text(v.as_string());
+		}
 	} else if(key == "color") {
 		set_color(graphics::color(v).as_sdl_color());
 	} else if(key == "size") {

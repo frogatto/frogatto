@@ -62,6 +62,10 @@
 #include "variant_utils.hpp"
 #include "wm.hpp"
 
+#if defined(USE_BOX2D)
+#include "b2d_ffl.hpp"
+#endif
+
 #if defined(__ANDROID__)
 #include "prof.h"
 #endif
@@ -588,7 +592,7 @@ extern "C" int main(int argcount, char** argvec)
 #if defined(USE_GLES2)
 	if(glCreateShader == NULL) {
 		const GLubyte* glstrings;
-		if(glGetString && (glstrings = glGetString(GL_VERSION)) != NULL) {
+		if(glGetString != NULL && (glstrings = glGetString(GL_VERSION)) != NULL) {
 			std::cerr << "OpenGL version: " << reinterpret_cast<const char *>(glstrings) << std::endl;
 		}
 		std::cerr << "glCreateShader is NULL. Check that your current video card drivers support "
@@ -605,6 +609,10 @@ extern "C" int main(int argcount, char** argvec)
 #ifndef NO_EDITOR
 	const external_text_editor::manager editor_manager;
 #endif // NO_EDITOR
+
+#if defined(USE_BOX2D)
+	box2d::manager b2d_manager;
+#endif
 
 	std::cerr << std::endl;
 	const GLubyte* glstrings;
@@ -760,7 +768,7 @@ extern "C" int main(int argcount, char** argvec)
 			test::run_benchmarks();
 		}
 		return 0;
-	} else if(utility_program.empty() == false) {
+	} else if(utility_program.empty() == false && test::utility_needs_video(utility_program) == true) {
 		test::run_utility(utility_program, util_args);
 		return 0;
 	}
@@ -846,5 +854,6 @@ extern "C" int main(int argcount, char** argvec)
 #if !defined(TARGET_OS_HARMATTAN) && !defined(TARGET_TEGRA) && !defined(TARGET_BLACKBERRY) && !defined(__ANDROID__) && !defined(USE_GLES2)
 	std::cerr << gluErrorString(glGetError()) << "\n";
 #endif
+
 	return 0;
 }
