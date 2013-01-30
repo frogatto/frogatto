@@ -463,6 +463,12 @@ variant server::create_game_info_msg(game_info_ptr g) const
 	value.add("id", g->game_state->game_id());
 	value.add("started", g->game_state->started());
 
+	std::vector<variant> clients;
+	foreach(int cid, g->clients) {
+		clients.push_back(variant(cid));
+	}
+	value.set("clients", variant(&clients));
+
 	return value.build();
 }
 
