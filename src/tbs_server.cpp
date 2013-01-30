@@ -463,9 +463,25 @@ variant server::create_game_info_msg(game_info_ptr g) const
 	value.add("id", g->game_state->game_id());
 	value.add("started", g->game_state->started());
 
+	std::vector<std::string>& ai = g->game_state->get_ai_players();
+
 	std::vector<variant> clients;
 	foreach(int cid, g->clients) {
-		clients.push_back(variant(cid));
+		std::map<variant, variant> m;
+		auto cinfo = clients_.find(cid);
+		if(cinfo != clients_.end()) {
+			m[variant("nick")] = variant(cinfo->second.user);
+			m[variant("id")] = variant(cid);
+			m[variant("bot")] = variant::from_bool(false);
+		}
+		clients.push_back(variant(&m));
+	}
+	foreach(const std::string& ai, g->game_state->get_ai_players()) {
+		std::map<variant, variant> m;
+		m[variant("nick")] = variant(ai);
+		m[variant("id")] = variant(-1);
+		m[variant("bot")] = variant::from_bool(true);
+		clients.push_back(variant(&m));
 	}
 	value.set("clients", variant(&clients));
 
