@@ -281,6 +281,11 @@ public:
 	virtual void being_removed() = 0;
 	virtual void being_added() = 0;
 
+	int get_mouseover_delay() const { return mouseover_delay_; }
+	void set_mouseover_delay(int dly) { mouseover_delay_ = dly; }
+	unsigned get_mouseover_trigger_cycle() const { return mouseover_trigger_cycle_; }
+	void set_mouseover_trigger_cycle(unsigned cyc) { mouseover_trigger_cycle_ = cyc; }
+
 protected:
 	virtual const_solid_info_ptr calculate_solid() const = 0;
 	virtual const_solid_info_ptr calculate_platform() const = 0;
@@ -354,6 +359,9 @@ private:
 	int platform_motion_x_;
 
 	std::string spawned_by_;
+
+	int mouseover_delay_;
+	unsigned mouseover_trigger_cycle_;
 };
 
 bool zorder_compare(const entity_ptr& e1, const entity_ptr& e2);	

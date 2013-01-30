@@ -57,7 +57,7 @@ custom_object_callable::custom_object_callable(bool is_singleton)
 	"schedule_expires",
 	"platform_area", "platform_offsets", "custom_draw", "event_handlers",
 	"use_absolute_screen_coordinates",
-	"widgets", "textv",
+	"widgets", "textv", "body", "mouseover_delay",
 	"ctrl_up", "ctrl_down", "ctrl_left", "ctrl_right",
 	"ctrl_attack", "ctrl_jump", "ctrl_tongue",
 };

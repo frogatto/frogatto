@@ -710,7 +710,8 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 	hidden_in_game_(node["hidden_in_game"].as_bool(false)),
 	platform_offsets_(node["platform_offsets"].as_list_int_optional()),
 	slot_properties_base_(-1), 
-	use_absolute_screen_coordinates_(node["use_absolute_screen_coordinates"].as_bool(false))
+	use_absolute_screen_coordinates_(node["use_absolute_screen_coordinates"].as_bool(false)),
+	mouseover_delay_(node["mouseover_delay"].as_int(0))
 {
 	custom_object_callable::instance();
 	init_level_definition();

@@ -467,7 +467,7 @@ level::level(const std::string& level_cfg, variant node)
 	if(node.has_key("bodies") && node["bodies"].is_list()) {
 		for(int n = 0; n != node["bodies"].num_elements(); ++n) {
 			bodies_.push_back(new box2d::body(node["bodies"][n]));
-			std::cerr << "level create body: " << std::hex << intptr_t(bodies_.back().get()) << " " << intptr_t(bodies_.back()->get_body_ptr()) << std::dec << std::endl;
+			std::cerr << "level create body: " << std::hex << intptr_t(bodies_.back().get()) << " " << intptr_t(bodies_.back()->get_raw_body_ptr()) << std::dec << std::endl;
 		}
 	}
 #endif
@@ -742,7 +742,7 @@ void level::finish_loading()
 		it != bodies_.end();
 		++it) {
 		(*it)->finish_loading();
-		std::cerr << "level body finish loading: " << std::hex << intptr_t((*it).get()) << " " << intptr_t((*it)->get_body_ptr()) << std::dec << std::endl;
+		std::cerr << "level body finish loading: " << std::hex << intptr_t((*it).get()) << " " << intptr_t((*it)->get_raw_body_ptr()) << std::dec << std::endl;
 	}
 #endif
 

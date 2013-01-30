@@ -310,6 +310,8 @@ custom_object::custom_object(variant node)
 		platform_offsets_ = type_->platform_offsets();
 	}
 
+	set_mouseover_delay(node["mouseover_delay"].as_int(0));
+
 #if defined(USE_GLES2)
 	if(type_->shader()) {
 		shader_.reset(new gles2::shader_program(*type_->shader()));
@@ -397,6 +399,8 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	set_frame_no_adjustments(frame_name_);
 
 	next_animation_formula_ = type_->next_animation_formula();
+
+	set_mouseover_delay(type_->get_mouseover_delay());
 }
 
 custom_object::custom_object(const custom_object& o) :
@@ -479,23 +483,11 @@ custom_object::custom_object(const custom_object& o) :
 
 #ifdef USE_BOX2D
 	std::stringstream ss;
-	if(o.body_ && o.body_->get_body_ptr()) {
-		ss << intptr_t(o.body_->get_body_ptr());
-	} else {
-		ss << "NULL";
-	}
-	std::cerr 
-		<< "COPY: << " 
-		<< label() 
-		<< " " 
-		<< intptr_t(o.body_.get()) 
-		<< " " 
-		<< ss
-		<< std::endl;
 	if(o.body_) {
 		body_.reset(new box2d::body(*o.body_));
 	}
 #endif
+	set_mouseover_delay(o.get_mouseover_delay());
 }
 
 custom_object::~custom_object()
@@ -2592,6 +2584,10 @@ variant custom_object::get_value_by_slot(int slot) const
 		return(variant(&v));
 	}
 
+	case CUSTOM_OBJECT_MOUSEOVER_DELAY: {
+		return variant(get_mouseover_delay());
+	}
+
 	case CUSTOM_OBJECT_CTRL_UP:
 	case CUSTOM_OBJECT_CTRL_DOWN:
 	case CUSTOM_OBJECT_CTRL_LEFT:
@@ -2957,6 +2953,8 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		}
 	} else if(key == "use_absolute_screen_coordinates") {
 		use_absolute_screen_coordinates_ = value.as_bool();
+	} else if(key == "mouseover_delay") {
+		set_mouseover_delay(value.as_int());
 #if defined(USE_BOX2D)
 	} else if(key == "body") {
 		//if(body_) {
@@ -3640,6 +3638,11 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		break;
 	}
 
+	case CUSTOM_OBJECT_MOUSEOVER_DELAY: {
+		set_mouseover_delay(value.as_int());
+		break;
+	}
+
 #if defined(USE_BOX2D)
 	case CUSTOM_OBJECT_BODY: {
 		//if(body_) {
@@ -3797,23 +3800,22 @@ void custom_object::die()
 	hitpoints_ = 0;
 	handle_event(OBJECT_EVENT_DIE);
 
+#if defined(USE_BOX2D)
 	if(body_) {
-		//std::cerr << "body_ reset on die: " << std::hex << intptr_t(level::current().get_world_ptr().get())  << ":" << intptr_t(&level::current().get_world_ptr()->get_world()) << std::dec << std::endl;
-		//box2d::world::our_world_ptr()->destroy_body(body_);
-		//body_.reset();
 		body_->set_active(false);
 	}
+#endif
 }
 
 void custom_object::die_with_no_event()
 {
 	hitpoints_ = 0;
 
+#if defined(USE_BOX2D)
 	if(body_) {
-		std::cerr << "body_ reset on die_with_no_event" << std::endl;
-		box2d::world::our_world_ptr()->destroy_body(body_);
-		body_.reset();
+		body_->set_active(false);
 	}
+#endif
 }
 
 

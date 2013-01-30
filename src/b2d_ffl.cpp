@@ -9,16 +9,81 @@
 
 namespace box2d
 {
+	class joint_factory
+	{
+	public:
+		joint_factory(const variant& j);
+		virtual ~joint_factory();
+		b2JointDef* get_joint_definition() const { return joint_def_.get(); }
+		variant write();
+	protected:
+	private:
+		boost::shared_ptr<b2JointDef> joint_def_;
+		std::string id_;
+
+		variant joint_variant_def_;
+	};
+
 	namespace 
 	{
 		b2World *current_world = NULL;
 		world_ptr this_world;
+
+		typedef std::map<std::string, boost::shared_ptr<joint_factory> > joint_factory_map;
+		typedef std::pair<std::string, boost::shared_ptr<joint_factory> > joint_factory_pair;
+		joint_factory_map& get_joint_defs()
+		{
+			static joint_factory_map res;
+			return res;
+		}
 	}
 
-	manager::manager()
+	struct body_destructor
 	{
-		this_world = new world(json::parse_from_file("data/world.cfg"));
-		this_world->finish_loading();
+		void operator()(b2Body* b) const 
+		{
+			// if the world has destructed the body will already have been destroyed.
+			if(current_world != NULL) {
+				std::cerr << "body_destructor: " << b << std::endl;
+				current_world->DestroyBody(b);
+			}
+		}
+	};
+
+	joint_ptr world::find_joint_by_id(const std::string& key) const
+	{
+		for(b2Joint* j = current_world->GetJointList(); j != NULL; j = j->GetNext()) {
+			std::string* s = (std::string*)j->GetUserData();
+			if(*s == key) {
+				return joint_ptr(new joint(j));
+			}
+		}
+		return joint_ptr();
+	}
+
+	class joints_command : public game_logic::formula_callable
+	{
+	public:
+		explicit joints_command()
+		{}
+		virtual variant get_value(const std::string& key) const
+		{
+			return variant(this_world->find_joint_by_id(key).get());
+		}
+		void set_value(const std::string& key, const variant& value)
+		{
+		}
+	};
+
+	manager::manager()	
+	{
+		try {
+			variant w = json::parse_from_file("data/world.cfg");
+			this_world = new world(w);
+			this_world->finish_loading();
+		} catch(json::parse_error&) {
+			std::cerr << "WORLD NOT FOUND/NOT VALID. NOT LOADING WORLD. WORLD IS SAD." << std::endl;
+		}
 	}
 
 	manager::~manager()
@@ -30,8 +95,7 @@ namespace box2d
 		: world_(b2Vec2(0.0f, -10.0f)), velocity_iterations_(8), position_iterations_(3),
 		world_x1_(0.0f), world_y1_(0.0f),
 		world_x2_(10.0f), world_y2_(10.0f),
-		pixel_scale_(w["scale"].as_int(10)),
-		debug_draw_(this), destruction_listener_(this)
+		pixel_scale_(w["scale"].as_int(10))
 	{
 		if(w.has_key("gravity") && w["gravity"].is_list() && w["gravity"].num_elements() == 2) {
 			b2Vec2 gravity;
@@ -51,6 +115,17 @@ namespace box2d
 			world_y1_ = float(w["viewport"][1].as_decimal().as_float());
 			world_x2_ = float(w["viewport"][2].as_decimal().as_float());
 			world_y2_ = float(w["viewport"][3].as_decimal().as_float());
+		}
+		if(w.has_key("joints")) {
+			if(w["joints"].is_list()) {
+				for(size_t n = 0; n < w["joints"].num_elements(); ++n) {
+					boost::shared_ptr<joint_factory> p = boost::shared_ptr<joint_factory>(new joint_factory(w["joints"][n]));
+					get_joint_defs()[w["joints"][n]["id"].as_string()] = p;
+				}
+			} else if(w["joints"].is_map()) {
+				boost::shared_ptr<joint_factory> p = boost::shared_ptr<joint_factory>(new joint_factory(w["joints"]));
+				get_joint_defs()[w["joints"]["id"].as_string()] = p;
+			}
 		}
 	}
 
@@ -137,11 +212,7 @@ namespace box2d
 		} else if(key == "debug_draw") {
 			return variant::from_bool(draw_debug_data());
 		} else if(key == "joints") {
-			std::vector<variant> v;
-			//foreach(const joint_ptr& j, joint_list_) {
-			//	v.push_back(variant(j.get()));
-			//}
-			return variant(&v);
+			return variant(new joints_command);
 		}
 		return variant();
 	}
@@ -149,7 +220,8 @@ namespace box2d
 	void world::set_value(const std::string& key, const variant& value)
 	{
 		if(key == "gravity") {
-			ASSERT_LOG(value.is_list() && value.num_elements() == 2, "gravity must be a list of two elements");
+			ASSERT_LOG(value.is_list() && value.num_elements() == 2, 
+				"gravity must be a list of two elements");
 			b2Vec2 gravity;
 			gravity.x = float(value[0].as_decimal().as_float());
 			gravity.y = float(value[1].as_decimal().as_float());
@@ -168,20 +240,18 @@ namespace box2d
 			world_y2_ = float(value[3].as_decimal().as_float());
 		} else if(key == "scale") {
 			set_scale(value.as_int());
-		} else if(key == "joints") {
-			/*if(value.is_null()) {
-				std::vector<joint_ptr>::iterator it = joint_list_.begin();
-				while(it != joint_list_.end()) {
-					it->reset();
-					++it;
-				}
-				joint_list_.clear();
-			} else {
-				joint_ptr j = new joint(this, value);
-			}*/
 		} else if(key == "debug_draw") {
 			enable_draw_debug_data(value.as_bool());
+		} else if(key == "joints") {
+			joint_factory j(value);
 		}
+	}
+
+	b2Body* world::create_body(body* b)
+	{
+		b2Body* bp = current().CreateBody(b->get_body_definition());
+		std::cerr << "create_body: " << std::hex << bp << " " << b << std::dec << std::endl;
+		return bp;
 	}
 
 	variant world::write()
@@ -191,34 +261,26 @@ namespace box2d
 		res.add("allow_sleeping", get_value("allow_sleeping"));
 		res.add("iterations", get_value("iterations"));
 		res.add("viewport", get_value("viewport"));
+		foreach(const joint_factory_pair& j, get_joint_defs()) {
+			res.add("joints", j.second->write());
+		}
 		return res.build();
 	}
 
-	destruction_listener::destruction_listener(world* w) 
-		: world_(w)
+	destruction_listener::destruction_listener()
 	{
-	}
-
-	void joint::reset()
-	{
-		std::cerr << "joint reset: " << std::hex << intptr_t(this) << std::dec << std::endl;
-		joint1_ = joint2_ = NULL;
-		body_a_ = NULL;
-		body_b_ = NULL;
-		joint_ = NULL;
 	}
 
 	void destruction_listener::SayGoodbye(b2Joint* j)
 	{
 		std::cerr << "joint being destructed: " << std::hex << intptr_t(j) << std::dec << std::endl;
-		joint* jp = (joint*)j->GetUserData();
-		jp->reset();
-		world_->destroy_joint(jp, true);
+		delete (std::string*)j->GetUserData();
 	}
 
 	void destruction_listener::SayGoodbye(b2Fixture* fix)
 	{
 		// do nothing.
+		//std::cerr << "fixture being destructed: " << std::hex << intptr_t(fix) << std::dec << std::endl;
 	}
 
 	boost::shared_ptr<b2FixtureDef> body::create_fixture(const variant& fix)
@@ -285,9 +347,50 @@ namespace box2d
 				fix_def->shape = circle_shape;
 				shape_list_.push_back(boost::shared_ptr<b2Shape>(circle_shape));
 			} else if(type == "edge") {
-				ASSERT_LOG(false, "Shape 'edge' to be implemented.");
+				b2EdgeShape* edge_shape = new b2EdgeShape;
+				ASSERT_LOG(shape.has_key("vertex1") && shape["vertex1"].is_list() && shape["vertex1"].num_elements() == 2,
+					"Must have vertex1 attribute, being a list of two elements (x,y).");
+				ASSERT_LOG(shape.has_key("vertex2") && shape["vertex2"].is_list() && shape["vertex2"].num_elements() == 2,
+					"Must have vertex2 attribute, being a list of two elements (x,y).");
+				edge_shape->m_vertex1.Set(float32(shape["vertex1"][0].as_decimal().as_float()), float32(shape["vertex1"][1].as_decimal().as_float()));
+				edge_shape->m_vertex2.Set(float32(shape["vertex2"][0].as_decimal().as_float()), float32(shape["vertex2"][1].as_decimal().as_float()));
+				if(shape.has_key("vertex0")) {
+					ASSERT_LOG(shape["vertex0"].is_list() && shape["vertex0"].num_elements() == 2,
+						"vertex0 attribute must be a list of two elements (x,y).");
+					edge_shape->m_vertex0.Set(float32(shape["vertex0"][0].as_decimal().as_float()), float32(shape["vertex0"][1].as_decimal().as_float()));
+					edge_shape->m_hasVertex0 = true;
+				}
+				if(shape.has_key("vertex3")) {
+					ASSERT_LOG(shape["vertex3"].is_list() && shape["vertex3"].num_elements() == 2,
+						"vertex3 attribute must be a list of two elements (x,y).");
+					edge_shape->m_vertex3.Set(float32(shape["vertex3"][0].as_decimal().as_float()), float32(shape["vertex3"][1].as_decimal().as_float()));
+					edge_shape->m_hasVertex3 = true;
+				}
+				fix_def->shape = edge_shape;
+				shape_list_.push_back(boost::shared_ptr<b2Shape>(edge_shape));
 			} else if(type == "chain") {
-				ASSERT_LOG(false, "Shape 'chain' to be implemented.");
+				b2ChainShape* chain_shape = new b2ChainShape;
+				ASSERT_LOG(shape.has_key("vertices") && shape["vertices"].is_list(), "verticies must be a list");
+				bool loop = shape["loop"].as_bool(false);
+				std::vector<b2Vec2> vertices;
+				for(size_t n = 0; n < shape["vertices"].num_elements(); ++n) {
+					ASSERT_LOG(shape["vertices"][n].is_list() && shape["vertices"][n].num_elements() > 2, 
+						"Inner items on vertices must be lists of length > 2.");
+					vertices.push_back(b2Vec2(float32(shape["vertices"][n][0].as_decimal().as_float()), float32(shape["vertex3"][n][1].as_decimal().as_float())));
+				}
+				if(loop) {
+					chain_shape->CreateLoop(&vertices[0], vertices.size());
+				} else {
+					chain_shape->CreateChain(&vertices[0], vertices.size());
+				}
+				if(shape.has_key("previous_vertex")) {
+					chain_shape->SetPrevVertex(b2Vec2(float32(shape["previous_vertex"][0].as_decimal().as_float()), float32(shape["previous_vertex"][1].as_decimal().as_float())));
+				}
+				if(shape.has_key("next_vertex")) {
+					chain_shape->SetNextVertex(b2Vec2(float32(shape["next_vertex"][0].as_decimal().as_float()), float32(shape["next_vertex"][1].as_decimal().as_float())));
+				}
+				fix_def->shape = chain_shape;
+				shape_list_.push_back(boost::shared_ptr<b2Shape>(chain_shape));
 			} else {
 				ASSERT_LOG(false, "Unrecognised shape type: " << type);
 			}
@@ -296,7 +399,6 @@ namespace box2d
 	}
 
 	body::body(const variant& value) 
-		: body_(NULL)
 	{
 		// value["id"]...
 		if(value.has_key("position")) {
@@ -364,30 +466,8 @@ namespace box2d
 		}
 	}
 
-	void body::recreate(entity_ptr e)
-	{
-		ASSERT_LOG(this_world != NULL, "this world is nothing.");
-		this_world->destroy_body(this);
-		finish_loading(e);
-	}
-
-	void body::reset()
-	{
-		std::cerr << "body reset: " << body_ << std::endl;
-		body_ = NULL;
-	}
-
 	body::~body()
 	{
-		if(current_world) {
-		//ASSERT_LOG(current_world != NULL, "Current world has destructed");
-			if(body_ != NULL) {
-			//ASSERT_LOG(body_ != NULL, "Body already destroyed");
-				std::cerr << "body destructor: " << body_ << std::endl;
-				current_world->DestroyBody(body_);
-				body_ = NULL;
-			}
-		}
 	}
 
 	
@@ -406,7 +486,7 @@ namespace box2d
 		body_def_.position.x /= wp->scale();
 		body_def_.position.y /= wp->scale();
 
-		body_ = wp->create_body(this);
+		body_ = boost::shared_ptr<b2Body>(wp->create_body(this), body_destructor());
 		foreach(const boost::shared_ptr<b2FixtureDef> fix_def, fix_defs_) {
 			body_->CreateFixture(fix_def.get());
 		}
@@ -671,6 +751,7 @@ namespace box2d
 				nvertex.push_back(variant(chain->m_nextVertex.y));
 				res.add("next_vertex", variant(&nvertex));
 			}
+			//res.add("loop", chain->
 		}
 		return res.build();
 	}
@@ -707,25 +788,26 @@ namespace box2d
 		return res.build();
 	}
 
-	joint::joint(world_ptr world, const variant& value) 
-		: joint_(NULL), joint1_(NULL), joint2_(NULL), joint_variant_def_(value)
+	joint_factory::joint_factory(const variant& value) 
+		: joint_variant_def_(value)
 	{
-		ASSERT_LOG(value.has_key("type"), "Joints must specify 'type' field.");
+		ASSERT_LOG(value.has_key("type"), "Joints must specify a 'type' field.");
+		ASSERT_LOG(value.has_key("id"), "Joints must specify an 'id' field.");
 		ASSERT_LOG(value.has_key("a") && value.has_key("b"), "Joints must have bodies 'a' and 'b' fields.");
 		const std::string type = value["type"].as_string();
-		body_a_ = value["a"].try_convert<body>();
-		body_b_ = value["b"].try_convert<body>();
+		body_ptr body_a_ = value["a"].try_convert<body>();
+		body_ptr body_b_ = value["b"].try_convert<body>();
 		bool collide_connected = value["collide_connected"].as_bool(false);
 
 		if(type == "revolute") {
 			boost::shared_ptr<b2RevoluteJointDef> revolute = boost::shared_ptr<b2RevoluteJointDef>(new b2RevoluteJointDef);
-			b2Vec2 anchor = body_a_->get_body_ptr()->GetWorldCenter();
+			b2Vec2 anchor = body_a_->get_raw_body_ptr()->GetWorldCenter();
 			if(value.has_key("anchor")) {
 				ASSERT_LOG(value["anchor"].is_list() && value["anchor"].num_elements() == 2,
 					"'anchor' must be a list of two elements.");
 				anchor.Set(float32(value["anchor"][0].as_decimal().as_float()), float32(value["anchor"][1].as_decimal().as_float()));
 			} 
-			revolute->Initialize(body_a_->get_body_ptr(), body_b_->get_body_ptr(), anchor);
+			revolute->Initialize(body_a_->get_raw_body_ptr(), body_b_->get_raw_body_ptr(), anchor);
 			if(value.has_key("lower_angle")) {
 				revolute->lowerAngle = float(value["lower_angle"].as_decimal().as_float()) * b2_pi / 180.0f;
 			}
@@ -762,7 +844,7 @@ namespace box2d
 					"'anchor_b' must be a list of two elements.");
 				anchor_b.Set(float32(value["anchor_b"][0].as_decimal().as_float()), float32(value["anchor_b"][1].as_decimal().as_float()));
 			}
-			distance->Initialize(body_a_->get_body_ptr(), body_b_->get_body_ptr(), anchor_a, anchor_b);
+			distance->Initialize(body_a_->get_raw_body_ptr(), body_b_->get_raw_body_ptr(), anchor_a, anchor_b);
 			if(value.has_key("frequency")) {
 				distance->frequencyHz = float(value["frequency"].as_decimal().as_float());
 			}
@@ -784,7 +866,7 @@ namespace box2d
 					"'axis' must be a list of two elements.");
 				anchor.Set(float32(value["axis"][0].as_decimal().as_float()), float32(value["axis"][1].as_decimal().as_float()));
 			}
-			prismatic->Initialize(body_a_->get_body_ptr(), body_b_->get_body_ptr(), anchor, axis);
+			prismatic->Initialize(body_a_->get_raw_body_ptr(), body_b_->get_raw_body_ptr(), anchor, axis);
 			if(value.has_key("lower_translation")) {
 				prismatic->lowerTranslation = float(value["lower_translation"].as_decimal().as_float());
 			}
@@ -830,17 +912,20 @@ namespace box2d
 				"'ground_anchor_b' must be a list of two elements.");
 			ground_anchor_b.Set(float32(value["ground_anchor_b"][0].as_decimal().as_float()), float32(value["ground_anchor_b"][1].as_decimal().as_float()));
 			float32 ratio = float(value["ratio"].as_decimal().as_float());
-			pulley->Initialize(body_a_->get_body_ptr(), body_b_->get_body_ptr(), ground_anchor_a, ground_anchor_b, anchor_a, anchor_b, ratio);
+			pulley->Initialize(body_a_->get_raw_body_ptr(), body_b_->get_raw_body_ptr(), ground_anchor_a, ground_anchor_b, anchor_a, anchor_b, ratio);
 			joint_def_ = pulley;
 		} else if(type == "gear") {
 			boost::shared_ptr<b2GearJointDef> gear = boost::shared_ptr<b2GearJointDef>(new b2GearJointDef);
 			gear->ratio = float(value["ratio"].as_decimal(decimal(1.0)).as_float());
-			gear->bodyA = body_a_->get_body_ptr();
-			gear->bodyB = body_b_->get_body_ptr();
-			ASSERT_LOG(value.has_key("joints") && value["joints"].is_list() && value["joints"].num_elements() == 2,
+			gear->bodyA = body_a_->get_raw_body_ptr();
+			gear->bodyB = body_b_->get_raw_body_ptr();
+			ASSERT_LOG(value.has_key("get_raw_body_ptr") && value["joints"].is_list() && value["joints"].num_elements() == 2,
 				"Must supply a list of two joints.");
-			gear->joint1 = value["joints"][0].try_convert<joint>()->get_joint_ptr();
-			gear->joint2 = value["joints"][1].try_convert<joint>()->get_joint_ptr();
+			ASSERT_LOG(false, "Gear joint to fix");
+			joint_ptr j1 = this_world->find_joint_by_id(value["joints"][0].as_string());
+			joint_ptr j2 = this_world->find_joint_by_id(value["joints"][1].as_string());
+			gear->joint1 = j1->get_b2Joint();
+			gear->joint2 = j1->get_b2Joint();
 			joint_def_ = gear;
 		} else if(type == "mouse") {
 			boost::shared_ptr<b2MouseJointDef> mouse = boost::shared_ptr<b2MouseJointDef>(new b2MouseJointDef);
@@ -875,7 +960,7 @@ namespace box2d
 					"'axis' must be a list of two elements.");
 				anchor.Set(float32(value["axis"][0].as_decimal().as_float()), float32(value["axis"][1].as_decimal().as_float()));
 			}
-			wheel->Initialize(body_a_->get_body_ptr(), body_b_->get_body_ptr(), anchor, axis);
+			wheel->Initialize(body_a_->get_raw_body_ptr(), body_b_->get_raw_body_ptr(), anchor, axis);
 			wheel->maxMotorTorque = float(value["max_motor_torque"].as_decimal(decimal(0.0)).as_float());
 			wheel->motorSpeed = float(value["motor_speed"].as_decimal(decimal(0.0)).as_float());
 			wheel->enableMotor = value["enable_motor"].as_bool(false);
@@ -890,15 +975,15 @@ namespace box2d
 					"'anchor' must be a list of two elements.");
 				anchor.Set(float32(value["anchor"][0].as_decimal().as_float()), float32(value["anchor"][1].as_decimal().as_float()));
 			}
-			weld->Initialize(body_a_->get_body_ptr(), body_b_->get_body_ptr(), anchor);
+			weld->Initialize(body_a_->get_raw_body_ptr(), body_b_->get_raw_body_ptr(), anchor);
 			weld->referenceAngle = float(value["reference_angle"].as_decimal().as_float()) * b2_pi / 180.0f;
 			weld->frequencyHz = float(value["frequency"].as_decimal(decimal(0.0)).as_float());
 			weld->dampingRatio = float(value["damping_ratio"].as_decimal(decimal(0.0)).as_float());
 			joint_def_ = weld;
 		} else if(type == "rope") {
 			boost::shared_ptr<b2RopeJointDef> rope = boost::shared_ptr<b2RopeJointDef>(new b2RopeJointDef);
-			rope->bodyA = body_a_->get_body_ptr();
-			rope->bodyB = body_b_->get_body_ptr();
+			rope->bodyA = body_a_->get_raw_body_ptr();
+			rope->bodyB = body_b_->get_raw_body_ptr();
 			b2Vec2 local_anchor_a(-1.0f, 0.0f);
 			b2Vec2 local_anchor_b(1.0f, 0.0f);
 			if(value.has_key("local_anchor_a")) {
@@ -935,7 +1020,7 @@ namespace box2d
 					"'local_anchor_b' must be a list of two elements");
 				local_anchor_b.Set(float(value["local_anchor_b"][0].as_decimal().as_float()), float(value["local_anchor_b"][1].as_decimal().as_float()));
 			}
-			friction->Initialize(body_a_->get_body_ptr(), body_b_->get_body_ptr(), anchor);
+			friction->Initialize(body_a_->get_raw_body_ptr(), body_b_->get_raw_body_ptr(), anchor);
 			friction->localAnchorA = local_anchor_a;
 			friction->localAnchorB = local_anchor_b;
 			friction->maxForce = float(value["max_force"].as_decimal(decimal(0.0)).as_float());
@@ -945,62 +1030,38 @@ namespace box2d
 			ASSERT_LOG(false, "Unrecognised joint type '" << type << "'");
 		}
 		joint_def_->collideConnected = collide_connected;
-		joint_def_->userData = this;
-		joint_ = world->create_joint(this);
+		joint_def_->userData = new std::string(value["id"].as_string());
+		current_world->CreateJoint(joint_def_.get());
 	}
 
-	joint::~joint()
+	joint_factory::~joint_factory()
 	{
-		//if(joint_) {
-		//	current_world->DestroyJoint(joint_);
-		//}
-		//joint_ = NULL;
-		//body_a_ = NULL;
-		//body_b_ = NULL;
-		//joint1_ = joint2_ = NULL;
 	}
 
-	b2Joint* world::create_joint(joint* j)
+	variant joint_factory::write()
 	{
-		b2Joint* jp;
-		//joint_list_.push_back(joint_ptr(j));
-		jp = current().CreateJoint(j->get_joint_definition());
-		std::cerr << "joint being created: " << std::hex << intptr_t(j) << " " << intptr_t(jp) << std::dec << std::endl;
-		return jp;
-	}
-
-	void world::destroy_joint(joint_ptr j, bool in_dest_listener)
-	{
-		std::cerr << "joint being destroyed: " << std::hex << intptr_t(j.get()) << " " << intptr_t(j->get_joint_ptr()) <<  std::dec << std::endl;
-		//joint_list_.erase(std::remove(joint_list_.begin(), joint_list_.end(), j), joint_list_.end());
-		if(!in_dest_listener) {
-			current().DestroyJoint(j->get_joint_ptr());
+		variant_builder res;
+		ASSERT_LOG(joint_def_ != NULL, "No joint definition found.");
+		variant keys = joint_variant_def_.get_keys();
+		for(int n = 0; n != keys.num_elements(); ++n) {
+			res.add(keys[n].as_string(), joint_variant_def_[keys[n]]);
 		}
+		return res.build();
+
 	}
 
-	b2Body* world::create_body(body* b)
+	joint::joint(b2Joint* j)
+		: joint_(j)
 	{
-		//body_list_.push_back(body_ptr(b));
-		b2Body* bp = current().CreateBody(b->get_body_definition());
-		std::cerr << "create_body: " << std::hex << intptr_t(bp) << std::dec << std::endl;
-		return bp;
-	}
-
-	void world::destroy_body(body_ptr b)
-	{
-		//body_list_.erase(std::remove(body_list_.begin(), body_list_.end(), b), body_list_.end());
-		std::cerr << "destroy_body: " << std::hex << intptr_t(b->get_body_ptr()) << std::dec << std::endl;
-		current().DestroyBody(b->get_body_ptr());
-		b->reset();
 	}
 
 	variant joint::get_value(const std::string& key) const
 	{
 		ASSERT_LOG(joint_ != NULL, "Internal joint has been destroyed.");
 		if(key == "a") {
-			return variant(body_a_);
+			return variant((body*)joint_->GetBodyA()->GetUserData());
 		} else if(key == "b") {
-			return variant(body_b_);
+			return variant((body*)joint_->GetBodyB()->GetUserData());
 		} else if(key == "collide_connected") {
 			return variant::from_bool(joint_->GetCollideConnected());
 		} else if(key == "anchor_a") {
@@ -1043,8 +1104,14 @@ namespace box2d
 			} else {
 				ASSERT_LOG(false, "Joint type unrecognised: " << joint_->GetType());
 			}
-		//} else if(key == "get_reaction_force") {
-		//} else if(key == "get_reaction_torque") {
+		} else if(key == "get_reaction_force") {
+			b2Vec2 rf = joint_->GetReactionForce(this_world->last_inv_dt());
+			std::vector<variant> v;
+			v.push_back(variant(rf.x));
+			v.push_back(variant(rf.y));
+			return variant(&v);
+		} else if(key == "get_reaction_torque") {
+			return variant(joint_->GetReactionTorque(this_world->last_inv_dt()));
 		}
 		if(joint_->GetType() == e_revoluteJoint) {
 			b2RevoluteJoint* revolute = (b2RevoluteJoint*)joint_;
@@ -1078,7 +1145,8 @@ namespace box2d
 				return variant(revolute->GetMotorSpeed());
 			} else if(key == "max_motor_torque") {
 				return variant(revolute->GetMaxMotorTorque());
-			//} else if(key == "get_motor_torque") {
+			} else if(key == "get_motor_torque") {
+				return variant(revolute->GetMotorTorque(this_world->last_inv_dt()));
 			}
 		} else if(joint_->GetType() == e_prismaticJoint) {
 			b2PrismaticJoint* prismatic = (b2PrismaticJoint*)joint_;
@@ -1179,9 +1247,9 @@ namespace box2d
 		} else if(joint_->GetType() == e_gearJoint) {
 			b2GearJoint* gear = (b2GearJoint*)joint_;
 			if(key == "joint1") {
-				return variant(joint1_);
+				return variant(new joint((b2Joint*)gear->GetJoint1()));
 			} else if(key == "joint2") {
-				return variant(joint2_);
+				return variant(new joint((b2Joint*)gear->GetJoint2()));
 			} else if(key == "ratio") {
 				return variant(gear->GetRatio());
 			}
@@ -1391,36 +1459,7 @@ namespace box2d
 		}
 	}
 
-	variant joint::write()
-	{
-		variant_builder res;
-		ASSERT_LOG(joint_def_ != NULL, "No joint definition found.");
-		/*res.add("a", joint_variant_def_["a"]);
-		res.add("b", joint_variant_def_["b"]);
-		if(joint_def_->type == e_revoluteJoint) {
-		} else if(joint_def_->type == e_prismaticJoint) {
-		} else if(joint_def_->type == e_distanceJoint) {
-		} else if(joint_def_->type == e_pulleyJoint) {
-		} else if(joint_def_->type == e_mouseJoint) {
-		} else if(joint_def_->type == e_gearJoint) {
-		} else if(joint_def_->type == e_wheelJoint) {
-		} else if(joint_def_->type == e_weldJoint) {
-		} else if(joint_def_->type == e_frictionJoint) {
-		} else if(joint_def_->type == e_ropeJoint) {
-			res.add("type", "rope");
-		} else {
-			ASSERT_LOG(false, "Joint type unrecognised: " << joint_def_->type);
-		}*/
-		variant keys = joint_variant_def_.get_keys();
-		for(int n = 0; n != keys.num_elements(); ++n) {
-			res.add(keys[n].as_string(), joint_variant_def_[keys[n]]);
-		}
-		return res.build();
-
-	}
-
-	debug_draw::debug_draw(world* w)
-		: world_(w)
+	debug_draw::debug_draw()
 	{
 	}
 
@@ -1429,8 +1468,8 @@ namespace box2d
 		std::vector<GLfloat>& varray = graphics::global_vertex_array();
 		varray.clear();
 		for(int n = 0; n != vertexCount; ++n) {
-			varray.push_back(GLfloat(vertices[n].x * world_->scale()));
-			varray.push_back(GLfloat(vertices[n].y * world_->scale()));
+			varray.push_back(GLfloat(vertices[n].x * this_world->scale()));
+			varray.push_back(GLfloat(vertices[n].y * this_world->scale()));
 		}
 #if defined(USE_GLES2)
 		glColor4f(color.r, color.g, color.b, 1.0);
@@ -1456,8 +1495,8 @@ namespace box2d
 		std::vector<GLfloat>& varray = graphics::global_vertex_array();
 		varray.clear();
 		for(int n = 0; n != vertexCount; ++n) {
-			varray.push_back(GLfloat(vertices[n].x * world_->scale()));
-			varray.push_back(GLfloat(vertices[n].y * world_->scale()));
+			varray.push_back(GLfloat(vertices[n].x * this_world->scale()));
+			varray.push_back(GLfloat(vertices[n].y * this_world->scale()));
 		}
 #if defined(USE_GLES2)
 		glEnable(GL_BLEND);
@@ -1501,8 +1540,8 @@ namespace box2d
 		varray.clear();
 		for(int n = 0; n < k_segments; ++n, theta += k_increment) {
 			b2Vec2 v = center + radius * b2Vec2(cosf(theta), sinf(theta));
-			varray.push_back(GLfloat(v.x * world_->scale()));
-			varray.push_back(GLfloat(v.y * world_->scale()));
+			varray.push_back(GLfloat(v.x * this_world->scale()));
+			varray.push_back(GLfloat(v.y * this_world->scale()));
 		}
 #if defined(USE_GLES2)
 		glColor4f(color.r, color.g, color.b, 1.0);
@@ -1533,8 +1572,8 @@ namespace box2d
 		varray.clear();
 		for(int n = 0; n < k_segments; ++n, theta += k_increment) {
 			b2Vec2 v = center + radius * b2Vec2(cosf(theta), sinf(theta));
-			varray.push_back(GLfloat(v.x * world_->scale()));
-			varray.push_back(GLfloat(v.y * world_->scale()));
+			varray.push_back(GLfloat(v.x * this_world->scale()));
+			varray.push_back(GLfloat(v.y * this_world->scale()));
 		}
 #if defined(USE_GLES2)
 		glEnable(GL_BLEND);
@@ -1550,8 +1589,8 @@ namespace box2d
 
 		varray.clear();
 		b2Vec2 p = center + radius * axis;
-		varray.push_back(center.x * world_->scale());
-		varray.push_back(center.y * world_->scale());
+		varray.push_back(center.x * this_world->scale());
+		varray.push_back(center.y * this_world->scale());
 		varray.push_back(p.x);
 		varray.push_back(p.y);
 		glDrawArrays(GL_LINE_LOOP, 0, varray.size()/2);
@@ -1589,10 +1628,10 @@ namespace box2d
 	{
 		std::vector<GLfloat>& varray = graphics::global_vertex_array();
 		varray.clear();
-		varray.push_back(GLfloat(p1.x * world_->scale()));
-		varray.push_back(GLfloat(p1.y * world_->scale()));
-		varray.push_back(GLfloat(p2.x * world_->scale()));
-		varray.push_back(GLfloat(p2.y * world_->scale()));
+		varray.push_back(GLfloat(p1.x * this_world->scale()));
+		varray.push_back(GLfloat(p1.y * this_world->scale()));
+		varray.push_back(GLfloat(p2.x * this_world->scale()));
+		varray.push_back(GLfloat(p2.y * this_world->scale()));
 #if defined(USE_GLES2)
 		glColor4f(color.r, color.g, color.b, 1.0);
 		gles2::manager gles2_manager(gles2::get_simple_shader());
@@ -1620,10 +1659,10 @@ namespace box2d
 
 		std::vector<GLfloat>& varray = graphics::global_vertex_array();
 		varray.clear();
-		varray.push_back(GLfloat(p1.x * world_->scale()));
-		varray.push_back(GLfloat(p1.y * world_->scale()));
-		varray.push_back(GLfloat(p2.x * world_->scale()));
-		varray.push_back(GLfloat(p2.y * world_->scale()));
+		varray.push_back(GLfloat(p1.x * this_world->scale()));
+		varray.push_back(GLfloat(p1.y * this_world->scale()));
+		varray.push_back(GLfloat(p2.x * this_world->scale()));
+		varray.push_back(GLfloat(p2.y * this_world->scale()));
 #if defined(USE_GLES2)
 		glColor4f(1.0f, 0.0f, 0.0f, 1.0);
 		gles2::manager gles2_manager(gles2::get_simple_shader());
@@ -1633,10 +1672,10 @@ namespace box2d
 		p2 = p1 + k_axisScale * xf.q.GetYAxis();
 		glColor4f(0.0f, 1.0f, 0.0f, 1.0);
 		varray.clear();
-		varray.push_back(GLfloat(p1.x * world_->scale()));
-		varray.push_back(GLfloat(p1.y * world_->scale()));
-		varray.push_back(GLfloat(p2.x * world_->scale()));
-		varray.push_back(GLfloat(p2.y * world_->scale()));
+		varray.push_back(GLfloat(p1.x * this_world->scale()));
+		varray.push_back(GLfloat(p1.y * this_world->scale()));
+		varray.push_back(GLfloat(p2.x * this_world->scale()));
+		varray.push_back(GLfloat(p2.y * this_world->scale()));
 		gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
 		glDrawArrays(GL_LINES, 0, varray.size()/2);
 
@@ -1651,10 +1690,10 @@ namespace box2d
 		p2 = p1 + k_axisScale * xf.q.GetYAxis();
 		glColor4f(0.0f, 1.0f, 0.0f, 1.0);
 		varray.clear();
-		varray.push_back(GLfloat(p1.x * world_->scale()));
-		varray.push_back(GLfloat(p1.y * world_->scale()));
-		varray.push_back(GLfloat(p2.x * world_->scale()));
-		varray.push_back(GLfloat(p2.y * world_->scale()));
+		varray.push_back(GLfloat(p1.x * this_world->scale()));
+		varray.push_back(GLfloat(p1.y * this_world->scale()));
+		varray.push_back(GLfloat(p2.x * this_world->scale()));
+		varray.push_back(GLfloat(p2.y * this_world->scale()));
 		glDrawArrays(GL_LINES, 0, varray.size()/2);
 
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -1698,14 +1737,14 @@ namespace box2d
 	{
 		std::vector<GLfloat>& varray = graphics::global_vertex_array();
 		varray.clear();
-		varray.push_back(GLfloat(aabb->lowerBound.x * world_->scale()));
-		varray.push_back(GLfloat(aabb->lowerBound.y * world_->scale()));
-		varray.push_back(GLfloat(aabb->upperBound.x * world_->scale()));
-		varray.push_back(GLfloat(aabb->lowerBound.y * world_->scale()));
-		varray.push_back(GLfloat(aabb->upperBound.x * world_->scale()));
-		varray.push_back(GLfloat(aabb->upperBound.y * world_->scale()));
-		varray.push_back(GLfloat(aabb->lowerBound.y * world_->scale()));
-		varray.push_back(GLfloat(aabb->upperBound.y * world_->scale()));
+		varray.push_back(GLfloat(aabb->lowerBound.x * this_world->scale()));
+		varray.push_back(GLfloat(aabb->lowerBound.y * this_world->scale()));
+		varray.push_back(GLfloat(aabb->upperBound.x * this_world->scale()));
+		varray.push_back(GLfloat(aabb->lowerBound.y * this_world->scale()));
+		varray.push_back(GLfloat(aabb->upperBound.x * this_world->scale()));
+		varray.push_back(GLfloat(aabb->upperBound.y * this_world->scale()));
+		varray.push_back(GLfloat(aabb->lowerBound.y * this_world->scale()));
+		varray.push_back(GLfloat(aabb->upperBound.y * this_world->scale()));
 #if defined(USE_GLES2)
 		glColor4f(color.r, color.g, color.b, 1.0);
 		gles2::manager gles2_manager(gles2::get_simple_shader());

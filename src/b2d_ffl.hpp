@@ -8,6 +8,9 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/intrusive_ptr.hpp>
 
+#include <vector>
+#include <map>
+
 #include "entity.hpp"
 #include "formula_callable.hpp"
 #include "geometry.hpp"
@@ -35,17 +38,15 @@ namespace box2d
 	class destruction_listener : public b2DestructionListener
 	{
 	public:
-		explicit destruction_listener(world* w);
+		destruction_listener();
 		void SayGoodbye(b2Joint* joint);
 		void SayGoodbye(b2Fixture* fix);
-	private:
-		world* world_;
 	};
 
 	class debug_draw : public b2Draw
 	{
 	public:
-		explicit debug_draw(world* w);
+		debug_draw();
 		void DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color);
 		void DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color);
 		void DrawCircle(const b2Vec2& center, float32 radius, const b2Color& color);
@@ -55,9 +56,6 @@ namespace box2d
 		void DrawPoint(const b2Vec2& p, float32 size, const b2Color& color);
 		void DrawString(int x, int y, const char* string, ...); 
 		void DrawAABB(b2AABB* aabb, const b2Color& color);
-
-	private:
-		world* world_;
 	};
 
 	class body : public game_logic::formula_callable
@@ -67,17 +65,16 @@ namespace box2d
 		virtual ~body();
 		const b2Body& get_body() const { return *body_; }
 		b2Body& get_body() { return *body_; }
-		const b2Body* get_body_ptr() const { return body_; }
-		b2Body* get_body_ptr() { return body_; }
+		const boost::shared_ptr<const b2Body> get_body_ptr() const { return body_; }
+		boost::shared_ptr<b2Body> get_body_ptr() { return body_; }
+		b2Body* get_raw_body_ptr() { return body_.get(); }
 		const b2BodyDef* get_body_definition() const { return &body_def_; }
-		void reset();
 
 		virtual variant get_value(const std::string&) const;
 		virtual void set_value(const std::string& key, const variant& value);
 
 		bool active() const;
 		void set_active(bool actv=true);
-		void recreate(entity_ptr e=NULL);
 
 		void finish_loading(entity_ptr e=NULL);
 		boost::shared_ptr<b2FixtureDef> create_fixture(const variant& fix);
@@ -90,35 +87,21 @@ namespace box2d
 		b2BodyDef body_def_;
 		std::vector<boost::shared_ptr<b2FixtureDef> > fix_defs_;
 		std::vector<boost::shared_ptr<b2Shape> > shape_list_;
-		b2Body* body_;
+		boost::shared_ptr<b2Body> body_;
 	};
 
 	class joint : public game_logic::formula_callable
 	{
 	public:
-		joint(world_ptr world, const variant& j);
-		virtual ~joint();
-		const b2Joint* get_joint_ptr() const { return joint_; }
-		b2Joint* get_joint_ptr() { return joint_; }
-		b2JointDef* get_joint_definition() const { return joint_def_.get(); }
-		virtual variant get_value(const std::string&) const;
+		explicit joint(b2Joint* j);
+		virtual variant get_value(const std::string& key) const;
 		virtual void set_value(const std::string& key, const variant& value);
-		void finish_loading();
-		variant write();
-		void reset();
-	protected:
+		
+		b2Joint* get_b2Joint() { return joint_; }
 	private:
-		boost::shared_ptr<b2JointDef> joint_def_;
 		b2Joint* joint_;
-		// stuff for holding.
-		body* body_a_;
-		body* body_b_;
-		joint* joint1_;
-		joint* joint2_;
-
-		variant joint_variant_def_;
 	};
-	
+
 	class world : public game_logic::formula_callable
 	{
 	public:
@@ -132,6 +115,8 @@ namespace box2d
 
 		void finish_loading();
 		void step(float time_step);
+
+		joint_ptr find_joint_by_id(const std::string& key) const;
 
 		float x1() const { return world_x1_; }
 		float x2() const { return world_x2_; }
@@ -152,11 +137,7 @@ namespace box2d
 		void set_as_current_world();
 		static void clear_current_world();
 
-		b2Joint* create_joint(joint*);
-		void destroy_joint(joint_ptr j, bool in_dest_listener=false);
-
 		b2Body* create_body(body*);
-		void destroy_body(body_ptr j);
 
 		int scale() const { return pixel_scale_; }
 		void set_scale(int scale) { pixel_scale_ = scale; }
@@ -168,9 +149,6 @@ namespace box2d
 		int velocity_iterations_;
 		int position_iterations_;
 		b2World world_;
-
-		//std::vector<joint_ptr> joint_list_;
-		//std::vector<body*> body_list_;
 
 		float world_x1_, world_y1_;
 		float world_x2_, world_y2_;

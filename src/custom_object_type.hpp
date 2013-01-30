@@ -121,6 +121,8 @@ public:
 	box2d::const_body_ptr body() const { return body_; }
 #endif
 
+	int get_mouseover_delay() const { return mouseover_delay_; }
+
 	bool object_level_collisions() const { return object_level_collisions_; }
 
 	int surface_friction() const { return surface_friction_; }
@@ -283,6 +285,8 @@ private:
 	bool has_feet_;
 
 	bool use_absolute_screen_coordinates_;
+
+	int mouseover_delay_;
 
 	bool adjust_feet_on_animation_change_;
 
