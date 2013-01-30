@@ -509,7 +509,7 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 							if((e->get_mouseover_delay() == 0 || unsigned(lvl_->cycle()) > e->get_mouseover_trigger_cycle())) {
 								e->handle_event(MouseEnterID, callable.get());
 								e->set_mouse_over_entity();
-							} else if(e->get_mouseover_trigger_cycle() == MAXINT) {
+							} else if(e->get_mouseover_trigger_cycle() == INT_MAX) {
 								e->set_mouseover_trigger_cycle(e->get_mouseover_delay() + lvl_->cycle());
 							}
 						}
@@ -573,7 +573,7 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 							}
 
 							if(mouse_in.find(e) == mouse_in.end()) {
-								e->set_mouseover_trigger_cycle(MAXINT);
+								e->set_mouseover_trigger_cycle(INT_MAX);
 							}
 
 							if(mouse_in.find(e) == mouse_in.end() 
