@@ -18,20 +18,20 @@
 namespace gui {
 
 image_widget::image_widget(const std::string& fname, int w, int h)
-  : texture_(graphics::texture::get(fname)), rotate_(0.0)
+  : texture_(graphics::texture::get(fname)), rotate_(0.0), alpha_(256)
 {
 	set_environment();
 	init(w, h);
 }
 
 image_widget::image_widget(graphics::texture tex, int w, int h)
-  : texture_(tex), rotate_(0.0)
+  : texture_(tex), rotate_(0.0), alpha_(256)
 {
 	set_environment();
 	init(w, h);
 }
 
-image_widget::image_widget(const variant& v, game_logic::formula_callable* e)
+image_widget::image_widget(const variant& v, game_logic::formula_callable* e) : alpha_(256)
 {
 	set_environment();
 	if(v.has_key("area")) {
@@ -41,6 +41,8 @@ image_widget::image_widget(const variant& v, game_logic::formula_callable* e)
 	texture_ = graphics::texture::get(v["image"].as_string());
 	rotate_ = v.has_key("rotation") ? v["rotation"].as_decimal().as_float() : 0.0;
 	init(v["image_width"].as_int(-1), v["image_height"].as_int(-1));
+
+	alpha_ = v["alpha"].as_int(256);
 }
 
 void image_widget::init(int w, int h)
@@ -66,6 +68,10 @@ void image_widget::init(int w, int h)
 
 void image_widget::handle_draw() const
 {
+	if(alpha_ != 256) {
+		graphics::color(255, 255, 255, alpha_).set_as_current_color();
+	}
+
 	if(area_.w() == 0) {
 		graphics::blit_texture(texture_, x(), y(), width(), height(), rotate_);
 	} else {
@@ -74,6 +80,10 @@ void image_widget::handle_draw() const
 		                       GLfloat(area_.y())/texture_.height(),
 		                       GLfloat(area_.x2())/texture_.width(),
 		                       GLfloat(area_.y2())/texture_.height());
+	}
+
+	if(alpha_ != 256) {
+		graphics::color(255, 255, 255, 255).set_as_current_color();
 	}
 }
 

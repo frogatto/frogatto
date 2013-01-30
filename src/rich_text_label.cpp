@@ -120,6 +120,36 @@ rich_text_label::rich_text_label(const variant& v, game_logic::formula_callable*
 		}
 	}
 
+	if(v["align"].as_string_default("left") == "right") {
+		foreach(std::vector<widget_ptr>& v, children_) {
+			if(!v.empty()) {
+				const int delta = x() + width() - (v.back()->x() + v.back()->width());
+				foreach(widget_ptr w, v) {
+					w->set_loc(w->x() + delta, w->y());
+				}
+			}
+		}
+	}
+
+	if(v["valign"].as_string_default("center") == "center") {
+		foreach(std::vector<widget_ptr>& v, children_) {
+			if(!v.empty()) {
+				int height = 0;
+				foreach(const widget_ptr& w, v) {
+					if(w->height() > height) {
+						height = w->height();
+					}
+				}
+
+				foreach(const widget_ptr& w, v) {
+					if(w->height() < height) {
+						w->set_loc(w->x(), w->y() + (height - w->height())/2);
+					}
+				}
+			}
+		}
+	}
+
 	set_dim(width(), ypos + line_height);
 }
 

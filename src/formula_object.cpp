@@ -38,10 +38,30 @@ struct property_entry {
 		if(node["set"].is_string()) {
 			setter = game_logic::formula::create_optional_formula(node["set"]);
 		}
+
+		variant valid_types = node["type"];
+		if(valid_types.is_list()) {
+			for(int n = 0; n != valid_types.num_elements(); ++n) {
+				variant item = valid_types[n];
+				const variant::TYPE t = variant::string_to_type(item.as_string());
+				ASSERT_LOG(t != variant::VARIANT_TYPE_INVALID, "INVALID FORMULA CLASS TYPE: " << item.as_string() << " -- " << item.debug_location());
+
+				types.push_back(t);
+			}
+		} else if(valid_types.is_string()) {
+
+				const variant::TYPE t = variant::string_to_type(valid_types.as_string());
+			ASSERT_LOG(t != variant::VARIANT_TYPE_INVALID, "INVALID FORMULA CLASS TYPE: " << valid_types.as_string() << " -- " << valid_types.debug_location());
+
+				types.push_back(t);
+		} else if(!valid_types.is_null()) {
+			ASSERT_LOG(false, "INVALID FORMULA CLASS TYPE: " << valid_types.to_debug_string() << " -- " << valid_types.debug_location());
+		}
 	}
 
 	variant variable;
 	game_logic::const_formula_ptr getter, setter;
+	std::vector<variant::TYPE> types;
 };
 
 typedef std::map<std::string, boost::intrusive_ptr<formula_class> > classes_map;
@@ -412,6 +432,12 @@ void formula_object::set_value(const std::string& key, const variant& value)
 	std::map<std::string, property_entry>::const_iterator itor = class_->properties().find(key);
 	ASSERT_LOG(itor != class_->properties().end(), "UNKNOWN PROPERTY ACCESS " << key << " IN CLASS " << class_->name());
 
+	if(itor->second.types.empty() == false) {
+		if(std::find(itor->second.types.begin(), itor->second.types.end(), value.type()) == itor->second.types.end()) {
+			ASSERT_LOG(false, "ILLEGAL WRITE PROPERTY ACCESS: SETTING VARIABLE " << key << " IN CLASS " << class_->name() << " TO INVALID TYPE " << variant::variant_type_to_string(value.type()));
+		}
+	}
+
 	if(itor->second.setter) {
 		private_data_scope scope(expose_private_data_, &tmp_value_, &value);
 		execute_command(itor->second.setter->execute(*this));
@@ -420,6 +446,7 @@ void formula_object::set_value(const std::string& key, const variant& value)
 	} else {
 		ASSERT_LOG(false, "ILLEGAL WRITE PROPERTY ACCESS OF NON-WRITABLE VARIABLE " << key << " IN CLASS " << class_->name());
 	}
+
 }
 
 void formula_object::get_inputs(std::vector<formula_input>* inputs) const

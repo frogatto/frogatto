@@ -21,35 +21,26 @@
 #include "wml_formula_callable.hpp"
 
 namespace {
-std::set<variant*> callable_variants_loading, delayed_variants_loading;
-
-std::string variant_type_to_string(variant::TYPE type) {
-	switch(type) {
-	case variant::VARIANT_TYPE_NULL: 
-		return "null";
-	case variant::VARIANT_TYPE_BOOL: 
-		return "bool";
-	case variant::VARIANT_TYPE_INT: 
-		return "int";
-	case variant::VARIANT_TYPE_DECIMAL: 
-		return "decimal";
-	case variant::VARIANT_TYPE_CALLABLE: 
-		return "object";
-	case variant::VARIANT_TYPE_CALLABLE_LOADING: 
-		return "object_loading";
-	case variant::VARIANT_TYPE_LIST: 
-		return "list";
-	case variant::VARIANT_TYPE_STRING: 
-		return "string";
-	case variant::VARIANT_TYPE_MAP: 
-		return "map";
-	case variant::VARIANT_TYPE_FUNCTION: 
-		return "function";
-	default:
-		assert(false);
-		return "invalid";
-	}
+static const std::string variant_type_str[] = {"null", "bool", "int", "decimal", "object", "object_loading", "list", "string", "map", "function", "delayed"};
 }
+
+std::string variant::variant_type_to_string(variant::TYPE type) {
+	assert(type >= VARIANT_TYPE_NULL && type < VARIANT_TYPE_INVALID);
+	return variant_type_str[type];
+}
+
+variant::TYPE variant::string_to_type(const std::string& str) {
+	for(int n = 0; n != sizeof(variant_type_str)/sizeof(*variant_type_str); ++n) {
+		if(str == variant_type_str[n]) {
+			return static_cast<TYPE>(n);
+		}
+	}
+
+	return VARIANT_TYPE_INVALID;
+}
+
+namespace {
+std::set<variant*> callable_variants_loading, delayed_variants_loading;
 
 std::vector<const game_logic::formula_expression*> call_stack;
 
@@ -266,6 +257,7 @@ void variant::increment_refcount()
 	case VARIANT_TYPE_INT:
 	case VARIANT_TYPE_BOOL:
 	case VARIANT_TYPE_DECIMAL:
+	case VARIANT_TYPE_INVALID:
 		break;
 	}
 }
@@ -311,6 +303,7 @@ void variant::release()
 	case VARIANT_TYPE_INT:
 	case VARIANT_TYPE_BOOL:
 	case VARIANT_TYPE_DECIMAL:
+	case VARIANT_TYPE_INVALID:
 		break;
 	}
 }
@@ -1132,6 +1125,7 @@ bool variant::operator==(const variant& v) const
 		return fn_ == v.fn_;
 	}
 	case VARIANT_TYPE_DELAYED:
+	case VARIANT_TYPE_INVALID:
 		assert(false);
 	}
 
@@ -1202,6 +1196,7 @@ bool variant::operator<=(const variant& v) const
 		return fn_ <= v.fn_;
 	}
 	case VARIANT_TYPE_DELAYED:
+	case VARIANT_TYPE_INVALID:
 		assert(false);
 	}
 
@@ -1596,6 +1591,11 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 	case VARIANT_TYPE_STRING: {
 		s << "'" << string_->str << "'";
 		break;
+	}
+	case VARIANT_TYPE_INVALID: {
+		assert(false);
+		break;
+
 	}
 	}
 

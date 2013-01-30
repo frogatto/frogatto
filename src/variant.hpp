@@ -227,8 +227,11 @@ public:
 
 	void write_json_pretty(std::ostream& s, std::string indent) const;
 
-	enum TYPE { VARIANT_TYPE_NULL, VARIANT_TYPE_BOOL, VARIANT_TYPE_INT, VARIANT_TYPE_DECIMAL, VARIANT_TYPE_CALLABLE, VARIANT_TYPE_CALLABLE_LOADING, VARIANT_TYPE_LIST, VARIANT_TYPE_STRING, VARIANT_TYPE_MAP, VARIANT_TYPE_FUNCTION, VARIANT_TYPE_DELAYED };
+	enum TYPE { VARIANT_TYPE_NULL, VARIANT_TYPE_BOOL, VARIANT_TYPE_INT, VARIANT_TYPE_DECIMAL, VARIANT_TYPE_CALLABLE, VARIANT_TYPE_CALLABLE_LOADING, VARIANT_TYPE_LIST, VARIANT_TYPE_STRING, VARIANT_TYPE_MAP, VARIANT_TYPE_FUNCTION, VARIANT_TYPE_DELAYED, VARIANT_TYPE_INVALID };
 	TYPE type() const { return type_; }
+
+	static std::string variant_type_to_string(TYPE type);
+	static TYPE string_to_type(const std::string& str);
 
 	struct debug_info {
 		debug_info() : filename(0), line(-1), column(-1), end_line(-1), end_column(-1)
