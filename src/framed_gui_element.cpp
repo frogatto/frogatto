@@ -69,19 +69,15 @@ void framed_gui_element::blit(int x, int y, int w, int h, bool upscaled) const
 	
 	blit_subsection(interior_fill_,x,y,w,h);
 	
-	blit_subsection(top_border_,x,y,w,top_border_.h()*scale);
-	blit_subsection(bottom_border_,x,y + h - bottom_border_.h()*scale,w,bottom_border_.h()*scale);
-	blit_subsection(left_border_,x,y,left_border_.w()*scale,h);
-	blit_subsection(right_border_,x + w - right_border_.w()*scale, y,right_border_.w()*scale,h);
+	blit_subsection(top_border_,x + corner_height_,y,w - corner_height_*2,top_border_.h()*scale);
+	blit_subsection(bottom_border_,x + corner_height_,y + h - bottom_border_.h()*scale,w-corner_height_*2,bottom_border_.h()*scale);
+	blit_subsection(left_border_,x,y+corner_height_,left_border_.w()*scale,h-2*corner_height_);
+	blit_subsection(right_border_,x + w - right_border_.w()*scale, y+corner_height_,right_border_.w()*scale,h-2*corner_height_);
 	
 	blit_subsection(top_left_corner_,x,y,top_left_corner_.w()*scale,top_left_corner_.h()*scale);
 	blit_subsection(top_right_corner_,x + w - top_right_corner_.w()*scale,y, top_right_corner_.w()*scale, top_right_corner_.h()*scale);
 	blit_subsection(bottom_left_corner_,x,y + h - bottom_left_corner_.h()*scale,bottom_left_corner_.w()*scale, bottom_left_corner_.h()*scale);
 	blit_subsection(bottom_right_corner_,x + w - bottom_right_corner_.w()*scale,y + h - bottom_right_corner_.h()*scale,bottom_right_corner_.w()*scale, bottom_right_corner_.h()*scale); 
-	
-	
-	
-	
 }
 
 void framed_gui_element::blit_subsection(rect subsection, int x, int y, int w, int h) const
