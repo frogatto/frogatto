@@ -1067,14 +1067,14 @@ namespace box2d
 		} else if(key == "anchor_a") {
 			// world co-ordinates
 			std::vector<variant> v;
-			b2Vec2 &anchor = joint_->GetAnchorA();
+			const b2Vec2 &anchor = joint_->GetAnchorA();
 			v.push_back(variant(anchor.x));
 			v.push_back(variant(anchor.y));
 			return variant(&v);
 		} else if(key == "anchor_b") {
 			// world co-ordinates
 			std::vector<variant> v;
-			b2Vec2 &anchor = joint_->GetAnchorB();
+			const b2Vec2 &anchor = joint_->GetAnchorB();
 			v.push_back(variant(anchor.x));
 			v.push_back(variant(anchor.y));
 			return variant(&v);
