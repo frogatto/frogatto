@@ -153,6 +153,14 @@ void level::set_as_current_level()
 	
 #endif // !NO_EDITOR
 #endif
+
+#if defined(USE_BOX2D)
+	//for(std::vector<box2d::body_ptr>::iterator it = bodies_.begin(); it != bodies_.end(); ++it) {
+	//	(*it)->recreate();
+	//	std::cerr << "level body recreate: " << std::hex << intptr_t((*it).get()) << " " << intptr_t((*it)->get_body_ptr()) << std::dec << std::endl;
+	//}
+	
+#endif
 }
 
 namespace {
@@ -455,6 +463,15 @@ level::level(const std::string& level_cfg, variant node)
 
 	allow_touch_controls_ = node["touch_controls"].as_bool(true);
 
+#ifdef USE_BOX2D
+	if(node.has_key("bodies") && node["bodies"].is_list()) {
+		for(int n = 0; n != node["bodies"].num_elements(); ++n) {
+			bodies_.push_back(new box2d::body(node["bodies"][n]));
+			std::cerr << "level create body: " << std::hex << intptr_t(bodies_.back().get()) << " " << intptr_t(bodies_.back()->get_raw_body_ptr()) << std::dec << std::endl;
+		}
+	}
+#endif
+
 	const int time_taken_ms = (SDL_GetTicks() - start_time);
 	stats::entry("load", id()).set("time", variant(time_taken_ms));
 	std::cerr << "done level constructor: " << time_taken_ms << "\n";
@@ -720,16 +737,25 @@ void level::finish_loading()
 		chars_.erase(std::remove(chars_.begin(), chars_.end(), entity_ptr()), chars_.end());
 	}
 
+#if defined(USE_BOX2D)
+	for(std::vector<box2d::body_ptr>::const_iterator it = bodies_.begin(); 
+		it != bodies_.end();
+		++it) {
+		(*it)->finish_loading();
+		std::cerr << "level body finish loading: " << std::hex << intptr_t((*it).get()) << " " << intptr_t((*it)->get_raw_body_ptr()) << std::dec << std::endl;
+	}
+#endif
+
 	//iterate over all our objects and let them do any final loading actions.
 	foreach(entity_ptr e, objects_not_in_level) {
 		if(e) {
-			e->finish_loading();
+			e->finish_loading(this);
 		}
 	}
 
 	foreach(entity_ptr e, chars_) {
 		if(e) {
-			e->finish_loading();
+			e->finish_loading(this);
 		}
 	}
 	
@@ -1433,6 +1459,14 @@ variant level::write() const
 #if defined(USE_GLES2)
 	if(shader_) {
 		res.add("shader", shader_->write());
+	}
+#endif
+
+#if defined(USE_BOX2D)
+	for(std::vector<box2d::body_ptr>::const_iterator it = bodies_.begin(); 
+		it != bodies_.end();
+		++it) {
+		res.add("bodies", (*it)->write());
 	}
 #endif
 
@@ -3147,6 +3181,7 @@ const level_tile* level::get_tile_at(int x, int y) const
 
 void level::remove_character(entity_ptr e)
 {
+	e->being_removed();
 	if(e->label().empty() == false) {
 		chars_by_label_.erase(e->label());
 	}
@@ -3406,6 +3441,7 @@ void level::add_character(entity_ptr p)
 	if(!active_chars_.empty() && (p->is_active(screen_area) || p->use_absolute_screen_coordinates())) {
 		new_chars_.push_back(p);
 	}
+	p->being_added();
 }
 
 void level::add_draw_character(entity_ptr p)
@@ -3661,6 +3697,10 @@ variant level::get_value(const std::string& key) const
 		return variant(editor_);
 	} else if(key == "zoom") {
 		return variant(zoom_level_);
+#if defined(USE_BOX2D)
+	} else if(key == "world") {
+		return variant(box2d::world::our_world_ptr().get());
+#endif
 	} else if(key == "focus") {
 		std::vector<variant> v;
 		foreach(const entity_ptr& e, focus_override_) {

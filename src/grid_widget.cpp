@@ -228,6 +228,10 @@ grid& grid::set_hpad(int pad)
 
 void grid::reset_contents(const variant& v)
 {
+	cells_.clear();
+	if(v.is_null()) {
+		return;
+	}
 	foreach(const variant& row, v.as_list()) {
 		if(row.is_list()) {
 			foreach(const variant& col, row.as_list()) {
@@ -337,7 +341,7 @@ void grid::on_set_yscroll(int old_value, int value)
 void grid::handle_draw() const
 {
 	glPushMatrix();
-	glTranslatef(x() & ~1, y() & ~1, 0.0);
+	glTranslatef(GLfloat(x() & ~1), GLfloat(y() & ~1), 0.0);
 	if(show_background_) {
 		const SDL_Color bg = {50,50,50};
 		SDL_Rect rect = {0,0,width(),height()};
@@ -409,7 +413,7 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 				if(e.state == SDL_PRESSED) {
 					const int row_index = row_at(e.x, e.y);
 					std::cerr << "SELECT ROW: " << row_index << "\n";
-					if(row_index >= 0 && row_index < row_callbacks_.size() &&
+					if(row_index >= 0 && row_index < int(row_callbacks_.size()) &&
 					   row_callbacks_[row_index]) {
 					std::cerr << "ROW CB: " << row_index << "\n";
 						row_callbacks_[row_index]();
@@ -496,7 +500,6 @@ widget_ptr grid::get_widget_by_id(const std::string& id)
 void grid::set_value(const std::string& key, const variant& v)
 {
 	if(key == "children") {
-		cells_.clear();
 		reset_contents(v);
 		finish_row();
 		recalculate_dimensions();

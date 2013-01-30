@@ -11,6 +11,7 @@ objects = \
 	src/animation_preview_widget.o \
 	src/animation_widget.o \
 	src/asserts.o \
+	src/b2d_ffl.o \
 	src/background.o \
 	src/background_task_pool.o \
 	src/base64.o \

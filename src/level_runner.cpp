@@ -488,11 +488,12 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 				bool click_handled = false;
 				std::set<entity_ptr> mouse_in;
 				for(it = cs.begin(); it != cs.end(); ++it) {
+					entity_ptr& e = *it;
 					rect clip_area;
 					// n.b. clip_area is in level coordinates, not relative to the object.
-					if((*it)->get_clip_area(&clip_area)) {
+					if(e->get_clip_area(&clip_area)) {
 						point p(x,y);
-						if((*it)->use_absolute_screen_coordinates()) {
+						if(e->use_absolute_screen_coordinates()) {
 							p = point(mx,my);
 						}
 						if(point_in_rect(p, clip_area) == false) {
@@ -501,25 +502,28 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 					}
 
 					if(event_type == SDL_MOUSEBUTTONDOWN) {
-						(*it)->set_mouse_buttons((*it)->get_mouse_buttons() | SDL_BUTTON(event_button_button));
+						e->set_mouse_buttons(e->get_mouse_buttons() | SDL_BUTTON(event_button_button));
 					} else if(event_type == SDL_MOUSEMOTION) {
 						// handling for mouse_enter
-						if((*it)->is_mouse_over_entity() == false) {
-							(*it)->handle_event(MouseEnterID, callable.get());
-							(*it)->set_mouse_over_entity();
+						if(e->is_mouse_over_entity() == false) {
+							if((e->get_mouseover_delay() == 0 || unsigned(lvl_->cycle()) > e->get_mouseover_trigger_cycle())) {
+								e->handle_event(MouseEnterID, callable.get());
+								e->set_mouse_over_entity();
+							} else if(e->get_mouseover_trigger_cycle() == MAXINT) {
+								e->set_mouseover_trigger_cycle(e->get_mouseover_delay() + lvl_->cycle());
+							}
 						}
-						mouse_in.insert(*it);
+						mouse_in.insert(e);
 					}
 
-					handled |= (*it)->handle_event(basic_evt, callable.get());
-					// XXX: fix this for dragging(with multiple mice)
-					if(event_type == SDL_MOUSEBUTTONUP && !click_handled && (*it)->is_being_dragged() == false) {
-						(*it)->handle_event(MouseClickID, callable.get());
+					handled |= e->handle_event(basic_evt, callable.get());
+					if(event_type == SDL_MOUSEBUTTONUP && !click_handled && e->is_being_dragged() == false) {
+						e->handle_event(MouseClickID, callable.get());
 						if((*it)->mouse_event_swallowed()) {
 							click_handled = true;
 						}
 					}
-					items.push_back(variant((*it).get()));
+					items.push_back(variant(e.get()));
 				}
 				// Handling for "catch all" mouse events.
 				callable->add("handled", variant(handled));
@@ -566,6 +570,10 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 							point p(x,y);
 							if(e->use_absolute_screen_coordinates()) {
 								p = point(mx,my);
+							}
+
+							if(mouse_in.find(e) == mouse_in.end()) {
+								e->set_mouseover_trigger_cycle(MAXINT);
 							}
 
 							if(mouse_in.find(e) == mouse_in.end() 
@@ -757,6 +765,13 @@ bool level_runner::play_cycle()
 	if(controls::num_players() > 1) {
 		lvl_->backup();
 	}
+	
+#if defined(USE_BOX2D)
+	box2d::world_ptr world = box2d::world::our_world_ptr();
+	if(world && !paused) {
+		world->step(1.0f/50.0f);
+	}
+#endif
 
 	boost::scoped_ptr<controls::local_controls_lock> controls_lock;
 #ifndef NO_EDITOR
@@ -1446,6 +1461,15 @@ bool level_runner::play_cycle()
 			}
 #endif
 		}
+
+#if defined(USE_BOX2D)
+	box2d::world_ptr world = box2d::world::our_world_ptr();
+	if(world) {
+		if(world->draw_debug_data()) {
+			world->current_ptr()->DrawDebugData();
+		}
+	}
+#endif
 
 		performance_data perf(current_fps_, current_cycles_, current_delay_, current_draw_, current_process_, current_flip_, cycle, current_events_, profiling_summary_);
 

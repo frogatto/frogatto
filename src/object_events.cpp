@@ -44,6 +44,8 @@ std::vector<std::string> create_object_event_names()
 	res.push_back("cosmic_shift");
 	res.push_back("schedule_finished");
 	res.push_back("outside_level");
+	res.push_back("being_added");
+	res.push_back("being_removed");
 
 	ASSERT_EQ(res.size(), NUM_OBJECT_BUILTIN_EVENT_IDS);
 	return res;

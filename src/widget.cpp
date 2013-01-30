@@ -28,7 +28,8 @@ namespace gui {
 widget::widget(const variant& v, game_logic::formula_callable* e) 
 	: environ_(e), w_(0), h_(0), x_(0), y_(0), zorder_(0), 
 	true_x_(0), true_y_(0), disabled_(false), disabled_opacity_(v["disabled_opacity"].as_int(127)),
-	tooltip_displayed_(false), id_(v["id"].as_string_default()), align_h_(HALIGN_LEFT), align_v_(VALIGN_TOP)
+	tooltip_displayed_(false), id_(v["id"].as_string_default()), align_h_(HALIGN_LEFT), align_v_(VALIGN_TOP),
+	tooltip_display_delay_(v["tooltip_delay"].as_int(500)), tooltip_ticks_(MAXINT)
 {
 	if(v.has_key("width")) {
 		w_ = v["width"].as_int();
@@ -150,6 +151,11 @@ void widget::process_delegate()
 
 void widget::handle_process()
 {
+	if(!tooltip_displayed_ && SDL_GetTicks() > tooltip_ticks_ && tooltip_ != NULL) {
+		gui::set_tooltip(tooltip_);
+		tooltip_displayed_ = true;
+	}
+
 	if(on_process_) {
 		on_process_();
 	}
@@ -210,6 +216,7 @@ void widget::set_tooltip(const std::string& str, int fontsize, const SDL_Color& 
 bool widget::process_event(const SDL_Event& event, bool claimed)
 {
 	if(disabled_) {
+		tooltip_ticks_ = MAXINT;
 		return claimed;
 	}
 	if(!claimed) {
@@ -217,16 +224,23 @@ bool widget::process_event(const SDL_Event& event, bool claimed)
 			if(event.motion.x >= x() && event.motion.x <= x()+width() &&
 				event.motion.y >= y() && event.motion.y <= y()+height()) {
 				if(!tooltip_displayed_) {
-					gui::set_tooltip(tooltip_);
-					tooltip_displayed_ = true;
+					if(tooltip_display_delay_ == 0 || SDL_GetTicks() > tooltip_ticks_) {
+						gui::set_tooltip(tooltip_);
+						tooltip_displayed_ = true;
+					} else if(tooltip_ticks_ == MAXINT) {
+						tooltip_ticks_ = SDL_GetTicks() + tooltip_display_delay_;
+					}
 				}
 			} else {
+				tooltip_ticks_ = MAXINT;
 				if(tooltip_displayed_) {
 					gui::remove_tooltip(tooltip_);
 					tooltip_displayed_ = false;
 				}
 			}
 		}
+	} else {
+		tooltip_ticks_ = MAXINT;
 	}
 
 	return handle_event(event, claimed);
