@@ -13,6 +13,7 @@
 */
 
 #include <boost/bind.hpp>
+#include <boost/uuid/sha1.hpp>
 #include <iostream>
 #include <stack>
 #include <math.h>
@@ -2614,6 +2615,18 @@ FUNCTION_DEF(hex_get_random_tile, 1, 2, "hex_get_random_tile(regex, (opt)count) 
 		return variant(matches[rand() % matches.size()].get());
 	}
 END_FUNCTION_DEF(hex_get_random_tile)
+
+FUNCTION_DEF(sha1, 1, 1, "sha1(string) -> string: Returns the sha1 hash of the given string")
+	variant v = args()[0]->evaluate(variables);
+	const std::string& s = v.as_string();
+	boost::uuids::detail::sha1 hash;
+	hash.process_bytes(s.c_str(), s.length());
+	unsigned int digest[5];
+	hash.get_digest(digest);
+	std::stringstream str;
+	str << std::hex << std::setfill('0')  << std::setw(sizeof(unsigned int)*2) << digest[0] << digest[1] << digest[2] << digest[3] << digest[4];
+	return variant(str.str());
+END_FUNCTION_DEF(sha1)
 
 }
 
