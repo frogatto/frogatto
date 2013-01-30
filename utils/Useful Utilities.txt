@@ -23,3 +23,6 @@ grep -Hnr 'time()' modules/frogatto/
 
 And replace:
 cd modules; find . -type f -print0 | xargs -0 sed -i 's/time()/time().unix/g'
+
+Assertions:
+[…] asserting x != 0 | 'x is zero'
