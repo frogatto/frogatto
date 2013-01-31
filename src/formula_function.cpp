@@ -11,11 +11,12 @@
 
    See the COPYING file for more details.
 */
-
+   
 #include <boost/bind.hpp>
 #include <boost/uuid/sha1.hpp>
 #include <iomanip>
 #include <iostream>
+#include <iomanip>
 #include <stack>
 #include <math.h>
 
