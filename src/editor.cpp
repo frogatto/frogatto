@@ -319,7 +319,7 @@ public:
 				std::string modname = module::get_module_id(name);
 				sys::write_file(module::get_module_path(modname, (preferences::editor_save_to_user_preferences() ? module::BASE_PATH_USER : module::BASE_PATH_GAME)) + preferences::level_path() + nn, empty_lvl.write_json());
 			}
-			loadlevel::load_level_paths();
+			load_level_paths();
 			editor_.close();
 			g_last_edited_level() = id;
 		}
@@ -2821,7 +2821,7 @@ void editor::save_level_as(const std::string& fname)
 	std::string path = module::get_id(fname);
 	std::string modname = module::get_module_id(fname);
 	sys::write_file(module::get_module_path(modname, preferences::editor_save_to_user_preferences() ? module::BASE_PATH_USER : module::BASE_PATH_GAME) + preferences::level_path() + path, "");
-	loadlevel::load_level_paths();
+	load_level_paths();
 	filename_ = id;
 	save_level();
 	g_last_edited_level() = id;
@@ -2937,7 +2937,7 @@ void editor::save_level()
 	if(preferences::is_level_path_set()) {
 		sys::write_file(preferences::level_path() + filename_, lvl_node.write_json(true));
 	} else {
-		std::string path = loadlevel::get_level_path(filename_);
+		std::string path = get_level_path(filename_);
 		if(preferences::editor_save_to_user_preferences()) {
 			path = module::get_module_path(module::get_module_name(), module::BASE_PATH_USER) + "/data/level/" + filename_;
 		}
@@ -3630,7 +3630,7 @@ void editor::create_new_object()
 	object_dialog.set_draw_background_fn(gui::dialog::draw_last_scene);
 	object_dialog.show_modal();
 	if(object_dialog.cancelled() == false) {
-		customobjecttype::reload_file_paths();
+		custom_object_type::reload_file_paths();
 		lvl_->editor_clear_selection();
 		change_tool(TOOL_ADD_OBJECT);
 		const std::string type = object_dialog.get_object()["id"].as_string();

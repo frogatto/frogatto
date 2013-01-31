@@ -2330,8 +2330,8 @@ public:
 
 	virtual void execute(level& lvl, entity& ob) const {
 		module::reload(id_);
-		loadlevel::reload_level_paths();
-		customobjecttype::reload_file_paths();
+		reload_level_paths();
+		custom_object_type::reload_file_paths();
 
 		const std::vector<entity_ptr> players = lvl.players();
 		foreach(entity_ptr e, players) {

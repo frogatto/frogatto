@@ -210,8 +210,8 @@ const std::string editor_module_properties_dialog::on_exit() {
 	// Switch to the new_module
 	module::reload(mod_.name_);
 	// Reload level paths
-	loadlevel::reload_level_paths();
-	customobjecttype::reload_file_paths();
+	reload_level_paths();
+	custom_object_type::reload_file_paths();
 	if(mod_.abbreviation_.empty() == false) {
 		return mod_.abbreviation_ + ":titlescreen.cfg";
 	}

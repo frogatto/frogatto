@@ -252,11 +252,10 @@ variant merge_into_prototype(variant prototype_node, variant node)
 
 }
 
-namespace customobjecttype {
-void reload_file_paths() {
-	custom_object_type::invalidate_all_objects();
+void custom_object_type::reload_file_paths() 
+{
+	invalidate_all_objects();
 	load_file_paths();
-}
 }
 
 

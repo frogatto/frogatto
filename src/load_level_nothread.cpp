@@ -19,25 +19,26 @@ std::map<std::string,std::string>& get_level_paths() {
 }
 }
 
-namespace loadlevel {
-void reload_level_paths() {
+void reload_level_paths() 
+{
 	get_level_paths().clear();
 	load_level_paths();
 }
-void load_level_paths() {
+void load_level_paths() 
+{
 	module::get_unique_filenames_under_dir(preferences::load_compiled() ? "data/compiled/level/" : "data/level/", &get_level_paths());
 }
 
-const std::string& get_level_path(const std::string& name) {
+const std::string& get_level_path(const std::string& name) 
+{
 	if(get_level_paths().empty()) {
-		loadlevel::load_level_paths();
+		load_level_paths();
 	}
 	std::map<std::string, std::string>::const_iterator itor = module::find(get_level_paths(), name);
 	if(itor == get_level_paths().end()) {
 		ASSERT_LOG(false, "FILE NOT FOUND: " << name);
 	}
 	return itor->second;
-}
 }
 
 void clear_level_wml()
@@ -61,7 +62,7 @@ variant load_level_wml_nowait(const std::string& lvl)
 		preferences::set_save_slot(lvl);
 		return json::parse_from_file(preferences::save_file_path());
 	}
-	return json::parse_from_file(loadlevel::get_level_path(lvl));
+	return json::parse_from_file(get_level_path(lvl));
 }
 
 load_level_manager::load_level_manager()

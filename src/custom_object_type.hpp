@@ -24,13 +24,7 @@ class custom_object_type;
 typedef boost::shared_ptr<custom_object_type> custom_object_type_ptr;
 typedef boost::shared_ptr<const custom_object_type> const_custom_object_type_ptr;
 
-//namespace {
 std::map<std::string, std::string>& prototype_file_paths();
-//}
-
-namespace customobjecttype {
-	void reload_file_paths();
-}
 
 namespace wml {
 class modifier;
@@ -221,6 +215,8 @@ public:
 	const gles2::shader_ptr& shader() const { return shader_; }
 	const std::vector<gles2::shader_ptr>& effects() const { return effects_; }
 #endif
+
+	static void reload_file_paths();
 
 private:
 	//recreate an object type, optionally given the old version to base
