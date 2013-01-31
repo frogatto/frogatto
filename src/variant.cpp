@@ -1606,18 +1606,18 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 	return s.str();
 }
 
-std::string variant::write_json(bool pretty) const
+std::string variant::write_json(bool pretty, write_flags flags) const
 {
 	std::ostringstream s;
 	if(pretty) {
-		write_json_pretty(s, "");
+		write_json_pretty(s, "", flags);
 	} else {
-		write_json(s);
+		write_json(s, flags);
 	}
 	return s.str();
 }
 
-void variant::write_json(std::ostream& s) const
+void variant::write_json(std::ostream& s, write_flags flags) const
 {
 	switch(type_) {
 	case VARIANT_TYPE_NULL: {
@@ -1645,12 +1645,12 @@ void variant::write_json(std::ostream& s) const
 			if(i->first.is_string()) {
 				s << '"' << i->first.string_cast() << "\":";
 			} else {
-				std::string str = i->first.write_json();
+				std::string str = i->first.write_json(true, flags);
 				boost::replace_all(str, "\"", "\\\"");
 				s << "\"@eval " << str << "\":";
 			}
 
-			i->second.write_json(s);
+			i->second.write_json(s, flags);
 		}
 
 		s << "}";
@@ -1665,7 +1665,7 @@ void variant::write_json(std::ostream& s) const
 				s << ',';
 			}
 
-			i->write_json(s);
+			i->write_json(s, flags);
 		}
 
 		s << "]";
@@ -1674,7 +1674,9 @@ void variant::write_json(std::ostream& s) const
 	case VARIANT_TYPE_STRING: {
 		const std::string& str = string_->translated_from.empty() ? string_->str : string_->translated_from;
 		const char delim = string_->translated_from.empty() ? '"' : '~';
-		if(std::count(str.begin(), str.end(), '\\') || std::count(str.begin(), str.end(), delim)) {
+		if(std::count(str.begin(), str.end(), '\\') 
+			|| std::count(str.begin(), str.end(), delim) 
+			|| (flags == JSON_COMPLIANT && std::count(str.begin(), str.end(), '\n'))) {
 			//escape the string
 			s << delim;
 			for(std::string::const_iterator i = str.begin(); i != str.end(); ++i) {
@@ -1682,7 +1684,11 @@ void variant::write_json(std::ostream& s) const
 					s << '\\';
 				}
 
-				s << *i;
+				if(flags == JSON_COMPLIANT && *i == '\n') {
+					s << "\\n";
+				} else {
+					s << *i;
+				}
 			}
 			s << delim;
 		} else {
@@ -1739,7 +1745,7 @@ void variant::write_json(std::ostream& s) const
 	}
 }
 
-void variant::write_json_pretty(std::ostream& s, std::string indent) const
+void variant::write_json_pretty(std::ostream& s, std::string indent, write_flags flags) const
 {
 	switch(type_) {
 	case VARIANT_TYPE_MAP: {
@@ -1754,14 +1760,14 @@ void variant::write_json_pretty(std::ostream& s, std::string indent) const
 			if(i->first.is_string()) {
 				s << i->first.string_cast();
 			} else {
-				std::string str = i->first.write_json();
+				std::string str = i->first.write_json(true, flags);
 				boost::replace_all(str, "\"", "\\\"");
 				s << "@eval " << str;
 			}
 
 			s << "\": ";
 
-			i->second.write_json_pretty(s, indent);
+			i->second.write_json_pretty(s, indent, flags);
 		}
 		indent.resize(indent.size()-1);
 
@@ -1779,7 +1785,7 @@ void variant::write_json_pretty(std::ostream& s, std::string indent) const
 		}
 
 		if(!found_non_scalar) {
-			write_json(s);
+			write_json(s, flags);
 			return;
 		}
 
@@ -1795,7 +1801,7 @@ void variant::write_json_pretty(std::ostream& s, std::string indent) const
 
 			s << "\n" << indent;
 
-			i->write_json_pretty(s, indent);
+			i->write_json_pretty(s, indent, flags);
 		}
 
 		indent.resize(indent.size()-1);
@@ -1810,7 +1816,7 @@ void variant::write_json_pretty(std::ostream& s, std::string indent) const
 	}
 
 	default:
-		write_json(s);
+		write_json(s, flags);
 		break;
 	}
 }

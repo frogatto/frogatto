@@ -46,7 +46,7 @@ void web_server::handle_post(socket_ptr socket, variant doc, const http::environ
 			std::map<variant,variant> msg;
 			msg[variant("status")] = variant("error");
 			msg[variant("message")] = variant(e.msg);
-			send_msg(socket, "text/json", variant(&msg).write_json(), "");
+			send_msg(socket, "text/json", variant(&msg).write_json(true, variant::JSON_COMPLIANT), "");
 		}
 
 		return;
@@ -72,7 +72,7 @@ void web_server::handle_get(socket_ptr socket,
 			m[variant(i->first)] = variant(msg);
 		}
 
-		send_msg(socket, "text/json", variant(&m).write_json(), "");
+		send_msg(socket, "text/json", variant(&m).write_json(true, variant::JSON_COMPLIANT), "");
 		return;
 	}
 
@@ -80,7 +80,7 @@ void web_server::handle_get(socket_ptr socket,
 		args.count("module") ? args.find("module")->second : "",
 		args.count("module_version") ? args.find("module_version")->second : "",
 		args.count("level") ? args.find("level")->second : "");
-	send_msg(socket, "text/json", value.write_json(), "");
+	send_msg(socket, "text/json", value.write_json(true, variant::JSON_COMPLIANT), "");
 }
 
 void web_server::heartbeat()
@@ -90,7 +90,7 @@ void web_server::heartbeat()
 		timeval start_time, end_time;
 		gettimeofday(&start_time, NULL);
 		variant v = write_stats();
-		std::string data = v.write_json(true);
+		std::string data = v.write_json();
 
 		if(sys::file_exists("stats-5.json")) {
 			sys::remove_file("stats-5.json");
