@@ -463,26 +463,21 @@ variant server::create_game_info_msg(game_info_ptr g) const
 	value.add("id", g->game_state->game_id());
 	value.add("started", g->game_state->started());
 
-	std::vector<std::string>& ai = g->game_state->get_ai_players();
-
+	int index = 0;
 	std::vector<variant> clients;
 	foreach(int cid, g->clients) {
+		ASSERT_LOG(index < g->game_state->players().size(), "MIS-MATCHED INDEX: " << index << ", " << g->game_state->players().size());
 		std::map<variant, variant> m;
-		auto cinfo = clients_.find(cid);
+		std::map<int, client_info>::const_iterator cinfo = clients_.find(cid);
 		if(cinfo != clients_.end()) {
 			m[variant("nick")] = variant(cinfo->second.user);
 			m[variant("id")] = variant(cid);
-			m[variant("bot")] = variant::from_bool(false);
+			m[variant("bot")] = variant::from_bool(g->game_state->players()[index].is_human == false);
 		}
 		clients.push_back(variant(&m));
+		++index;
 	}
-	foreach(const std::string& ai, g->game_state->get_ai_players()) {
-		std::map<variant, variant> m;
-		m[variant("nick")] = variant(ai);
-		m[variant("id")] = variant(-1);
-		m[variant("bot")] = variant::from_bool(true);
-		clients.push_back(variant(&m));
-	}
+
 	value.set("clients", variant(&clients));
 
 	return value.build();
