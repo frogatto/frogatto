@@ -56,17 +56,17 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 					return;
 				}
 
-				if(session_id != -1) {
-					client_info& cli_info = clients_[session_id];
-					cli_info.user = user;
-					cli_info.game = g;
-					cli_info.nplayer = i;
-					cli_info.last_contact = nheartbeat_;
-					cli_info.session_id = session_id;
+				client_info& cli_info = clients_[session_id];
+				cli_info.user = user;
+				cli_info.game = g;
+				cli_info.nplayer = i;
+				cli_info.last_contact = nheartbeat_;
+				cli_info.session_id = session_id;
 
+				if(users[i]["bot"].as_bool(false) == false) {
 					g->game_state->add_player(user);
 				} else {
-					g->game_state->add_ai_player(user);
+					g->game_state->add_ai_player(user, users[i]);
 				}
 
 				g->clients.push_back(session_id);

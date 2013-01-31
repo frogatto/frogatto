@@ -48,7 +48,7 @@ public:
 	virtual bool full() const { return players_.size() == 2; }
 
 	virtual void add_player(const std::string& name);
-	virtual void add_ai_player(const std::string& name);
+	virtual void add_ai_player(const std::string& name, const variant& info);
 
 	std::vector<std::string> get_ai_players() const;
 

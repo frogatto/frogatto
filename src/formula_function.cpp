@@ -14,6 +14,7 @@
 
 #include <boost/bind.hpp>
 #include <boost/uuid/sha1.hpp>
+#include <iomanip>
 #include <iostream>
 #include <stack>
 #include <math.h>

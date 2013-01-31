@@ -73,7 +73,7 @@ protected:
 		: x_(0), y_(0), w_(0), h_(0), align_h_(HALIGN_LEFT), align_v_(VALIGN_TOP),
 		true_x_(0), true_y_(0), disabled_(false), disabled_opacity_(127),
 		tooltip_displayed_(false), visible_(true), zorder_(0), environ_(0),
-		tooltip_display_delay_(0), tooltip_ticks_(MAXINT)
+		tooltip_display_delay_(0), tooltip_ticks_(INT_MAX)
 	{}
 	explicit widget(const variant& v, game_logic::formula_callable* e);
 	virtual ~widget();

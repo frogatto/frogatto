@@ -260,18 +260,17 @@ void game::add_player(const std::string& name)
 	players_.back().is_human = true;
 }
 
-void game::add_ai_player(const std::string& name)
+void game::add_ai_player(const std::string& name, const variant& info)
 {
-	ai_player* ai = create_ai();
-	if(!ai) {
-		return;
-	}
-
 	players_.push_back(player());
 	players_.back().name = name;
 	players_.back().side = players_.size() - 1;
 	players_.back().is_human = false;
-	ai_.push_back(boost::shared_ptr<ai_player>(ai));
+
+	handle_event("add_bot", map_into_callable(info).get());
+
+//	boost::intrusive_ptr<bot> new_bot(new bot(*web_server::service(), "localhost", formatter() << web_server::port(), info));
+//	bots_.push_back(new_bot);
 }
 
 void game::remove_player(const std::string& name)
@@ -336,7 +335,7 @@ void game::send_game_state(int nplayer)
 		outgoing_messages_.back().recipients.push_back(-1);
 
 		current_message_ = "";
-	} else if(nplayer >= 0 && nplayer < players().size() && players()[nplayer].is_human) {
+	} else if(nplayer >= 0 && nplayer < players().size()) {
 		queue_message(write(nplayer), nplayer);
 	}
 }
@@ -398,6 +397,7 @@ void game::set_value(const std::string& key, const variant& value)
 	} else if(key == "bots") {
 		bots_.clear();
 		for(int n = 0; n != value.num_elements(); ++n) {
+			std::cerr << "BOT_ADD: " << value[n].write_json() << "\n";
 			boost::intrusive_ptr<bot> new_bot(new bot(*web_server::service(), "localhost", formatter() << web_server::port(), value[n]));
 			bots_.push_back(new_bot);
 		}
