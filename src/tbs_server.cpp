@@ -461,7 +461,7 @@ variant server::create_game_info_msg(game_info_ptr g) const
 	variant_builder value;
 	value.add("type", "game_info");
 	value.add("id", g->game_state->game_id());
-	value.add("started", g->game_state->started());
+	value.add("started", variant::from_bool(g->game_state->started()));
 
 	size_t index = 0;
 	std::vector<variant> clients;
