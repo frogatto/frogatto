@@ -463,7 +463,7 @@ variant server::create_game_info_msg(game_info_ptr g) const
 	value.add("id", g->game_state->game_id());
 	value.add("started", g->game_state->started());
 
-	int index = 0;
+	size_t index = 0;
 	std::vector<variant> clients;
 	foreach(int cid, g->clients) {
 		ASSERT_LOG(index < g->game_state->players().size(), "MIS-MATCHED INDEX: " << index << ", " << g->game_state->players().size());
