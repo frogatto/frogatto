@@ -2177,6 +2177,11 @@ void custom_object::being_added()
 	handle_event(OBJECT_EVENT_BEING_ADDED);
 }
 
+void custom_object::remove_widget(gui::widget_ptr w)
+{
+	widgets_.erase(std::remove(widgets_.begin(), widgets_.end(), w), widgets_.end());
+}
+
 namespace {
 
 using game_logic::formula_callable;
@@ -2212,6 +2217,15 @@ class widgets_callable : public formula_callable {
 		return variant(obj_->get_widget_by_id(key).get());
 	}
 	void set_value(const std::string& key, const variant& value) {
+		if(key == "child") {
+			obj_->add_widget(widget_factory::create(value, obj_.get()));
+			return;
+		}
+		if(value.is_null()) {
+			gui::widget_ptr w = obj_->get_widget_by_id(key);
+			ASSERT_LOG(w != NULL, "no widget with identifier " << key << " found");
+			obj_->remove_widget(w);
+		}
 	}
 public:
 	explicit widgets_callable(const custom_object& obj) : obj_(const_cast<custom_object*>(&obj))
@@ -4740,6 +4754,17 @@ bool custom_object::handle_sdl_event(const SDL_Event& event, bool claimed)
 game_logic::formula_ptr custom_object::create_formula(const variant& v)
 {
 	return game_logic::formula_ptr(new game_logic::formula(v, &get_custom_object_functions_symbol_table()));
+}
+
+gui::const_widget_ptr custom_object::get_widget_by_id(const std::string& id) const
+{
+	foreach(const gui::widget_ptr& w, widgets_) {
+		gui::widget_ptr wx = w->get_widget_by_id(id);
+		if(wx) {
+			return wx;
+		}
+	}
+	return gui::const_widget_ptr();
 }
 
 gui::widget_ptr custom_object::get_widget_by_id(const std::string& id)

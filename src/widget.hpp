@@ -20,6 +20,7 @@
 #include "graphics.hpp"
 #include "input.hpp"
 #include "tooltip.hpp"
+#include "framed_gui_element.hpp"
 
 namespace gui {
 
@@ -58,6 +59,7 @@ public:
 	virtual variant get_value(const std::string& key) const;
 
 	virtual widget_ptr get_widget_by_id(const std::string& id);
+	virtual const_widget_ptr get_widget_by_id(const std::string& id) const;
 
 	virtual void handle_draw() const = 0;
 
@@ -67,13 +69,16 @@ public:
 	void set_zorder(int z) { zorder_ = z; }
 	int zorder() const { return zorder_; }
 
+	int get_frame_resolution() const { return resolution_; }
+	void set_frame_set(const std::string& frame) { frame_set_ = framed_gui_element::get(frame); frame_set_name_ = frame; }
+
 	void process();
 protected:
 	widget() 
 		: x_(0), y_(0), w_(0), h_(0), align_h_(HALIGN_LEFT), align_v_(VALIGN_TOP),
 		true_x_(0), true_y_(0), disabled_(false), disabled_opacity_(127),
 		tooltip_displayed_(false), visible_(true), zorder_(0), environ_(0),
-		tooltip_display_delay_(0), tooltip_ticks_(INT_MAX)
+		tooltip_display_delay_(0), tooltip_ticks_(INT_MAX), resolution_(0)
 	{}
 	explicit widget(const variant& v, game_logic::formula_callable* e);
 	virtual ~widget();
@@ -110,6 +115,10 @@ private:
 
 	HORIZONTAL_ALIGN align_h_;
 	VERTICAL_ALIGN   align_v_;
+
+	std::string frame_set_name_;
+	const_framed_gui_element_ptr frame_set_;
+	int resolution_;
 };
 
 // Functor to sort widgets by z-ordering.

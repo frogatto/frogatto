@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "asserts.hpp"
 #include "foreach.hpp"
 #include "framed_gui_element.hpp"
 #include "geometry.hpp"
@@ -22,11 +23,7 @@ void framed_gui_element::init(variant node)
 const_framed_gui_element_ptr framed_gui_element::get(const std::string& key)
 {
 	cache_map::const_iterator itor = cache.find(key);
-	if(itor == cache.end()) {
-		assert(false); //TODO: replace with an exception.
-		return const_framed_gui_element_ptr();
-	}
-	
+	ASSERT_LOG(itor != cache.end(), "Couldn't find gui_element named '" << key << "' in list");
 	return itor->second;
 }
 
@@ -67,7 +64,7 @@ void framed_gui_element::blit(int x, int y, int w, int h, bool upscaled) const
 	
 	int scale = upscaled? 2:1;
 	
-	blit_subsection(interior_fill_,x,y,w,h);
+	blit_subsection(interior_fill_,x+ corner_height_,y+ corner_height_,w-2*corner_height_,h-2*corner_height_);
 	
 	blit_subsection(top_border_,x + corner_height_,y,w - corner_height_*2,top_border_.h()*scale);
 	blit_subsection(bottom_border_,x + corner_height_,y + h - bottom_border_.h()*scale,w-corner_height_*2,bottom_border_.h()*scale);

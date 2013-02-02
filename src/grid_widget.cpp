@@ -51,6 +51,7 @@ grid::grid(const variant& v, game_logic::formula_callable* e)
 	ncols_ = v["columns"].as_int(1);
 	if(v.has_key("column_widths")) {
 		if(v["column_widths"].is_list()) {
+			ASSERT_LOG(v["column_widths"].num_elements() == ncols_, "List of column widths must have " << ncols_ << " elements");
 			std::vector<int> li = v["column_widths"].as_list_int();
 			col_widths_.assign(li.begin(), li.end());
 		} else if(v["column_widths"].is_int()) {
@@ -486,6 +487,17 @@ void grid::mouseover_delegate(int selection)
 	}
 }
 
+const_widget_ptr grid::get_widget_by_id(const std::string& id) const
+{
+	foreach(widget_ptr w, cells_) {
+		widget_ptr wx = w->get_widget_by_id(id);
+		if(wx) {
+			return wx;
+		}
+	}
+	return widget::get_widget_by_id(id);
+}
+
 widget_ptr grid::get_widget_by_id(const std::string& id)
 {
 	foreach(widget_ptr w, cells_) {
@@ -508,7 +520,13 @@ void grid::set_value(const std::string& key, const variant& v)
 			.finish_row();
 		recalculate_dimensions();
 	}
-	widget::set_value(key, v);
+	gui::widget_ptr w = get_widget_by_id(key);
+	if(v.is_null() && w != NULL) {
+		cells_.erase(std::remove(cells_.begin(), cells_.end(), w), cells_.end());
+		recalculate_dimensions();
+	} else {
+		widget::set_value(key, v);
+	}
 }
 
 variant grid::get_value(const std::string& key) const
@@ -521,6 +539,10 @@ variant grid::get_value(const std::string& key) const
 		return variant(&v);
 	} else if(key == "selected_row") {
 		return variant(selected_row_);
+	}
+	gui::const_widget_ptr w = get_widget_by_id(key);
+	if(w != NULL) {
+		return variant(w.get());
 	}
 	return widget::get_value(key);
 }

@@ -16,6 +16,7 @@ public:
 	border_widget(const variant& v, game_logic::formula_callable* e);
 	void set_color(const graphics::color& col);
 	virtual widget_ptr get_widget_by_id(const std::string& id);
+	const_widget_ptr get_widget_by_id(const std::string& id) const;
 protected:
 	virtual void handle_draw() const;
 	virtual void handle_process();

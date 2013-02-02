@@ -430,6 +430,17 @@ widget_ptr tree_view_widget::get_widget_by_id(const std::string& id)
 	return widget::get_widget_by_id(id);
 }
 
+const_widget_ptr tree_view_widget::get_widget_by_id(const std::string& id) const
+{
+	foreach(const widget_ptr& w, widgets_) {
+		widget_ptr wx = w->get_widget_by_id(id);
+		if(wx) {
+			return wx;
+		}
+	}
+	return widget::get_widget_by_id(id);
+}
+
 void tree_view_widget::set_value(const std::string& key, const variant& v)
 {
 	widget::set_value(key, v);

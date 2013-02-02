@@ -162,6 +162,14 @@ widget_ptr button::get_widget_by_id(const std::string& id)
 	return widget::get_widget_by_id(id);
 }
 
+const_widget_ptr button::get_widget_by_id(const std::string& id) const
+{
+	if(label_ && label_->get_widget_by_id(id)) {
+		return label_;
+	}
+	return widget::get_widget_by_id(id);
+}
+
 variant button::get_value(const std::string& key) const
 {
 	if(key == "label") {

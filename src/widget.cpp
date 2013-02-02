@@ -29,7 +29,8 @@ widget::widget(const variant& v, game_logic::formula_callable* e)
 	: environ_(e), w_(0), h_(0), x_(0), y_(0), zorder_(0), 
 	true_x_(0), true_y_(0), disabled_(false), disabled_opacity_(v["disabled_opacity"].as_int(127)),
 	tooltip_displayed_(false), id_(v["id"].as_string_default()), align_h_(HALIGN_LEFT), align_v_(VALIGN_TOP),
-	tooltip_display_delay_(v["tooltip_delay"].as_int(500)), tooltip_ticks_(INT_MAX)
+	tooltip_display_delay_(v["tooltip_delay"].as_int(500)), tooltip_ticks_(INT_MAX),
+	resolution_(v["frame_size"].as_int(0))
 {
 	if(v.has_key("width")) {
 		w_ = v["width"].as_int();
@@ -110,6 +111,9 @@ widget::widget(const variant& v, game_logic::formula_callable* e)
 		}
 	}
 	disabled_ = !v["enabled"].as_bool(true);
+	if(v.has_key("frame")) {
+		set_frame_set(v["frame"].as_string());
+	}
 	recalc_loc();
 }
 
@@ -259,6 +263,9 @@ void widget::draw() const
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glColor4ub(255, 255, 255, disabled_opacity_);
 		}
+		if(frame_set_ != NULL) {
+			frame_set_->blit(x(), y(), width(), height(), resolution_ != 0);
+		}
 		handle_draw();
 		if(disabled_) {
 #if !defined(USE_GLES2)
@@ -289,6 +296,14 @@ int widget::height() const
 	return h_;
 }
 
+const_widget_ptr widget::get_widget_by_id(const std::string& id) const
+{
+	if(id_ == id) {
+		return const_widget_ptr(this);
+	}
+	return widget_ptr();
+}
+
 widget_ptr widget::get_widget_by_id(const std::string& id)
 {
 	if(id_ == id) {
@@ -314,7 +329,11 @@ variant widget::get_value(const std::string& key) const
 		return variant(visible_);
 	} else if(key == "id") {
 		return variant(id_);
-	}
+	} else if(key == "resolution") {
+		return variant(resolution_);
+	} else if(key == "frame") {
+		return variant(frame_set_name_);
+	} 
 	return variant();
 }
 
@@ -360,6 +379,10 @@ void widget::set_value(const std::string& key, const variant& v)
 	} else if(key == "disabled_opacity") {
 		int opa = v.as_int();
 		disabled_opacity_ = (opa > 255) ? 255 : (opa < 0) ? 0 : opa;
+	} else if(key == "frame") {
+		set_frame_set(v.as_string());
+	} else if(key == "resolution") {
+		resolution_ = v.as_int();
 	}
 }
 

@@ -213,7 +213,9 @@ public:
 	void add_widget(const gui::widget_ptr& w) { widgets_.push_back(w); std::sort(widgets_.begin(), widgets_.end(), gui::widget_sort_zorder()); }
 	void add_widgets(std::vector<gui::widget_ptr>* widgets) { widgets_.swap(*widgets); std::sort(widgets_.begin(), widgets_.end(), gui::widget_sort_zorder()); }
 	void clear_widgets() { widgets_.clear(); }
+	void remove_widget(gui::widget_ptr w);
 	gui::widget_ptr get_widget_by_id(const std::string& id);
+	gui::const_widget_ptr get_widget_by_id(const std::string& id) const;
 	bool get_clip_area(rect* clip_area) {
 		if(clip_area_ && clip_area) {
 			*clip_area = *clip_area_.get();

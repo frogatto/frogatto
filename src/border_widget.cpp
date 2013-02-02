@@ -57,6 +57,15 @@ bool border_widget::handle_event(const SDL_Event& event, bool claimed)
 	return child_->process_event(ev, claimed);
 }
 
+const_widget_ptr border_widget::get_widget_by_id(const std::string& id) const
+{
+	widget_ptr wx = child_->get_widget_by_id(id);
+	if(wx) {
+		return wx;
+	}
+	return widget::get_widget_by_id(id);
+}
+
 widget_ptr border_widget::get_widget_by_id(const std::string& id)
 {
 	widget_ptr wx = child_->get_widget_by_id(id);

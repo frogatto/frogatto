@@ -350,6 +350,17 @@ widget_ptr dialog::get_widget_by_id(const std::string& id)
 	return widget::get_widget_by_id(id);
 }
 
+const_widget_ptr dialog::get_widget_by_id(const std::string& id) const
+{
+	foreach(widget_ptr w, widgets_) {
+		widget_ptr wx = w->get_widget_by_id(id);
+		if(wx) {
+			return wx;
+		}
+	}
+	return widget::get_widget_by_id(id);
+}
+
 void dialog::set_value(const std::string& key, const variant& v)
 {
 	if(key == "show_modal") {
