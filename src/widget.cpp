@@ -30,7 +30,7 @@ widget::widget(const variant& v, game_logic::formula_callable* e)
 	true_x_(0), true_y_(0), disabled_(false), disabled_opacity_(v["disabled_opacity"].as_int(127)),
 	tooltip_displayed_(false), id_(v["id"].as_string_default()), align_h_(HALIGN_LEFT), align_v_(VALIGN_TOP),
 	tooltip_display_delay_(v["tooltip_delay"].as_int(500)), tooltip_ticks_(INT_MAX),
-	resolution_(v["frame_size"].as_int(0))
+	resolution_(v["frame_size"].as_int(0)), display_alpha_(v["alpha"].as_int(255))
 {
 	if(v.has_key("width")) {
 		w_ = v["width"].as_int();
@@ -255,24 +255,24 @@ void widget::draw() const
 	if(visible_) {
 		GLint src = 0;
 		GLint dst = 0;
-		if(disabled_) {
 #if !defined(USE_GLES2)
 			glGetIntegerv(GL_BLEND_SRC, &src);
 			glGetIntegerv(GL_BLEND_DST, &dst);
 #endif
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		if(disabled_) {
 			glColor4ub(255, 255, 255, disabled_opacity_);
+		} else {
+			glColor4ub(255, 255, 255, display_alpha_);
 		}
 		if(frame_set_ != NULL) {
 			frame_set_->blit(x(), y(), width(), height(), resolution_ != 0);
 		}
 		handle_draw();
-		if(disabled_) {
 #if !defined(USE_GLES2)
-			glBlendFunc(src, dst);
+		glBlendFunc(src, dst);
 #endif
-			glColor4ub(255, 255, 255, 255);
-		}
+		glColor4ub(255, 255, 255, 255);
 	}
 }
 
@@ -333,6 +333,8 @@ variant widget::get_value(const std::string& key) const
 		return variant(resolution_);
 	} else if(key == "frame") {
 		return variant(frame_set_name_);
+	} else if(key == "alpha") {
+		return variant(get_alpha());
 	} 
 	return variant();
 }
@@ -383,6 +385,9 @@ void widget::set_value(const std::string& key, const variant& v)
 		set_frame_set(v.as_string());
 	} else if(key == "resolution") {
 		resolution_ = v.as_int();
+	} else if(key == "alpha") {
+		int a = v.as_int();
+		set_alpha(a < 0 ? 0 : (a > 255 ? 255 : a));
 	}
 }
 

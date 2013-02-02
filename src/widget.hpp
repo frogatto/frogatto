@@ -72,13 +72,17 @@ public:
 	int get_frame_resolution() const { return resolution_; }
 	void set_frame_set(const std::string& frame) { frame_set_ = framed_gui_element::get(frame); frame_set_name_ = frame; }
 
+	uint8_t get_alpha() const { return display_alpha_; }
+	void set_alpha(uint8_t a=255) { display_alpha_ = a; }
+
 	void process();
 protected:
 	widget() 
 		: x_(0), y_(0), w_(0), h_(0), align_h_(HALIGN_LEFT), align_v_(VALIGN_TOP),
 		true_x_(0), true_y_(0), disabled_(false), disabled_opacity_(127),
 		tooltip_displayed_(false), visible_(true), zorder_(0), environ_(0),
-		tooltip_display_delay_(0), tooltip_ticks_(INT_MAX), resolution_(0)
+		tooltip_display_delay_(0), tooltip_ticks_(INT_MAX), resolution_(0),
+		display_alpha_(255)
 	{}
 	explicit widget(const variant& v, game_logic::formula_callable* e);
 	virtual ~widget();
@@ -112,6 +116,7 @@ private:
 	uint8_t disabled_opacity_;
 	unsigned tooltip_display_delay_;
 	unsigned tooltip_ticks_;
+	uint8_t display_alpha_;
 
 	HORIZONTAL_ALIGN align_h_;
 	VERTICAL_ALIGN   align_v_;
