@@ -1828,6 +1828,19 @@ void custom_object::process(level& lvl)
 	}
 #endif
 
+	if(level::current().cycle() > get_mouseover_trigger_cycle()) {
+		if(is_mouse_over_entity() == false) {
+			game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable);
+			int mx, my;
+			SDL_GetMouseState(&mx, &my);
+			callable->add("mouse_x", variant(mx));
+			callable->add("mouse_y", variant(my));
+			handle_event("mouse_enter", callable.get());
+			set_mouse_over_entity();
+			set_mouseover_trigger_cycle(INT_MAX);
+		}
+	}
+
 	foreach(const gui::widget_ptr& w, widgets_) {
 		w->process();
 	}
