@@ -5,6 +5,7 @@
 # Translators:
 #   <chr1s_t0ph@yahoo.de>, 2012.
 #   <khaosoahk@gmail.com>, 2011.
+#  <Link-Mario@gmx.de>, 2013.
 #   <Link-Mario@gmx.de>, 2012.
 # Philipp Zabel <pzabel@gmx.de>, 2011.
 #   <reeelo@web.de>, 2012.
@@ -16,7 +17,7 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2012-11-28 22:10-0200\n"
-"PO-Revision-Date: 2012-12-01 10:42+0000\n"
+"PO-Revision-Date: 2013-01-30 11:15+0000\n"
 "Last-Translator: Link_Mario <Link-Mario@gmx.de>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/Frogatto/language/de/)\n"
 "MIME-Version: 1.0\n"
@@ -136,7 +137,7 @@ msgstr "Einige neue Feinde zum besiegen: eine rote Fledermaus, viel zäher als d
 msgid ""
 "New difficulty level: Challenging. Some enemies will be faster, hardier, "
 "smarter, or all of those put together."
-msgstr "New Schwierigkeitsgrad: Anspruchsvoll. Einige Gegner werden schneller, robuster, intelligenter, oder alles zusammen."
+msgstr "Neuer Schwierigkeitsgrad: Anspruchsvoll. Einige Gegner werden schneller, robuster, intelligenter, oder alles zusammen."
 
 #: ../CHANGELOG:6 ../iOS_CHANGELOG:6
 msgid ""
@@ -180,7 +181,7 @@ msgid ""
 "A much wider and smarter usage of sound effects; now you'll be able to "
 "notice flying enemies' wings flapping, kitties running around, and even the "
 "sounds Frogatto make are when moving around are dependent on terrain."
-msgstr "Eine viel größere und intelligentere Nutzung von Soundeffekten; jetzt wirst du in der Lage sein, den Flügelschlag fliegender Feinde zu bemerken, herumlaufende Kätzchen, und sogar die Geräusche Frogatto, wenn er sich auf anderem Gelände bewegt."
+msgstr "Eine viel größere und intelligentere Nutzung von Soundeffekten; jetzt wirst du in der Lage sein, den Flügelschlag fliegender Feinde zu bemerken, herumlaufende Kätzchen, und sogar die Geräusche von Frogatto, wenn er sich auf anderem Gelände bewegt."
 
 #: ../CHANGELOG:14 ../iOS_CHANGELOG:14
 msgid "Version 1.2:"
@@ -1006,7 +1007,7 @@ msgstr "Zum Schluss wendet sich alles zum Besseren.\nHoffe ich."
 msgid ""
 "I did find out what was going on, at least,\n"
 "that is, what the elder <em>says</em> is going on."
-msgstr "Ich habe erfahren, was los war, zumindest das,\nwas der Älteste<em> sagte</em>."
+msgstr "Ich habe erfahren, was los war, zumindest das,\nwas der Älteste <em>sagte</em>."
 
 #: ../data/level/crevice-bridge.cfg:310
 msgid ""
@@ -1154,7 +1155,7 @@ msgstr "<em>Jemand</em> muss zu Milgram gehen und fragen,\nwas falsch war, so da
 msgid ""
 "So for a lack of any other willing parties,\n"
 "I decided to go."
-msgstr "Da sich sich sonst niemand freiwillig\nmeldete, entschloss ich mich zu gehen."
+msgstr "Da sich sonst niemand freiwillig\nmeldete, entschloss ich mich zu gehen."
 
 #: ../data/level/crevice-bridge.cfg:363
 msgid "That's very noble of you."
@@ -2326,7 +2327,7 @@ msgstr "Nein. Tun Sie dies nicht. <em>Nicht</em> heute.\nIch will mich nicht mit
 msgid ""
 "Please, just stop playing games, okay?\n"
 "Don't convince me that you're actually crazy."
-msgstr "Bitte, hören sie mit diesen Spielchen auf, okay?\nÜberzeugen mich nicht,\ndass Sie tatsächlich verrückt sind."
+msgstr "Bitte, hören sie mit diesen Spielchen auf, okay?\nÜberzeugen Sie mich nicht,\ndass Sie tatsächlich verrückt sind."
 
 #: ../data/level/crevice-village-house-elder.cfg:530
 msgid "Are you done insulting me, yet?"
@@ -3177,7 +3178,7 @@ msgstr "Verstanden. Nur um genau zu sein,\nwir hatten nichts damit zu tun."
 msgid ""
 "Yes, I'm aware.  Nevertheless,\n"
 "you <em>can</em> get some information, ASAP."
-msgstr "Ja, bin ich mir bewusst. Dennoch <em>kanndu</em> du einige Informationen bekommen, so bald wie möglich."
+msgstr "Ja, bin ich mir bewusst. Dennoch <em>kannst</em> du einige Informationen bekommen, so bald wie möglich."
 
 #: ../data/level/golden-glen.cfg:2359
 msgid "Don't take no for an answer."
@@ -3749,7 +3750,7 @@ msgstr "Also ist er euer Vater?\nUnd hat einen Haufen Kinder."
 msgid ""
 "Well, I guess we consider him a parent,\n"
 "but we're very much made."
-msgstr "Nun, wir sollten ihn Vater nennen,\naber hat viele von uns geformt."
+msgstr "Nun, wir sollten ihn Vater nennen,\naber er hat viele von uns geformt."
 
 #: ../data/level/kitty-dormitory.cfg:1995
 msgid ""
@@ -5788,7 +5789,7 @@ msgstr "Ein oder zwei."
 msgid ""
 "Probably the craziest and most helpful is...\n"
 "I actually think <em>he still has</em> that money."
-msgstr "Das wahrscheinlich verrückteste und hilfreichste ist…\ndass ich glaube tatsächlich, dass\n<em>er immer noch</em> das Geld hat."
+msgstr "Das wahrscheinlich verrückteste und hilfreichste ist…\ndass ich tatsächlich glauben kann, dass\n<em>er immer noch</em> das Geld hat."
 
 #: ../data/level/tea-with-milgram.cfg:310
 msgid ""
@@ -6275,7 +6276,7 @@ msgstr "Nimm einfach das Geschenk,\ndu dummer, dummer Frosch."
 msgid ""
 "Hey, thanks for taking care\n"
 "of those ants down there!"
-msgstr "Hey, danke danke dass du dich\num die vielen Ameisen gekümmert hast."
+msgstr "Hey, danke dass du dich\num die vielen Ameisen gekümmert hast."
 
 #: ../data/level/to-nenes-house-inside.cfg:113
 msgid ""
@@ -6417,7 +6418,7 @@ msgstr "Meine Birne schmerzt immer noch…"
 msgid ""
 "Frankly, I'm almost glad it does!\n"
 "You need to learn a lesson from this."
-msgstr "Offen gesagt, bin ich froh darüber!\nDas sollte dir eine Lehre sein."
+msgstr "Offen gesagt, bin ich froh darüber!\nDas sollte ihnen eine Lehre sein."
 
 #: ../data/level/underground-pool.cfg:2476
 msgid ""
@@ -6562,7 +6563,7 @@ msgstr "Entschuldigt, dass ich eine solche Standpauke\ngehalten habe, aber ihr m
 msgid ""
 "Just understand that being overzealous\n"
 "isn't going to impress me."
-msgstr "Aber diese Übereifrigkeit beeindruckt mich nicht."
+msgstr "Nur diese Übereifrigkeit beeindruckt mich nicht."
 
 #: ../data/level/underground-pool.cfg:2535
 msgid ""

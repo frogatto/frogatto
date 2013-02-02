@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+#  <braknazwy@autograf.pl>, 2013.
 # marb <message@marb.pl>, 2011.
 # Marcos Avila Isidoro <marcavis@yahoo.com.br>, 2012.
 # Mariusz Bielski <message@marb.pl>, 2011.
@@ -17,8 +18,8 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2012-11-28 22:10-0200\n"
-"PO-Revision-Date: 2013-01-13 13:19+0000\n"
-"Last-Translator: mikolaj <mikolaj@lavabit.com>\n"
+"PO-Revision-Date: 2013-01-22 19:44+0000\n"
+"Last-Translator: julia.domagalska <braknazwy@autograf.pl>\n"
 "Language-Team: Polish (http://www.transifex.com/projects/p/Frogatto/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1841,7 +1842,7 @@ msgstr "Zrobi się, Do zobaczenia."
 msgid ""
 "HEY, WAIT!\n"
 "What about me?!"
-msgstr ""
+msgstr "HEJ, ZACZEKAJ!⏎ Co ze mną?!"
 
 #: ../data/level/crevice-village-house-1.cfg:975
 msgid "Does it look like I have a key for your cage?"
@@ -1855,7 +1856,7 @@ msgstr "Ach, rozumiem...\nKontynuuj więc."
 
 #: ../data/level/crevice-village-house-1.cfg:991
 msgid "Thank god it's you!"
-msgstr ""
+msgstr "Dzięki Bogu, to ty!"
 
 #: ../data/level/crevice-village-house-1.cfg:993
 msgid "Hey, Hedge, you alright?"
@@ -2169,7 +2170,7 @@ msgstr "Kim do diabła jesteś?"
 
 #: ../data/level/crevice-village-house-elder.cfg:365
 msgid "I sometimes ask myself that question."
-msgstr ""
+msgstr "Czasem zadaję sobie to pytanie."
 
 #: ../data/level/crevice-village-house-elder.cfg:369
 msgid "I don't have to put up with this."
@@ -2355,7 +2356,7 @@ msgstr "Wiem, że próbujesz coś przede mną ukryć, \nale zrzuć mi tu linę."
 msgid ""
 "Maybe ...\n"
 "I can actually <em>help</em> you?"
-msgstr ""
+msgstr "Może ...⏎ Rzeczywiście mogę ci <em>pomóc</em>?"
 
 #: ../data/level/crevice-village-house-elder.cfg:540
 msgid ""
@@ -2887,7 +2888,7 @@ msgstr ""
 
 #: ../data/level/dungeon-gateway.cfg:186
 msgid "If anyone asks, I didn't see you, okay?"
-msgstr ""
+msgstr "Jeśli ktoś mnie zapyta, nie widziałem cię, ok?"
 
 #: ../data/level/dungeon-gateway.cfg:189
 msgid "Roger!"
@@ -3063,7 +3064,7 @@ msgstr "Sękaty Pagórek"
 #: ../data/level/milgrams-basement-junction.cfg:387
 #: ../data/level/underground-pool.cfg:2453
 msgid "Meanwhile..."
-msgstr ""
+msgstr "Tymczasem..."
 
 #: ../data/level/golden-glen.cfg:2306
 msgid ""
@@ -3095,7 +3096,7 @@ msgstr ""
 
 #: ../data/level/golden-glen.cfg:2322
 msgid "Right..."
-msgstr ""
+msgstr "Racja..."
 
 #: ../data/level/golden-glen.cfg:2323
 msgid ""
@@ -3118,7 +3119,7 @@ msgstr ""
 
 #: ../data/level/golden-glen.cfg:2332
 msgid "Yes, I think so."
-msgstr ""
+msgstr "Tak myślę."
 
 #: ../data/level/golden-glen.cfg:2334
 msgid ""
@@ -3134,7 +3135,7 @@ msgstr ""
 
 #: ../data/level/golden-glen.cfg:2338
 msgid "Anybody?"
-msgstr ""
+msgstr "Ktokolwiek?"
 
 #: ../data/level/golden-glen.cfg:2342
 msgid ""
@@ -4101,7 +4102,7 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:3047
 msgid "Hello?"
-msgstr ""
+msgstr "Halo?"
 
 #: ../data/level/kitty-dormitory.cfg:3049
 msgid "Yes, hi."
@@ -4109,7 +4110,7 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:3050
 msgid "I'm doing laundry!"
-msgstr ""
+msgstr "Robię pranie!"
 
 #: ../data/level/kitty-dormitory.cfg:3053
 msgid ""
@@ -4125,7 +4126,7 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:3056
 msgid "I'd chat at length, but I'm a bit busy."
-msgstr ""
+msgstr "Pogadałbym dłużej, ale jestem trochę zajęty."
 
 #: ../data/level/kitty-dormitory.cfg:3057
 msgid ""
@@ -4153,7 +4154,7 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:3065
 msgid "No problem!"
-msgstr ""
+msgstr "Nie ma sprawy!"
 
 #: ../data/level/kitty-dormitory.cfg:3097
 msgid "Hi.  Haven't seen you around before."
@@ -4167,11 +4168,11 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:3102
 msgid "So what are you doing?"
-msgstr ""
+msgstr "Więc co porabiasz?"
 
 #: ../data/level/kitty-dormitory.cfg:3104
 msgid "Eh, trying to get this stupid machine working."
-msgstr ""
+msgstr "Eh, próbuję sprawić, żeby ta głupia maszyna zadziałała."
 
 #: ../data/level/kitty-dormitory.cfg:3105
 msgid ""
@@ -4234,7 +4235,7 @@ msgstr ""
 msgid ""
 "I mean, someone has to make these things?\n"
 "Right?"
-msgstr ""
+msgstr "Mam na myśli to, że ktoś musi to robić, prawda?"
 
 #: ../data/level/kitty-dormitory.cfg:3123
 msgid ""
@@ -4246,7 +4247,7 @@ msgstr ""
 msgid ""
 "Well, sometimes what you do is important.\n"
 "Don't ever forget that."
-msgstr ""
+msgstr "Cóż, czasem to co robisz jest ważne.⏎ Nigdy o tym nie zapominaj."
 
 #: ../data/level/kitty-dormitory.cfg:3128
 msgid ""
@@ -4256,11 +4257,11 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:3130
 msgid "And anything important tends to take time."
-msgstr ""
+msgstr "I zazwyczaj wszystko co ważne wymaga czasu."
 
 #: ../data/level/kitty-dormitory.cfg:3132
 msgid "Hmm..."
-msgstr ""
+msgstr "Hmm..."
 
 #: ../data/level/kitty-dormitory.cfg:3133
 msgid ""
@@ -4272,7 +4273,7 @@ msgstr ""
 msgid ""
 "Sometimes I wish I spent\n"
 "more time outside, though."
-msgstr ""
+msgstr "Chociaż czasem chciałbym spędzać⏎ więcej czasu na zewnątrz."
 
 #: ../data/level/kitty-dormitory.cfg:3135
 msgid "Bah."
@@ -4286,7 +4287,7 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:3139
 msgid "Of course."
-msgstr ""
+msgstr "Oczywiście."
 
 #: ../data/level/kitty-dormitory.cfg:3171
 msgid "^Who are you?"
@@ -4379,7 +4380,7 @@ msgstr ""
 msgid ""
 "Wow, that really sucks.\n"
 "I hope you can fix this."
-msgstr ""
+msgstr "Wow, to naprawdę kiepsko.⏎ Mam nadzieję, że możesz to naprawić."
 
 #: ../data/level/kitty-dormitory.cfg:3241
 msgid ""
@@ -4633,7 +4634,7 @@ msgstr "Jest napisane, \"Niebezpieczeństwo: Droga w jedną stronę.\""
 msgid ""
 "Sir, there's something we need\n"
 "to bring to your attention."
-msgstr ""
+msgstr "Panie, jest coś na co musimy ⏎ zwrócić pańską uwagę"
 
 #: ../data/level/milgrams-basement-junction.cfg:395
 msgid ""
@@ -4643,7 +4644,7 @@ msgstr ""
 
 #: ../data/level/milgrams-basement-junction.cfg:396
 msgid "I've had a pretty rough day."
-msgstr ""
+msgstr "Miałem bardzo ciężki dzień."
 
 #: ../data/level/milgrams-basement-junction.cfg:398
 msgid "No, I don't believe it can."
@@ -4670,7 +4671,7 @@ msgstr ""
 
 #: ../data/level/milgrams-basement-junction.cfg:405
 msgid "Him...?"
-msgstr ""
+msgstr "On...?"
 
 #: ../data/level/milgrams-basement-junction.cfg:407
 msgid ""
@@ -4682,13 +4683,13 @@ msgstr ""
 msgid ""
 "...\n"
 "Mother of god."
-msgstr ""
+msgstr "...⏎ Matko Boska"
 
 #: ../data/level/milgrams-basement-junction.cfg:410
 msgid ""
 "How is that even possible?\n"
 "How did he get here?"
-msgstr ""
+msgstr "Jak to w ogóle możliwe? ⏎ Jak on się tu dostał?"
 
 #: ../data/level/milgrams-basement-junction.cfg:412
 msgid ""
@@ -4698,7 +4699,7 @@ msgstr ""
 
 #: ../data/level/milgrams-basement-junction.cfg:413
 msgid "Should we try to negotiate with him?"
-msgstr ""
+msgstr "Czy powinniśmy spróbować z nim negocjować?"
 
 #: ../data/level/milgrams-basement-junction.cfg:415
 msgid ""
@@ -4744,11 +4745,11 @@ msgstr ""
 msgid ""
 "Shoot first or you might not\n"
 "get a second chance."
-msgstr ""
+msgstr "Traf za pierwszym razem ⏎ bo drugiego możesz nie mieć."
 
 #: ../data/level/milgrams-basement-junction.cfg:425
 msgid "That's an order."
-msgstr ""
+msgstr "To rozkaz."
 
 #: ../data/level/milgrams-basement-junction.cfg:428
 msgid "Fine."
@@ -4782,7 +4783,7 @@ msgstr ""
 
 #: ../data/level/milgrams-throne-room-entrance.cfg:52
 msgid "Right?"
-msgstr ""
+msgstr "Prawda?"
 
 #: ../data/level/milgrams-throne-room-entrance.cfg:417
 msgid "Milgram's Throne Room Entrance"
@@ -5128,7 +5129,7 @@ msgstr ""
 msgid ""
 "Good luck,\n"
 "and I hope it serves you well!"
-msgstr ""
+msgstr "Powodzenia,⏎ mam nadzieję, że będzie Ci to dobrze służyć!"
 
 #: ../data/level/secluded-hut-interior.cfg:351
 msgid ""
@@ -6162,7 +6163,7 @@ msgstr "Myślałam, że od przyjaciół\nnie będziesz oczekiwał zapłaty!"
 msgid ""
 "Also, come back and\n"
 "talk to me when you're done."
-msgstr ""
+msgstr "Ponadto, wróć i⏎ porozmawiaj ze mną, kiedy skończysz."
 
 #: ../data/level/to-nenes-house-inside.cfg:65
 msgid ""
@@ -6173,7 +6174,7 @@ msgstr "Skoro tak stawiasz sprawę to \nw piwnicy znajduje się kapsułka zdrowi
 
 #: ../data/level/to-nenes-house-inside.cfg:65
 msgid "I might have something else for you."
-msgstr ""
+msgstr "Być może mam dla Ciebie coś innego."
 
 #: ../data/level/to-nenes-house-inside.cfg:70
 msgid ""
@@ -6206,7 +6207,7 @@ msgstr ""
 
 #: ../data/level/to-nenes-house-inside.cfg:83
 msgid "Is it cake?"
-msgstr ""
+msgstr "Czy to ciasto?"
 
 #: ../data/level/to-nenes-house-inside.cfg:85
 msgid ""
@@ -6270,7 +6271,7 @@ msgstr ""
 msgid ""
 "Just take the present,\n"
 "you silly, silly frog."
-msgstr ""
+msgstr "Po prostu przyjmij prezent,⏎ ty głupia, głupia ropucho."
 
 #: ../data/level/to-nenes-house-inside.cfg:111
 msgid ""
@@ -6412,7 +6413,7 @@ msgstr ""
 
 #: ../data/level/underground-pool.cfg:2470
 msgid "My head still hurts..."
-msgstr ""
+msgstr "Moja głowa nadal boli..."
 
 #: ../data/level/underground-pool.cfg:2474
 msgid ""
@@ -6442,7 +6443,7 @@ msgstr ""
 msgid ""
 "But even if you have good intentions, people\n"
 "don't like it when you're mean to them."
-msgstr ""
+msgstr "Ale nawet jeśli masz dobre intencje, to ludzie ⏎ nie lubią, kiedy jesteś dla nich złośliwy"
 
 #: ../data/level/underground-pool.cfg:2484
 msgid "I'm sorry, sir."
@@ -6478,7 +6479,7 @@ msgstr ""
 msgid ""
 "I am afraid of angering\n"
 "something stronger than all of us."
-msgstr ""
+msgstr "Boję się rozgniewać ⏎ czegoś, co jest silniejsze od nas wszystkich."
 
 #: ../data/level/underground-pool.cfg:2499
 msgid ""
@@ -6488,7 +6489,7 @@ msgstr ""
 
 #: ../data/level/underground-pool.cfg:2502
 msgid "Yup."
-msgstr ""
+msgstr "Tak."
 
 #: ../data/level/underground-pool.cfg:2504
 msgid ""
@@ -6498,13 +6499,13 @@ msgstr ""
 
 #: ../data/level/underground-pool.cfg:2507
 msgid "I have no idea."
-msgstr ""
+msgstr "Nie mam pojęcia."
 
 #: ../data/level/underground-pool.cfg:2509
 msgid ""
 "But there are so many things\n"
 "we don't know about the world."
-msgstr ""
+msgstr "Ale jest tak wiele rzeczy, ⏎ których nie wiemy o świecie."
 
 #: ../data/level/underground-pool.cfg:2511
 msgid ""
@@ -6625,7 +6626,7 @@ msgstr ""
 #: ../data/objects/items/ability.cfg:8 ../data/objects/items/ability.cfg:9
 #: ../data/objects/items/ability.cfg:10
 msgid "You gained a new ability!"
-msgstr ""
+msgstr "Zyskałeś nową umiejętność!"
 
 #: ../data/objects/items/ability.cfg:9
 msgid ""

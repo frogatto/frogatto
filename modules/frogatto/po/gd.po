@@ -4,6 +4,7 @@
 # 
 # Translators:
 # <fios@foramnagaidhlig.net>, 2012.
+#  <fios@foramnagaidhlig.net>, 2013.
 #   <fios@foramnagaidhlig.net>, 2012-2013.
 # GunChleoc <fios@foramnagaidhlig.net>, 2012.
 msgid ""
@@ -11,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2012-11-28 22:10-0200\n"
-"PO-Revision-Date: 2013-01-13 16:05+0000\n"
+"PO-Revision-Date: 2013-01-17 22:43+0000\n"
 "Last-Translator: GunChleoc <fios@foramnagaidhlig.net>\n"
 "Language-Team: Gaelic, Scottish (http://www.transifex.com/projects/p/Frogatto/language/gd/)\n"
 "MIME-Version: 1.0\n"
@@ -2740,7 +2741,7 @@ msgstr "'Eil seo na chùis iongnaidh?"
 msgid ""
 "Yeah, I thought you were some creature\n"
 "that had shambled in from the caves."
-msgstr "Tha, bha mi 'n dùil gum biodh tu nad chreutair\nair choireigin air èalaidh a-steach o na h-uamhan."
+msgstr "Thà, bha mi 'n dùil gu robh tu nad chreutair\nair choireigin air èalaidh a-steach o na h-uamhan."
 
 #: ../data/level/dungeon-gateway.cfg:138
 msgid "We get that from time to time."
@@ -2793,7 +2794,7 @@ msgstr "Co-dhiù no co-dheth, fhad 's a tha thu\na' faighneachd, thàinig mi gus
 msgid ""
 "I'm trying to sneak in, because I hear he's\n"
 "nigh-impossible to get a proper audience with."
-msgstr "Tha mi feuchainn ri goideadh a-steach oir\ndh'innis iad rium gu bheil e cha mhòr\nneo-dhèanta èisteachd cheart fhaighinn."
+msgstr "Tha mi feuchainn ri goideadh a-steach oir\ndh'innis iad rium gu bheil e cha mhòr\ndo-dhèanta èisteachd cheart fhaighinn."
 
 #: ../data/level/dungeon-gateway.cfg:159
 msgid ""
@@ -2803,13 +2804,13 @@ msgstr "Abair thusa gu bheil seo caran dàna!"
 
 #: ../data/level/dungeon-gateway.cfg:160
 msgid "What business do you have with him?"
-msgstr "Dè an gnothach a th' agad leis?"
+msgstr "Dè 'n gnothach a th' agad leis?"
 
 #: ../data/level/dungeon-gateway.cfg:163
 msgid ""
 "Well, some of you came to my hometown a little\n"
 "while ago, and went after someone I know."
-msgstr "Uill, thàinig cuid dhibh dhan bhaile agam o chionn\ngreis an tòir air cuideigin as aithne dhomh."
+msgstr "Uill, thàinig cuid dhibh dhan bhaile agam o chionn\nghreis an tòir air cuideigin as aithne dhomh."
 
 #: ../data/level/dungeon-gateway.cfg:165
 msgid ""
@@ -2833,7 +2834,7 @@ msgstr "Nise gu bheil sinn a' bruidhinn air, fhios a'd,\nnach eil mi gad aithnea
 
 #: ../data/level/dungeon-gateway.cfg:171
 msgid "I think they put out a security bulletin about you."
-msgstr "Saoilidh mi gun do sgaoil iad bràth\ntèarainteachd mud dheidhinn."
+msgstr "Saoilidh mi gun do sgaoil iad brath\ntèarainteachd mud dheidhinn."
 
 #: ../data/level/dungeon-gateway.cfg:174
 msgid ""
@@ -3692,7 +3693,7 @@ msgstr "An tuirt thu \"Chaidh ar dèanamh\"?\nSeo taghadh fhaclan inntinneach."
 msgid ""
 "Yes, that's right - I'm implying we are \"made\".\n"
 "We're made, not born, like you ... presumably are."
-msgstr "Thuirt, tha sin ceart, 's e gun deach ar dèanamh.\nChaidh ar dèanamh seadh breith mar a chaidh thusa\n... tha mi 'n dùil."
+msgstr "Thuirt, tha sin ceart, 's e gun deach ar dèanamh.\nChaidh ar dèanamh seach breith mar a chaidh thusa\n... tha mi 'n dùil."
 
 #: ../data/level/kitty-dormitory.cfg:1977
 msgid ""
@@ -3716,7 +3717,7 @@ msgstr "On a chaidh do dhèanamh ...\nCò an dèanadair a-rèist?"
 msgid ""
 "Oh, Milgram, of course.\n"
 "Why else would he be so important?"
-msgstr "Calum Corca gu nàdarra.\nSeo as adhbhar gu bheil e cho cudromach."
+msgstr "Calum Corca gu nàdarra.\nSeo as adhbhar gu bheil esan cho cudromach."
 
 #: ../data/level/kitty-dormitory.cfg:1984
 msgid ""
@@ -4412,7 +4413,7 @@ msgstr "Saoilidh mi gum biodh aig cuideigin ris\nan obair seo a dhèanamh co-dhi
 
 #: ../data/level/kitty-kitchen.cfg:354
 msgid "Well, we could use a bit more help."
-msgstr "Uill, tha beagan taice a bharrachd a dhìth oirnn."
+msgstr "Uill, tha beagan taic a bharrachd a dhìth oirnn."
 
 #: ../data/level/kitty-kitchen.cfg:355
 msgid ""
@@ -5457,7 +5458,7 @@ msgstr "Sin agad e!"
 msgid ""
 "In fact, I came to him with the idea.\n"
 "It was meant to be philanthropy."
-msgstr "A dh'innse na fìrinne, 's e mo bheachd-sa a bh' ann.\nBhiodh e air sgàth gràdh daonna."
+msgstr "A dh'innse na fìrinne, 's e mo bheachd-s' a bh' ann.\nBhiodh e air sgàth gràdh daonna."
 
 #: ../data/level/tea-with-milgram.cfg:157
 msgid ""
@@ -5467,7 +5468,7 @@ msgstr "Bha mi dhen bheachd gum biodh 'bàillidh' ciallach\nach cha dèan e ach 
 
 #: ../data/level/tea-with-milgram.cfg:159
 msgid "And now he's refusing to repay you?"
-msgstr "Is a bheil e a' diùltadh gad phàigheadh a-nis?"
+msgstr "Is a bheil e diùltadh gad phàigheadh a-nis?"
 
 #: ../data/level/tea-with-milgram.cfg:162
 msgid "That's right!"
@@ -5580,7 +5581,7 @@ msgstr "Sin agad e!"
 msgid ""
 "It's very, very hard to get people\n"
 "to work on anything big or long-term."
-msgstr "Tha e cianail fhèin doirbh toirt air daoine\nobair air rudan mòra no thar ùine mhòr."
+msgstr "Tha e cianail fhèin doirbh toirt air daoine\nobair air rudan mòra no thar ùine mòire."
 
 #: ../data/level/tea-with-milgram.cfg:211
 msgid ""
@@ -5646,7 +5647,7 @@ msgstr "Feumaidh mi aideachadh nach eil mi fiù 's cinnteach\na-nis dè bha fain
 msgid ""
 "Might've been something about a bridge,\n"
 "Fergus was heading that one up."
-msgstr "'S dòcha gur e rudeigin mu dheidhinn drochaid'\na bh' ann. Bha Fearghas os cionn na cùise."
+msgstr "'S dòcha gur e rudeigin mu dheidhinn drochaid\na bh' ann. Bha Fearghas os cionn na cùise."
 
 #: ../data/level/tea-with-milgram.cfg:247
 msgid ""
@@ -5720,7 +5721,7 @@ msgid ""
 "Those cats are turning into bullies.\n"
 "Sooner or later, they're going to\n"
 "cause me some <em>serious</em> problems!"
-msgstr "Tha na cait seo a' dol nam burraidhean. Thig an\nlatha gun adhbharaich iad trioblaid mhòr dhomh!"
+msgstr "Tha na cait seo a' dol nam burraidhean. Thig a' latha\ngun adhbharaich iad trioblaid mhòr dhomh!"
 
 #: ../data/level/tea-with-milgram.cfg:273
 msgid ""
@@ -5769,7 +5770,7 @@ msgstr "... bha na rinn na piseagan ann a shiud\nuabhasach mì-mhodhail."
 msgid ""
 "Then again, I'm almost tempted to cut my\n"
 "losses and leave you guys well enough alone."
-msgstr "Air a' làimh eile, carson nach diùlt mi\ntuilleadh calla is seachnaich mi sibh."
+msgstr "Air a' làimh eile, carson nach diùlt mi\ntuilleadh calla is gun seachnaich mi sibh."
 
 #: ../data/level/tea-with-milgram.cfg:302
 msgid "Would you have any suggestions?"
@@ -5783,7 +5784,7 @@ msgstr "Tha moladh no dhà."
 msgid ""
 "Probably the craziest and most helpful is...\n"
 "I actually think <em>he still has</em> that money."
-msgstr "Am fear as craicte is as fheumaile 's dòcha ...\nsaoilidh mi gu bheil an t-airgead aige fhathast."
+msgstr "A' rud as craicte is as fheumaile 's dòcha ...\nsaoilidh mi gu bheil an t-airgead aige fhathast."
 
 #: ../data/level/tea-with-milgram.cfg:310
 msgid ""
@@ -5835,7 +5836,7 @@ msgstr "'S dòcha gun do chleachd e cuid dhen airgead\ndìomhair gus a thogail, 
 msgid ""
 "It's just a guess, but I honestly think he\n"
 "might have hidden the rest right inside it."
-msgstr "Chan e ach tuairmse a th' ann, ach tha mi dhen\nlàn-bheachd gun do dh'fhalaich e an corr\na-steach ann a shiud 's dòcha."
+msgstr "Chan e ach tuairmse a th' ann, ach tha mi dhen\nlàn-bheachd gun do dh'fhalaicheadh e an corr\na-steach ann a shiud."
 
 #: ../data/level/tea-with-milgram.cfg:330
 msgid "Incredible."
@@ -5870,7 +5871,7 @@ msgid ""
 "You probably should hear what others are\n"
 "interested in, but I for one really wish there\n"
 "was a road of any kind between here and there."
-msgstr "Tha mi 'n dùil gum bu chòir dhuibh èisteachd\nri càch fhathast, ach dhomhsa dheth, bhiodh e\nmath nan robh rathad air choireigin eadar\na-bhos an-seo is an-siud thall."
+msgstr "Tha mi 'n dùil gum bu chòir dhuibh èisteachd\nri càch fhathast, ach dhomhsa dheth, bhiodh e\nmath nan robh rathad air choireigin eadar\na-bhos an-seo is thall an-siud."
 
 #: ../data/level/tea-with-milgram.cfg:344
 msgid "I'm dreading the trip back."
@@ -5917,7 +5918,7 @@ msgid ""
 "We should keep in touch - hopefully,\n"
 "through you, I can meet some of the\n"
 "more 'level-headed' members of your town."
-msgstr "Bu chòir dhuinn cumail ann an co-luadar - tha mi 'n\ndòchas gun tachair mi air cuid dhen mhuinntir nas\n'ciallaiche' aig a bhaile le taic bhuatsa."
+msgstr "Bu chòir dhuinn cumail ann an co-luadar - tha mi 'n\ndòchas gun tachair mi air cuid dhen mhuinntir nas\n\"ciallaiche\" aig a bhaile le taic bhuatsa."
 
 #: ../data/level/tea-with-milgram.cfg:363
 msgid "So ... all's well that ends well?"
