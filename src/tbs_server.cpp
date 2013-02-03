@@ -181,12 +181,13 @@ void server::close_ajax(socket_ptr socket, client_info& cli_info)
 	if(cli_info.msg_queue.empty() == false) {
 
 		for(std::map<socket_ptr,std::string>::iterator s = waiting_connections_.begin();
-		    s != waiting_connections_.end(); ++s) {
+		    s != waiting_connections_.end(); ) {
 			if(s->second == info.nick && s->first != socket) {
-				sessions_to_waiting_connections_.erase(cli_info.session_id);
-				waiting_connections_.erase(s);
 				send_msg(s->first, "{ \"type\": \"keepalive\" }");
-				break;
+				sessions_to_waiting_connections_.erase(cli_info.session_id);
+				waiting_connections_.erase(s++);
+			} else {
+				++s;
 			}
 		}
 
@@ -251,7 +252,7 @@ void server::send_msg(socket_ptr socket, const std::string& msg)
 void server::handle_send(socket_ptr socket, const boost::system::error_code& e, size_t nbytes, boost::shared_ptr<std::string> buf)
 {
 	if(e) {
-		std::cerr << "ERROR SENDING DATA: " << std::make_error_code(static_cast<std::errc::errc>(e.value())) << std::endl;
+		std::cerr << "ERROR SENDING DATA: " << e.message() << std::endl;
 	}
 
 	disconnect(socket);
