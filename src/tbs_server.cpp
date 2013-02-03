@@ -10,6 +10,8 @@
 #include "filesystem.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
+#include "module.hpp"
+#include "json_parser.hpp"
 #include "tbs_server.hpp"
 #include "string_utils.hpp"
 #include "utils.hpp"
@@ -17,6 +19,19 @@
 
 
 namespace tbs {
+
+namespace 
+{
+	const variant& get_server_info()
+	{
+		static variant server_info;
+		if(server_info.is_null()) {
+			server_info = json::parse_from_file("data/server_info.cfg");
+			server_info.add_attr(variant("type"), variant("server_info"));
+		}
+		return server_info;
+	}
+}
 
 server::game_info::game_info(const variant& value)
 {
@@ -123,6 +138,8 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 				send_msg(socket, create_lobby_msg().write_json());
 			}
 			return;
+		} else if(type == "get_server_info") {
+			send_msg(socket, get_server_info().write_json());
 		} else {
 			send_msg(socket, "{ \"type\": \"unknown_message\" }");
 			return;
