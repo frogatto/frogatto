@@ -62,6 +62,7 @@ void client::recv_handler(const std::string& msg)
 
 void client::error_handler(const std::string& err)
 {
+	std::cerr << "ERROR IN TBS CLIENT: " << err << (handler_ ? " SENDING TO HANDLER...\n" : " NO HANDLER\n");
 	if(handler_) {
 		callable_->add("error", json::parse(err, json::JSON_NO_PREPROCESSOR));
 		handler_("connection_error");
