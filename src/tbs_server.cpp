@@ -183,6 +183,8 @@ void server::close_ajax(socket_ptr socket, client_info& cli_info)
 		for(std::map<socket_ptr,std::string>::iterator s = waiting_connections_.begin();
 		    s != waiting_connections_.end(); ++s) {
 			if(s->second == info.nick && s->first != socket) {
+				sessions_to_waiting_connections_.erase(cli_info.session_id);
+				waiting_connections_.erase(s);
 				send_msg(s->first, "{ \"type\": \"keepalive\" }");
 				break;
 			}
