@@ -19,6 +19,7 @@ public:
 	void blit(int x, int y, int w, int h, bool upscaled = 0) const;
 	explicit framed_gui_element(variant node);
 
+	int corner_height() const { return corner_height_; }
 	
 private:
 	void blit_subsection(rect subsection, int x, int y, int w, int h) const;
