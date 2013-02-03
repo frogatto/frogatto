@@ -2026,22 +2026,21 @@ public:
 	vector_text_command(entity_ptr target, std::vector<variant>* textv)
 		: target_(target)
 	{
-		textv_.swap(*textv);
+		foreach(const variant& v, *textv) {
+			textv_.push_back(gui::vector_text_ptr(new gui::vector_text(v)));
+		}
 	}
 
 	virtual void execute(level& lvl, custom_object& ob) const 
 	{
 		custom_object* custom_obj = target_ ? dynamic_cast<custom_object*>(target_.get()) : &ob;
 		custom_obj->clear_vector_text();
-		foreach(const variant& v, textv_) {
-			if(v.is_null() == false) {
-				gui::vector_text_ptr txtp(new gui::vector_text(v));
-				custom_obj->add_vector_text(txtp);
-			}
+		foreach(gui::vector_text_ptr txtp, textv_) {
+			custom_obj->add_vector_text(txtp);
 		}
 	}
 private:
-	std::vector<variant> textv_;
+	std::vector<gui::vector_text_ptr> textv_;
 	entity_ptr target_;
 };
 

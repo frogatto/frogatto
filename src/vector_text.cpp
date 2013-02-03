@@ -10,7 +10,7 @@
 namespace gui {
 
 vector_text::vector_text(const variant& node)
-	: text_(i18n::tr(node["text"].as_string())), 
+	: text_(i18n::tr(node["text"].as_string())),
 	visible_(node["visible"].as_bool(true)),
 	size_(node["size"].as_int(12)),
 	font_(node["font"].as_string_default())
