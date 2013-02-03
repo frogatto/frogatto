@@ -75,6 +75,10 @@ public:
 	uint8_t get_alpha() const { return display_alpha_; }
 	void set_alpha(uint8_t a=255) { display_alpha_ = a; }
 
+	int get_pad_width() const { return pad_w_; }
+	int get_pad_height() const { return pad_h_; }
+	void set_padding(int pw, int ph) { pad_w_ = pw; pad_h_ = ph; }
+
 	void process();
 protected:
 	widget() 
@@ -82,7 +86,7 @@ protected:
 		true_x_(0), true_y_(0), disabled_(false), disabled_opacity_(127),
 		tooltip_displayed_(false), visible_(true), zorder_(0), environ_(0),
 		tooltip_display_delay_(0), tooltip_ticks_(INT_MAX), resolution_(0),
-		display_alpha_(255)
+		display_alpha_(255), pad_h_(0), pad_w_(0)
 	{}
 	explicit widget(const variant& v, game_logic::formula_callable* e);
 	virtual ~widget();
@@ -117,6 +121,8 @@ private:
 	unsigned tooltip_display_delay_;
 	unsigned tooltip_ticks_;
 	uint8_t display_alpha_;
+	int pad_h_;
+	int pad_w_;
 
 	HORIZONTAL_ALIGN align_h_;
 	VERTICAL_ALIGN   align_v_;

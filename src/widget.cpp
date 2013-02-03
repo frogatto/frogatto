@@ -30,7 +30,8 @@ widget::widget(const variant& v, game_logic::formula_callable* e)
 	true_x_(0), true_y_(0), disabled_(false), disabled_opacity_(v["disabled_opacity"].as_int(127)),
 	tooltip_displayed_(false), id_(v["id"].as_string_default()), align_h_(HALIGN_LEFT), align_v_(VALIGN_TOP),
 	tooltip_display_delay_(v["tooltip_delay"].as_int(500)), tooltip_ticks_(INT_MAX),
-	resolution_(v["frame_size"].as_int(0)), display_alpha_(v["alpha"].as_int(255))
+	resolution_(v["frame_size"].as_int(0)), display_alpha_(v["alpha"].as_int(255)),
+	pad_w_(0), pad_h_(0)
 {
 	if(v.has_key("width")) {
 		w_ = v["width"].as_int();
@@ -113,6 +114,16 @@ widget::widget(const variant& v, game_logic::formula_callable* e)
 	disabled_ = !v["enabled"].as_bool(true);
 	if(v.has_key("frame")) {
 		set_frame_set(v["frame"].as_string());
+	}
+	if(v.has_key("frame_padding")) {
+		ASSERT_LOG(v["frame_padding"].is_list() && v["frame_padding"].num_elements() == 2, "'pad' must be two element list");
+		set_padding(v["frame_padding"][0].as_int(), v["frame_padding"][1].as_int());
+	} 
+	if(v.has_key("frame_pad_width")) {
+		set_padding(v["frame_pad_width"].as_int(), get_pad_height());
+	}
+	if(v.has_key("frame_pad_height")) {
+		set_padding(get_pad_width(), v["frame_pad_height"].as_int());
 	}
 	recalc_loc();
 }
@@ -266,7 +277,10 @@ void widget::draw() const
 			glColor4ub(255, 255, 255, display_alpha_);
 		}
 		if(frame_set_ != NULL) {
-			frame_set_->blit(x(), y(), width(), height(), resolution_ != 0);
+			frame_set_->blit(x() - get_pad_width() - frame_set_->corner_height(),
+				y() - get_pad_height() - frame_set_->corner_height(), 
+				width() + get_pad_width()*2 + 2*frame_set_->corner_height(), 
+				height() + get_pad_height()*2 + 2*frame_set_->corner_height(), resolution_ != 0);
 		}
 		handle_draw();
 #if !defined(USE_GLES2)
@@ -335,7 +349,16 @@ variant widget::get_value(const std::string& key) const
 		return variant(frame_set_name_);
 	} else if(key == "alpha") {
 		return variant(get_alpha());
-	} 
+	} else if(key == "frame_pad_width") {
+		return variant(get_pad_width());
+	} else if(key == "frame_pad_height") {
+		return variant(get_pad_height());
+	} else if(key == "frame_padding") {
+		std::vector<variant> v;
+		v.push_back(variant(get_pad_width()));
+		v.push_back(variant(get_pad_height()));
+		return variant(&v);
+	}
 	return variant();
 }
 
@@ -388,6 +411,13 @@ void widget::set_value(const std::string& key, const variant& v)
 	} else if(key == "alpha") {
 		int a = v.as_int();
 		set_alpha(a < 0 ? 0 : (a > 255 ? 255 : a));
+	} else if(key == "frame_pad_width") {
+		set_padding(v.as_int(), get_pad_height());
+	} else if(key == "frame_pad_height") {
+		set_padding(get_pad_width(), v.as_int());
+	} else if(key == "frame_padding") {
+		ASSERT_LOG(v.is_list() && v.num_elements() == 2, "'pad' must be two element list");
+		set_padding(v[0].as_int(), v[1].as_int());
 	}
 }
 
