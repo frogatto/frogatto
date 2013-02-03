@@ -249,7 +249,7 @@ void server::send_msg(socket_ptr socket, const std::string& msg)
 void server::handle_send(socket_ptr socket, const boost::system::error_code& e, size_t nbytes, boost::shared_ptr<std::string> buf)
 {
 	if(e) {
-		std::cerr << "ERROR SENDING DATA\n";
+		std::cerr << "ERROR SENDING DATA: " << std::make_error_code(static_cast<std::errc::errc>(e.value())) << std::endl;
 	}
 
 	disconnect(socket);
