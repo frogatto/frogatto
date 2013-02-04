@@ -53,7 +53,7 @@ private:
 	void send_msg(socket_ptr socket, const variant& msg);
 	void send_msg(socket_ptr socket, const char* msg);
 	void send_msg(socket_ptr socket, const std::string& msg);
-	void handle_send(socket_ptr socket, const boost::system::error_code& e, size_t nbytes, boost::shared_ptr<std::string> buf);
+	void handle_send(socket_ptr socket, const boost::system::error_code& e, size_t nbytes, boost::shared_ptr<std::string> buf, int session_id);
 
 	void disconnect(socket_ptr socket);
 
@@ -71,7 +71,7 @@ private:
 		int session_id;
 	};
 
-	void queue_msg(int session_id, const std::string& msg);
+	void queue_msg(int session_id, const std::string& msg, bool has_priority=false);
 
 	variant create_lobby_msg() const;
 	variant create_game_info_msg(game_info_ptr g) const;

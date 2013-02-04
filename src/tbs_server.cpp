@@ -216,7 +216,7 @@ void server::close_ajax(socket_ptr socket, client_info& cli_info)
 	}
 }
 
-void server::queue_msg(int session_id, const std::string& msg)
+void server::queue_msg(int session_id, const std::string& msg, bool has_priority)
 {
 	if(session_id == -1) {
 		return;
@@ -232,7 +232,11 @@ void server::queue_msg(int session_id, const std::string& msg)
 		return;
 	}
 
-	clients_[session_id].msg_queue.push_back(msg);
+	if(has_priority) {
+		clients_[session_id].msg_queue.push_front(msg);
+	} else {
+		clients_[session_id].msg_queue.push_back(msg);
+	}
 }
 
 void server::send_msg(socket_ptr socket, const variant& msg)
@@ -263,13 +267,14 @@ void server::send_msg(socket_ptr socket, const std::string& msg)
 
 	boost::shared_ptr<std::string> str_buf(new std::string(header.empty() ? msg : (header + msg)));
 	boost::asio::async_write(*socket, boost::asio::buffer(*str_buf),
-			                         boost::bind(&server::handle_send, this, socket, _1, _2, str_buf));
+			                         boost::bind(&server::handle_send, this, socket, _1, _2, str_buf, info.session_id));
 }
 
-void server::handle_send(socket_ptr socket, const boost::system::error_code& e, size_t nbytes, boost::shared_ptr<std::string> buf)
+void server::handle_send(socket_ptr socket, const boost::system::error_code& e, size_t nbytes, boost::shared_ptr<std::string> buf, int session_id)
 {
 	if(e) {
 		std::cerr << "ERROR SENDING DATA: " << e.message() << std::endl;
+		queue_msg(session_id, *buf, true); //re-queue the message.
 	}
 
 	disconnect(socket);
