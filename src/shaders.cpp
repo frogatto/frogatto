@@ -694,7 +694,7 @@ bool program::execute_command(const variant& var)
 	} else {
 		game_logic::command_callable* cmd = var.try_convert<game_logic::command_callable>();
 		if(cmd != NULL) {
-			cmd->execute(*this);
+			cmd->run_command(*this);
 		}
 	}
 	return result;
@@ -1120,7 +1120,7 @@ bool shader_program::execute_command(const variant& var)
 	} else {
 		game_logic::command_callable* cmd = var.try_convert<game_logic::command_callable>();
 		if(cmd != NULL) {
-			cmd->execute(*this);
+			cmd->run_command(*this);
 		}
 	}
 	return result;

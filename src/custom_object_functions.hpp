@@ -20,20 +20,32 @@ void init_custom_object_functions(variant node);
 
 class entity_command_callable : public game_logic::formula_callable {
 public:
-	virtual void execute(level& lvl, entity& ob) const = 0;
+	entity_command_callable() : expr_(NULL) {}
+	void run_command(level& lvl, entity& obj) const;
+
+	void set_expression(const game_logic::formula_expression* expr) { expr_ = expr; }
 
 private:
+	virtual void execute(level& lvl, entity& ob) const = 0;
 	variant get_value(const std::string& key) const { return variant(); }
 	void get_inputs(std::vector<game_logic::formula_input>* inputs) const {}
+
+	const game_logic::formula_expression* expr_;
 };
 
 class custom_object_command_callable : public game_logic::formula_callable {
 public:
-	virtual void execute(level& lvl, custom_object& ob) const = 0;
+	custom_object_command_callable() : expr_(NULL) {}
+	void run_command(level& lvl, custom_object& ob) const;
+
+	void set_expression(const game_logic::formula_expression* expr) { expr_ = expr; }
 
 private:
+	virtual void execute(level& lvl, custom_object& ob) const = 0;
 	variant get_value(const std::string& key) const { return variant(); }
 	void get_inputs(std::vector<game_logic::formula_input>* inputs) const {}
+	
+	const game_logic::formula_expression* expr_;
 };
 
 class swallow_object_command_callable : public game_logic::formula_callable {

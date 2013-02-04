@@ -475,7 +475,7 @@ void game::execute_command(variant cmd)
 	} else if(cmd.is_callable()) {
 		const game_logic::command_callable* command = cmd.try_convert<game_logic::command_callable>();
 		if(command) {
-			command->execute(*this);
+			command->run_command(*this);
 		}
 	} else if(cmd.is_map()) {
 		if(cmd.has_key("execute")) {

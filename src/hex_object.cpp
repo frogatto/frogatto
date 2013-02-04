@@ -310,7 +310,7 @@ bool hex_object::execute_command(const variant& value)
 	} else {
 		game_logic::command_callable* cmd = value.try_convert<game_logic::command_callable>();
 		if(cmd != NULL) {
-			cmd->execute(*this);
+			cmd->run_command(*this);
 		}
 	}
 	return result;

@@ -1028,7 +1028,7 @@ void execute_variation_command(variant cmd, game_logic::formula_callable& obj)
 			execute_variation_command(c, obj);
 		}
 	} else if(cmd.try_convert<game_logic::command_callable>()) {
-		cmd.try_convert<game_logic::command_callable>()->execute(obj);
+		cmd.try_convert<game_logic::command_callable>()->run_command(obj);
 	}
 }
 }

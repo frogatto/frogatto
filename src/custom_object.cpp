@@ -2718,7 +2718,6 @@ void custom_object::set_value(const std::string& key, const variant& value)
 
 	std::map<std::string, custom_object_type::property_entry>::const_iterator property_itor = type_->properties().find(key);
 	if(property_itor != type_->properties().end() && property_itor->second.setter) {
-			
 		game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable(this));
 		callable->add("value", value);
 		variant value = property_itor->second.setter->execute(*callable);
@@ -4159,15 +4158,15 @@ bool custom_object::execute_command(const variant& var)
 	} else {
 		game_logic::command_callable* cmd = var.try_convert<game_logic::command_callable>();
 		if(cmd != NULL) {
-			cmd->execute(*this);
+			cmd->run_command(*this);
 		} else {
 			custom_object_command_callable* cmd = var.try_convert<custom_object_command_callable>();
 			if(cmd != NULL) {
-				cmd->execute(level::current(), *this);
+				cmd->run_command(level::current(), *this);
 			} else {
 				entity_command_callable* cmd = var.try_convert<entity_command_callable>();
 				if(cmd != NULL) {
-					cmd->execute(level::current(), *this);
+					cmd->run_command(level::current(), *this);
 				} else {
 					swallow_object_command_callable* cmd = var.try_convert<swallow_object_command_callable>();
 					if(cmd) {

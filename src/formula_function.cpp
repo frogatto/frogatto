@@ -334,7 +334,12 @@ FUNCTION_DEF(eval_no_recover, 1, 2, "eval_no_recover(str, [arg]): evaluate the g
 
 	variant s = args()[0]->evaluate(variables);
 
-	const_formula_ptr f(formula::create_optional_formula(s));
+	static std::map<std::string, const_formula_ptr> cache;
+	const_formula_ptr& f = cache[s.as_string()];
+	if(!f) {
+		f = const_formula_ptr(formula::create_optional_formula(s));
+	}
+
 	ASSERT_LOG(f.get() != NULL, "ILLEGAL FORMULA GIVEN TO eval: " << s.as_string());
 	return f->execute(*callable);
 END_FUNCTION_DEF(eval_no_recover)
@@ -354,8 +359,14 @@ FUNCTION_DEF(eval, 1, 2, "eval(str, [arg]): evaluate the given string as FFL")
 
 	variant s = args()[0]->evaluate(variables);
 	try {
+		static std::map<std::string, const_formula_ptr> cache;
 		const assert_recover_scope recovery_scope;
-		const_formula_ptr f(formula::create_optional_formula(s));
+
+		const_formula_ptr& f = cache[s.as_string()];
+		if(!f) {
+			f = const_formula_ptr(formula::create_optional_formula(s));
+		}
+
 		if(!f) {
 			return variant();
 		}
@@ -1984,22 +1995,28 @@ private:
 		if(slot_ != -1) {
 			if(cmd_->refcount() == 1) {
 				cmd_->set_value(args()[1]->evaluate(variables));
+				cmd_->set_expression(this);
 				return variant(cmd_.get());
 			}
 
 			cmd_ = boost::intrusive_ptr<set_by_slot_command>(new set_by_slot_command(slot_, args()[1]->evaluate(variables)));
+			cmd_->set_expression(this);
 			return variant(cmd_.get());
 		}
 
 		if(!key_.empty()) {
-			return variant(new set_command(variant(), key_, args()[1]->evaluate(variables)));
+			set_command* cmd = new set_command(variant(), key_, args()[1]->evaluate(variables));
+			cmd->set_expression(this);
+			return variant(cmd);
 		}
 
 		if(args().size() == 2) {
 			std::string member;
 			variant target = args()[0]->evaluate_with_member(variables, member);
-			return variant(new set_command(
-			  target, member, args()[1]->evaluate(variables)));
+			set_command* cmd = new set_command(
+			  target, member, args()[1]->evaluate(variables));
+			cmd->set_expression(this);
+			return variant(cmd);
 		}
 
 		variant target;
@@ -2007,10 +2024,12 @@ private:
 			target = args()[0]->evaluate(variables);
 		}
 		const int begin_index = args().size() == 2 ? 0 : 1;
-		return variant(new set_command(
+		set_command* cmd = new set_command(
 		    target,
 		    args()[begin_index]->evaluate(variables).as_string(),
-			args()[begin_index + 1]->evaluate(variables)));
+			args()[begin_index + 1]->evaluate(variables));
+		cmd->set_expression(this);
+		return variant(cmd);
 	}
 
 	std::string key_;
@@ -2121,7 +2140,7 @@ void debug_side_effect(variant v)
 		}
 	} else if(v.is_callable() && v.try_convert<game_logic::command_callable>()) {
 		map_formula_callable_ptr obj(new map_formula_callable);
-		v.try_convert<game_logic::command_callable>()->execute(*obj);
+		v.try_convert<game_logic::command_callable>()->run_command(*obj);
 	} else {
 		std::string s = v.to_debug_string();
 #ifndef NO_EDITOR
