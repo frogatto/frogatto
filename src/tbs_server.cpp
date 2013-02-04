@@ -49,6 +49,7 @@ server::server(boost::asio::io_service& io_service)
 
 void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant& msg)
 {
+	fprintf(stderr, "DEBUG: adopt_ajax_socket(%p)\n", socket.get());
 	const std::string& type = msg["type"].as_string();
 
 	if(session_id == -1) {
@@ -251,6 +252,7 @@ void server::send_msg(socket_ptr socket, const char* msg)
 
 void server::send_msg(socket_ptr socket, const std::string& msg)
 {
+	fprintf(stderr, "DEBUG: send_msg(%p)\n", socket.get());
 	const socket_info& info = connections_[socket];
 	std::stringstream buf;
 	buf <<
@@ -272,6 +274,7 @@ void server::send_msg(socket_ptr socket, const std::string& msg)
 
 void server::handle_send(socket_ptr socket, const boost::system::error_code& e, size_t nbytes, boost::shared_ptr<std::string> buf, int session_id)
 {
+	fprintf(stderr, "DEBUG: handle_send(%p)\n", socket.get());
 	if(e) {
 		std::cerr << "ERROR SENDING DATA: " << e.message() << std::endl;
 		queue_msg(session_id, *buf, true); //re-queue the message.
@@ -282,6 +285,7 @@ void server::handle_send(socket_ptr socket, const boost::system::error_code& e, 
 
 void server::disconnect(socket_ptr socket)
 {
+	fprintf(stderr, "DEBUG: disconnect(%p)\n", socket.get());
 	std::map<socket_ptr, socket_info>::iterator itor = connections_.find(socket);
 	if(itor != connections_.end()) {
 		std::map<int, socket_ptr>::iterator sessions_itor = sessions_to_waiting_connections_.find(itor->second.session_id);
