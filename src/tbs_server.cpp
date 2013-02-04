@@ -167,7 +167,9 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 	client_info& cli_info = client_itor->second;
 
 	socket_info& info = connections_[socket];
+	ASSERT_EQ(info.session_id, -1);
 	info.nick = cli_info.user;
+	info.session_id = session_id;
 
 	handle_message_internal(socket, cli_info, msg);
 	close_ajax(socket, cli_info);
@@ -205,6 +207,7 @@ void server::handle_message_internal(socket_ptr socket, client_info& cli_info, c
 void server::close_ajax(socket_ptr socket, client_info& cli_info)
 {
 	socket_info& info = connections_[socket];
+	ASSERT_LOG(info.session_id != -1, "UNKNOWN SOCKET");
 
 	if(cli_info.msg_queue.empty() == false) {
 		std::vector<socket_ptr> keepalive_sockets;
@@ -277,7 +280,9 @@ void server::send_msg(socket_ptr socket, const char* msg)
 void server::send_msg(socket_ptr socket, const std::string& msg)
 {
 	fprintf(stderr, "DEBUG: send_msg(%p)\n", socket.get());
-	const socket_info& info = connections_[socket];
+	std::map<socket_ptr, socket_info>::const_iterator connections_itor = connections_.find(socket);
+	const int session_id = connections_itor == connections_.end() ? -1 : connections_itor->second.session_id;
+
 	std::stringstream buf;
 	buf <<
 		"HTTP/1.1 200 OK\r\n"
@@ -294,7 +299,7 @@ void server::send_msg(socket_ptr socket, const std::string& msg)
 	boost::shared_ptr<std::string> str_buf(new std::string(header.empty() ? msg : (header + msg)));
 	fprintf(stderr, "DEBUG: CALL async_write()\n");
 	boost::asio::async_write(*socket, boost::asio::buffer(*str_buf),
-			                         boost::bind(&server::handle_send, this, socket, _1, _2, str_buf, info.session_id));
+			                         boost::bind(&server::handle_send, this, socket, _1, _2, str_buf, session_id));
 	fprintf(stderr, "DEBUG: DONE async_write()\n");
 }
 
@@ -376,6 +381,8 @@ void server::heartbeat()
 		socket_ptr socket = i->first;
 
 		socket_info& info = connections_[socket];
+		ASSERT_LOG(info.session_id != -1, "UNKNOWN SOCKET");
+
 		client_info& cli_info = clients_[info.session_id];
 		fprintf(stderr, "DEBUG: SOCKET %p -> %d\n", socket.get(), info.session_id);
 		if(cli_info.msg_queue.empty() == false) {

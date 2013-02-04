@@ -66,6 +66,7 @@ private:
 	void flush_game_messages(game_info& info);
 
 	struct socket_info {
+		socket_info() : session_id(-1) {}
 		std::vector<char> partial_message;
 		std::string nick;
 		int session_id;
