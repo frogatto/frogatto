@@ -135,11 +135,11 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 			if(last_status == status_id_) {
 				status_sockets_.push_back(socket);
 			} else {
-				send_msg(socket, create_lobby_msg().write_json());
+				send_msg(socket, create_lobby_msg().write_json(true, variant::JSON_COMPLIANT));
 			}
 			return;
 		} else if(type == "get_server_info") {
-			send_msg(socket, get_server_info().write_json());
+			send_msg(socket, get_server_info().write_json(true, variant::JSON_COMPLIANT));
 		} else {
 			send_msg(socket, "{ \"type\": \"unknown_message\" }");
 			return;
@@ -237,7 +237,7 @@ void server::queue_msg(int session_id, const std::string& msg)
 
 void server::send_msg(socket_ptr socket, const variant& msg)
 {
-	send_msg(socket, msg.write_json());
+	send_msg(socket, msg.write_json(true, variant::JSON_COMPLIANT));
 }
 
 void server::send_msg(socket_ptr socket, const char* msg)
@@ -247,7 +247,7 @@ void server::send_msg(socket_ptr socket, const char* msg)
 
 void server::send_msg(socket_ptr socket, const std::string& msg)
 {
-	const socket_info& info = connections_[socket];
+	//const socket_info& info = connections_[socket];
 	std::stringstream buf;
 	buf <<
 		"HTTP/1.1 200 OK\r\n"
@@ -431,7 +431,7 @@ void server::quit_games(int session_id)
 					g->clients.clear();
 					//TODO: remove joining clients from the game nicely.
 				} else {
-					const std::string msg = create_game_info_msg(g).write_json();
+					const std::string msg = create_game_info_msg(g).write_json(true, variant::JSON_COMPLIANT);
 					foreach(int client, g->clients) {
 						queue_msg(client, msg);
 					}
@@ -507,7 +507,7 @@ void server::status_change()
 {
 	++status_id_;
 	if(!status_sockets_.empty()) {
-		std::string msg = create_lobby_msg().write_json();
+		std::string msg = create_lobby_msg().write_json(true, variant::JSON_COMPLIANT);
 		foreach(socket_ptr socket, status_sockets_) {
 			send_msg(socket, msg);
 		}
