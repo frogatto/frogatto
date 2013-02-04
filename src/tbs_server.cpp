@@ -49,7 +49,7 @@ server::server(boost::asio::io_service& io_service)
 
 void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant& msg)
 {
-	fprintf(stderr, "DEBUG: adopt_ajax_socket(%p)\n", socket.get());
+	fprintf(stderr, "DEBUG: adopt_ajax_socket(%p -> %d)\n", socket.get(), session_id);
 	const std::string& type = msg["type"].as_string();
 
 	if(session_id == -1) {
@@ -214,6 +214,9 @@ void server::close_ajax(socket_ptr socket, client_info& cli_info)
 			if(s->second == info.nick && s->first != socket) {
 				fprintf(stderr, "DEBUG: send_msg(k)\n");
 				keepalive_sockets.push_back(s->first);
+				if(sessions_to_waiting_connections_.count(cli_info.session_id)) {
+				fprintf(stderr, "DEBUG: sessions_to_waiting_connections_.erase(%d -> %p)\n", cli_info.session_id, sessions_to_waiting_connections_.find(cli_info.session_id)->second.get());
+				}
 				sessions_to_waiting_connections_.erase(cli_info.session_id);
 				waiting_connections_.erase(s++);
 			} else {
@@ -231,6 +234,7 @@ void server::close_ajax(socket_ptr socket, client_info& cli_info)
 		}
 	} else {
 		waiting_connections_[socket] = info.nick;
+		fprintf(stderr, "DEBUG: A sessions_to_waiting_connections_.insert(%d -> %p)\n", cli_info.session_id, socket.get());
 		sessions_to_waiting_connections_[cli_info.session_id] = socket;
 	}
 }
@@ -246,6 +250,7 @@ void server::queue_msg(int session_id, const std::string& msg, bool has_priority
 		const int session_id = itor->first;
 		const socket_ptr sock = itor->second;
 		waiting_connections_.erase(sock);
+		fprintf(stderr, "DEBUG: B sessions_to_waiting_connections_.erase(%d -> %p)\n", itor->first, itor->second.get());
 		sessions_to_waiting_connections_.erase(session_id);
 				fprintf(stderr, "DEBUG: send_msg(m)\n");
 		send_msg(sock, msg);
@@ -315,6 +320,7 @@ void server::disconnect(socket_ptr socket)
 	if(itor != connections_.end()) {
 		std::map<int, socket_ptr>::iterator sessions_itor = sessions_to_waiting_connections_.find(itor->second.session_id);
 		if(sessions_itor != sessions_to_waiting_connections_.end() && sessions_itor->second == socket) {
+		fprintf(stderr, "DEBUG: C sessions_to_waiting_connections_.erase(%d -> %p)\n", sessions_itor->first, sessions_itor->second.get());
 			sessions_to_waiting_connections_.erase(sessions_itor);
 		}
 
@@ -325,7 +331,7 @@ void server::disconnect(socket_ptr socket)
 
 	for(std::map<int, socket_ptr>::iterator itor = sessions_to_waiting_connections_.begin(); itor != sessions_to_waiting_connections_.end(); ++itor) {
 		if(itor->second == socket) {
-			fprintf(stderr, "DEBUG: socket in sessions_to_waiting_connections %p\n", socket.get());
+			fprintf(stderr, "DEBUG: socket in sessions_to_waiting_connections %p -> %d\n", socket.get(), itor->first);
 		}
 	}
 
@@ -371,10 +377,15 @@ void server::heartbeat()
 
 		socket_info& info = connections_[socket];
 		client_info& cli_info = clients_[info.session_id];
+		fprintf(stderr, "DEBUG: SOCKET %p -> %d\n", socket.get(), info.session_id);
 		if(cli_info.msg_queue.empty() == false) {
 			messages.push_back(std::pair<socket_ptr,std::string>(socket, cli_info.msg_queue.front()));
 			cli_info.msg_queue.pop_front();
 
+		std::map<int, socket_ptr>::iterator sessions_itor = sessions_to_waiting_connections_.find(info.session_id);
+		if(sessions_itor != sessions_to_waiting_connections_.end()) {
+		fprintf(stderr, "DEBUG: F sessions_to_waiting_connections_.erase(%d -> %p)\n", sessions_itor->first, sessions_itor->second.get());
+		}
 			sessions_to_waiting_connections_.erase(info.session_id);
 		} else if(send_heartbeat) {
 			if(!cli_info.game) {
