@@ -57,6 +57,7 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 			game_info_ptr g(new game_info(msg));
 			if(!g->game_state) {
 				std::cerr << "COULD NOT CREATE GAME TYPE: " << msg["game_type"].as_string() << "\n";
+				fprintf(stderr, "DEBUG: send_msg(a)\n");
 				send_msg(socket, "{ \"type\": \"create_game_failed\" }");
 				return;
 			}
@@ -68,6 +69,7 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 
 				if(clients_.count(session_id) && session_id != -1) {
 					std::cerr << "ERROR: REUSED SESSION ID WHEN CREATING GAME: " << session_id << "\n";
+				fprintf(stderr, "DEBUG: send_msg(b)\n");
 					send_msg(socket, "{ \"type\": \"create_game_failed\" }");
 					return;
 				}
@@ -92,6 +94,7 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 			g->game_state->setup_game();
 
 			games_.push_back(g);
+				fprintf(stderr, "DEBUG: send_msg(c)\n");
 			send_msg(socket, formatter() << "{ \"type\": \"game_created\", \"game_id\": " << g->game_state->game_id() << " }");
 			
 			status_change();
@@ -110,11 +113,13 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 			}
 
 			if(!g) {
+				fprintf(stderr, "DEBUG: send_msg(d)\n");
 				send_msg(socket, "{ \"type\": \"unknown_game\" }");
 				return;
 			}
 
 			if(clients_.count(session_id)) {
+				fprintf(stderr, "DEBUG: send_msg(e)\n");
 				send_msg(socket, "{ \"type\": \"reuse_session_id\" }");
 				return;
 			}
@@ -128,6 +133,7 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 
 			g->clients.push_back(session_id);
 
+				fprintf(stderr, "DEBUG: send_msg(f)\n");
 			send_msg(socket, formatter() << "{ \"type\": \"observing_game\" }");
 
 			return;
@@ -136,12 +142,15 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 			if(last_status == status_id_) {
 				status_sockets_.push_back(socket);
 			} else {
+				fprintf(stderr, "DEBUG: send_msg(g)\n");
 				send_msg(socket, create_lobby_msg().write_json(true, variant::JSON_COMPLIANT));
 			}
 			return;
 		} else if(type == "get_server_info") {
+				fprintf(stderr, "DEBUG: send_msg(h)\n");
 			send_msg(socket, get_server_info().write_json(true, variant::JSON_COMPLIANT));
 		} else {
+				fprintf(stderr, "DEBUG: send_msg(i)\n");
 			send_msg(socket, "{ \"type\": \"unknown_message\" }");
 			return;
 		}
@@ -150,6 +159,7 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 	std::map<int, client_info>::iterator client_itor = clients_.find(session_id);
 	if(client_itor == clients_.end()) {
 		std::cerr << "BAD SESSION ID: " << session_id << "\n";
+				fprintf(stderr, "DEBUG: send_msg(j)\n");
 		send_msg(socket, "{ \"type\": \"invalid_session\" }");
 		return;
 	}
@@ -201,6 +211,7 @@ void server::close_ajax(socket_ptr socket, client_info& cli_info)
 		for(std::map<socket_ptr,std::string>::iterator s = waiting_connections_.begin();
 		    s != waiting_connections_.end(); ) {
 			if(s->second == info.nick && s->first != socket) {
+				fprintf(stderr, "DEBUG: send_msg(k)\n");
 				send_msg(s->first, "{ \"type\": \"keepalive\" }");
 				sessions_to_waiting_connections_.erase(cli_info.session_id);
 				waiting_connections_.erase(s++);
@@ -209,6 +220,7 @@ void server::close_ajax(socket_ptr socket, client_info& cli_info)
 			}
 		}
 
+				fprintf(stderr, "DEBUG: send_msg(l)\n");
 		send_msg(socket, cli_info.msg_queue.front());
 		cli_info.msg_queue.pop_front();
 	} else {
@@ -227,6 +239,7 @@ void server::queue_msg(int session_id, const std::string& msg, bool has_priority
 	if(itor != sessions_to_waiting_connections_.end()) {
 		const int session_id = itor->first;
 		const socket_ptr sock = itor->second;
+				fprintf(stderr, "DEBUG: send_msg(m)\n");
 		send_msg(sock, msg);
 		waiting_connections_.erase(sock);
 		sessions_to_waiting_connections_.erase(session_id);
@@ -349,6 +362,7 @@ void server::heartbeat()
 		socket_info& info = connections_[socket];
 		client_info& cli_info = clients_[info.session_id];
 		if(cli_info.msg_queue.empty() == false) {
+				fprintf(stderr, "DEBUG: send_msg(n)\n");
 			send_msg(socket, cli_info.msg_queue.front());
 			cli_info.msg_queue.pop_front();
 
@@ -356,6 +370,7 @@ void server::heartbeat()
 			sessions_to_waiting_connections_.erase(info.session_id);
 		} else if(send_heartbeat) {
 			if(!cli_info.game) {
+				fprintf(stderr, "DEBUG: send_msg(o)\n");
 				send_msg(socket, "{ \"type\": \"heartbeat\" }");
 			} else {
 				variant_builder doc;
@@ -386,6 +401,7 @@ void server::heartbeat()
 
 				doc.set("players", variant(&items));
 
+				fprintf(stderr, "DEBUG: send_msg(p)\n");
 				send_msg(socket, doc.build());
 			}
 
@@ -539,6 +555,7 @@ void server::status_change()
 	if(!status_sockets_.empty()) {
 		std::string msg = create_lobby_msg().write_json(true, variant::JSON_COMPLIANT);
 		foreach(socket_ptr socket, status_sockets_) {
+				fprintf(stderr, "DEBUG: send_msg(q)\n");
 			send_msg(socket, msg);
 		}
 
