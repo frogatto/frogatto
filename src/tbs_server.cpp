@@ -423,6 +423,10 @@ void server::heartbeat()
 				messages.push_back(std::pair<socket_ptr,std::string>(socket, doc.build().write_json()));
 			}
 
+		std::map<int, socket_ptr>::iterator sessions_itor = sessions_to_waiting_connections_.find(info.session_id);
+		if(sessions_itor != sessions_to_waiting_connections_.end()) {
+		fprintf(stderr, "DEBUG: G sessions_to_waiting_connections_.erase(%d -> %p)\n", sessions_itor->first, sessions_itor->second.get());
+		}
 			sessions_to_waiting_connections_.erase(info.session_id);
 		}
 	}
