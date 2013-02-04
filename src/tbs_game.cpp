@@ -373,6 +373,8 @@ variant game::get_value(const std::string& key) const
 		return variant(this);
 	} else if(key == "doc") {
 		return doc_;
+	} else if(key == "state_id") {
+		return variant(state_id_);
 	} else if(backup_callable_) {
 		return backup_callable_->query_value(key);
 	} else {
