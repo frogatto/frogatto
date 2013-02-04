@@ -251,7 +251,7 @@ void server::send_msg(socket_ptr socket, const char* msg)
 
 void server::send_msg(socket_ptr socket, const std::string& msg)
 {
-	//const socket_info& info = connections_[socket];
+	const socket_info& info = connections_[socket];
 	std::stringstream buf;
 	buf <<
 		"HTTP/1.1 200 OK\r\n"
