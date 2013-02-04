@@ -283,8 +283,12 @@ void server::handle_send(socket_ptr socket, const boost::system::error_code& e, 
 	disconnect(socket);
 }
 
+std::vector<socket_ptr> debug_disconnected_store;
+
 void server::disconnect(socket_ptr socket)
 {
+	debug_disconnected_store.push_back(socket);
+
 	fprintf(stderr, "DEBUG: disconnect(%p)\n", socket.get());
 	std::map<socket_ptr, socket_info>::iterator itor = connections_.find(socket);
 	if(itor != connections_.end()) {
@@ -297,6 +301,23 @@ void server::disconnect(socket_ptr socket)
 	}
 
 	waiting_connections_.erase(socket);
+
+	for(std::map<int, socket_ptr>::iterator itor = sessions_to_waiting_connections_.begin(); itor != sessions_to_waiting_connections_.end(); ++itor) {
+		if(itor->second == socket) {
+			fprintf(stderr, "DEBUG: socket in sessions_to_waiting_connections %p\n", socket.get());
+		}
+	}
+
+	for(std::map<socket_ptr, std::string>::iterator itor = waiting_connections_.begin(); itor != waiting_connections_.end(); ++itor) {
+		if(itor->first == socket) {
+			fprintf(stderr, "DEBUG: socket in waiting_connections_ %p\n", socket.get());
+		}
+	}
+
+	foreach(socket_ptr s, status_sockets_) {
+			fprintf(stderr, "DEBUG: socket in status_sockets %p\n", socket.get());
+	}
+
 	socket->close();
 }
 
