@@ -207,12 +207,13 @@ void server::close_ajax(socket_ptr socket, client_info& cli_info)
 	socket_info& info = connections_[socket];
 
 	if(cli_info.msg_queue.empty() == false) {
+		std::vector<socket_ptr> keepalive_sockets;
 
 		for(std::map<socket_ptr,std::string>::iterator s = waiting_connections_.begin();
 		    s != waiting_connections_.end(); ) {
 			if(s->second == info.nick && s->first != socket) {
 				fprintf(stderr, "DEBUG: send_msg(k)\n");
-				send_msg(s->first, "{ \"type\": \"keepalive\" }");
+				keepalive_sockets.push_back(s->first);
 				sessions_to_waiting_connections_.erase(cli_info.session_id);
 				waiting_connections_.erase(s++);
 			} else {
@@ -221,8 +222,13 @@ void server::close_ajax(socket_ptr socket, client_info& cli_info)
 		}
 
 				fprintf(stderr, "DEBUG: send_msg(l)\n");
-		send_msg(socket, cli_info.msg_queue.front());
+		const std::string msg = cli_info.msg_queue.front();
 		cli_info.msg_queue.pop_front();
+		send_msg(socket, msg);
+
+		foreach(socket_ptr socket, keepalive_sockets) {
+			send_msg(socket, "{ \"type\": \"keepalive\" }");
+		}
 	} else {
 		waiting_connections_[socket] = info.nick;
 		sessions_to_waiting_connections_[cli_info.session_id] = socket;
@@ -239,10 +245,10 @@ void server::queue_msg(int session_id, const std::string& msg, bool has_priority
 	if(itor != sessions_to_waiting_connections_.end()) {
 		const int session_id = itor->first;
 		const socket_ptr sock = itor->second;
-				fprintf(stderr, "DEBUG: send_msg(m)\n");
-		send_msg(sock, msg);
 		waiting_connections_.erase(sock);
 		sessions_to_waiting_connections_.erase(session_id);
+				fprintf(stderr, "DEBUG: send_msg(m)\n");
+		send_msg(sock, msg);
 		return;
 	}
 
@@ -281,8 +287,10 @@ void server::send_msg(socket_ptr socket, const std::string& msg)
 	std::string header = buf.str();
 
 	boost::shared_ptr<std::string> str_buf(new std::string(header.empty() ? msg : (header + msg)));
+	fprintf(stderr, "DEBUG: CALL async_write()\n");
 	boost::asio::async_write(*socket, boost::asio::buffer(*str_buf),
 			                         boost::bind(&server::handle_send, this, socket, _1, _2, str_buf, info.session_id));
+	fprintf(stderr, "DEBUG: DONE async_write()\n");
 }
 
 void server::handle_send(socket_ptr socket, const boost::system::error_code& e, size_t nbytes, boost::shared_ptr<std::string> buf, int session_id)
@@ -352,9 +360,11 @@ void server::heartbeat()
 	sys::pump_file_modifications();
 #endif
 
+	fprintf(stderr, "DEBUG: BEGIN HEARTBEAT\n");
+
 	const bool send_heartbeat = nheartbeat_%100 == 0;
 
-	std::vector<socket_ptr> connections_to_remove;
+	std::vector<std::pair<socket_ptr, std::string> > messages;
 
 	for(std::map<socket_ptr, std::string>::iterator i = waiting_connections_.begin(); i != waiting_connections_.end(); ++i) {
 		socket_ptr socket = i->first;
@@ -362,16 +372,13 @@ void server::heartbeat()
 		socket_info& info = connections_[socket];
 		client_info& cli_info = clients_[info.session_id];
 		if(cli_info.msg_queue.empty() == false) {
-				fprintf(stderr, "DEBUG: send_msg(n)\n");
-			send_msg(socket, cli_info.msg_queue.front());
+			messages.push_back(std::pair<socket_ptr,std::string>(socket, cli_info.msg_queue.front()));
 			cli_info.msg_queue.pop_front();
 
-			connections_to_remove.push_back(i->first);
 			sessions_to_waiting_connections_.erase(info.session_id);
 		} else if(send_heartbeat) {
 			if(!cli_info.game) {
-				fprintf(stderr, "DEBUG: send_msg(o)\n");
-				send_msg(socket, "{ \"type\": \"heartbeat\" }");
+				messages.push_back(std::pair<socket_ptr,std::string>(socket, "{ \"type\": \"heartbeat\" }"));
 			} else {
 				variant_builder doc;
 				doc.add("type", "heartbeat");
@@ -402,21 +409,26 @@ void server::heartbeat()
 				doc.set("players", variant(&items));
 
 				fprintf(stderr, "DEBUG: send_msg(p)\n");
-				send_msg(socket, doc.build());
+				messages.push_back(std::pair<socket_ptr,std::string>(socket, doc.build().write_json()));
 			}
 
-			connections_to_remove.push_back(i->first);
 			sessions_to_waiting_connections_.erase(info.session_id);
 		}
 	}
 
-	foreach(const socket_ptr& s, connections_to_remove) {
-		waiting_connections_.erase(s);
+	for(int i = 0; i != messages.size(); ++i) {
+		waiting_connections_.erase(messages[i].first);
+	}
+
+	for(int i = 0; i != messages.size(); ++i) {
+		send_msg(messages[i].first, messages[i].second);
 	}
 
 	if(send_heartbeat) {
 		status_change();
 	}
+
+	fprintf(stderr, "DEBUG: END HEARTBEAT\n");
 
 	if(nheartbeat_ >= scheduled_write_) {
 		//write out the game recorded data.
