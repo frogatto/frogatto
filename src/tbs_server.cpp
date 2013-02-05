@@ -49,7 +49,6 @@ server::server(boost::asio::io_service& io_service)
 
 void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant& msg)
 {
-	fprintf(stderr, "DEBUG: adopt_ajax_socket(%p -> %d)\n", socket.get(), session_id);
 	const std::string& type = msg["type"].as_string();
 
 	if(session_id == -1) {
@@ -57,7 +56,6 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 			game_info_ptr g(new game_info(msg));
 			if(!g->game_state) {
 				std::cerr << "COULD NOT CREATE GAME TYPE: " << msg["game_type"].as_string() << "\n";
-				fprintf(stderr, "DEBUG: send_msg(a)\n");
 				send_msg(socket, "{ \"type\": \"create_game_failed\" }");
 				return;
 			}
@@ -69,7 +67,6 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 
 				if(clients_.count(session_id) && session_id != -1) {
 					std::cerr << "ERROR: REUSED SESSION ID WHEN CREATING GAME: " << session_id << "\n";
-				fprintf(stderr, "DEBUG: send_msg(b)\n");
 					send_msg(socket, "{ \"type\": \"create_game_failed\" }");
 					return;
 				}
@@ -94,7 +91,6 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 			g->game_state->setup_game();
 
 			games_.push_back(g);
-				fprintf(stderr, "DEBUG: send_msg(c)\n");
 			send_msg(socket, formatter() << "{ \"type\": \"game_created\", \"game_id\": " << g->game_state->game_id() << " }");
 			
 			status_change();
@@ -113,13 +109,11 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 			}
 
 			if(!g) {
-				fprintf(stderr, "DEBUG: send_msg(d)\n");
 				send_msg(socket, "{ \"type\": \"unknown_game\" }");
 				return;
 			}
 
 			if(clients_.count(session_id)) {
-				fprintf(stderr, "DEBUG: send_msg(e)\n");
 				send_msg(socket, "{ \"type\": \"reuse_session_id\" }");
 				return;
 			}
@@ -133,7 +127,6 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 
 			g->clients.push_back(session_id);
 
-				fprintf(stderr, "DEBUG: send_msg(f)\n");
 			send_msg(socket, formatter() << "{ \"type\": \"observing_game\" }");
 
 			return;
@@ -142,15 +135,12 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 			if(last_status == status_id_) {
 				status_sockets_.push_back(socket);
 			} else {
-				fprintf(stderr, "DEBUG: send_msg(g)\n");
 				send_msg(socket, create_lobby_msg().write_json(true, variant::JSON_COMPLIANT));
 			}
 			return;
 		} else if(type == "get_server_info") {
-				fprintf(stderr, "DEBUG: send_msg(h)\n");
 			send_msg(socket, get_server_info().write_json(true, variant::JSON_COMPLIANT));
 		} else {
-				fprintf(stderr, "DEBUG: send_msg(i)\n");
 			send_msg(socket, "{ \"type\": \"unknown_message\" }");
 			return;
 		}
@@ -159,7 +149,6 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 	std::map<int, client_info>::iterator client_itor = clients_.find(session_id);
 	if(client_itor == clients_.end()) {
 		std::cerr << "BAD SESSION ID: " << session_id << "\n";
-				fprintf(stderr, "DEBUG: send_msg(j)\n");
 		send_msg(socket, "{ \"type\": \"invalid_session\" }");
 		return;
 	}
@@ -215,11 +204,7 @@ void server::close_ajax(socket_ptr socket, client_info& cli_info)
 		for(std::map<socket_ptr,std::string>::iterator s = waiting_connections_.begin();
 		    s != waiting_connections_.end(); ) {
 			if(s->second == info.nick && s->first != socket) {
-				fprintf(stderr, "DEBUG: send_msg(k)\n");
 				keepalive_sockets.push_back(s->first);
-				if(sessions_to_waiting_connections_.count(cli_info.session_id)) {
-				fprintf(stderr, "DEBUG: sessions_to_waiting_connections_.erase(%d -> %p)\n", cli_info.session_id, sessions_to_waiting_connections_.find(cli_info.session_id)->second.get());
-				}
 				sessions_to_waiting_connections_.erase(cli_info.session_id);
 				waiting_connections_.erase(s++);
 			} else {
@@ -227,7 +212,6 @@ void server::close_ajax(socket_ptr socket, client_info& cli_info)
 			}
 		}
 
-				fprintf(stderr, "DEBUG: send_msg(l)\n");
 		const std::string msg = cli_info.msg_queue.front();
 		cli_info.msg_queue.pop_front();
 		send_msg(socket, msg);
@@ -237,7 +221,6 @@ void server::close_ajax(socket_ptr socket, client_info& cli_info)
 		}
 	} else {
 		waiting_connections_[socket] = info.nick;
-		fprintf(stderr, "DEBUG: A sessions_to_waiting_connections_.insert(%d -> %p)\n", cli_info.session_id, socket.get());
 		sessions_to_waiting_connections_[cli_info.session_id] = socket;
 	}
 }
@@ -253,9 +236,7 @@ void server::queue_msg(int session_id, const std::string& msg, bool has_priority
 		const int session_id = itor->first;
 		const socket_ptr sock = itor->second;
 		waiting_connections_.erase(sock);
-		fprintf(stderr, "DEBUG: B sessions_to_waiting_connections_.erase(%d -> %p)\n", itor->first, itor->second.get());
 		sessions_to_waiting_connections_.erase(session_id);
-				fprintf(stderr, "DEBUG: send_msg(m)\n");
 		send_msg(sock, msg);
 		return;
 	}
@@ -279,7 +260,6 @@ void server::send_msg(socket_ptr socket, const char* msg)
 
 void server::send_msg(socket_ptr socket, const std::string& msg)
 {
-	fprintf(stderr, "DEBUG: send_msg(%p)\n", socket.get());
 	std::map<socket_ptr, socket_info>::const_iterator connections_itor = connections_.find(socket);
 	const int session_id = connections_itor == connections_.end() ? -1 : connections_itor->second.session_id;
 
@@ -297,15 +277,12 @@ void server::send_msg(socket_ptr socket, const std::string& msg)
 	std::string header = buf.str();
 
 	boost::shared_ptr<std::string> str_buf(new std::string(header.empty() ? msg : (header + msg)));
-	fprintf(stderr, "DEBUG: CALL async_write()\n");
 	boost::asio::async_write(*socket, boost::asio::buffer(*str_buf),
 			                         boost::bind(&server::handle_send, this, socket, _1, _2, str_buf, session_id));
-	fprintf(stderr, "DEBUG: DONE async_write()\n");
 }
 
 void server::handle_send(socket_ptr socket, const boost::system::error_code& e, size_t nbytes, boost::shared_ptr<std::string> buf, int session_id)
 {
-	fprintf(stderr, "DEBUG: handle_send(%p)\n", socket.get());
 	if(e) {
 		std::cerr << "ERROR SENDING DATA: " << e.message() << std::endl;
 		queue_msg(session_id, *buf, true); //re-queue the message.
@@ -320,12 +297,10 @@ void server::disconnect(socket_ptr socket)
 {
 	debug_disconnected_store.push_back(socket);
 
-	fprintf(stderr, "DEBUG: disconnect(%p)\n", socket.get());
 	std::map<socket_ptr, socket_info>::iterator itor = connections_.find(socket);
 	if(itor != connections_.end()) {
 		std::map<int, socket_ptr>::iterator sessions_itor = sessions_to_waiting_connections_.find(itor->second.session_id);
 		if(sessions_itor != sessions_to_waiting_connections_.end() && sessions_itor->second == socket) {
-		fprintf(stderr, "DEBUG: C sessions_to_waiting_connections_.erase(%d -> %p)\n", sessions_itor->first, sessions_itor->second.get());
 			sessions_to_waiting_connections_.erase(sessions_itor);
 		}
 
@@ -333,22 +308,6 @@ void server::disconnect(socket_ptr socket)
 	}
 
 	waiting_connections_.erase(socket);
-
-	for(std::map<int, socket_ptr>::iterator itor = sessions_to_waiting_connections_.begin(); itor != sessions_to_waiting_connections_.end(); ++itor) {
-		if(itor->second == socket) {
-			fprintf(stderr, "DEBUG: socket in sessions_to_waiting_connections %p -> %d\n", socket.get(), itor->first);
-		}
-	}
-
-	for(std::map<socket_ptr, std::string>::iterator itor = waiting_connections_.begin(); itor != waiting_connections_.end(); ++itor) {
-		if(itor->first == socket) {
-			fprintf(stderr, "DEBUG: socket in waiting_connections_ %p\n", socket.get());
-		}
-	}
-
-	foreach(socket_ptr s, status_sockets_) {
-			fprintf(stderr, "DEBUG: socket in status_sockets %p\n", socket.get());
-	}
 
 	socket->close();
 }
@@ -371,8 +330,6 @@ void server::heartbeat()
 	sys::pump_file_modifications();
 #endif
 
-	fprintf(stderr, "DEBUG: BEGIN HEARTBEAT\n");
-
 	const bool send_heartbeat = nheartbeat_%100 == 0;
 
 	std::vector<std::pair<socket_ptr, std::string> > messages;
@@ -384,16 +341,11 @@ void server::heartbeat()
 		ASSERT_LOG(info.session_id != -1, "UNKNOWN SOCKET");
 
 		client_info& cli_info = clients_[info.session_id];
-		fprintf(stderr, "DEBUG: SOCKET %p -> %d\n", socket.get(), info.session_id);
 		if(cli_info.msg_queue.empty() == false) {
 			messages.push_back(std::pair<socket_ptr,std::string>(socket, cli_info.msg_queue.front()));
 			cli_info.msg_queue.pop_front();
 
-		std::map<int, socket_ptr>::iterator sessions_itor = sessions_to_waiting_connections_.find(info.session_id);
-		if(sessions_itor != sessions_to_waiting_connections_.end()) {
-		fprintf(stderr, "DEBUG: F sessions_to_waiting_connections_.erase(%d -> %p)\n", sessions_itor->first, sessions_itor->second.get());
-		}
-			sessions_to_waiting_connections_.erase(info.session_id);
+		sessions_to_waiting_connections_.erase(info.session_id);
 		} else if(send_heartbeat) {
 			if(!cli_info.game) {
 				messages.push_back(std::pair<socket_ptr,std::string>(socket, "{ \"type\": \"heartbeat\" }"));
@@ -426,14 +378,9 @@ void server::heartbeat()
 
 				doc.set("players", variant(&items));
 
-				fprintf(stderr, "DEBUG: send_msg(p)\n");
 				messages.push_back(std::pair<socket_ptr,std::string>(socket, doc.build().write_json()));
 			}
 
-		std::map<int, socket_ptr>::iterator sessions_itor = sessions_to_waiting_connections_.find(info.session_id);
-		if(sessions_itor != sessions_to_waiting_connections_.end()) {
-		fprintf(stderr, "DEBUG: G sessions_to_waiting_connections_.erase(%d -> %p)\n", sessions_itor->first, sessions_itor->second.get());
-		}
 			sessions_to_waiting_connections_.erase(info.session_id);
 		}
 	}
@@ -449,8 +396,6 @@ void server::heartbeat()
 	if(send_heartbeat) {
 		status_change();
 	}
-
-	fprintf(stderr, "DEBUG: END HEARTBEAT\n");
 
 	if(nheartbeat_ >= scheduled_write_) {
 		//write out the game recorded data.
@@ -589,7 +534,6 @@ void server::status_change()
 	if(!status_sockets_.empty()) {
 		std::string msg = create_lobby_msg().write_json(true, variant::JSON_COMPLIANT);
 		foreach(socket_ptr socket, status_sockets_) {
-				fprintf(stderr, "DEBUG: send_msg(q)\n");
 			send_msg(socket, msg);
 		}
 
