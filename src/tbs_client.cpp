@@ -64,7 +64,13 @@ void client::error_handler(const std::string& err)
 {
 	std::cerr << "ERROR IN TBS CLIENT: " << err << (handler_ ? " SENDING TO HANDLER...\n" : " NO HANDLER\n");
 	if(handler_) {
-		callable_->add("error", json::parse(err, json::JSON_NO_PREPROCESSOR));
+		variant v;
+		try {
+			v = json::parse(err, json::JSON_NO_PREPROCESSOR);
+		} catch(const json::parse_error&) {
+			std::cerr << "Uanble to parse message \"" << err << "\" assuming it is a string." << std::endl;
+		}
+		callable_->add("error", v.is_null() ? variant(err) : v);
 		handler_("connection_error");
 	}
 }
