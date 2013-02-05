@@ -131,6 +131,7 @@ objects = \
 	src/scrollbar_widget.o \
 	src/scrollable_widget.o \
 	src/segment_editor_dialog.o \
+	src/selector_widget.o \
 	src/settings_dialog.o \
 	src/shaders.o \
 	src/sys.o \
