@@ -88,6 +88,7 @@ public:
 
 	variant write() const;
 	void draw(int x, int y, int w, int h) const;
+	void draw_later(int x, int y, int w, int h) const;
 	void draw_status() const;
 	void draw_debug_solid(int x, int y, int w, int h) const;
 	void draw_background(int x, int y, int rotation) const;

@@ -1893,9 +1893,43 @@ void draw_entity(const entity& obj, int x, int y, bool editor) {
 		glPopMatrix();
 	}
 }
+void draw_entity_later(const entity& obj, int x, int y, bool editor) {
+	const std::pair<int,int>* scroll_speed = obj.parallax_scale_millis();
+
+	if(scroll_speed) {
+		glPushMatrix();
+		const int scrollx = scroll_speed->first;
+		const int scrolly = scroll_speed->second;
+
+		const int diffx = ((scrollx - 1000)*x)/1000;
+		const int diffy = ((scrolly - 1000)*y)/1000;
+
+		glTranslatef(diffx, diffy, 0.0);
+	}
+
+	obj.draw_later(x, y);
+
+	if(scroll_speed) {
+		glPopMatrix();
+	}
+}
 }
 
 extern std::vector<rect> background_rects_drawn;
+
+void level::draw_later(int x, int y, int w, int h) const
+{
+	// Delayed drawing for some elements.
+#if defined(USE_GLES2)
+	gles2::manager manager(shader_);
+#endif
+	std::vector<entity_ptr>::const_iterator entity_itor = active_chars_.begin();
+	while(entity_itor != active_chars_.end()) {
+		draw_entity_later(**entity_itor, x, y, editor_);
+		++entity_itor;
+	}
+}
+
 
 void level::draw(int x, int y, int w, int h) const
 {

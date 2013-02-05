@@ -52,6 +52,7 @@ public:
 	virtual variant write() const;
 	virtual void setup_drawing() const;
 	virtual void draw(int x, int y) const;
+	virtual void draw_later(int x, int y) const;
 	virtual void draw_group() const;
 	virtual void process(level& lvl);
 	virtual void create_object();

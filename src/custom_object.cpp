@@ -42,6 +42,8 @@
 #include "widget_factory.hpp"
 
 namespace {
+const int widget_zorder_draw_later_threshold = 1000;
+
 const game_logic::formula_variable_storage_ptr& global_vars()
 {
 	static game_logic::formula_variable_storage_ptr obj(new game_logic::formula_variable_storage);
@@ -856,6 +858,33 @@ void custom_object::setup_drawing() const
 	}
 }
 
+void custom_object::draw_later(int xx, int yy) const
+{
+	// custom object evil hackery part one.
+	// Called nearer the end of rendering the scene, the
+	// idea is to draw widgets with z-orders over the
+	// threshold now rather than during the normal draw
+	// processing.
+	if(use_absolute_screen_coordinates_) {
+		glPushMatrix();
+		glTranslatef(GLfloat(xx), GLfloat(yy), 0.0);
+		adjusted_draw_position_.x = xx;
+		adjusted_draw_position_.y = yy;
+	}
+	glPushMatrix();
+	glTranslatef(GLfloat(x()), GLfloat(y()), 0.0);
+	foreach(const gui::widget_ptr& w, widgets_) {
+		if(w->zorder() >= widget_zorder_draw_later_threshold) {
+			w->draw();
+		}
+	}
+	glPopMatrix();
+
+	if(use_absolute_screen_coordinates_) {
+		glPopMatrix();
+	}
+}
+
 void custom_object::draw(int xx, int yy) const
 {
 	if(frame_ == NULL) {
@@ -942,7 +971,9 @@ void custom_object::draw(int xx, int yy) const
 	glPushMatrix();
 	glTranslatef(GLfloat(x()), GLfloat(y()), 0.0);
 	foreach(const gui::widget_ptr& w, widgets_) {
-		w->draw();
+		if(w->zorder() < widget_zorder_draw_later_threshold) {
+			w->draw();
+		}
 	}
 	foreach(const gui::vector_text_ptr& txt, vector_text_) {
 		txt->draw();
@@ -1828,7 +1859,7 @@ void custom_object::process(level& lvl)
 	}
 #endif
 
-	if(level::current().cycle() > get_mouseover_trigger_cycle()) {
+	if(level::current().cycle() > int(get_mouseover_trigger_cycle())) {
 		if(is_mouse_over_entity() == false) {
 			game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable);
 			int mx, my;

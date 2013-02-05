@@ -370,6 +370,8 @@ void render_scene(const level& lvl, screen_position& pos, const entity* focus, b
 	current_debug_rects_valid_cycle = lvl.cycle();
 
 	graphics::clear_raster_distortion();
+
+	lvl.draw_later(xscroll, yscroll, draw_width, draw_height);
 	glPopMatrix();
 
 	for(std::vector<screen_flash>::iterator i = flashes().begin();

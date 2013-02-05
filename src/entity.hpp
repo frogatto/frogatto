@@ -44,6 +44,7 @@ public:
 	virtual variant write() const = 0;
 	virtual void setup_drawing() const {}
 	virtual void draw(int x, int y) const = 0;
+	virtual void draw_later(int x, int y) const = 0;
 	virtual void draw_group() const = 0;
 	player_info* get_player_info() { return is_human(); }
 	const player_info* get_player_info() const { return is_human(); }
