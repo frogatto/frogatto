@@ -363,10 +363,9 @@ const_widget_ptr dialog::get_widget_by_id(const std::string& id) const
 
 void dialog::set_value(const std::string& key, const variant& v)
 {
-	if(key == "show_modal") {
-		if(v.as_bool()) {
-			show_modal();
-		}
+	if(key == "child") {
+		widget_ptr w = widget_factory::create(v, get_environment());
+		add_widget(w, w->x(), w->y());
 	}
 	widget::set_value(key, v);
 }
