@@ -110,6 +110,7 @@ void print_help(const std::string& argv0)
 "      --relay                  use the server as a relay in multiplayer rather\n" <<
 "                                 than trying to initiate direct connections\n" <<
 "      --[no-]resizable         allows/disallows to resize the game window\n" <<
+"      ----module-args=ARGS     map of arguments passed to the module\n" <<
 "      --scale                  enables an experimental pixel art interpolation\n" <<
 "                                 algorithm for scaling the game graphics (some\n" <<
 "                                 issues with this still have to be solved)\n" <<

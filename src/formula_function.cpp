@@ -2649,6 +2649,11 @@ FUNCTION_DEF(sha1, 1, 1, "sha1(string) -> string: Returns the sha1 hash of the g
 	return variant(str.str());
 END_FUNCTION_DEF(sha1)
 
+FUNCTION_DEF(get_module_args, 0, 0, "get_module_args() -> callable: Returns the current module callable environment")
+	formula::fail_if_static_context();
+	return variant(module::get_module_args().get());
+END_FUNCTION_DEF(get_module_args)
+
 }
 
 UNIT_TEST(modulo_operation) {

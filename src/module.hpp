@@ -61,6 +61,9 @@ variant build_package(const std::string& id);
 
 bool uninstall_downloaded_module(const std::string& id);
 
+void set_module_args(game_logic::const_formula_callable_ptr callable);
+game_logic::const_formula_callable_ptr get_module_args();
+
 class client : public game_logic::formula_callable
 {
 public:

@@ -2489,8 +2489,10 @@ END_FUNCTION_DEF(module_rate)
 
 class module_launch_command : public entity_command_callable {
 	std::string id_;
+	const_formula_callable_ptr callable_;
 public:
-	explicit module_launch_command(const std::string& id) : id_(id)
+	explicit module_launch_command(const std::string& id, const_formula_callable_ptr callable) 
+		: id_(id), callable_(callable)
 	{}
 
 	virtual void execute(level& lvl, entity& ob) const {
@@ -2503,6 +2505,8 @@ public:
 			lvl.remove_character(e);
 		}
 
+		module::set_module_args(callable_);
+
 		level::portal p;
 		p.level_dest = "titlescreen.cfg";
 		p.dest_starting_pos = true;
@@ -2513,9 +2517,13 @@ public:
 	}
 };
 
-FUNCTION_DEF(module_launch, 1, 1, "module_launch(string module_id): launch the game using the given module.")
+FUNCTION_DEF(module_launch, 1, 2, "module_launch(string module_id, (optional) callable): launch the game using the given module.")
 	const std::string module_id = args()[0]->evaluate(variables).as_string();
-	module_launch_command* cmd = (new module_launch_command(module_id));
+	const_formula_callable_ptr callable;
+	if(args().size() > 1) {
+		callable = map_into_callable(args()[1]->evaluate(variables));
+	}
+	module_launch_command* cmd = (new module_launch_command(module_id, callable));
 	cmd->set_expression(this);
 	return variant(cmd);
 END_FUNCTION_DEF(module_launch)

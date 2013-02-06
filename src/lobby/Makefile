@@ -20,6 +20,7 @@ objects = \
 	game_server_worker.o \
 	lobby.o \
 	mime_types.o \
+	name.o \
 	reply.o \
 	request_handler.o \
 	request_parser.o \
