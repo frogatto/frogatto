@@ -118,7 +118,12 @@ boost::intrusive_ptr<game> game::create(const variant& v)
 		return NULL;
 	}
 
-	boost::intrusive_ptr<game> result(new game(all_types()[type_var.as_string()]));
+	std::map<std::string, game_type>::const_iterator type_itor = all_types().find(type_var.as_string());
+	if(type_itor == all_types().end()) {
+		return NULL;
+	}
+
+	boost::intrusive_ptr<game> result(new game(type_itor->second));
 	game_logic::map_formula_callable_ptr vars(new game_logic::map_formula_callable);
 	vars->add("msg", v);
 	result->handle_event("create", vars.get());

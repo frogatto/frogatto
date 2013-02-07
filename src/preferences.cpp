@@ -134,6 +134,7 @@ namespace preferences {
 		bool reverse_ab_ = false;
 		bool show_fps_ = false;
 		int frame_time_millis_ = 20;
+		int alt_frame_time_millis_ = -1;
 		bool no_iphone_controls_ = false;
 		bool allow_autopause_ = false;
 		
@@ -641,6 +642,24 @@ namespace preferences {
 	{
 		return frame_time_millis_;
 	}
+
+	bool has_alt_frame_time()
+	{
+		return alt_frame_time_millis_ != -1;
+	}
+
+	alt_frame_time_scope::alt_frame_time_scope(bool value) : old_value_(frame_time_millis_)
+	{
+		if(value && has_alt_frame_time()) {
+			frame_time_millis_ = alt_frame_time_millis_;
+			active_ = true;
+		}
+	}
+
+	alt_frame_time_scope::~alt_frame_time_scope()
+	{
+		frame_time_millis_ = old_value_;
+	}
 	
 	bool use_joystick()
 	{
@@ -870,6 +889,9 @@ namespace preferences {
 		} else if(arg_name == "--set-fps" && !arg_value.empty()) {
 			frame_time_millis_ = 1000/boost::lexical_cast<int, std::string>(arg_value);
 			std::cerr << "FPS: " << arg_value << " = " << frame_time_millis_ << "ms/frame\n";
+		} else if(arg_name == "--alt-fps" && !arg_value.empty()) {
+			alt_frame_time_millis_ = 1000/boost::lexical_cast<int, std::string>(arg_value);
+			std::cerr << "FPS: " << arg_value << " = " << alt_frame_time_millis_ << "ms/frame\n";
 		} else if(arg_name == "--config-path" && !arg_value.empty()) {
 			set_preferences_path(arg_value);
 		} else if(s == "--send-stats") {

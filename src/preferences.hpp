@@ -74,6 +74,16 @@ namespace preferences {
 	bool debug();
 	
 	int frame_time_millis();
+	bool has_alt_frame_time();
+
+	struct alt_frame_time_scope {
+		explicit alt_frame_time_scope(bool value);
+		~alt_frame_time_scope();
+		bool active() const { return active_; }
+	private:
+		int old_value_;
+		bool active_;
+	};
 
 	//whether to show the fps display at the top
 	bool show_fps();
