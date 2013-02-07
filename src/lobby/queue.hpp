@@ -48,7 +48,7 @@ namespace queue
 			system_clock::time_point time_limit = system_clock::now() + milliseconds(interval);
 			while(q_.empty()) {
 				if(interval) {
-					if(cv_.wait_until(lock, time_limit) == boost::cv_status::timeout) {
+					if(cv_.wait_until<system_clock, system_clock::duration>(lock, time_limit) == boost::cv_status::timeout) {
 						return false;
 					}
 				} else {

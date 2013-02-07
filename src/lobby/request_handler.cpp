@@ -72,6 +72,7 @@ namespace
 		for(int n = 0; n < bots; ++n) {
 			json_spirit::mObject b_obj;
 			b_obj["user"] = name::generate_bot_name();
+			b_obj["bot"] = true;
 			b_obj["session_id"] = game_server::shared_data::make_session_id();
 			u_ary.push_back(b_obj);
 		}
