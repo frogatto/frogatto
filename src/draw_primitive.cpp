@@ -41,6 +41,11 @@ private:
 	int fade_in_length_;
 
 	GLfloat width_base_, width_head_;
+
+	mutable std::vector<GLfloat> varray_;
+	mutable std::vector<unsigned char> carray_;
+
+	void calculate_draw_arrays() const;
 };
 
 arrow_primitive::arrow_primitive(const variant& v)
@@ -60,11 +65,12 @@ arrow_primitive::arrow_primitive(const variant& v)
 	set_points(v["points"]);
 }
 
-void arrow_primitive::handle_draw() const
+void arrow_primitive::calculate_draw_arrays() const
 {
-	if(points_.size() < 3) {
+	if(!varray_.empty()) {
 		return;
 	}
+
 
 	std::vector<FPoint> path;
 
@@ -119,43 +125,50 @@ void arrow_primitive::handle_draw() const
 		right_path.push_back(right);
 	}
 
-	std::vector<GLfloat> varray;
-	std::vector<unsigned char> carray;
 	for(int n = 0; n != left_path.size(); ++n) {
-		varray.push_back(left_path[n][0]);
-		varray.push_back(left_path[n][1]);
-		varray.push_back(right_path[n][0]);
-		varray.push_back(right_path[n][1]);
+		varray_.push_back(left_path[n][0]);
+		varray_.push_back(left_path[n][1]);
+		varray_.push_back(right_path[n][0]);
+		varray_.push_back(right_path[n][1]);
 
 		for(int m = 0; m != 2; ++m) {
-			carray.push_back(color_.r());
-			carray.push_back(color_.g());
-			carray.push_back(color_.b());
+			carray_.push_back(color_.r());
+			carray_.push_back(color_.g());
+			carray_.push_back(color_.b());
 			if(n < fade_in_length_) {
-				carray.push_back(int((GLfloat(color_.a())*GLfloat(n)*(255.0/GLfloat(fade_in_length_)))/255.0));
+				carray_.push_back(int((GLfloat(color_.a())*GLfloat(n)*(255.0/GLfloat(fade_in_length_)))/255.0));
 			} else {
-				carray.push_back(color_.a());
+				carray_.push_back(color_.a());
 			}
 		}
 	}
+}
+
+void arrow_primitive::handle_draw() const
+{
+	if(points_.size() < 3) {
+		return;
+	}
+
+	calculate_draw_arrays();
 
 #if !defined(USE_GLES2)
 	glEnableClientState(GL_COLOR_ARRAY);
 	glDisable(GL_TEXTURE_2D);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 
-	glVertexPointer(2, GL_FLOAT, 0, &varray[0]);
-	glColorPointer(4, GL_UNSIGNED_BYTE, 0, &carray[0]);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
+	glVertexPointer(2, GL_FLOAT, 0, &varray_[0]);
+	glColorPointer(4, GL_UNSIGNED_BYTE, 0, &carray_[0]);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, varray_.size()/2);
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnable(GL_TEXTURE_2D);
 #else
 	gles2::manager gles2_manager(gles2::get_simple_col_shader());
-	gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, GL_FALSE, 0, &varray[0]);
-	gles2::active_shader()->shader()->color_array(4, GL_UNSIGNED_BYTE, GL_TRUE, 0, &carray[0]);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, varray.size()/2);
+	gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, GL_FALSE, 0, &varray_[0]);
+	gles2::active_shader()->shader()->color_array(4, GL_UNSIGNED_BYTE, GL_TRUE, 0, &carray_[0]);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, varray_.size()/2);
 #endif
 }
 
@@ -169,9 +182,26 @@ void arrow_primitive::set_value(const std::string& key, const variant& value)
 {
 	if(key == "points") {
 		set_points(value);
+	} else if(key == "color") {
+		color_ = graphics::color(value);
+	} else if(key == "granularity") {
+		granularity_ = value.as_decimal().as_float();
+	} else if(key == "arrow_head_length") {
+		arrow_head_length_ = value.as_int();
+	} else if(key == "arrow_head_width") {
+		arrow_head_width_ = value.as_decimal().as_float();
+	} else if(key == "fade_in_length") {
+		fade_in_length_ = value.as_int();
+	} else if(key == "width_base") {
+		width_base_ = value.as_decimal().as_float();
+	} else if(key == "width_head") {
+		width_head_ = value.as_decimal().as_float();
+	} else {
+		ASSERT_LOG(false, "ILLEGAL KEY IN ARROW: " << key);
 	}
 
-	ASSERT_LOG(false, "ILLEGAL KEY IN ARROW: " << key);
+	varray_.clear();
+	carray_.clear();
 }
 
 void arrow_primitive::set_points(const variant& points)
