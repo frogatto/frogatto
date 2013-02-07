@@ -2499,6 +2499,7 @@ public:
 		module::reload(id_);
 		reload_level_paths();
 		custom_object_type::reload_file_paths();
+		font::reload_font_paths();
 
 		const std::vector<entity_ptr> players = lvl.players();
 		foreach(entity_ptr e, players) {

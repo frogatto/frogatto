@@ -37,6 +37,8 @@ graphics::texture render_text_uncached(const std::string& text,
 int char_width(int size, const std::string& fn="");
 int char_height(int size, const std::string& fn="");
 
+void reload_font_paths();
+
 }
 
 #endif
