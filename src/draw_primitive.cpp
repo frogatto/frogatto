@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "asserts.hpp"
+#include "color_utils.hpp"
 #include "draw_primitive.hpp"
 #include "geometry.hpp"
 
@@ -36,13 +37,26 @@ private:
 	GLfloat granularity_;
 	int arrow_head_length_;
 	GLfloat arrow_head_width_;
+	graphics::color color_;
+	int fade_in_length_;
+
+	GLfloat width_base_, width_head_;
 };
 
 arrow_primitive::arrow_primitive(const variant& v)
   : granularity_(v["granularity"].as_decimal(decimal(0.005)).as_float()),
     arrow_head_length_(v["arrow_head_length"].as_int(10)),
-    arrow_head_width_(v["arrow_head_width"].as_decimal(decimal(2.0)).as_float())
+    arrow_head_width_(v["arrow_head_width"].as_decimal(decimal(2.0)).as_float()),
+	fade_in_length_(v["fade_in_length"].as_int(50)),
+	width_base_(v["width_base"].as_decimal(decimal(12.0)).as_float()),
+	width_head_(v["width_head"].as_decimal(decimal(5.0)).as_float())
 {
+	if(v.has_key("color")) {
+		color_ = color(v["color"]);
+	} else {
+		color_ = color(200, 0, 0, 255);
+	}
+
 	set_points(v["points"]);
 }
 
@@ -88,7 +102,7 @@ void arrow_primitive::handle_draw() const
 
 		const GLfloat ratio = n/PathLength;
 
-		GLfloat arrow_width = 12.0 - 7.0*ratio;
+		GLfloat arrow_width = width_base_ - (width_base_-width_head_)*ratio;
 
 		const int time_until_end = path.size()-2 - n;
 		if(time_until_end < arrow_head_length_) {
@@ -114,13 +128,13 @@ void arrow_primitive::handle_draw() const
 		varray.push_back(right_path[n][1]);
 
 		for(int m = 0; m != 2; ++m) {
-			carray.push_back(200);
-			carray.push_back(0);
-			carray.push_back(0);
-			if(n < 50) {
-				carray.push_back(n*5);
+			carray.push_back(color_.r());
+			carray.push_back(color_.g());
+			carray.push_back(color_.b());
+			if(n < fade_in_length_) {
+				carray.push_back(int((GLfloat(color_.a())*GLfloat(n)*(255.0/GLfloat(fade_in_length_)))/255.0));
 			} else {
-				carray.push_back(255);
+				carray.push_back(color_.a());
 			}
 		}
 	}
