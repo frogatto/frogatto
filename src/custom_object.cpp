@@ -966,6 +966,10 @@ void custom_object::draw(int xx, int yy) const
 		attached->draw(xx, yy);
 	}
 
+	foreach(const graphics::draw_primitive_ptr& p, draw_primitives_) {
+		p->draw();
+	}
+
 	draw_debug_rects();
 
 	glPushMatrix();
@@ -3755,6 +3759,14 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 
 		v->swap(draw_order);
 
+		break;
+	}
+
+	case CUSTOM_OBJECT_DRAW_PRIMITIVES: {
+		draw_primitives_.clear();
+		for(int n = 0; n != value.num_elements(); ++n) {
+			draw_primitives_.push_back(graphics::draw_primitive::create(value[n]));
+		}
 		break;
 	}
 

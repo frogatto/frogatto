@@ -49,6 +49,7 @@ objects = \
 	src/debug_console.o \
 	src/dialog.o \
 	src/draw_number.o \
+	src/draw_primitive.o \
 	src/draw_scene.o \
 	src/draw_tile.o \
 	src/editor.o \

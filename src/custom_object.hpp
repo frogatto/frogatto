@@ -12,6 +12,7 @@
 #include "color_utils.hpp"
 #include "custom_object_type.hpp"
 #include "decimal.hpp"
+#include "draw_primitive.hpp"
 #include "draw_scene.hpp"
 #include "entity.hpp"
 #include "formula.hpp"
@@ -440,6 +441,8 @@ private:
 	rect previous_water_bounds_;
 
 	mutable screen_position adjusted_draw_position_;
+
+	std::vector<graphics::draw_primitive_ptr> draw_primitives_;
 };
 
 #endif
