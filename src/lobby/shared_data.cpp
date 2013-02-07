@@ -73,6 +73,7 @@ namespace game_server
 			} else {
 				// We have been sent a session_id, check if it's valid.
 				if(it->second.session_id != session_id) {
+					it->second.signed_in = false;
 					return boost::make_tuple(bad_session_id, it->second);
 				}
 			}
@@ -81,8 +82,10 @@ namespace game_server
 			return boost::make_tuple(send_salt, it->second);
 		} else {
 			if(check_password(it->second.salt, fixed_password, phash)) {
+				it->second.signed_in = true;
 				return boost::make_tuple(login_success, it->second);
 			} else {
+				it->second.signed_in = false;
 				return boost::make_tuple(password_failed, it->second);
 			}
 		}
@@ -113,20 +116,6 @@ namespace game_server
 				[user](const std::pair<int, game_info>& v) { return std::find(v.second.clients.begin(), v.second.clients.end(), user) != v.second.clients.end(); });
 			uo["game"] = it == games_.end() ? "lobby" : it->second.name;
 			ary->push_back(json_spirit::mValue(uo));
-		}
-	}
-
-	void shared_data::get_server_info(json_spirit::mArray* ary)
-	{
-		boost::mutex::scoped_lock lock(guard_);
-		for(auto si : servers_) {
-			json_spirit::mObject obj;
-			obj["name"] = si.name;
-			obj["display_name"] = si.display_name;
-			obj["min_players"] = si.min_players;
-			obj["max_players"] = si.max_players;
-			obj["has_bots"] = si.has_bots;
-			ary->push_back(json_spirit::mValue(obj));
 		}
 	}
 
@@ -162,5 +151,10 @@ namespace game_server
 	{
 		boost::mutex::scoped_lock lock(guard_);
 		servers_.push_back(si);
+	}
+
+	int shared_data::make_session_id()
+	{
+		return generate_session_id();
 	}
 }

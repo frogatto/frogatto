@@ -3731,6 +3731,8 @@ variant level::get_value(const std::string& key) const
 		return variant(editor_);
 	} else if(key == "zoom") {
 		return variant(zoom_level_);
+	} else if(key == "module_args") {
+		return variant(module::get_module_args().get());
 #if defined(USE_BOX2D)
 	} else if(key == "world") {
 		return variant(box2d::world::our_world_ptr().get());

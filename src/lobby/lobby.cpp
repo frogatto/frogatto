@@ -6,11 +6,9 @@
 #include <fstream>
 #include <string>
 #include <boost/asio.hpp>
-#include <boost/bind.hpp>
-#include <boost/lexical_cast.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
-#include "json_spirit.h"
+#include <json_spirit.h>
 #if defined(USE_SQLITE)
 #include "sqlite3.h"
 #endif

@@ -19,11 +19,100 @@
 #include "asserts.hpp"
 #include "request_handler.hpp"
 #include "mime_types.hpp"
+#include "name.hpp"
 #include "reply.hpp"
 #include "request.hpp"
+#include "game_server_worker.hpp"
 
 namespace http {
 namespace server {
+
+namespace
+{
+	const int64_t game_server_wait_interval_ms = 30000;
+
+	enum start_game_errors
+	{
+		game_created,
+		max_player_size_exceeded,
+		not_enough_human_players,
+		game_server_timed_out,
+		game_server_failed_create,
+		game_server_bad_response,
+	};
+
+	void process_start_game_message(const std::string& game_type, 
+		const json_spirit::mArray& players, 
+		int bots, 
+		json_spirit::mObject& reply_object)
+	{
+		json_spirit::mObject m;
+		game_server::worker& w = game_server::worker::get_server_from_game_type(game_type);
+		const game_server::server_info& si = w.get_server_info();
+		if(players.size() > si.max_players) {
+			reply_object["type"] = "error";
+			reply_object["description"] = "Maximum number of human players exceeded.";
+			return;
+		}
+		if(players.size() < si.min_humans) {
+			reply_object["type"] = "error";
+			reply_object["description"] = "Not enough human players supplied.";
+			return;
+		}
+		if(players.size() + bots < si.min_players) {
+			bots = si.min_players - players.size();
+		}
+		if(players.size() + bots > si.max_players) {
+			bots = si.max_players - players.size();
+		}
+		json_spirit::mArray u_ary;
+		// {type: 'create_game', game_type: 'citadel', users: [{user: 'a', session_id: 1}, {user: 'b', bot: true, session_id: 2}]}
+		// Add Bots
+		u_ary.insert(u_ary.end(), players.begin(), players.end());
+		for(int n = 0; n < bots; ++n) {
+			json_spirit::mObject b_obj;
+			b_obj["user"] = name::generate_bot_name();
+			b_obj["session_id"] = game_server::shared_data::make_session_id();
+			u_ary.push_back(b_obj);
+		}
+		m["type"] = "create_game";
+		m["game_type"] = game_type;
+		m["users"] = u_ary;
+		// Push 'create_game' message to the game server.
+		game_server::message msg;
+		msg.msg = json_spirit::write(m);
+		msg.reply = game_server::string_queue_ptr(new game_server::string_queue);
+		w.get_queue()->push(msg);
+		std::string reply;
+		if(msg.reply->wait_and_pop(reply, game_server_wait_interval_ms)) {
+			json_spirit::mValue rv;
+			json_spirit::read(reply, rv);
+			json_spirit::mObject ro = rv.get_obj();
+			if(ro.find("type") != ro.end()) {
+				const std::string& type = ro["type"].get_str();
+				if(type == "create_game_failed") {
+					reply_object["type"] = "error";
+					reply_object["description"] = "Server replied: Create game failed.";
+				} else if(type == "game_created") {
+
+					for(auto it : ro) {
+						reply_object[it.first] = it.second;
+					}
+				} else {
+					reply_object["type"] = "error";
+					reply_object["description"] = "Didn't understand server response. 'type' unknown: " + type;
+				}
+			} else {
+				reply_object["type"] = "error";
+				reply_object["description"] = "Didn't understand server response. No 'type' attribute";
+			}
+		} else {
+			// XXX we could really do a fail-over and retry the another server with this.
+			reply_object["type"] = "error";
+			reply_object["description"] = "Timeout waiting for game server to reply.";
+		}
+	}
+}
 
 request_handler::request_handler(const std::string& doc_root, game_server::shared_data& data)
   : doc_root_(doc_root), data_(data)
@@ -240,10 +329,15 @@ void request_handler::handle_post(const request& req, reply& rep)
 		obj["type"] = "status";
 		obj["clients"] = ary;
 	} else if(type == "get_server_info") {
-		json_spirit::mArray ary;
-		data_.get_server_info(&ary);
+		json_spirit::mObject si_obj;
+		game_server::worker::get_server_info(&si_obj);
 		obj["type"] = "server_info";
-		obj["servers"] = ary;
+		obj["servers"] = si_obj;
+	} else if(type == "start_game") {
+		std::string game_type = req_obj["game_type"].get_str();
+		json_spirit::mArray players = req_obj["players"].get_array();
+		int bots = req_obj["bots"].get_int();
+		process_start_game_message(game_type, players, bots, obj);
 	} else if(type == "quit") {
 		if(data_.sign_off(user, session_id)) {
 			obj["type"] = "bye";

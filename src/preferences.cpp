@@ -910,6 +910,9 @@ namespace preferences {
 			username_ = arg_value;
 		} else if(arg_name == "--pass") {
 			password_ = arg_value;
+		} else if(arg_name == "--module-args") {
+			game_logic::const_formula_callable_ptr callable = map_into_callable(json::parse(arg_value));
+			module::set_module_args(callable);
 		} else if(s == "--relay") {
 			relay_through_server_ = true;
 		} else if(s == "--failing-tests") {

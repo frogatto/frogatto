@@ -35,6 +35,8 @@ std::vector<std::string> module_dirs() {
 	result.push_back(preferences::dlc_path());
 	return result;
 }
+
+game_logic::const_formula_callable_ptr module_args;
 }
 
 const std::string get_module_name(){
@@ -154,6 +156,17 @@ std::string make_module_id(const std::string& name) {
 	}
 	return conv_name;
 }
+
+void set_module_args(game_logic::const_formula_callable_ptr callable)
+{
+	module_args = callable;
+}
+
+game_logic::const_formula_callable_ptr get_module_args()
+{
+	return module_args;
+}
+
 
 std::vector<variant> get_all()
 {
