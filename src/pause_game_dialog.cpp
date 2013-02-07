@@ -9,6 +9,7 @@
 #include "graphical_font_label.hpp"
 #include "i18n.hpp"
 #include "level.hpp"
+#include "module.hpp"
 #include "pause_game_dialog.hpp"
 #include "preferences.hpp"
 #include "sound.hpp"
@@ -74,7 +75,16 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	widget_ptr b1(new button(widget_ptr(new graphical_font_label(_("Resume"), "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_CONTINUE), BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
 	widget_ptr b2(new button(widget_ptr(new graphical_font_label(_("Controls..."), "door_label", 2)), show_controls_dialog, BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
 	widget_ptr language_button(new button(widget_ptr(new graphical_font_label(_("Language..."), "door_label", 2)), show_language_dialog, BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
-	widget_ptr b3(new button(widget_ptr(new graphical_font_label(_("Return to Titlescreen"), "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_GO_TO_TITLESCREEN), BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
+	widget_ptr b3;
+	if(module::get_module_args() != NULL) {
+		variant v = module::get_module_args()->query_value("from_lobby");
+		if(v.is_bool() && v.as_bool() == true && module::get_module_name() != "lobby") {
+			b3.reset(new button(widget_ptr(new graphical_font_label(_("Return to Lobby"), "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_GO_TO_LOBBY), BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
+		}
+	}
+	if(b3 == NULL) {
+		b3.reset(new button(widget_ptr(new graphical_font_label(_("Return to Titlescreen"), "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_GO_TO_TITLESCREEN), BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
+	}
 	widget_ptr b4(new button(widget_ptr(new graphical_font_label(_("Exit Game"), "door_label", 2)), boost::bind(end_dialog, &d, &result, PAUSE_GAME_QUIT), BUTTON_STYLE_DEFAULT, BUTTON_SIZE_DOUBLE_RESOLUTION));
 	widget_ptr b5(new checkbox(_("Reverse A and B"), preferences::reverse_ab(), boost::bind(preferences::set_reverse_ab, _1), BUTTON_SIZE_DOUBLE_RESOLUTION));
 #ifdef ENABLE_OPENFEINT

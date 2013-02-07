@@ -2496,25 +2496,7 @@ public:
 	{}
 
 	virtual void execute(level& lvl, entity& ob) const {
-		module::reload(id_);
-		reload_level_paths();
-		custom_object_type::reload_file_paths();
-		font::reload_font_paths();
-
-		const std::vector<entity_ptr> players = lvl.players();
-		foreach(entity_ptr e, players) {
-			lvl.remove_character(e);
-		}
-
-		module::set_module_args(callable_);
-
-		level::portal p;
-		p.level_dest = "titlescreen.cfg";
-		p.dest_starting_pos = true;
-		p.automatic = true;
-		p.transition = "instant";
-		p.saved_game = true; //makes it use the player in there.
-		lvl.force_enter_portal(p);
+		lvl.launch_new_module(id_, callable_);
 	}
 };
 

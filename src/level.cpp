@@ -4558,6 +4558,31 @@ bool level::gui_event(const SDL_Event &event)
 	return false;
 }
 
+void level::launch_new_module(const std::string& module_id, game_logic::const_formula_callable_ptr callable)
+{
+	module::reload(module_id);
+	reload_level_paths();
+	custom_object_type::reload_file_paths();
+	font::reload_font_paths();
+
+	const std::vector<entity_ptr> players = this->players();
+	foreach(entity_ptr e, players) {
+		this->remove_character(e);
+	}
+
+	if(callable) {
+		module::set_module_args(callable);
+	}
+
+	level::portal p;
+	p.level_dest = "titlescreen.cfg";
+	p.dest_starting_pos = true;
+	p.automatic = true;
+	p.transition = "instant";
+	p.saved_game = true; //makes it use the player in there.
+	force_enter_portal(p);
+}
+
 std::pair<std::vector<level_tile>::const_iterator, std::vector<level_tile>::const_iterator> level::tiles_at_loc(int x, int y) const
 {
 	x = round_tile_size(x);

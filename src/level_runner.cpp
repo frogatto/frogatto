@@ -1637,6 +1637,9 @@ void level_runner::handle_pause_game_result(PAUSE_GAME_RESULT result)
 	} else if(result == PAUSE_GAME_GO_TO_TITLESCREEN) {
 		done = true;
 		original_level_cfg_ = "titlescreen.cfg";
+	} else if(result == PAUSE_GAME_GO_TO_LOBBY) {
+		done = true;
+		lvl_->launch_new_module("lobby");
 	}
 }
 

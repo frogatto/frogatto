@@ -360,6 +360,8 @@ public:
 	int x_resolution() const { return x_resolution_; }
 	int y_resolution() const { return y_resolution_; }
 
+	void launch_new_module(const std::string& module_id, game_logic::const_formula_callable_ptr callable = NULL);
+
 	bool gui_event(const SDL_Event &event);
 
 	typedef std::vector<level_tile>::const_iterator TileItor;
