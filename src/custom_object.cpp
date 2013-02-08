@@ -371,9 +371,11 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 #if defined(USE_GLES2)
 	if(type_->shader()) {
 		shader_.reset(new gles2::shader_program(*type_->shader()));
+		shader_->init(this);
 	}
 	for(size_t n = 0; n < type_->effects().size(); ++n) {
 		effects_.push_back(new gles2::shader_program(*type_->effects()[n]));
+		effects_[n]->init(this);
 	}
 #endif
 
@@ -477,9 +479,11 @@ custom_object::custom_object(const custom_object& o) :
 #if defined(USE_GLES2)
 	if(o.shader_) {
 		shader_.reset(new gles2::shader_program(*o.shader_));
+		shader_->init(this);
 	}
 	for(size_t n = 0; n < o.effects_.size(); ++n) {
 		effects_.push_back(new gles2::shader_program(*o.effects_[n]));
+		effects_[n]->init(this);
 	}
 #endif
 
