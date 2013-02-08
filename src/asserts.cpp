@@ -53,8 +53,15 @@ validation_failure_exception::validation_failure_exception(const std::string& m)
 	std::cerr << "ASSERT FAIL: " << m << "\n";
 }
 
+fatal_assert_failure_exception::fatal_assert_failure_exception(const std::string& m)
+  : msg(m)
+{
+	std::cerr << "ASSERT FAIL: " << m << "\n";
+}
+
 namespace {
 	int throw_validation_failure = 0;
+	int throw_fatal = 0;
 }
 
 bool throw_validation_failure_on_assert()
@@ -75,4 +82,19 @@ assert_recover_scope::~assert_recover_scope()
 void output_backtrace()
 {
 	std::cerr << get_call_stack() << "\n";
+}
+
+bool throw_fatal_error_on_assert()
+{
+	return throw_fatal != 0;
+}
+
+fatal_assert_scope::fatal_assert_scope()
+{
+	throw_fatal++;
+}
+
+fatal_assert_scope::~fatal_assert_scope()
+{
+	throw_fatal--;
 }

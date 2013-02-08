@@ -2649,6 +2649,14 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_MOUSEOVER_DELAY: {
 		return variant(get_mouseover_delay());
 	}
+	case CUSTOM_OBJECT_DRAW_PRIMITIVES: {
+		std::vector<variant> v;
+		foreach(boost::intrusive_ptr<graphics::draw_primitive> p, draw_primitives_) {
+			v.push_back(variant(p.get()));
+		}
+
+		return variant(&v);
+	}
 
 	case CUSTOM_OBJECT_CTRL_UP:
 	case CUSTOM_OBJECT_CTRL_DOWN:
@@ -3765,7 +3773,13 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 	case CUSTOM_OBJECT_DRAW_PRIMITIVES: {
 		draw_primitives_.clear();
 		for(int n = 0; n != value.num_elements(); ++n) {
-			draw_primitives_.push_back(graphics::draw_primitive::create(value[n]));
+			if(value[n].is_callable()) {
+				boost::intrusive_ptr<graphics::draw_primitive> obj(value[n].try_convert<graphics::draw_primitive>());
+				ASSERT_LOG(obj.get() != NULL, "BAD OBJECT PASSED WHEN SETTING draw_primitives");
+				draw_primitives_.push_back(obj);
+			} else if(!value[n].is_null()) {
+				draw_primitives_.push_back(graphics::draw_primitive::create(value[n]));
+			}
 		}
 		break;
 	}

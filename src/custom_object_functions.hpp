@@ -1,11 +1,13 @@
 #ifndef CUSTOM_OBJECT_FUNCTIONS_HPP_INCLUDED
 #define CUSTOM_OBJECT_FUNCTIONS_HPP_INCLUDED
 
+#include <boost/intrusive_ptr.hpp>
 #include <string>
 
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "formula_function.hpp"
+#include "reference_counted_object.hpp"
 #include "variant.hpp"
 
 class custom_object;
@@ -23,14 +25,17 @@ public:
 	entity_command_callable() : expr_(NULL) {}
 	void run_command(level& lvl, entity& obj) const;
 
-	void set_expression(const game_logic::formula_expression* expr) { expr_ = expr; }
+	void set_expression(const game_logic::formula_expression* expr);
 
 private:
 	virtual void execute(level& lvl, entity& ob) const = 0;
 	variant get_value(const std::string& key) const { return variant(); }
 	void get_inputs(std::vector<game_logic::formula_input>* inputs) const {}
 
+	//these two members are used as a more compiler-friendly version of a
+	//intrusive_ptr<formula_expression>
 	const game_logic::formula_expression* expr_;
+	boost::intrusive_ptr<const reference_counted_object> expr_holder_;
 };
 
 class custom_object_command_callable : public game_logic::formula_callable {
@@ -38,14 +43,17 @@ public:
 	custom_object_command_callable() : expr_(NULL) {}
 	void run_command(level& lvl, custom_object& ob) const;
 
-	void set_expression(const game_logic::formula_expression* expr) { expr_ = expr; }
+	void set_expression(const game_logic::formula_expression* expr);
 
 private:
 	virtual void execute(level& lvl, custom_object& ob) const = 0;
 	variant get_value(const std::string& key) const { return variant(); }
 	void get_inputs(std::vector<game_logic::formula_input>* inputs) const {}
 	
+	//these two members are used as a more compiler-friendly version of a
+	//intrusive_ptr<formula_expression>
 	const game_logic::formula_expression* expr_;
+	boost::intrusive_ptr<const reference_counted_object> expr_holder_;
 };
 
 class swallow_object_command_callable : public game_logic::formula_callable {

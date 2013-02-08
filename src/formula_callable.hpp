@@ -218,13 +218,16 @@ public:
 	command_callable();
 	void run_command(formula_callable& context) const;
 
-	void set_expression(const formula_expression* expr) { expr_ = expr; }
+	void set_expression(const formula_expression* expr);
 private:
 	virtual void execute(formula_callable& context) const = 0;
 	variant get_value(const std::string& key) const { return variant(); }
 	void get_inputs(std::vector<game_logic::formula_input>* inputs) const {}
 
+	//these two members are a more compiler-friendly version of a
+	//intrusive_ptr<formula_expression>
 	const formula_expression* expr_;
+	boost::intrusive_ptr<const reference_counted_object> expr_holder_;
 };
 
 }
