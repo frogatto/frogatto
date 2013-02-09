@@ -20,12 +20,19 @@ public:
 		const_formula_callable_definition_ptr type_definition_holder;
 	};
 
+	formula_callable_definition() : is_strict_(false)
+	{}
 	virtual ~formula_callable_definition() {}
 
 	virtual int get_slot(const std::string& key) const = 0;
 	virtual entry* get_entry(int slot) = 0;
 	virtual const entry* get_entry(int slot) const = 0;
 	virtual int num_slots() const = 0;
+
+	bool is_strict() const { return is_strict_; }
+	void set_strict(bool value=true) { is_strict_ = value; }
+private:
+	bool is_strict_;
 };
 
 formula_callable_definition_ptr create_formula_callable_definition(const std::string* beg, const std::string* end, const formula_callable_definition* base=NULL);

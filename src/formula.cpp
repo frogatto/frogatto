@@ -497,6 +497,8 @@ public:
 			const int index = callable_def_->get_slot(id_);
 			if(index != -1) {
 				return expression_ptr(new slot_identifier_expression(id_, index, callable_def_));
+			} else if(callable_def_->is_strict()) {
+				ASSERT_LOG(false, "Unknown value access with strict checking in force: " << id_ << " AT: " << debug_pinpoint_location());
 			}
 		}
 

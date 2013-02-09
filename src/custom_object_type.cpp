@@ -710,7 +710,8 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 	platform_offsets_(node["platform_offsets"].as_list_int_optional()),
 	slot_properties_base_(-1), 
 	use_absolute_screen_coordinates_(node["use_absolute_screen_coordinates"].as_bool(false)),
-	mouseover_delay_(node["mouseover_delay"].as_int(0))
+	mouseover_delay_(node["mouseover_delay"].as_int(0)),
+	is_strict_(node["is_strict"].as_bool(false))
 {
 	custom_object_callable::instance();
 	init_level_definition();
@@ -857,7 +858,9 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 		if(!var_str. empty()) {
 			game_logic::formula_callable_definition::entry* entry = callable_definition_.get_entry(CUSTOM_OBJECT_VARS);
 			ASSERT_LOG(entry != NULL, "CANNOT FIND VARS ENTRY IN OBJECT");
-			entry->type_definition_holder = game_logic::create_formula_callable_definition(&var_str[0], &var_str[0] + var_str.size());
+			game_logic::formula_callable_definition_ptr def = game_logic::create_formula_callable_definition(&var_str[0], &var_str[0] + var_str.size());
+			def->set_strict(is_strict_);
+			entry->type_definition_holder = def;
 			entry->type_definition = entry->type_definition_holder.get();
 		}
 	}
@@ -873,7 +876,9 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 		if(!var_str.empty()) {
 			game_logic::formula_callable_definition::entry* entry = callable_definition_.get_entry(CUSTOM_OBJECT_TMP);
 			ASSERT_LOG(entry != NULL, "CANNOT FIND TMP ENTRY IN OBJECT");
-			entry->type_definition_holder = game_logic::create_formula_callable_definition(&var_str[0], &var_str[0] + var_str.size());
+			game_logic::formula_callable_definition_ptr def = game_logic::create_formula_callable_definition(&var_str[0], &var_str[0] + var_str.size());
+			def->set_strict(is_strict_);
+			entry->type_definition_holder = def;
 			entry->type_definition = entry->type_definition_holder.get();
 		}
 	}

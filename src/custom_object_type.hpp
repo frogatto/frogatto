@@ -218,6 +218,8 @@ public:
 
 	static void reload_file_paths();
 
+	bool is_strict() const { return is_strict_; }
+
 private:
 	//recreate an object type, optionally given the old version to base
 	//things off where possible
@@ -336,6 +338,9 @@ private:
 #ifdef USE_BOX2D
 	box2d::body_ptr body_;
 #endif
+
+	//does this object use strict checking?
+	bool is_strict_;
 };
 
 #endif
