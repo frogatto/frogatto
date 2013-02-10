@@ -31,7 +31,8 @@ image_widget::image_widget(graphics::texture tex, int w, int h)
 	init(w, h);
 }
 
-image_widget::image_widget(const variant& v, game_logic::formula_callable* e) : alpha_(256)
+image_widget::image_widget(const variant& v, game_logic::formula_callable* e) 
+	: widget(v, e)
 {
 	set_environment();
 	if(v.has_key("area")) {
