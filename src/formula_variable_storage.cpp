@@ -1,3 +1,4 @@
+#include "asserts.hpp"
 #include "foreach.hpp"
 #include "formula_variable_storage.hpp"
 #include "variant_utils.hpp"
@@ -5,10 +6,10 @@
 namespace game_logic
 {
 
-formula_variable_storage::formula_variable_storage()
+formula_variable_storage::formula_variable_storage() : disallow_new_keys_(false)
 {}
 
-formula_variable_storage::formula_variable_storage(const std::map<std::string, variant>& m)
+formula_variable_storage::formula_variable_storage(const std::map<std::string, variant>& m) : disallow_new_keys_(false)
 {
 	for(std::map<std::string, variant>::const_iterator i = m.begin(); i != m.end(); ++i) {
 		add(i->first, i->second);
@@ -63,6 +64,7 @@ void formula_variable_storage::add(const std::string& key, const variant& value)
 	if(i != strings_to_values_.end()) {
 		values_[i->second] = value;
 	} else {
+		ASSERT_LOG(!disallow_new_keys_, "UNKNOWN KEY SET IN VAR STORAGE: " << key);
 		strings_to_values_[key] = values_.size();
 		values_.push_back(value);
 	}
@@ -81,6 +83,7 @@ variant formula_variable_storage::get_value(const std::string& key) const
 	if(i != strings_to_values_.end()) {
 		return values_[i->second];
 	} else {
+		ASSERT_LOG(!disallow_new_keys_, "UNKNOWN KEY ACCESSED IN VAR STORAGE: " << key);
 		return variant();
 	}
 }

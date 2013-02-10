@@ -28,8 +28,15 @@ const char* FontFile = "UbuntuMono-R";
 typedef std::map<std::pair<std::string, int>, TTF_Font*> font_map;
 font_map font_table;
 
-const std::string& get_font_path(const std::string& name) {
+std::map<std::string,std::string>& get_font_list()
+{
 	static std::map<std::string,std::string> res;
+	return res;
+}
+
+const std::string& get_font_path(const std::string& name) 
+{
+	std::map<std::string,std::string>& res = get_font_list();
 	if(res.empty()) {
 		module::get_unique_filenames_under_dir("data/fonts/", &res);
 	}
@@ -212,6 +219,11 @@ int char_height(int size, const std::string& fn)
 	graphics::texture t(render_text("A", color, size, fn));
 	height = t.height();
 	return height;
+}
+
+void reload_font_paths()
+{
+	get_font_list().clear();
 }
 
 }

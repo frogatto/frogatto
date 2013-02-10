@@ -127,7 +127,7 @@ namespace gui
 		set_dim(width + left_arrow_->width() + right_arrow_->width() + 10, height);
 		for(int n = 0; n != list_.size(); ++n) {
 			widget_ptr& w = list_[n].second;
-			w->set_loc((width - w->width())/2 + left_arrow_->width()+5, (height - w->height())/2);
+			w->set_loc((width - w->width())/2 + left_arrow_->width()+5, abs(height - w->height())/2);
 		}
 	}
 
@@ -246,6 +246,7 @@ namespace gui
 		if(get_environment()) {
 			game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
 			callable->add("selection", variant(s));
+			callable->add("selected", variant(current_selection_));
 			variant v(callable);
 			variant value = change_handler_->execute(*callable);
 			get_environment()->execute_command(value);
@@ -259,6 +260,7 @@ namespace gui
 		if(get_environment()) {
 			game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
 			callable->add("selection", variant(s));
+			callable->add("selected", variant(current_selection_));
 			variant v(callable);
 			variant value = change_handler_->execute(*callable);
 			get_environment()->execute_command(value);

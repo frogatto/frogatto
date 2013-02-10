@@ -27,6 +27,8 @@ public:
 
 	std::vector<std::string> keys() const;
 
+	void disallow_new_keys(bool value=true) { disallow_new_keys_ = value; }
+
 private:
 	variant get_value(const std::string& key) const;
 	variant get_value_by_slot(int slot) const;
@@ -37,6 +39,8 @@ private:
 	
 	std::vector<variant> values_;
 	std::map<std::string, int> strings_to_values_;
+
+	bool disallow_new_keys_;
 };
 
 typedef boost::intrusive_ptr<formula_variable_storage> formula_variable_storage_ptr;

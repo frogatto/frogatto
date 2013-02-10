@@ -128,7 +128,7 @@ void level::set_as_current_level()
 	static const int starting_virtual_x_resolution = preferences::virtual_screen_width();
 	static const int starting_virtual_y_resolution = preferences::virtual_screen_height();
 
-	if(!set_screen_resolution_on_entry_ && !editor_ && !editor_resolution_manager::is_active() && starting_x_resolution == starting_virtual_x_resolution) {
+	if(set_screen_resolution_on_entry_ && !editor_ && !editor_resolution_manager::is_active() && starting_x_resolution == starting_virtual_x_resolution) {
 		if(!x_resolution_) {
 			x_resolution_ = starting_x_resolution;
 		}
@@ -3731,6 +3731,8 @@ variant level::get_value(const std::string& key) const
 		return variant(editor_);
 	} else if(key == "zoom") {
 		return variant(zoom_level_);
+	} else if(key == "module_args") {
+		return variant(module::get_module_args().get());
 #if defined(USE_BOX2D)
 	} else if(key == "world") {
 		return variant(box2d::world::our_world_ptr().get());
@@ -4554,6 +4556,31 @@ bool level::gui_event(const SDL_Event &event)
 		}
 	}
 	return false;
+}
+
+void level::launch_new_module(const std::string& module_id, game_logic::const_formula_callable_ptr callable)
+{
+	module::reload(module_id);
+	reload_level_paths();
+	custom_object_type::reload_file_paths();
+	font::reload_font_paths();
+
+	const std::vector<entity_ptr> players = this->players();
+	foreach(entity_ptr e, players) {
+		this->remove_character(e);
+	}
+
+	if(callable) {
+		module::set_module_args(callable);
+	}
+
+	level::portal p;
+	p.level_dest = "titlescreen.cfg";
+	p.dest_starting_pos = true;
+	p.automatic = true;
+	p.transition = "instant";
+	p.saved_game = true; //makes it use the player in there.
+	force_enter_portal(p);
 }
 
 std::pair<std::vector<level_tile>::const_iterator, std::vector<level_tile>::const_iterator> level::tiles_at_loc(int x, int y) const

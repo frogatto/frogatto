@@ -2,6 +2,8 @@
 #include "targetver.h"
 #endif
 
+#include <map>
+#include <set>
 #include <boost/asio.hpp>
 #include <json_spirit.h>
 
@@ -18,14 +20,31 @@ namespace game_server
 		public:
 			processing_exception(const std::string& arg): runtime_error(arg) {}
 		};
+
+		struct worker_comparator 
+		{
+			bool operator() (const boost::shared_ptr<worker>& lhs, const boost::shared_ptr<worker>& rhs) const
+			{
+				return lhs->server_load() < rhs->server_load();
+			}
+		};
+
+		typedef std::map<std::string, std::set<boost::shared_ptr<worker>, worker_comparator> > game_registry_map;
+		game_registry_map& game_registry()
+		{
+			static game_registry_map res;
+			return res;
+		}
 	}
 
 	worker::worker(int64_t polling_interval, 
 		game_server::shared_data& data, 
 		const std::string& addr, 
 		const std::string& port)
-		: running_(true), data_(data), polling_interval_(polling_interval),
-		server_address_(addr), server_port_(port)
+		: running_(true), data_(data),
+		polling_interval_(polling_interval),
+		server_address_(addr), server_port_(port),
+		server_load_(0.0), q_(message_queue_ptr(new message_queue))
 		{}
 
 	void worker::process_game(const json_spirit::mObject& obj)
@@ -92,25 +111,39 @@ namespace game_server
 						throw new processing_exception("Couldn't parse response as json: " + reply.body);
 					}
 					auto& obj = value.get_obj();
-					auto name_it = obj.find("name");
-					auto dname_it = obj.find("display_name");
-					auto minp_it = obj.find("min_players");
-					auto maxp_it = obj.find("max_players");
-					auto hasbots_it = obj.find("has_bots");
-					if(name_it == obj.end() 
-						|| dname_it == obj.end()
-						|| minp_it == obj.end()
-						|| maxp_it == obj.end()
-						|| hasbots_it == obj.end()) {
+					int field_counter = 0;
+					for(auto it : obj) {
+						if(it.first == "name") {
+							si_.name = it.second.get_str();
+							++field_counter;
+						} else if(it.first == "display_name") {
+							si_.display_name = it.second.get_str();
+							++field_counter;
+						} else if(it.first == "min_players") {
+							si_.min_players = it.second.get_int();
+							++field_counter;
+						} else if(it.first == "min_humans") {
+							si_.min_humans = it.second.get_int();
+							++field_counter;
+						} else if(it.first == "max_players") {
+							si_.max_players = it.second.get_int();
+							++field_counter;
+						} else if(it.first == "has_bots") {
+							si_.has_bots = it.second.get_bool();
+							++field_counter;
+						} else if(it.first == "display") {
+							si_.display = it.second.get_obj();
+							++field_counter;
+						} else {
+							si_.other[it.first] = it.second;
+						}
+					}
+
+					if(field_counter != 7) {
 						throw new processing_exception("Missing attribute in get_server_info reply.");
 					}
 
 					got_server_info = true;
-					si_.name = name_it->second.get_str();
-					si_.display_name = dname_it->second.get_str();
-					si_.min_players = minp_it->second.get_int();
-					si_.max_players = maxp_it->second.get_int();
-					si_.has_bots = hasbots_it->second.get_bool();
 					data_.add_server(si_);
 				}
 			} catch(std::exception& e) {
@@ -118,6 +151,10 @@ namespace game_server
 			}
 			boost::this_thread::sleep(boost::posix_time::milliseconds(polling_interval_));
 		}
+
+		// Register the game
+		game_registry()[si_.name].insert(boost::shared_ptr<worker>(this));
+
 		// Then do main processing
 		while(running_) {
 			try {
@@ -161,16 +198,52 @@ namespace game_server
 			} catch(processing_exception& e) {
 				std::cerr << "http client exception: " << e.what() << std::endl;
 			} catch(std::exception& e) {
-				//ASSERT_LOG(false, "exception: " << e.what());
 				std::cerr << "exception: " << e.what() << std::endl;
 			}
-			boost::this_thread::sleep(boost::posix_time::milliseconds(polling_interval_));
+			message msg;
+			if(q_->wait_and_pop(msg, polling_interval_)) {
+				http::client::reply reply;
+				http::client::request req;
+				req.body = msg.msg;
+				if(http::client::client(server_address_, server_port_, req, reply)) {
+					msg.reply->push(reply.body);
+				} else {
+					msg.reply->push("{\"type\":\"error\", \"description\":\"No response from game server.\"");
+				}
+			}
 		}
 	}
 
 	void worker::abort()
 	{
 		running_ = false;
+	}
+
+	worker& worker::get_server_from_game_type(const std::string& game_type)
+	{
+		auto gt = game_registry().find(game_type);
+		if(gt == game_registry().end()) {
+			throw new processing_exception("No server for game: " + game_type);
+		}
+		return *(*gt->second.begin());
+	}
+
+	void worker::get_server_info(json_spirit::mObject* obj)
+	{
+		for(auto game : game_registry()) {
+			const server_info& si = (*game.second.begin())->get_server_info();
+			json_spirit::mObject g_obj;
+			g_obj["display_name"] = si.display_name;
+			g_obj["min_players"] = int(si.min_players);
+			g_obj["min_humans"] = int(si.min_humans);
+			g_obj["max_players"] = int(si.max_players);
+			g_obj["has_bots"] = si.has_bots;
+			g_obj["display"] = si.display;
+			for(auto it : si.other) {
+				g_obj[it.first] = it.second;
+			}
+			(*obj)[game.first] = g_obj;
+		}
 	}
 }
 

@@ -31,7 +31,7 @@ void set_verbatim_string_expressions(bool verbatim);
 class formula_callable;
 class formula_expression;
 class function_symbol_table;
-typedef boost::shared_ptr<formula_expression> expression_ptr;
+typedef boost::intrusive_ptr<formula_expression> expression_ptr;
 
 //helper struct which contains info for a where expression.
 struct where_variables_info : public reference_counted_object {

@@ -5,12 +5,12 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <boost/algorithm/string.hpp>
 #include <boost/asio.hpp>
-#include <boost/bind.hpp>
-#include <boost/lexical_cast.hpp>
+#include <boost/lambda/lambda.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
-#include "json_spirit.h"
+#include <json_spirit.h>
 #if defined(USE_SQLITE)
 #include "sqlite3.h"
 #endif
@@ -23,19 +23,29 @@
 namespace 
 {
 	const int64_t default_polling_interval = 5000;
+	const std::string default_lobby_config_file = "lobby-config.cfg";
 }
 
 
 int main(int argc, char* argv[])
 {
 	std::vector<std::string> args;
+	std::string lobby_config_file = default_lobby_config_file;
 
 	// Push the command-line arguments into an array
 	for(int i = 1; i < argc; ++i) {
 		args.push_back(argv[i]);
 	}
 
-	std::ifstream is("lobby-config.cfg");
+	for(auto a : args) {
+		std::vector<std::string> seperated_args;
+		boost::split(seperated_args, a, boost::lambda::_1 == '=');
+		if(seperated_args[0] == "--config-file" || seperated_args[0] == "-n") {
+			lobby_config_file = seperated_args[1];
+		}
+	}
+
+	std::ifstream is(lobby_config_file);
 	json_spirit::mValue value;
 	json_spirit::read(is, value);
 	ASSERT_LOG(value.type() == json_spirit::obj_type, "lobby-config.cfg should be an object.");

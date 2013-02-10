@@ -13,6 +13,7 @@
 #include "editor_dialogs.hpp"
 #include "editor_module_properties_dialog.hpp"
 #include "filesystem.hpp"
+#include "font.hpp"
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "grid_widget.hpp"
@@ -212,6 +213,7 @@ const std::string editor_module_properties_dialog::on_exit() {
 	// Reload level paths
 	reload_level_paths();
 	custom_object_type::reload_file_paths();
+	font::reload_font_paths();
 	if(mod_.abbreviation_.empty() == false) {
 		return mod_.abbreviation_ + ":titlescreen.cfg";
 	}

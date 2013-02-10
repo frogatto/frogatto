@@ -753,6 +753,8 @@ void load_level_thread(const std::string& lvl, level** res) {
 bool level_runner::play_cycle()
 {
 	static settings_dialog settings_dialog;
+
+	const preferences::alt_frame_time_scope alt_frame_time_scoper(preferences::has_alt_frame_time && SDL_GetModState()&KMOD_ALT);
 	if(controls::first_invalid_cycle() >= 0) {
 		lvl_->replay_from_cycle(controls::first_invalid_cycle());
 		controls::mark_valid();
@@ -811,7 +813,7 @@ bool level_runner::play_cycle()
 
 	if(!is_multiplayer) {
 		const int ticks = SDL_GetTicks();
-		if(desired_end_time < ticks) {
+		if(desired_end_time < ticks || alt_frame_time_scoper.active()) {
 			const int new_desired_end_time = ticks + preferences::frame_time_millis();
 			pause_time_ += new_desired_end_time - desired_end_time;
 			desired_end_time = new_desired_end_time;
@@ -1635,6 +1637,9 @@ void level_runner::handle_pause_game_result(PAUSE_GAME_RESULT result)
 	} else if(result == PAUSE_GAME_GO_TO_TITLESCREEN) {
 		done = true;
 		original_level_cfg_ = "titlescreen.cfg";
+	} else if(result == PAUSE_GAME_GO_TO_LOBBY) {
+		done = true;
+		lvl_->launch_new_module("lobby");
 	}
 }
 

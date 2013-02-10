@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <string>
+#include <boost/algorithm/string.hpp>
 
 #include <stdio.h>
 
@@ -52,6 +53,7 @@ std::map<std::string, game_type> generate_game_types() {
 	foreach(const std::string& fname, files) {
 		if(fname.size() > 4 && std::string(fname.end()-4,fname.end()) == ".cfg") {
 			std::string type(fname.begin(), fname.end()-4);
+			boost::algorithm::to_lower(type);
 			result[type] = game_type(json::parse_from_file("data/tbs/" + fname));
 			std::cerr << "LOADED TBS GAME TYPE: " << type << "\n";
 		}
@@ -81,6 +83,13 @@ int generate_game_id() {
 }
 
 using namespace game_logic;
+
+std::string string_tolower(const std::string& s) 
+{
+	std::string res(s);
+	boost::algorithm::to_lower(res);
+	return res;
+}
 }
 
 game::error::error(const std::string& m) : msg(m)
@@ -118,7 +127,14 @@ boost::intrusive_ptr<game> game::create(const variant& v)
 		return NULL;
 	}
 
-	boost::intrusive_ptr<game> result(new game(all_types()[type_var.as_string()]));
+	std::string type = type_var.as_string();
+	boost::algorithm::to_lower(type);
+	std::map<std::string, game_type>::const_iterator type_itor = all_types().find(type);
+	if(type_itor == all_types().end()) {
+		return NULL;
+	}
+
+	boost::intrusive_ptr<game> result(new game(type_itor->second));
 	game_logic::map_formula_callable_ptr vars(new game_logic::map_formula_callable);
 	vars->add("msg", v);
 	result->handle_event("create", vars.get());
@@ -133,8 +149,8 @@ game::game(const game_type& type)
 }
 
 game::game(const variant& value)
-  : type_(all_types()[value["type"].as_string()]),
-    game_id_(generate_game_id()),
+  : type_(all_types()[string_tolower(value["type"].as_string())]),
+	game_id_(generate_game_id()),
     started_(value["started"].as_bool(false)),
 	state_(STATE_SETUP),
 	state_id_(0),

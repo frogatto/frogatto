@@ -30,13 +30,14 @@
 namespace game_logic {
 
 class formula_expression;
-typedef boost::shared_ptr<formula_expression> expression_ptr;
+typedef boost::intrusive_ptr<formula_expression> expression_ptr;
+typedef boost::intrusive_ptr<const formula_expression> const_expression_ptr;
 
 std::string pinpoint_location(variant v, std::string::const_iterator begin);
 std::string pinpoint_location(variant v, std::string::const_iterator begin,
                                          std::string::const_iterator end);
 
-class formula_expression {
+class formula_expression : public reference_counted_object {
 public:
 	explicit formula_expression(const char* name=NULL);
 	virtual ~formula_expression() {}
@@ -154,8 +155,8 @@ private:
 	int base_slot_;
 };
 
-typedef boost::shared_ptr<function_expression> function_expression_ptr;
-typedef boost::shared_ptr<formula_function_expression> formula_function_expression_ptr;
+typedef boost::intrusive_ptr<function_expression> function_expression_ptr;
+typedef boost::intrusive_ptr<formula_function_expression> formula_function_expression_ptr;
 
 class formula_function {
 	std::string name_;

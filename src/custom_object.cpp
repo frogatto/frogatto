@@ -120,6 +120,9 @@ custom_object::custom_object(variant node)
 	currently_handling_die_event_(0),
 	use_absolute_screen_coordinates_(node["use_absolute_screen_coordinates"].as_bool(type_->use_absolute_screen_coordinates()))
 {
+	vars_->disallow_new_keys(type_->is_strict());
+	tmp_vars_->disallow_new_keys(type_->is_strict());
+
 	get_all().insert(this);
 	get_all(base_type_->id()).insert(this);
 
@@ -365,15 +368,20 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	currently_handling_die_event_(0),
 	use_absolute_screen_coordinates_(type_->use_absolute_screen_coordinates())
 {
+	vars_->disallow_new_keys(type_->is_strict());
+	tmp_vars_->disallow_new_keys(type_->is_strict());
+
 	get_all().insert(this);
 	get_all(base_type_->id()).insert(this);
 
 #if defined(USE_GLES2)
 	if(type_->shader()) {
 		shader_.reset(new gles2::shader_program(*type_->shader()));
+		shader_->init(this);
 	}
 	for(size_t n = 0; n < type_->effects().size(); ++n) {
 		effects_.push_back(new gles2::shader_program(*type_->effects()[n]));
+		effects_[n]->init(this);
 	}
 #endif
 
@@ -471,15 +479,20 @@ custom_object::custom_object(const custom_object& o) :
 	currently_handling_die_event_(0),
 	use_absolute_screen_coordinates_(o.use_absolute_screen_coordinates_)
 {
+	vars_->disallow_new_keys(type_->is_strict());
+	tmp_vars_->disallow_new_keys(type_->is_strict());
+
 	get_all().insert(this);
 	get_all(base_type_->id()).insert(this);
 
 #if defined(USE_GLES2)
 	if(o.shader_) {
 		shader_.reset(new gles2::shader_program(*o.shader_));
+		shader_->init(this);
 	}
 	for(size_t n = 0; n < o.effects_.size(); ++n) {
 		effects_.push_back(new gles2::shader_program(*o.effects_[n]));
+		effects_[n]->init(this);
 	}
 #endif
 
@@ -964,6 +977,10 @@ void custom_object::draw(int xx, int yy) const
 
 	foreach(const entity_ptr& attached, attached_objects()) {
 		attached->draw(xx, yy);
+	}
+
+	foreach(const graphics::draw_primitive_ptr& p, draw_primitives_) {
+		p->draw();
 	}
 
 	draw_debug_rects();
@@ -2645,6 +2662,14 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_MOUSEOVER_DELAY: {
 		return variant(get_mouseover_delay());
 	}
+	case CUSTOM_OBJECT_DRAW_PRIMITIVES: {
+		std::vector<variant> v;
+		foreach(boost::intrusive_ptr<graphics::draw_primitive> p, draw_primitives_) {
+			v.push_back(variant(p.get()));
+		}
+
+		return variant(&v);
+	}
 
 	case CUSTOM_OBJECT_CTRL_UP:
 	case CUSTOM_OBJECT_CTRL_DOWN:
@@ -2695,14 +2720,16 @@ variant custom_object::get_value(const std::string& key) const
 		}
 	}
 
-	variant var_result = tmp_vars_->query_value(key);
-	if(!var_result.is_null()) {
-		return var_result;
-	}
+	if(!type_->is_strict()) {
+		variant var_result = tmp_vars_->query_value(key);
+		if(!var_result.is_null()) {
+			return var_result;
+		}
 
-	var_result = vars_->query_value(key);
-	if(!var_result.is_null()) {
-		return var_result;
+		var_result = vars_->query_value(key);
+		if(!var_result.is_null()) {
+			return var_result;
+		}
 	}
 
 	std::map<std::string, variant>::const_iterator i = type_->variables().find(key);
@@ -2724,6 +2751,8 @@ variant custom_object::get_value(const std::string& key) const
 			return backup_callable_stack_.top()->query_value(key);
 		}
 	}
+
+	ASSERT_LOG(!type_->is_strict(), "ILLEGAL OBJECT ACCESS WITH STRICT CHECKING IN " << debug_description() << ": " << key);
 
 	return variant();
 }
@@ -3004,6 +3033,9 @@ void custom_object::set_value(const std::string& key, const variant& value)
 			vars_->add(*old_vars);
 			tmp_vars_->add(*old_tmp_vars_);
 
+			vars_->disallow_new_keys(type_->is_strict());
+			tmp_vars_->disallow_new_keys(type_->is_strict());
+
 			//set the animation to the default animation for the new type.
 			set_frame(type_->default_frame().id());
 			//std::cerr << "SET TYPE WHEN CHANGING TO '" << type_->id() << "'\n";
@@ -3020,8 +3052,10 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		body_.reset(new box2d::body(value));
 		body_->finish_loading(this);
 #endif
-	} else {
+	} else if(!type_->is_strict()) {
 		vars_->add(key, value);
+	} else {
+		ASSERT_LOG(false, "ILLEGAL OBJECT ACCESS WITH STRICT CHECKING IN " << debug_description() << ": " << key);
 	}
 }
 
@@ -3042,6 +3076,9 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 
 			vars_->add(*old_vars);
 			tmp_vars_->add(*old_tmp_vars_);
+
+			vars_->disallow_new_keys(type_->is_strict());
+			tmp_vars_->disallow_new_keys(type_->is_strict());
 
 			//set the animation to the default animation for the new type.
 			set_frame(type_->default_frame().id());
@@ -3755,6 +3792,20 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 
 		v->swap(draw_order);
 
+		break;
+	}
+
+	case CUSTOM_OBJECT_DRAW_PRIMITIVES: {
+		draw_primitives_.clear();
+		for(int n = 0; n != value.num_elements(); ++n) {
+			if(value[n].is_callable()) {
+				boost::intrusive_ptr<graphics::draw_primitive> obj(value[n].try_convert<graphics::draw_primitive>());
+				ASSERT_LOG(obj.get() != NULL, "BAD OBJECT PASSED WHEN SETTING draw_primitives");
+				draw_primitives_.push_back(obj);
+			} else if(!value[n].is_null()) {
+				draw_primitives_.push_back(graphics::draw_primitive::create(value[n]));
+			}
+		}
 		break;
 	}
 
@@ -4749,6 +4800,9 @@ void custom_object::update_type(const_custom_object_type_ptr old_type,
 			tmp_vars_->mutate_value(key, old_value);
 		}
 	}
+
+	vars_->disallow_new_keys(type_->is_strict());
+	tmp_vars_->disallow_new_keys(type_->is_strict());
 
 	frame_ = &type_->get_frame(frame_name_);
 
