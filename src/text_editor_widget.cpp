@@ -867,11 +867,17 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 	}
 	case SDLK_HOME:
 		record_op();
+#ifdef __APPLE__
+		cursor_.row = 0;
+#endif
 		cursor_.col = 0;
 		on_move_cursor();
 		break;
 	case SDLK_END:
 		record_op();
+#ifdef __APPLE__
+		cursor_.row = text_.size()-1;
+#endif
 		cursor_.col = text_[cursor_.row].size();
 		on_move_cursor();
 		break;
