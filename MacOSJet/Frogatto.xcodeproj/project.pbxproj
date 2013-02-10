@@ -196,6 +196,7 @@
 		C026F59B16C23629000482A1 /* b2d_ffl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C026F59A16C23629000482A1 /* b2d_ffl.cpp */; };
 		C026F59D16C23649000482A1 /* rich_text_label.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C026F59C16C23649000482A1 /* rich_text_label.cpp */; };
 		C026F5A116C23963000482A1 /* selector_widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C026F59F16C23963000482A1 /* selector_widget.cpp */; };
+		C026F5A416C74B1E000482A1 /* draw_primitive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C026F5A216C74B1E000482A1 /* draw_primitive.cpp */; };
 		C089D452162BDF7B009D2878 /* master-config.cfg in Resources */ = {isa = PBXBuildFile; fileRef = C089D451162BDF7B009D2878 /* master-config.cfg */; };
 		C0B87BD4166725A700D66B15 /* formula_object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0B87BD21667256F00D66B15 /* formula_object.cpp */; };
 		C0DDFDC6163F7FF800F727DD /* sys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0406533163F790000F84F94 /* sys.cpp */; };
@@ -623,6 +624,8 @@
 		C026F59E16C23650000482A1 /* rich_text_label.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = rich_text_label.hpp; sourceTree = "<group>"; };
 		C026F59F16C23963000482A1 /* selector_widget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = selector_widget.cpp; sourceTree = "<group>"; };
 		C026F5A016C23963000482A1 /* selector_widget.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = selector_widget.hpp; sourceTree = "<group>"; };
+		C026F5A216C74B1E000482A1 /* draw_primitive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = draw_primitive.cpp; sourceTree = "<group>"; };
+		C026F5A316C74B1E000482A1 /* draw_primitive.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = draw_primitive.hpp; sourceTree = "<group>"; };
 		C0406533163F790000F84F94 /* sys.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sys.cpp; sourceTree = "<group>"; };
 		C0406534163F790000F84F94 /* sys.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sys.hpp; sourceTree = "<group>"; };
 		C089D451162BDF7B009D2878 /* master-config.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "master-config.cfg"; path = "../master-config.cfg"; sourceTree = "<group>"; };
@@ -823,6 +826,8 @@
 				C010C607160AFD4C006E7D90 /* drag_widget.hpp */,
 				C010C608160AFD4C006E7D90 /* draw_number.cpp */,
 				C010C609160AFD4C006E7D90 /* draw_number.hpp */,
+				C026F5A216C74B1E000482A1 /* draw_primitive.cpp */,
+				C026F5A316C74B1E000482A1 /* draw_primitive.hpp */,
 				C010C60A160AFD4C006E7D90 /* draw_scene.cpp */,
 				C010C60B160AFD4C006E7D90 /* draw_scene.hpp */,
 				C010C60C160AFD4C006E7D90 /* draw_tile.cpp */,
@@ -1379,6 +1384,7 @@
 				C026F59B16C23629000482A1 /* b2d_ffl.cpp in Sources */,
 				C026F59D16C23649000482A1 /* rich_text_label.cpp in Sources */,
 				C026F5A116C23963000482A1 /* selector_widget.cpp in Sources */,
+				C026F5A416C74B1E000482A1 /* draw_primitive.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
