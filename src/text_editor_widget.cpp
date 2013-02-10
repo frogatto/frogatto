@@ -631,6 +631,24 @@ bool text_editor_widget::handle_mouse_motion(const SDL_MouseMotionEvent& event)
 			cursor_.col = pos.second;
 			on_move_cursor(true /*don't check for shift, assume it is*/);
 		}
+
+		if(mousey >= y() + height() && scroll_pos_ < int(text_.size())-2) {
+			++scroll_pos_;
+			int end = scroll_pos_ + nrows_ - 1;
+			if(end >= text_.size()) {
+				end = text_.size() - 1;
+			}
+
+			cursor_ = Loc(end, text_[end].size());
+			on_move_cursor(true /*don't check for shift, assume it is*/);
+			refresh_scrollbar();
+		} else if(mousey <= y() && scroll_pos_ > 0) {
+			--scroll_pos_;
+			cursor_ = Loc(scroll_pos_, 0);
+			on_move_cursor(true /*don't check for shift, assume it is*/);
+
+			refresh_scrollbar();
+		}
 	}
 
 	return false;
@@ -640,6 +658,19 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 {
 	if(!has_focus_) {
 		return false;
+	}
+
+	if(event.keysym.sym == SDLK_a && (event.keysym.mod&KMOD_CTRL)) {
+		record_op();
+		cursor_.row = text_.size()-1;
+		cursor_.col = text_[cursor_.row].size();
+		on_move_cursor();
+		select_ = Loc(0, 0);
+		if(select_ != cursor_) {
+			//a mouse-based copy for X-style copy/paste
+			handle_copy(true);
+		}
+		return true;
 	}
 
 	if(event.keysym.sym == SDLK_z && (event.keysym.mod&KMOD_CTRL)) {
