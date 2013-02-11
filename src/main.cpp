@@ -4,6 +4,9 @@
 #include <cmath>
 #include <iostream>
 #include <cstdio>
+#if !defined(_MSC_VER)
+#include <sys/wait.h>
+#endif
 
 #include <boost/bind.hpp>
 #include <boost/lexical_cast.hpp>
@@ -34,6 +37,7 @@
 #include "graphical_font.hpp"
 #include "gui_section.hpp"
 #include "i18n.hpp"
+#include "ipc.hpp"
 #include "iphone_device_info.h"
 #include "of_bridge.h"
 #include "joystick.hpp"
@@ -167,6 +171,91 @@ void print_help(const std::string& argv0)
 
 }
 
+#if defined(UTILITY_IN_PROC)
+boost::shared_ptr<char> child_args;
+
+#if defined(_MSC_VER)
+const std::string shared_sem_name = "Local\anura_local_process_semaphore";
+HANDLE child_process;
+HANDLE child_thread;
+HANDLE child_stderr;
+HANDLE child_stdout;
+#else
+const std::string shared_sem_name = "/anura_local_process_semaphore";
+pid_t child_pid;
+#endif
+
+bool create_utility_process(const std::string& app, const std::vector<std::string>& argv)
+{
+#if defined(_MSC_VER)
+	// windows version
+	std::string command_line_params;
+
+	for(size_t n = 0; n != argv.size(); ++n) {
+		command_line_params += argv[n] + " ";
+	}
+	child_args = boost::shared_ptr<char>(new char[command_line_params.size()+1]);
+	memset(child_args.get(), 0, command_line_params.size()+1);
+	memcpy(child_args.get(), &command_line_params[0], command_line_params.size());
+
+	STARTUPINFOA siStartupInfo; 
+	PROCESS_INFORMATION piProcessInfo;
+	memset(&siStartupInfo, 0, sizeof(siStartupInfo));
+	memset(&piProcessInfo, 0, sizeof(piProcessInfo));
+	siStartupInfo.cb = sizeof(siStartupInfo);
+	child_stderr = siStartupInfo.hStdError = CreateFileA("stderr_server.txt", GENERIC_READ|GENERIC_WRITE, FILE_SHARE_READ|FILE_SHARE_WRITE, NULL, TRUNCATE_EXISTING, FILE_ATTRIBUTE_NORMAL|FILE_FLAG_NO_BUFFERING, NULL);
+	ASSERT_LOG(siStartupInfo.hStdError != INVALID_HANDLE_VALUE, 
+		"Unable to open stderr_server.txt for child process.");
+	child_stdout = siStartupInfo.hStdOutput = CreateFileA("stdout_server.txt", GENERIC_READ|GENERIC_WRITE, FILE_SHARE_READ|FILE_SHARE_WRITE, NULL, TRUNCATE_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	ASSERT_LOG(siStartupInfo.hStdOutput != INVALID_HANDLE_VALUE, 
+		"Unable to open stderr_server.txt for child process.");
+	siStartupInfo.dwFlags |= STARTF_USESTDHANDLES;
+	std::cerr << "CREATE CHILD PROCESS: " << app << std::endl;
+	ASSERT_LOG(CreateProcessA(app.c_str(), child_args.get(), 0, 0, true, CREATE_DEFAULT_ERROR_MODE, 0, 0, &siStartupInfo, &piProcessInfo),
+		"Unable to create child process for utility.");
+	child_process = piProcessInfo.hProcess;
+	child_thread = piProcessInfo.hThread;
+#else
+	// everyone else version using fork()
+	//...
+	child_pid = fork();
+	if(child_pid == 0) {
+		FILE* fout = std::freopen("stdout_server.txt","w", stdout);
+		FILE* ferr = std::freopen("stderr_server.txt","w", stderr);
+		std::cerr.sync_with_stdio(true);
+	}
+	ASSERT_LOG(child_pid >= 0, "Unable to fork process: " << errno);
+#endif
+	// Create a semaphore to signal termination.
+	ASSERT_LOG(ipc::semaphore::create(shared_sem_name, 0), 
+		"Unable to create shared semaphore");
+#if defined(_MSC_VER)
+	return false;
+#else
+	return child_pid == 0;
+#endif
+}
+
+void terminate_utility_process()
+{
+	ipc::semaphore::post();
+#if defined(_MSC_VER)
+	WaitForSingleObject(child_process, INFINITE);
+	CloseHandle(child_process);
+	CloseHandle(child_thread);
+	CloseHandle(child_stderr);
+	CloseHandle(child_stdout);
+#else
+	// .. close child or whatever.
+	int status;
+	if(waitpid(child_pid, &status, 0) != child_pid) {
+		std::cerr << "Error waiting for child process to finish: " << errno << std::endl;
+	}
+#endif
+}
+#endif
+
+
 #if defined(__ANDROID__)
 #include <jni.h>
 #include <android/asset_manager_jni.h>
@@ -241,6 +330,11 @@ extern "C" int main(int argcount, char** argvec)
 	std::string utility_program;
 	std::vector<std::string> util_args;
 	std::string server = "wesnoth.org";
+#if defined(UTILITY_IN_PROC)
+	bool create_utility_in_new_process = false;
+	std::string utility_name;
+#endif
+	bool is_child_utility = false;
 
 	const char* profile_output = NULL;
 	std::string profile_output_buf;
@@ -256,13 +350,37 @@ extern "C" int main(int argcount, char** argvec)
 
 	std::vector<std::string> argv;
 	for(int n = 1; n < argcount; ++n) {
+#if defined(UTILITY_IN_PROC)
+		std::string sarg(argvec[n]);
+		if(sarg.compare(0, 15, "--utility-proc=") == 0) {
+			create_utility_in_new_process = true;
+			utility_name = "--utility=" + sarg.substr(15);
+		} else {
+			argv.push_back(argvec[n]);
+		}
+#else
 		argv.push_back(argvec[n]);
+#endif
         
         if(argv.size() >= 2 && argv[argv.size()-2] == "-NSDocumentRevisionsDebugMode" && argv.back() == "YES") {
             //XCode passes these arguments by default when debugging -- make sure they are ignored.
             argv.resize(argv.size()-2);
         }
 	}
+
+#if defined(UTILITY_IN_PROC)
+	if(create_utility_in_new_process) {
+		argv.push_back(utility_name);
+#if defined(_MSC_VER)
+		is_child_utility = create_utility_process(argvec[0], argv);
+#else 
+		is_child_utility = create_utility_process(argvec[0], argv);
+#endif
+		if(!is_child_utility) {
+			argv.pop_back();
+		}
+	}
+#endif
 
 	if(sys::file_exists("./master-config.cfg")) {
 		std::cerr << "LOADING CONFIGURATION FROM master-config.cfg" << std::endl;
@@ -334,6 +452,7 @@ extern "C" int main(int argcount, char** argvec)
 			profile_output_buf = arg_value;
 			profile_output = profile_output_buf.c_str();
 		} else if(arg_name == "--utility") {
+			is_child_utility = true;
 			utility_program = arg_value;
 			for(++n; n < argc; ++n) {
 				const std::string arg(argv[n]);
@@ -405,7 +524,14 @@ extern "C" int main(int argcount, char** argvec)
 
 	std::cerr << "\n";
 
-	if(utility_program.empty() == false && test::utility_needs_video(utility_program) == false) {
+	if(utility_program.empty() == false 
+		&& test::utility_needs_video(utility_program) == false 
+		&& is_child_utility) {
+#if defined(UTILITY_IN_PROC)
+		ASSERT_LOG(ipc::semaphore::create(shared_sem_name, 1) != false, 
+			"Unable to create shared semaphore: " << errno);
+		std::cerr.sync_with_stdio(true);
+#endif
 		test::run_utility(utility_program, util_args);
 		return 0;
 	}
@@ -854,6 +980,10 @@ extern "C" int main(int argcount, char** argvec)
 	std::cerr << SDL_GetError() << "\n";
 #if !defined(TARGET_OS_HARMATTAN) && !defined(TARGET_TEGRA) && !defined(TARGET_BLACKBERRY) && !defined(__ANDROID__) && !defined(USE_GLES2)
 	std::cerr << gluErrorString(glGetError()) << "\n";
+#endif
+
+#if defined(UTILITY_IN_PROC)
+	terminate_utility_process();
 #endif
 
 	return 0;

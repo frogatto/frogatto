@@ -8,6 +8,7 @@
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "formula_object.hpp"
+#include "ipc.hpp"
 #include "json_parser.hpp"
 #include "module.hpp"
 #include "string_utils.hpp"
@@ -233,7 +234,15 @@ COMMAND_LINE_UTILITY(tbs_server) {
 		}
 	
 		try {
+#if defined(UTILITY_IN_PROC)
+			while(!ipc::semaphore::trywait()) {
+				io_service.poll();
+				io_service.reset();
+			}
+			return;
+#else
 			io_service.run();
+#endif
 		} catch(code_modified_exception&) {
 			s.clear_games();
 		}

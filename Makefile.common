@@ -89,6 +89,7 @@ objects = \
 	src/i18n.o \
 	src/image_widget.o \
 	src/input.o \
+	src/ipc.o \
 	src/iphone_controls.o \
 	src/joystick.o \
 	src/json_parser.o \
