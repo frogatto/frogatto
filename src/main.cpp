@@ -217,7 +217,7 @@ bool create_utility_process(const std::string& app, const std::vector<std::strin
 	siStartupInfo.dwFlags = STARTF_USESTDHANDLES;
 	std::cerr << "CREATE CHILD PROCESS: " << app << std::endl;
 	ASSERT_LOG(CreateProcessA(app.c_str(), child_args.get(), NULL, NULL, true, CREATE_DEFAULT_ERROR_MODE, 0, 0, &siStartupInfo, &piProcessInfo),
-		"Unable to create child process for utility.");
+		"Unable to create child process for utility: " << GetLastError());
 	child_process = piProcessInfo.hProcess;
 	child_thread = piProcessInfo.hThread;
 #else

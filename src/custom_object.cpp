@@ -4878,7 +4878,6 @@ void custom_object::add_to_level()
 	entity::add_to_level();
 	standing_on_.reset();
 #if defined(USE_BOX2D)
-	std::cerr << "add_tolevel(): " << label() << std::endl;
 	if(body_) {
 		body_->set_active();
 	}

@@ -15,7 +15,7 @@ class instrument
 public:
 	explicit instrument(const char* id) {}
 	~instrument() {}
-}
+};
 
 //should be called every cycle while the profiler is running.
 void pump();
