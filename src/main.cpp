@@ -200,18 +200,23 @@ bool create_utility_process(const std::string& app, const std::vector<std::strin
 
 	STARTUPINFOA siStartupInfo; 
 	PROCESS_INFORMATION piProcessInfo;
+	SECURITY_ATTRIBUTES saFileSecurityAttributes;
 	memset(&siStartupInfo, 0, sizeof(siStartupInfo));
 	memset(&piProcessInfo, 0, sizeof(piProcessInfo));
 	siStartupInfo.cb = sizeof(siStartupInfo);
-	child_stderr = siStartupInfo.hStdError = CreateFileA("stderr_server.txt", GENERIC_READ|GENERIC_WRITE, FILE_SHARE_READ|FILE_SHARE_WRITE, NULL, TRUNCATE_EXISTING, FILE_ATTRIBUTE_NORMAL|FILE_FLAG_NO_BUFFERING, NULL);
+	saFileSecurityAttributes.nLength = sizeof(saFileSecurityAttributes);
+	saFileSecurityAttributes.lpSecurityDescriptor = NULL;
+	saFileSecurityAttributes.bInheritHandle = true;
+	child_stderr = siStartupInfo.hStdError = CreateFileA("stderr_server.txt", GENERIC_WRITE, FILE_SHARE_READ|FILE_SHARE_WRITE, &saFileSecurityAttributes, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	ASSERT_LOG(siStartupInfo.hStdError != INVALID_HANDLE_VALUE, 
 		"Unable to open stderr_server.txt for child process.");
-	child_stdout = siStartupInfo.hStdOutput = CreateFileA("stdout_server.txt", GENERIC_READ|GENERIC_WRITE, FILE_SHARE_READ|FILE_SHARE_WRITE, NULL, TRUNCATE_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	child_stdout = siStartupInfo.hStdOutput = CreateFileA("stdout_server.txt", GENERIC_WRITE, FILE_SHARE_READ|FILE_SHARE_WRITE, &saFileSecurityAttributes, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	ASSERT_LOG(siStartupInfo.hStdOutput != INVALID_HANDLE_VALUE, 
-		"Unable to open stderr_server.txt for child process.");
-	siStartupInfo.dwFlags |= STARTF_USESTDHANDLES;
+		"Unable to open stdout_server.txt for child process.");
+	siStartupInfo.hStdInput = GetStdHandle(STD_INPUT_HANDLE);
+	siStartupInfo.dwFlags = STARTF_USESTDHANDLES;
 	std::cerr << "CREATE CHILD PROCESS: " << app << std::endl;
-	ASSERT_LOG(CreateProcessA(app.c_str(), child_args.get(), 0, 0, true, CREATE_DEFAULT_ERROR_MODE, 0, 0, &siStartupInfo, &piProcessInfo),
+	ASSERT_LOG(CreateProcessA(app.c_str(), child_args.get(), NULL, NULL, true, CREATE_DEFAULT_ERROR_MODE, 0, 0, &siStartupInfo, &piProcessInfo),
 		"Unable to create child process for utility.");
 	child_process = piProcessInfo.hProcess;
 	child_thread = piProcessInfo.hThread;
