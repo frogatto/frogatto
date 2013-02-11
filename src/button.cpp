@@ -94,7 +94,9 @@ void button::setup()
 void button::set_label(widget_ptr label)
 {
 	label_ = label;
-	set_dim(label_->width()+hpadding_*2,label_->height()+vpadding_*2);
+	if(width() == 0 && height() == 0) {
+		set_dim(label_->width()+hpadding_*2,label_->height()+vpadding_*2);
+	}
 }
 
 void button::handle_draw() const
