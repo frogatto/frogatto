@@ -32,7 +32,7 @@ grid::grid(int ncols)
 }
 
 grid::grid(const variant& v, game_logic::formula_callable* e)
-	: widget(v, e), scrollable_widget(v, e), row_height_(0), selected_row_(-1), 
+	: widget(v, e), scrollable_widget(v, e), row_height_(v["row_height"].as_int(0)), selected_row_(-1), 
 	allow_selection_(false), must_select_(false),
     swallow_clicks_(false), hpad_(0), show_background_(false),
 	max_height_(-1), allow_highlight_(true), set_h_(0), set_w_(0)
