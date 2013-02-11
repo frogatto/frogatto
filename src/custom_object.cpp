@@ -2218,7 +2218,6 @@ void custom_object::run_garbage_collection()
 
 void custom_object::being_removed()
 {
-	std::cerr << "BEING REMOVED: " << label() << std::endl;
 	handle_event(OBJECT_EVENT_BEING_REMOVED);
 #if defined(USE_BOX2D)
 	if(body_) {
@@ -2229,7 +2228,6 @@ void custom_object::being_removed()
 
 void custom_object::being_added()
 {
-	std::cerr << "BEING ADDED: " << label() << std::endl;
 #if defined(USE_BOX2D)
 	if(body_) {
 		body_->set_active();
