@@ -141,6 +141,8 @@ bool update_camera_position(const level& lvl, screen_position& pos, const entity
 		const int x_screen_pad = std::max<int>(0, screen_width - lvl.boundaries().w());
 
 		const int y_screen_pad = std::max<int>(0, screen_height - lvl.boundaries().h());
+		pos.x_border = x_screen_pad/2;
+		pos.y_border = y_screen_pad/2;
 
 		//find the boundary values for the camera position based on the size
 		//of the level. These boundaries keep the camera from ever going out
@@ -388,6 +390,18 @@ void render_scene(const level& lvl, screen_position& pos, const entity* focus, b
 			++i;
 		}
 	}
+	
+	//draw borders around the screen if the screen is bigger than the level.
+	if(pos.x_border > 0) {
+		graphics::draw_rect(rect(0, 0, pos.x_border, graphics::screen_height()), graphics::color(0,0,0,255));
+		graphics::draw_rect(rect(graphics::screen_width() - pos.x_border, 0, pos.x_border, graphics::screen_height()), graphics::color(0,0,0,255));
+	}
+
+	if(pos.y_border > 0) {
+		graphics::draw_rect(rect(pos.x_border, 0, graphics::screen_width() - pos.x_border*2, pos.y_border), graphics::color(0,0,0,255));
+		graphics::draw_rect(rect(pos.x_border, graphics::screen_height() - pos.y_border, graphics::screen_width() - pos.x_border*2, pos.y_border), graphics::color(0,0,0,255));
+	}
+
 
 #ifndef NO_EDITOR
 	debug_console::draw();
