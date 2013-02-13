@@ -102,11 +102,11 @@ void print_help(const std::string& argv0)
 //"      --bigscreen              FIXME\n" <<
 "      --config-path=PATH       sets the path to the user config dir\n" <<
 "      --fullscreen             starts in fullscreen mode\n" <<
-"      --height NUM             sets the game window height to which contents\n" <<
+"      --height[=]NUM           sets the game window height to which contents\n" <<
 "                                 are scaled\n" <<
 "      --host                   set the game server host address\n" <<
 "      --[no-]joystick          enables/disables joystick support\n" <<
-"      --level LEVEL_FILE       starts the game using the specified level file,\n" <<
+"      --level[=]LEVEL_FILE     starts the game using the specified level file,\n" <<
 "                                 relative to the level path\n" <<
 "      --level-path=PATH        sets the path to the game level files\n" <<
 "      --[no-]music             enables/disables game music\n" <<
@@ -129,7 +129,7 @@ void print_help(const std::string& argv0)
 "      --[no-]sound             enables/disables sound and music support\n" <<
 "      --widescreen             sets widescreen mode, increasing the game view\n" <<
 "                                 area for wide screen displays\n" <<
-"      --width NUM              sets the game window width to which contents are\n" <<
+"      --width[=]NUM            sets the game window width to which contents are\n" <<
 "                                 scaled\n" <<
 "      --windowed               starts in windowed mode\n" <<
 "      --wvga                   sets the display size to 800x480\n" <<
@@ -359,7 +359,7 @@ extern "C" int main(int argcount, char** argvec)
 		std::string sarg(argvec[n]);
 		if(sarg.compare(0, 15, "--utility-proc=") == 0) {
 			create_utility_in_new_process = true;
-			utility_name = "--utility=" + sarg.substr(15);
+			utility_name = "--utility-child=" + sarg.substr(15);
 		} else {
 			argv.push_back(argvec[n]);
 		}
@@ -377,13 +377,16 @@ extern "C" int main(int argcount, char** argvec)
 	if(create_utility_in_new_process) {
 		argv.push_back(utility_name);
 #if defined(_MSC_VER)
-		is_child_utility = create_utility_process(argvec[0], argv);
+		is_child_utility = create_utility_process("frogatto.exe" /*argvec[0]*/, argv);
 #else 
 		is_child_utility = create_utility_process(argvec[0], argv);
 #endif
 		if(!is_child_utility) {
 			argv.pop_back();
 		}
+#if defined(_MSC_VER)
+		atexit(terminate_utility_process);
+#endif
 	}
 #endif
 
@@ -450,14 +453,16 @@ extern "C" int main(int argcount, char** argvec)
 			arg_name = std::string(arg.begin(), equal);
 			arg_value = std::string(equal+1, arg.end());
 		}
-		
+		std::cerr << "ARGS: " << arg << std::endl;
 		if(arg_name == "--module") {
 			// ignore already processed.
 		} else if(arg_name == "--profile" || arg == "--profile") {
 			profile_output_buf = arg_value;
 			profile_output = profile_output_buf.c_str();
-		} else if(arg_name == "--utility") {
-			is_child_utility = true;
+		} else if(arg_name == "--utility" || arg_name == "--utility-child") {
+			if(arg_name == "--utility-child") {
+				is_child_utility = true;
+			}
 			utility_program = arg_value;
 			for(++n; n < argc; ++n) {
 				const std::string arg(argv[n]);
@@ -474,14 +479,24 @@ extern "C" int main(int argcount, char** argvec)
 			unit_tests_only = true;
 		} else if(arg == "--no-tests") {
 			skip_tests = true;
+		} else if(arg_name == "--width") {
+			std::string w(arg_value);
+			preferences::set_actual_screen_width(boost::lexical_cast<int>(w));
 		} else if(arg == "--width" && n+1 < argc) {
 			std::string w(argv[++n]);
 			preferences::set_actual_screen_width(boost::lexical_cast<int>(w));
+		} else if(arg_name == "--height") {
+			std::string h(arg_value);
+			preferences::set_actual_screen_height(boost::lexical_cast<int>(h));
 		} else if(arg == "--height" && n+1 < argc) {
 			std::string h(argv[++n]);
 			preferences::set_actual_screen_height(boost::lexical_cast<int>(h));
+		} else if(arg_name == "--level") {
+			override_level_cfg = arg_value;
 		} else if(arg == "--level" && n+1 < argc) {
 			override_level_cfg = argv[++n];
+		} else if(arg_name == "--host") {
+			server = arg_value;
 		} else if(arg == "--host" && n+1 < argc) {
 			server = argv[++n];
 		} else if(arg == "--compiled") {
@@ -530,12 +545,13 @@ extern "C" int main(int argcount, char** argvec)
 	std::cerr << "\n";
 
 	if(utility_program.empty() == false 
-		&& test::utility_needs_video(utility_program) == false 
-		&& is_child_utility) {
+		&& test::utility_needs_video(utility_program) == false) {
 #if defined(UTILITY_IN_PROC)
-		ASSERT_LOG(ipc::semaphore::create(shared_sem_name, 1) != false, 
-			"Unable to create shared semaphore: " << errno);
-		std::cerr.sync_with_stdio(true);
+		if(is_child_utility) {
+			ASSERT_LOG(ipc::semaphore::create(shared_sem_name, 1) != false, 
+				"Unable to create shared semaphore: " << errno);
+			std::cerr.sync_with_stdio(true);
+		}
 #endif
 		test::run_utility(utility_program, util_args);
 		return 0;
@@ -987,8 +1003,10 @@ extern "C" int main(int argcount, char** argvec)
 	std::cerr << gluErrorString(glGetError()) << "\n";
 #endif
 
-#if defined(UTILITY_IN_PROC)
-	terminate_utility_process();
+#if !defined(_MSC_VER) && defined(UTILITY_IN_PROC)
+	if(create_utility_in_new_process) {
+		terminate_utility_process();
+	}
 #endif
 
 	return 0;
