@@ -17,7 +17,7 @@ bot::bot(boost::asio::io_service& service, const std::string& host, const std::s
 {
 	std::cerr << "CREATE BOT\n";
 	timer_.expires_from_now(boost::posix_time::milliseconds(100));
-	timer_.async_wait(boost::bind(&bot::process, this));
+	timer_.async_wait(boost::bind(&bot::process, this, boost::asio::placeholders::error));
 }
 
 bot::~bot()
@@ -25,8 +25,12 @@ bot::~bot()
 	timer_.cancel();
 }
 
-void bot::process()
+void bot::process(const boost::system::error_code& error)
 {
+	if(error == boost::asio::error::operation_aborted) {
+		std::cerr << "tbs::bot::process cancelled" << std::endl;
+		return;
+	}
 	if(on_create_) {
 		execute_command(on_create_->execute(*this));
 		on_create_.reset();
@@ -53,7 +57,7 @@ void bot::process()
 	}
 
 	timer_.expires_from_now(boost::posix_time::milliseconds(100));
-	timer_.async_wait(boost::bind(&bot::process, this));
+	timer_.async_wait(boost::bind(&bot::process, this, boost::asio::placeholders::error));
 }
 
 void bot::handle_response(const std::string& type, game_logic::formula_callable_ptr callable)

@@ -20,6 +20,7 @@ class server
 {
 public:
 	explicit server(boost::asio::io_service& io_service);
+	virtual ~server();
 	 
 	void adopt_ajax_socket(socket_ptr socket, int session_id, const variant& msg);
 
@@ -57,7 +58,7 @@ private:
 
 	void disconnect(socket_ptr socket);
 
-	void heartbeat();
+	void heartbeat(const boost::system::error_code& error);
 
 	boost::asio::deadline_timer timer_;
 

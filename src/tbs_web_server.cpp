@@ -39,11 +39,12 @@ web_server::web_server(server& serv, boost::asio::io_service& io_service, int po
 {
 	web_server_instance = this;
 	timer_.expires_from_now(boost::posix_time::milliseconds(1000));
-	timer_.async_wait(boost::bind(&web_server::heartbeat, this));
+	timer_.async_wait(boost::bind(&web_server::heartbeat, this, boost::asio::placeholders::error));
 }
 
 web_server::~web_server()
 {
+	timer_.cancel();
 	web_server_instance = NULL;
 }
 
@@ -110,8 +111,12 @@ void web_server::set_debug_state(variant v)
 	debug_state_sockets.clear();
 }
 
-void web_server::heartbeat()
+void web_server::heartbeat(const boost::system::error_code& error)
 {
+	if(error == boost::asio::error::operation_aborted) {
+		std::cerr << "tbs_webserver::heartbeat cancelled" << std::endl;
+		return;
+	}
 	foreach(socket_ptr sock, debug_state_sockets) {
 		send_msg(sock, "text/json", "{ \"new_data\": false }", "");
 		fprintf(stderr, "send no new data\n");
@@ -119,7 +124,7 @@ void web_server::heartbeat()
 	}
 	debug_state_sockets.clear();
 	timer_.expires_from_now(boost::posix_time::milliseconds(1000));
-	timer_.async_wait(boost::bind(&web_server::heartbeat, this));
+	timer_.async_wait(boost::bind(&web_server::heartbeat, this, boost::asio::placeholders::error));
 }
 
 void web_server::handle_get(socket_ptr socket, 
@@ -235,11 +240,24 @@ COMMAND_LINE_UTILITY(tbs_server) {
 	
 		try {
 #if defined(UTILITY_IN_PROC)
-			while(!ipc::semaphore::trywait()) {
-				io_service.poll();
-				io_service.reset();
+			if(ipc::semaphore::in_use()) {
+				while(!ipc::semaphore::trywait()) {
+					io_service.reset();
+					io_service.poll();
+				}
+#if defined(_MSC_VER)
+				::ExitProcess(0);
+#else
+				return;
+#endif
+			} else {
+				//for(int i = 0; i < 10000000; ++i) {
+				//	io_service.reset();
+				//	io_service.poll();
+				//}
+				io_service.run();
 			}
-			return;
+			//exit(EXIT_SUCCESS);
 #else
 			io_service.run();
 #endif
