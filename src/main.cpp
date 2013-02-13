@@ -188,9 +188,15 @@ pid_t child_pid;
 bool create_utility_process(const std::string& app, const std::vector<std::string>& argv)
 {
 #if defined(_MSC_VER)
+	char app_np[MAX_PATH];
+	// Grab the full path name
+	DWORD chararacters_copied = GetModuleFileNameA(NULL, app_np,  MAX_PATH);
+	ASSERT_LOG(chararacters_copied > 0, "Failed to get module name: " << GetLastError());
+	std::string app_name_and_path(app_np, chararacters_copied);
+
 	// windows version
 	std::string command_line_params;
-
+	command_line_params += app_name_and_path + " ";
 	for(size_t n = 0; n != argv.size(); ++n) {
 		command_line_params += argv[n] + " ";
 	}
@@ -215,8 +221,8 @@ bool create_utility_process(const std::string& app, const std::vector<std::strin
 		"Unable to open stdout_server.txt for child process.");
 	siStartupInfo.hStdInput = GetStdHandle(STD_INPUT_HANDLE);
 	siStartupInfo.dwFlags = STARTF_USESTDHANDLES;
-	std::cerr << "CREATE CHILD PROCESS: " << app << std::endl;
-	ASSERT_LOG(CreateProcessA(app.c_str(), child_args.get(), NULL, NULL, true, CREATE_DEFAULT_ERROR_MODE, 0, 0, &siStartupInfo, &piProcessInfo),
+	std::cerr << "CREATE CHILD PROCESS: " << app_name_and_path << std::endl;
+	ASSERT_LOG(CreateProcessA(app_name_and_path.c_str(), child_args.get(), NULL, NULL, true, CREATE_DEFAULT_ERROR_MODE, 0, 0, &siStartupInfo, &piProcessInfo),
 		"Unable to create child process for utility: " << GetLastError());
 	child_process = piProcessInfo.hProcess;
 	child_thread = piProcessInfo.hThread;
@@ -377,7 +383,8 @@ extern "C" int main(int argcount, char** argvec)
 	if(create_utility_in_new_process) {
 		argv.push_back(utility_name);
 #if defined(_MSC_VER)
-		is_child_utility = create_utility_process("frogatto.exe" /*argvec[0]*/, argv);
+		// app name is ignored for windows, we get windows to tell us.
+		is_child_utility = create_utility_process("", argv);
 #else 
 		is_child_utility = create_utility_process(argvec[0], argv);
 #endif
