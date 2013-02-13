@@ -43,7 +43,8 @@ namespace
 
 	void process_start_game_message(const std::string& game_type, 
 		const json_spirit::mArray& players, 
-		int bots, 
+		size_t bots, 
+		const json_spirit::mArray& bot_type,
 		json_spirit::mObject& reply_object)
 	{
 		json_spirit::mObject m;
@@ -65,14 +66,20 @@ namespace
 		if(players.size() + bots > si.max_players) {
 			bots = si.max_players - players.size();
 		}
+		if(bots != bot_type.size()) {
+			reply_object["type"] = "error";
+			reply_object["description"] = "Not enough bot types specified.";
+			return;
+		}
 		json_spirit::mArray u_ary;
 		// {type: 'create_game', game_type: 'citadel', users: [{user: 'a', session_id: 1}, {user: 'b', bot: true, session_id: 2}]}
 		// Add Bots
 		u_ary.insert(u_ary.end(), players.begin(), players.end());
-		for(int n = 0; n < bots; ++n) {
+		for(size_t n = 0; n != bots; ++n) {
 			json_spirit::mObject b_obj;
 			b_obj["user"] = name::generate_bot_name();
 			b_obj["bot"] = true;
+			b_obj["bot_type"] = bot_type[n].get_str(); 
 			b_obj["session_id"] = game_server::shared_data::make_session_id();
 			u_ary.push_back(b_obj);
 		}
@@ -338,7 +345,8 @@ void request_handler::handle_post(const request& req, reply& rep)
 		std::string game_type = req_obj["game_type"].get_str();
 		json_spirit::mArray players = req_obj["players"].get_array();
 		int bots = req_obj["bots"].get_int();
-		process_start_game_message(game_type, players, bots, obj);
+		json_spirit::mArray bot_types = req_obj["bot_type"].get_array();
+		process_start_game_message(game_type, players, bots, bot_types, obj);
 	} else if(type == "quit") {
 		if(data_.sign_off(user, session_id)) {
 			obj["type"] = "bye";
