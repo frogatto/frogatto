@@ -14,6 +14,11 @@ namespace ipc
 {
 	namespace semaphore
 	{
+		bool in_use()
+		{
+			return shared_sem != NULL;
+		}
+
 		void post()
 		{
 #if defined(_MSC_VER)
