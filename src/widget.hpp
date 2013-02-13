@@ -136,10 +136,7 @@ private:
 class widget_sort_zorder
 {
 public:
-    bool operator()(const widget_ptr lhs, const widget_ptr rhs) const
-    {
-        return lhs->zorder() < rhs->zorder();
-    }
+    bool operator()(const widget_ptr lhs, const widget_ptr rhs) const;
 };
 
 }
