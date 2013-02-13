@@ -128,6 +128,7 @@ namespace preferences {
 		bool show_iphone_controls_ = false;
 		bool use_pretty_scaling_ = false;
 		bool fullscreen_ = false;
+		bool fullscreen_disabled_ = false;
 		bool resizable_ = false;
 		bool proportional_resize_ = false;
 		bool debug_ = true;
@@ -465,6 +466,11 @@ namespace preferences {
 	
 	bool fullscreen() {
 		return fullscreen_;
+	}
+
+	bool no_fullscreen_ever()
+	{
+		return fullscreen_disabled_;
 	}
 	
 	void set_fullscreen(bool value) {
@@ -809,6 +815,8 @@ namespace preferences {
 			no_sound_ = false;
 		} else if(s == "--music") {
 			no_music_ = false;
+		} else if(s == "--disable-fullscreen") {
+			fullscreen_disabled_ = true;
 		} else if(s == "--fullscreen") {
 			fullscreen_ = true;
 		} else if(s == "--windowed") {

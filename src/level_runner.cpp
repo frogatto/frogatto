@@ -1290,7 +1290,7 @@ bool level_runner::play_cycle()
 				} else if(key == SDLK_p && mod & KMOD_ALT) {
 					preferences::set_use_pretty_scaling(!preferences::use_pretty_scaling());
 					graphics::texture::clear_textures();
-				} else if(key == SDLK_f && mod & KMOD_CTRL) {
+				} else if(key == SDLK_f && mod & KMOD_CTRL && !preferences::no_fullscreen_ever()) {
 					preferences::set_fullscreen(!preferences::fullscreen());
 					graphics::set_video_mode(graphics::screen_width(), graphics::screen_height());
 				}
