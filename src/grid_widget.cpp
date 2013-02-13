@@ -25,7 +25,8 @@ grid::grid(int ncols)
     col_aligns_(ncols, grid::ALIGN_LEFT), row_height_(0),
 	selected_row_(-1), allow_selection_(false), must_select_(false),
     swallow_clicks_(false), hpad_(0), show_background_(false),
-	max_height_(-1), allow_highlight_(true), set_h_(0), set_w_(0)
+	max_height_(-1), allow_highlight_(true), set_h_(0), set_w_(0),
+	default_selection_(-1), draw_selection_highlight_(false)
 {
 	set_environment();
 	set_dim(0,0);
@@ -35,7 +36,9 @@ grid::grid(const variant& v, game_logic::formula_callable* e)
 	: widget(v, e), scrollable_widget(v, e), row_height_(v["row_height"].as_int(0)), selected_row_(-1), 
 	allow_selection_(false), must_select_(false),
     swallow_clicks_(false), hpad_(0), show_background_(false),
-	max_height_(-1), allow_highlight_(true), set_h_(0), set_w_(0)
+	max_height_(-1), allow_highlight_(true), set_h_(0), set_w_(0),
+	default_selection_(v["default_select"].as_int(-1)), 
+	draw_selection_highlight_(v["draw_selection_highlighted"].as_bool(false))
 {
 	ASSERT_LOG(get_environment() != 0, "You must specify a callable environment");
 	if(v.has_key("on_select")) {
@@ -148,6 +151,10 @@ grid::grid(const variant& v, game_logic::formula_callable* e)
 
 	if(v["scroll_to_bottom"].as_bool(false) && virtual_height() > height()) {
 		set_yscroll(virtual_height() - height());
+	}
+
+	if(on_select_ && default_selection_ >= 0) {
+		on_select_(default_selection_);
 	}
 }
 
@@ -349,10 +356,18 @@ void grid::handle_draw() const
 		graphics::draw_rect(rect,bg);
 	}
 
+	if(draw_selection_highlight_ && default_selection_ >= 0 && default_selection_ < nrows()) {
+		if(std::find(header_rows_.begin(), header_rows_.end(), default_selection_) == header_rows_.end()) {
+			SDL_Rect rect = {0,row_height_*default_selection_ - yscroll(),width(),row_height_};
+			const SDL_Color col = {0x00,0x00,0xff,0x00};
+			graphics::draw_rect(rect,col,128);
+		}
+	}
+
 	if(allow_highlight_ && selected_row_ >= 0 && selected_row_ < nrows()) {
 		if(std::find(header_rows_.begin(), header_rows_.end(), selected_row_) == header_rows_.end()) {
 			SDL_Rect rect = {0,row_height_*selected_row_ - yscroll(),width(),row_height_};
-			const SDL_Color col = {0xFF,0x00,0x00,0x00};
+			const SDL_Color col = {0xff,0x00,0x00,0x00};
 			graphics::draw_rect(rect,col,128);
 		}
 	}
@@ -416,10 +431,11 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 					std::cerr << "SELECT ROW: " << row_index << "\n";
 					if(row_index >= 0 && row_index < int(row_callbacks_.size()) &&
 					   row_callbacks_[row_index]) {
-					std::cerr << "ROW CB: " << row_index << "\n";
+						std::cerr << "ROW CB: " << row_index << "\n";
 						row_callbacks_[row_index]();
 					}
 
+					default_selection_ = row_index;
 					if(on_select_) {
 						on_select_(row_index);
 					}

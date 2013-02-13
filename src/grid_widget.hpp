@@ -93,6 +93,8 @@ private:
 	bool must_select_;
 	bool swallow_clicks_;
 	bool allow_highlight_;
+	int default_selection_;
+	bool draw_selection_highlight_;
 
 	// Explicitly set dimensions
 	int set_w_;
