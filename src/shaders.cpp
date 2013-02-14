@@ -1003,14 +1003,15 @@ void shader_program::configure(const variant& node, entity* obj)
 
 	vars_->read(node["vars"]);
 
-	//if(obj) {
+	if(obj) {
 		init(obj);
-	//}
+	}
 }
 
 void shader_program::init(entity* obj)
 {
 	ASSERT_LOG(name_.empty() != true, "Configure not run, before calling init");
+	std::cerr << "init() on shader '" << name_ << "', " << obj << std::endl;
 	game_logic::formula_callable* e = this;
 	parent_ = obj;
 	GLint current_program;

@@ -377,11 +377,10 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 #if defined(USE_GLES2)
 	if(type_->shader()) {
 		shader_.reset(new gles2::shader_program(*type_->shader()));
-		shader_->init(this);
 	}
+	effects_.clear();
 	for(size_t n = 0; n < type_->effects().size(); ++n) {
 		effects_.push_back(new gles2::shader_program(*type_->effects()[n]));
-		effects_[n]->init(this);
 	}
 #endif
 
@@ -4897,6 +4896,14 @@ void custom_object::add_to_level()
 #if defined(USE_BOX2D)
 	if(body_) {
 		body_->set_active();
+	}
+#endif
+#if defined(USE_GLES2)
+	if(shader_) {
+		shader_->init(this);
+	}
+	for(size_t n = 0; n < effects_.size(); ++n) {
+		effects_[n]->init(this);
 	}
 #endif
 }
