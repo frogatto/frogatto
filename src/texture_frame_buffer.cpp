@@ -170,4 +170,14 @@ void set_as_current_texture()
 	graphics::texture::set_current_texture(texture_id);
 }
 
+void rebuild()
+{
+	if(!supported) {
+		return;
+	}
+	glDeleteTextures(1, &texture_id);
+	glDeleteFramebuffers(1, &framebuffer_id);
+	init(preferences::actual_screen_width(), preferences::actual_screen_height());
+}
+
 } // namespace texture_frame_buffer

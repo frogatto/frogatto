@@ -10,6 +10,7 @@ void switch_texture();
 void set_as_current_texture();
 int width();
 int height();
+void rebuild();
 
 void set_render_to_texture();
 void set_render_to_screen();

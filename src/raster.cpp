@@ -18,6 +18,7 @@
 #include "raster.hpp"
 #include "raster_distortion.hpp"
 #include "rectangle_rotator.hpp"
+#include "texture_frame_buffer.hpp"
 
 #include <boost/shared_array.hpp>
 #include <iostream>
@@ -106,6 +107,7 @@ SDL_Surface* set_video_mode(int w, int h, int bitsperpixel, int flags)
 	SDL_Surface* result = SDL_SetVideoMode(w,h,bitsperpixel,flags);
 	reset_opengl_state();
 	graphics::texture::rebuild_all();
+	texture_frame_buffer::rebuild();
 	
 	return result;
 }
