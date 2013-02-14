@@ -204,6 +204,7 @@ public:
 
 	virtual void execute(level& lvl, entity& ob) const {
 		tbs::client* tbs_client = client_.try_convert<tbs::client>();
+		ASSERT_LOG(tbs_client != NULL, "tbs_client object isn't valid.");
 		game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable);
 		tbs_client->send_request(msg_.write_json(), callable, boost::bind(tbs_send_event, entity_ptr(&ob), callable, _1));
 	}
