@@ -633,7 +633,15 @@ variant variant::operator()(const std::vector<variant>& args) const
 	const int min_args = max_args - fn_->default_args.size();
 
 	if(args.size() < min_args || args.size() > max_args) {
-		generate_error(formatter() << "Function passed " << args.size() << " arguments, between " <<  min_args << " and " << max_args << " expected");
+		std::ostringstream str;
+		for(const std::string* a = fn_->begin_args; a != fn_->end_args; ++a) {
+			if(a != fn_->begin_args) {
+				str << ", ";
+			}
+
+			str << *a;
+		}
+		generate_error(formatter() << "Function passed " << args.size() << " arguments, between " <<  min_args << " and " << max_args << " expected (" << str.str() << ")");
 	}
 
 	for(size_t n = 0; n != args.size(); ++n) {
