@@ -308,7 +308,7 @@ void request_handler::handle_post(const request& req, reply& rep)
 		}
 	}
 
-	if(type == "login") {
+	if(type == "lobby_login") {
 		game_server::shared_data::action action;
 		game_server::client_info ci;
 		boost::tie(action, ci) = data_.process_user(user, pass, session_id);
@@ -316,7 +316,7 @@ void request_handler::handle_post(const request& req, reply& rep)
 			obj["type"] = "error";
 			obj["description"] = "Bad session ID";
 		} else if(action == game_server::shared_data::send_salt) {
-			obj["type"] = "password_request";
+			obj["type"] = "lobby_password_request";
 			obj["salt"] = ci.salt;
 			obj["session_id"] = ci.session_id;
 		} else if(action == game_server::shared_data::user_not_found) {
@@ -326,30 +326,47 @@ void request_handler::handle_post(const request& req, reply& rep)
 			obj["type"] = "error";
 			obj["description"] = "Password failed.";
 		} else if(action == game_server::shared_data::login_success) {
-			obj["type"] = "login_success";
+			obj["type"] = "lobby_login_success";
 			obj["session_id"] = ci.session_id;
 		} else {
 			ASSERT_LOG(false, "Unhandled state: " << static_cast<int>(action));
 		}
-	} else if(type == "get_status") {
+	} else if(type == "lobby_get_status") {
 		json_spirit::mArray ary;
 		data_.get_status_list(&ary);
-		obj["type"] = "status";
+		obj["type"] = "lobby_status";
 		obj["clients"] = ary;
-	} else if(type == "get_server_info") {
+	} else if(type == "lobby_get_server_info") {
 		json_spirit::mObject si_obj;
 		game_server::worker::get_server_info(&si_obj);
-		obj["type"] = "server_info";
+		obj["type"] = "lobby_server_info";
 		obj["servers"] = si_obj;
-	} else if(type == "start_game") {
+	} else if(type == "lobby_create_game") {
+		// waiting for other players
+		auto gt_it = req_obj.find("game_type");
+		if(gt_it == req_obj.end()) {
+			obj["type"] = "error";
+			obj["description"] = "No 'game_type' attribute given.";
+		} else {
+			const std::string& game_type = gt_it->second.get_str();
+			if(data_.create_game(user, game_type)) {
+				obj["type"] = "lobby_game_created";
+				obj["game_id"] = game_server::shared_data::make_session_id();
+			} else {
+				obj["type"] = "error";
+				obj["description"] = "Unable to create game.";
+			}
+		}
+	} else if(type == "lobby_start_game") {
+		// Sending the "create_game" message to the tbs server
 		std::string game_type = req_obj["game_type"].get_str();
 		json_spirit::mArray players = req_obj["players"].get_array();
 		int bots = req_obj["bots"].get_int();
 		json_spirit::mArray bot_types = req_obj["bot_type"].get_array();
 		process_start_game_message(game_type, players, bots, bot_types, obj);
-	} else if(type == "quit") {
+	} else if(type == "lobby_quit") {
 		if(data_.sign_off(user, session_id)) {
-			obj["type"] = "bye";
+			obj["type"] = "lobby_bye";
 		}
 		// We just return no content if session id and username not valid.
 	} else {

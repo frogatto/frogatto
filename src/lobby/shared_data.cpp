@@ -112,6 +112,8 @@ namespace game_server
 			json_spirit::mObject uo;
 			const std::string& user = u.first;
 			uo["user"] = user;
+			uo["waiting_for_players"] = u.second.waiting_for_players;
+			uo["created_game"] = u.second.game;
 			auto it = std::find_if(games_.begin(), games_.end(), 
 				[user](const std::pair<int, game_info>& v) { return std::find(v.second.clients.begin(), v.second.clients.end(), user) != v.second.clients.end(); });
 			uo["game"] = it == games_.end() ? "lobby" : it->second.name;
@@ -151,6 +153,18 @@ namespace game_server
 	{
 		boost::mutex::scoped_lock lock(guard_);
 		servers_.push_back(si);
+	}
+
+	bool shared_data::create_game(const std::string& user, const std::string& game_type)
+	{
+		boost::mutex::scoped_lock lock(guard_);
+		auto it = clients_.find(user);
+		if(it == clients_.end()) {
+			return false;
+		}
+		it->second.game	= game_type;
+		it->second.waiting_for_players = true;
+		return true;
 	}
 
 	int shared_data::make_session_id()

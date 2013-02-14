@@ -18,12 +18,15 @@ namespace game_server
 			: session_id(-1), is_human(false), signed_in(false)
 		{}
 		client_info(int sid, bool human, const std::string& slt)
-			: session_id(sid), is_human(human), salt(slt), signed_in(false)
+			: session_id(sid), is_human(human), salt(slt), signed_in(false),
+			waiting_for_players(false)
 		{}
 		int session_id;
 		std::string salt;
 		bool is_human;
 		bool signed_in;
+		bool waiting_for_players;
+		std::string game;
 	};
 
 	struct server_info
@@ -72,6 +75,7 @@ namespace game_server
 		void check_add_game(int gid, const game_info& gi);
 		void get_status_list(json_spirit::mArray* ary);
 		void add_server(const server_info& si);
+		bool create_game(const std::string& user, const std::string& game_type);
 		static int make_session_id();
 	private:
 		game_list games_;
