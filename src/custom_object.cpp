@@ -914,7 +914,7 @@ void custom_object::draw(int xx, int yy) const
 #ifndef NO_EDITOR
 	try {
 #endif
-	for(size_t n = 0; n < type_->effects().size(); ++n) {
+	for(size_t n = 0; n < effects_.size(); ++n) {
 		if(effects_[n]->zorder() < 0) {
 			gles2::manager gles2_manager(effects_[n]);
 		}
@@ -1019,7 +1019,7 @@ void custom_object::draw(int xx, int yy) const
 	}
 
 #if defined(USE_GLES2)
-	for(size_t n = 0; n < type_->effects().size(); ++n) {
+	for(size_t n = 0; n < effects_.size(); ++n) {
 		if(effects_[n]->zorder() >= 0) {
 			gles2::manager gles2_manager(effects_[n]);
 		}

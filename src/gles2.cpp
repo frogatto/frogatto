@@ -320,6 +320,9 @@ namespace {
 		{}
 	};
 	std::stack<blend_mode> blend_stack;
+
+	GLint active_texture_unit;
+	GLuint current_bound_texture;
 }
 
 namespace gles2 {
@@ -510,6 +513,9 @@ namespace gles2 {
 		if(shader == NULL || active_shader_program == shader) {
 			return;
 		}
+		
+		glGetIntegerv(GL_ACTIVE_TEXTURE, &active_texture_unit);
+		glGetIntegerv(GL_TEXTURE_BINDING_2D, (GLint*)&current_bound_texture);
 
 		if(active_shader_program != shader) {
 			shader_stack.push(active_shader_program);
@@ -532,6 +538,8 @@ namespace gles2 {
 			glDisable(GL_BLEND);
 		}
 		glBlendFunc(bm.blend_src_mode, bm.blend_dst_mode);
+		glBindTexture(GL_TEXTURE_BINDING_2D, current_bound_texture);
+		glActiveTexture(active_texture_unit);
 
 		active_shader_program->shader()->disable_vertex_attrib(-1);
 		if(shader_stack.empty() == false) {
