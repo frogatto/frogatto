@@ -988,7 +988,9 @@ extern "C" int main(int argcount, char** argvec)
 #endif
 
 #if defined(UTILITY_IN_PROC)
-	terminate_utility_process();
+	if(create_utility_in_new_process) {
+		terminate_utility_process();
+	}
 #endif
 
 	return 0;
