@@ -2236,11 +2236,6 @@ void custom_object::being_added()
 	handle_event(OBJECT_EVENT_BEING_ADDED);
 }
 
-void custom_object::remove_widget(gui::widget_ptr w)
-{
-	widgets_.erase(std::remove(widgets_.begin(), widgets_.end(), w), widgets_.end());
-}
-
 namespace {
 
 using game_logic::formula_callable;
@@ -4820,6 +4815,28 @@ void custom_object::update_type(const_custom_object_type_ptr old_type,
 #endif
 }
 
+void custom_object::add_widget(const gui::widget_ptr& w)
+{ 
+	widgets_.insert(w); 
+}
+
+void custom_object::add_widgets(std::vector<gui::widget_ptr>* widgets) 
+{
+	std::copy(widgets->begin(), widgets->end(), std::inserter(widgets_, widgets_.end()));
+}
+
+void custom_object::clear_widgets() 
+{ 
+	widgets_.clear(); 
+}
+
+void custom_object::remove_widget(gui::widget_ptr w)
+{
+	widget_list::iterator it = widgets_.find(w);
+	ASSERT_LOG(it != widgets_.end(), "Tried to erase widget not in list.");
+	widgets_.erase(it);
+}
+
 bool custom_object::handle_sdl_event(const SDL_Event& event, bool claimed)
 {
 	SDL_Event ev(event);
@@ -4839,9 +4856,9 @@ bool custom_object::handle_sdl_event(const SDL_Event& event, bool claimed)
 		}
 	}
 
-	const std::vector<gui::widget_ptr> v = widgets_;
-	foreach(const gui::widget_ptr& w, v) {
-		claimed = w->process_event(ev, claimed);
+	widget_list::const_reverse_iterator ritor = widgets_.rbegin();
+	while(ritor != widgets_.rend()) {
+		claimed |= (*ritor++)->process_event(ev, claimed);
 	}
 	return claimed;
 }

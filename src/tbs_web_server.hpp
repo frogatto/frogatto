@@ -29,7 +29,7 @@ private:
 	virtual void handle_post(socket_ptr socket, variant doc, const http::environment& env);
 	virtual void handle_get(socket_ptr socket, const std::string& url, const std::map<std::string, std::string>& args);
 
-	void heartbeat();
+	void heartbeat(const boost::system::error_code& error);
 
 	server& server_;
 	boost::asio::deadline_timer timer_;

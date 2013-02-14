@@ -429,4 +429,9 @@ bool widget::in_widget(int xloc, int yloc) const
 			yloc > y() && yloc < y() + height();
 }
 
+bool widget_sort_zorder::operator()(const widget_ptr lhs, const widget_ptr rhs) const
+{
+	return lhs->zorder() < rhs->zorder();
+}
+
 }

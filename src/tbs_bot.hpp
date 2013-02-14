@@ -20,7 +20,7 @@ public:
 	bot(boost::asio::io_service& io_service, const std::string& host, const std::string& port, variant v);
 	~bot();
 
-	void process();
+	void process(const boost::system::error_code& error);
 
 private:
 	void handle_response(const std::string& type, game_logic::formula_callable_ptr callable);

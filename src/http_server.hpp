@@ -16,8 +16,7 @@ public:
 	typedef boost::shared_ptr<boost::array<char, 64*1024> > buffer_ptr;
 
 	explicit web_server(boost::asio::io_service& io_service, int port=23456);
-	virtual ~web_server()
-	{}
+	virtual ~web_server();
 
 	static void disconnect_socket(socket_ptr socket);
 

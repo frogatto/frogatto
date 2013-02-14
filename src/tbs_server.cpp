@@ -44,7 +44,12 @@ server::client_info::client_info() : nplayer(0), last_contact(0)
 server::server(boost::asio::io_service& io_service)
   : timer_(io_service), nheartbeat_(0), scheduled_write_(0), status_id_(0)
 {
-	heartbeat();
+	heartbeat(boost::asio::error::timed_out);
+}
+
+server::~server()
+{
+	timer_.cancel();
 }
 
 void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant& msg)
@@ -312,10 +317,14 @@ void server::disconnect(socket_ptr socket)
 	socket->close();
 }
 
-void server::heartbeat()
+void server::heartbeat(const boost::system::error_code& error)
 {
+	if(error == boost::asio::error::operation_aborted) {
+		std::cerr << "tbs_server::heartbeat cancelled" << std::endl;
+		return;
+	}
 	timer_.expires_from_now(boost::posix_time::milliseconds(100));
-	timer_.async_wait(boost::bind(&server::heartbeat, this));
+	timer_.async_wait(boost::bind(&server::heartbeat, this, boost::asio::placeholders::error));
 
 	foreach(game_info_ptr g, games_) {
 		g->game_state->process();

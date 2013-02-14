@@ -212,9 +212,9 @@ public:
 
 	bool mouse_event_swallowed() const {return swallow_mouse_event_;}
 	void reset_mouse_event() {swallow_mouse_event_ = false;}
-	void add_widget(const gui::widget_ptr& w) { widgets_.push_back(w); std::sort(widgets_.begin(), widgets_.end(), gui::widget_sort_zorder()); }
-	void add_widgets(std::vector<gui::widget_ptr>* widgets) { widgets_.swap(*widgets); std::sort(widgets_.begin(), widgets_.end(), gui::widget_sort_zorder()); }
-	void clear_widgets() { widgets_.clear(); }
+	void add_widget(const gui::widget_ptr& w);
+	void add_widgets(std::vector<gui::widget_ptr>* widgets);
+	void clear_widgets();
 	void remove_widget(gui::widget_ptr w);
 	gui::widget_ptr get_widget_by_id(const std::string& id);
 	gui::const_widget_ptr get_widget_by_id(const std::string& id) const;
@@ -436,7 +436,8 @@ private:
 
 	int currently_handling_die_event_;
 
-	std::vector<gui::widget_ptr> widgets_;
+	typedef std::set<gui::widget_ptr, gui::widget_sort_zorder> widget_list;
+	widget_list widgets_;
 
 	rect previous_water_bounds_;
 

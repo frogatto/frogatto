@@ -25,6 +25,7 @@ namespace ipc
 {
 	namespace semaphore
 	{
+		bool in_use();
 		void post();
 		bool trywait();
 		bool open(const std::string& sem_name);

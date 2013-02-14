@@ -50,6 +50,7 @@ namespace preferences {
 	void set_use_pretty_scaling(bool value);
 	bool fullscreen();
 	void set_fullscreen(bool value);
+	bool no_fullscreen_ever();
 
 	bool resizable();
 	bool proportional_resize();
