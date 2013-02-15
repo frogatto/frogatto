@@ -332,10 +332,10 @@ void request_handler::handle_post(const request& req, reply& rep)
 			ASSERT_LOG(false, "Unhandled state: " << static_cast<int>(action));
 		}
 	} else if(type == "lobby_get_status") {
-		json_spirit::mArray ary;
-		data_.get_status_list(&ary);
+		json_spirit::mObject uo;
+		data_.get_status_list(&uo);
 		obj["type"] = "lobby_status";
-		obj["clients"] = ary;
+		obj["clients"] = uo;
 	} else if(type == "lobby_get_server_info") {
 		json_spirit::mObject si_obj;
 		game_server::worker::get_server_info(&si_obj);
