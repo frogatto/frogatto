@@ -145,6 +145,7 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 			return;
 		} else if(type == "get_server_info") {
 			send_msg(socket, get_server_info().write_json(true, variant::JSON_COMPLIANT));
+			return;
 		} else {
 			send_msg(socket, "{ \"type\": \"unknown_message\" }");
 			return;
@@ -153,7 +154,7 @@ void server::adopt_ajax_socket(socket_ptr socket, int session_id, const variant&
 
 	std::map<int, client_info>::iterator client_itor = clients_.find(session_id);
 	if(client_itor == clients_.end()) {
-		std::cerr << "BAD SESSION ID: " << session_id << "\n";
+		std::cerr << "BAD SESSION ID: " << session_id << ": " << type << "\n";
 		send_msg(socket, "{ \"type\": \"invalid_session\" }");
 		return;
 	}
