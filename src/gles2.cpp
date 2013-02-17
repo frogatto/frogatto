@@ -193,13 +193,16 @@ namespace {
 		"{\"shader\": {\n"
 		"    \"program\": \"simple_shader\",\n"
 		"    \"create\": \"\",\n"
-		"    \"draw\": \"[set(uniforms.mvp_matrix, mvp_matrix), set(uniforms.u_color,color), set(uniforms.u_point_size, point_size)]\",\n"
+		"    \"draw\": \"[set(uniforms.u_color,color), set(uniforms.u_point_size, point_size)]\",\n"
 		"}}\n";
 	const std::string simple_attribute_info = 
 		"{\n"
 		"    \"attributes\": {\n"
 		"        \"vertex\": \"a_position\",\n"
 		"    },\n"
+		"	\"uniforms\": {\n"
+		"		\"mvp_matrix\": \"u_mvp_matrix\",\n"
+        "    },\n"
 		"}\n";
 
 	const std::string fs_col = 
@@ -224,7 +227,7 @@ namespace {
 		"{\"shader\": {\n"
 		"    \"program\": \"simple_col_shader\",\n"
 		"    \"create\": \"\",\n"
-		"    \"draw\": \"[set(uniforms.mvp_matrix, mvp_matrix),set(uniforms.u_point_size,point_size)]\",\n"
+		"    \"draw\": \"[set(uniforms.u_point_size,point_size)]\",\n"
 		"}}\n";
 	const std::string simple_col_attribute_info = 
 		"{\n"
@@ -232,6 +235,9 @@ namespace {
 		"        \"vertex\": \"a_position\",\n"
 		"        \"color\": \"a_color\",\n"
 		"    },\n"
+		"	\"uniforms\": {\n"
+		"		\"mvp_matrix\": \"u_mvp_matrix\",\n"
+        "    },\n"
 		"}\n";
 
 	const std::string fs_tex = 
@@ -256,13 +262,16 @@ namespace {
 		"{\"shader\": {\n"
         "    \"program\": \"tex_shader\",\n"
 		"    \"create\": \"[set(uniforms.u_tex_map, 0)]\",\n"
-		"    \"draw\": \"[set(uniforms.mvp_matrix,mvp_matrix),set(uniforms.u_color,color)]\",\n"
+		"    \"draw\": \"[set(uniforms.u_color,color)]\",\n"
 		"}}\n";
 	const std::string tex_attribute_info = 
 		"{\n"
         "    \"attributes\": {\n"
         "        \"vertex\": \"a_position\",\n"
         "        \"texcoord\": \"a_texcoord\",\n"
+        "    },\n"
+		"	\"uniforms\": {\n"
+		"		\"mvp_matrix\": \"u_mvp_matrix\",\n"
         "    },\n"
 		"}\n";
 
@@ -291,7 +300,7 @@ namespace {
 		"{\"shader\": {\n"
         "    \"program\": \"texcol_shader\",\n"
 		"    \"create\": \"[set(uniforms.u_tex_map, 0)]\",\n"
-		"    \"draw\": \"[set(uniforms.mvp_matrix,mvp_matrix),set(attributes.a_color,color)]\",\n"
+		"    \"draw\": \"[set(attributes.a_color,color)]\",\n"
 		"}}\n";
 	const std::string texcol_attribute_info = 
 		"{\n"
@@ -299,6 +308,9 @@ namespace {
         "        \"vertex\": \"a_position\",\n"
         "        \"texcoord\": \"a_texcoord\",\n"
 		"        \"color\": \"a_color\",\n"
+        "    },\n"
+		"	\"uniforms\": {\n"
+		"		\"mvp_matrix\": \"u_mvp_matrix\",\n"
         "    },\n"
 		"}\n";
 

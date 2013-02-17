@@ -84,7 +84,7 @@ namespace {
 }
 
 program::program() 
-	: object_(0)
+	: object_(0), mvp_matrix_(-1)
 {
 	environ_ = this;
 }
@@ -789,6 +789,9 @@ variant program::write()
 	if(stored_attributes_.is_null() == false) {
 		res.add("attributes", stored_attributes_);
 	}
+	if(stored_uniforms_.is_null() == false) {
+		res.add("uniforms", stored_uniforms_);
+	}
 	return res.build();
 }
 
@@ -846,6 +849,15 @@ void program::set_fixed_attributes(const variant& node)
 	stored_attributes_ = node;
 }
 
+void program::set_fixed_uniforms(const variant& node)
+{
+	if(node.has_key("mvp_matrix")) {
+		mvp_matrix_ = GLint(get_uniform(node["mvp_matrix"].as_string()));
+		ASSERT_LOG(mvp_matrix_ != -1, "mvp_matrix uniform given but nothing in corresponding shader.");
+	}
+	stored_uniforms_ = node;
+}
+
 void program::load_shaders(const std::string& shader_data)
 {
 	variant node = json::parse(shader_data);
@@ -886,7 +898,7 @@ void program::load_shaders(const std::string& shader_data)
 		gles2::shader v_shader(GL_VERTEX_SHADER, vs_name, vert_data);
 		gles2::shader f_shader(GL_FRAGMENT_SHADER, fs_name, frag_data);
 		const std::string& program_name = prog["name"].as_string();
-		add_shader(program_name, v_shader, f_shader, prog["attributes"]);
+		add_shader(program_name, v_shader, f_shader, prog["attributes"], prog["uniforms"]);
 
 		std::map<std::string, gles2::program_ptr>::iterator it = shader_programs.find(program_name);
 		ASSERT_LOG(it != shader_programs.end(), "Error! Something bad happened adding the shader.");
@@ -898,7 +910,8 @@ void program::load_shaders(const std::string& shader_data)
 void program::add_shader(const std::string& program_name, 
 		const shader& v_shader, 
 		const shader& f_shader,
-		const variant& prog)
+		const variant& prog,
+		const variant& uniforms)
 {
 	std::map<std::string, gles2::program_ptr>::iterator it = shader_programs.find(program_name);
 	if(it == shader_programs.end()) {
@@ -908,6 +921,9 @@ void program::add_shader(const std::string& program_name,
 	}
 	if(prog.is_null() == false) {
 		shader_programs[program_name]->set_fixed_attributes(prog);
+	}
+	if(uniforms.is_null() == false) {
+		shader_programs[program_name]->set_fixed_uniforms(uniforms);
 	}
 }
 
@@ -938,6 +954,12 @@ void program::set_deferred_uniforms()
 	uniforms_to_update_.clear();
 }
 
+void program::set_mvp_matrix()
+{
+	if(mvp_matrix_ != -1) {
+		glUniformMatrix4fv(mvp_matrix_, 16, GL_FALSE, (GLfloat*)(&gles2::get_mvp_matrix().x.x));
+	}
+}
 
 ///////////////////////////////////////////////////////////////////////////
 // shader_program
@@ -1065,6 +1087,7 @@ void shader_program::prepare_draw()
 //#endif
 	glUseProgram(program_object_->get());
 	program_object_->set_deferred_uniforms();
+	program_object_->set_mvp_matrix();
 	game_logic::formula_callable* e = this;
 	for(size_t n = 0; n < draw_formulas_.size(); ++n) {
 		e->execute_command(draw_formulas_[n]->execute(*e));
