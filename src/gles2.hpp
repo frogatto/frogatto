@@ -71,7 +71,8 @@ namespace gles2 {
 		static void add_shader(const std::string& program_name, 
 			const shader& v_shader, 
 			const shader& f_shader, 
-			const variant& prog);
+			const variant& prog,
+			const variant& uniforms);
 	private:
 		typedef std::vector<GLfloat> gl_attribute;
 		typedef boost::shared_ptr<gl_attribute> attribute_ptr;

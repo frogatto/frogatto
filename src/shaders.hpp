@@ -96,7 +96,7 @@ public:
 		const variant& uniforms);
 	static std::map<std::string, gles2::program_ptr>& get_shaders();
 	static void clear_shaders();
-	void set_mvp_matrix();
+	void set_known_uniforms();
 protected:
 	bool link();
 	bool queryUniforms();
@@ -119,7 +119,9 @@ private:
 
 	std::vector<std::string> uniforms_to_update_;
 
-	GLint mvp_matrix_;
+	GLint u_mvp_matrix_;
+	GLint u_color_;
+	GLint u_point_size_;
 
 	friend class shader_program;
 };

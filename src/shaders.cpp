@@ -84,7 +84,7 @@ namespace {
 }
 
 program::program() 
-	: object_(0), mvp_matrix_(-1)
+	: object_(0), u_mvp_matrix_(-1), u_color_(-1), u_point_size_(-1)
 {
 	environ_ = this;
 }
@@ -852,8 +852,22 @@ void program::set_fixed_attributes(const variant& node)
 void program::set_fixed_uniforms(const variant& node)
 {
 	if(node.has_key("mvp_matrix")) {
-		mvp_matrix_ = GLint(get_uniform(node["mvp_matrix"].as_string()));
-		ASSERT_LOG(mvp_matrix_ != -1, "mvp_matrix uniform given but nothing in corresponding shader.");
+		u_mvp_matrix_ = GLint(get_uniform(node["mvp_matrix"].as_string()));
+		ASSERT_LOG(u_mvp_matrix_ != -1, "mvp_matrix uniform given but nothing in corresponding shader.");
+	} else {
+		u_mvp_matrix_ = -1;
+	}
+	if(node.has_key("color")) {
+		u_color_ = GLint(get_uniform(node["color"].as_string()));
+		ASSERT_LOG(u_color_ != -1, "color uniform given but nothing in corresponding shader.");
+	} else {
+		u_color_ = -1;
+	}
+	if(node.has_key("point_size")) {
+		u_point_size_ = GLint(get_uniform(node["point_size"].as_string()));
+		ASSERT_LOG(u_point_size_ != -1, "point size uniform given but nothing in corresponding shader.");
+	} else {
+		u_point_size_ = -1;
 	}
 	stored_uniforms_ = node;
 }
@@ -954,10 +968,18 @@ void program::set_deferred_uniforms()
 	uniforms_to_update_.clear();
 }
 
-void program::set_mvp_matrix()
+void program::set_known_uniforms()
 {
-	if(mvp_matrix_ != -1) {
-		glUniformMatrix4fv(mvp_matrix_, 16, GL_FALSE, (GLfloat*)(&gles2::get_mvp_matrix().x.x));
+	if(u_mvp_matrix_ != -1) {
+		glUniformMatrix4fv(u_mvp_matrix_, 1, GL_FALSE, (GLfloat*)(&gles2::get_mvp_matrix().x.x));
+	}
+	if(u_color_ != -1) {
+		glUniform4fv(u_color_, 1, gles2::get_color());
+	}
+	if(u_point_size_ != -1) {
+		GLfloat pt_size;
+		glGetFloatv(GL_POINT_SIZE, &pt_size);
+		glUniform1f(u_point_size_, pt_size);
 	}
 }
 
@@ -1087,7 +1109,7 @@ void shader_program::prepare_draw()
 //#endif
 	glUseProgram(program_object_->get());
 	program_object_->set_deferred_uniforms();
-	program_object_->set_mvp_matrix();
+	program_object_->set_known_uniforms();
 	game_logic::formula_callable* e = this;
 	for(size_t n = 0; n < draw_formulas_.size(); ++n) {
 		e->execute_command(draw_formulas_[n]->execute(*e));
