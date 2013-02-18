@@ -2654,6 +2654,12 @@ FUNCTION_DEF(get_module_args, 0, 0, "get_module_args() -> callable: Returns the 
 	return variant(module::get_module_args().get());
 END_FUNCTION_DEF(get_module_args)
 
+FUNCTION_DEF(seed_rng, 0, 0, "seed_rng() -> none: Seeds the peudo-RNG used.")
+	formula::fail_if_static_context();
+	::srand(::time(NULL));
+	return variant();
+END_FUNCTION_DEF(seed_rng)
+
 }
 
 UNIT_TEST(modulo_operation) {
