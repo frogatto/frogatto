@@ -1405,6 +1405,15 @@ private:
 					vars.push_back(val);
 					++index;
 				}
+			} else if(items.is_string()) {
+				const std::string& s = items.as_string();
+				boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
+				for(size_t n = 0; n != s.length(); ++n) {
+					variant v(s.substr(n,1));
+					callable->set(v, n);
+					const variant val = args().back()->evaluate(*callable);
+					vars.push_back(val);
+				}
 			} else {
 				boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
 				for(size_t n = 0; n != items.num_elements(); ++n) {
@@ -1430,9 +1439,18 @@ private:
 			formula_callable_ptr callable_backup(new formula_callable_with_backup(*self_callable, variables));
 
 			const int nelements = items.num_elements();
-			for(int& n = index_variant.int_addr(); n != nelements; ++n) {
-				self_variant = items[n];
-				vars.push_back(args().back()->evaluate(*callable_backup));
+			if(items.is_string()) {
+				const std::string& s = items.as_string();
+				for(int& n = index_variant.int_addr(); n != nelements; ++n) {
+					variant v(s.substr(n,1));
+					self_variant = v;
+					vars.push_back(args().back()->evaluate(*callable_backup));
+				}
+			} else {
+				for(int& n = index_variant.int_addr(); n != nelements; ++n) {
+					self_variant = items[n];
+					vars.push_back(args().back()->evaluate(*callable_backup));
+				}
 			}
 		}
 
