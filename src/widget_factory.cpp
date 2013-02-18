@@ -10,6 +10,7 @@
 #include "button.hpp"
 #include "code_editor_widget.hpp"
 #include "checkbox.hpp"
+#include "custom_object_widget.hpp"
 #include "dialog.hpp"
 #include "drag_widget.hpp"
 #include "graphical_font_label.hpp"
@@ -82,6 +83,8 @@ widget_ptr create(const variant& v, game_logic::formula_callable* e)
 		return widget_ptr(new gui::progress_bar(v, e));
 	} else if(wtype == "selector") {
 		return widget_ptr(new gui::selector_widget(v, e));
+	} else if(wtype == "object") {
+		return widget_ptr(new gui::custom_object_widget(v, e));
 	//} else if(wtype == "scrollable") {
 	//} else if(wtype == "widget") {
 	} else {
