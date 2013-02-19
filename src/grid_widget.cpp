@@ -348,6 +348,13 @@ void grid::on_set_yscroll(int old_value, int value)
 
 void grid::handle_draw() const
 {
+	GLfloat current_color[4];
+#if defined(USE_GLES2)
+	memcpy(current_color, gles2::get_color(), sizeof(current_color));
+#else
+	glGetFloatv(GL_CURRENT_COLOR, current_color);
+#endif
+
 	glPushMatrix();
 	glTranslatef(GLfloat(x() & ~1), GLfloat(y() & ~1), 0.0);
 	if(show_background_) {
@@ -371,6 +378,7 @@ void grid::handle_draw() const
 			graphics::draw_rect(rect,col,128);
 		}
 	}
+	glColor4f(current_color[0], current_color[1], current_color[2], current_color[3]);
 	foreach(const widget_ptr& widget, visible_cells_) {
 		if(widget) {
 			widget->draw();

@@ -25,12 +25,20 @@
 
 namespace gui {
 
+widget::widget() 
+	: x_(0), y_(0), w_(0), h_(0), align_h_(HALIGN_LEFT), align_v_(VALIGN_TOP),
+	true_x_(0), true_y_(0), disabled_(false), disabled_opacity_(127),
+	tooltip_displayed_(false), visible_(true), zorder_(0), environ_(0),
+	tooltip_display_delay_(0), tooltip_ticks_(INT_MAX), resolution_(0),
+	display_alpha_(256), pad_h_(0), pad_w_(0)
+	{}
+
 widget::widget(const variant& v, game_logic::formula_callable* e) 
 	: environ_(e), w_(0), h_(0), x_(0), y_(0), zorder_(0), 
 	true_x_(0), true_y_(0), disabled_(false), disabled_opacity_(v["disabled_opacity"].as_int(127)),
 	tooltip_displayed_(false), id_(v["id"].as_string_default()), align_h_(HALIGN_LEFT), align_v_(VALIGN_TOP),
 	tooltip_display_delay_(v["tooltip_delay"].as_int(500)), tooltip_ticks_(INT_MAX),
-	resolution_(v["frame_size"].as_int(0)), display_alpha_(v["alpha"].as_int(255)),
+	resolution_(v["frame_size"].as_int(0)), display_alpha_(v["alpha"].as_int(256)),
 	pad_w_(0), pad_h_(0)
 {
 	if(v.has_key("width")) {
@@ -263,6 +271,13 @@ bool widget::process_event(const SDL_Event& event, bool claimed)
 
 void widget::draw() const
 {
+	GLfloat current_color[4];
+#if defined(USE_GLES2)
+	memcpy(current_color, gles2::get_color(), sizeof(current_color));
+#else
+	glGetFloatv(GL_CURRENT_COLOR, current_color);
+#endif
+
 	if(visible_) {
 		GLint src = 0;
 		GLint dst = 0;
@@ -273,7 +288,7 @@ void widget::draw() const
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		if(disabled_) {
 			glColor4ub(255, 255, 255, disabled_opacity_);
-		} else {
+		} else if(display_alpha_ < 256) {
 			glColor4ub(255, 255, 255, display_alpha_);
 		}
 		if(frame_set_ != NULL) {
@@ -286,7 +301,7 @@ void widget::draw() const
 #if !defined(USE_GLES2)
 		glBlendFunc(src, dst);
 #endif
-		glColor4ub(255, 255, 255, 255);
+		glColor4f(current_color[0], current_color[1], current_color[2], current_color[3]);
 	}
 }
 
@@ -410,7 +425,7 @@ void widget::set_value(const std::string& key, const variant& v)
 		resolution_ = v.as_int();
 	} else if(key == "alpha") {
 		int a = v.as_int();
-		set_alpha(a < 0 ? 0 : (a > 255 ? 255 : a));
+		set_alpha(a < 0 ? 0 : (a > 256 ? 256 : a));
 	} else if(key == "frame_pad_width") {
 		set_padding(v.as_int(), get_pad_height());
 	} else if(key == "frame_pad_height") {
