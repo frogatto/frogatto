@@ -40,7 +40,7 @@ widget_ptr create(const variant& v, game_logic::formula_callable* e)
 		ASSERT_LOG(w != NULL, "Error converting widget from callable.");
 		return w;
 	}
-	ASSERT_LOG(v.is_map(), "TYPE ERROR: widget must be specified by a map");
+	ASSERT_LOG(v.is_map(), "TYPE ERROR: widget must be specified by a map, found: " << v.to_debug_string());
 	std::string wtype = v["type"].as_string();
 	if(wtype == "animation_widget") {
 		return widget_ptr(new gui::animation_widget(v,e));

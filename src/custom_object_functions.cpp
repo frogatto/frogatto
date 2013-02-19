@@ -2319,11 +2319,9 @@ FUNCTION_DEF(get_widget, 2, 2, "get_widget(object obj, string id): returns the w
 	return variant(target->get_widget_by_id(id).get());
 END_FUNCTION_DEF(get_widget)
 
-FUNCTION_DEF(widget, 1, 2, "widget(map w, (opt) callable): Constructs a widget defined by w and returns it for later use")
-	game_logic::formula_callable_ptr callable;
-	if(args().size() > 1) {
-		callable = map_into_callable(args()[1]->evaluate(variables));
-	}
+FUNCTION_DEF(widget, 2, 2, "widget(callable, map w): Constructs a widget defined by w and returns it for later use")
+	formula::fail_if_static_context();
+	game_logic::formula_callable_ptr callable = map_into_callable(args()[1]->evaluate(variables));
 	gui::widget_ptr w = widget_factory::create(args()[0]->evaluate(variables), callable.get());
 	return variant(w.get());
 END_FUNCTION_DEF(widget)
