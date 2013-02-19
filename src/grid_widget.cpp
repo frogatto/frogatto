@@ -65,6 +65,7 @@ grid::grid(const variant& v, game_logic::formula_callable* e)
 	} else {
 		col_widths_.assign(ncols_, 0);
 	}
+	col_aligns_.resize(ncols_);
 	if(v.has_key("column_alignments")) {
 		if(v["column_alignments"].is_list()) {
 			// XXX this could be a list of strings as well.
