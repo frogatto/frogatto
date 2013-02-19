@@ -41,6 +41,7 @@ widget::widget(const variant& v, game_logic::formula_callable* e)
 	resolution_(v["frame_size"].as_int(0)), display_alpha_(v["alpha"].as_int(256)),
 	pad_w_(0), pad_h_(0)
 {
+	set_alpha(display_alpha_ < 0 ? 0 : (display_alpha_ > 256 ? 256 : display_alpha_));
 	if(v.has_key("width")) {
 		w_ = v["width"].as_int();
 	} 

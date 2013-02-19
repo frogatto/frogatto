@@ -72,8 +72,8 @@ public:
 	int get_frame_resolution() const { return resolution_; }
 	void set_frame_set(const std::string& frame) { frame_set_ = framed_gui_element::get(frame); frame_set_name_ = frame; }
 
-	uint8_t get_alpha() const { return display_alpha_; }
-	void set_alpha(uint8_t a=256) { display_alpha_ = a; }
+	int get_alpha() const { return display_alpha_; }
+	void set_alpha(int a=256) { display_alpha_ = a; }
 
 	int get_pad_width() const { return pad_w_; }
 	int get_pad_height() const { return pad_h_; }
@@ -114,7 +114,7 @@ private:
 	uint8_t disabled_opacity_;
 	unsigned tooltip_display_delay_;
 	unsigned tooltip_ticks_;
-	uint8_t display_alpha_;
+	int display_alpha_;
 	int pad_h_;
 	int pad_w_;
 
