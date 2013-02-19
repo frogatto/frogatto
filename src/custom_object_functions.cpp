@@ -2321,8 +2321,8 @@ END_FUNCTION_DEF(get_widget)
 
 FUNCTION_DEF(widget, 2, 2, "widget(callable, map w): Constructs a widget defined by w and returns it for later use")
 	formula::fail_if_static_context();
-	game_logic::formula_callable_ptr callable = map_into_callable(args()[1]->evaluate(variables));
-	gui::widget_ptr w = widget_factory::create(args()[0]->evaluate(variables), callable.get());
+	game_logic::formula_callable_ptr callable = map_into_callable(args()[0]->evaluate(variables));
+	gui::widget_ptr w = widget_factory::create(args()[1]->evaluate(variables), callable.get());
 	return variant(w.get());
 END_FUNCTION_DEF(widget)
 
