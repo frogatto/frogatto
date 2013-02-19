@@ -26,6 +26,7 @@ objects = \
 	src/color_chart.o \
 	src/compress.o \
 	src/current_generator.o \
+	src/custom_object_widget.o \
 	src/decimal.o \
 	src/difficulty.o \
 	src/drag_widget.o \
