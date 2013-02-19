@@ -169,6 +169,7 @@ void color_cache_init()
 	get_color_cache()["purple"] = boost::bind(graphics::color_purple);
 	get_color_cache()["medium_purple"] = boost::bind(graphics::color_medium_purple);
 	get_color_cache()["thistle"] = boost::bind(graphics::color_thistle);
+	get_color_cache()["crimson"] = boost::bind(graphics::color_crimson);
 }
 
 }
@@ -1101,6 +1102,12 @@ const SDL_Color& color_medium_purple()
 const SDL_Color& color_thistle()
 {
 	static SDL_Color res = {0xd8, 0xbf, 0xd8, 0xff};
+	return res;
+}
+
+const SDL_Color& color_crimson()
+{
+	static SDL_Color res = {0xdc, 0x14, 0x3c, 0xff};
 	return res;
 }
 
