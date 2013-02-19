@@ -35,7 +35,12 @@ using gui::widget_ptr;
 
 widget_ptr create(const variant& v, game_logic::formula_callable* e)
 {
-	ASSERT_LOG(v.is_map(), "TYPE ERROR: widget must be specified by a map");	
+	if(v.is_callable()) {
+		widget_ptr w = v.try_convert<gui::widget>();
+		ASSERT_LOG(w != NULL, "Error converting widget from callable.");
+		return w;
+	}
+	ASSERT_LOG(v.is_map(), "TYPE ERROR: widget must be specified by a map");
 	std::string wtype = v["type"].as_string();
 	if(wtype == "animation_widget") {
 		return widget_ptr(new gui::animation_widget(v,e));
