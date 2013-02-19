@@ -361,6 +361,14 @@ variant widget::get_value(const std::string& key) const
 		return variant(id_);
 	} else if(key == "resolution") {
 		return variant(resolution_);
+	} else if(key == "x") {
+		return variant(x());
+	} else if(key == "y") {
+		return variant(y());
+	} else if(key == "width" || key == "w") {
+		return variant(width());
+	} else if(key == "height" || key == "h") {
+		return variant(height());
 	} else if(key == "frame") {
 		return variant(frame_set_name_);
 	} else if(key == "alpha") {
@@ -393,6 +401,10 @@ void widget::set_value(const std::string& key, const variant& v)
 		std::vector<int> xy = v.as_list_int();
 		ASSERT_LOG(xy.size() == 2, "Two values must be supplied to the X, Y attribute");
 		set_loc(xy[0], xy[1]);
+	} else if(key == "x") {
+		set_loc(v.as_int(), y());
+	} else if(key == "y") {
+		set_loc(x(), v.as_int());
 	} else if(key == "wh") {
 		std::vector<int> wh = v.as_list_int();
 		ASSERT_LOG(wh.size() == 2, "Two values must be supplied to the W, H attribute");
