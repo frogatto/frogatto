@@ -970,6 +970,7 @@ void program::set_deferred_uniforms()
 
 void program::set_known_uniforms()
 {
+#if defined(USE_GLES2)
 	if(u_mvp_matrix_ != -1) {
 		glUniformMatrix4fv(u_mvp_matrix_, 1, GL_FALSE, (GLfloat*)(&gles2::get_mvp_matrix().x.x));
 	}
@@ -981,6 +982,7 @@ void program::set_known_uniforms()
 		glGetFloatv(GL_POINT_SIZE, &pt_size);
 		glUniform1f(u_point_size_, pt_size);
 	}
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////
