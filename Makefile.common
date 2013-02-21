@@ -156,8 +156,11 @@ objects = \
 	src/tbs_bot.o \
 	src/tbs_client.o \
 	src/tbs_functions.o \
+	src/tbs_internal_client.o \
+	src/tbs_internal_server.o \
 	src/tbs_game.o \
 	src/tbs_server.o \
+	src/tbs_server_base.o \
 	src/tbs_web_server.o \
 	src/texture.o \
 	src/texture_frame_buffer.o \

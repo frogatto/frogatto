@@ -159,6 +159,8 @@ namespace preferences {
 		std::string username_;
 		std::string password_;
 
+		bool internal_tbs_server_ = false;
+
 		std::string locale_;
 		
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
@@ -927,6 +929,8 @@ namespace preferences {
 			run_failing_unit_tests_ = true;
 		} else if(s == "--serialize-bad-objects") {
 			serialize_bad_objects_ = true;
+		} else if(s == "--tbs-server") {
+			internal_tbs_server_ = true;
 		} else if(s == "--no-autopause") {
 			allow_autopause_ = false;
 		} else if(s == "--autopause") {
@@ -990,6 +994,10 @@ namespace preferences {
 	
 	const std::string& locale() {
 		return locale_;
+	}
+
+	bool internal_tbs_server() {
+		return internal_tbs_server_;
 	}
 
 	void set_locale(const std::string& value) {

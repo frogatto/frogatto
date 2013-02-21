@@ -59,6 +59,7 @@
 #include "stats.hpp"
 #include "string_utils.hpp"
 #include "surface_cache.hpp"
+#include "tbs_internal_server.hpp"
 #include "texture.hpp"
 #include "texture_frame_buffer.hpp"
 #include "tile_map.hpp"
@@ -551,6 +552,10 @@ extern "C" int main(int argcount, char** argvec)
 
 	std::cerr << "\n";
 
+	if(preferences::internal_tbs_server()) {
+		tbs::internal_server::init();
+	}
+
 	if(utility_program.empty() == false 
 		&& test::utility_needs_video(utility_program) == false) {
 #if defined(UTILITY_IN_PROC)
@@ -1014,6 +1019,10 @@ extern "C" int main(int argcount, char** argvec)
 	if(create_utility_in_new_process) {
 		terminate_utility_process();
 	}
+#endif
+
+#ifdef _MSC_VER
+	ExitProcess(0);
 #endif
 
 	return 0;

@@ -3,6 +3,7 @@
 #include "asserts.hpp"
 #include "foreach.hpp"
 #include "formula.hpp"
+#include "preferences.hpp"
 #include "tbs_bot.hpp"
 #include "tbs_web_server.hpp"
 
@@ -36,7 +37,8 @@ void bot::process(const boost::system::error_code& error)
 		on_create_.reset();
 	}
 
-	if(!client_ && response_.size() < script_.size()) {
+	if(((!client_ && !preferences::internal_tbs_server()) || (!internal_client_ && preferences::internal_tbs_server()))
+		&& response_.size() < script_.size()) {
 		variant script = script_[response_.size()];
 		variant send = script["send"];
 		if(send.is_string()) {
@@ -51,9 +53,14 @@ void bot::process(const boost::system::error_code& error)
 		std::cerr << "BOT SEND REQUEST\n";
 
 		ASSERT_LOG(send.is_map(), "NO REQUEST TO SEND: " << send.write_json() << " IN " << script.write_json());
-		client_.reset(new client(host_, port_, session_id, &service_));
 		game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable(this));
-		client_->send_request(send.write_json(), callable, boost::bind(&bot::handle_response, this, _1, callable));
+		if(preferences::internal_tbs_server()) {
+			internal_client_.reset(new internal_client(session_id));
+			internal_client_->send_request(send, session_id, callable, boost::bind(&bot::handle_response, this, _1, callable));
+		} else {
+			client_.reset(new client(host_, port_, session_id, &service_));
+			client_->send_request(send.write_json(), callable, boost::bind(&bot::handle_response, this, _1, callable));
+		}
 	}
 
 	timer_.expires_from_now(boost::posix_time::milliseconds(100));
@@ -105,6 +112,7 @@ void bot::handle_response(const std::string& type, game_logic::formula_callable_
 
 	response_.push_back(variant(&m));
 	client_.reset();
+	internal_client_.reset();
 
 	tbs::web_server::set_debug_state(generate_report());
 	std::cerr << "SET STATE: " << generate_report().write_json() << "\n";

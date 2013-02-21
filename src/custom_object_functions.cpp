@@ -33,6 +33,7 @@
 #include "raster.hpp"
 #if !defined(__native_client__)
 #include "tbs_client.hpp"
+#include "tbs_internal_client.hpp"
 #endif
 #include "texture.hpp"
 #include "message_dialog.hpp"
@@ -186,6 +187,10 @@ FUNCTION_DEF(tbs_client, 2, 3, "tbs_client(host, port, session=-1): creates a cl
 	const int port = args()[1]->evaluate(variables).as_int();
 	const int session = args().size() >= 3 ? args()[2]->evaluate(variables).as_int() : -1;
 
+	if(host == "localhost" && preferences::internal_tbs_server()) {
+		return variant(new tbs::internal_client(session));
+	}
+
 	return variant(new tbs::client(host, formatter() << port, session));
 END_FUNCTION_DEF(tbs_client)
 
@@ -203,10 +208,15 @@ public:
 	{}
 
 	virtual void execute(level& lvl, entity& ob) const {
-		tbs::client* tbs_client = client_.try_convert<tbs::client>();
-		ASSERT_LOG(tbs_client != NULL, "tbs_client object isn't valid.");
 		game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable);
-		tbs_client->send_request(msg_.write_json(), callable, boost::bind(tbs_send_event, entity_ptr(&ob), callable, _1));
+		tbs::client* tbs_client = client_.try_convert<tbs::client>();
+		if(tbs_client == NULL) {
+			tbs::internal_client* tbs_iclient = client_.try_convert<tbs::internal_client>();
+			ASSERT_LOG(tbs_iclient != NULL, "tbs_client object isn't valid.");
+			tbs_iclient->send_request(msg_, tbs_iclient->session_id(), callable, boost::bind(tbs_send_event, entity_ptr(&ob), callable, _1));
+		} else {
+			tbs_client->send_request(msg_.write_json(), callable, boost::bind(tbs_send_event, entity_ptr(&ob), callable, _1));
+		}
 	}
 
 };
@@ -229,7 +239,13 @@ public:
 
 	virtual void execute(level& lvl, entity& ob) const {
 		tbs::client* tbs_client = client_.try_convert<tbs::client>();
-		tbs_client->process();
+		if(tbs_client == NULL) {
+			tbs::internal_client* iclient = client_.try_convert<tbs::internal_client>();
+			ASSERT_LOG(iclient != NULL, "tbs_client object isn't valid.");
+			iclient->process();
+		} else {
+			tbs_client->process();
+		}
 	}
 };
 

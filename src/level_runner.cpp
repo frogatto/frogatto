@@ -45,6 +45,7 @@
 #include "sound.hpp"
 #include "stats.hpp"
 #include "surface_cache.hpp"
+#include "tbs_internal_server.hpp"
 #include "utils.hpp"
 #include "variant_utils.hpp"
 #include "IMG_savepng.h"
@@ -763,6 +764,10 @@ bool level_runner::play_cycle()
 	background_task_pool::pump();
 
 	performance_data current_perf(current_fps_,50,0,0,0,0,0,custom_object::events_handled_per_second,"");
+
+	if(preferences::internal_tbs_server()) {
+		tbs::internal_server::process();
+	}
 
 	if(controls::num_players() > 1) {
 		lvl_->backup();

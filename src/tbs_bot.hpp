@@ -10,6 +10,7 @@
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "tbs_client.hpp"
+#include "tbs_internal_client.hpp"
 #include "variant.hpp"
 
 namespace tbs {
@@ -33,6 +34,7 @@ private:
 	std::vector<variant> script_;
 	std::vector<variant> response_;
 	boost::shared_ptr<client> client_;
+	boost::shared_ptr<internal_client> internal_client_;
 
 	boost::asio::io_service& service_;
 	boost::asio::deadline_timer timer_;
