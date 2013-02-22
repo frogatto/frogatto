@@ -61,7 +61,7 @@ int delay;
 
 int first_invalid_cycle_var = -1;
 
-SDLKey sdlk[NUM_CONTROLS] = {
+SDL_Keycode sdlk[NUM_CONTROLS] = {
 	SDLK_UP,
 	SDLK_DOWN,
 	SDLK_LEFT,
@@ -77,7 +77,7 @@ SDLKey sdlk[NUM_CONTROLS] = {
 };
 
 //If any of these keys are held, we ignore other keyboard input.
-SDLKey control_keys[] = {
+SDL_Keycode control_keys[] = {
 	SDLK_LCTRL,
 	SDLK_RCTRL,
 	SDLK_LALT,
@@ -228,7 +228,7 @@ void read_local_controls()
 	if(local_control_locks.empty()) {
 #if !defined(__ANDROID__)
 		bool ignore_keypresses = false;
-		foreach(const SDLKey& k, control_keys) {
+		foreach(const SDL_Keycode& k, control_keys) {
 			if(keyboard()[k]) {
 				ignore_keypresses = true;
 				break;
@@ -565,12 +565,12 @@ void debug_dump_controls()
 	}
 }
 
-void set_sdlkey (CONTROL_ITEM item, SDLKey key) {
+void set_SDL_Keycode (CONTROL_ITEM item, SDL_Keycode key) {
 	if (item < NUM_CONTROLS)
 		sdlk[item] = key;
 }
 
-SDLKey get_sdlkey (CONTROL_ITEM item) {
+SDL_Keycode get_SDL_Keycode (CONTROL_ITEM item) {
 	if (item < NUM_CONTROLS)
 		return sdlk[item];
 	return SDLK_UNKNOWN;

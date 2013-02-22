@@ -300,7 +300,7 @@ int show_simple_option_dialog(level& lvl, const std::string& text, const std::ve
 		}
 
 		draw_scene(lvl, last_draw_position(), &lvl.player()->get_entity());
-		SDL_GL_SwapBuffers();
+		SDL_GL_SwapWindow(graphics::get_window());
 #if defined(__ANDROID__)
 		graphics::reset_opengl_state();
 #endif

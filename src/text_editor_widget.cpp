@@ -452,8 +452,42 @@ bool text_editor_widget::handle_event(const SDL_Event& event, bool claimed)
 		return handle_mouse_button_up(event.button) || claimed;
 	case SDL_MOUSEMOTION:
 		return handle_mouse_motion(event.motion) || claimed;
+	case SDL_MOUSEWHEEL:
+		return handle_mouse_wheel(event.wheel) || claimed;
 	}
 
+	return false;
+}
+
+bool text_editor_widget::handle_mouse_wheel(const SDL_MouseWheelEvent& event)
+{
+	int mx, my;
+	SDL_GetMouseState(&mx, &my);
+	if(mx >= x() && mx < x() + width() && my >= y() && my < y() + height()) {
+		if(event.y < 0) {
+			if(cursor_.row > 2) {
+				cursor_.row -= 3;
+				scroll_pos_ -= 3;
+				if( scroll_pos_ < 0 ){ 
+					scroll_pos_ = 0; 
+				}
+				cursor_.col = find_equivalent_col(cursor_.col, cursor_.row+3, cursor_.row);
+				on_move_cursor();
+			}
+			return true;
+		} else {
+			if(text_.size() > 2 && cursor_.row < text_.size()-3) {
+				cursor_.row += 3;
+				scroll_pos_ += 3;
+				if( scroll_pos_ > text_.size() ){ 
+					scroll_pos_ = text_.size(); 
+				}
+				cursor_.col = find_equivalent_col(cursor_.col, cursor_.row-3, cursor_.row);
+				on_move_cursor();
+			}
+			return true;
+		}
+	}
 	return false;
 }
 
@@ -463,11 +497,6 @@ void text_editor_widget::set_focus(bool value)
 		on_change_focus_(value);
 	}
 	has_focus_ = value;
-
-	if(value) {
-		SDL_EnableUNICODE(1);
-		SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
-	}
 
 	if(nrows_ == 1 && value) {
 		cursor_ = Loc(0, text_.front().size());
@@ -539,30 +568,6 @@ bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& ev
 {
 	record_op();
 	if(event.x >= x() && event.x < x() + width() && event.y >= y() && event.y < y() + height()) {
-		if(event.button == SDL_BUTTON_WHEELUP) {
-			if(cursor_.row > 2) {
-				cursor_.row -= 3;
-				scroll_pos_ -= 3;
-				if( scroll_pos_ < 0 ){ 
-					scroll_pos_ = 0; 
-				}
-				cursor_.col = find_equivalent_col(cursor_.col, cursor_.row+3, cursor_.row);
-				on_move_cursor();
-			}
-			return true;
-		} else if(event.button == SDL_BUTTON_WHEELDOWN) {
-			if(text_.size() > 2 && cursor_.row < text_.size()-3) {
-				cursor_.row += 3;
-				scroll_pos_ += 3;
-				if( scroll_pos_ > text_.size() ){ 
-					scroll_pos_ = text_.size(); 
-				}
-				cursor_.col = find_equivalent_col(cursor_.col, cursor_.row-3, cursor_.row);
-				on_move_cursor();
-			}
-			return true;
-		}
-
 		set_focus(true);
 		std::pair<int, int> pos = mouse_position_to_row_col(event.x, event.y);
 		if(pos.first != -1) {

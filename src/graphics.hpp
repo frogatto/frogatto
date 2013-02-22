@@ -7,7 +7,6 @@
 #endif
 
 #include "SDL.h"
-#include "SDL_keysym.h"
 #include "SDL_thread.h"
 
 #if defined(__ANDROID__)
@@ -29,7 +28,6 @@
 #endif
 
 #include "gles2.hpp"
-#include "wm.hpp"
 
 #if defined(GL_ES_VERSION_2_0)
 extern window_manager wm;
@@ -75,5 +73,7 @@ extern window_manager wm;
 #endif
 
 #endif
+
+#define CLEANUP_WINDOW_CONTEXT 0x40000000
 
 #endif // GRAPHICS_HPP_INCLUDED

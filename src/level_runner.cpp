@@ -350,9 +350,8 @@ bool is_skipping_game() {
 
 void video_resize(SDL_Event &event) 
 {
-    const SDL_ResizeEvent* resize = reinterpret_cast<SDL_ResizeEvent*>(&event);
-    int width = resize->w;
-    int height = resize->h;
+	int width = event.window.data1;
+    int height = event.window.data2;
 
 	if(preferences::proportional_resize() == false) {
 		const int aspect = (preferences::actual_screen_width()*1000)/preferences::actual_screen_height();
@@ -391,14 +390,10 @@ void video_resize(SDL_Event &event)
 
 void level_runner::video_resize_event(const SDL_Event &event)
 {
-    const SDL_ResizeEvent* resize = reinterpret_cast<const SDL_ResizeEvent*>(&event);
-    int width = resize->w;
-    int height = resize->h;
-
 	static const int WindowResizeEventID = get_object_event_id("window_resize");
 	game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable);
-	callable->add("width", variant(width));
-	callable->add("height", variant(height));
+	callable->add("width", variant(event.window.data1));
+	callable->add("height", variant(event.window.data2));
 	lvl_->player()->get_entity().handle_event(WindowResizeEventID, callable.get());
 }
 
@@ -447,7 +442,6 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 		case SDL_MOUSEMOTION:
 		    int x, mx = event.type == SDL_MOUSEMOTION ? event.motion.x : event.button.x;
 			int y, my = event.type == SDL_MOUSEMOTION ? event.motion.y : event.button.y;
-			int i = event.type == SDL_MOUSEMOTION ? event.motion.which : event.button.which;
 			int event_type = event.type;
 			int event_button_button = event.button.button;
 #endif
@@ -472,7 +466,6 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 				game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable);
 				callable->add("mouse_x", variant(x));
 				callable->add("mouse_y", variant(y));
-				callable->add("mouse_index", variant(i));
 				if(event_type != SDL_MOUSEMOTION) {
 					callable->add("mouse_button", variant(event_button_button));
 				} else {
@@ -1135,7 +1128,6 @@ bool level_runner::play_cycle()
 				quit_ = true;
 				break;
 			}
-			case SDL_VIDEORESIZE: video_resize(event); video_resize_event(event); continue;
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 			// make sure nothing happens while the app is supposed to be "inactive"
 			case SDL_WINDOWEVENT:
@@ -1200,25 +1192,28 @@ bool level_runner::play_cycle()
 				}
 			break;
 #else
-			case SDL_ACTIVEEVENT:
-				if (event.active.state & (SDL_APPACTIVE | SDL_APPINPUTFOCUS) 
+			case SDL_WINDOWEVENT:
+				if((event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED 
+					|| event.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
 					&& preferences::allow_autopause()) {
-					if(event.active.gain == 0) {
+					if(event.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
 						if(!paused && !editor_) {
 							toggle_pause();
 						}
-					//} else {
-					//	if(paused) {
-					//		toggle_pause();
-					//	}
+					} else {
+						if(paused) {
+							toggle_pause();
+						}
 					}
-					
+				} else if(event.window.event == SDL_WINDOWEVENT_RESIZED) {
+					video_resize(event); 
+					video_resize_event(event);
 				}
 			break;
 #endif
 			case SDL_KEYDOWN: {
-				const SDLMod mod = SDL_GetModState();
-				const SDLKey key = event.key.keysym.sym;
+				const SDL_Keymod mod = SDL_GetModState();
+				const SDL_Keycode key = event.key.keysym.sym;
 				//std::cerr << "Key #" << (int) key << ".\n";
 				if(key == SDLK_ESCAPE) {
 					if(editor_) {

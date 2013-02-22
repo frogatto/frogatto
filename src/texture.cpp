@@ -335,9 +335,10 @@ surface texture::build_surface_from_key(const key& k, unsigned int surf_width, u
 	} else {
 		for(key::const_iterator i = k.begin(); i != k.end(); ++i) {
 			if(i == k.begin()) {
-				SDL_SetAlpha(i->get(), 0, SDL_ALPHA_OPAQUE);
+				// XXX ????
+				SDL_SetSurfaceAlphaMod(i->get(), SDL_ALPHA_OPAQUE);
 			} else {
-				SDL_SetAlpha(i->get(), SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
+				SDL_SetSurfaceAlphaMod(i->get(), SDL_ALPHA_OPAQUE);
 			}
 
 			SDL_BlitSurface(i->get(),NULL,s.get(),NULL);

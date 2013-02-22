@@ -73,30 +73,30 @@ namespace input {
         bool killed_;
     };
 
-    SDLMod get_mod_change_state(const SDLKey& k);
+    SDL_Keymod get_mod_change_state(const SDL_Keycode& k);
     Uint8 get_button_change_state(Uint8 button);
 
     class key_listener: public listener {
     public:
-        virtual void bind_key(int logical_key, const SDL_keysym& sym, 
+        virtual void bind_key(int logical_key, const SDL_Scancode& sym, 
                               bool collapse_doubles = true);
-        virtual void bind_key(int logical_key, const SDLKey& k, const SDLMod& m,
+        virtual void bind_key(int logical_key, const SDL_Keycode& k, const SDL_Keymod& m,
                               bool collapse_doubles = true);
         virtual bool unbind_key(int logical_key);
-        virtual bool unbind_key(const SDL_keysym& sym);
-        int bound_key(const SDL_keysym& sym) const;
+        virtual bool unbind_key(const SDL_Scancode& sym);
+        int bound_key(const SDL_Scancode& sym) const;
         bool process_event(const SDL_Event& event, bool claimed);
     protected:
-        bool check_keys(const SDL_keysym& sym, Uint32 event_type);
+        bool check_keys(const SDL_Scancode& sym, Uint32 event_type);
         virtual void do_keydown(int key) =0;
         virtual void do_keyup(int key) =0;
     private:
         void clean_mod_maps();
-        void expand_keys(int logical_key, const SDL_keysym& sym,
-                         const SDLMod &mask, int depth);
+        void expand_keys(int logical_key, const SDL_Scancode& sym,
+                         const SDL_Keymod &mask, int depth);
         
-        typedef std::map<SDLMod,int> mod_map;
-        typedef std::map<SDLKey,mod_map> binding_map;
+        typedef std::map<SDL_Keymod,int> mod_map;
+        typedef std::map<SDL_Keycode,mod_map> binding_map;
 
         binding_map bindings_;
     };
@@ -105,14 +105,14 @@ namespace input {
     public:
         bool key(int logical_key) const { return state_[logical_key]; }
         void reset();
-        void bind_key(int logical_key, const SDL_keysym& sym,
+        void bind_key(int logical_key, const SDL_Scancode& sym,
                       bool collapse_doubles = true);
-        void bind_key(int logical_key, const SDLKey& k, const SDLMod& m,
+        void bind_key(int logical_key, const SDL_Keycode& k, const SDL_Keymod& m,
                       bool collapse_doubles = true) {
             key_listener::bind_key(logical_key, k, m, collapse_doubles);
         }
         bool unbind_key(int logical_key);
-        bool unbind_key(const SDL_keysym& sym);
+        bool unbind_key(const SDL_Scancode& sym);
     protected:
         void do_keydown(int key);
         void do_keyup(int key);
@@ -139,8 +139,8 @@ namespace input {
     /* convenient abstract base */
     class mouse_listener: public listener {
     public:
-        static const SDLMod MOD_MASK_NONE = (SDLMod)-1;
-        static const SDLMod MOD_MASK_ALL = (SDLMod)0;
+        static const SDL_Keymod MOD_MASK_NONE = (SDL_Keymod)-1;
+        static const SDL_Keymod MOD_MASK_ALL = (SDL_Keymod)0;
         static const Uint8 STATE_MASK_NONE = 0xFF;
         static const Uint8 STATE_MASK_ALL = 0;
 
@@ -169,14 +169,14 @@ namespace input {
             return target_area_.w != 0 && target_area_.h != 0;
         }
         
-        void set_target_mod(SDLMod mod, SDLMod mask) { 
+        void set_target_mod(SDL_Keymod mod, SDL_Keymod mask) { 
             target_mod_ = mod;
-            target_mod_mask_ = (SDLMod)(mask | mod);
+            target_mod_mask_ = (SDL_Keymod)(mask | mod);
         }
-        SDLMod target_mod() const {
+        SDL_Keymod target_mod() const {
             return target_mod_;
         }
-        SDLMod target_mod_mask() const {
+        SDL_Keymod target_mod_mask() const {
             return target_mod_mask_;
         }
         
@@ -201,15 +201,15 @@ namespace input {
         bool matches_target_state(const Uint8& state) const {
             return (state & target_state_mask_ )== target_state_;
         }
-        bool matches_target_mod(const SDLMod& mod) const {
+        bool matches_target_mod(const SDL_Keymod& mod) const {
             return (mod & target_mod_mask_) == target_mod_;
         }
     private:
         SDL_Rect target_area_; //= {0,0,0,0};
         Uint8 target_state_;
         Uint8 target_state_mask_;// = STATE_MASK_ALL;
-        SDLMod target_mod_;// = 0;
-        SDLMod target_mod_mask_;// = MOD_MASK_ALL;    
+        SDL_Keymod target_mod_;// = 0;
+        SDL_Keymod target_mod_mask_;// = MOD_MASK_ALL;    
     };
 
     class mouse_drag_listener: public mouse_listener {
@@ -272,7 +272,7 @@ namespace input {
             return total_rel_[1];
         }
         /* the last modifiers observed */
-        SDLMod mod() const {
+        SDL_Keymod mod() const {
             return mod_;
         }
         /* the last state observed */
@@ -291,7 +291,7 @@ namespace input {
         Sint32 start_pos_[2];
         Sint16 rel_[2];
         Sint16 total_rel_[2];
-        SDLMod mod_;
+        SDL_Keymod mod_;
         Uint8 state_;
         bool is_capturing_;
     };
@@ -323,14 +323,14 @@ namespace input {
         void reset() { clicked_ = false; }
         void set_click_timeout(Uint32 amount) { click_timeout_ = amount; }
         Uint32 click_timeout() const { return click_timeout_; }
-        virtual void do_click(Sint32 x, Sint32 y, int count, Uint8 state, Uint8 button_state, SDLMod mod)=0;
+        virtual void do_click(Sint32 x, Sint32 y, int count, Uint8 state, Uint8 button_state, SDL_Keymod mod)=0;
     private:
         bool clicked_;
         int click_count_;
         Uint32 click_time_;
         Uint32 click_timeout_;
         Uint8 state_, button_state_;
-        SDLMod mod_;
+        SDL_Keymod mod_;
         Sint32 pos_[2];
     };
 
@@ -340,7 +340,7 @@ namespace input {
         mouse_click_listener(T owner) : owner_(owner) {}
 
         void do_click(Sint32 x, Sint32 y, int count, 
-                      Uint8 state, Uint8 bstate, SDLMod mod) {
+                      Uint8 state, Uint8 bstate, SDL_Keymod mod) {
             owner_->click(x, y, count, state, bstate, mod);
         }
     private:

@@ -104,6 +104,7 @@ private:
 	bool handle_mouse_button_down(const SDL_MouseButtonEvent& event);
 	bool handle_mouse_button_up(const SDL_MouseButtonEvent& event);
 	bool handle_mouse_motion(const SDL_MouseMotionEvent& event);
+	bool handle_mouse_wheel(const SDL_MouseWheelEvent& event);
 	bool handle_key_press(const SDL_KeyboardEvent& key);
 
 	void handle_paste(std::string txt);

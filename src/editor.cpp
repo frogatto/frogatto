@@ -938,7 +938,7 @@ editor_resolution_manager::editor_resolution_manager(int xres, int yres) :
 
 	if(++editor_resolution_manager_count == 1) {
 		std::cerr << "EDITOR RESOLUTION: " << editor_x_resolution << "," << editor_y_resolution << "\n";
-		SDL_Surface* result = graphics::set_video_mode(editor_x_resolution,editor_y_resolution,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+		SDL_Surface* result = graphics::set_video_mode(editor_x_resolution,editor_y_resolution,0,SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN|SDL_WINDOW_RESIZABLE|(preferences::fullscreen() ? SDL_WINDOW_FULLSCREEN : 0));
 
 		if(result) {
 			preferences::set_actual_screen_width(editor_x_resolution);
@@ -954,7 +954,7 @@ editor_resolution_manager::~editor_resolution_manager() {
 	if(--editor_resolution_manager_count == 0) {
 		preferences::set_actual_screen_width(original_width_);
 		preferences::set_actual_screen_height(original_height_);
-		graphics::set_video_mode(original_width_,original_height_,0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+		graphics::set_video_mode(original_width_,original_height_,0,SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN|SDL_WINDOW_RESIZABLE|(preferences::fullscreen() ? SDL_WINDOW_FULLSCREEN : 0));
 	}
 }
 
@@ -1088,16 +1088,15 @@ bool editor::handle_event(const SDL_Event& event, bool swallowed)
 			handle_mouse_button_up(event.button);
 		}
 		break;
-	case SDL_VIDEORESIZE: {
-		const SDL_ResizeEvent* const resize = reinterpret_cast<const SDL_ResizeEvent*>(&event);
-
-		SDL_Surface* result = graphics::set_video_mode(resize->w,resize->h,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+	case SDL_WINDOWEVENT: {
+		if(event.window.event == SDL_WINDOWEVENT_RESIZED) {
+		SDL_Surface* result = graphics::set_video_mode(event.window.data1, event.window.data2, 0, SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN|SDL_WINDOW_RESIZABLE|(preferences::fullscreen() ? SDL_WINDOW_FULLSCREEN : 0));
 		
 		if(result) {
-			editor_x_resolution = resize->w;
-			editor_y_resolution = resize->h;
-			preferences::set_actual_screen_width(resize->w);
-			preferences::set_actual_screen_height(resize->h);
+			editor_x_resolution = event.window.data1;
+			editor_y_resolution = event.window.data2;
+			preferences::set_actual_screen_width(event.window.data1);
+			preferences::set_actual_screen_height(event.window.data2);
 		
 			reset_dialog_positions();
 		}

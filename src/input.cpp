@@ -159,303 +159,58 @@ namespace input {
         }
         reference_holder_.clear();
     }
-
-    Uint8 get_button_change_state(Uint8 button) {
-        return (1 << (button-1));
-    }
-
-    SDLMod get_mod_change_state(const SDLKey& key) {
-        SDLMod ret;
-#if SDL_MAJOR_VERSION == 1 && SDL_MINOR_VERSION == 3
-#define SDLK_LMETA SDLK_LGUI
-#define SDLK_RMETA SDLK_RGUI
-#endif
-        switch(key) {
-        case SDLK_LSHIFT:
-            ret = KMOD_LSHIFT;
-            break;
-        case SDLK_RSHIFT:
-            ret = KMOD_RSHIFT;
-            break;
-        case SDLK_LCTRL:
-            ret = KMOD_LCTRL;
-            break;
-        case SDLK_RCTRL:
-            ret = KMOD_RCTRL;
-            break;
-        case SDLK_LALT:
-            ret = KMOD_LALT;
-            break;
-        case SDLK_RALT:
-            ret = KMOD_RALT;
-            break;
-        case SDLK_LMETA:
-            ret = KMOD_LMETA;
-            break;
-        case SDLK_RMETA:
-            ret = KMOD_RMETA;
-            break;
-        case SDLK_NUMLOCK:
-            ret = KMOD_NUM;
-            break;
-        case SDLK_CAPSLOCK:
-            ret = KMOD_CAPS;
-            break;
-        case SDLK_MODE:
-            ret = KMOD_MODE;
-            break;
-        default:
-            ret = KMOD_NONE;
-            break;
-        }
-
-        return ret;
-    }
-        
-    void key_listener::expand_keys(int logical_key, const SDL_keysym& sym,
-                                   const SDLMod& processed_mask, int depth) {
-        SDL_keysym tmp;
-        tmp = sym;
-
-        static const int NUM_CHUNKS = 4;
-        static const SDLMod chunks[NUM_CHUNKS] = { 
-            (SDLMod)KMOD_SHIFT, (SDLMod)KMOD_ALT, 
-            (SDLMod)KMOD_CTRL,  (SDLMod)KMOD_META 
-        };
-        static const SDLMod ALL_CHUNKS = (SDLMod)(KMOD_SHIFT | KMOD_ALT | KMOD_CTRL | KMOD_META);
-
-        static const int NUM_BITS = sizeof(SDLMod)*8;
-        int bit_idx[NUM_BITS];
-
-        int remaining = ALL_CHUNKS & sym.mod & ~processed_mask;
-        if(remaining == 0) {
-            bind_key(logical_key, sym, false);
-            return;
-        } 
-
-        for(int i =0;i<NUM_CHUNKS;++i) {
-            if(sym.mod & chunks[i] && !(processed_mask & chunks[i])) {
-                SDLMod newmask = (SDLMod)(processed_mask | chunks[i]);
-                SDLMod newmod = (SDLMod)(sym.mod & ~chunks[i]);
-
-                int bit_count = 0;
-                for(int j=0;j<NUM_BITS;++j) {
-                    if(chunks[i] & (1 << j)) {
-                        bit_idx[bit_count++] = j;
-                    }
-                }
-                int k_max = 1 << bit_count;
-                for(int k=1;k < k_max;++k) {
-                    tmp.mod = newmod;
-                    for(int j=0;j<bit_count;++j) {
-                        int bit = 1 << j;
-                        if(k & bit) {
-                            tmp.mod = (SDLMod)(tmp.mod | (1 << bit_idx[j]));
-                        }
-                    }
-                    expand_keys(logical_key, tmp, newmask, depth+1);
-                }
-                return;
-            }
-        }
+       
+    void key_listener::expand_keys(int logical_key, const SDL_Scancode& sym,
+                                   const SDL_Keymod& processed_mask, int depth) {
     }        
 
-    void key_listener::bind_key(int logical_key, const SDL_keysym& sym,
+    void key_listener::bind_key(int logical_key, const SDL_Scancode& sym,
                                 bool collapse_doubles) {
-        if(collapse_doubles) {
-            expand_keys(logical_key, sym, KMOD_NONE,0);
-            return;
-        }
-
-        unbind_key(sym);
-
-        binding_map::iterator binding_itor = bindings_.find(sym.sym);
-        if(binding_itor == bindings_.end()) {
-            mod_map m;
-            bindings_[sym.sym] = m;
-            binding_itor = bindings_.find(sym.sym);
-        }
-        assert(binding_itor != bindings_.end());
-        binding_itor->second[static_cast<SDLMod>(sym.mod)] = logical_key;
     }
     
-    void key_listener::bind_key(int logical_key, const SDLKey& k, 
-                                const SDLMod& m, bool collapse_doubles) {
-        SDL_keysym sym;
-        sym.sym = k;
-        sym.mod = m;
-        bind_key(logical_key, sym, collapse_doubles);
+    void key_listener::bind_key(int logical_key, const SDL_Keycode& k, 
+                                const SDL_Keymod& m, bool collapse_doubles) {
     }
     
-    bool key_listener::unbind_key(const SDL_keysym& k) {
-        bool had_key = false;
-
-        binding_map::iterator binding_itor = bindings_.find(k.sym);
-        if(binding_itor != bindings_.end()) {
-            mod_map& mm = binding_itor->second;
-            mod_map::iterator mod_itor = mm.find(static_cast<SDLMod>(k.mod));
-            if(mod_itor != mm.end()) {
-                mm.erase(mod_itor);
-                had_key = true;
-            }
-        }
-        clean_mod_maps();
-        
-        return had_key;
+    bool key_listener::unbind_key(const SDL_Scancode& k) {
+		return false;
     }
     
-    /* find every instance of logical_key in the nested maps
-       and erase it, erasing any mod_maps that become empty*/
     bool key_listener::unbind_key(int logical_key) {
-        bool had_key = false;
-        bool erased;
-        do {
-            erased = false;
-            for(binding_map::iterator binding_itor = bindings_.begin();
-                binding_itor != bindings_.end();
-                ++binding_itor) {
-                mod_map& mm = binding_itor->second;
-                for(mod_map::iterator mod_itor = mm.begin();
-                    mod_itor != mm.end();
-                    ++mod_itor) {
-
-                    if(mod_itor->second == logical_key) {
-                        mm.erase(mod_itor);
-                        had_key = true;
-                        erased = true;
-                        break;
-                    }
-                }
-                if(erased) {
-                    break;
-                }
-            }
-        } while(erased);
-
-        clean_mod_maps();
-
-        return had_key;
+		return false;
     }
 
     void key_listener::clean_mod_maps() {
-        bool erased;
-        do {
-            erased = false;
-            for(binding_map::iterator binding_itor = bindings_.begin();
-                binding_itor != bindings_.end();
-                ++binding_itor) {
-                if(binding_itor->second.empty()) {
-                    bindings_.erase(binding_itor);
-                    erased = true;
-                    break;
-                }
-            }
-        } while(erased);
     }
     
-    int key_listener::bound_key(const SDL_keysym& sym) const {
-        binding_map::const_iterator binding_itor;
-        binding_itor = bindings_.find(sym.sym);
-        if(binding_itor == bindings_.end()) {
-            return -1;
-        }
-        mod_map::const_iterator mod_itor;
-        const mod_map& mm = binding_itor->second;
-        mod_itor = mm.find(static_cast<SDLMod>(sym.mod));
-        if(mod_itor == mm.end()) {
-            return -1;
-        }
-        return mod_itor->second;
+    int key_listener::bound_key(const SDL_Scancode& sym) const {
+		return 0;
     }
 
-    bool key_listener::check_keys(const SDL_keysym& sym, Uint32 type) {
-        binding_map::iterator binding_itor;
-        binding_itor = bindings_.find(sym.sym);
-        
-        bool changed = false;
-
-        switch(type) {
-        case SDL_KEYDOWN:
-            if(binding_itor != bindings_.end()) {
-                mod_map::iterator mod_itor = binding_itor->second.find(static_cast<SDLMod>(sym.mod));
-                if(mod_itor != binding_itor->second.end()) {
-                    do_keydown(mod_itor->second);
-                    changed = true;
-                }
-            }
-            break;
-        case SDL_KEYUP:
-            if(binding_itor != bindings_.end()) {
-                for(mod_map::iterator mod_itor = binding_itor->second.begin();
-                    mod_itor != binding_itor->second.end();
-                    ++mod_itor) {
-                    do_keyup(mod_itor->second);
-                }
-                changed = true;
-            }
-            break;
-        default:
-            break;
-       }
-
-        return changed;
+    bool key_listener::check_keys(const SDL_Scancode& sym, Uint32 type) {
+		return 0;
     }
     
     bool key_listener::process_event(const SDL_Event& event, bool claimed) {
-        switch(event.type) {
-        case SDL_KEYDOWN:
-        case SDL_KEYUP:
-            if(claimed) {
-                reset();
-                break;
-            }
-            if(check_keys(event.key.keysym, event.type)) {
-                claimed = true;
-            }
-            break;
-        default:
-            break;
-        }
-        
-        return claimed;
+		return 0;
     }
 
-    void key_down_listener::bind_key(int logical_key, const SDL_keysym& sym,
+    void key_down_listener::bind_key(int logical_key, const SDL_Scancode& sym,
                                      bool collapse_doubles) {
-        key_listener::bind_key(logical_key, sym, collapse_doubles);
-        if(logical_key >= state_.size()) {
-            state_.resize(logical_key+1);
-        }
-        state_[logical_key] = false;
     }
     
-    bool key_down_listener::unbind_key(const SDL_keysym& k) {
-        int key = bound_key(k);
-        if(key >= 0 && key < state_.size()) {
-            state_[key] = false;
-        }
-        return key_listener::unbind_key(k);
+    bool key_down_listener::unbind_key(const SDL_Scancode& k) {
     }
     
     bool key_down_listener::unbind_key(int logical_key) {
-        if(logical_key < state_.size()) {
-            state_[logical_key] = false;
-        }
-        return key_listener::unbind_key(logical_key);
     }
 
     void key_down_listener::do_keydown(int key) {
-        state_[key] = true;
     }
     void key_down_listener::do_keyup(int key) {
-        state_[key] = false;
     }
 
     void key_down_listener::reset() {
-        std::vector<bool>::iterator itor;
-        for(itor = state_.begin(); itor != state_.end(); ++itor) {
-            *itor = false;
-        }
     }
 
 #ifndef NO_EDITOR
@@ -464,8 +219,8 @@ namespace input {
         Sint16 rel[2];
         Uint8 state;
         Uint8 button_change_state;
-        SDLMod mod;
-        SDLMod mod_change_state;
+        SDL_Keymod mod;
+        SDL_Keymod mod_change_state;
         
         bool was_capturing = is_capturing_;
         
@@ -505,7 +260,7 @@ namespace input {
             rel[1] = 0;
             mod = event.key.keysym.mod;
             button_change_state = 0;
-            mod_change_state = (SDLMod)
+            mod_change_state = (SDL_Keymod)
                 (get_mod_change_state(event.key.keysym.sym)
                  & target_mod_mask());
             break;

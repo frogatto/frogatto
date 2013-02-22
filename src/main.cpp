@@ -65,7 +65,6 @@
 #include "tile_map.hpp"
 #include "unit_test.hpp"
 #include "variant_utils.hpp"
-#include "wm.hpp"
 
 #if defined(USE_BOX2D)
 #include "b2d_ffl.hpp"
@@ -82,10 +81,6 @@
 #endif
 
 #define DEFAULT_MODULE	"frogatto"
-
-#if defined(USE_GLES2)
-window_manager wm;
-#endif
 
 namespace {
 
@@ -617,10 +612,7 @@ extern "C" int main(int argcount, char** argvec)
 	}
 
 #if defined(USE_GLES2)
-	wm.create_window(preferences::actual_screen_width(),
-		preferences::actual_screen_height(),
-		0,
-		(preferences::resizable() ? SDL_RESIZABLE : 0) | (preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+	graphics::set_video_mode(preferences::actual_screen_width(), preferences::actual_screen_height());
 #else
 
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
@@ -830,8 +822,6 @@ extern "C" int main(int argcount, char** argvec)
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	SDL_WM_SetCaption(module::get_module_pretty_name().c_str(), module::get_module_pretty_name().c_str());
-
 	std::cerr << "JOYSTICKS: " << SDL_NumJoysticks() << "\n";
 
 	const load_level_manager load_manager;
@@ -843,14 +833,6 @@ extern "C" int main(int argcount, char** argvec)
 	const joystick::manager joystick_manager;
 #endif 
 	
-	#if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR && !defined(__native_client__)
-	std::cerr << "SDL_GetVideoSurface()" << std::endl;
-	const SDL_Surface* fb = SDL_GetVideoSurface();
-	if(fb == NULL) {
-		return 0;
-	}
-	#endif
-
 	graphics::texture::manager texture_manager;
 
 #ifndef NO_EDITOR
@@ -1003,10 +985,8 @@ extern "C" int main(int argcount, char** argvec)
     EGL_Destroy();
 #endif
 
-#if defined(USE_GLES2)
-	wm.destroy_window();
-#endif
-
+	// Be nice and destroy the GL context and the window.
+	graphics::set_video_mode(0, 0, 0, CLEANUP_WINDOW_CONTEXT);
 	SDL_Quit();
 	
 	preferences::save_preferences();

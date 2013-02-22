@@ -29,7 +29,7 @@ void stoupper(std::string& s)
 
 }
 
-std::string get_key_name(SDLKey key) {
+std::string get_key_name(SDL_Keycode key) {
 	switch(key) {
 	// these characters are not contained in the font
 	case SDLK_CARET:
@@ -47,13 +47,11 @@ std::string get_key_name(SDLKey key) {
 		return std::string("BKSP");
 	case SDLK_CAPSLOCK:
 		return std::string("CAPS");
-	case SDLK_COMPOSE:
-		return std::string("COMP");
 	case SDLK_DELETE:
 		return std::string("DEL");
 	case SDLK_INSERT:
 		return std::string("INS");
-	case SDLK_NUMLOCK:
+	case SDLK_NUMLOCKCLEAR:
 		return std::string("NUM");
 	case SDLK_PAGEDOWN:
 		return std::string("PGDN");
@@ -80,10 +78,10 @@ std::string get_key_name(SDLKey key) {
 	}
 }
 
-SDLKey get_key_sym(const std::string& s)
+SDL_Keycode get_key_sym(const std::string& s)
 {
 	if(s.size() == 1 && unsigned(s[0]) <= 127) {
-		return SDLKey(s[0]);
+		return SDL_Keycode(s[0]);
 	} else if(s == "UP" || s == (("↑"))) {
 		return SDLK_UP;
 	} else if(s == "DOWN" || s == (("↓"))) {
@@ -105,11 +103,27 @@ SDLKey get_key_sym(const std::string& s)
 	} else if(s.substr(0, 6) == "SDLK_F") {
 		int n;
 		std::istringstream(s.substr(6)) >> n;
-		return SDLKey(n + SDLK_F1 - 1);
-	} else if(s.substr(0, 7) == "SDLK_KP") {
-		int n;
-		std::istringstream(s.substr(7)) >> n;
-		return SDLKey(n + SDLK_KP0);
+		return SDL_Keycode(n + SDLK_F1 - 1);
+	} else if(s == "SDLK_KP_0") {
+		return SDLK_KP_0;
+	} else if(s == "SDLK_KP_1") {
+		return SDLK_KP_1;
+	} else if(s == "SDLK_KP_2") {
+		return SDLK_KP_2;
+	} else if(s == "SDLK_KP_3") {
+		return SDLK_KP_3;
+	} else if(s == "SDLK_KP_4") {
+		return SDLK_KP_4;
+	} else if(s == "SDLK_KP_5") {
+		return SDLK_KP_6;
+	} else if(s == "SDLK_KP_6") {
+		return SDLK_KP_6;
+	} else if(s == "SDLK_KP_7") {
+		return SDLK_KP_7;
+	} else if(s == "SDLK_KP_8") {
+		return SDLK_KP_8;
+	} else if(s == "SDLK_KP_9") {
+		return SDLK_KP_9;
 	} else if(s == "KP_PERIOD") {
 		return SDLK_KP_PERIOD;
 	} else if(s == "KP_DIVIDE") {
@@ -127,27 +141,27 @@ SDLKey get_key_sym(const std::string& s)
 	} else if(s == "HELP") {
 		return SDLK_HELP;
 	} else if(s == "PRINT") {
-		return SDLK_PRINT;
+		return SDLK_PRINTSCREEN;
 	} else if(s == "SYSRQ") {
 		return SDLK_SYSREQ;
-	} else if(s == "BREAK") {
-		return SDLK_BREAK;
+	} else if(s == "PAUSE") {
+		return SDLK_PAUSE;
 	} else if(s == "POWER") {
 		return SDLK_POWER;
 	} else if(s == "UNDO") {
 		return SDLK_UNDO;
 	} else if(s == "NUMLOCK") {
-		return SDLK_NUMLOCK;
+		return SDLK_NUMLOCKCLEAR;
 	} else if(s == "CAPSLOCK") {
 		return SDLK_CAPSLOCK;
 	} else if(s == "SCROLLOCK") {
-		return SDLK_SCROLLOCK;
+		return SDLK_SCROLLLOCK;
 	}
 	ASSERT_LOG(false, "Unreconised key '" << s << "'");
 	return SDLK_UNKNOWN;
 }
 
-key_button::key_button(SDLKey key, BUTTON_RESOLUTION button_resolution)
+key_button::key_button(SDL_Keycode key, BUTTON_RESOLUTION button_resolution)
   : label_(widget_ptr(new graphical_font_label(get_key_name(key), "door_label", 2))),
 	key_(key), button_resolution_(button_resolution),
 	normal_button_image_set_(framed_gui_element::get("regular_button")),
@@ -239,7 +253,7 @@ bool key_button::handle_event(const SDL_Event& event, bool claimed)
 	return claimed;
 }
 
-SDLKey key_button::get_key() {
+SDL_Keycode key_button::get_key() {
 	return key_;
 }
 

@@ -21,8 +21,8 @@ enum CONTROL_ITEM {
 	NUM_CONTROLS,
 };
 
-void set_sdlkey (CONTROL_ITEM item, SDLKey key);
-SDLKey get_sdlkey (CONTROL_ITEM item);
+void set_SDL_Keycode (CONTROL_ITEM item, SDL_Keycode key);
+SDL_Keycode get_SDL_Keycode (CONTROL_ITEM item);
 
 void new_level(int starting_cycle, int nplayers, int local_player);
 

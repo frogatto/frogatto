@@ -181,8 +181,7 @@ bool label::handle_event(const SDL_Event& event, bool claimed)
 	if(!on_click_ && !highlight_on_mouseover_) {
 		return claimed;
 	}
-	if((event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) 
-		&& (event.button.button == SDL_BUTTON_WHEELUP || event.button.button == SDL_BUTTON_WHEELDOWN)
+	if((event.type == SDL_MOUSEWHEEL) 
 		&& in_label(event.button.x, event.button.y)) {
 		// skip processing if mousewheel event
 		return claimed;

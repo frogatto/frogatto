@@ -97,13 +97,13 @@ bool speech_dialog::key_press(const SDL_Event& event)
 	if(text_char_ == num_chars() && options_.empty() == false) {
 		if(event.type == SDL_KEYDOWN)
 		{
-			if(event.key.keysym.sym == get_sdlkey(controls::CONTROL_UP)) {
+			if(event.key.keysym.sym == get_SDL_Keycode(controls::CONTROL_UP)) {
 				move_up();
-			} else if(event.key.keysym.sym == get_sdlkey(controls::CONTROL_DOWN)) {
+			} else if(event.key.keysym.sym == get_SDL_Keycode(controls::CONTROL_DOWN)) {
 				move_down();
 			} else if(event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_SPACE ||
-			   event.key.keysym.sym == get_sdlkey(controls::CONTROL_JUMP) ||
-			   event.key.keysym.sym == get_sdlkey(controls::CONTROL_TONGUE)) {
+			   event.key.keysym.sym == get_SDL_Keycode(controls::CONTROL_JUMP) ||
+			   event.key.keysym.sym == get_SDL_Keycode(controls::CONTROL_TONGUE)) {
 				return true;
 			}
 		}

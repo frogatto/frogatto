@@ -14,6 +14,7 @@
 
 #include "asserts.hpp"
 #include "foreach.hpp"
+#include "module.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "raster_distortion.hpp"
@@ -97,21 +98,36 @@ bool set_video_mode(int w, int h)
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1);
 	return set_video_mode(w,h,0,SDL_OPENGLES | SDL_FULLSCREEN);
 #else
-	return set_video_mode(w,h,0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) != NULL;
+	return set_video_mode(w,h,0,SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL|(preferences::resizable() ? SDL_WINDOW_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_WINDOW_FULLSCREEN : 0)) != NULL;
 #endif
 }
 
-SDL_Surface* set_video_mode(int w, int h, int bitsperpixel, int flags)
+SDL_Window* set_video_mode(int w, int h, int bitsperpixel, int flags)
 {
+	static SDL_Window* wnd = NULL;
+	static SDL_GLContext ctx = NULL;
 	graphics::texture::unbuild_all();
-	SDL_Surface* result = SDL_SetVideoMode(w,h,bitsperpixel,flags);
-	reset_opengl_state();
-	graphics::texture::rebuild_all();
-	texture_frame_buffer::rebuild();
-	
-	return result;
+	if(ctx) {
+		SDL_GL_DeleteContext(ctx);
+		ctx = NULL;
+	}
+	if(wnd) {
+		SDL_DestroyWindow(wnd);
+		wnd = NULL;
+	}
+	if(!(flags & CLEANUP_WINDOW_CONTEXT)) {
+		wnd = SDL_CreateWindow(module::get_module_pretty_name().c_str(), 
+			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, flags);
+		ctx = SDL_GL_CreateContext(wnd);
+
+		reset_opengl_state();
+		graphics::texture::rebuild_all();
+		texture_frame_buffer::rebuild();
+	}
+
+	return wnd;
 }
-	
+
 	/* unavoidable global variable to store global clip
 	 rectangle changes */
 	std::vector<boost::shared_array<GLint> > clip_rectangles;
