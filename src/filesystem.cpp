@@ -950,7 +950,7 @@ void notify_on_file_modification(const std::string& path, boost::function<void()
 	}
 
 	if(file_mod_worker_thread == NULL) {
-		file_mod_worker_thread = new threading::thread(file_mod_worker_thread_fn);
+		file_mod_worker_thread = new threading::thread("file_change_notify", file_mod_worker_thread_fn);
 	}
 }
 

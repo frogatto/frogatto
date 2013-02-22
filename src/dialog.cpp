@@ -251,7 +251,7 @@ void dialog::prepare_draw()
 
 void dialog::complete_draw()
 {
-	SDL_GL_SwapBuffers();
+	graphics::swap_buffers();
 #if defined(__ANDROID__)
 	graphics::reset_opengl_state();
 #endif

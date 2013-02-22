@@ -53,6 +53,7 @@ bool shader::compile(const std::string& code)
 		shader_ = 0;
 	}
 
+	ASSERT_LOG(glCreateShader != NULL, "Something bad happened with Glew shader not initialised.");
 	shader_ = glCreateShader(type_);
 	if(shader_ == 0) {
 		std::cerr << "Enable to create shader." << std::endl;

@@ -24,7 +24,7 @@ void load_palette_def(const std::string& id)
 	surface s = surface_cache::get_no_cache("palette/" + id + ".png");
 
 	surface converted(SDL_CreateRGBSurface(SDL_SWSURFACE, s->w, s->h, 32, SURFACE_MASK));
-	SDL_SetAlpha(s.get(), 0, SDL_ALPHA_OPAQUE);
+	SDL_SetSurfaceAlphaMod(s.get(), SDL_ALPHA_OPAQUE);
 	SDL_BlitSurface(s.get(), NULL, converted.get(), NULL);
 	s = converted;
 

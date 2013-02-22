@@ -180,7 +180,7 @@ class vi_editor : public external_text_editor
 public:
 	explicit vi_editor(variant obj) : cmd_(obj["command"].as_string_default("gvim")), counter_(0), shutdown_(false)
 	{
-		thread_.reset(new threading::thread(boost::bind(&vi_editor::run_thread, this)));
+		thread_.reset(new threading::thread("vi_editor_thread", boost::bind(&vi_editor::run_thread, this)));
 	}
 
 	void shutdown()

@@ -167,7 +167,7 @@ void create_compiled_tiles_image()
 			src = graphics::map_palette(src, palette);
 		}
 
-		SDL_SetAlpha(src.get(), 0, SDL_ALPHA_OPAQUE);
+		SDL_SetSurfaceAlphaMod(src.get(), SDL_ALPHA_OPAQUE);
 		const int width = std::max<int>(src->w, src->h)/BaseTileSize;
 
 		const int src_x = (tile_pos%width) * BaseTileSize;
@@ -187,7 +187,7 @@ void create_compiled_tiles_image()
 //  don't need to save the main compiled tile anymore.
 //	IMG_SavePNG("images/tiles-compiled.png", s.get(), 5);
 
-	SDL_SetAlpha(s.get(), 0, SDL_ALPHA_OPAQUE);
+	SDL_SetSurfaceAlphaMod(s.get(), SDL_ALPHA_OPAQUE);
 
 	for(std::map<obj_variant_ptr, int>::const_iterator i = tile_nodes_to_zorders.begin(); i != tile_nodes_to_zorders.end(); ++i) {
 		const int num_tiles = zorder_to_num_tiles[i->second];

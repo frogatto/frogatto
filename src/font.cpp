@@ -162,7 +162,7 @@ graphics::texture render_text_uncached(const std::string& text,
 		int ypos = 0;
 		foreach(graphics::surface part, parts) {
 			SDL_Rect rect = {0, ypos, part->w, part->h};
-			SDL_SetAlpha(part.get(), 0, SDL_ALPHA_OPAQUE);
+			SDL_SetSurfaceAlphaMod(part.get(), SDL_ALPHA_OPAQUE);
 			SDL_BlitSurface(part.get(), NULL, s.get(), &rect);
 			ypos += part->h;
 		}

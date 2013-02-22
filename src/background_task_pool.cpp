@@ -48,7 +48,7 @@ manager::~manager()
 
 void submit(boost::function<void()> job, boost::function<void()> on_complete)
 {
-	task t = { job, on_complete, boost::shared_ptr<threading::thread>(new threading::thread(boost::bind(run_task, job, next_task_id))) };
+	task t = { job, on_complete, boost::shared_ptr<threading::thread>(new threading::thread("background_task", boost::bind(run_task, job, next_task_id))) };
 	task_map[next_task_id] = t;
 	++next_task_id;
 }

@@ -42,7 +42,6 @@
 #include "of_bridge.h"
 #include "joystick.hpp"
 #include "json_parser.hpp"
-#include "key.hpp"
 #include "level.hpp"
 #include "level_object.hpp"
 #include "level_runner.hpp"
@@ -736,11 +735,6 @@ extern "C" int main(int argcount, char** argvec)
 
 #endif // USE_GLES2
 
-#if defined(__GLEW_H__)
-	GLenum glew_status = glewInit();
-	ASSERT_EQ(glew_status, GLEW_OK);
-#endif
-
 #if defined(USE_GLES2)
 	if(glCreateShader == NULL) {
 		const GLubyte* glstrings;
@@ -986,7 +980,7 @@ extern "C" int main(int argcount, char** argvec)
 #endif
 
 	// Be nice and destroy the GL context and the window.
-	graphics::set_video_mode(0, 0, 0, CLEANUP_WINDOW_CONTEXT);
+	graphics::set_video_mode(0, 0, CLEANUP_WINDOW_CONTEXT);
 	SDL_Quit();
 	
 	preferences::save_preferences();

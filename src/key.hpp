@@ -35,11 +35,11 @@ public:
 	void Write(std::string* output);
 	void Read(const std::string& input);
 private:
-	Uint8 *key_list;
+	mutable Uint8 *key_list;
 	Uint8 custom_key_list[512];
 	bool is_enabled;
 	mutable bool require_key_release;
-	int num_keys;
+	mutable int num_keys;
 };
 
 #endif

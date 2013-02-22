@@ -57,7 +57,7 @@ void loading_screen::draw (const std::string& message)
 		draw_internal(message);
 	}
 	
-	SDL_GL_SwapBuffers();
+	graphics::swap_buffers();
 #if defined(__ANDROID__)
 	graphics::reset_opengl_state();
 #endif

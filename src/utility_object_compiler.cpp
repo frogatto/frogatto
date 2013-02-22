@@ -360,7 +360,7 @@ UTILITY(compile_objects)
 			ASSERT_GE(blit_dst.y, anim->dst_area.y());
 			ASSERT_LE(blit_dst.x + blit_dst.w, anim->dst_area.x() + anim->dst_area.w());
 			ASSERT_LE(blit_dst.y + blit_dst.h, anim->dst_area.y() + anim->dst_area.h());
-			SDL_SetAlpha(src.get(), 0, SDL_ALPHA_OPAQUE);
+			SDL_SetSurfaceAlphaMod(src.get(), SDL_ALPHA_OPAQUE);
 			SDL_BlitSurface(src.get(), &blit_src, dst.get(), &blit_dst);
 		}
 	}

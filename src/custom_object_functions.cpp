@@ -300,7 +300,7 @@ int show_simple_option_dialog(level& lvl, const std::string& text, const std::ve
 		}
 
 		draw_scene(lvl, last_draw_position(), &lvl.player()->get_entity());
-		SDL_GL_SwapWindow(graphics::get_window());
+		graphics::swap_buffers();
 #if defined(__ANDROID__)
 		graphics::reset_opengl_state();
 #endif
@@ -1182,7 +1182,7 @@ public:
 		screen_position pos = last_draw_position();
 		for(int n = 0; n != 50; ++n) {
 			draw_scene(lvl, pos, focus_.get());
-			SDL_GL_SwapBuffers();
+			graphics::swap_buffers();
 #if defined(__ANDROID__)
 			graphics::reset_opengl_state();
 #endif
@@ -1568,7 +1568,7 @@ private:
 		menu_button_.draw(in_speech_dialog());
 #endif
 
-		SDL_GL_SwapBuffers();
+		graphics::swap_buffers();
 #if defined(__ANDROID__)
 		graphics::reset_opengl_state();
 #endif

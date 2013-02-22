@@ -200,9 +200,11 @@ namespace input {
     }
     
     bool key_down_listener::unbind_key(const SDL_Scancode& k) {
+		return false;
     }
     
     bool key_down_listener::unbind_key(int logical_key) {
+		return false;
     }
 
     void key_down_listener::do_keydown(int key) {
@@ -215,186 +217,10 @@ namespace input {
 
 #ifndef NO_EDITOR
     bool mouse_drag_listener::process_event(const SDL_Event& event, bool claimed) {
-        Sint32 pos[2];
-        Sint16 rel[2];
-        Uint8 state;
-        Uint8 button_change_state;
-        SDL_Keymod mod;
-        SDL_Keymod mod_change_state;
-        
-        bool was_capturing = is_capturing_;
-        
-        if(claimed) {
-            is_capturing_ = false;
-            return claimed;
-        }
-        
-        switch(event.type) {
-        case SDL_MOUSEMOTION:
-            pos[0] = event.motion.x;
-            pos[1] = event.motion.y;
-            rel[0] = event.motion.xrel;
-            rel[1] = event.motion.yrel;
-            state = event.motion.state;
-            mod = SDL_GetModState();
-            button_change_state = 0;
-            mod_change_state = KMOD_NONE;
-            break;
-        case SDL_MOUSEBUTTONDOWN:
-        case SDL_MOUSEBUTTONUP:
-            pos[0] = event.button.x;
-            pos[1] = event.button.y;
-            rel[0] = 0;
-            rel[1] = 0;
-            state = SDL_GetMouseState(NULL,NULL);
-            mod = SDL_GetModState();
-            button_change_state = 
-                get_button_change_state(event.button.button) 
-                & target_state_mask();
-            mod_change_state = KMOD_NONE;
-            break;
-        case SDL_KEYDOWN:
-        case SDL_KEYUP:
-            state = SDL_GetMouseState(&(pos[0]), &(pos[1]));
-            rel[0] = 0;
-            rel[1] = 0;
-            mod = event.key.keysym.mod;
-            button_change_state = 0;
-            mod_change_state = (SDL_Keymod)
-                (get_mod_change_state(event.key.keysym.sym)
-                 & target_mod_mask());
-            break;
-        default:
-            return claimed;
-        }
-        
-        if(!matches_target_state(state)) {
-            is_capturing_ = false;
-            return claimed;
-        } else if(!matches_target_mod(mod)) {
-            is_capturing_ = false;
-            return claimed;
-        } 
-        
-        if(!is_capturing_) {
-            /* to start a gesture, we must be in the target area (if one is defined) 
-               AND this must be a mouse state change event if buttons are involved 
-               OR this must be a key state change event if keys are involved
-            */
-            if(target_state() != 0) {
-                /* if we have a target state, this must have been an event
-                   which indicated an unmasked button was pressed */
-                if(button_change_state == 0) {
-                    return claimed;
-                }
-            } else if(target_mod() != 0) {
-                /* if we don't have a target state, but do have target modifiers,
-                   this must have been an event that indicated an unmasked
-                   modifier was pressed */
-                if(mod_change_state == 0) {
-                    return claimed;
-                }
-            }
-            if(target_area_enabled() && !in_target_area(pos[0], pos[1])) {
-                return claimed;
-            }
-        }
-
-        is_capturing_ = true;
-        claimed = true;
-        
-        pos_[0] = pos[0];
-        pos_[1] = pos[1];
-        state_ = state;
-        mod_ = mod;
-        
-        rel_[0] = rel[0];
-        rel_[1] = rel[1];
-
-        if(was_capturing) {
-            total_rel_[0] += rel[0];
-            total_rel_[1] += rel[1];
-        } else {
-            total_rel_[0] = rel[0];
-            total_rel_[1] = rel[1];
-            start_pos_[0] = pos[0];
-            start_pos_[1] = pos[1];
-        }
-        
-        do_drag();
-
         return claimed;
     }
 
     bool mouse_click_listener_base::process_event(const SDL_Event& event, bool claimed) {
-        if(claimed) {
-            click_count_ = 0;
-            clicked_ = false;
-            return claimed;
-        }
-
-        switch(event.type) {
-        case SDL_MOUSEMOTION:
-            pos_[0] = event.motion.x;
-            pos_[1] = event.motion.y;
-            state_ = event.motion.state;
-            button_state_ = 0;
-            mod_ = SDL_GetModState();
-            break;
-        case SDL_MOUSEBUTTONDOWN:
-        case SDL_MOUSEBUTTONUP:
-            pos_[0] = event.button.x;
-            pos_[1] = event.button.y;
-            state_ = SDL_GetMouseState(NULL,NULL);
-            mod_ = SDL_GetModState();
-            button_state_ = get_button_change_state(event.button.button);
-            if(event.type == SDL_MOUSEBUTTONDOWN) {
-                state_ |= button_state_;
-            }
-            break;
-        default:
-            return claimed;
-        }
-        
-        /* this handles exiting from a click */
-        if(!matches_target_state(state_)) {
-            if(clicked_) {
-                click_time_ = SDL_GetTicks();
-                clicked_ = false;
-                do_click(pos_[0], pos_[1], click_count_, state_, button_state_, mod_);
-            }
-            return claimed;
-        }
-
-        switch(event.type) {
-        case SDL_MOUSEMOTION:
-            /* next continuing in a click - claim motion events
-               whilst clicking */
-            if(clicked_) {
-                claimed = true;
-            }
-            break;
-        case SDL_MOUSEBUTTONDOWN:
-            /* finally beginning a click */
-            if(!clicked_ && matches_target_mod(mod_)) {
-                /* to start a click, we must be in the target area */
-                if(target_area_enabled() && !in_target_area(pos_[0], pos_[1])) {
-                    break;
-                }
-                clicked_ = true;
-                Uint32 curtime = SDL_GetTicks();
-                if(click_count_ > 0 && 
-                   curtime - click_time_ >= click_timeout_) {
-                    click_count_ = 0;
-                }
-                click_count_++;
-                claimed = true;
-            }
-            break;
-        default:
-            break;
-        }
-        
         return claimed;
     }
 #endif // NO_EDITOR

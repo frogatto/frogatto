@@ -29,7 +29,6 @@ uint32_t htonl(uint32_t nl)
 #include "controls.hpp"
 #include "foreach.hpp"
 #include "joystick.hpp"
-#include "key.hpp"
 #include "level_runner.hpp"
 #include "multiplayer.hpp"
 #include "preferences.hpp"
@@ -61,27 +60,27 @@ int delay;
 
 int first_invalid_cycle_var = -1;
 
-SDL_Keycode sdlk[NUM_CONTROLS] = {
-	SDLK_UP,
-	SDLK_DOWN,
-	SDLK_LEFT,
-	SDLK_RIGHT,
-	SDLK_d,
+SDL_Scancode sdlk[NUM_CONTROLS] = {
+	SDL_SCANCODE_UP,
+	SDL_SCANCODE_DOWN,
+	SDL_SCANCODE_LEFT,
+	SDL_SCANCODE_RIGHT,
+	SDL_SCANCODE_D,
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-	SDLK_b,
-	SDLK_a
+	SDL_SCANCODE_B,
+	SDL_SCANCODE_A
 #else
-	SDLK_a,
-	SDLK_s
+	SDL_SCANCODE_A,
+	SDL_SCANCODE_S
 #endif
 };
 
 //If any of these keys are held, we ignore other keyboard input.
-SDL_Keycode control_keys[] = {
-	SDLK_LCTRL,
-	SDLK_RCTRL,
-	SDLK_LALT,
-	SDLK_RALT,
+SDL_Scancode control_keys[] = {
+	SDL_SCANCODE_LCTRL,
+	SDL_SCANCODE_RCTRL,
+	SDL_SCANCODE_LALT,
+	SDL_SCANCODE_RALT,
 };
 
 int32_t our_highest_confirmed() {
@@ -95,10 +94,6 @@ int32_t our_highest_confirmed() {
 	return res;
 }
 
-CKey& keyboard() {
-	static CKey key;
-	return key;
-}
 }
 
 struct control_backup_scope_impl {
@@ -185,8 +180,9 @@ bool key_ignore[NUM_CONTROLS];
 
 void ignore_current_keypresses()
 {
+	Uint8 *state = SDL_GetKeyboardState(NULL);
 	for(int n = 0; n < NUM_CONTROLS; ++n) {
-		key_ignore[n] = keyboard()[sdlk[n]];
+		key_ignore[n] = state[sdlk[n]];
 	}
 }
 
@@ -228,15 +224,16 @@ void read_local_controls()
 	if(local_control_locks.empty()) {
 #if !defined(__ANDROID__)
 		bool ignore_keypresses = false;
-		foreach(const SDL_Keycode& k, control_keys) {
-			if(keyboard()[k]) {
+		Uint8 *key_state = SDL_GetKeyboardState(NULL);
+		foreach(const SDL_Scancode& k, control_keys) {
+			if(key_state[k]) {
 				ignore_keypresses = true;
 				break;
 			}
 		}
 
 		for(int n = 0; n < NUM_CONTROLS; ++n) {
-			if(keyboard()[sdlk[n]] && !ignore_keypresses) {
+			if(key_state[sdlk[n]] && !ignore_keypresses) {
 				if(!key_ignore[n]) {
 					state |= (1 << n);
 				}
@@ -565,15 +562,15 @@ void debug_dump_controls()
 	}
 }
 
-void set_SDL_Keycode (CONTROL_ITEM item, SDL_Keycode key) {
+void set_SDL_Scancode(CONTROL_ITEM item, SDL_Scancode key) {
 	if (item < NUM_CONTROLS)
 		sdlk[item] = key;
 }
 
-SDL_Keycode get_SDL_Keycode (CONTROL_ITEM item) {
+SDL_Scancode get_SDL_Scancode(CONTROL_ITEM item) {
 	if (item < NUM_CONTROLS)
 		return sdlk[item];
-	return SDLK_UNKNOWN;
+	return SDL_SCANCODE_UNKNOWN;
 }
 
 }

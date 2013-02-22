@@ -92,33 +92,57 @@ void reset_opengl_state()
 #endif
 }
 
+namespace {
+	SDL_Window* global_main_window = NULL;
+}
+
+SDL_Window* get_window()
+{
+	ASSERT_LOG(global_main_window != NULL, "swap_buffers called on NULL window");
+	return global_main_window;
+}
+
+void swap_buffers()
+{
+	ASSERT_LOG(global_main_window != NULL, "swap_buffers called on NULL window");
+	SDL_GL_SwapWindow(global_main_window );
+}
+
 bool set_video_mode(int w, int h)
 {
 #ifdef TARGET_OS_HARMATTAN
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1);
 	return set_video_mode(w,h,0,SDL_OPENGLES | SDL_FULLSCREEN);
 #else
-	return set_video_mode(w,h,0,SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL|(preferences::resizable() ? SDL_WINDOW_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_WINDOW_FULLSCREEN : 0)) != NULL;
+	return set_video_mode(w,h,SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL|(preferences::resizable() ? SDL_WINDOW_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_WINDOW_FULLSCREEN : 0)) != NULL;
 #endif
 }
 
-SDL_Window* set_video_mode(int w, int h, int bitsperpixel, int flags)
+SDL_Window* set_video_mode(int w, int h, int flags)
 {
 	static SDL_Window* wnd = NULL;
 	static SDL_GLContext ctx = NULL;
 	graphics::texture::unbuild_all();
+#if defined(USE_GLES2) 
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+#endif
 	if(ctx) {
 		SDL_GL_DeleteContext(ctx);
 		ctx = NULL;
 	}
 	if(wnd) {
 		SDL_DestroyWindow(wnd);
-		wnd = NULL;
+		global_main_window = wnd = NULL;		
 	}
 	if(!(flags & CLEANUP_WINDOW_CONTEXT)) {
-		wnd = SDL_CreateWindow(module::get_module_pretty_name().c_str(), 
+		global_main_window = wnd = SDL_CreateWindow(module::get_module_pretty_name().c_str(), 
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, flags);
 		ctx = SDL_GL_CreateContext(wnd);
+
+#if defined(__GLEW_H__)
+	GLenum glew_status = glewInit();
+	ASSERT_EQ(glew_status, GLEW_OK);
+#endif
 
 		reset_opengl_state();
 		graphics::texture::rebuild_all();
@@ -166,7 +190,7 @@ SDL_Window* set_video_mode(int w, int h, int bitsperpixel, int flags)
 #elif defined(__native_client__)
 		// do nothing.
 #else
-		const SDL_Surface* fb = SDL_GetVideoSurface();
+		const SDL_Surface* fb = SDL_GetWindowSurface(graphics::get_window());
 		if(fb == NULL) {
 			std::cerr << "Framebuffer was null in prepare_raster\n";
 			return;

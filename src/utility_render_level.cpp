@@ -71,7 +71,7 @@ UTILITY(render_level)
 				lvl->draw(x, y, seg_width, seg_height);
 				glPopMatrix();
 
-				SDL_GL_SwapBuffers();
+				graphics::swap_buffers();
 #if defined(__ANDROID__)
 				graphics::reset_opengl_state();
 #endif

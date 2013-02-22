@@ -11,16 +11,16 @@
 
 namespace gui {
 
-std::string get_key_name(SDL_Keycode key);
+std::string get_key_name(SDL_Scancode key);
 
 //a key selection button widget. Does not derive from button as we don't need the onclick event.
 class key_button : public widget
 {
 public:
-	key_button(SDL_Keycode key, BUTTON_RESOLUTION button_resolution);
+	key_button(SDL_Scancode key, BUTTON_RESOLUTION button_resolution);
 	key_button(const variant& v, game_logic::formula_callable* e);
 
-	SDL_Keycode get_key();
+	SDL_Scancode get_key();
 
 	void set_value(const std::string& key, const variant& v);
 	variant get_value(const std::string& key) const;
@@ -31,7 +31,7 @@ private:
 
 	BUTTON_RESOLUTION button_resolution_;
 	widget_ptr label_;
-	SDL_Keycode key_;
+	SDL_Scancode key_;
 	bool grab_keys_;
 
 	const_framed_gui_element_ptr normal_button_image_set_,depressed_button_image_set_,focus_button_image_set_,current_button_image_set_;

@@ -123,12 +123,12 @@ typedef boost::function<void(const level&, screen_position&, float)> TransitionF
 void prepare_transition_scene(level& lvl, screen_position& screen_pos)
 {
 	draw_scene(lvl, screen_pos);
-	SDL_GL_SwapBuffers();
+	graphics::swap_buffers();
 #if defined(__ANDROID__)
     graphics::reset_opengl_state();
 #endif
 	draw_scene(lvl, screen_pos);
-	SDL_GL_SwapBuffers();
+	graphics::swap_buffers();
 #if defined(__ANDROID__)
     graphics::reset_opengl_state();
 #endif
@@ -146,7 +146,7 @@ void transition_scene(level& lvl, screen_position& screen_pos, bool transition_o
 
 		draw_fn(lvl, screen_pos, transition_out ? (n/20.0) : (1 - n/20.0));
 
-		SDL_GL_SwapBuffers();
+		graphics::swap_buffers();
 #if defined(__ANDROID__)
 		graphics::reset_opengl_state();
 #endif
@@ -282,7 +282,7 @@ void show_end_game()
 		graphics::draw_rect(rect, graphics::color_black());
 		graphics::blit_texture(t, xpos, ypos, t.width()*percent, t.height(), 0.0,
 						       0.0, 0.0, percent, 1.0);
-		SDL_GL_SwapBuffers();
+		graphics::swap_buffers();
 #if defined(__ANDROID__)
 		graphics::reset_opengl_state();
 #endif
@@ -703,7 +703,8 @@ bool level_runner::play_level()
 #endif
 
 	while(!done && !quit_) {
-		if(key[SDLK_t] && preferences::record_history()
+		Uint8 *key = SDL_GetKeyboardState(NULL);
+		if(key[SDL_SCANCODE_T] && preferences::record_history()
 #ifndef NO_EDITOR
 			&& (!editor_ || !editor_->has_keyboard_focus())
 			&& (!console_ || !console_->has_keyboard_focus())
@@ -1394,7 +1395,7 @@ bool level_runner::play_cycle()
 #ifndef NO_EDITOR
 			const int xpos = editor_->xpos();
 			const int ypos = editor_->ypos();
-			editor_->handle_scrolling();
+			//editor_->handle_scrolling();
 			last_draw_position().x += (editor_->xpos() - xpos)*100;
 			last_draw_position().y += (editor_->ypos() - ypos)*100;
 
@@ -1419,7 +1420,8 @@ bool level_runner::play_cycle()
 
 		if(should_draw) {
 #ifndef NO_EDITOR
-			if(editor_ && key[SDLK_l] && !editor_->has_keyboard_focus() && (!console_ || !console_->has_keyboard_focus())) {
+			Uint8 *key = SDL_GetKeyboardState(NULL);
+			if(editor_ && key[SDL_SCANCODE_L] && !editor_->has_keyboard_focus() && (!console_ || !console_->has_keyboard_focus())) {
 
 				editor_->toggle_active_level();
 
@@ -1491,7 +1493,7 @@ bool level_runner::play_cycle()
 
 		const int start_flip = SDL_GetTicks();
 		if(!is_skipping_game()) {
-			SDL_GL_SwapBuffers();
+			graphics::swap_buffers();
 #if defined(__ANDROID__)
 			graphics::reset_opengl_state();
 #endif
@@ -1595,7 +1597,7 @@ void level_runner::reverse_cycle()
 
 	const bool should_draw = update_camera_position(*lvl_, last_draw_position(), NULL, !is_skipping_game());
 	render_scene(*lvl_, last_draw_position(), NULL, !is_skipping_game());
-	SDL_GL_SwapBuffers();
+	graphics::swap_buffers();
 
 	const int wait_time = begin_time + 20 - SDL_GetTicks();
 	if(wait_time > 0) {
