@@ -1056,6 +1056,7 @@ bool level_runner::play_cycle()
 	joystick::update();
 	bool should_pause = false;
 
+	SDL_StartTextInput();
 	if(message_dialog::get() == NULL) {
 		SDL_Event event;
 		while(SDL_PollEvent(&event)) {

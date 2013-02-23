@@ -326,7 +326,7 @@ void set_alpha_for_transparent_colors_in_rgba_surface(SDL_Surface* s, int option
 
 surface texture::build_surface_from_key(const key& k, unsigned int surf_width, unsigned int surf_height)
 {
-	surface s(SDL_CreateRGBSurface(SDL_SWSURFACE,surf_width,surf_height,32,SURFACE_MASK));
+	surface s(SDL_CreateRGBSurface(0,surf_width,surf_height,32,SURFACE_MASK));
 	if(k.size() == 1 && k.front()->format->Rmask == 0xFF && k.front()->format->Gmask == 0xFF00 && k.front()->format->Bmask == 0xFF0000 && k.front()->format->Amask == 0) {
 		add_alpha_channel_to_surface((uint8_t*)s->pixels, (uint8_t*)k.front()->pixels, s->w, k.front()->w, k.front()->h, k.front()->pitch);
 	} else if(k.size() == 1 && k.front()->format->Rmask == 0xFF00 && k.front()->format->Gmask == 0xFF0000 && k.front()->format->Bmask == 0xFF000000 && k.front()->format->Amask == 0xFF) {
@@ -334,13 +334,7 @@ surface texture::build_surface_from_key(const key& k, unsigned int surf_width, u
 		s = k.front();
 	} else {
 		for(key::const_iterator i = k.begin(); i != k.end(); ++i) {
-			if(i == k.begin()) {
-				// XXX ????
-				SDL_SetSurfaceAlphaMod(i->get(), SDL_ALPHA_OPAQUE);
-			} else {
-				SDL_SetSurfaceAlphaMod(i->get(), SDL_ALPHA_OPAQUE);
-			}
-
+			SDL_SetSurfaceBlendMode(i->get(), SDL_BLENDMODE_NONE);
 			SDL_BlitSurface(i->get(),NULL,s.get(),NULL);
 		}
 	}
@@ -898,7 +892,7 @@ void texture::ID::unbuild_id()
 		return;
 	}
 
-	s = surface(SDL_CreateRGBSurface(SDL_SWSURFACE,width,height,32,SURFACE_MASK));
+	s = surface(SDL_CreateRGBSurface(0,width,height,32,SURFACE_MASK));
 
 	glBindTexture(GL_TEXTURE_2D, id);
 #if defined(USE_GLES2)

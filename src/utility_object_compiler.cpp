@@ -325,7 +325,7 @@ UTILITY(compile_objects)
 
 	std::vector<surface> surfaces;
 	for(int n = 0; n != num_output_images; ++n) {
-		surfaces.push_back(surface(SDL_CreateRGBSurface(SDL_SWSURFACE,TextureImageSize,TextureImageSize,32,SURFACE_MASK)));
+		surfaces.push_back(surface(SDL_CreateRGBSurface(0,TextureImageSize,TextureImageSize,32,SURFACE_MASK)));
 	}
 
 	foreach(animation_area_ptr anim, animation_areas) {
@@ -360,7 +360,7 @@ UTILITY(compile_objects)
 			ASSERT_GE(blit_dst.y, anim->dst_area.y());
 			ASSERT_LE(blit_dst.x + blit_dst.w, anim->dst_area.x() + anim->dst_area.w());
 			ASSERT_LE(blit_dst.y + blit_dst.h, anim->dst_area.y() + anim->dst_area.h());
-			SDL_SetSurfaceAlphaMod(src.get(), SDL_ALPHA_OPAQUE);
+			SDL_SetSurfaceBlendMode(src.get(), SDL_BLENDMODE_NONE);
 			SDL_BlitSurface(src.get(), &blit_src, dst.get(), &blit_dst);
 		}
 	}

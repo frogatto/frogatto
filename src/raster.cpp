@@ -94,6 +94,7 @@ void reset_opengl_state()
 
 namespace {
 	SDL_Window* global_main_window = NULL;
+	SDL_Renderer* global_renderer = NULL;
 }
 
 SDL_Window* get_window()
@@ -122,6 +123,7 @@ SDL_Window* set_video_mode(int w, int h, int flags)
 {
 	static SDL_Window* wnd = NULL;
 	static SDL_GLContext ctx = NULL;
+	
 	graphics::texture::unbuild_all();
 #if defined(USE_GLES2) 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -134,16 +136,20 @@ SDL_Window* set_video_mode(int w, int h, int flags)
 		SDL_DestroyWindow(wnd);
 		global_main_window = wnd = NULL;		
 	}
+	if(global_renderer) {
+		SDL_DestroyRenderer(global_renderer);
+		global_renderer = NULL;
+	}
 	if(!(flags & CLEANUP_WINDOW_CONTEXT)) {
 		global_main_window = wnd = SDL_CreateWindow(module::get_module_pretty_name().c_str(), 
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, flags);
 		ctx = SDL_GL_CreateContext(wnd);
-
+		global_renderer = SDL_CreateRenderer(wnd, -1, SDL_RENDERER_ACCELERATED);
 #if defined(__GLEW_H__)
 	GLenum glew_status = glewInit();
 	ASSERT_EQ(glew_status, GLEW_OK);
 #endif
-
+		
 		reset_opengl_state();
 		graphics::texture::rebuild_all();
 		texture_frame_buffer::rebuild();

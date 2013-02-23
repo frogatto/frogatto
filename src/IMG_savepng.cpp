@@ -50,7 +50,7 @@ int IMG_SaveFrameBuffer(const char* file, int compression)
 	const int w = preferences::actual_screen_width();
 	const int h = preferences::actual_screen_height();
 
-	graphics::surface s(SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, 24, SURFACE_MASK_RGB));
+	graphics::surface s(SDL_CreateRGBSurface(0, w, h, 24, SURFACE_MASK_RGB));
 	glReadPixels(0, 0, w, h, GL_RGB, GL_UNSIGNED_BYTE, s->pixels); 
 
 	unsigned char* pixels = (unsigned char*)s->pixels;
@@ -105,9 +105,9 @@ int IMG_SavePNG_RW(SDL_RWops *src, SDL_Surface *surf,int compression){
 	png_infop info_ptr;
 	SDL_PixelFormat *fmt=NULL;
 	SDL_Surface *tempsurf=NULL;
-	int ret,funky_format,used_alpha;
+	int ret,funky_format,used_blend;
 	unsigned int i;
-	Uint8 temp_alpha;
+	SDL_BlendMode temp_blend;
 	png_colorp palette;
 	Uint8 *palette_alpha=NULL;
 	png_byte **row_pointers=NULL;
@@ -256,18 +256,18 @@ int IMG_SavePNG_RW(SDL_RWops *src, SDL_Surface *surf,int compression){
 			/* Allocate non-funky format, and copy pixeldata in*/
 			if(fmt->Amask){
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-				tempsurf = SDL_CreateRGBSurface(SDL_SWSURFACE, surf->w, surf->h, 24,
+				tempsurf = SDL_CreateRGBSurface(0, surf->w, surf->h, 24,
 										0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
 #else
-				tempsurf = SDL_CreateRGBSurface(SDL_SWSURFACE, surf->w, surf->h, 24,
+				tempsurf = SDL_CreateRGBSurface(0, surf->w, surf->h, 24,
 										0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
 #endif
 			}else{
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-				tempsurf = SDL_CreateRGBSurface(SDL_SWSURFACE, surf->w, surf->h, 24,
+				tempsurf = SDL_CreateRGBSurface(0, surf->w, surf->h, 24,
 										0xff0000, 0x00ff00, 0x0000ff, 0x00000000);
 #else
-				tempsurf = SDL_CreateRGBSurface(SDL_SWSURFACE, surf->w, surf->h, 24,
+				tempsurf = SDL_CreateRGBSurface(0, surf->w, surf->h, 24,
 										0x000000ff, 0x0000ff00, 0x00ff0000, 0x00000000);
 #endif
 			}
@@ -275,19 +275,19 @@ int IMG_SavePNG_RW(SDL_RWops *src, SDL_Surface *surf,int compression){
 				SDL_SetError("Couldn't allocate temp surface");
 				goto savedone;
 			}
-			if(SDL_GetSurfaceAlphaMod(surf, &temp_alpha) == 0){
-				used_alpha=1;
-				SDL_SetSurfaceAlphaMod(surf, 255);
+			if(SDL_GetSurfaceBlendMode(surf, &temp_blend) == 0){
+				used_blend=1;
+				SDL_SetSurfaceBlendMode(surf, SDL_BLENDMODE_NONE);
 			}else{
-				used_alpha=0;
+				used_blend=0;
 			}
 			if(SDL_BlitSurface(surf,NULL,tempsurf,NULL)!=0){
 				SDL_SetError("Couldn't blit surface to temp surface");
 				SDL_FreeSurface(tempsurf);
 				goto savedone;
 			}
-			if (used_alpha) {
-				SDL_SetSurfaceAlphaMod(surf,temp_alpha); /* Restore alpha settings*/
+			if (used_blend) {
+				SDL_SetSurfaceBlendMode(surf, temp_blend); /* Restore blend settings*/
 			}
 			for(i=0;i<tempsurf->h;i++){
 				row_pointers[i]= ((png_byte*)tempsurf->pixels) + i*tempsurf->pitch;

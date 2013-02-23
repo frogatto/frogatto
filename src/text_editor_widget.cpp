@@ -454,6 +454,10 @@ bool text_editor_widget::handle_event(const SDL_Event& event, bool claimed)
 		return handle_mouse_motion(event.motion) || claimed;
 	case SDL_MOUSEWHEEL:
 		return handle_mouse_wheel(event.wheel) || claimed;
+	case SDL_TEXTINPUT:
+		return handle_text_input(event.text) || claimed;
+	case SDL_TEXTEDITING:
+		return handle_text_editing(event.edit) || claimed;
 	}
 
 	return false;
@@ -464,7 +468,7 @@ bool text_editor_widget::handle_mouse_wheel(const SDL_MouseWheelEvent& event)
 	int mx, my;
 	SDL_GetMouseState(&mx, &my);
 	if(mx >= x() && mx < x() + width() && my >= y() && my < y() + height()) {
-		if(event.y < 0) {
+		if(event.y > 0) {
 			if(cursor_.row > 2) {
 				cursor_.row -= 3;
 				scroll_pos_ -= 3;
@@ -984,28 +988,34 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 			break;
 		}
 	}
-	default: {
-		const char c = event.keysym.unicode;
-		if(util::c_isprint(c) || c == '\t') {
-			if(record_op("chars")) {
-				save_undo_state();
-			}
-			delete_selection();
-			if(cursor_.col > text_[cursor_.row].size()) {
-				cursor_.col = text_[cursor_.row].size();
-			}
-			text_[cursor_.row].insert(text_[cursor_.row].begin() + cursor_.col, c);
-			++cursor_.col;
-			select_ = cursor_;
-			refresh_scrollbar();
-			on_change();
-			return true;
-		}
-		return false;
-	}
+	default: return false;
 	}
 
 	return true;
+}
+
+bool text_editor_widget::handle_text_input(const SDL_TextInputEvent& event)
+{
+	if(record_op("chars")) {
+		save_undo_state();
+	}
+	delete_selection();
+	if(cursor_.col > text_[cursor_.row].size()) {
+		cursor_.col = text_[cursor_.row].size();
+	}
+	for(const char* c = &event.text[0]; *c != 0; ++c) {
+		text_[cursor_.row].insert(text_[cursor_.row].begin() + cursor_.col, *c);
+		++cursor_.col;
+	}
+	select_ = cursor_;
+	refresh_scrollbar();
+	on_change();
+	return true;
+}
+
+bool text_editor_widget::handle_text_editing(const SDL_TextEditingEvent& event)
+{
+	return false;
 }
 
 void text_editor_widget::handle_paste(std::string txt)

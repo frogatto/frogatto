@@ -55,7 +55,7 @@ UTILITY(render_level)
 		const int seg_width = graphics::screen_width();
 		const int seg_height = graphics::screen_height();
 
-		graphics::surface level_surface(SDL_CreateRGBSurface(SDL_SWSURFACE, lvl_width, lvl_height, 24, SURFACE_MASK_RGB));
+		graphics::surface level_surface(SDL_CreateRGBSurface(0, lvl_width, lvl_height, 24, SURFACE_MASK_RGB));
 
 		texture_frame_buffer::init(seg_width, seg_height);
 
@@ -76,7 +76,7 @@ UTILITY(render_level)
 				graphics::reset_opengl_state();
 #endif
 
-				graphics::surface s(SDL_CreateRGBSurface(SDL_SWSURFACE, seg_width, seg_height, 24, SURFACE_MASK_RGB));
+				graphics::surface s(SDL_CreateRGBSurface(0, seg_width, seg_height, 24, SURFACE_MASK_RGB));
 				glReadPixels(0, 0, seg_width, seg_height, GL_RGB, GL_UNSIGNED_BYTE, s->pixels);
 
 				unsigned char* pixels = (unsigned char*)s->pixels;
@@ -91,6 +91,7 @@ UTILITY(render_level)
 
 				SDL_Rect src_rect = {0, 0, seg_width, seg_height};
 				SDL_Rect dst_rect = {x - lvl->boundaries().x(), y - lvl->boundaries().y(), 0, 0};
+				SDL_SetSurfaceBlendMode(s.get(), SDL_BLENDMODE_NONE);
 				SDL_BlitSurface(s.get(), &src_rect, level_surface.get(), &dst_rect);
 			}
 		}

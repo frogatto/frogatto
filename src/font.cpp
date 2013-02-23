@@ -158,11 +158,11 @@ graphics::texture render_text_uncached(const std::string& text,
 		}
 
 		const SDL_PixelFormat* f = parts.front()->format;
-		s = graphics::surface(SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, f->BitsPerPixel, f->Rmask, f->Gmask, f->Bmask, f->Amask));
+		s = graphics::surface(SDL_CreateRGBSurface(0, width, height, f->BitsPerPixel, f->Rmask, f->Gmask, f->Bmask, f->Amask));
 		int ypos = 0;
 		foreach(graphics::surface part, parts) {
 			SDL_Rect rect = {0, ypos, part->w, part->h};
-			SDL_SetSurfaceAlphaMod(part.get(), SDL_ALPHA_OPAQUE);
+			SDL_SetSurfaceBlendMode(part.get(), SDL_BLENDMODE_NONE);
 			SDL_BlitSurface(part.get(), NULL, s.get(), &rect);
 			ypos += part->h;
 		}

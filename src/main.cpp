@@ -657,12 +657,6 @@ extern "C" int main(int argcount, char** argvec)
 	preferences::init_oes();
 	SDL_ShowCursor(0);
 #else
-#ifndef __APPLE__
-	graphics::surface wm_icon = graphics::surface_cache::get("window-icon.png");
-	if(!wm_icon.null()) {
-		SDL_WM_SetIcon(wm_icon, NULL);
-	}
-#endif
 
 #if defined(TARGET_PANDORA)
 	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),16,SDL_FULLSCREEN) == NULL) {
@@ -724,10 +718,16 @@ extern "C" int main(int argcount, char** argvec)
 		return -1;
     }
 #else
-	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) == NULL) {
+	if(!graphics::set_video_mode(preferences::actual_screen_width(), preferences::actual_screen_height())) {
 		std::cerr << "could not set video mode\n";
 		return -1;
 	}
+#ifndef __APPLE__
+	graphics::surface wm_icon = graphics::surface_cache::get("window-icon.png");
+	if(!wm_icon.null()) {
+		SDL_SetWindowIcon(graphics::get_window(), wm_icon.get());
+	}
+#endif
 #endif
 #endif
 
