@@ -2023,7 +2023,9 @@ private:
 		}
 
 		if(!key_.empty()) {
-			set_command* cmd = new set_command(variant(), key_, args()[1]->evaluate(variables));
+			static const std::string MeKey = "me";
+			variant target = variables.query_value(MeKey);
+			set_command* cmd = new set_command(target, key_, args()[1]->evaluate(variables));
 			cmd->set_expression(this);
 			return variant(cmd);
 		}
