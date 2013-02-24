@@ -2082,22 +2082,30 @@ private:
 		if(slot_ != -1) {
 			if(cmd_->refcount() == 1) {
 				cmd_->set_value(args()[1]->evaluate(variables));
+				cmd_->set_expression(this);
 				return variant(cmd_.get());
 			}
 
 			cmd_ = boost::intrusive_ptr<add_by_slot_command>(new add_by_slot_command(slot_, args()[1]->evaluate(variables)));
+			cmd_->set_expression(this);
 			return variant(cmd_.get());
 		}
 
 		if(!key_.empty()) {
-			return variant(new add_command(variant(), key_, args()[1]->evaluate(variables)));
+			static const std::string MeKey = "me";
+			variant target = variables.query_value(MeKey);
+			add_command* cmd = new add_command(target, key_, args()[1]->evaluate(variables));
+			cmd->set_expression(this);
+			return variant(cmd);
 		}
 
 		if(args().size() == 2) {
 			std::string member;
 			variant target = args()[0]->evaluate_with_member(variables, member);
-			return variant(new add_command(
-				  target, member, args()[1]->evaluate(variables)));
+			add_command* cmd = new add_command(
+			      target, member, args()[1]->evaluate(variables));
+			cmd->set_expression(this);
+			return variant(cmd);
 		}
 
 		variant target;
@@ -2105,10 +2113,12 @@ private:
 			target = args()[0]->evaluate(variables);
 		}
 		const int begin_index = args().size() == 2 ? 0 : 1;
-		return variant(new add_command(
+		add_command* cmd = new add_command(
 		    target,
 		    args()[begin_index]->evaluate(variables).as_string(),
-			args()[begin_index + 1]->evaluate(variables)));
+			args()[begin_index + 1]->evaluate(variables));
+		cmd->set_expression(this);
+		return variant(cmd);
 	}
 
 	std::string key_;
