@@ -29,6 +29,23 @@ class widget;
 typedef boost::intrusive_ptr<widget> widget_ptr;
 typedef boost::intrusive_ptr<const widget> const_widget_ptr;
 
+struct color_save_context
+{
+	color_save_context()
+	{
+#if defined(USE_GLES2)
+		memcpy(current_color, gles2::get_color(), sizeof(current_color));
+#else
+		glGetFloatv(GL_CURRENT_COLOR, current_color);
+#endif
+	}
+	~color_save_context()
+	{
+		glColor4f(current_color[0], current_color[1], current_color[2], current_color[3]);
+	}
+	GLfloat current_color[4];
+};
+
 class widget : public virtual input::listener
 {
 public:

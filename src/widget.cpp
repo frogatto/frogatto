@@ -272,14 +272,9 @@ bool widget::process_event(const SDL_Event& event, bool claimed)
 
 void widget::draw() const
 {
-	GLfloat current_color[4];
-#if defined(USE_GLES2)
-	memcpy(current_color, gles2::get_color(), sizeof(current_color));
-#else
-	glGetFloatv(GL_CURRENT_COLOR, current_color);
-#endif
-
 	if(visible_) {
+		color_save_context color_saver;
+
 		GLint src = 0;
 		GLint dst = 0;
 #if !defined(USE_GLES2)
@@ -302,7 +297,6 @@ void widget::draw() const
 #if !defined(USE_GLES2)
 		glBlendFunc(src, dst);
 #endif
-		glColor4f(current_color[0], current_color[1], current_color[2], current_color[3]);
 	}
 }
 
