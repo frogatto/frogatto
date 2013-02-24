@@ -140,7 +140,8 @@ SDL_Window* set_video_mode(int w, int h, int flags)
 	
 	graphics::texture::unbuild_all();
 #if defined(USE_GLES2) 
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 #endif
 	if(ctx) {
 		SDL_GL_DeleteContext(ctx);
