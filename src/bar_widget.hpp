@@ -20,6 +20,7 @@ namespace gui
 	protected:
 		void handle_draw() const;
 		bool handle_event(const SDL_Event& event, bool claimed);
+		void draw_ticks(GLfloat x_offset, int segments, const SDL_Color& color) const;
 
 		struct bar_section
 		{
@@ -34,10 +35,19 @@ namespace gui
 		bar_section right_cap_;
 
 		SDL_Color bar_color_;
+		SDL_Color drained_bar_color_;
 		SDL_Color tick_mark_color_;
+		SDL_Color drained_tick_mark_color_;
 
 		GLfloat rotate_;
 		GLfloat scale_;
+
+		// Rate (in frames/segment) that the bar goes removes
+		// segments when missing_segments_ is increased or decreased.
+		double drain_rate_;
+
+		// Whether we are animating a transition or not.
+		bool animating_;
 
 		// Segments is a reflection of the number of ticks in the bar.
 		// One segment = no tick marks
@@ -45,11 +55,25 @@ namespace gui
 		// and so on
 		int segments_;
 
+		// Segments drawn with alternative color
+		int drained_segments_;
+
 		// Length of segments, in pixels basically.
 		int segment_length_;
 
 		// Width of tick mark in pixels.
 		int tick_width_;
+
+		// Calculated total length of the bar
+		int total_bar_length_;
+		// Calculated active length of the bar (i.e. segments-drained_segments)
+		int active_bar_length_;
+		// Calculated length of the drained bar
+		int drained_bar_length_;
+		// Calculated left_cap_width
+		int left_cap_width_;
+		// Calculated right_cap_width
+		int right_cap_width_;
 	};
 }
 

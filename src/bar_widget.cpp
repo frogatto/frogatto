@@ -8,7 +8,11 @@ namespace gui
 		: widget(v, e), segments_(v["segments"].as_int(1)), 
 		segment_length_(v["segment_length"].as_int(5)), 
 		rotate_(GLfloat(v["rotation"].as_decimal().as_float())),
-		tick_width_(v["tick_width"].as_int(1)), scale_(2.0f)
+		tick_width_(v["tick_width"].as_int(1)), scale_(2.0f),
+		drained_segments_(v["drained_segments"].as_int(0)), animating_(false),
+		drain_rate_(v["drain_rate"].as_decimal(decimal(10.0)).as_float()),
+		total_bar_length_(0), drained_bar_length_(0), active_bar_length_(0),
+		left_cap_width_(0), right_cap_width_(0)
 	{
 		if(v.has_key("bar_color")) {
 			bar_color_ = graphics::color(v["bar_color"]).as_sdl_color();
@@ -19,6 +23,16 @@ namespace gui
 			tick_mark_color_ = graphics::color(v["tick_color"]).as_sdl_color();
 		} else {
 			tick_mark_color_ = graphics::color("black").as_sdl_color();
+		}
+		if(v.has_key("drained_bar_color")) {
+			drained_bar_color_ = graphics::color(v["drained_bar_color"]).as_sdl_color();
+		} else {
+			drained_bar_color_ = graphics::color("black").as_sdl_color();
+		}
+		if(v.has_key("drained_tick_color")) {
+			drained_tick_mark_color_ = graphics::color(v["drained_tick_color"]).as_sdl_color();
+		} else {
+			drained_tick_mark_color_ = graphics::color("white").as_sdl_color();
 		}
 
 		if(v.has_key("scale")) {
@@ -34,7 +48,12 @@ namespace gui
 
 		ASSERT_GT(segments_, 0);
 		ASSERT_GT(segment_length_, 0);
-
+		if(drained_segments_ > segments_) {
+			drained_segments_ = segments_;
+		}
+		if(drained_segments_ < 0) {
+			drained_segments_ = 0;
+		}
 		init();
 	}
 
@@ -55,14 +74,19 @@ namespace gui
 
 	void bar_widget::init()
 	{
-		int w =  segments_ * segment_length_ + (segments_-1) * tick_width_ + left_cap_.area.w() + right_cap_.area.w();
+		left_cap_width_ = left_cap_.area.w() ? left_cap_.area.w()*scale_ : left_cap_.texture.width()*scale_;
+		right_cap_width_ = right_cap_.area.w() ? right_cap_.area.w()*scale_ : right_cap_.texture.width()*scale_;
+
+		total_bar_length_ = (segments_ * segment_length_ + (segments_-1) * tick_width_) * scale_;
+		drained_bar_length_ = (drained_segments_ * segment_length_ + (drained_segments_-1) * tick_width_) * scale_;
+		active_bar_length_ = ((segments_-drained_segments_) * segment_length_ + (segments_-(drained_segments_?drained_segments_:1)) * tick_width_) * scale_;
+		int w = total_bar_length_ + left_cap_width_ + right_cap_width_;
 		int h;
 		if(height() == 0) {
-			h = std::max(bar_.area.h(), std::max(left_cap_.area.h(), right_cap_.area.h()));
+			h = std::max(bar_.area.h(), std::max(left_cap_.area.h(), right_cap_.area.h()))*scale_;
 		} else {
-			h = height();
+			h = height()*scale_;
 		}
-		std::cerr << "bar_widget::init(): " << w << ", " << h << std::endl;
 		set_dim(w, h);
 	}
 
@@ -81,6 +105,10 @@ namespace gui
 			return variant(tick_width_);
 		} else if(key == "scale") {
 			return variant(decimal(scale_));
+		} else if(key == "drained") {
+			return variant(drained_segments_);
+		} else if(key == "drain_rate") {
+			return variant(drain_rate_);
 		}
 		return widget::get_value(key);
 	}
@@ -102,47 +130,44 @@ namespace gui
 		} else if(key == "scale") {
 			scale_ = value.as_decimal().as_float();
 			ASSERT_GT(scale_, 0.0f);
+		} else if(key == "drain_rate") {
+			drain_rate_ = value.as_decimal().as_float();
+			ASSERT_GE(drain_rate_, 0.0);
+		} else if(key == "drained") {
+			drained_segments_ = value.as_int();
+			if(drained_segments_ < 0) {
+				drained_segments_ = 0;
+			}
+			if(drained_segments_ > segments_) {
+				drained_segments_ = segments_;
+			}
+			init();
 		}
 		widget::set_value(key, value);
 	}
 
-	void bar_widget::handle_draw() const
+	void bar_widget::draw_ticks(GLfloat x_offset, int segments, const SDL_Color& color) const
 	{
-		// save color
-		GLfloat current_color[4];
-#if defined(USE_GLES2)
-		memcpy(current_color, gles2::get_color(), sizeof(current_color));
-#else
-		glGetFloatv(GL_CURRENT_COLOR, current_color);
-#endif
-
-		int x_offset = 0;
-
-		// background
-		graphics::draw_rect(rect(x()+1, y()+1, width()*scale_-2, height()*scale_-2), graphics::color(bar_color_));
-
 		// tick marks
-		if(segments_ > 1) {
+		if(segments > 1) {
 			std::vector<GLfloat>& varray = graphics::global_vertex_array();
 			varray.clear();
-			for(int n = 1; n < segments_; ++n) {
-				GLfloat lx = GLfloat(x()+(left_cap_.area.w() ? left_cap_.area.w()*scale_ : left_cap_.texture.width()) 
-					+ (segment_length_ * n + (n - 1) * tick_width_ + 1) * scale_);
+			for(int n = 1; n < segments; ++n) {
+				GLfloat lx = x_offset + GLfloat((segment_length_ * n + (n - 1) * tick_width_ + 1) * scale_);
 				varray.push_back(lx);
 				varray.push_back(GLfloat(y()));
 				varray.push_back(lx);
-				varray.push_back(GLfloat(y()+height()*scale_));
+				varray.push_back(GLfloat(y()+height()));
 			}
-			glLineWidth(GLfloat(tick_width_ * scale_));
+			glLineWidth(GLfloat(tick_width_) * scale_);
+			glColor4ub(color.r, color.g, color.b, 255);
 #if defined(USE_GLES2)
-			glColor4ub(tick_mark_color_.r, tick_mark_color_.g, tick_mark_color_.b, 255);
 			gles2::manager gles2_manager(gles2::get_simple_shader());
 			gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
 			glDrawArrays(GL_LINES, 0, varray.size()/2);
 #else
 			glDisable(GL_TEXTURE_2D);
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-			glColor4ub(tick_mark_color_.r, tick_mark_color_.g, tick_mark_color_.b, 255);
 			glVertexPointer(2, GL_FLOAT, 0, &varray.front());
 			glDrawArrays(GL_LINES, 0, varray.size()/2);
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -150,41 +175,58 @@ namespace gui
 #endif
 			glLineWidth(1.0f);
 		}
+	}
 
-		// restore color
-		glColor4f(current_color[0], current_color[1], current_color[2], current_color[3]);
+	void bar_widget::handle_draw() const
+	{
+		int x_offset = x();
+		{
+			color_save_context color_saver;
+
+			// draw color under end caps.
+			graphics::draw_rect(rect(x()+scale_, y()+scale_, left_cap_width_-2*scale_, height()-2*scale_), graphics::color(bar_color_));
+			graphics::draw_rect(rect(x()+left_cap_width_+total_bar_length_, y()+scale_, right_cap_width_-scale_, height()-2*scale_), graphics::color(drained_segments_ ? drained_bar_color_ : bar_color_));
+
+			// background for active segments.
+			graphics::draw_rect(rect(x()+left_cap_width_, y(), active_bar_length_, height()), graphics::color(bar_color_));
+			// background for drained segments.
+			if(drained_segments_) {
+				graphics::draw_rect(rect(x()+active_bar_length_+left_cap_width_, y(), drained_bar_length_, height()), graphics::color(drained_bar_color_));
+			}
+
+			
+			draw_ticks(x()+left_cap_width_, segments_-drained_segments_+(drained_segments_?1:0), tick_mark_color_);
+			draw_ticks(x()+left_cap_width_+active_bar_length_, drained_segments_, drained_tick_mark_color_);
+		}
 
 		// left cap
 		if(left_cap_.area.w() == 0) {
-			graphics::blit_texture(left_cap_.texture, x(), y(), left_cap_.texture.width()*scale_, left_cap_.texture.height()*scale_, rotate_);
-			x_offset += left_cap_.texture.width();
+			graphics::blit_texture(left_cap_.texture, x_offset, y(), left_cap_width_, height(), rotate_);
 		} else {
-			graphics::blit_texture(left_cap_.texture, x(), y(), left_cap_.area.w()*scale_, left_cap_.area.h()*scale_, rotate_,
+			graphics::blit_texture(left_cap_.texture, x_offset, y(), left_cap_width_, height(), rotate_,
 				GLfloat(left_cap_.area.x())/left_cap_.texture.width(),
 				GLfloat(left_cap_.area.y())/left_cap_.texture.height(),
 				GLfloat(left_cap_.area.x2())/left_cap_.texture.width(),
 				GLfloat(left_cap_.area.y2())/left_cap_.texture.height());
-			x_offset += left_cap_.area.w()*scale_;
 		}
-		const int left_offset = x_offset;
+		x_offset += left_cap_width_;
 		// bar
-		const int bar_length = (segment_length_ * segments_ + (segments_- 1) * tick_width_) * scale_;
 		if(bar_.area.w() == 0) {
-			graphics::blit_texture(bar_.texture, x()+x_offset, y(),bar_length, bar_.area.h()*scale_, rotate_);
+			graphics::blit_texture(bar_.texture, x_offset, y(), total_bar_length_, height(), rotate_);
 		} else {
-			graphics::blit_texture(bar_.texture, x()+x_offset, y(), bar_length, bar_.area.h()*scale_, rotate_,
+			graphics::blit_texture(bar_.texture, x_offset, y(), total_bar_length_, height(), rotate_,
 				GLfloat(bar_.area.x())/bar_.texture.width(),
 				GLfloat(bar_.area.y())/bar_.texture.height(),
 				GLfloat(bar_.area.x2())/bar_.texture.width(),
 				GLfloat(bar_.area.y2())/bar_.texture.height());
 		}
-		x_offset += bar_length;
+		x_offset += total_bar_length_;
 
 		// right cap
 		if(right_cap_.area.w() == 0) {
-			graphics::blit_texture(left_cap_.texture, x()+x_offset, y(), right_cap_.texture.width()*scale_, right_cap_.texture.height()*scale_, rotate_);
+			graphics::blit_texture(left_cap_.texture, x_offset, y(), right_cap_width_, height(), rotate_);
 		} else {
-			graphics::blit_texture(right_cap_.texture, x()+x_offset, y(), right_cap_.area.w()*scale_, right_cap_.area.h()*scale_, rotate_,
+			graphics::blit_texture(right_cap_.texture, x_offset, y(), right_cap_width_, height(), rotate_,
 				GLfloat(right_cap_.area.x())/right_cap_.texture.width(),
 				GLfloat(right_cap_.area.y())/right_cap_.texture.height(),
 				GLfloat(right_cap_.area.x2())/right_cap_.texture.width(),
