@@ -80,6 +80,7 @@ namespace gui
 			glPushMatrix();
 			glTranslatef(GLfloat(x() & ~1), GLfloat(y() & ~1), 0.0);
 			entity_->draw(x(), y());
+			entity_->draw_later(x(), y());
 			glPopMatrix();
 		}
 	}

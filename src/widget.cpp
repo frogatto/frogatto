@@ -459,7 +459,7 @@ bool widget::in_widget(int xloc, int yloc) const
 
 bool widget_sort_zorder::operator()(const widget_ptr lhs, const widget_ptr rhs) const
 {
-	return lhs->zorder() < rhs->zorder();
+	return lhs->zorder() < rhs->zorder() || lhs->zorder() == rhs->zorder() && lhs.get() < rhs.get();
 }
 
 }
