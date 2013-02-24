@@ -57,7 +57,7 @@ namespace gui
 	{
 		int w =  segments_ * segment_length_ + (segments_-1) * tick_width_ + left_cap_.area.w() + right_cap_.area.w();
 		int h;
-		if(height() > 0) {
+		if(height() == 0) {
 			h = std::max(bar_.area.h(), std::max(left_cap_.area.h(), right_cap_.area.h()));
 		} else {
 			h = height();
