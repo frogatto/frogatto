@@ -57,7 +57,10 @@ namespace gui
 	void custom_object_widget::set_value(const std::string& key, const variant& value)
 	{
 		if(key == "object") {
-			init(value);
+			std::map<variant, variant> m;
+			m[variant("object")] = value;
+			init(variant(&m));
+			return;
 		}
 		widget::set_value(key, value);
 	}
