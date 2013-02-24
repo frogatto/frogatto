@@ -505,11 +505,9 @@ bool gui_algorithm::gui_event(level& lvl, const SDL_Event &event) {
 		|| event.type == SDL_MOUSEMOTION) {
 		int x = event.type == SDL_MOUSEMOTION ? event.motion.x : event.button.x;
 		int y = event.type == SDL_MOUSEMOTION ? event.motion.y : event.button.y;
-		int i = event.type == SDL_MOUSEMOTION ? event.motion.which : event.button.which;
 		map_formula_callable_ptr callable(new map_formula_callable(this));
 		callable->add("mouse_x", variant(x));
 		callable->add("mouse_y", variant(y));
-		callable->add("mouse_index", variant(i));
 		if(event.type != SDL_MOUSEMOTION) {
 			callable->add("mouse_button", variant(event.button.button));
 		}

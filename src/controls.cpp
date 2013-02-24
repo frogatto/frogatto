@@ -29,11 +29,13 @@ uint32_t htonl(uint32_t nl)
 #include "controls.hpp"
 #include "foreach.hpp"
 #include "joystick.hpp"
-#include "key.hpp"
 #include "level_runner.hpp"
 #include "multiplayer.hpp"
 #include "preferences.hpp"
 #include "iphone_controls.hpp"
+#if !SDL_VERSION_ATLEAST(2, 0, 0)
+#include "key.hpp"
+#endif
 
 namespace controls {
 namespace {
@@ -61,7 +63,7 @@ int delay;
 
 int first_invalid_cycle_var = -1;
 
-SDLKey sdlk[NUM_CONTROLS] = {
+key_type sdlk[NUM_CONTROLS] = {
 	SDLK_UP,
 	SDLK_DOWN,
 	SDLK_LEFT,
@@ -77,7 +79,7 @@ SDLKey sdlk[NUM_CONTROLS] = {
 };
 
 //If any of these keys are held, we ignore other keyboard input.
-SDLKey control_keys[] = {
+key_type control_keys[] = {
 	SDLK_LCTRL,
 	SDLK_RCTRL,
 	SDLK_LALT,
@@ -95,10 +97,12 @@ int32_t our_highest_confirmed() {
 	return res;
 }
 
+#if !SDL_VERSION_ATLEAST(2, 0, 0)
 CKey& keyboard() {
-	static CKey key;
-	return key;
+static CKey key;
+return key;
 }
+#endif
 }
 
 struct control_backup_scope_impl {
@@ -185,8 +189,15 @@ bool key_ignore[NUM_CONTROLS];
 
 void ignore_current_keypresses()
 {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	Uint8 *state = SDL_GetKeyboardState(NULL);
+#endif
 	for(int n = 0; n < NUM_CONTROLS; ++n) {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		key_ignore[n] = state[SDL_GetScancodeFromKey(sdlk[n])];
+#else
 		key_ignore[n] = keyboard()[sdlk[n]];
+#endif
 	}
 }
 
@@ -228,15 +239,25 @@ void read_local_controls()
 	if(local_control_locks.empty()) {
 #if !defined(__ANDROID__)
 		bool ignore_keypresses = false;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		Uint8 *key_state = SDL_GetKeyboardState(NULL);
+		foreach(const key_type& k, control_keys) {
+			if(key_state[SDL_GetScancodeFromKey(k)]) {
+#else
 		foreach(const SDLKey& k, control_keys) {
 			if(keyboard()[k]) {
+#endif
 				ignore_keypresses = true;
 				break;
 			}
 		}
 
 		for(int n = 0; n < NUM_CONTROLS; ++n) {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+			if(key_state[SDL_GetScancodeFromKey(sdlk[n])] && !ignore_keypresses) {
+#else
 			if(keyboard()[sdlk[n]] && !ignore_keypresses) {
+#endif
 				if(!key_ignore[n]) {
 					state |= (1 << n);
 				}
@@ -565,15 +586,18 @@ void debug_dump_controls()
 	}
 }
 
-void set_sdlkey (CONTROL_ITEM item, SDLKey key) {
-	if (item < NUM_CONTROLS)
+void set_keycode(CONTROL_ITEM item, key_type key) 
+{
+	if (item < NUM_CONTROLS) {
 		sdlk[item] = key;
+	}
 }
 
-SDLKey get_sdlkey (CONTROL_ITEM item) {
-	if (item < NUM_CONTROLS)
+key_type get_keycode(CONTROL_ITEM item) 
+{
+	if (item < NUM_CONTROLS) {
 		return sdlk[item];
+	}
 	return SDLK_UNKNOWN;
 }
-
 }

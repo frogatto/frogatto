@@ -300,10 +300,7 @@ int show_simple_option_dialog(level& lvl, const std::string& text, const std::ve
 		}
 
 		draw_scene(lvl, last_draw_position(), &lvl.player()->get_entity());
-		SDL_GL_SwapBuffers();
-#if defined(__ANDROID__)
-		graphics::reset_opengl_state();
-#endif
+		graphics::swap_buffers();
 		SDL_Delay(20);
 	}
 
@@ -1182,10 +1179,7 @@ public:
 		screen_position pos = last_draw_position();
 		for(int n = 0; n != 50; ++n) {
 			draw_scene(lvl, pos, focus_.get());
-			SDL_GL_SwapBuffers();
-#if defined(__ANDROID__)
-			graphics::reset_opengl_state();
-#endif
+			graphics::swap_buffers();
 			SDL_Delay(20);
 		}
 	}
@@ -1568,10 +1562,7 @@ private:
 		menu_button_.draw(in_speech_dialog());
 #endif
 
-		SDL_GL_SwapBuffers();
-#if defined(__ANDROID__)
-		graphics::reset_opengl_state();
-#endif
+		graphics::swap_buffers();
 		SDL_Delay(20);
 	}
 

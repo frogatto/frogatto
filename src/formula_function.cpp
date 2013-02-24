@@ -836,7 +836,7 @@ END_FUNCTION_DEF(update_controls)
 FUNCTION_DEF(map_controls, 1, 1, "map_controls(map) : Creates or updates the mapping on controls to keys")
 	const variant map = args()[0]->evaluate(variables);
 	foreach(const variant_pair& p, map.as_map()) {
-		controls::set_mapped_key(p.first.as_string(), static_cast<SDLKey>(p.second.as_int()));
+		controls::set_mapped_key(p.first.as_string(), static_cast<SDL_Keycode>(p.second.as_int()));
 	}
 	return variant();
 END_FUNCTION_DEF(map_controls)*/

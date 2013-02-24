@@ -24,7 +24,11 @@ namespace {
 
 		if(first_time) {
 			first_time = false;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+			surface surf(SDL_CreateRGBSurface(0,1,1,32,SURFACE_MASK));
+#else
 			surface surf(SDL_CreateRGBSurface(SDL_SWSURFACE,1,1,32,SURFACE_MASK));
+#endif
 			format = *surf->format;
 			format.palette = NULL;
 		}
@@ -42,12 +46,16 @@ surface surface::convert_opengl_format() const
 surface surface::clone() const
 {
 	return SDL_ConvertSurface(get(),&get_neutral_pixel_format(),
-	                          SDL_SWSURFACE);
+	                          0);
 }
 
 surface surface::create(int w, int h)
 {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	return surface(SDL_CreateRGBSurface(0,w,h,32,0xFF0000,0xFF00,0xFF,0xFF000000));
+#else
 	return surface(SDL_CreateRGBSurface(SDL_SWSURFACE,w,h,32,0xFF0000,0xFF00,0xFF,0xFF000000));
+#endif
 }
 
 }

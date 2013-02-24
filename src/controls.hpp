@@ -8,6 +8,12 @@
 
 #include "graphics.hpp"
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+typedef SDL_Keycode key_type;
+#else
+typedef SDLKey key_type;
+#endif
+
 namespace controls {
 
 enum CONTROL_ITEM {
@@ -21,8 +27,8 @@ enum CONTROL_ITEM {
 	NUM_CONTROLS,
 };
 
-void set_sdlkey (CONTROL_ITEM item, SDLKey key);
-SDLKey get_sdlkey (CONTROL_ITEM item);
+void set_keycode(CONTROL_ITEM item, key_type key);
+key_type get_keycode(CONTROL_ITEM item);
 
 void new_level(int starting_cycle, int nplayers, int local_player);
 

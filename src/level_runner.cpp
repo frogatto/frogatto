@@ -123,15 +123,9 @@ typedef boost::function<void(const level&, screen_position&, float)> TransitionF
 void prepare_transition_scene(level& lvl, screen_position& screen_pos)
 {
 	draw_scene(lvl, screen_pos);
-	SDL_GL_SwapBuffers();
-#if defined(__ANDROID__)
-    graphics::reset_opengl_state();
-#endif
+	graphics::swap_buffers();
 	draw_scene(lvl, screen_pos);
-	SDL_GL_SwapBuffers();
-#if defined(__ANDROID__)
-    graphics::reset_opengl_state();
-#endif
+	graphics::swap_buffers();
 }
 
 void transition_scene(level& lvl, screen_position& screen_pos, bool transition_out, TransitionFn draw_fn) {
@@ -146,10 +140,7 @@ void transition_scene(level& lvl, screen_position& screen_pos, bool transition_o
 
 		draw_fn(lvl, screen_pos, transition_out ? (n/20.0) : (1 - n/20.0));
 
-		SDL_GL_SwapBuffers();
-#if defined(__ANDROID__)
-		graphics::reset_opengl_state();
-#endif
+		graphics::swap_buffers();
 
 		const int target_end_time = start_time + (n+1)*preferences::frame_time_millis();
 		const int current_time = SDL_GetTicks();
@@ -282,10 +273,7 @@ void show_end_game()
 		graphics::draw_rect(rect, graphics::color_black());
 		graphics::blit_texture(t, xpos, ypos, t.width()*percent, t.height(), 0.0,
 						       0.0, 0.0, percent, 1.0);
-		SDL_GL_SwapBuffers();
-#if defined(__ANDROID__)
-		graphics::reset_opengl_state();
-#endif
+		graphics::swap_buffers();
 		SDL_Delay(40);
 	}
 
@@ -350,9 +338,13 @@ bool is_skipping_game() {
 
 void video_resize(SDL_Event &event) 
 {
-    const SDL_ResizeEvent* resize = reinterpret_cast<SDL_ResizeEvent*>(&event);
-    int width = resize->w;
-    int height = resize->h;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	int width = event.window.data1;
+    int height = event.window.data2;
+#else
+    int width = event.resize.w;
+    int height = event.resize.h;
+#endif
 
 	if(preferences::proportional_resize() == false) {
 		const int aspect = (preferences::actual_screen_width()*1000)/preferences::actual_screen_height();
@@ -391,14 +383,15 @@ void video_resize(SDL_Event &event)
 
 void level_runner::video_resize_event(const SDL_Event &event)
 {
-    const SDL_ResizeEvent* resize = reinterpret_cast<const SDL_ResizeEvent*>(&event);
-    int width = resize->w;
-    int height = resize->h;
-
 	static const int WindowResizeEventID = get_object_event_id("window_resize");
 	game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable);
-	callable->add("width", variant(width));
-	callable->add("height", variant(height));
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	callable->add("width", variant(event.window.data1));
+	callable->add("height", variant(event.window.data2));
+#else
+	callable->add("width", variant(event.resize.w));
+	callable->add("height", variant(event.resize.h));
+#endif
 	lvl_->player()->get_entity().handle_event(WindowResizeEventID, callable.get());
 }
 
@@ -447,7 +440,6 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 		case SDL_MOUSEMOTION:
 		    int x, mx = event.type == SDL_MOUSEMOTION ? event.motion.x : event.button.x;
 			int y, my = event.type == SDL_MOUSEMOTION ? event.motion.y : event.button.y;
-			int i = event.type == SDL_MOUSEMOTION ? event.motion.which : event.button.which;
 			int event_type = event.type;
 			int event_button_button = event.button.button;
 #endif
@@ -472,7 +464,6 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 				game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable);
 				callable->add("mouse_x", variant(x));
 				callable->add("mouse_y", variant(y));
-				callable->add("mouse_index", variant(i));
 				if(event_type != SDL_MOUSEMOTION) {
 					callable->add("mouse_button", variant(event_button_button));
 				} else {
@@ -710,7 +701,12 @@ bool level_runner::play_level()
 #endif
 
 	while(!done && !quit_) {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		Uint8 *key = SDL_GetKeyboardState(NULL);
+		if(key[SDL_SCANCODE_T] && preferences::record_history()
+#else
 		if(key[SDLK_t] && preferences::record_history()
+#endif
 #ifndef NO_EDITOR
 			&& (!editor_ || !editor_->has_keyboard_focus())
 			&& (!console_ || !console_->has_keyboard_focus())
@@ -1062,6 +1058,9 @@ bool level_runner::play_cycle()
 	joystick::update();
 	bool should_pause = false;
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	SDL_StartTextInput();
+#endif
 	if(message_dialog::get() == NULL) {
 		SDL_Event event;
 		while(SDL_PollEvent(&event)) {
@@ -1135,7 +1134,9 @@ bool level_runner::play_cycle()
 				quit_ = true;
 				break;
 			}
+#if !SDL_VERSION_ATLEAST(2, 0, 0)
 			case SDL_VIDEORESIZE: video_resize(event); video_resize_event(event); continue;
+#endif
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 			// make sure nothing happens while the app is supposed to be "inactive"
 			case SDL_WINDOWEVENT:
@@ -1200,25 +1201,35 @@ bool level_runner::play_cycle()
 				}
 			break;
 #else
-			case SDL_ACTIVEEVENT:
-				if (event.active.state & (SDL_APPACTIVE | SDL_APPINPUTFOCUS) 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+			case SDL_WINDOWEVENT:
+				if((event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED 
+					|| event.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
 					&& preferences::allow_autopause()) {
-					if(event.active.gain == 0) {
+					if(event.window.event == SDL_WINDOWEVENT_FOCUS_LOST) {
 						if(!paused && !editor_) {
 							toggle_pause();
 						}
-					//} else {
-					//	if(paused) {
-					//		toggle_pause();
-					//	}
+					} else {
+						if(paused) {
+							toggle_pause();
+						}
 					}
-					
+				} else if(event.window.event == SDL_WINDOWEVENT_RESIZED) {
+					video_resize(event); 
+					video_resize_event(event);
 				}
 			break;
+#endif // SDL_VERSION_ATLEAST
 #endif
 			case SDL_KEYDOWN: {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+				const SDL_Keymod mod = SDL_GetModState();
+				const SDL_Keycode key = event.key.keysym.sym;
+#else
 				const SDLMod mod = SDL_GetModState();
 				const SDLKey key = event.key.keysym.sym;
+#endif
 				//std::cerr << "Key #" << (int) key << ".\n";
 				if(key == SDLK_ESCAPE) {
 					if(editor_) {
@@ -1399,7 +1410,7 @@ bool level_runner::play_cycle()
 #ifndef NO_EDITOR
 			const int xpos = editor_->xpos();
 			const int ypos = editor_->ypos();
-			editor_->handle_scrolling();
+			//editor_->handle_scrolling();
 			last_draw_position().x += (editor_->xpos() - xpos)*100;
 			last_draw_position().y += (editor_->ypos() - ypos)*100;
 
@@ -1424,7 +1435,12 @@ bool level_runner::play_cycle()
 
 		if(should_draw) {
 #ifndef NO_EDITOR
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+			Uint8 *key = SDL_GetKeyboardState(NULL);
+			if(editor_ && key[SDL_SCANCODE_L] && !editor_->has_keyboard_focus() && (!console_ || !console_->has_keyboard_focus())) {
+#else
 			if(editor_ && key[SDLK_l] && !editor_->has_keyboard_focus() && (!console_ || !console_->has_keyboard_focus())) {
+#endif
 
 				editor_->toggle_active_level();
 
@@ -1496,10 +1512,7 @@ bool level_runner::play_cycle()
 
 		const int start_flip = SDL_GetTicks();
 		if(!is_skipping_game()) {
-			SDL_GL_SwapBuffers();
-#if defined(__ANDROID__)
-			graphics::reset_opengl_state();
-#endif
+			graphics::swap_buffers();
 		}
 
 		const int flip_time = SDL_GetTicks() - start_flip;
@@ -1600,7 +1613,7 @@ void level_runner::reverse_cycle()
 
 	const bool should_draw = update_camera_position(*lvl_, last_draw_position(), NULL, !is_skipping_game());
 	render_scene(*lvl_, last_draw_position(), NULL, !is_skipping_game());
-	SDL_GL_SwapBuffers();
+	graphics::swap_buffers();
 
 	const int wait_time = begin_time + 20 - SDL_GetTicks();
 	if(wait_time > 0) {

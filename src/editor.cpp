@@ -708,27 +708,6 @@ editor* editor::get_editor(const char* level_cfg)
 	return e;
 }
 
-void editor::edit(const char* level_cfg, int xpos, int ypos)
-{
-	editor* e = get_editor(level_cfg);
-
-	if(xpos != -1) {
-		e->xpos_ = xpos;
-		e->ypos_ = ypos;
-	}
-
-	editor_resolution_manager resolution_manager(e->xres(), e->yres());
-
-	e->setup_for_editing();
-	e->edit_level();
-	if(g_last_edited_level() != level_cfg) {
-		//a new level was set, so start editing it now.
-		edit(g_last_edited_level().c_str());
-	}
-
-	clear_level_wml();
-}
-
 std::string editor::last_edited_level()
 {
 	return g_last_edited_level();
@@ -938,7 +917,11 @@ editor_resolution_manager::editor_resolution_manager(int xres, int yres) :
 
 	if(++editor_resolution_manager_count == 1) {
 		std::cerr << "EDITOR RESOLUTION: " << editor_x_resolution << "," << editor_y_resolution << "\n";
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		SDL_Window* result = graphics::set_video_mode(editor_x_resolution,editor_y_resolution,SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN|SDL_WINDOW_RESIZABLE|(preferences::fullscreen() ? SDL_WINDOW_FULLSCREEN : 0));
+#else
 		SDL_Surface* result = graphics::set_video_mode(editor_x_resolution,editor_y_resolution,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+#endif
 
 		if(result) {
 			preferences::set_actual_screen_width(editor_x_resolution);
@@ -954,7 +937,11 @@ editor_resolution_manager::~editor_resolution_manager() {
 	if(--editor_resolution_manager_count == 0) {
 		preferences::set_actual_screen_width(original_width_);
 		preferences::set_actual_screen_height(original_height_);
-		graphics::set_video_mode(original_width_,original_height_,0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		graphics::set_video_mode(original_width_,original_height_,SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN|SDL_WINDOW_RESIZABLE|(preferences::fullscreen() ? SDL_WINDOW_FULLSCREEN : 0));
+#else
+		graphics::set_video_mode(original_width_,original_height_,0,SDL_OPENGL|SDL_RESIZABLE|(preferences::fullscreen() ? SDL_FULLSCREEN : 0));
+#endif
 	}
 }
 
@@ -995,37 +982,6 @@ void editor::setup_for_editing()
 
 	//reset the tool status.
 	change_tool(tool_);
-}
-
-void editor::edit_level()
-{
-
-	glEnable(GL_BLEND);
-#if !defined(USE_GLES2)
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glEnable(GL_TEXTURE_2D);
-#endif
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	int selected_tile = 0;
-
-	done_ = false;
-	prev_mousex_ = prev_mousey_ = -1;
-	while(!done_) {
-		const int scheduled_frame_end_time = SDL_GetTicks() + 20;
-
-		handle_scrolling();
-		process();
-
-		SDL_Event event;
-		while(SDL_PollEvent(&event) && !done_) {
-			handle_event(event, false);
-		}
-
-		draw();
-
-		SDL_Delay(std::max<int>(1, scheduled_frame_end_time - SDL_GetTicks()));
-	}
 }
 
 bool editor::handle_event(const SDL_Event& event, bool swallowed)
@@ -1088,6 +1044,37 @@ bool editor::handle_event(const SDL_Event& event, bool swallowed)
 			handle_mouse_button_up(event.button);
 		}
 		break;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	case SDL_MOUSEWHEEL: {
+			int mousex, mousey;
+			const unsigned int buttons = get_mouse_state(mousex, mousey);
+			
+			const int xpos = xpos_ + mousex*zoom_;
+			if(xpos < editor_x_resolution-sidebar_width()) {
+				if(event.wheel.y < 0) {
+					zoom_in();
+				} else {
+					zoom_out();
+				}
+			}
+		break;
+		}
+	case SDL_WINDOWEVENT:
+		if(event.window.event == SDL_WINDOWEVENT_RESIZED) {
+		SDL_Window* result = graphics::set_video_mode(event.window.data1, event.window.data2, SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN|SDL_WINDOW_RESIZABLE|(preferences::fullscreen() ? SDL_WINDOW_FULLSCREEN : 0));
+		
+		if(result) {
+			editor_x_resolution = event.window.data1;
+			editor_y_resolution = event.window.data2;
+			preferences::set_actual_screen_width(event.window.data1);
+			preferences::set_actual_screen_height(event.window.data2);
+		
+			reset_dialog_positions();
+		}
+
+		return false;
+	}
+#else
 	case SDL_VIDEORESIZE: {
 		const SDL_ResizeEvent* const resize = reinterpret_cast<const SDL_ResizeEvent*>(&event);
 
@@ -1104,6 +1091,7 @@ bool editor::handle_event(const SDL_Event& event, bool swallowed)
 
 		return false;
 	}
+#endif
 
 	default:
 		break;
@@ -1152,11 +1140,6 @@ void editor::process()
 
 	int mousex, mousey;
 	const unsigned int buttons = get_mouse_state(mousex, mousey);
-#if defined(__ANDROID__) && SDL_VERSION_ATLEAST(1, 3, 0)
-	const Uint8* keystate = SDL_GetKeyboardState(0);
-#else
-	const Uint8* keystate = SDL_GetKeyState(NULL); 
-#endif
 
 	if(buttons == 0) {
 		drawing_rect_ = false;
@@ -1437,8 +1420,12 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 	if(key.keysym.sym == SDLK_h) {
 		preferences::toogle_debug_hitboxes();
 	}
-	
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	if(key.keysym.sym == SDLK_KP_8) {
+#else
 	if(key.keysym.sym == SDLK_KP8) {
+#endif
 		begin_command_group();
 		foreach(const entity_ptr& e, lvl_->editor_selection()){
 			execute_shift_object(e, 0, -2);
@@ -1446,7 +1433,11 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 		end_command_group();
 	}
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	if(key.keysym.sym == SDLK_KP_5) {
+#else
 	if(key.keysym.sym == SDLK_KP5) {
+#endif
 		begin_command_group();
 		foreach(const entity_ptr& e, lvl_->editor_selection()){
 			execute_shift_object(e, 0, 2);
@@ -1454,7 +1445,11 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 		end_command_group();
 	}
 	
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	if(key.keysym.sym == SDLK_KP_4) {
+#else
 	if(key.keysym.sym == SDLK_KP4) {
+#endif
 		begin_command_group();
 		foreach(const entity_ptr& e, lvl_->editor_selection()){
 			execute_shift_object(e, -2, 0);
@@ -1462,7 +1457,11 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 		end_command_group();
 	}
 	
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	if(key.keysym.sym == SDLK_KP_6) {
+#else
 	if(key.keysym.sym == SDLK_KP6) {
+#endif
 		begin_command_group();
 		foreach(const entity_ptr& e, lvl_->editor_selection()){
 			execute_shift_object(e, 2, 0);
@@ -1651,44 +1650,6 @@ void editor::toggle_pause() const
 	}
 }
 
-void editor::handle_scrolling()
-{
-	if(code_dialog_ && code_dialog_->has_keyboard_focus()) {
-		return;
-	}
-
-	const int ScrollSpeed = 24*zoom_;
-	const int FastScrollSpeed = 384*zoom_;
-
-	if(key_[SDLK_LEFT]) {
-		xpos_ -= ScrollSpeed;
-		if(key_[SDLK_KP0]) {
-			xpos_ -= FastScrollSpeed;
-		}
-	}
-
-	if(key_[SDLK_RIGHT]) {
-		xpos_ += ScrollSpeed;
-		if(key_[SDLK_KP0]) {
-			xpos_ += FastScrollSpeed;
-		}
-	}
-
-	if(key_[SDLK_UP]) {
-		ypos_ -= ScrollSpeed;
-		if(key_[SDLK_KP0]) {
-			ypos_ -= FastScrollSpeed;
-		}
-	}
-
-	if(key_[SDLK_DOWN]) {
-		ypos_ += ScrollSpeed;
-		if(key_[SDLK_KP0]) {
-			ypos_ += FastScrollSpeed;
-		}
-	}
-}
-
 void editor::handle_object_dragging(int mousex, int mousey)
 {
 	if(std::count(lvl_->editor_selection().begin(), lvl_->editor_selection().end(), lvl_->editor_highlight()) == 0) {
@@ -1799,9 +1760,12 @@ void editor::handle_drawing_rect(int mousex, int mousey)
 
 void editor::handle_mouse_button_down(const SDL_MouseButtonEvent& event)
 {
+#if !SDL_VERSION_ATLEAST(2, 0, 0)
 	if(event.button == SDL_BUTTON_WHEELUP || event.button == SDL_BUTTON_WHEELDOWN) {
 		return;
 	}
+#endif
+
 	const bool ctrl_pressed = (SDL_GetModState()&(KMOD_LCTRL|KMOD_RCTRL)) != 0;
 	const bool shift_pressed = (SDL_GetModState()&(KMOD_LSHIFT|KMOD_RSHIFT)) != 0;
 	const bool alt_pressed = (SDL_GetModState()&KMOD_ALT) != 0;
@@ -2127,6 +2091,7 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 	const int xpos = xpos_ + mousex*zoom_;
 	const int ypos = ypos_ + mousey*zoom_;
 
+#if !SDL_VERSION_ATLEAST(2, 0, 0)
 	if((event.button == SDL_BUTTON_WHEELUP || event.button == SDL_BUTTON_WHEELDOWN) 
 		&& xpos < editor_x_resolution-sidebar_width() ) {
 		if(event.button == SDL_BUTTON_WHEELUP) {
@@ -2136,6 +2101,7 @@ void editor::handle_mouse_button_up(const SDL_MouseButtonEvent& event)
 		}
 		return;
 	}
+#endif
 
 	if(g_variable_editing) {
 		if(property_dialog_ && property_dialog_->get_entity()) {
@@ -3018,7 +2984,7 @@ void editor::draw() const
 
 	debug_console::draw();
 
-	SDL_GL_SwapBuffers();
+	graphics::swap_buffers();
 }
 
 void editor::draw_gui() const
@@ -3599,7 +3565,11 @@ void editor::create_new_module()
 		prop_dialog.on_exit();
 		close();
 		g_last_edited_level() = prop_dialog.on_exit();
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		SDL_SetWindowTitle(graphics::get_window(), module::get_module_pretty_name().c_str());
+#else
 		SDL_WM_SetCaption(module::get_module_pretty_name().c_str(), module::get_module_pretty_name().c_str());
+#endif
 	}
 }
 
@@ -3609,7 +3579,11 @@ void editor::edit_module_properties()
 	prop_dialog.show_modal();
 	if(prop_dialog.cancelled() == false) {
 		prop_dialog.on_exit();
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		SDL_SetWindowTitle(graphics::get_window(), module::get_module_pretty_name().c_str());
+#else
 		SDL_WM_SetCaption(module::get_module_pretty_name().c_str(), module::get_module_pretty_name().c_str());
+#endif
 	}
 }
 

@@ -39,11 +39,7 @@ void report_assert_msg(const std::string& m)
 #endif
 	
 #if defined(_WINDOWS)
-	SDL_SysWMinfo SysInfo;
-	SDL_VERSION(&SysInfo.version);
-	if(SDL_GetWMInfo(&SysInfo) > 0) {
-		::MessageBoxA(SysInfo.window, m.c_str(), "Assertion failed", MB_OK|MB_ICONSTOP);
-	}
+	::MessageBoxA(NULL, m.c_str(), "Assertion failed", MB_OK|MB_ICONSTOP);
 #endif
 }
 

@@ -29,7 +29,23 @@ void stoupper(std::string& s)
 
 }
 
-std::string get_key_name(SDLKey key) {
+std::string get_key_name(key_type key) 
+{
+	switch(key) {
+	case SDLK_LEFT:
+		return std::string(("←"));
+	case SDLK_RIGHT:
+		return std::string(("→"));
+	case SDLK_UP:
+		return std::string(("↑"));
+	case SDLK_DOWN:
+		return std::string(("↓"));
+	default:
+		break;
+	}
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	return SDL_GetKeyName(key);
+#else
 	switch(key) {
 	// these characters are not contained in the font
 	case SDLK_CARET:
@@ -59,14 +75,6 @@ std::string get_key_name(SDLKey key) {
 		return std::string("PGDN");
 	case SDLK_PAGEUP:
 		return std::string("PGUP");
-	case SDLK_LEFT:
-		return std::string(("←"));
-	case SDLK_RIGHT:
-		return std::string(("→"));
-	case SDLK_UP:
-		return std::string(("↑"));
-	case SDLK_DOWN:
-		return std::string(("↓"));
 	// other names can be shortened by taking only the
 	// first letter of the first word, i.e. "LEFT SHIFT" --> "LSHIFT"
 	default:
@@ -78,10 +86,24 @@ std::string get_key_name(SDLKey key) {
 		else
 			return s.erase(1, pos);
 	}
+#endif
 }
 
-SDLKey get_key_sym(const std::string& s)
+key_type get_key_sym(const std::string& s)
 {
+	if(s == "UP" || s == (("↑"))) {
+		return SDLK_UP;
+	} else if(s == "DOWN" || s == (("↓"))) {
+		return SDLK_DOWN;
+	} else if(s == "LEFT" || s == (("←"))) {
+		return SDLK_LEFT;
+	} else if(s == "RIGHT" || s == (("→"))) {
+		return SDLK_RIGHT;
+	}
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	return SDL_GetKeyFromName(s.c_str());
+#else
 	if(s.size() == 1 && unsigned(s[0]) <= 127) {
 		return SDLKey(s[0]);
 	} else if(s == "UP" || s == (("↑"))) {
@@ -145,9 +167,10 @@ SDLKey get_key_sym(const std::string& s)
 	}
 	ASSERT_LOG(false, "Unreconised key '" << s << "'");
 	return SDLK_UNKNOWN;
+#endif
 }
 
-key_button::key_button(SDLKey key, BUTTON_RESOLUTION button_resolution)
+key_button::key_button(key_type key, BUTTON_RESOLUTION button_resolution)
   : label_(widget_ptr(new graphical_font_label(get_key_name(key), "door_label", 2))),
 	key_(key), button_resolution_(button_resolution),
 	normal_button_image_set_(framed_gui_element::get("regular_button")),
@@ -239,7 +262,7 @@ bool key_button::handle_event(const SDL_Event& event, bool claimed)
 	return claimed;
 }
 
-SDLKey key_button::get_key() {
+key_type key_button::get_key() {
 	return key_;
 }
 

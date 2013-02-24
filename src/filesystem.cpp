@@ -950,7 +950,11 @@ void notify_on_file_modification(const std::string& path, boost::function<void()
 	}
 
 	if(file_mod_worker_thread == NULL) {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		file_mod_worker_thread = new threading::thread("file_change_notify", file_mod_worker_thread_fn);
+#else
 		file_mod_worker_thread = new threading::thread(file_mod_worker_thread_fn);
+#endif
 	}
 }
 

@@ -19,17 +19,18 @@
 
 CKey::CKey() : is_enabled(true), require_key_release(false), num_keys(300)
 {
-	#if SDL_MAJOR_VERSION == 1 && SDL_MINOR_VERSION == 3
-	key_list = SDL_GetKeyboardState( &num_keys );
-	#else
+#if !SDL_VERSION_ATLEAST(2, 0, 0)
 	key_list = SDL_GetKeyState( &num_keys );
-	#endif
+#endif
 }
 
 int CKey::operator[]( int code ) const
 {
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 	return 0;
+#endif
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	key_list = SDL_GetKeyboardState(&num_keys);
 #endif
 	if(require_key_release) {
 		if(std::count(key_list, key_list + num_keys, 0) == num_keys) {

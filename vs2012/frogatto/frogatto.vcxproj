@@ -1,0 +1,570 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{3CB048B6-E289-404D-914B-03A65D7E4CDF}</ProjectGuid>
+    <RootNamespace>Frogatto</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>Windows7.1SDK</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>Windows7.1SDK</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Configuration)\$(Platform)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NOMINMAX;_CRT_SECURE_NO_WARNINGS;IMPLEMENT_SAVE_PNG;USE_BOX2D;USE_GLES2;UTILITY_IN_PROC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>..\..\..\zlib-1.2.7;..\..\..\lpng1512;..\..\..\Box2D_v2.2.1;..\..\..\glew-1.9.0\include;..\..\..\boost_1_50_0;..\..\..\SDL\include;..\..\..\SDL_mixer;..\..\..\SDL_image;..\..\..\SDL_ttf;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <StackReserveSize>10000000</StackReserveSize>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NOMINMAX;_CRT_SECURE_NO_WARNINGS;IMPLEMENT_SAVE_PNG;USE_BOX2D;USE_GLES2;UTILITY_IN_PROC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <AdditionalIncludeDirectories>..\..\..\zlib-1.2.7;..\..\..\lpng1512;..\..\..\Box2D_v2.2.1;..\..\..\glew-1.9.0\include;..\..\..\boost_1_50_0;..\..\..\SDL\include;..\..\..\SDL_mixer;..\..\..\SDL_image;..\..\..\SDL_ttf;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <StackReserveSize>10000000</StackReserveSize>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NOMINMAX;_CRT_SECURE_NO_WARNINGS;IMPLEMENT_SAVE_PNG;UTILITY_IN_PROC;GLEW_STATIC;USE_GLES2;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <DisableSpecificWarnings>4250</DisableSpecificWarnings>
+      <ExceptionHandling>SyncCThrow</ExceptionHandling>
+      <AdditionalIncludeDirectories>..\..\..\zlib;..\..\..\lpng1512;..\..\..\Box2D_v2.2.1;..\..\..\glew-1.9.0\include;..\..\..\boost_1_52_0;..\..\..\SDL\include;..\..\..\SDL_mixer;..\..\..\SDL_image;..\..\..\SDL_ttf;..\..\..\lpng160;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <UndefinePreprocessorDefinitions>_USE_MATH_DEFINES</UndefinePreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <SubSystem>Console</SubSystem>
+      <StackReserveSize>10000000</StackReserveSize>
+      <IgnoreSpecificDefaultLibraries>libcmt</IgnoreSpecificDefaultLibraries>
+      <AdditionalLibraryDirectories>..\..\..\glew-1.9.0\build\vc10\shared\release;..\..\..\SDL_ttf\VisualC\Release;..\..\..\SDL_mixer\VisualC\Release;..\..\..\SDL_image\VisualC\Win32\Release;..\..\..\SDL\VisualC\SDL\Win32\Release;..\..\..\Box2D_v2.2.1\Build\vs2010\bin\Release;..\..\..\zlib;..\..\..\lpng160;..\..\..\boost_1_52_0\stage32-release-static\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;libpng.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NOMINMAX;_CRT_SECURE_NO_WARNINGS;IMPLEMENT_SAVE_PNG;USE_BOX2D;USE_GLES2;UTILITY_IN_PROC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <AdditionalIncludeDirectories>..\..\..\zlib-1.2.7;..\..\..\lpng1512;..\..\..\Box2D_v2.2.1;..\..\..\glew-1.9.0\include;..\..\..\boost_1_50_0;..\..\..\SDL\include;..\..\..\SDL_mixer;..\..\..\SDL_image;..\..\..\SDL_ttf;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <SubSystem>Windows</SubSystem>
+      <StackReserveSize>10000000</StackReserveSize>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\frogatto\src\achievements.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\animation_creator.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\animation_preview_widget.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\animation_widget.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\asserts.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\b2d_ffl.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\background.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\background_task_pool.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\blur.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\border_widget.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\button.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\character_editor_dialog.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\checkbox.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\checksum.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\clipboard.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\code_editor_dialog.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\code_editor_widget.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\collision_utils.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\color_chart.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\color_utils.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\compat.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\concurrent_cache.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\controls.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\controls_dialog.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\current_generator.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\custom_object.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\custom_object_callable.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\custom_object_dialog.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\custom_object_functions.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\custom_object_type.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\custom_object_widget.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\debug_console.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\decimal.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\dialog.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\difficulty.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\drag_widget.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\draw_number.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\draw_primitive.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\draw_scene.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\draw_tile.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\dropdown_widget.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\editor.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\editor_dialogs.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\editor_formula_functions.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\editor_layers_dialog.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\editor_level_properties_dialog.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\editor_module_properties_dialog.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\editor_stats_dialog.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\editor_variable_info.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\eglport.h" />
+    <ClInclude Include="..\..\..\frogatto\src\entity.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\entity_fwd.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\external_text_editor.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\filesystem.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\file_chooser_dialog.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\font.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\foreach.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\formatter.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\formula.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\formula_callable.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\formula_callable_definition.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\formula_callable_definition_fwd.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\formula_callable_utils.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\formula_constants.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\formula_function.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\formula_function_registry.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\formula_fwd.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\formula_object.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\formula_profiler.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\formula_tokenizer.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\formula_variable_storage.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\frame.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\framed_gui_element.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\functional.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\game_registry.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\geometry.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\gles2.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\globals.h" />
+    <ClInclude Include="..\..\..\frogatto\src\graphical_font.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\graphical_font_label.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\graphics.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\grid_widget.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\grid_widget_fwd.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\group_property_editor_dialog.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\gui_formula_functions.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\gui_section.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\hex_map.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\hex_object.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\hex_object_fwd.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\hex_tile.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\hex_tileset_editor_dialog.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\hi_res_timer.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\http_client.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\http_server.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\i18n.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\image_widget.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\image_widget_fwd.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\IMG_savepng.h" />
+    <ClInclude Include="..\..\..\frogatto\src\input.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\ipc.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\iphone_controls.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\iphone_device_info.h" />
+    <ClInclude Include="..\..\..\frogatto\src\iphone_sound.h" />
+    <ClInclude Include="..\..\..\frogatto\src\joystick.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\json_parser.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\json_tokenizer.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\key_button.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\label.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\language_dialog.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\level.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\level_logic.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\level_object.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\level_runner.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\level_solid_map.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\light.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\loading_screen.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\map_utils.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\md5.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\message_dialog.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\module.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\module_web_server.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\movement_script.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\multiplayer.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\multi_tile_pattern.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\object_events.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\of_bridge.h" />
+    <ClInclude Include="..\..\..\frogatto\src\options_dialog.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\particle_system.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\pathfinding.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\pause_game_dialog.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\playable_custom_object.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\player_info.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\point_map.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\poly_line_widget.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\preferences.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\preprocessor.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\preview_tileset_widget.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\progress_bar.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\property_editor_dialog.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\random.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\raster.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\raster_distortion.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\rectangle_rotator.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\reference_counted_object.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\regex_utils.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\rich_text_label.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\SampleOFDelegate.h" />
+    <ClInclude Include="..\..\..\frogatto\src\scoped_resource.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\scrollable_widget.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\scrollbar_widget.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\SDLMain.h" />
+    <ClInclude Include="..\..\..\frogatto\src\segment_editor_dialog.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\selector_widget.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\settings_dialog.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\shaders.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\slider.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\solid_map.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\solid_map_fwd.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\sound.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\speech_dialog.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\stats.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\stats_server.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\stats_web_server.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\string_utils.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\surface.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\surface_cache.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\surface_formula.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\surface_palette.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\surface_scaling_generated.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\sys.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\tbs_ai_player.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\tbs_bot.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\tbs_client.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\tbs_functions.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\tbs_game.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\tbs_internal_client.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\tbs_internal_server.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\tbs_server.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\tbs_server_base.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\tbs_web_server.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\texture.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\texture_frame_buffer.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\text_editor_widget.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\thread.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\tileset_editor_dialog.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\tile_edit_widget.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\tile_map.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\tooltip.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\translate.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\tree_view_widget.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\unit_test.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\userevents.h" />
+    <ClInclude Include="..\..\..\frogatto\src\utility_query.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\utils.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\variant.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\variant_callable.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\variant_utils.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\vecmath.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\vector_text.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\water.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\water_particle_system.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\weather_particle_system.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\widget.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\widget_factory.hpp" />
+    <ClInclude Include="..\..\..\frogatto\src\wml_formula_callable.hpp" />
+    <ClInclude Include="..\..\src\bar_widget.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\frogatto\src\achievements.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\animation_creator.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\animation_preview_widget.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\animation_widget.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\asserts.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\b2d_ffl.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\background.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\background_task_pool.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\base64.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\blur.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\border_widget.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\button.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\character_editor_dialog.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\checkbox.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\checksum.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\clipboard.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\code_editor_dialog.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\code_editor_widget.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\collision_utils.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\color_chart.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\color_utils.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\compress.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\controls.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\controls_dialog.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\current_generator.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\custom_object.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\custom_object_callable.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\custom_object_dialog.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\custom_object_functions.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\custom_object_type.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\custom_object_widget.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\debug_console.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\decimal.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\dialog.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\difficulty.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\drag_widget.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\draw_number.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\draw_primitive.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\draw_scene.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\draw_tile.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\dropdown_widget.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\editor.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\editor_dialogs.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\editor_formula_functions.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\editor_layers_dialog.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\editor_level_properties_dialog.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\editor_module_properties_dialog.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\editor_stats_dialog.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\editor_variable_info.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\entity.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\external_text_editor.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\filesystem-android.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\filesystem.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\file_chooser_dialog.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\font.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\formula.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\formula_callable_definition.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\formula_constants.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\formula_function.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\formula_function_registry.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\formula_object.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\formula_profiler.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\formula_test.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\formula_tokenizer.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\formula_variable_storage.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\frame.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\framed_gui_element.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\game_registry.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\geometry.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\gles2.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\globals.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\graphical_font.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\graphical_font_label.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\grid_widget.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\group_property_editor_dialog.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\gui_formula_functions.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\gui_section.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\hex_map.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\hex_object.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\hex_tile.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\hex_tileset_editor_dialog.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\http_client.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\http_server.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\i18n.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\image_widget.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\IMG_savepng.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\input.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\ipc.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\iphone_controls.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\joystick.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\json_parser.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\json_tokenizer.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\key_button.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\label.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\language_dialog.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\level.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\level_logic.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\level_object.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\level_runner.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\level_solid_map.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\light.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\loading_screen.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\load_level_nothread.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\main.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\md5.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\message_dialog.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\module.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\module_web_server.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\movement_script.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\multiplayer.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\multi_tile_pattern.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\object_events.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\options_dialog.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\particle_system.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\pathfinding.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\pause_game_dialog.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\playable_custom_object.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\player_info.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\preferences.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\preprocessor.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\preview_tileset_widget.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\progress_bar.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\property_editor_dialog.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\random.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\raster.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\raster_distortion.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\rectangle_rotator.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\rich_text_label.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\scrollable_widget.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\scrollbar_widget.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\segment_editor_dialog.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\selector_widget.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\settings_dialog.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\shaders.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\slider.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\solid_map.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\sound.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\speech_dialog.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\stats.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\stats_server.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\stats_server_main.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\stats_web_server.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\string_utils.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\surface.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\surface_cache.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\surface_formula.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\surface_palette.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\surface_scaling.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\sys.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\tbs_ai_player.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\tbs_bot.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\tbs_client.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\tbs_functions.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\tbs_game.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\tbs_internal_client.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\tbs_internal_server.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\tbs_server.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\tbs_server_base.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\tbs_web_server.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\texture.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\texture_frame_buffer.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\text_editor_widget.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\thread.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\tileset_editor_dialog.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\tile_edit_widget.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\tile_map.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\tooltip.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\translate.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\tree_view_widget.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\unit_test.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\utility_object_compiler.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\utility_query.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\utility_render_level.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\utils.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\variant.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\variant_callable.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\variant_utils.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\vector_text.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\water.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\water_particle_system.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\weather_particle_system.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\widget.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\widget_factory.cpp" />
+    <ClCompile Include="..\..\..\frogatto\src\wml_formula_callable.cpp" />
+    <ClCompile Include="..\..\src\bar_widget.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\..\frogatto\src\frogatto-resouces.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\..\Box2D_v2.2.1\Build\vs2010\bin\Release\Box2D.lib" />
+    <Library Include="..\..\..\glew-1.9.0\lib\glew32s.lib" />
+    <Library Include="..\..\..\SDL\VisualC\SDLmain\Win32\Release\SDLmain.lib" />
+    <Library Include="..\..\..\SDL\VisualC\SDL\Win32\Release\SDL.lib" />
+    <Library Include="..\..\..\SDL_image\VisualC\Win32\Release\SDL2_image.lib" />
+    <Library Include="..\..\..\SDL_mixer\VisualC\Release\SDL2_mixer.lib" />
+    <Library Include="..\..\..\SDL_ttf\VisualC\Release\SDL2_ttf.lib" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

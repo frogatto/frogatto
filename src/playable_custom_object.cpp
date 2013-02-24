@@ -155,15 +155,14 @@ variant playable_custom_object::get_value(const std::string& key) const
 		return variant(SDL_GetModState());
 	} else if(key == "ctrl_keys") {
 		std::vector<variant> result;
-		#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-		#else
-#if defined(__ANDROID__) && SDL_VERSION_ATLEAST(1, 3, 0)
-		Uint8* key_state = SDL_GetKeyboardState(NULL);
-		for(int count = 0; count < SDL_NUM_SCANCODES; count++) {
+#if !defined(TARGET_OS_IPHONE) && !defined(TARGET_IPHONE_SIMULATOR)
+		int ary_length;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		Uint8* key_state = SDL_GetKeyboardState(&ary_length);
 #else
-		Uint8* key_state = SDL_GetKeyState(NULL);
-		for(int count = SDLK_FIRST; count < SDLK_LAST; count++) {
+		const Uint8* key_state = SDL_GetKeyState(&ary_length);
 #endif
+		for(int count = 0; count < ary_length; ++count) {
 			if(key_state[count]) {				//Returns only keys that are down so the list that ffl has to deal with is small.
 				if(count < 128 && util::c_isprint(count)) {
 					std::string str(1,count);
@@ -173,7 +172,7 @@ variant playable_custom_object::get_value(const std::string& key) const
 				}
 			}
 		}
-		#endif
+#endif
 		return variant(&result);
 	} else if(key == "ctrl_mice") {
 		std::vector<variant> result;
@@ -216,14 +215,6 @@ variant playable_custom_object::get_value(const std::string& key) const
 				info.push_back(variant("x2"));
 			}
 
-			if(button_state & SDL_BUTTON(SDL_BUTTON_WHEELUP)) { //and these don't work
-				info.push_back(variant("up"));
-			}
-
-			if(button_state & SDL_BUTTON(SDL_BUTTON_WHEELDOWN)) {
-				info.push_back(variant("down"));
-			}
-			
 			result.push_back(variant(&info));
 		}
 
