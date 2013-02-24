@@ -48,7 +48,11 @@ manager::~manager()
 
 void submit(boost::function<void()> job, boost::function<void()> on_complete)
 {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	task t = { job, on_complete, boost::shared_ptr<threading::thread>(new threading::thread("background_task", boost::bind(run_task, job, next_task_id))) };
+#else
 	task t = { job, on_complete, boost::shared_ptr<threading::thread>(new threading::thread(boost::bind(run_task, job, next_task_id))) };
+#endif
 	task_map[next_task_id] = t;
 	++next_task_id;
 }

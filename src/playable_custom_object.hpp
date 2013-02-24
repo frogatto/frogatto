@@ -5,7 +5,6 @@
 
 #include "controls.hpp"
 #include "custom_object.hpp"
-#include "key.hpp"
 #include "player_info.hpp"
 #include "variant.hpp"
 

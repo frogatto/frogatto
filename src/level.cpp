@@ -886,7 +886,7 @@ void level::start_rebuild_tiles_in_background(const std::vector<int>& layers)
 
 	static threading::mutex* sync = new threading::mutex;
 
-#if defined(__ANDROID__) && SDL_VERSION_ATLEAST(1, 3, 0)
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 	info.rebuild_tile_thread = new threading::thread("rebuild_tiles", boost::bind(build_tiles_thread_function, &info, worker_tile_maps, *sync));
 #else
 	info.rebuild_tile_thread = new threading::thread(boost::bind(build_tiles_thread_function, &info, worker_tile_maps, *sync));

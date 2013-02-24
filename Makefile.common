@@ -14,6 +14,7 @@ objects = \
 	src/b2d_ffl.o \
 	src/background.o \
 	src/background_task_pool.o \
+	src/bar_widget.o \
 	src/base64.o \
 	src/blur.o \
 	src/border_widget.o \
@@ -187,8 +188,11 @@ objects = \
 	src/utility_object_compiler.o \
 	src/utility_query.o \
 	src/utility_render_level.o \
-    src/vector_text.o \
-	src/wm.o
+    src/vector_text.o 
+
+ifneq ($(USE_SDL2),yes)
+objects += src/wm.o
+endif
 
 
 # Server

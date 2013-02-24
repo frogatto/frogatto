@@ -45,12 +45,25 @@
 #include "stats.hpp"
 #include "surface.hpp"
 
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+#	define SURFACE_MASK_WITH_ALPHA	0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff
+#	define SURFACE_MASK_WITHOUT_ALPHA	0xff000000, 0x00ff0000, 0x0000ff00, 0x00000000
+#else
+#	define SURFACE_MASK_WITH_ALPHA	0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000
+#	define SURFACE_MASK_WITHOUT_ALPHA	0x000000ff, 0x0000ff00, 0x00ff0000, 0x00000000
+#endif
+
+
 int IMG_SaveFrameBuffer(const char* file, int compression)
 {
 	const int w = preferences::actual_screen_width();
 	const int h = preferences::actual_screen_height();
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	graphics::surface s(SDL_CreateRGBSurface(0, w, h, 24, SURFACE_MASK_RGB));
+#else
 	graphics::surface s(SDL_CreateRGBSurface(SDL_SWSURFACE, w, h, 24, SURFACE_MASK_RGB));
+#endif
 	glReadPixels(0, 0, w, h, GL_RGB, GL_UNSIGNED_BYTE, s->pixels); 
 
 	unsigned char* pixels = (unsigned char*)s->pixels;
@@ -105,9 +118,15 @@ int IMG_SavePNG_RW(SDL_RWops *src, SDL_Surface *surf,int compression){
 	png_infop info_ptr;
 	SDL_PixelFormat *fmt=NULL;
 	SDL_Surface *tempsurf=NULL;
-	int ret,funky_format,used_alpha;
+	int ret,funky_format;
 	unsigned int i;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	SDL_BlendMode temp_blend;
+	bool used_blend = false;
+#else
 	Uint8 temp_alpha;
+	bool used_alpha = false;
+#endif
 	png_colorp palette;
 	Uint8 *palette_alpha=NULL;
 	png_byte **row_pointers=NULL;
@@ -172,12 +191,12 @@ int IMG_SavePNG_RW(SDL_RWops *src, SDL_Surface *surf,int compression){
 			palette[i].blue=fmt->palette->colors[i].b;
 		}
 		png_set_PLTE(png_ptr,info_ptr,palette,fmt->palette->ncolors);
-		if (surf->flags&SDL_SRCCOLORKEY) {
-			Uint32 colorkey; 
-#if defined(__ANDROID__) && SDL_VERSION_ATLEAST(1, 3, 0)
-			SDL_GetColorKey(surf, &colorkey);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		Uint32 colorkey; 
+		if (SDL_GetColorKey(surf, &colorkey) == 0) {
 #else
-			colorkey = fmt->colorkey;
+		if (surf->flags&SDL_SRCCOLORKEY) {
+			Uint32 colorkey = fmt->colorkey; 
 #endif
 			palette_alpha=(Uint8 *)malloc((colorkey+1)*sizeof(Uint8));
 			if (!palette_alpha) {
@@ -260,45 +279,48 @@ int IMG_SavePNG_RW(SDL_RWops *src, SDL_Surface *surf,int compression){
 		if (funky_format) {
 			/* Allocate non-funky format, and copy pixeldata in*/
 			if(fmt->Amask){
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-				tempsurf = SDL_CreateRGBSurface(SDL_SWSURFACE, surf->w, surf->h, 24,
-										0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+				tempsurf = SDL_CreateRGBSurface(0, surf->w, surf->h, 24, SURFACE_MASK_WITH_ALPHA);
 #else
-				tempsurf = SDL_CreateRGBSurface(SDL_SWSURFACE, surf->w, surf->h, 24,
-										0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+				tempsurf = SDL_CreateRGBSurface(SDL_SWSURFACE, surf->w, surf->h, 24, SURFACE_MASK_WITH_ALPHA);
 #endif
 			}else{
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-				tempsurf = SDL_CreateRGBSurface(SDL_SWSURFACE, surf->w, surf->h, 24,
-										0xff0000, 0x00ff00, 0x0000ff, 0x00000000);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+				tempsurf = SDL_CreateRGBSurface(0, surf->w, surf->h, 24, SURFACE_MASK_WITHOUT_ALPHA);
 #else
-				tempsurf = SDL_CreateRGBSurface(SDL_SWSURFACE, surf->w, surf->h, 24,
-										0x000000ff, 0x0000ff00, 0x00ff0000, 0x00000000);
+				tempsurf = SDL_CreateRGBSurface(SDL_SWSURFACE, surf->w, surf->h, 24, SURFACE_MASK_WITHOUT_ALPHA);
 #endif
 			}
 			if(!tempsurf){
 				SDL_SetError("Couldn't allocate temp surface");
 				goto savedone;
 			}
-			if(surf->flags&SDL_SRCALPHA){
-#if defined(__ANDROID__) && SDL_VERSION_ATLEAST(1, 3, 0)
-				SDL_GetSurfaceAlphaMod(surf, &temp_alpha);
-#else
-				temp_alpha=fmt->alpha;
-#endif
-				used_alpha=1;
-				SDL_SetAlpha(surf,0,255); /* Set for an opaque blit */
-			}else{
-				used_alpha=0;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+			if(SDL_GetSurfaceBlendMode(surf, &temp_blend) == 0){
+				used_blend = true;
+				SDL_SetSurfaceBlendMode(surf, SDL_BLENDMODE_NONE);
 			}
-			if(SDL_BlitSurface(surf,NULL,tempsurf,NULL)!=0){
+#else
+			if(surf->flags&SDL_SRCALPHA) {
+				temp_alpha = fmt->alpha;
+					used_alpha = true;
+					SDL_SetAlpha(surf,0,255); /* Set for an opaque blit */
+			}
+#endif
+			if(SDL_BlitSurface(surf, NULL, tempsurf, NULL)!=0){
 				SDL_SetError("Couldn't blit surface to temp surface");
 				SDL_FreeSurface(tempsurf);
 				goto savedone;
 			}
-			if (used_alpha) {
-				SDL_SetAlpha(surf,SDL_SRCALPHA,(Uint8)temp_alpha); /* Restore alpha settings*/
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+			if (used_blend) {
+				SDL_SetSurfaceBlendMode(surf, temp_blend); /* Restore blend settings*/
 			}
+#else
+			if(used_alpha) {
+					SDL_SetAlpha(surf, SDL_SRCALPHA, (Uint8)temp_alpha); /* Restore alpha settings*/
+			}
+#endif
 			for(i=0;i<tempsurf->h;i++){
 				row_pointers[i]= ((png_byte*)tempsurf->pixels) + i*tempsurf->pitch;
 			}

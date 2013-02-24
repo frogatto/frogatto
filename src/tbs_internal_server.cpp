@@ -86,7 +86,7 @@ namespace tbs
 			return;
 		}
 
-		for(std::map<send_function, socket_info>::iterator i = connections_.begin(); i != connections_.end(); ++i) {
+		for(std::map<send_function, socket_info, send_function_less>::iterator i = connections_.begin(); i != connections_.end(); ++i) {
 			if(i->second.session_id == session_id) {
 				connections_.erase(i);
 				return;
@@ -99,7 +99,7 @@ namespace tbs
 	{
 		std::vector<std::pair<send_function, variant> > messages;
 
-		for(std::map<send_function, socket_info>::iterator i = connections_.begin(); i != connections_.end(); ++i) {
+		for(std::map<send_function, socket_info, send_function_less>::iterator i = connections_.begin(); i != connections_.end(); ++i) {
 			send_function send_fn = i->first;
 			socket_info& info = i->second;
 			ASSERT_LOG(info.session_id != -1, "UNKNOWN SOCKET");
@@ -149,7 +149,7 @@ namespace tbs
 			return;
 		}
 
-		for(std::map<send_function, socket_info>::iterator i = connections_.begin(); i != connections_.end(); ++i) {
+		for(std::map<send_function, socket_info, send_function_less>::iterator i = connections_.begin(); i != connections_.end(); ++i) {
 			if(i->second.session_id == session_id) {
 				i->first(json::parse(msg));
 				return;

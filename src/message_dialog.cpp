@@ -204,7 +204,7 @@ void message_dialog::process()
 
 	if(cur_row_ < lines_.size()) {
 		int num_keys;
-#if SDL_MAJOR_VERSION == 1 && SDL_MINOR_VERSION == 3
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 		const Uint8* keys = SDL_GetKeyboardState(&num_keys);
 #else
 		const Uint8* keys = SDL_GetKeyState(&num_keys);
