@@ -252,9 +252,6 @@ void dialog::prepare_draw()
 void dialog::complete_draw()
 {
 	graphics::swap_buffers();
-#if defined(__ANDROID__)
-	graphics::reset_opengl_state();
-#endif
 
 	const int end_draw = last_draw_ + 20;
 	const int delay_time = std::max<int>(1, end_draw - SDL_GetTicks());

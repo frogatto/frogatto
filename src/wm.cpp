@@ -81,7 +81,7 @@ void window_manager::create_window(int width, int height, int bpp, unsigned int 
 	err = glGetError();
 	ASSERT_LOG(err != EGL_SUCCESS, "eglMakeCurrent failed.");
 #else
-	flags |= SDL_WINDOW_OPENGL;
+	flags |= SDL_OPENGL;
 	SDLWindow_ = SDL_SetVideoMode(width_, height_, bpp, flags);
 #endif // defined(GL_ES_VERSION_2_0)
 #endif // !defined(__native_client__)

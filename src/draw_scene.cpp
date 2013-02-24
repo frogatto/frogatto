@@ -333,7 +333,11 @@ void render_scene(const level& lvl, screen_position& pos, const entity* focus, b
 		glClearColor(0.0, 0.0, 0.0, 0.0);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 		const SDL_Surface* fb = SDL_GetWindowSurface(graphics::get_window());
+#else
+		const SDL_Surface* fb = SDL_GetVideoSurface();
+#endif
 		const double angle = sin(0.5*3.141592653589*GLfloat(pos.flip_rotate)/1000.0);
 		const int pixels = (preferences::actual_screen_width()/2)*angle;
 		
@@ -474,7 +478,11 @@ void render_scene(const level& lvl, screen_position& pos, const entity* focus, b
 	}
 	
 	if(pos.flip_rotate) {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 		const SDL_Surface* fb = SDL_GetWindowSurface(graphics::get_window());
+#else
+		const SDL_Surface* fb = SDL_GetVideoSurface();
+#endif
 		const double angle = sin(0.5*3.141592653589*GLfloat(pos.flip_rotate)/1000.0);
 		//const int pixels = (fb->w/2)*angle;
 		const int pixels = (preferences::actual_screen_width()/2)*angle;

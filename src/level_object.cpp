@@ -135,7 +135,11 @@ void create_compiled_tiles_image()
 				for(int n = 0; n != num_sheets; ++n) {
 					tiles_in_sheet.push_back(0);
 					sheet_next_image_index.push_back(0);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 					sheets.push_back(graphics::surface(SDL_CreateRGBSurface(0, 1024, 1024, 32, SURFACE_MASK)));
+#else
+					sheets.push_back(graphics::surface(SDL_CreateRGBSurface(SDL_SWSURFACE, 1024, 1024, 32, SURFACE_MASK)));
+#endif
 					tiles_in_sheet[sheet+n] += i->second;
 				}
 			} else {
@@ -152,7 +156,11 @@ void create_compiled_tiles_image()
 	std::cerr << "NUM_TILES: " << tile_nodes_to_zorders.size() << " / " << TilesInSheet << "\n";
 
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 	graphics::surface s(SDL_CreateRGBSurface(0, 1024, (compiled_tile_ids.size()/64 + 1)*BaseTileSize, 32, SURFACE_MASK));
+#else
+	graphics::surface s(SDL_CreateRGBSurface(SDL_SWSURFACE, 1024, (compiled_tile_ids.size()/64 + 1)*BaseTileSize, 32, SURFACE_MASK));
+#endif
 	for(std::map<tile_id, int>::const_iterator itor = compiled_tile_ids.begin();
 	    itor != compiled_tile_ids.end(); ++itor) {
 		const tile_id& tile_info = itor->first;
@@ -167,7 +175,11 @@ void create_compiled_tiles_image()
 			src = graphics::map_palette(src, palette);
 		}
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 		SDL_SetSurfaceBlendMode(src.get(), SDL_BLENDMODE_NONE);
+#else
+		SDL_SetAlpha(src.get(), 0, SDL_ALPHA_OPAQUE);
+#endif
 		const int width = std::max<int>(src->w, src->h)/BaseTileSize;
 
 		const int src_x = (tile_pos%width) * BaseTileSize;
@@ -187,7 +199,11 @@ void create_compiled_tiles_image()
 //  don't need to save the main compiled tile anymore.
 //	IMG_SavePNG("images/tiles-compiled.png", s.get(), 5);
 
-	SDL_SetSurfaceAlphaMod(s.get(), SDL_ALPHA_OPAQUE);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	SDL_SetSurfaceBlendMode(s.get(), SDL_BLENDMODE_NONE);
+#else
+	SDL_SetAlpha(s.get(), 0, SDL_ALPHA_OPAQUE);
+#endif
 
 	for(std::map<obj_variant_ptr, int>::const_iterator i = tile_nodes_to_zorders.begin(); i != tile_nodes_to_zorders.end(); ++i) {
 		const int num_tiles = zorder_to_num_tiles[i->second];
@@ -240,7 +256,11 @@ void create_compiled_tiles_image()
 				SDL_Rect src_rect = { src_x, src_y, BaseTileSize, BaseTileSize };
 				SDL_Rect dst_rect = { dst_x, dst_y, BaseTileSize, BaseTileSize };
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 				SDL_SetSurfaceBlendMode(s.get(), SDL_BLENDMODE_NONE);
+#else
+				SDL_SetAlpha(s.get(), 0, 255);
+#endif
 				SDL_BlitSurface(s.get(), &src_rect, sheets[sheet].get(), &dst_rect);
 			}
 

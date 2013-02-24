@@ -29,58 +29,148 @@ void stoupper(std::string& s)
 
 }
 
-std::string get_key_name(SDL_Scancode key) {
-	/*switch(key) {
-	// these characters are not contained in the font
-	case SDL_SCANCODE_PERIOD:
-		return std::string("PERIOD");
-	case SDL_SCANCODE_COMMA:
-		return "COMMA";
-	// abreviations for some long names
-	case SDL_SCANCODE_MODE:
-		return std::string("ALTGR");
-	case SDL_SCANCODE_BACKSPACE:
-		return std::string("BKSP");
-	case SDL_SCANCODE_CAPSLOCK:
-		return std::string("CAPS");
-	case SDL_SCANCODE_DELETE:
-		return std::string("DEL");
-	case SDL_SCANCODE_INSERT:
-		return std::string("INS");
-	case SDL_SCANCODE_NUMLOCKCLEAR:
-		return std::string("NUM");
-	case SDL_SCANCODE_PAGEDOWN:
-		return std::string("PGDN");
-	case SDL_SCANCODE_PAGEUP:
-		return std::string("PGUP");
-	case SDL_SCANCODE_LEFT:
+std::string get_key_name(key_type key) 
+{
+	switch(key) {
+	case SDLK_LEFT:
 		return std::string(("←"));
-	case SDL_SCANCODE_RIGHT:
+	case SDLK_RIGHT:
 		return std::string(("→"));
-	case SDL_SCANCODE_UP:
+	case SDLK_UP:
 		return std::string(("↑"));
-	case SDL_SCANCODE_DOWN:
+	case SDLK_DOWN:
 		return std::string(("↓"));
+	default:
+		break;
+	}
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	return SDL_GetKeyName(key);
+#else
+	switch(key) {
+	// these characters are not contained in the font
+	case SDLK_CARET:
+		return std::string("CARET");
+	case SDLK_GREATER:
+		return std::string("GREATER");
+	case SDLK_HASH:
+		return std::string("HASH");
+	case SDLK_LESS:
+		return std::string("LESS");
+	// abreviations for some long names
+	case SDLK_MODE:
+		return std::string("ALTGR");
+	case SDLK_BACKSPACE:
+		return std::string("BKSP");
+	case SDLK_CAPSLOCK:
+		return std::string("CAPS");
+	case SDLK_COMPOSE:
+		return std::string("COMP");
+	case SDLK_DELETE:
+		return std::string("DEL");
+	case SDLK_INSERT:
+		return std::string("INS");
+	case SDLK_NUMLOCK:
+		return std::string("NUM");
+	case SDLK_PAGEDOWN:
+		return std::string("PGDN");
+	case SDLK_PAGEUP:
+		return std::string("PGUP");
 	// other names can be shortened by taking only the
 	// first letter of the first word, i.e. "LEFT SHIFT" --> "LSHIFT"
 	default:
-		std::string s = SDL_GetScancodeName(key);
+		std::string s = SDL_GetKeyName(key);
 		stoupper(s);
 		size_t pos = s.find_first_of(' ');
 		if (pos == std::string::npos)
 			return s;
 		else
 			return s.erase(1, pos);
-	}*/
-	return SDL_GetScancodeName(key);
+	}
+#endif
 }
 
-SDL_Scancode get_key_sym(const std::string& s)
+key_type get_key_sym(const std::string& s)
 {
-	return SDL_GetScancodeFromName(s.c_str());
+	if(s == "UP" || s == (("↑"))) {
+		return SDLK_UP;
+	} else if(s == "DOWN" || s == (("↓"))) {
+		return SDLK_DOWN;
+	} else if(s == "LEFT" || s == (("←"))) {
+		return SDLK_LEFT;
+	} else if(s == "RIGHT" || s == (("→"))) {
+		return SDLK_RIGHT;
+	}
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	return SDL_GetKeyFromName(s.c_str());
+#else
+	if(s.size() == 1 && unsigned(s[0]) <= 127) {
+		return SDLKey(s[0]);
+	} else if(s == "UP" || s == (("↑"))) {
+		return SDLK_UP;
+	} else if(s == "DOWN" || s == (("↓"))) {
+		return SDLK_DOWN;
+	} else if(s == "LEFT" || s == (("←"))) {
+		return SDLK_LEFT;
+	} else if(s == "RIGHT" || s == (("→"))) {
+		return SDLK_RIGHT;
+	} else if(s == "PGDN" || s == "PAGEDOWN") {
+		return SDLK_PAGEDOWN;
+	} else if(s == "PGUP" || s == "PAGEUP") {
+		return SDLK_PAGEUP;
+	} else if(s == "INSERT") {
+		return SDLK_INSERT;
+	} else if(s == "HOME") {
+		return SDLK_HOME;
+	} else if(s == "END") {
+		return SDLK_END;
+	} else if(s.substr(0, 6) == "SDLK_F") {
+		int n;
+		std::istringstream(s.substr(6)) >> n;
+		return SDLKey(n + SDLK_F1 - 1);
+	} else if(s.substr(0, 7) == "SDLK_KP") {
+		int n;
+		std::istringstream(s.substr(7)) >> n;
+		return SDLKey(n + SDLK_KP0);
+	} else if(s == "KP_PERIOD") {
+		return SDLK_KP_PERIOD;
+	} else if(s == "KP_DIVIDE") {
+		return SDLK_KP_DIVIDE;
+	} else if(s == "KP_MULTIPLY") {
+		return SDLK_KP_MULTIPLY;
+	} else if(s == "KP_MINUS") {
+		return SDLK_KP_MINUS;
+	} else if(s == "KP_PLUS") {
+		return SDLK_KP_PLUS;
+	} else if(s == "KP_ENTER") {
+		return SDLK_KP_ENTER;
+	} else if(s == "KP_EQUALS") {
+		return SDLK_KP_EQUALS;
+	} else if(s == "HELP") {
+		return SDLK_HELP;
+	} else if(s == "PRINT") {
+		return SDLK_PRINT;
+	} else if(s == "SYSRQ") {
+		return SDLK_SYSREQ;
+	} else if(s == "BREAK") {
+		return SDLK_BREAK;
+	} else if(s == "POWER") {
+		return SDLK_POWER;
+	} else if(s == "UNDO") {
+		return SDLK_UNDO;
+	} else if(s == "NUMLOCK") {
+		return SDLK_NUMLOCK;
+	} else if(s == "CAPSLOCK") {
+		return SDLK_CAPSLOCK;
+	} else if(s == "SCROLLOCK") {
+		return SDLK_SCROLLOCK;
+	}
+	ASSERT_LOG(false, "Unreconised key '" << s << "'");
+	return SDLK_UNKNOWN;
+#endif
 }
 
-key_button::key_button(SDL_Scancode key, BUTTON_RESOLUTION button_resolution)
+key_button::key_button(key_type key, BUTTON_RESOLUTION button_resolution)
   : label_(widget_ptr(new graphical_font_label(get_key_name(key), "door_label", 2))),
 	key_(key), button_resolution_(button_resolution),
 	normal_button_image_set_(framed_gui_element::get("regular_button")),
@@ -160,8 +250,8 @@ bool key_button::handle_event(const SDL_Event& event, bool claimed)
 	}
 
 	if(event.type == SDL_KEYDOWN && grab_keys_) {
-		key_ = event.key.keysym.scancode;
-		if(key_ != SDL_SCANCODE_RETURN && key_ != SDL_SCANCODE_ESCAPE) {
+		key_ = event.key.keysym.sym;
+		if(key_ != SDLK_RETURN && key_ != SDLK_ESCAPE) {
 			dynamic_cast<graphical_font_label*>(label_.get())->set_text(get_key_name(key_));
 			claimed = true;
 			current_button_image_set_ = normal_button_image_set_;
@@ -172,7 +262,7 @@ bool key_button::handle_event(const SDL_Event& event, bool claimed)
 	return claimed;
 }
 
-SDL_Scancode key_button::get_key() {
+key_type key_button::get_key() {
 	return key_;
 }
 

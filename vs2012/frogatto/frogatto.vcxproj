@@ -363,6 +363,7 @@
     <ClInclude Include="..\..\..\frogatto\src\widget.hpp" />
     <ClInclude Include="..\..\..\frogatto\src\widget_factory.hpp" />
     <ClInclude Include="..\..\..\frogatto\src\wml_formula_callable.hpp" />
+    <ClInclude Include="..\..\src\bar_widget.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\frogatto\src\achievements.cpp" />
@@ -549,6 +550,7 @@
     <ClCompile Include="..\..\..\frogatto\src\widget.cpp" />
     <ClCompile Include="..\..\..\frogatto\src\widget_factory.cpp" />
     <ClCompile Include="..\..\..\frogatto\src\wml_formula_callable.cpp" />
+    <ClCompile Include="..\..\src\bar_widget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\..\frogatto\src\frogatto-resouces.rc" />

@@ -92,6 +92,7 @@ void reset_opengl_state()
 #endif
 }
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 namespace {
 	SDL_Window* global_main_window = NULL;
 	SDL_Renderer* global_renderer = NULL;
@@ -102,11 +103,19 @@ SDL_Window* get_window()
 	ASSERT_LOG(global_main_window != NULL, "swap_buffers called on NULL window");
 	return global_main_window;
 }
+#endif
 
 void swap_buffers()
 {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 	ASSERT_LOG(global_main_window != NULL, "swap_buffers called on NULL window");
 	SDL_GL_SwapWindow(global_main_window );
+#else
+	SDL_GL_SwapBuffers();
+#endif
+#if defined(__ANDROID__)
+	graphics::reset_opengl_state();
+#endif
 }
 
 bool set_video_mode(int w, int h)
@@ -115,10 +124,15 @@ bool set_video_mode(int w, int h)
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 1);
 	return set_video_mode(w,h,0,SDL_OPENGLES | SDL_FULLSCREEN);
 #else
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 	return set_video_mode(w,h,SDL_WINDOW_SHOWN|SDL_WINDOW_OPENGL|(preferences::resizable() ? SDL_WINDOW_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_WINDOW_FULLSCREEN : 0)) != NULL;
+#else
+	return set_video_mode(w,h,0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) != NULL;
+#endif
 #endif
 }
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 SDL_Window* set_video_mode(int w, int h, int flags)
 {
 	static SDL_Window* wnd = NULL;
@@ -157,6 +171,18 @@ SDL_Window* set_video_mode(int w, int h, int flags)
 
 	return wnd;
 }
+#else
+SDL_Surface* set_video_mode(int w, int h, int bitsperpixel, int flags)
+{
+	graphics::texture::unbuild_all();
+	SDL_Surface* result = SDL_SetVideoMode(w,h,bitsperpixel,flags);
+	reset_opengl_state();
+	graphics::texture::rebuild_all();
+	texture_frame_buffer::rebuild();
+
+	return result;
+}
+#endif
 
 	/* unavoidable global variable to store global clip
 	 rectangle changes */
@@ -196,7 +222,11 @@ SDL_Window* set_video_mode(int w, int h, int flags)
 #elif defined(__native_client__)
 		// do nothing.
 #else
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 		const SDL_Surface* fb = SDL_GetWindowSurface(graphics::get_window());
+#else
+		const SDL_Surface* fb = SDL_GetVideoSurface();
+#endif
 		if(fb == NULL) {
 			std::cerr << "Framebuffer was null in prepare_raster\n";
 			return;

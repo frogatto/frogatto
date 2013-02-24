@@ -23,8 +23,13 @@ void load_palette_def(const std::string& id)
 	def.name = id;
 	surface s = surface_cache::get_no_cache("palette/" + id + ".png");
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 	surface converted(SDL_CreateRGBSurface(0, s->w, s->h, 32, SURFACE_MASK));
 	SDL_SetSurfaceBlendMode(s.get(), SDL_BLENDMODE_NONE);
+#else
+	surface converted(SDL_CreateRGBSurface(SDL_SWSURFACE, s->w, s->h, 32, SURFACE_MASK));
+	SDL_SetAlpha(s.get(), 0, SDL_ALPHA_OPAQUE);
+#endif
 	SDL_BlitSurface(s.get(), NULL, converted.get(), NULL);
 	s = converted;
 
@@ -76,7 +81,11 @@ surface map_palette(surface s, int palette)
 		return s;
 	}
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 	surface result(SDL_CreateRGBSurface(0, s->w, s->h, 32, SURFACE_MASK));
+#else
+	surface result(SDL_CreateRGBSurface(SDL_SWSURFACE, s->w, s->h, 32, SURFACE_MASK));
+#endif
 
 	s = surface(SDL_ConvertSurface(s.get(), result->format, 0));
 

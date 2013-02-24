@@ -158,72 +158,7 @@ namespace input {
             pending_addition_listeners_.clear();
         }
         reference_holder_.clear();
-    }
-       
-    void key_listener::expand_keys(int logical_key, const SDL_Scancode& sym,
-                                   const SDL_Keymod& processed_mask, int depth) {
-    }        
-
-    void key_listener::bind_key(int logical_key, const SDL_Scancode& sym,
-                                bool collapse_doubles) {
-    }
-    
-    void key_listener::bind_key(int logical_key, const SDL_Keycode& k, 
-                                const SDL_Keymod& m, bool collapse_doubles) {
-    }
-    
-    bool key_listener::unbind_key(const SDL_Scancode& k) {
-		return false;
-    }
-    
-    bool key_listener::unbind_key(int logical_key) {
-		return false;
-    }
-
-    void key_listener::clean_mod_maps() {
-    }
-    
-    int key_listener::bound_key(const SDL_Scancode& sym) const {
-		return 0;
-    }
-
-    bool key_listener::check_keys(const SDL_Scancode& sym, Uint32 type) {
-		return 0;
-    }
-    
-    bool key_listener::process_event(const SDL_Event& event, bool claimed) {
-		return 0;
-    }
-
-    void key_down_listener::bind_key(int logical_key, const SDL_Scancode& sym,
-                                     bool collapse_doubles) {
-    }
-    
-    bool key_down_listener::unbind_key(const SDL_Scancode& k) {
-		return false;
-    }
-    
-    bool key_down_listener::unbind_key(int logical_key) {
-		return false;
-    }
-
-    void key_down_listener::do_keydown(int key) {
-    }
-    void key_down_listener::do_keyup(int key) {
-    }
-
-    void key_down_listener::reset() {
-    }
-
-#ifndef NO_EDITOR
-    bool mouse_drag_listener::process_event(const SDL_Event& event, bool claimed) {
-        return claimed;
-    }
-
-    bool mouse_click_listener_base::process_event(const SDL_Event& event, bool claimed) {
-        return claimed;
-    }
-#endif // NO_EDITOR
+    }     
 
 }
 

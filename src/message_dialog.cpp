@@ -204,7 +204,11 @@ void message_dialog::process()
 
 	if(cur_row_ < lines_.size()) {
 		int num_keys;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 		const Uint8* keys = SDL_GetKeyboardState(&num_keys);
+#else
+		const Uint8* keys = SDL_GetKeyState(&num_keys);
+#endif
 		const int WaitTime = std::count(keys, keys + num_keys, 0)  == num_keys ? 3 : 1;
 
 		const int nchars = lines_[cur_row_].width()/font::char_width(FontSize);

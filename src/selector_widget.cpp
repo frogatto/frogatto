@@ -164,8 +164,11 @@ namespace gui
 		} else if(event.type == SDL_MOUSEBUTTONUP) {
 			return handle_mouseup(event.button, claimed);
 		} else if(event.type == SDL_KEYDOWN) {
-			//const SDL_Keymod mod = SDL_GetModState();
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 			const SDL_Keycode key = event.key.keysym.sym;
+#else
+			const SDLKey key = event.key.keysym.sym;
+#endif
 			if(key == SDLK_LEFT || key == SDLK_PAGEUP) {
 				select_left();
 			} else if(key == SDLK_RIGHT || key == SDLK_PAGEDOWN) {

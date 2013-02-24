@@ -775,8 +775,12 @@ void code_editor_dialog::select_suggestion(int index)
 COMMAND_LINE_UTILITY(codeedit)
 {
 	SDL_Init(SDL_INIT_VIDEO);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 	SDL_Window* wnd = SDL_CreateWindow("Code Editor", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 600, SDL_WINDOW_OPENGL|SDL_WINDOW_RESIZABLE);
 	SDL_GLContext ctx = SDL_GL_CreateContext(wnd);
+#else
+	SDL_SetVideoMode(600, 600, 0, SDL_OPENGL|SDL_RESIZABLE);
+#endif
 #ifdef USE_GLES2
 	glViewport(0, 0, 600, 600);
 	glEnable(GL_BLEND);
@@ -807,8 +811,10 @@ COMMAND_LINE_UTILITY(codeedit)
 
 	d.show_modal();
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 	SDL_GL_DeleteContext(ctx);
 	SDL_DestroyWindow(wnd);
+#endif
 	SDL_Quit();
 }
 

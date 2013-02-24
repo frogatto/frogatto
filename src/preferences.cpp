@@ -735,13 +735,13 @@ namespace preferences {
 		}
 		
 #if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
-		controls::set_SDL_Scancode(controls::CONTROL_UP, static_cast<SDL_Scancode>(node["key_up"].as_int(SDL_SCANCODE_UP)));
-		controls::set_SDL_Scancode(controls::CONTROL_DOWN, static_cast<SDL_Scancode>(node["key_down"].as_int(SDL_SCANCODE_DOWN)));
-		controls::set_SDL_Scancode(controls::CONTROL_LEFT, static_cast<SDL_Scancode>(node["key_left"].as_int(SDL_SCANCODE_LEFT)));
-		controls::set_SDL_Scancode(controls::CONTROL_RIGHT, static_cast<SDL_Scancode>(node["key_right"].as_int(SDL_SCANCODE_RIGHT)));
-		controls::set_SDL_Scancode(controls::CONTROL_ATTACK, static_cast<SDL_Scancode>(node["key_attack"].as_int(SDL_SCANCODE_D)));
-		controls::set_SDL_Scancode(controls::CONTROL_JUMP, static_cast<SDL_Scancode>(node["key_jump"].as_int(SDL_SCANCODE_A)));
-		controls::set_SDL_Scancode(controls::CONTROL_TONGUE, static_cast<SDL_Scancode>(node["key_tongue"].as_int(SDL_SCANCODE_S)));
+		controls::set_keycode(controls::CONTROL_UP, static_cast<key_type>(node["key_up"].as_int(SDLK_UP)));
+		controls::set_keycode(controls::CONTROL_DOWN, static_cast<key_type>(node["key_down"].as_int(SDLK_DOWN)));
+		controls::set_keycode(controls::CONTROL_LEFT, static_cast<key_type>(node["key_left"].as_int(SDLK_LEFT)));
+		controls::set_keycode(controls::CONTROL_RIGHT, static_cast<key_type>(node["key_right"].as_int(SDLK_RIGHT)));
+		controls::set_keycode(controls::CONTROL_ATTACK, static_cast<key_type>(node["key_attack"].as_int(SDLK_d)));
+		controls::set_keycode(controls::CONTROL_JUMP, static_cast<key_type>(node["key_jump"].as_int(SDLK_a)));
+		controls::set_keycode(controls::CONTROL_TONGUE, static_cast<key_type>(node["key_tongue"].as_int(SDLK_s)));
 #endif
 	}
 	
@@ -756,13 +756,13 @@ namespace preferences {
 		node.add("joystick", variant::from_bool(use_joystick_));
 		node.add("sound_volume", static_cast<int>(sound::get_sound_volume()*1000));
 		node.add("music_volume", static_cast<int>(sound::get_music_volume()*1000));
-		node.add("key_up", controls::get_SDL_Scancode(controls::CONTROL_UP));
-		node.add("key_down", controls::get_SDL_Scancode(controls::CONTROL_DOWN));
-		node.add("key_left", controls::get_SDL_Scancode(controls::CONTROL_LEFT));
-		node.add("key_right", controls::get_SDL_Scancode(controls::CONTROL_RIGHT));
-		node.add("key_attack", controls::get_SDL_Scancode(controls::CONTROL_ATTACK));
-		node.add("key_jump", controls::get_SDL_Scancode(controls::CONTROL_JUMP));
-		node.add("key_tongue", controls::get_SDL_Scancode(controls::CONTROL_TONGUE));
+		node.add("key_up", controls::get_keycode(controls::CONTROL_UP));
+		node.add("key_down", controls::get_keycode(controls::CONTROL_DOWN));
+		node.add("key_left", controls::get_keycode(controls::CONTROL_LEFT));
+		node.add("key_right", controls::get_keycode(controls::CONTROL_RIGHT));
+		node.add("key_attack", controls::get_keycode(controls::CONTROL_ATTACK));
+		node.add("key_jump", controls::get_keycode(controls::CONTROL_JUMP));
+		node.add("key_tongue", controls::get_keycode(controls::CONTROL_TONGUE));
 		node.add("show_iphone_controls", variant::from_bool(show_iphone_controls_));
 		node.add("locale", locale_);
 		

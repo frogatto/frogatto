@@ -9,6 +9,9 @@
 #include "button.hpp"
 #include "debug_console.hpp"
 #include "geometry.hpp"
+#if !SDL_VERSION_ATLEAST(2, 0, 0)
+#include "key.hpp"
+#endif
 #include "level.hpp"
 #include "pause_game_dialog.hpp"
 #include "slider.hpp"
@@ -51,6 +54,10 @@ private:
 		current_flip_, next_flip_, current_events_;
 	std::string profiling_summary_;
 	int nskip_draw_;
+
+#if !SDL_VERSION_ATLEAST(2, 0, 0)
+	CKey key;
+#endif
 
 	int cycle;
 	int die_at;

@@ -51,19 +51,19 @@ variant get_constant(const std::string& id)
 	} else if(id == "PASSWORD") {
 		return variant(preferences::get_password());
 	} else if(id == "UP_KEY") {
-		return variant(gui::get_key_name(controls::get_SDL_Scancode(controls::CONTROL_UP)));
+		return variant(gui::get_key_name(controls::get_keycode(controls::CONTROL_UP)));
 	} else if(id == "DOWN_KEY") {
-		return variant(gui::get_key_name(controls::get_SDL_Scancode(controls::CONTROL_DOWN)));
+		return variant(gui::get_key_name(controls::get_keycode(controls::CONTROL_DOWN)));
 	} else if(id == "LEFT_KEY") {
-		return variant(gui::get_key_name(controls::get_SDL_Scancode(controls::CONTROL_LEFT)));
+		return variant(gui::get_key_name(controls::get_keycode(controls::CONTROL_LEFT)));
 	} else if(id == "RIGHT_KEY") {
-		return variant(gui::get_key_name(controls::get_SDL_Scancode(controls::CONTROL_RIGHT)));
+		return variant(gui::get_key_name(controls::get_keycode(controls::CONTROL_RIGHT)));
 	} else if(id == "JUMP_KEY") {
-		return variant(gui::get_key_name(controls::get_SDL_Scancode(controls::CONTROL_JUMP)));
+		return variant(gui::get_key_name(controls::get_keycode(controls::CONTROL_JUMP)));
 	} else if(id == "TONGUE_KEY") {
-		return variant(gui::get_key_name(controls::get_SDL_Scancode(controls::CONTROL_TONGUE)));
+		return variant(gui::get_key_name(controls::get_keycode(controls::CONTROL_TONGUE)));
 	} else if(id == "ATTACK_KEY") {
-		return variant(gui::get_key_name(controls::get_SDL_Scancode(controls::CONTROL_ATTACK)));
+		return variant(gui::get_key_name(controls::get_keycode(controls::CONTROL_ATTACK)));
 	} else if(id == "LOCALE") {
 		return variant(i18n::get_locale());
 	} else if(id == "EPSILON") {

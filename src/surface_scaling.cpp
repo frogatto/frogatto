@@ -545,8 +545,12 @@ BENCHMARK(surface_scaling)
 	surface s(graphics::surface_cache::get("characters/frogatto-spritesheet1.png"));
 	assert(s.get());
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 	surface target(SDL_CreateRGBSurface(0,s->w,s->h,32,SURFACE_MASK));
 	SDL_SetSurfaceBlendMode(s.get(), SDL_BLENDMODE_NONE);
+#else
+	surface target(SDL_CreateRGBSurface(0,s->w,s->h,32,SURFACE_MASK));
+#endif
 	SDL_BlitSurface(s.get(), NULL, target.get(), NULL);
 	BENCHMARK_LOOP {
 		scale_surface(target);

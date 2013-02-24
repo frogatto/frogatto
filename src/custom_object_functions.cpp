@@ -301,9 +301,6 @@ int show_simple_option_dialog(level& lvl, const std::string& text, const std::ve
 
 		draw_scene(lvl, last_draw_position(), &lvl.player()->get_entity());
 		graphics::swap_buffers();
-#if defined(__ANDROID__)
-		graphics::reset_opengl_state();
-#endif
 		SDL_Delay(20);
 	}
 
@@ -1183,9 +1180,6 @@ public:
 		for(int n = 0; n != 50; ++n) {
 			draw_scene(lvl, pos, focus_.get());
 			graphics::swap_buffers();
-#if defined(__ANDROID__)
-			graphics::reset_opengl_state();
-#endif
 			SDL_Delay(20);
 		}
 	}
@@ -1569,9 +1563,6 @@ private:
 #endif
 
 		graphics::swap_buffers();
-#if defined(__ANDROID__)
-		graphics::reset_opengl_state();
-#endif
 		SDL_Delay(20);
 	}
 

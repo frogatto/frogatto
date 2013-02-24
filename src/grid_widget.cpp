@@ -413,6 +413,7 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 					on_mouseover_(new_row);
 				}
 			}
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 		} else if(event.type == SDL_MOUSEWHEEL) {
 			int mx, my;
 			SDL_GetMouseState(&mx, &my);
@@ -437,24 +438,48 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 				}
 				claimed = true;
 			}
+#endif
 		} else if(event.type == SDL_MOUSEBUTTONDOWN) {
 			point p(event.button.x, event.button.y);
 			rect r(x(), y(), width(), height());
-			const SDL_MouseButtonEvent& e = event.button;
-			if(e.state == SDL_PRESSED) {
-				const int row_index = row_at(e.x, e.y);
-				std::cerr << "SELECT ROW: " << row_index << "\n";
-				if(row_index >= 0 && row_index < int(row_callbacks_.size()) &&
-					row_callbacks_[row_index]) {
-					std::cerr << "ROW CB: " << row_index << "\n";
-					row_callbacks_[row_index]();
+#if !SDL_VERSION_ATLEAST(2, 0, 0)
+			if(event.button.button == SDL_BUTTON_WHEELUP && point_in_rect(p, r)) {
+				set_yscroll(yscroll() - 3*row_height_ < 0 ? 0 : yscroll() - 3*row_height_);
+				selected_row_ -= 3;
+				if(selected_row_ < 0) {
+					selected_row_ = 0;
 				}
+				claimed = true;
+			} else if(event.button.button == SDL_BUTTON_WHEELDOWN  && point_in_rect(p, r)) {
+				int y3 = yscroll() + 3*row_height_;
+				set_yscroll(virtual_height() - y3 < height() 
+					? virtual_height() - height()
+					: y3);
+				selected_row_ += 3;
+				if(selected_row_ >= nrows()) {
+					selected_row_ = nrows() - 1;
+				}
+				claimed = true;
+			} else {
+#endif
+				const SDL_MouseButtonEvent& e = event.button;
+				if(e.state == SDL_PRESSED) {
+					const int row_index = row_at(e.x, e.y);
+					std::cerr << "SELECT ROW: " << row_index << "\n";
+					if(row_index >= 0 && row_index < int(row_callbacks_.size()) &&
+						row_callbacks_[row_index]) {
+						std::cerr << "ROW CB: " << row_index << "\n";
+						row_callbacks_[row_index]();
+					}
 
-				default_selection_ = row_index;
-				if(on_select_) {
-					on_select_(row_index);
+					default_selection_ = row_index;
+					if(on_select_) {
+						on_select_(row_index);
+					}
 				}
+#if !SDL_VERSION_ATLEAST(2, 0, 0)
 			}
+#endif
 			if(swallow_clicks_) {
 				claimed = true;
 			}

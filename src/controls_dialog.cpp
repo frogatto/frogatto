@@ -19,7 +19,7 @@ void end_dialog(gui::dialog* d)
 	using namespace controls;
 	for(int n = 0; n < NUM_CONTROLS; ++n) {
 		const CONTROL_ITEM item = static_cast<CONTROL_ITEM>(n);
-		set_SDL_Scancode(item, key_buttons[item]->get_key());
+		set_keycode(item, key_buttons[item]->get_key());
 	}
 	d->close();
 }
@@ -44,7 +44,7 @@ void show_controls_dialog()
 
 	for(int n = 0; n < NUM_CONTROLS; ++n) {
 		const CONTROL_ITEM item = static_cast<CONTROL_ITEM>(n);
-		key_buttons[item] = key_button_ptr(new key_button(get_SDL_Scancode(item), BUTTON_SIZE_DOUBLE_RESOLUTION));
+		key_buttons[item] = key_button_ptr(new key_button(get_keycode(item), BUTTON_SIZE_DOUBLE_RESOLUTION));
 		key_buttons[item]->set_dim(70, 60);
 	}
 
