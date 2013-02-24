@@ -18,8 +18,9 @@ namespace gui
 		virtual variant get_value(const std::string& key) const;
 		virtual void set_value(const std::string& key, const variant& value);
 	protected:
-		void handle_draw() const;
-		bool handle_event(const SDL_Event& event, bool claimed);
+		virtual void handle_draw() const;
+		virtual void handle_process();
+		virtual bool handle_event(const SDL_Event& event, bool claimed);
 		void draw_ticks(GLfloat x_offset, int segments, const SDL_Color& color) const;
 
 		struct bar_section
@@ -42,8 +43,11 @@ namespace gui
 		GLfloat rotate_;
 		GLfloat scale_;
 
+		GLfloat animation_end_point_unscaled_;
+		GLfloat animation_current_position_;
+
 		// Rate (in frames/segment) that the bar goes removes
-		// segments when missing_segments_ is increased or decreased.
+		// segments when drained_segments_ is increased or decreased.
 		double drain_rate_;
 
 		// Whether we are animating a transition or not.
@@ -74,6 +78,11 @@ namespace gui
 		int left_cap_width_;
 		// Calculated right_cap_width
 		int right_cap_width_;
+
+		// Saved bar_height
+		int bar_height_;
+
+		int drained_segments_after_anim_;
 	};
 }
 

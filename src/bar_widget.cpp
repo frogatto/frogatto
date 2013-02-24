@@ -12,7 +12,9 @@ namespace gui
 		drained_segments_(v["drained_segments"].as_int(0)), animating_(false),
 		drain_rate_(v["drain_rate"].as_decimal(decimal(10.0)).as_float()),
 		total_bar_length_(0), drained_bar_length_(0), active_bar_length_(0),
-		left_cap_width_(0), right_cap_width_(0)
+		left_cap_width_(0), right_cap_width_(0), 
+		animation_end_point_unscaled_(0.0f),
+		animation_current_position_(0.0f), drained_segments_after_anim_(0)
 	{
 		if(v.has_key("bar_color")) {
 			bar_color_ = graphics::color(v["bar_color"]).as_sdl_color();
@@ -54,6 +56,7 @@ namespace gui
 		if(drained_segments_ < 0) {
 			drained_segments_ = 0;
 		}
+		bar_height_ = height();
 		init();
 	}
 
@@ -82,10 +85,10 @@ namespace gui
 		active_bar_length_ = ((segments_-drained_segments_) * segment_length_ + (segments_-(drained_segments_?drained_segments_:1)) * tick_width_) * scale_;
 		int w = total_bar_length_ + left_cap_width_ + right_cap_width_;
 		int h;
-		if(height() == 0) {
+		if(bar_height_ == 0) {
 			h = std::max(bar_.area.h(), std::max(left_cap_.area.h(), right_cap_.area.h()))*scale_;
 		} else {
-			h = height()*scale_;
+			h = bar_height_*scale_;
 		}
 		set_dim(w, h);
 	}
@@ -134,16 +137,49 @@ namespace gui
 			drain_rate_ = value.as_decimal().as_float();
 			ASSERT_GE(drain_rate_, 0.0);
 		} else if(key == "drained") {
-			drained_segments_ = value.as_int();
-			if(drained_segments_ < 0) {
-				drained_segments_ = 0;
+			int drain = value.as_int();
+			if(drain == drained_segments_) {
+				return;
 			}
-			if(drained_segments_ > segments_) {
-				drained_segments_ = segments_;
+			int animation_start_position = segments_-drained_segments_;
+			animation_current_position_ = 0;
+			drained_segments_after_anim_ = drain;
+			if(drained_segments_after_anim_ < 0) {
+				drained_segments_after_anim_ = 0;
 			}
+			if(drained_segments_after_anim_ > segments_) {
+				drained_segments_after_anim_ = segments_;
+			}
+			int animation_end_position = segments_-drained_segments_after_anim_;
+			animation_end_point_unscaled_ = animation_end_position - animation_start_position;
+			animating_ = true;
 			init();
 		}
 		widget::set_value(key, value);
+	}
+
+	void bar_widget::handle_process()
+	{
+		int end_point_unscaled = animation_end_point_unscaled_ * segment_length_;
+		if(animation_end_point_unscaled_ > 0) {
+			// gaining segments
+			animation_current_position_ += (1.0 / drain_rate_) * segment_length_;
+			if(animation_current_position_ >= end_point_unscaled) {
+				drained_segments_ = drained_segments_after_anim_;
+				init();
+				animating_ = false;
+			}
+		} else {
+			// loosing segments
+			animation_current_position_ -= (1.0 / drain_rate_) * segment_length_;
+			if(animation_current_position_ <= end_point_unscaled) {
+				drained_segments_ = drained_segments_after_anim_;
+				init();
+				animating_ = false;
+			}
+		}
+
+		widget::handle_process();
 	}
 
 	void bar_widget::draw_ticks(GLfloat x_offset, int segments, const SDL_Color& color) const
@@ -183,17 +219,17 @@ namespace gui
 		{
 			color_save_context color_saver;
 
-			// draw color under end caps.
+			// draw color under end caps.			
 			graphics::draw_rect(rect(x()+scale_, y()+scale_, left_cap_width_-2*scale_, height()-2*scale_), graphics::color(bar_color_));
 			graphics::draw_rect(rect(x()+left_cap_width_+total_bar_length_, y()+scale_, right_cap_width_-scale_, height()-2*scale_), graphics::color(drained_segments_ ? drained_bar_color_ : bar_color_));
 
 			// background for active segments.
-			graphics::draw_rect(rect(x()+left_cap_width_, y(), active_bar_length_, height()), graphics::color(bar_color_));
+			int anim_offset = animating_ ? animation_current_position_*scale_ : 0;
+			graphics::draw_rect(rect(x()+left_cap_width_, y(), active_bar_length_+anim_offset, height()), graphics::color(bar_color_));
 			// background for drained segments.
-			if(drained_segments_) {
-				graphics::draw_rect(rect(x()+active_bar_length_+left_cap_width_, y(), drained_bar_length_, height()), graphics::color(drained_bar_color_));
+			if(drained_segments_ || animating_) {
+				graphics::draw_rect(rect(x()+active_bar_length_+left_cap_width_+anim_offset, y(), drained_bar_length_-anim_offset, height()), graphics::color(drained_bar_color_));
 			}
-
 			
 			draw_ticks(x()+left_cap_width_, segments_-drained_segments_+(drained_segments_?1:0), tick_mark_color_);
 			draw_ticks(x()+left_cap_width_+active_bar_length_, drained_segments_, drained_tick_mark_color_);
