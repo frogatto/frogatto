@@ -23,6 +23,7 @@ void draw_graph();
 
 void add_message(const std::string& msg);
 void draw();
+void enable_screen_output(bool en=true);
 
 class console_dialog : public gui::dialog
 {

@@ -2690,6 +2690,24 @@ FUNCTION_DEF(seed_rng, 0, 0, "seed_rng() -> none: Seeds the peudo-RNG used.")
 	return variant();
 END_FUNCTION_DEF(seed_rng)
 
+
+class console_output_to_screen_command : public game_logic::command_callable
+{
+	bool value_;
+public:
+	explicit console_output_to_screen_command(bool value) : value_(value)
+	{}
+
+	virtual void execute(game_logic::formula_callable& ob) const {
+		debug_console::enable_screen_output(value_);
+	}
+};
+
+FUNCTION_DEF(console_output_to_screen, 1, 1, "console_output_to_screen(bool) -> none: Turns the console output to the screen on and off")
+	formula::fail_if_static_context();
+	return variant(new console_output_to_screen_command(args()[0]->evaluate(variables).as_bool()));
+END_FUNCTION_DEF(console_output_to_screen)
+
 }
 
 UNIT_TEST(modulo_operation) {

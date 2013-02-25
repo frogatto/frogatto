@@ -206,6 +206,8 @@ void draw_graph()
 }
 
 namespace {
+static bool screen_output_enabled = true;
+
 std::list<graphics::texture>& messages() {
 	static std::list<graphics::texture> message_queue;
 	return message_queue;
@@ -214,6 +216,11 @@ std::list<graphics::texture>& messages() {
 std::set<console_dialog*> consoles_;
 
 const std::string Prompt = "--> ";
+}
+
+void enable_screen_output(bool en)
+{
+	screen_output_enabled = en;
 }
 
 void add_message(const std::string& msg)
@@ -252,6 +259,9 @@ void add_message(const std::string& msg)
 void draw()
 {
 	if(messages().empty()) {
+		return;
+	}
+	if(screen_output_enabled == false) {
 		return;
 	}
 
