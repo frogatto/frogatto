@@ -34,7 +34,7 @@ BASE_CXXFLAGS += -O2
 endif
 
 SDL2_CONFIG?=sdl2-config
-USE_SDL2?=$(shell which $(SDL2_CONFIG) 2>&1 > /dev/null && echo yes)
+#USE_SDL2?=$(shell which $(SDL2_CONFIG) 2>&1 > /dev/null && echo yes)
 
 # Initial compiler options, used before CXXFLAGS and CPPFLAGS.
 BASE_CXXFLAGS += -g -fno-inline-functions -fthreadsafe-statics -Wnon-virtual-dtor -Werror -Wignored-qualifiers -Wformat -Wswitch -DUSE_GLES2 -DUTILITY_IN_PROC

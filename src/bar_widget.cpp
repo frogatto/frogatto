@@ -14,7 +14,8 @@ namespace gui
 		total_bar_length_(0), drained_bar_length_(0), active_bar_length_(0),
 		left_cap_width_(0), right_cap_width_(0), 
 		animation_end_point_unscaled_(0.0f),
-		animation_current_position_(0.0f), drained_segments_after_anim_(0)
+		animation_current_position_(0.0f), drained_segments_after_anim_(0),
+		bar_max_width_(v["max_width"].as_int())
 	{
 		if(v.has_key("bar_color")) {
 			bar_color_ = graphics::color(v["bar_color"]).as_sdl_color();
@@ -57,6 +58,7 @@ namespace gui
 			drained_segments_ = 0;
 		}
 		bar_height_ = height();
+		std::cerr << "Segments: " << segments_ << ", Drained: " << drained_segments_ << std::endl;
 		init();
 	}
 
@@ -90,6 +92,20 @@ namespace gui
 		} else {
 			h = bar_height_*scale_;
 		}
+
+		tick_distance_ = (segment_length_ + tick_width_) * scale_;
+
+		if(bar_max_width_ != 0 && w > bar_max_width_) {
+			double ratio = bar_max_width_ / double(w);
+			left_cap_width_ = int(double(left_cap_width_) * ratio);
+			right_cap_width_ = int(double(right_cap_width_) * ratio);
+			total_bar_length_ = int(double(total_bar_length_) * ratio);
+			drained_bar_length_ = int(double(drained_bar_length_) * ratio);
+			active_bar_length_ = int(double(active_bar_length_) * ratio);
+			tick_distance_ = int(double(tick_distance_) * ratio);
+			w = bar_max_width_;
+		}
+
 		set_dim(w, h);
 	}
 
@@ -112,6 +128,8 @@ namespace gui
 			return variant(drained_segments_);
 		} else if(key == "drain_rate") {
 			return variant(drain_rate_);
+		} else if(key == "max_width") { 
+			return variant(bar_max_width_);
 		}
 		return widget::get_value(key);
 	}
@@ -133,6 +151,7 @@ namespace gui
 		} else if(key == "scale") {
 			scale_ = value.as_decimal().as_float();
 			ASSERT_GT(scale_, 0.0f);
+			init();
 		} else if(key == "drain_rate") {
 			drain_rate_ = value.as_decimal().as_float();
 			ASSERT_GE(drain_rate_, 0.0);
@@ -154,14 +173,17 @@ namespace gui
 			animation_end_point_unscaled_ = animation_end_position - animation_start_position;
 			animating_ = true;
 			init();
+		} else if(key == "max_width") { 
+			bar_max_width_ = value.as_int();
+			init();
 		}
 		widget::set_value(key, value);
 	}
 
 	void bar_widget::handle_process()
 	{
-		int end_point_unscaled = animation_end_point_unscaled_ * segment_length_;
 		if(animating_) {
+			int end_point_unscaled = animation_end_point_unscaled_ * segment_length_;
 			if(animation_end_point_unscaled_ > 0) {
 				// gaining segments
 				animation_current_position_ += (1.0 / drain_rate_) * segment_length_;
@@ -191,7 +213,8 @@ namespace gui
 			std::vector<GLfloat>& varray = graphics::global_vertex_array();
 			varray.clear();
 			for(int n = 1; n < segments; ++n) {
-				GLfloat lx = x_offset + GLfloat((segment_length_ * n + (n - 1) * tick_width_ + 1) * scale_);
+				//GLfloat lx = x_offset + GLfloat((segment_length_ * n + (n - 1) * tick_width_ + 1) * scale_);
+				GLfloat lx = x_offset + tick_distance_ * n;
 				varray.push_back(lx);
 				varray.push_back(GLfloat(y()));
 				varray.push_back(lx);
