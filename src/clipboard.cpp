@@ -518,7 +518,7 @@ std::string copy_from_clipboard(const bool)
     #if TARGET_OS_IPHONE
         //for now, do nothing
 
-    #elif TARGET_OS_MAC
+    #elif TARGET_OS_MAC_DISABLED
     #define CLIPBOARD_FUNCS_DEFINED
     #include <Carbon/Carbon.h>
 
