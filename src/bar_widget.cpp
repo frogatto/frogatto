@@ -58,7 +58,6 @@ namespace gui
 			drained_segments_ = 0;
 		}
 		bar_height_ = height();
-		std::cerr << "Segments: " << segments_ << ", Drained: " << drained_segments_ << std::endl;
 		init();
 	}
 

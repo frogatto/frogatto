@@ -21,11 +21,14 @@ namespace gui
 		if(v["object"].is_string()) {
 			// type name, has obj_x, obj_y, facing			
 			entity_ = entity_ptr(new custom_object(v["object"].as_string(), v["obj_x"].as_int(0), v["obj_y"].as_int(0), v["facing"].as_int(0)));
+			entity_->finish_loading(NULL);
 		} else if(v["object"].is_map()) {
 			entity_ = entity_ptr(new custom_object(v["object"]));
+			entity_->finish_loading(NULL);
 		} else {
 			entity_ = v["object"].try_convert<entity>();
 			ASSERT_LOG(entity_ != NULL, "Couldn't convert 'object' attribue to an entity");
+			entity_->finish_loading(NULL);
 		}
 		if(v.has_key("properties")) {
 			ASSERT_LOG(v["properties"].is_map(), "properties field must be a map");
