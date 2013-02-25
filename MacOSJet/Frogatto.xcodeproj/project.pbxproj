@@ -198,6 +198,7 @@
 		C026F5A116C23963000482A1 /* selector_widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C026F59F16C23963000482A1 /* selector_widget.cpp */; };
 		C026F5A416C74B1E000482A1 /* draw_primitive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C026F5A216C74B1E000482A1 /* draw_primitive.cpp */; };
 		C089D452162BDF7B009D2878 /* master-config.cfg in Resources */ = {isa = PBXBuildFile; fileRef = C089D451162BDF7B009D2878 /* master-config.cfg */; };
+		C0B1908916CD9437008FF14A /* ipc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0B1908716CD9437008FF14A /* ipc.cpp */; };
 		C0B87BD4166725A700D66B15 /* formula_object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0B87BD21667256F00D66B15 /* formula_object.cpp */; };
 		C0DDFDC6163F7FF800F727DD /* sys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0406533163F790000F84F94 /* sys.cpp */; };
 		C0EF2A5616215F78004CD227 /* libboost_iostreams.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0EF2A5316215F78004CD227 /* libboost_iostreams.dylib */; };
@@ -629,6 +630,8 @@
 		C0406533163F790000F84F94 /* sys.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sys.cpp; sourceTree = "<group>"; };
 		C0406534163F790000F84F94 /* sys.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sys.hpp; sourceTree = "<group>"; };
 		C089D451162BDF7B009D2878 /* master-config.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "master-config.cfg"; path = "../master-config.cfg"; sourceTree = "<group>"; };
+		C0B1908716CD9437008FF14A /* ipc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ipc.cpp; sourceTree = "<group>"; };
+		C0B1908816CD9437008FF14A /* ipc.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ipc.hpp; sourceTree = "<group>"; };
 		C0B397F71636666C00D010E0 /* Frogatto.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Frogatto.entitlements; sourceTree = "<group>"; };
 		C0B87BB9166603C300D66B15 /* icon.iconset */ = {isa = PBXFileReference; lastKnownFileType = folder.iconset; path = icon.iconset; sourceTree = "<group>"; };
 		C0B87BD21667256F00D66B15 /* formula_object.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = formula_object.cpp; sourceTree = "<group>"; };
@@ -934,6 +937,8 @@
 				C010C676160AFD4C006E7D90 /* IMG_savepng.h */,
 				C010C677160AFD4C006E7D90 /* input.cpp */,
 				C010C678160AFD4C006E7D90 /* input.hpp */,
+				C0B1908716CD9437008FF14A /* ipc.cpp */,
+				C0B1908816CD9437008FF14A /* ipc.hpp */,
 				C010C679160AFD4C006E7D90 /* iphone_controls.cpp */,
 				C010C67A160AFD4C006E7D90 /* iphone_controls.hpp */,
 				C010C67F160AFD4C006E7D90 /* joystick.cpp */,
@@ -1385,6 +1390,7 @@
 				C026F59D16C23649000482A1 /* rich_text_label.cpp in Sources */,
 				C026F5A116C23963000482A1 /* selector_widget.cpp in Sources */,
 				C026F5A416C74B1E000482A1 /* draw_primitive.cpp in Sources */,
+				C0B1908916CD9437008FF14A /* ipc.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
