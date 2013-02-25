@@ -9,7 +9,7 @@ namespace gui
 		segment_length_(v["segment_length"].as_int(5)), 
 		rotate_(GLfloat(v["rotation"].as_decimal().as_float())),
 		tick_width_(v["tick_width"].as_int(1)), scale_(2.0f),
-		drained_segments_(v["drained_segments"].as_int(0)), animating_(false),
+		drained_segments_(v["drained"].as_int(0)), animating_(false),
 		drain_rate_(v["drain_rate"].as_decimal(decimal(10.0)).as_float()),
 		total_bar_length_(0), drained_bar_length_(0), active_bar_length_(0),
 		left_cap_width_(0), right_cap_width_(0), 
@@ -161,21 +161,23 @@ namespace gui
 	void bar_widget::handle_process()
 	{
 		int end_point_unscaled = animation_end_point_unscaled_ * segment_length_;
-		if(animation_end_point_unscaled_ > 0) {
-			// gaining segments
-			animation_current_position_ += (1.0 / drain_rate_) * segment_length_;
-			if(animation_current_position_ >= end_point_unscaled) {
-				drained_segments_ = drained_segments_after_anim_;
-				init();
-				animating_ = false;
-			}
-		} else {
-			// loosing segments
-			animation_current_position_ -= (1.0 / drain_rate_) * segment_length_;
-			if(animation_current_position_ <= end_point_unscaled) {
-				drained_segments_ = drained_segments_after_anim_;
-				init();
-				animating_ = false;
+		if(animating_) {
+			if(animation_end_point_unscaled_ > 0) {
+				// gaining segments
+				animation_current_position_ += (1.0 / drain_rate_) * segment_length_;
+				if(animation_current_position_ >= end_point_unscaled) {
+					drained_segments_ = drained_segments_after_anim_;
+					init();
+					animating_ = false;
+				}
+			} else {
+				// loosing segments
+				animation_current_position_ -= (1.0 / drain_rate_) * segment_length_;
+				if(animation_current_position_ <= end_point_unscaled) {
+					drained_segments_ = drained_segments_after_anim_;
+					init();
+					animating_ = false;
+				}
 			}
 		}
 
@@ -226,6 +228,7 @@ namespace gui
 			// background for active segments.
 			int anim_offset = animating_ ? animation_current_position_*scale_ : 0;
 			graphics::draw_rect(rect(x()+left_cap_width_, y(), active_bar_length_+anim_offset, height()), graphics::color(bar_color_));
+
 			// background for drained segments.
 			if(drained_segments_ || animating_) {
 				graphics::draw_rect(rect(x()+active_bar_length_+left_cap_width_+anim_offset, y(), drained_bar_length_-anim_offset, height()), graphics::color(drained_bar_color_));
