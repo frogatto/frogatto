@@ -33,6 +33,7 @@
 #include "raster.hpp"
 #if !defined(__native_client__)
 #include "tbs_client.hpp"
+#include "tbs_internal_client.hpp"
 #endif
 #include "texture.hpp"
 #include "message_dialog.hpp"
@@ -186,6 +187,10 @@ FUNCTION_DEF(tbs_client, 2, 3, "tbs_client(host, port, session=-1): creates a cl
 	const int port = args()[1]->evaluate(variables).as_int();
 	const int session = args().size() >= 3 ? args()[2]->evaluate(variables).as_int() : -1;
 
+	if(host == "localhost" && preferences::internal_tbs_server()) {
+		return variant(new tbs::internal_client(session));
+	}
+
 	return variant(new tbs::client(host, formatter() << port, session));
 END_FUNCTION_DEF(tbs_client)
 
@@ -203,10 +208,15 @@ public:
 	{}
 
 	virtual void execute(level& lvl, entity& ob) const {
-		tbs::client* tbs_client = client_.try_convert<tbs::client>();
-		ASSERT_LOG(tbs_client != NULL, "tbs_client object isn't valid.");
 		game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable);
-		tbs_client->send_request(msg_.write_json(), callable, boost::bind(tbs_send_event, entity_ptr(&ob), callable, _1));
+		tbs::client* tbs_client = client_.try_convert<tbs::client>();
+		if(tbs_client == NULL) {
+			tbs::internal_client* tbs_iclient = client_.try_convert<tbs::internal_client>();
+			ASSERT_LOG(tbs_iclient != NULL, "tbs_client object isn't valid.");
+			tbs_iclient->send_request(msg_, tbs_iclient->session_id(), callable, boost::bind(tbs_send_event, entity_ptr(&ob), callable, _1));
+		} else {
+			tbs_client->send_request(msg_.write_json(), callable, boost::bind(tbs_send_event, entity_ptr(&ob), callable, _1));
+		}
 	}
 
 };
@@ -229,7 +239,13 @@ public:
 
 	virtual void execute(level& lvl, entity& ob) const {
 		tbs::client* tbs_client = client_.try_convert<tbs::client>();
-		tbs_client->process();
+		if(tbs_client == NULL) {
+			tbs::internal_client* iclient = client_.try_convert<tbs::internal_client>();
+			ASSERT_LOG(iclient != NULL, "tbs_client object isn't valid.");
+			iclient->process();
+		} else {
+			tbs_client->process();
+		}
 	}
 };
 
@@ -284,10 +300,7 @@ int show_simple_option_dialog(level& lvl, const std::string& text, const std::ve
 		}
 
 		draw_scene(lvl, last_draw_position(), &lvl.player()->get_entity());
-		SDL_GL_SwapBuffers();
-#if defined(__ANDROID__)
-		graphics::reset_opengl_state();
-#endif
+		graphics::swap_buffers();
 		SDL_Delay(20);
 	}
 
@@ -1166,10 +1179,7 @@ public:
 		screen_position pos = last_draw_position();
 		for(int n = 0; n != 50; ++n) {
 			draw_scene(lvl, pos, focus_.get());
-			SDL_GL_SwapBuffers();
-#if defined(__ANDROID__)
-			graphics::reset_opengl_state();
-#endif
+			graphics::swap_buffers();
 			SDL_Delay(20);
 		}
 	}
@@ -1552,10 +1562,7 @@ private:
 		menu_button_.draw(in_speech_dialog());
 #endif
 
-		SDL_GL_SwapBuffers();
-#if defined(__ANDROID__)
-		graphics::reset_opengl_state();
-#endif
+		graphics::swap_buffers();
 		SDL_Delay(20);
 	}
 
@@ -2318,6 +2325,13 @@ FUNCTION_DEF(get_widget, 2, 2, "get_widget(object obj, string id): returns the w
 	std::string id = args()[1]->evaluate(variables).as_string();
 	return variant(target->get_widget_by_id(id).get());
 END_FUNCTION_DEF(get_widget)
+
+FUNCTION_DEF(widget, 2, 2, "widget(callable, map w): Constructs a widget defined by w and returns it for later use")
+	formula::fail_if_static_context();
+	game_logic::formula_callable_ptr callable = map_into_callable(args()[0]->evaluate(variables));
+	gui::widget_ptr w = widget_factory::create(args()[1]->evaluate(variables), callable.get());
+	return variant(w.get());
+END_FUNCTION_DEF(widget)
 
 class add_level_module_command : public entity_command_callable {
 	std::string lvl_;

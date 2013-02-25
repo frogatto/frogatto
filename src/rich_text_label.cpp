@@ -153,6 +153,15 @@ rich_text_label::rich_text_label(const variant& v, game_logic::formula_callable*
 	set_dim(width(), ypos + line_height);
 }
 
+void rich_text_label::handle_process()
+{
+	foreach(const std::vector<widget_ptr>& v, children_) {
+		foreach(const widget_ptr& widget, v) {
+			widget->process();
+		}
+	}
+}
+
 void rich_text_label::handle_draw() const
 {
 	glPushMatrix();

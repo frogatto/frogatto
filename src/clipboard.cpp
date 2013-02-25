@@ -16,12 +16,14 @@
 /** @file */
 
 #include "clipboard.hpp"
+#include "raster.hpp"
 #include <algorithm>
 #include <iostream>
 
 #if (defined(_X11) || defined(__linux__)) && !defined(__APPLE__) && !defined(__ANDROID__)
 #define CLIPBOARD_FUNCS_DEFINED
 
+#ifdef THIS_STUFF_BREAKS_ON_LINUX_DAVID_TO_LOOK_INTO
 #include "SDL_syswm.h"
 
 #include <unistd.h>
@@ -115,7 +117,11 @@ public:
 		++acquireCount_;
 		if (acquireCount_ == 1) {
 			SDL_VERSION  (&wmInf_.version);
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+			SDL_GetWindowWMInfo(graphics::get_window(), &wmInf_);
+#else
 			SDL_GetWMInfo(&wmInf_);
+#endif
 
 			wmInf_.info.x11.lock_func();
 		}
@@ -379,6 +385,22 @@ std::string copy_from_clipboard(const bool mouse)
 
 	return "";
 }
+#else
+void copy_to_clipboard(const std::string& text, const bool mouse)
+{
+}
+
+std::string copy_from_clipboard(const bool mouse)
+{
+	return std::string();
+}
+
+bool clipboard_handle_event(const SDL_Event& ev)
+{
+	return false;
+}
+
+#endif // THIS_STUFF_BREAKS_ON_LINUX_DAVID_TO_LOOK_INTO
 
 #endif
 #ifdef _WIN32
@@ -496,7 +518,7 @@ std::string copy_from_clipboard(const bool)
     #if TARGET_OS_IPHONE
         //for now, do nothing
 
-    #elif TARGET_OS_MAC
+    #elif TARGET_OS_MAC_DISABLED
     #define CLIPBOARD_FUNCS_DEFINED
     #include <Carbon/Carbon.h>
 

@@ -6,10 +6,12 @@
 
 #include "animation_preview_widget.hpp"
 #include "animation_widget.hpp"
+#include "bar_widget.hpp"
 #include "border_widget.hpp"
 #include "button.hpp"
 #include "code_editor_widget.hpp"
 #include "checkbox.hpp"
+#include "custom_object_widget.hpp"
 #include "dialog.hpp"
 #include "drag_widget.hpp"
 #include "graphical_font_label.hpp"
@@ -34,7 +36,12 @@ using gui::widget_ptr;
 
 widget_ptr create(const variant& v, game_logic::formula_callable* e)
 {
-	ASSERT_LOG(v.is_map(), "TYPE ERROR: widget must be specified by a map");	
+	if(v.is_callable()) {
+		widget_ptr w = v.try_convert<gui::widget>();
+		ASSERT_LOG(w != NULL, "Error converting widget from callable.");
+		return w;
+	}
+	ASSERT_LOG(v.is_map(), "TYPE ERROR: widget must be specified by a map, found: " << v.to_debug_string());
 	std::string wtype = v["type"].as_string();
 	if(wtype == "animation_widget") {
 		return widget_ptr(new gui::animation_widget(v,e));
@@ -82,6 +89,10 @@ widget_ptr create(const variant& v, game_logic::formula_callable* e)
 		return widget_ptr(new gui::progress_bar(v, e));
 	} else if(wtype == "selector") {
 		return widget_ptr(new gui::selector_widget(v, e));
+	} else if(wtype == "object") {
+		return widget_ptr(new gui::custom_object_widget(v, e));
+	} else if(wtype == "bar") {
+		return widget_ptr(new gui::bar_widget(v, e));
 	//} else if(wtype == "scrollable") {
 	//} else if(wtype == "widget") {
 	} else {

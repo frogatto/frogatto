@@ -83,6 +83,7 @@ public:
 	virtual void texture_array(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr);
 	virtual void color_array(GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid* ptr);
 	virtual void set_fixed_attributes(const variant& node);
+	virtual void set_fixed_uniforms(const variant& node);
 
 	void disable_vertex_attrib(GLint);
 
@@ -91,9 +92,11 @@ public:
 	static void add_shader(const std::string& program_name, 
 		const shader& v_shader, 
 		const shader& f_shader,
-		const variant& prog);
+		const variant& prog,
+		const variant& uniforms);
 	static std::map<std::string, gles2::program_ptr>& get_shaders();
 	static void clear_shaders();
+	void set_known_uniforms();
 protected:
 	bool link();
 	bool queryUniforms();
@@ -104,6 +107,7 @@ protected:
 
 	std::vector<GLint> active_attributes_;
 	variant stored_attributes_;
+	variant stored_uniforms_;
 private:
 	game_logic::formula_callable* environ_;
 	std::string name_;
@@ -114,6 +118,10 @@ private:
 	std::map<std::string, actives> uniforms_;
 
 	std::vector<std::string> uniforms_to_update_;
+
+	GLint u_mvp_matrix_;
+	GLint u_color_;
+	GLint u_point_size_;
 
 	friend class shader_program;
 };

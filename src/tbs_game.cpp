@@ -11,7 +11,9 @@
 #include "formula_object.hpp"
 #include "json_parser.hpp"
 #include "module.hpp"
+#include "preferences.hpp"
 #include "tbs_ai_player.hpp"
+#include "tbs_internal_server.hpp"
 #include "tbs_game.hpp"
 #include "tbs_web_server.hpp"
 #include "string_utils.hpp"
@@ -416,8 +418,13 @@ void game::set_value(const std::string& key, const variant& value)
 		bots_.clear();
 		for(int n = 0; n != value.num_elements(); ++n) {
 			std::cerr << "BOT_ADD: " << value[n].write_json() << "\n";
-			boost::intrusive_ptr<bot> new_bot(new bot(*web_server::service(), "localhost", formatter() << web_server::port(), value[n]));
-			bots_.push_back(new_bot);
+			if(preferences::internal_tbs_server()) {
+				boost::intrusive_ptr<bot> new_bot(new bot(tbs::internal_server::get_io_service(), "localhost", "23456", value[n]));
+				bots_.push_back(new_bot);
+			} else {
+				boost::intrusive_ptr<bot> new_bot(new bot(*web_server::service(), "localhost", formatter() << web_server::port(), value[n]));
+				bots_.push_back(new_bot);
+			}
 		}
 	} else if(backup_callable_) {
 		backup_callable_->mutate_value(key, value);

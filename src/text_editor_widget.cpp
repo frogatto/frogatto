@@ -452,10 +452,52 @@ bool text_editor_widget::handle_event(const SDL_Event& event, bool claimed)
 		return handle_mouse_button_up(event.button) || claimed;
 	case SDL_MOUSEMOTION:
 		return handle_mouse_motion(event.motion) || claimed;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	case SDL_MOUSEWHEEL:
+		return handle_mouse_wheel(event.wheel) || claimed;
+	case SDL_TEXTINPUT:
+		return handle_text_input(event.text) || claimed;
+	case SDL_TEXTEDITING:
+		return handle_text_editing(event.edit) || claimed;
+#endif
 	}
 
 	return false;
 }
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+bool text_editor_widget::handle_mouse_wheel(const SDL_MouseWheelEvent& event)
+{
+	int mx, my;
+	SDL_GetMouseState(&mx, &my);
+	if(mx >= x() && mx < x() + width() && my >= y() && my < y() + height()) {
+		if(event.y > 0) {
+			if(cursor_.row > 2) {
+				cursor_.row -= 3;
+				scroll_pos_ -= 3;
+				if( scroll_pos_ < 0 ){ 
+					scroll_pos_ = 0; 
+				}
+				cursor_.col = find_equivalent_col(cursor_.col, cursor_.row+3, cursor_.row);
+				on_move_cursor();
+			}
+			return true;
+		} else {
+			if(text_.size() > 2 && cursor_.row < text_.size()-3) {
+				cursor_.row += 3;
+				scroll_pos_ += 3;
+				if( scroll_pos_ > text_.size() ){ 
+					scroll_pos_ = text_.size(); 
+				}
+				cursor_.col = find_equivalent_col(cursor_.col, cursor_.row-3, cursor_.row);
+				on_move_cursor();
+			}
+			return true;
+		}
+	}
+	return false;
+}
+#endif
 
 void text_editor_widget::set_focus(bool value)
 {
@@ -464,10 +506,12 @@ void text_editor_widget::set_focus(bool value)
 	}
 	has_focus_ = value;
 
+#if !SDL_VERSION_ATLEAST(2, 0, 0)
 	if(value) {
 		SDL_EnableUNICODE(1);
 		SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 	}
+#endif
 
 	if(nrows_ == 1 && value) {
 		cursor_ = Loc(0, text_.front().size());
@@ -539,6 +583,7 @@ bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& ev
 {
 	record_op();
 	if(event.x >= x() && event.x < x() + width() && event.y >= y() && event.y < y() + height()) {
+#if !SDL_VERSION_ATLEAST(2, 0, 0)
 		if(event.button == SDL_BUTTON_WHEELUP) {
 			if(cursor_.row > 2) {
 				cursor_.row -= 3;
@@ -562,7 +607,7 @@ bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& ev
 			}
 			return true;
 		}
-
+#endif
 		set_focus(true);
 		std::pair<int, int> pos = mouse_position_to_row_col(event.x, event.y);
 		if(pos.first != -1) {
@@ -979,8 +1024,12 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 			break;
 		}
 	}
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	default: return false;
+#else
 	default: {
 		const char c = event.keysym.unicode;
+		std::cerr << "CHAR: " << c << ", " << event.keysym.unicode << std::endl;
 		if(util::c_isprint(c) || c == '\t') {
 			if(record_op("chars")) {
 				save_undo_state();
@@ -998,10 +1047,37 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 		}
 		return false;
 	}
+#endif
 	}
 
 	return true;
 }
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+bool text_editor_widget::handle_text_input(const SDL_TextInputEvent& event)
+{
+	if(record_op("chars")) {
+		save_undo_state();
+	}
+	delete_selection();
+	if(cursor_.col > text_[cursor_.row].size()) {
+		cursor_.col = text_[cursor_.row].size();
+	}
+	for(const char* c = &event.text[0]; *c != 0; ++c) {
+		text_[cursor_.row].insert(text_[cursor_.row].begin() + cursor_.col, *c);
+		++cursor_.col;
+	}
+	select_ = cursor_;
+	refresh_scrollbar();
+	on_change();
+	return true;
+}
+
+bool text_editor_widget::handle_text_editing(const SDL_TextEditingEvent& event)
+{
+	return false;
+}
+#endif
 
 void text_editor_widget::handle_paste(std::string txt)
 {

@@ -42,7 +42,6 @@
 #include "of_bridge.h"
 #include "joystick.hpp"
 #include "json_parser.hpp"
-#include "key.hpp"
 #include "level.hpp"
 #include "level_object.hpp"
 #include "level_runner.hpp"
@@ -59,12 +58,12 @@
 #include "stats.hpp"
 #include "string_utils.hpp"
 #include "surface_cache.hpp"
+#include "tbs_internal_server.hpp"
 #include "texture.hpp"
 #include "texture_frame_buffer.hpp"
 #include "tile_map.hpp"
 #include "unit_test.hpp"
 #include "variant_utils.hpp"
-#include "wm.hpp"
 
 #if defined(USE_BOX2D)
 #include "b2d_ffl.hpp"
@@ -82,8 +81,11 @@
 
 #define DEFAULT_MODULE	"frogatto"
 
+#if !SDL_VERSION_ATLEAST(2, 0, 0)
 #if defined(USE_GLES2)
+#include "wm.hpp"
 window_manager wm;
+#endif
 #endif
 
 namespace {
@@ -551,6 +553,10 @@ extern "C" int main(int argcount, char** argvec)
 
 	std::cerr << "\n";
 
+	if(preferences::internal_tbs_server()) {
+		tbs::internal_server::init();
+	}
+
 	if(utility_program.empty() == false 
 		&& test::utility_needs_video(utility_program) == false) {
 #if defined(UTILITY_IN_PROC)
@@ -611,7 +617,7 @@ extern "C" int main(int argcount, char** argvec)
 		orig_level_cfg = level_cfg;
 	}
 
-#if defined(USE_GLES2)
+#if !SDL_VERSION_ATLEAST(2, 0, 0) && defined(USE_GLES2)
 	wm.create_window(preferences::actual_screen_width(),
 		preferences::actual_screen_height(),
 		0,
@@ -661,12 +667,6 @@ extern "C" int main(int argcount, char** argvec)
 	preferences::init_oes();
 	SDL_ShowCursor(0);
 #else
-#ifndef __APPLE__
-	graphics::surface wm_icon = graphics::surface_cache::get("window-icon.png");
-	if(!wm_icon.null()) {
-		SDL_WM_SetIcon(wm_icon, NULL);
-	}
-#endif
 
 #if defined(TARGET_PANDORA)
 	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),16,SDL_FULLSCREEN) == NULL) {
@@ -728,18 +728,31 @@ extern "C" int main(int argcount, char** argvec)
 		return -1;
     }
 #else
-	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) == NULL) {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	if(!graphics::set_video_mode(preferences::actual_screen_width(), preferences::actual_screen_height())) {
+#else
+	if(SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) == NULL) {
+#endif
 		std::cerr << "could not set video mode\n";
 		return -1;
 	}
+#ifndef __APPLE__
+	graphics::surface wm_icon = graphics::surface_cache::get("window-icon.png");
+	if(!wm_icon.null()) {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		SDL_SetWindowIcon(graphics::get_window(), wm_icon.get());
+#else
+		SDL_WM_SetIcon(wm_icon, NULL);
+#endif
+	}
+#endif // __APPLE__
+#endif
 #endif
 #endif
 
 #endif
 
-#endif // USE_GLES2
-
-#if defined(__GLEW_H__)
+#if !SDL_VERSION_ATLEAST(2, 0, 0) && defined(__GLEW_H__)
 	GLenum glew_status = glewInit();
 	ASSERT_EQ(glew_status, GLEW_OK);
 #endif
@@ -825,8 +838,6 @@ extern "C" int main(int argcount, char** argvec)
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	SDL_WM_SetCaption(module::get_module_pretty_name().c_str(), module::get_module_pretty_name().c_str());
-
 	std::cerr << "JOYSTICKS: " << SDL_NumJoysticks() << "\n";
 
 	const load_level_manager load_manager;
@@ -838,14 +849,6 @@ extern "C" int main(int argcount, char** argvec)
 	const joystick::manager joystick_manager;
 #endif 
 	
-	#if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR && !defined(__native_client__)
-	std::cerr << "SDL_GetVideoSurface()" << std::endl;
-	const SDL_Surface* fb = SDL_GetVideoSurface();
-	if(fb == NULL) {
-		return 0;
-	}
-	#endif
-
 	graphics::texture::manager texture_manager;
 
 #ifndef NO_EDITOR
@@ -998,10 +1001,12 @@ extern "C" int main(int argcount, char** argvec)
     EGL_Destroy();
 #endif
 
-#if defined(USE_GLES2)
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	// Be nice and destroy the GL context and the window.
+	graphics::set_video_mode(0, 0, CLEANUP_WINDOW_CONTEXT);
+#elif defined(USE_GLES2)
 	wm.destroy_window();
 #endif
-
 	SDL_Quit();
 	
 	preferences::save_preferences();
@@ -1014,6 +1019,10 @@ extern "C" int main(int argcount, char** argvec)
 	if(create_utility_in_new_process) {
 		terminate_utility_process();
 	}
+#endif
+
+#ifdef _MSC_VER
+	ExitProcess(0);
 #endif
 
 	return 0;

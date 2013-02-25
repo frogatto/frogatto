@@ -44,7 +44,6 @@ private:
 	graphics::texture texture_;
 	GLfloat rotate_;
 	rect area_;
-	int alpha_;
 };
 
 class gui_section_widget : public widget

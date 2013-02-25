@@ -4821,6 +4821,7 @@ void custom_object::add_widget(const gui::widget_ptr& w)
 
 void custom_object::add_widgets(std::vector<gui::widget_ptr>* widgets) 
 {
+	widgets_.clear();
 	std::copy(widgets->begin(), widgets->end(), std::inserter(widgets_, widgets_.end()));
 }
 
@@ -4855,8 +4856,11 @@ bool custom_object::handle_sdl_event(const SDL_Event& event, bool claimed)
 		}
 	}
 
-	widget_list::const_reverse_iterator ritor = widgets_.rbegin();
-	while(ritor != widgets_.rend()) {
+	// XXX fix listener_container::process_event() to remain working in the case the iterator
+	// gets invalidated during process even, so we can remove this copy.
+	widget_list w = widgets_;
+	widget_list::const_reverse_iterator ritor = w.rbegin();
+	while(ritor != w.rend()) {
 		claimed |= (*ritor++)->process_event(ev, claimed);
 	}
 	return claimed;

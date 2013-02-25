@@ -344,7 +344,33 @@ bool tree_view_widget::handle_event(const SDL_Event& event, bool claimed)
 					selected_row_ = new_row;
 				}
 			}
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		} else if(event.type == SDL_MOUSEWHEEL) {
+			int mx, my;
+			SDL_GetMouseState(&mx, &my);
+			point p(mx, my);
+			if(point_in_rect(p, r)) {
+				if(event.wheel.y < 0 ) {
+					set_yscroll(yscroll() - 3*row_height_ < 0 ? 0 : yscroll() - 3*row_height_);
+					selected_row_ -= 3;
+					if(selected_row_ < 0) {
+						selected_row_ = 0;
+					}
+				} else {
+					int y3 = yscroll() + 3*row_height_;
+					set_yscroll(virtual_height() - y3 < height() 
+						? virtual_height() - height()
+						: y3);
+					selected_row_ += 3;
+					if(selected_row_ >= nrows()) {
+						selected_row_ = nrows() - 1;
+					}
+				}
+				claimed = true;
+			}
+#endif
 		} else if(event.type == SDL_MOUSEBUTTONDOWN) {
+#if !SDL_VERSION_ATLEAST(2, 0, 0)
 			point p(event.button.x, event.button.y);
 			if(event.button.button == SDL_BUTTON_WHEELUP && point_in_rect(p, r)) {
 				set_yscroll(yscroll() - 3*row_height_ < 0 ? 0 : yscroll() - 3*row_height_);
@@ -363,7 +389,9 @@ bool tree_view_widget::handle_event(const SDL_Event& event, bool claimed)
 					selected_row_ = nrows() - 1;
 				}
 				claimed = true;
-			} else {
+			} else 
+#endif
+			{
 				const SDL_MouseButtonEvent& e = event.button;
 				const int row_index = row_at(e.x, e.y);
 				on_select(e.button, row_index);

@@ -14,6 +14,7 @@ objects = \
 	src/b2d_ffl.o \
 	src/background.o \
 	src/background_task_pool.o \
+	src/bar_widget.o \
 	src/base64.o \
 	src/blur.o \
 	src/border_widget.o \
@@ -26,6 +27,7 @@ objects = \
 	src/color_chart.o \
 	src/compress.o \
 	src/current_generator.o \
+	src/custom_object_widget.o \
 	src/decimal.o \
 	src/difficulty.o \
 	src/drag_widget.o \
@@ -155,8 +157,11 @@ objects = \
 	src/tbs_bot.o \
 	src/tbs_client.o \
 	src/tbs_functions.o \
+	src/tbs_internal_client.o \
+	src/tbs_internal_server.o \
 	src/tbs_game.o \
 	src/tbs_server.o \
+	src/tbs_server_base.o \
 	src/tbs_web_server.o \
 	src/texture.o \
 	src/texture_frame_buffer.o \
@@ -183,8 +188,11 @@ objects = \
 	src/utility_object_compiler.o \
 	src/utility_query.o \
 	src/utility_render_level.o \
-    src/vector_text.o \
-	src/wm.o
+    src/vector_text.o 
+
+ifneq ($(USE_SDL2),yes)
+objects += src/wm.o
+endif
 
 
 # Server

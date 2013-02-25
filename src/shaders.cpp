@@ -53,6 +53,7 @@ bool shader::compile(const std::string& code)
 		shader_ = 0;
 	}
 
+	ASSERT_LOG(glCreateShader != NULL, "Something bad happened with Glew shader not initialised.");
 	shader_ = glCreateShader(type_);
 	if(shader_ == 0) {
 		std::cerr << "Enable to create shader." << std::endl;
@@ -84,7 +85,7 @@ namespace {
 }
 
 program::program() 
-	: object_(0)
+	: object_(0), u_mvp_matrix_(-1), u_color_(-1), u_point_size_(-1)
 {
 	environ_ = this;
 }
@@ -789,6 +790,9 @@ variant program::write()
 	if(stored_attributes_.is_null() == false) {
 		res.add("attributes", stored_attributes_);
 	}
+	if(stored_uniforms_.is_null() == false) {
+		res.add("uniforms", stored_uniforms_);
+	}
 	return res.build();
 }
 
@@ -846,6 +850,29 @@ void program::set_fixed_attributes(const variant& node)
 	stored_attributes_ = node;
 }
 
+void program::set_fixed_uniforms(const variant& node)
+{
+	if(node.has_key("mvp_matrix")) {
+		u_mvp_matrix_ = GLint(get_uniform(node["mvp_matrix"].as_string()));
+		ASSERT_LOG(u_mvp_matrix_ != -1, "mvp_matrix uniform given but nothing in corresponding shader.");
+	} else {
+		u_mvp_matrix_ = -1;
+	}
+	if(node.has_key("color")) {
+		u_color_ = GLint(get_uniform(node["color"].as_string()));
+		ASSERT_LOG(u_color_ != -1, "color uniform given but nothing in corresponding shader.");
+	} else {
+		u_color_ = -1;
+	}
+	if(node.has_key("point_size")) {
+		u_point_size_ = GLint(get_uniform(node["point_size"].as_string()));
+		ASSERT_LOG(u_point_size_ != -1, "point size uniform given but nothing in corresponding shader.");
+	} else {
+		u_point_size_ = -1;
+	}
+	stored_uniforms_ = node;
+}
+
 void program::load_shaders(const std::string& shader_data)
 {
 	variant node = json::parse(shader_data);
@@ -886,7 +913,7 @@ void program::load_shaders(const std::string& shader_data)
 		gles2::shader v_shader(GL_VERTEX_SHADER, vs_name, vert_data);
 		gles2::shader f_shader(GL_FRAGMENT_SHADER, fs_name, frag_data);
 		const std::string& program_name = prog["name"].as_string();
-		add_shader(program_name, v_shader, f_shader, prog["attributes"]);
+		add_shader(program_name, v_shader, f_shader, prog["attributes"], prog["uniforms"]);
 
 		std::map<std::string, gles2::program_ptr>::iterator it = shader_programs.find(program_name);
 		ASSERT_LOG(it != shader_programs.end(), "Error! Something bad happened adding the shader.");
@@ -898,7 +925,8 @@ void program::load_shaders(const std::string& shader_data)
 void program::add_shader(const std::string& program_name, 
 		const shader& v_shader, 
 		const shader& f_shader,
-		const variant& prog)
+		const variant& prog,
+		const variant& uniforms)
 {
 	std::map<std::string, gles2::program_ptr>::iterator it = shader_programs.find(program_name);
 	if(it == shader_programs.end()) {
@@ -908,6 +936,9 @@ void program::add_shader(const std::string& program_name,
 	}
 	if(prog.is_null() == false) {
 		shader_programs[program_name]->set_fixed_attributes(prog);
+	}
+	if(uniforms.is_null() == false) {
+		shader_programs[program_name]->set_fixed_uniforms(uniforms);
 	}
 }
 
@@ -938,6 +969,22 @@ void program::set_deferred_uniforms()
 	uniforms_to_update_.clear();
 }
 
+void program::set_known_uniforms()
+{
+#if defined(USE_GLES2)
+	if(u_mvp_matrix_ != -1) {
+		glUniformMatrix4fv(u_mvp_matrix_, 1, GL_FALSE, (GLfloat*)(&gles2::get_mvp_matrix().x.x));
+	}
+	if(u_color_ != -1) {
+		glUniform4fv(u_color_, 1, gles2::get_color());
+	}
+	if(u_point_size_ != -1) {
+		GLfloat pt_size;
+		glGetFloatv(GL_POINT_SIZE, &pt_size);
+		glUniform1f(u_point_size_, pt_size);
+	}
+#endif
+}
 
 ///////////////////////////////////////////////////////////////////////////
 // shader_program
@@ -1065,6 +1112,7 @@ void shader_program::prepare_draw()
 //#endif
 	glUseProgram(program_object_->get());
 	program_object_->set_deferred_uniforms();
+	program_object_->set_known_uniforms();
 	game_logic::formula_callable* e = this;
 	for(size_t n = 0; n < draw_formulas_.size(); ++n) {
 		e->execute_command(draw_formulas_[n]->execute(*e));

@@ -114,8 +114,12 @@ void button::handle_process()
 
 bool button::handle_event(const SDL_Event& event, bool claimed)
 {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	if((event.type == SDL_MOUSEWHEEL) 
+#else
 	if((event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) 
 		&& (event.button.button == SDL_BUTTON_WHEELUP || event.button.button == SDL_BUTTON_WHEELDOWN)
+#endif
 		&& in_widget(event.button.x, event.button.y)) {
 		// skip processing if mousewheel event
 		return claimed;

@@ -192,14 +192,17 @@ namespace {
     const std::string simple_shader_info = 
 		"{\"shader\": {\n"
 		"    \"program\": \"simple_shader\",\n"
-		"    \"create\": \"\",\n"
-		"    \"draw\": \"[set(uniforms.mvp_matrix, mvp_matrix), set(uniforms.u_color,color), set(uniforms.u_point_size, point_size)]\",\n"
 		"}}\n";
 	const std::string simple_attribute_info = 
 		"{\n"
 		"    \"attributes\": {\n"
 		"        \"vertex\": \"a_position\",\n"
 		"    },\n"
+		"	\"uniforms\": {\n"
+		"		\"mvp_matrix\": \"mvp_matrix\",\n"
+		"		\"color\": \"u_color\",\n"
+		"		\"point_size\": \"u_point_size\",\n"
+        "    },\n"
 		"}\n";
 
 	const std::string fs_col = 
@@ -223,8 +226,6 @@ namespace {
     const std::string simple_col_shader_info = 
 		"{\"shader\": {\n"
 		"    \"program\": \"simple_col_shader\",\n"
-		"    \"create\": \"\",\n"
-		"    \"draw\": \"[set(uniforms.mvp_matrix, mvp_matrix),set(uniforms.u_point_size,point_size)]\",\n"
 		"}}\n";
 	const std::string simple_col_attribute_info = 
 		"{\n"
@@ -232,6 +233,10 @@ namespace {
 		"        \"vertex\": \"a_position\",\n"
 		"        \"color\": \"a_color\",\n"
 		"    },\n"
+		"	\"uniforms\": {\n"
+		"		\"mvp_matrix\": \"mvp_matrix\",\n"
+		"		\"point_size\": \"u_point_size\",\n"
+        "    },\n"
 		"}\n";
 
 	const std::string fs_tex = 
@@ -256,13 +261,16 @@ namespace {
 		"{\"shader\": {\n"
         "    \"program\": \"tex_shader\",\n"
 		"    \"create\": \"[set(uniforms.u_tex_map, 0)]\",\n"
-		"    \"draw\": \"[set(uniforms.mvp_matrix,mvp_matrix),set(uniforms.u_color,color)]\",\n"
 		"}}\n";
 	const std::string tex_attribute_info = 
 		"{\n"
         "    \"attributes\": {\n"
         "        \"vertex\": \"a_position\",\n"
         "        \"texcoord\": \"a_texcoord\",\n"
+        "    },\n"
+		"	\"uniforms\": {\n"
+		"		\"mvp_matrix\": \"mvp_matrix\",\n"
+		"		\"color\": \"u_color\",\n"
         "    },\n"
 		"}\n";
 
@@ -291,7 +299,7 @@ namespace {
 		"{\"shader\": {\n"
         "    \"program\": \"texcol_shader\",\n"
 		"    \"create\": \"[set(uniforms.u_tex_map, 0)]\",\n"
-		"    \"draw\": \"[set(uniforms.mvp_matrix,mvp_matrix),set(attributes.a_color,color)]\",\n"
+		"    \"draw\": \"[set(attributes.a_color,color)]\",\n"
 		"}}\n";
 	const std::string texcol_attribute_info = 
 		"{\n"
@@ -299,6 +307,9 @@ namespace {
         "        \"vertex\": \"a_position\",\n"
         "        \"texcoord\": \"a_texcoord\",\n"
 		"        \"color\": \"a_color\",\n"
+        "    },\n"
+		"	\"uniforms\": {\n"
+		"		\"mvp_matrix\": \"mvp_matrix\",\n"
         "    },\n"
 		"}\n";
 
@@ -321,8 +332,7 @@ namespace {
 	};
 	std::stack<blend_mode> blend_stack;
 
-	GLint active_texture_unit;
-	GLuint current_bound_texture;
+	std::stack<GLint> active_texture_unit;
 }
 
 namespace gles2 {
@@ -355,7 +365,8 @@ namespace gles2 {
 	void fixed_program::add_shader(const std::string& program_name, 
 			const shader& v_shader, 
 			const shader& f_shader,
-			const variant& prog)
+			const variant& prog,
+			const variant& uniforms)
 	{
 		std::map<std::string, gles2::program_ptr>::iterator it = program::get_shaders().find(program_name);
 		if(it == program::get_shaders().end()) {
@@ -364,6 +375,7 @@ namespace gles2 {
 			it->second->init(program_name, v_shader, f_shader);
 		}
 		program::get_shaders()[program_name]->set_fixed_attributes(prog);
+		program::get_shaders()[program_name]->set_fixed_uniforms(uniforms);
 	}
 
 	void fixed_program::set_fixed_attributes(const variant& node)
@@ -454,28 +466,32 @@ namespace gles2 {
 	{
 		gles2::shader v1(GL_VERTEX_SHADER, "simple_vertex_shader", vs1);
 		gles2::shader f1(GL_FRAGMENT_SHADER, "simple_fragment_shader", fs1);
-		fixed_program::add_shader("simple_shader", v1, f1, json::parse(simple_attribute_info)["attributes"]);
+		variant sai = json::parse(simple_attribute_info);
+		fixed_program::add_shader("simple_shader", v1, f1, sai["attributes"], sai["uniforms"]);
 		simple_shader_program.reset(new shader_program());
 		simple_shader_program->configure(json::parse(simple_shader_info)["shader"]);
 		simple_shader_program->init(0);
 
 		gles2::shader v1_col(GL_VERTEX_SHADER, "simple_col_vertex_shader", vs_col);
 		gles2::shader f1_col(GL_FRAGMENT_SHADER, "simple_col_fragment_shader", fs_col);
-		fixed_program::add_shader("simple_col_shader", v1_col, f1_col, json::parse(simple_col_attribute_info)["attributes"]);
+		variant scs = json::parse(simple_col_attribute_info);
+		fixed_program::add_shader("simple_col_shader", v1_col, f1_col, scs["attributes"], scs["uniforms"]);
 		simple_col_shader_program.reset(new shader_program());
 		simple_col_shader_program->configure(json::parse(simple_col_shader_info)["shader"]);
 		simple_col_shader_program->init(0);
 
 		gles2::shader v_tex(GL_VERTEX_SHADER, "tex_vertex_shader", vs_tex);
 		gles2::shader f_tex(GL_FRAGMENT_SHADER, "tex_fragment_shader", fs_tex);
-		fixed_program::add_shader("tex_shader", v_tex, f_tex, json::parse(tex_attribute_info)["attributes"]);
+		variant ts = json::parse(tex_attribute_info);
+		fixed_program::add_shader("tex_shader", v_tex, f_tex, ts["attributes"], ts["uniforms"]);
 		tex_shader_program.reset(new shader_program());
 		tex_shader_program->configure(json::parse(tex_shader_info)["shader"]);
 		tex_shader_program->init(0);
 
 		gles2::shader v_texcol(GL_VERTEX_SHADER, "texcol_vertex_shader", vs_texcol);
 		gles2::shader f_texcol(GL_FRAGMENT_SHADER, "texcol_fragment_shader", fs_texcol);
-		fixed_program::add_shader("texcol_shader", v_texcol, f_texcol, json::parse(texcol_attribute_info)["attributes"]);
+		variant tcs = json::parse(texcol_attribute_info);
+		fixed_program::add_shader("texcol_shader", v_texcol, f_texcol, tcs["attributes"], tcs["uniforms"]);
 		texcol_shader_program.reset(new shader_program());
 		texcol_shader_program->configure(json::parse(texcol_shader_info)["shader"]);
 		texcol_shader_program->init(0);
@@ -510,12 +526,13 @@ namespace gles2 {
 		glGetIntegerv(GL_BLEND_DST, &blend_dst_mode);
 		blend_stack.push(blend_mode(blend_src_mode, blend_dst_mode, glIsEnabled(GL_BLEND) != 0));
 
+		GLint atu;
+		glGetIntegerv(GL_ACTIVE_TEXTURE, &atu);
+		active_texture_unit.push(atu);
+
 		if(shader == NULL || active_shader_program == shader) {
 			return;
-		}
-		
-		glGetIntegerv(GL_ACTIVE_TEXTURE, &active_texture_unit);
-		glGetIntegerv(GL_TEXTURE_BINDING_2D, (GLint*)&current_bound_texture);
+		}	
 
 		if(active_shader_program != shader) {
 			shader_stack.push(active_shader_program);
@@ -538,8 +555,8 @@ namespace gles2 {
 			glDisable(GL_BLEND);
 		}
 		glBlendFunc(bm.blend_src_mode, bm.blend_dst_mode);
-		glBindTexture(GL_TEXTURE_BINDING_2D, current_bound_texture);
-		glActiveTexture(active_texture_unit);
+		glActiveTexture(active_texture_unit.top());
+		active_texture_unit.pop();
 
 		active_shader_program->shader()->disable_vertex_attrib(-1);
 		if(shader_stack.empty() == false) {

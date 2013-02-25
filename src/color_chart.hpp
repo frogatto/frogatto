@@ -163,6 +163,7 @@ const SDL_Color& color_blue_violet();
 const SDL_Color& color_purple();
 const SDL_Color& color_medium_purple();
 const SDL_Color& color_thistle();
+const SDL_Color& color_crimson();
 
 }
 

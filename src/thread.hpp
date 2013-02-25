@@ -52,7 +52,7 @@ public:
 	// \param data passed to f
 	//
 	// \pre f != NULL
-#if defined(__ANDROID__) && SDL_VERSION_ATLEAST(1, 3, 0)
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 	explicit thread(const std::string& name, boost::function<void ()> f);
 #else
 	explicit thread(boost::function<void ()> f);
@@ -62,10 +62,6 @@ public:
 	// thread with the join() operation, thus blocking until the
 	// thread object has finished its operation.
 	~thread();
-
-	// Kill the thread. If the thread has already been killed, this
-	// is a no-op.
-	void kill();
 
 	// Join (wait) on the thread to finish. When the thread finishes,
 	// the function will return. calling wait() on an already killed

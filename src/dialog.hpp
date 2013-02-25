@@ -81,6 +81,7 @@ protected:
 	virtual variant get_value(const std::string& key) const;
 
 	virtual void handle_process();
+	void recalculate_dimensions();
 private:
 	std::vector<widget_ptr> widgets_;
 	bool opened_;
@@ -103,6 +104,7 @@ private:
 	mutable GLfloat bg_alpha_;
 
 	int last_draw_;
+	rect forced_dimensions_;
 
 	std::string background_framed_gui_element_;
 	boost::function<void()> draw_background_fn_;

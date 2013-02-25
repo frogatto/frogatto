@@ -68,6 +68,7 @@ dialog::dialog(int x, int y, int w, int h)
 	set_environment();
 	set_loc(x,y);
 	set_dim(w,h);
+	forced_dimensions_ = rect(x, y, w, h);
 }
 
 dialog::dialog(const variant& v, game_logic::formula_callable* e)
@@ -108,10 +109,29 @@ dialog::dialog(const variant& v, game_logic::formula_callable* e)
 			add_widget(w);
 		}
 	}
+	forced_dimensions_ = rect(x(), y(), width(), height());
+	recalculate_dimensions();
 }
 
 dialog::~dialog()
 {}
+
+void dialog::recalculate_dimensions()
+{
+	if(forced_dimensions_.empty()) {
+		int new_w = 0;
+		int new_h = 0;
+	    foreach(widget_ptr w, widgets_) {
+			if((w->x() + w->width()) > new_w) {
+				new_w = w->x() + w->width() + padding_ + get_pad_width();
+			}
+			if((w->y() + w->height()) > new_h) {
+				new_h = w->y() + w->height() + padding_ + get_pad_height();
+			}
+		}
+		set_dim(new_w, new_h);
+	}
+}
 
 void dialog::draw_last_scene() 
 {
@@ -159,6 +179,7 @@ dialog& dialog::add_widget(widget_ptr w, int x, int y,
 		add_y_ = y;
 		break;
 	}
+	recalculate_dimensions();
 	return *this;
 }
 
@@ -167,6 +188,7 @@ void dialog::remove_widget(widget_ptr w)
     deregister_listener(w);
 	widgets_.erase(std::remove(widgets_.begin(),widgets_.end(),w),
 	               widgets_.end());
+	recalculate_dimensions();
 }
 
 void dialog::clear() { 
@@ -174,6 +196,7 @@ void dialog::clear() {
         deregister_listener(w);
     }
     widgets_.clear(); 
+	recalculate_dimensions();
 }
 
 void dialog::replace_widget(widget_ptr w_old, widget_ptr w_new)
@@ -191,6 +214,7 @@ void dialog::replace_widget(widget_ptr w_old, widget_ptr w_new)
 
     register_listener(w_new);
     deregister_listener(w_old);
+	recalculate_dimensions();
 }
 
 void dialog::show() {
@@ -227,10 +251,7 @@ void dialog::prepare_draw()
 
 void dialog::complete_draw()
 {
-	SDL_GL_SwapBuffers();
-#if defined(__ANDROID__)
-	graphics::reset_opengl_state();
-#endif
+	graphics::swap_buffers();
 
 	const int end_draw = last_draw_ + 20;
 	const int delay_time = std::max<int>(1, end_draw - SDL_GetTicks());
@@ -251,6 +272,13 @@ void dialog::handle_draw_children() const {
 
 void dialog::handle_draw() const
 {
+	GLfloat current_color[4];
+#if defined(USE_GLES2)
+	memcpy(current_color, gles2::get_color(), sizeof(current_color));
+#else
+	glGetFloatv(GL_CURRENT_COLOR, current_color);
+#endif
+
 	if(clear_bg()) {
 		SDL_Rect rect = {x(),y(),width(),height()};
 		SDL_Color col = {0,0,0,0};
@@ -274,11 +302,12 @@ void dialog::handle_draw() const
 	if(background_framed_gui_element_.empty() == false) {
 		SDL_Rect rect = {x(),y(),width(),height()};
 		SDL_Color col = {0,0,0,0};
-		graphics::draw_rect(rect, col, 204);
+		graphics::draw_rect(rect, col, get_alpha() >= 255 ? 204 : get_alpha());
 		const_framed_gui_element_ptr window(framed_gui_element::get(background_framed_gui_element_));
 		window->blit(x(),y(),width(),height(), 1);
 	}
 
+	glColor4f(current_color[0], current_color[1], current_color[2], current_color[3]);
 	handle_draw_children();
 }
 

@@ -836,7 +836,7 @@ END_FUNCTION_DEF(update_controls)
 FUNCTION_DEF(map_controls, 1, 1, "map_controls(map) : Creates or updates the mapping on controls to keys")
 	const variant map = args()[0]->evaluate(variables);
 	foreach(const variant_pair& p, map.as_map()) {
-		controls::set_mapped_key(p.first.as_string(), static_cast<SDLKey>(p.second.as_int()));
+		controls::set_mapped_key(p.first.as_string(), static_cast<SDL_Keycode>(p.second.as_int()));
 	}
 	return variant();
 END_FUNCTION_DEF(map_controls)*/
@@ -1405,6 +1405,15 @@ private:
 					vars.push_back(val);
 					++index;
 				}
+			} else if(items.is_string()) {
+				const std::string& s = items.as_string();
+				boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
+				for(size_t n = 0; n != s.length(); ++n) {
+					variant v(s.substr(n,1));
+					callable->set(v, n);
+					const variant val = args().back()->evaluate(*callable);
+					vars.push_back(val);
+				}
 			} else {
 				boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
 				for(size_t n = 0; n != items.num_elements(); ++n) {
@@ -1430,9 +1439,18 @@ private:
 			formula_callable_ptr callable_backup(new formula_callable_with_backup(*self_callable, variables));
 
 			const int nelements = items.num_elements();
-			for(int& n = index_variant.int_addr(); n != nelements; ++n) {
-				self_variant = items[n];
-				vars.push_back(args().back()->evaluate(*callable_backup));
+			if(items.is_string()) {
+				const std::string& s = items.as_string();
+				for(int& n = index_variant.int_addr(); n != nelements; ++n) {
+					variant v(s.substr(n,1));
+					self_variant = v;
+					vars.push_back(args().back()->evaluate(*callable_backup));
+				}
+			} else {
+				for(int& n = index_variant.int_addr(); n != nelements; ++n) {
+					self_variant = items[n];
+					vars.push_back(args().back()->evaluate(*callable_backup));
+				}
 			}
 		}
 
@@ -2005,7 +2023,9 @@ private:
 		}
 
 		if(!key_.empty()) {
-			set_command* cmd = new set_command(variant(), key_, args()[1]->evaluate(variables));
+			static const std::string MeKey = "me";
+			variant target = variables.query_value(MeKey);
+			set_command* cmd = new set_command(target, key_, args()[1]->evaluate(variables));
 			cmd->set_expression(this);
 			return variant(cmd);
 		}
@@ -2062,22 +2082,30 @@ private:
 		if(slot_ != -1) {
 			if(cmd_->refcount() == 1) {
 				cmd_->set_value(args()[1]->evaluate(variables));
+				cmd_->set_expression(this);
 				return variant(cmd_.get());
 			}
 
 			cmd_ = boost::intrusive_ptr<add_by_slot_command>(new add_by_slot_command(slot_, args()[1]->evaluate(variables)));
+			cmd_->set_expression(this);
 			return variant(cmd_.get());
 		}
 
 		if(!key_.empty()) {
-			return variant(new add_command(variant(), key_, args()[1]->evaluate(variables)));
+			static const std::string MeKey = "me";
+			variant target = variables.query_value(MeKey);
+			add_command* cmd = new add_command(target, key_, args()[1]->evaluate(variables));
+			cmd->set_expression(this);
+			return variant(cmd);
 		}
 
 		if(args().size() == 2) {
 			std::string member;
 			variant target = args()[0]->evaluate_with_member(variables, member);
-			return variant(new add_command(
-				  target, member, args()[1]->evaluate(variables)));
+			add_command* cmd = new add_command(
+			      target, member, args()[1]->evaluate(variables));
+			cmd->set_expression(this);
+			return variant(cmd);
 		}
 
 		variant target;
@@ -2085,10 +2113,12 @@ private:
 			target = args()[0]->evaluate(variables);
 		}
 		const int begin_index = args().size() == 2 ? 0 : 1;
-		return variant(new add_command(
+		add_command* cmd = new add_command(
 		    target,
 		    args()[begin_index]->evaluate(variables).as_string(),
-			args()[begin_index + 1]->evaluate(variables)));
+			args()[begin_index + 1]->evaluate(variables));
+		cmd->set_expression(this);
+		return variant(cmd);
 	}
 
 	std::string key_;
@@ -2653,6 +2683,12 @@ FUNCTION_DEF(get_module_args, 0, 0, "get_module_args() -> callable: Returns the 
 	formula::fail_if_static_context();
 	return variant(module::get_module_args().get());
 END_FUNCTION_DEF(get_module_args)
+
+FUNCTION_DEF(seed_rng, 0, 0, "seed_rng() -> none: Seeds the peudo-RNG used.")
+	formula::fail_if_static_context();
+	::srand(::time(NULL));
+	return variant();
+END_FUNCTION_DEF(seed_rng)
 
 }
 

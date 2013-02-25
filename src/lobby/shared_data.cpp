@@ -105,19 +105,19 @@ namespace game_server
 		return true;
 	}
 
-	void shared_data::get_status_list(json_spirit::mArray* ary)
+	void shared_data::get_status_list(json_spirit::mObject* users)
 	{
 		boost::mutex::scoped_lock lock(guard_);
 		for(auto u : clients_) {
 			json_spirit::mObject uo;
 			const std::string& user = u.first;
-			uo["user"] = user;
 			uo["waiting_for_players"] = u.second.waiting_for_players;
 			uo["created_game"] = u.second.game;
 			auto it = std::find_if(games_.begin(), games_.end(), 
 				[user](const std::pair<int, game_info>& v) { return std::find(v.second.clients.begin(), v.second.clients.end(), user) != v.second.clients.end(); });
 			uo["game"] = it == games_.end() ? "lobby" : it->second.name;
-			ary->push_back(json_spirit::mValue(uo));
+
+			(*users)[user] = uo;
 		}
 	}
 

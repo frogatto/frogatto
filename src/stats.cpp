@@ -184,7 +184,7 @@ manager::manager()
 {
 #if !TARGET_OS_IPHONE
 	if(!background_thread) {
-#if defined(__ANDROID__) && SDL_VERSION_ATLEAST(1, 3, 0)
+#if SDL_VERSION_ATLEAST(2, 0, 0)
 		background_thread = new threading::thread("stats-thread", send_stats_thread);
 #else
 		background_thread = new threading::thread(send_stats_thread);

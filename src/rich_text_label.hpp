@@ -17,6 +17,7 @@ public:
 	rich_text_label(const variant& v, game_logic::formula_callable* e);
 private:
 
+	void handle_process();
 	void handle_draw() const;
 	bool handle_event(const SDL_Event& event, bool claimed);
 

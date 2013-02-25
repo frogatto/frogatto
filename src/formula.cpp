@@ -635,6 +635,11 @@ private:
 		const variant key = key_->evaluate(variables);
 		if(left.is_list() || left.is_map()) {
 			return left[ key ];
+		} else if(left.is_string()) {
+			const std::string& s = left.as_string();
+			int index = key.as_int();
+			ASSERT_LOG(index < s.length(), "index outside bounds: " << s << "[" << index << "]'\n'"  << debug_pinpoint_location());
+			return variant(s.substr(index, 1));
 		} else if(left.is_callable()) {
 			return left.as_callable()->query_value(key.as_string());
 		} else {
@@ -665,6 +670,24 @@ private:
 		const variant left = left_->evaluate(variables);
 		int begin_index = start_ ? start_->evaluate(variables).as_int() : 0;
 		int end_index = end_ ? end_->evaluate(variables).as_int() : left.num_elements();
+
+		if(left.is_string()) {
+			const std::string& s = left.as_string();
+			if(begin_index > s.length()) {
+				begin_index = s.length();
+			}
+			if(end_index > s.length()) {
+				end_index = s.length();
+			}
+			if(s.length() == 0) {
+				return variant();
+			}
+			if(end_index >= begin_index) {
+				return variant(s.substr(begin_index, end_index-begin_index));
+			} else {
+				return variant();
+			}
+		}
 
 		if(begin_index > left.num_elements()) {
 			begin_index = left.num_elements();

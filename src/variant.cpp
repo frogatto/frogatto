@@ -583,6 +583,9 @@ size_t variant::num_elements() const
 	} else if (type_ == VARIANT_TYPE_LIST) {
 		assert(list_);
 		return list_->size();
+	} else if (type_ == VARIANT_TYPE_STRING) {
+		assert(string_);
+		return string_->str.size();
 	} else if (type_ == VARIANT_TYPE_MAP) {
 		assert(map_);
 		return map_->elements.size();

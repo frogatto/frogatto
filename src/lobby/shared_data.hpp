@@ -73,7 +73,7 @@ namespace game_server
 		bool sign_off(const std::string& uname, int session_id);
 		void check_add_client(const std::string& user, const client_info& ci);
 		void check_add_game(int gid, const game_info& gi);
-		void get_status_list(json_spirit::mArray* ary);
+		void get_status_list(json_spirit::mObject* users);
 		void add_server(const server_info& si);
 		bool create_game(const std::string& user, const std::string& game_type);
 		static int make_session_id();

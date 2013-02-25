@@ -25,14 +25,23 @@
 
 namespace gui {
 
+widget::widget() 
+	: x_(0), y_(0), w_(0), h_(0), align_h_(HALIGN_LEFT), align_v_(VALIGN_TOP),
+	true_x_(0), true_y_(0), disabled_(false), disabled_opacity_(127),
+	tooltip_displayed_(false), visible_(true), zorder_(0), environ_(0),
+	tooltip_display_delay_(0), tooltip_ticks_(INT_MAX), resolution_(0),
+	display_alpha_(256), pad_h_(0), pad_w_(0)
+	{}
+
 widget::widget(const variant& v, game_logic::formula_callable* e) 
 	: environ_(e), w_(0), h_(0), x_(0), y_(0), zorder_(0), 
 	true_x_(0), true_y_(0), disabled_(false), disabled_opacity_(v["disabled_opacity"].as_int(127)),
 	tooltip_displayed_(false), id_(v["id"].as_string_default()), align_h_(HALIGN_LEFT), align_v_(VALIGN_TOP),
 	tooltip_display_delay_(v["tooltip_delay"].as_int(500)), tooltip_ticks_(INT_MAX),
-	resolution_(v["frame_size"].as_int(0)), display_alpha_(v["alpha"].as_int(255)),
+	resolution_(v["frame_size"].as_int(0)), display_alpha_(v["alpha"].as_int(256)),
 	pad_w_(0), pad_h_(0)
 {
+	set_alpha(display_alpha_ < 0 ? 0 : (display_alpha_ > 256 ? 256 : display_alpha_));
 	if(v.has_key("width")) {
 		w_ = v["width"].as_int();
 	} 
@@ -264,6 +273,8 @@ bool widget::process_event(const SDL_Event& event, bool claimed)
 void widget::draw() const
 {
 	if(visible_) {
+		color_save_context color_saver;
+
 		GLint src = 0;
 		GLint dst = 0;
 #if !defined(USE_GLES2)
@@ -273,7 +284,7 @@ void widget::draw() const
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		if(disabled_) {
 			glColor4ub(255, 255, 255, disabled_opacity_);
-		} else {
+		} else if(display_alpha_ < 256) {
 			glColor4ub(255, 255, 255, display_alpha_);
 		}
 		if(frame_set_ != NULL) {
@@ -286,7 +297,6 @@ void widget::draw() const
 #if !defined(USE_GLES2)
 		glBlendFunc(src, dst);
 #endif
-		glColor4ub(255, 255, 255, 255);
 	}
 }
 
@@ -345,6 +355,14 @@ variant widget::get_value(const std::string& key) const
 		return variant(id_);
 	} else if(key == "resolution") {
 		return variant(resolution_);
+	} else if(key == "x") {
+		return variant(x());
+	} else if(key == "y") {
+		return variant(y());
+	} else if(key == "width" || key == "w") {
+		return variant(width());
+	} else if(key == "height" || key == "h") {
+		return variant(height());
 	} else if(key == "frame") {
 		return variant(frame_set_name_);
 	} else if(key == "alpha") {
@@ -377,6 +395,10 @@ void widget::set_value(const std::string& key, const variant& v)
 		std::vector<int> xy = v.as_list_int();
 		ASSERT_LOG(xy.size() == 2, "Two values must be supplied to the X, Y attribute");
 		set_loc(xy[0], xy[1]);
+	} else if(key == "x") {
+		set_loc(v.as_int(), y());
+	} else if(key == "y") {
+		set_loc(x(), v.as_int());
 	} else if(key == "wh") {
 		std::vector<int> wh = v.as_list_int();
 		ASSERT_LOG(wh.size() == 2, "Two values must be supplied to the W, H attribute");
@@ -410,7 +432,7 @@ void widget::set_value(const std::string& key, const variant& v)
 		resolution_ = v.as_int();
 	} else if(key == "alpha") {
 		int a = v.as_int();
-		set_alpha(a < 0 ? 0 : (a > 255 ? 255 : a));
+		set_alpha(a < 0 ? 0 : (a > 256 ? 256 : a));
 	} else if(key == "frame_pad_width") {
 		set_padding(v.as_int(), get_pad_height());
 	} else if(key == "frame_pad_height") {
@@ -431,7 +453,7 @@ bool widget::in_widget(int xloc, int yloc) const
 
 bool widget_sort_zorder::operator()(const widget_ptr lhs, const widget_ptr rhs) const
 {
-	return lhs->zorder() < rhs->zorder();
+	return lhs->zorder() < rhs->zorder() || lhs->zorder() == rhs->zorder() && lhs.get() < rhs.get();
 }
 
 }

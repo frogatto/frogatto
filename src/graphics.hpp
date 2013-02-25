@@ -7,7 +7,6 @@
 #endif
 
 #include "SDL.h"
-#include "SDL_keysym.h"
 #include "SDL_thread.h"
 
 #if defined(__ANDROID__)
@@ -29,12 +28,13 @@
 #endif
 
 #include "gles2.hpp"
+#if !SDL_VERSION_ATLEAST(2, 0, 0)
 #include "wm.hpp"
-
 #if defined(GL_ES_VERSION_2_0)
 extern window_manager wm;
 #undef SDL_GL_SwapBuffers
 #define SDL_GL_SwapBuffers()	do{wm.swap();}while(0)
+#endif
 #endif
 
 #else
@@ -75,5 +75,7 @@ extern window_manager wm;
 #endif
 
 #endif
+
+#define CLEANUP_WINDOW_CONTEXT 0x40000000
 
 #endif // GRAPHICS_HPP_INCLUDED
