@@ -78,9 +78,12 @@ namespace gui
 		int left_cap_width_;
 		// Calculated right_cap_width
 		int right_cap_width_;
+		// Calculated distance between ticks
+		double tick_distance_;
 
-		// Saved bar_height
+		// Saved bar_height and width;
 		int bar_height_;
+		int bar_max_width_;
 
 		int drained_segments_after_anim_;
 	};
