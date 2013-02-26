@@ -37,7 +37,11 @@
 namespace graphics
 {
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+SDL_threadID graphics_thread_id;
+#else
 int graphics_thread_id;
+#endif
 surface scale_surface(surface input);
 
 namespace {
@@ -108,7 +112,11 @@ namespace {
 		}
 
 		if(texture_buf_pos == TextureBufSize) {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+			if(graphics_thread_id != SDL_ThreadID()) {
+#else
 			if(graphics_thread_id != SDL_GetThreadID(NULL)) {
+#endif
 				//we are in a worker thread so we can't make an OpenGL
 				//call. Throw an exception.
 				std::cerr << "CANNOT ALLOCATE TEXTURE ID's in WORKER THREAD\n";
@@ -216,7 +224,11 @@ texture::manager::manager() {
 
 	graphics_initialized = true;
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	graphics_thread_id = SDL_ThreadID();
+#else
 	graphics_thread_id = SDL_GetThreadID(NULL);
+#endif
 }
 
 texture::manager::~manager() {
@@ -433,7 +445,11 @@ unsigned int texture::get_id() const
 			id_->s = scale_surface(id_->s);
 		}
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		if(graphics_thread_id != SDL_ThreadID()) {
+#else
 		if(graphics_thread_id != SDL_GetThreadID(NULL)) {
+#endif
 			threading::lock lck(id_to_build_mutex);
 			id_to_build_.push_back(id_);
 		} else {
@@ -446,7 +462,11 @@ unsigned int texture::get_id() const
 
 void texture::build_textures_from_worker_threads()
 {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	ASSERT_LOG(graphics_thread_id == SDL_ThreadID(), "CALLED build_textures_from_worker_threads from thread other than the main one");
+#else
 	ASSERT_LOG(graphics_thread_id == SDL_GetThreadID(NULL), "CALLED build_textures_from_worker_threads from thread other than the main one");
+#endif
 	threading::lock lck(id_to_build_mutex);
 	foreach(boost::shared_ptr<ID> id, id_to_build_) {
 		id->build_id();
