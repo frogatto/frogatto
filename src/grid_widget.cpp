@@ -481,6 +481,7 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 			}
 #endif
 			if(swallow_clicks_) {
+				std::cerr << "SWALLOW CLICK\n";
 				claimed = true;
 			}
 		}
