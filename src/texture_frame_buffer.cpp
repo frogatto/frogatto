@@ -175,7 +175,7 @@ void rebuild()
 	if(!supported) {
 		return;
 	}
-	glDeleteFramebuffers(1, &framebuffer_id);
+	EXT_CALL(glDeleteFramebuffers)(1, &framebuffer_id);
 	glDeleteTextures(1, &texture_id);
 	init(preferences::actual_screen_width(), preferences::actual_screen_height());
 }
