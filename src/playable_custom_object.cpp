@@ -159,9 +159,19 @@ variant playable_custom_object::get_value(const std::string& key) const
 		int ary_length;
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 		Uint8* key_state = SDL_GetKeyboardState(&ary_length);
+		for(int count = 0; count < ary_length; ++count) {
+			if(key_state[count]) {				//Returns only keys that are down so the list that ffl has to deal with is small.
+				SDL_Keycode k = SDL_GetKeyFromScancode(SDL_Scancode(count));
+				if(k < 128 && util::c_isprint(k)) {
+					std::string str(1,k);
+					result.push_back(variant(str));
+				} else {
+					result.push_back(variant(k));
+				}
+			}
+		}
 #else
 		const Uint8* key_state = SDL_GetKeyState(&ary_length);
-#endif
 		for(int count = 0; count < ary_length; ++count) {
 			if(key_state[count]) {				//Returns only keys that are down so the list that ffl has to deal with is small.
 				if(count < 128 && util::c_isprint(count)) {
@@ -172,6 +182,7 @@ variant playable_custom_object::get_value(const std::string& key) const
 				}
 			}
 		}
+#endif
 #endif
 		return variant(&result);
 	} else if(key == "ctrl_mice") {
