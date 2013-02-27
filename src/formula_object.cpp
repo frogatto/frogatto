@@ -77,6 +77,7 @@ public:
 	explicit formula_class(const variant& node);
 	void set_name(const std::string& name);
 	const std::string& name() const { return name_; }
+	const variant& name_variant() const { return name_variant_; }
 	const variant& private_data() const { return private_data_; }
 	const std::vector<game_logic::const_formula_ptr>& constructor() const { return constructor_; }
 	const std::map<std::string, property_entry>& properties() const { return properties_; }
@@ -86,6 +87,7 @@ public:
 
 private:
 	std::string name_;
+	variant name_variant_;
 	variant private_data_;
 	std::vector<game_logic::const_formula_ptr> constructor_;
 	std::map<std::string, property_entry> properties_;
@@ -151,6 +153,7 @@ formula_class::formula_class(const variant& node)
 void formula_class::set_name(const std::string& name)
 {
 	name_ = name;
+	name_variant_ = variant(name);
 	for(classes_map::iterator i = sub_classes_.begin(); i != sub_classes_.end(); ++i) {
 		i->second->set_name(name + "." + i->first);
 	}
@@ -398,6 +401,10 @@ variant formula_object::get_value(const std::string& key) const
 
 	if(key == "self" || key == "me") {
 		return variant(this);
+	}
+
+	if(key == "type") {
+		return class_->name_variant();
 	}
 
 	std::map<std::string, formula_ptr>::const_iterator override_itor = property_overrides_.find(key);

@@ -364,6 +364,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	activation_border_(type_->activation_border()),
 	last_cycle_active_(0),
 	parent_prev_x_(INT_MIN), parent_prev_y_(INT_MIN), parent_prev_facing_(true),
+	swallow_mouse_event_(false),
 	min_difficulty_(-1), max_difficulty_(-1),
 	currently_handling_die_event_(0),
 	use_absolute_screen_coordinates_(type_->use_absolute_screen_coordinates())
@@ -471,6 +472,7 @@ custom_object::custom_object(const custom_object& o) :
 	parent_prev_x_(o.parent_prev_x_),
 	parent_prev_y_(o.parent_prev_y_),
 	parent_prev_facing_(o.parent_prev_facing_),
+	swallow_mouse_event_(false),
 	min_difficulty_(o.min_difficulty_),
 	max_difficulty_(o.max_difficulty_),
 	custom_draw_(o.custom_draw_),
