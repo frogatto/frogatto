@@ -67,8 +67,8 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 
 	variant v;
 	try {
-		v = json::parse_from_file("data/pause_menu.cfg");
-		ASSERT_LOG(v.is_map(), "\"data/pause_menu.cfg\" found but isn't a map.");
+		v = json::parse_from_file("data/pause-menu.cfg");
+		ASSERT_LOG(v.is_map(), "\"data/pause-menu.cfg\" found but isn't a map.");
 		show_exit = v["show_exit"].as_bool(true);
 		show_controls = v["show_controls"].as_bool(true);
 		show_button_swap = v["show_button_swap"].as_bool(false);
