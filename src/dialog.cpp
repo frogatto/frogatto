@@ -76,6 +76,7 @@ dialog::dialog(const variant& v, game_logic::formula_callable* e)
 	opened_(false), cancelled_(false), 
 	add_x_(0), add_y_(0), last_draw_(-1)
 {
+	forced_dimensions_ = rect(x(), y(), width(), height());
 	padding_ = v["padding"].as_int(10);
 	if(v.has_key("background_frame")) {
 		background_framed_gui_element_ = v["background_frame"].as_string();
@@ -109,7 +110,6 @@ dialog::dialog(const variant& v, game_logic::formula_callable* e)
 			add_widget(w);
 		}
 	}
-	forced_dimensions_ = rect(x(), y(), width(), height());
 	recalculate_dimensions();
 }
 
