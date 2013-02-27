@@ -200,6 +200,11 @@
 		C089D452162BDF7B009D2878 /* master-config.cfg in Resources */ = {isa = PBXBuildFile; fileRef = C089D451162BDF7B009D2878 /* master-config.cfg */; };
 		C0B1908916CD9437008FF14A /* ipc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0B1908716CD9437008FF14A /* ipc.cpp */; };
 		C0B87BD4166725A700D66B15 /* formula_object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0B87BD21667256F00D66B15 /* formula_object.cpp */; };
+		C0D6EB6C16DB25C000B5ABCA /* tbs_internal_client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0D6EB6616DB25C000B5ABCA /* tbs_internal_client.cpp */; };
+		C0D6EB6D16DB25C000B5ABCA /* tbs_internal_server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0D6EB6816DB25C000B5ABCA /* tbs_internal_server.cpp */; };
+		C0D6EB6E16DB25C000B5ABCA /* tbs_server_base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0D6EB6A16DB25C000B5ABCA /* tbs_server_base.cpp */; };
+		C0D6EB7116DB25D700B5ABCA /* bar_widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0D6EB6F16DB25D700B5ABCA /* bar_widget.cpp */; };
+		C0D6EB7416DB285D00B5ABCA /* custom_object_widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0D6EB7216DB25EA00B5ABCA /* custom_object_widget.cpp */; };
 		C0DDFDC6163F7FF800F727DD /* sys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0406533163F790000F84F94 /* sys.cpp */; };
 		C0EF2A5616215F78004CD227 /* libboost_iostreams.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0EF2A5316215F78004CD227 /* libboost_iostreams.dylib */; };
 		C0EF2A5716215F78004CD227 /* libboost_regex.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0EF2A5416215F78004CD227 /* libboost_regex.dylib */; };
@@ -638,6 +643,16 @@
 		C0B87BD31667256F00D66B15 /* formula_object.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = formula_object.hpp; sourceTree = "<group>"; };
 		C0C2918D1665DFFC00DB88A6 /* signature.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = signature.cfg; path = ../../signature.cfg; sourceTree = "<group>"; };
 		C0C291901665F21600DB88A6 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C0D6EB6616DB25C000B5ABCA /* tbs_internal_client.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tbs_internal_client.cpp; sourceTree = "<group>"; };
+		C0D6EB6716DB25C000B5ABCA /* tbs_internal_client.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = tbs_internal_client.hpp; sourceTree = "<group>"; };
+		C0D6EB6816DB25C000B5ABCA /* tbs_internal_server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tbs_internal_server.cpp; sourceTree = "<group>"; };
+		C0D6EB6916DB25C000B5ABCA /* tbs_internal_server.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = tbs_internal_server.hpp; sourceTree = "<group>"; };
+		C0D6EB6A16DB25C000B5ABCA /* tbs_server_base.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tbs_server_base.cpp; sourceTree = "<group>"; };
+		C0D6EB6B16DB25C000B5ABCA /* tbs_server_base.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = tbs_server_base.hpp; sourceTree = "<group>"; };
+		C0D6EB6F16DB25D700B5ABCA /* bar_widget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bar_widget.cpp; sourceTree = "<group>"; };
+		C0D6EB7016DB25D700B5ABCA /* bar_widget.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bar_widget.hpp; sourceTree = "<group>"; };
+		C0D6EB7216DB25EA00B5ABCA /* custom_object_widget.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = custom_object_widget.cpp; sourceTree = "<group>"; };
+		C0D6EB7316DB25EA00B5ABCA /* custom_object_widget.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = custom_object_widget.hpp; sourceTree = "<group>"; };
 		C0EF2A5316215F78004CD227 /* libboost_iostreams.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libboost_iostreams.dylib; sourceTree = "<group>"; };
 		C0EF2A5416215F78004CD227 /* libboost_regex.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libboost_regex.dylib; sourceTree = "<group>"; };
 		C0EF2A5516215F78004CD227 /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libboost_system.dylib; sourceTree = "<group>"; };
@@ -769,6 +784,8 @@
 				C010C5CA160AFD4C006E7D90 /* background.hpp */,
 				C010C5CB160AFD4C006E7D90 /* background_task_pool.cpp */,
 				C010C5CC160AFD4C006E7D90 /* background_task_pool.hpp */,
+				C0D6EB6F16DB25D700B5ABCA /* bar_widget.cpp */,
+				C0D6EB7016DB25D700B5ABCA /* bar_widget.hpp */,
 				C010C5CD160AFD4C006E7D90 /* base64.cpp */,
 				C010C5CE160AFD4C006E7D90 /* base64.hpp */,
 				C010C5CF160AFD4C006E7D90 /* blur.cpp */,
@@ -817,6 +834,8 @@
 				C010C5FB160AFD4C006E7D90 /* custom_object_functions.hpp */,
 				C010C5FC160AFD4C006E7D90 /* custom_object_type.cpp */,
 				C010C5FD160AFD4C006E7D90 /* custom_object_type.hpp */,
+				C0D6EB7216DB25EA00B5ABCA /* custom_object_widget.cpp */,
+				C0D6EB7316DB25EA00B5ABCA /* custom_object_widget.hpp */,
 				C010C5FE160AFD4C006E7D90 /* debug_console.cpp */,
 				C010C5FF160AFD4C006E7D90 /* debug_console.hpp */,
 				C010C600160AFD4C006E7D90 /* decimal.cpp */,
@@ -1074,6 +1093,12 @@
 				C010C709160AFD4D006E7D90 /* tbs_game.hpp */,
 				C00160C916A2991D001DAEB9 /* tbs_server.cpp */,
 				C00160CA16A2991D001DAEB9 /* tbs_server.hpp */,
+				C0D6EB6616DB25C000B5ABCA /* tbs_internal_client.cpp */,
+				C0D6EB6716DB25C000B5ABCA /* tbs_internal_client.hpp */,
+				C0D6EB6816DB25C000B5ABCA /* tbs_internal_server.cpp */,
+				C0D6EB6916DB25C000B5ABCA /* tbs_internal_server.hpp */,
+				C0D6EB6A16DB25C000B5ABCA /* tbs_server_base.cpp */,
+				C0D6EB6B16DB25C000B5ABCA /* tbs_server_base.hpp */,
 				C00160CB16A2991D001DAEB9 /* tbs_web_server.cpp */,
 				C00160CC16A2991D001DAEB9 /* tbs_web_server.hpp */,
 				C010C70E160AFD4D006E7D90 /* text_editor_widget.cpp */,
@@ -1219,6 +1244,7 @@
 				C0DDFDC6163F7FF800F727DD /* sys.cpp in Sources */,
 				C010C741160AFD4D006E7D90 /* achievements.cpp in Sources */,
 				C010C742160AFD4D006E7D90 /* animation_creator.cpp in Sources */,
+				C0D6EB7416DB285D00B5ABCA /* custom_object_widget.cpp in Sources */,
 				C010C743160AFD4D006E7D90 /* animation_preview_widget.cpp in Sources */,
 				C010C744160AFD4D006E7D90 /* animation_widget.cpp in Sources */,
 				C010C746160AFD4D006E7D90 /* asserts.cpp in Sources */,
@@ -1391,6 +1417,10 @@
 				C026F5A116C23963000482A1 /* selector_widget.cpp in Sources */,
 				C026F5A416C74B1E000482A1 /* draw_primitive.cpp in Sources */,
 				C0B1908916CD9437008FF14A /* ipc.cpp in Sources */,
+				C0D6EB6C16DB25C000B5ABCA /* tbs_internal_client.cpp in Sources */,
+				C0D6EB6D16DB25C000B5ABCA /* tbs_internal_server.cpp in Sources */,
+				C0D6EB6E16DB25C000B5ABCA /* tbs_server_base.cpp in Sources */,
+				C0D6EB7116DB25D700B5ABCA /* bar_widget.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
