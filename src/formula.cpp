@@ -348,7 +348,9 @@ private:
 			res[ key ] = value;
 		}
 		
-		return variant(&res);
+		variant result(&res);
+		result.set_source_expression(this);
+		return result;
 	}
 	
 	std::vector<expression_ptr> items_;

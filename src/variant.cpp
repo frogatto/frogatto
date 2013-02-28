@@ -137,13 +137,12 @@ struct variant_list {
 	                 refcount(0), storage(NULL)
 	{}
 
-	variant_list(const variant_list& o) : info(o.info),
+	variant_list(const variant_list& o) :
 	   elements(o.begin, o.end), begin(elements.begin()), end(elements.end()),
 	   refcount(1), storage(NULL)
 	{}
 
 	const variant_list& operator=(const variant_list& o) {
-		info = o.info;
 		elements.assign(o.begin, o.end),
 		begin = elements.begin();
 		end = elements.end();
@@ -160,6 +159,7 @@ struct variant_list {
 	size_t size() const { return end - begin; }
 
 	variant::debug_info info;
+	boost::intrusive_ptr<const game_logic::formula_expression> expression;
 	std::vector<variant> elements;
 	std::vector<variant>::iterator begin, end;
 	int refcount;
@@ -168,142 +168,181 @@ struct variant_list {
 
 struct variant_string {
 	variant::debug_info info;
+	boost::intrusive_ptr<const game_logic::formula_expression> expression;
 
 	variant_string() : refcount(0)
 	{}
+	variant_string(const variant_string& o) : str(o.str), translated_from(o.translated_from), refcount(1)
+	{}
 	std::string str, translated_from;
 	int refcount;
+
+	private:
+	void operator=(const variant_string&);
 };
 
 struct variant_map {
 	variant::debug_info info;
+	boost::intrusive_ptr<const game_logic::formula_expression> expression;
 
 	variant_map() : refcount(0)
 	{}
+	variant_map(const variant_map& o) : expression(o.expression), elements(o.elements), refcount(1)
+	{}
+
 	std::map<variant,variant> elements;
 	int refcount;
+private:
+	void operator=(const variant_map&);
 };
 
 struct variant_fn {
-	variant_fn() : refcount(0)
-	{}
+variant_fn() : refcount(0)
+{}
 
-	const std::string* begin_args;
-	const std::string* end_args;
+const std::string* begin_args;
+const std::string* end_args;
 
-	game_logic::const_formula_ptr fn;
+game_logic::const_formula_ptr fn;
 
-	game_logic::const_formula_callable_ptr callable;
+game_logic::const_formula_callable_ptr callable;
 
-	std::vector<variant> default_args;
+std::vector<variant> default_args;
 
-	int base_slot;
-	int refcount;
+int base_slot;
+int refcount;
 };
 
 struct variant_delayed {
-	variant_delayed() : has_result(false), refcount(0)
-	{}
+variant_delayed() : has_result(false), refcount(0)
+{}
 
-	void calculate_result() {
-		if(!has_result) {
-			if(callable) {
-				result = fn->execute(*callable);
-			} else {
-				result = fn->execute();
-			}
-
-			has_result = true;
-		}
+void calculate_result() {
+if(!has_result) {
+	if(callable) {
+		result = fn->execute(*callable);
+	} else {
+		result = fn->execute();
 	}
 
-	game_logic::const_formula_ptr fn;
-	game_logic::const_formula_callable_ptr callable;
+	has_result = true;
+}
+}
 
-	bool has_result;
-	variant result;
+game_logic::const_formula_ptr fn;
+game_logic::const_formula_callable_ptr callable;
 
-	int refcount;
+bool has_result;
+variant result;
+
+int refcount;
 };
 
 void variant::increment_refcount()
 {
-	switch(type_) {
-	case VARIANT_TYPE_LIST:
-		++list_->refcount;
-		break;
-	case VARIANT_TYPE_STRING:
-		++string_->refcount;
-		break;
-	case VARIANT_TYPE_MAP:
-		++map_->refcount;
-		break;
-	case VARIANT_TYPE_CALLABLE:
-		intrusive_ptr_add_ref(callable_);
-		break;
-	case VARIANT_TYPE_CALLABLE_LOADING:
-		callable_variants_loading.insert(this);
-		break;
-	case VARIANT_TYPE_FUNCTION:
-		++fn_->refcount;
-		break;
-	case VARIANT_TYPE_DELAYED:
-		delayed_variants_loading.insert(this);
-		++delayed_->refcount;
-		break;
+switch(type_) {
+case VARIANT_TYPE_LIST:
+++list_->refcount;
+break;
+case VARIANT_TYPE_STRING:
+++string_->refcount;
+break;
+case VARIANT_TYPE_MAP:
+++map_->refcount;
+break;
+case VARIANT_TYPE_CALLABLE:
+intrusive_ptr_add_ref(callable_);
+break;
+case VARIANT_TYPE_CALLABLE_LOADING:
+callable_variants_loading.insert(this);
+break;
+case VARIANT_TYPE_FUNCTION:
+++fn_->refcount;
+break;
+case VARIANT_TYPE_DELAYED:
+delayed_variants_loading.insert(this);
+++delayed_->refcount;
+break;
 
-	// These are not used here, add them to silence a compiler warning.
-	case VARIANT_TYPE_NULL:
-	case VARIANT_TYPE_INT:
-	case VARIANT_TYPE_BOOL:
-	case VARIANT_TYPE_DECIMAL:
-	case VARIANT_TYPE_INVALID:
-		break;
-	}
+// These are not used here, add them to silence a compiler warning.
+case VARIANT_TYPE_NULL:
+case VARIANT_TYPE_INT:
+case VARIANT_TYPE_BOOL:
+case VARIANT_TYPE_DECIMAL:
+case VARIANT_TYPE_INVALID:
+break;
+}
 }
 
 void variant::release()
 {
+switch(type_) {
+case VARIANT_TYPE_LIST:
+if(--list_->refcount == 0) {
+	delete list_;
+}
+break;
+case VARIANT_TYPE_STRING:
+if(--string_->refcount == 0) {
+	delete string_;
+}
+break;
+case VARIANT_TYPE_MAP:
+if(--map_->refcount == 0) {
+	delete map_;
+}
+break;
+case VARIANT_TYPE_CALLABLE:
+intrusive_ptr_release(callable_);
+break;
+case VARIANT_TYPE_CALLABLE_LOADING:
+callable_variants_loading.erase(this);
+break;
+case VARIANT_TYPE_FUNCTION:
+if(--fn_->refcount == 0) {
+	delete fn_;
+}
+break;
+case VARIANT_TYPE_DELAYED:
+delayed_variants_loading.erase(this);
+if(--delayed_->refcount == 0) {
+	delete delayed_;
+}
+break;
+
+// These are not used here, add them to silence a compiler warning.
+case VARIANT_TYPE_NULL:
+case VARIANT_TYPE_INT:
+case VARIANT_TYPE_BOOL:
+case VARIANT_TYPE_DECIMAL:
+case VARIANT_TYPE_INVALID:
+break;
+}
+}
+
+const game_logic::formula_expression* variant::get_source_expression() const
+{
 	switch(type_) {
 	case VARIANT_TYPE_LIST:
-		if(--list_->refcount == 0) {
-			delete list_;
-		}
-		break;
 	case VARIANT_TYPE_STRING:
-		if(--string_->refcount == 0) {
-			delete string_;
-		}
-		break;
 	case VARIANT_TYPE_MAP:
-		if(--map_->refcount == 0) {
-			delete map_;
-		}
+		return map_->expression.get();
+	default:
 		break;
-	case VARIANT_TYPE_CALLABLE:
-		intrusive_ptr_release(callable_);
-		break;
-	case VARIANT_TYPE_CALLABLE_LOADING:
-		callable_variants_loading.erase(this);
-		break;
-	case VARIANT_TYPE_FUNCTION:
-		if(--fn_->refcount == 0) {
-			delete fn_;
-		}
-		break;
-	case VARIANT_TYPE_DELAYED:
-		delayed_variants_loading.erase(this);
-		if(--delayed_->refcount == 0) {
-			delete delayed_;
-		}
-		break;
+	}
 
-	// These are not used here, add them to silence a compiler warning.
-	case VARIANT_TYPE_NULL:
-	case VARIANT_TYPE_INT:
-	case VARIANT_TYPE_BOOL:
-	case VARIANT_TYPE_DECIMAL:
-	case VARIANT_TYPE_INVALID:
+	return NULL;
+}
+
+void variant::set_source_expression(const game_logic::formula_expression* expr)
+{
+	switch(type_) {
+	case VARIANT_TYPE_LIST:
+	case VARIANT_TYPE_STRING:
+	case VARIANT_TYPE_MAP:
+		map_->expression.reset(expr);
+		break;
+	default:
 		break;
 	}
 }
@@ -1236,6 +1275,8 @@ void variant::throw_type_error(variant::TYPE t) const
 		const debug_info* info = last_failed_query_map.get_debug_info();
 		if(info) {
 			generate_error(formatter() << "In object at " << *info->filename << " " << info->line << " (column " << info->column << ") did not find attribute " << last_failed_query_key << " which was expected to be a " << variant_type_to_string(t));
+		} else if(last_failed_query_map.get_source_expression()) {
+			generate_error(formatter() << "Map object generated in FFL was expected to have key '" << last_failed_query_key << "' of type " << variant_type_to_string(t) << " but this key wasn't found. The map was generated by this expression:\n" << last_failed_query_map.get_source_expression()->debug_pinpoint_location());
 		}
 	}
 
@@ -1248,6 +1289,12 @@ void variant::throw_type_error(variant::TYPE t) const
 				}
 				generate_error(formatter() << "In object at " << *info->filename << " " << info->line << " (column " << info->column << ") attribute for " << i->first << " was " << *this << ", which is a " << variant_type_to_string(type_) << ", must be a " << variant_type_to_string(t));
 				
+			}
+		}
+	} else if(last_query_map.is_map() && last_query_map.get_source_expression()) {
+		for(std::map<variant,variant>::const_iterator i = last_query_map.map_->elements.begin(); i != last_query_map.map_->elements.end(); ++i) {
+			if(this == &i->second) {
+				generate_error(formatter() << "Map object generated in FFL was expected to have key '" << last_failed_query_key << "' of type " << variant_type_to_string(t) << " but this key was of type " << variant_type_to_string(i->second.type_) << " instead. The map was generated by this expression:\n" << last_failed_query_map.get_source_expression()->debug_pinpoint_location());
 			}
 		}
 	}
