@@ -168,10 +168,12 @@ void grid::set_dim(int w, int h)
 
 void grid::handle_process()
 {
-	widget::handle_process();
     foreach(widget_ptr w, cells_) {
-		w->process();
+		if(w != NULL) {
+			w->process();
+		}
 	}
+	widget::handle_process();
 }
 
 void grid::add_row(const std::vector<widget_ptr>& widgets)
@@ -546,9 +548,11 @@ void grid::mouseover_delegate(int selection)
 const_widget_ptr grid::get_widget_by_id(const std::string& id) const
 {
 	foreach(widget_ptr w, cells_) {
-		widget_ptr wx = w->get_widget_by_id(id);
-		if(wx) {
-			return wx;
+		if(w) {
+			widget_ptr wx = w->get_widget_by_id(id);
+			if(wx) {
+				return wx;
+			}
 		}
 	}
 	return widget::get_widget_by_id(id);
@@ -557,9 +561,11 @@ const_widget_ptr grid::get_widget_by_id(const std::string& id) const
 widget_ptr grid::get_widget_by_id(const std::string& id)
 {
 	foreach(widget_ptr w, cells_) {
-		widget_ptr wx = w->get_widget_by_id(id);
-		if(wx) {
-			return wx;
+		if(w) {
+			widget_ptr wx = w->get_widget_by_id(id);
+			if(wx) {
+				return wx;
+			}
 		}
 	}
 	return widget::get_widget_by_id(id);
@@ -575,13 +581,14 @@ void grid::set_value(const std::string& key, const variant& v)
 		add_col(widget_factory::create(v, get_environment()))
 			.finish_row();
 		recalculate_dimensions();
-	}
-	gui::widget_ptr w = get_widget_by_id(key);
-	if(v.is_null() && w != NULL) {
-		cells_.erase(std::remove(cells_.begin(), cells_.end(), w), cells_.end());
-		recalculate_dimensions();
 	} else {
-		widget::set_value(key, v);
+		gui::widget_ptr w = get_widget_by_id(key);
+		if(v.is_null() && w != NULL) {
+			cells_.erase(std::remove(cells_.begin(), cells_.end(), w), cells_.end());
+			recalculate_dimensions();
+		} else {
+			widget::set_value(key, v);
+		}
 	}
 }
 

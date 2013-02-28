@@ -371,9 +371,11 @@ bool dialog::has_focus() const
 widget_ptr dialog::get_widget_by_id(const std::string& id)
 {
 	foreach(widget_ptr w, widgets_) {
-		widget_ptr wx = w->get_widget_by_id(id);
-		if(wx) {
-			return wx;
+		if(w) {
+			widget_ptr wx = w->get_widget_by_id(id);
+			if(wx) {
+				return wx;
+			}
 		}
 	}
 	return widget::get_widget_by_id(id);
@@ -382,9 +384,11 @@ widget_ptr dialog::get_widget_by_id(const std::string& id)
 const_widget_ptr dialog::get_widget_by_id(const std::string& id) const
 {
 	foreach(widget_ptr w, widgets_) {
-		widget_ptr wx = w->get_widget_by_id(id);
-		if(wx) {
-			return wx;
+		if(w) {
+			widget_ptr wx = w->get_widget_by_id(id);
+			if(wx) {
+				return wx;
+			}
 		}
 	}
 	return widget::get_widget_by_id(id);
