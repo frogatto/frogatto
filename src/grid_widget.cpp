@@ -410,6 +410,37 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 		}
 	}
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	if(!claimed && event.type == SDL_MOUSEWHEEL) {
+		int mx, my;
+		SDL_GetMouseState(&mx, &my);
+		point p(mx, my);
+		rect r(x(), y(), width(), height());
+		if(point_in_rect(p, r)) {
+			if(event.wheel.y > 0) {
+				set_yscroll(yscroll() - 3*row_height_ < 0 ? 0 : yscroll() - 3*row_height_);
+				if(allow_selection_) {
+					selected_row_ -= 3;
+					if(selected_row_ < 0) {
+						selected_row_ = 0;
+					}
+				}
+			} else {
+				int y3 = yscroll() + 3*row_height_;
+				set_yscroll(virtual_height() - y3 < height() 
+					? virtual_height() - height()
+					: y3);
+				if(allow_selection_) {
+					selected_row_ += 3;
+					if(selected_row_ >= nrows()) {
+						selected_row_ = nrows() - 1;
+					}
+				}
+			}
+			claimed = true;
+		}
+	}
+#endif
 	if(!claimed && allow_selection_) {
 		if(event.type == SDL_MOUSEMOTION) {
 			const SDL_MouseMotionEvent& e = event.motion;
@@ -420,32 +451,6 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 					on_mouseover_(new_row);
 				}
 			}
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-		} else if(event.type == SDL_MOUSEWHEEL) {
-			int mx, my;
-			SDL_GetMouseState(&mx, &my);
-			point p(mx, my);
-			rect r(x(), y(), width(), height());
-			if(point_in_rect(p, r)) {
-				if(event.wheel.y < 0) {
-					set_yscroll(yscroll() - 3*row_height_ < 0 ? 0 : yscroll() - 3*row_height_);
-					selected_row_ -= 3;
-					if(selected_row_ < 0) {
-						selected_row_ = 0;
-					}
-				} else {
-					int y3 = yscroll() + 3*row_height_;
-					set_yscroll(virtual_height() - y3 < height() 
-						? virtual_height() - height()
-						: y3);
-					selected_row_ += 3;
-					if(selected_row_ >= nrows()) {
-						selected_row_ = nrows() - 1;
-					}
-				}
-				claimed = true;
-			}
-#endif
 		} else if(event.type == SDL_MOUSEBUTTONDOWN) {
 			point p(event.button.x, event.button.y);
 			rect r(x(), y(), width(), height());

@@ -2206,13 +2206,21 @@ FUNCTION_DEF(write_document, 2, 2, "write_document(string filename, doc): writes
 	const std::string docname = args()[0]->evaluate(variables).as_string();
 	variant doc = args()[1]->evaluate(variables);
 
-	ASSERT_LOG(docname.empty() == false, "DOCUMENT NAME GIVEN TO write_document() IS EMPTY");
-	ASSERT_LOG(docname[0] != '/', "DOCUMENT NAME BEGINS WITH / " << docname);
-	ASSERT_LOG(std::adjacent_find(docname.begin(), docname.end(), consecutive_periods) == docname.end(), "DOCUMENT NAME CONTAINS ADJACENT PERIODS " << docname);
+	std::string rel_path = sys::compute_relative_path(preferences::user_data_path(), docname);
 
+	if(docname.empty()) {
+		return variant("DOCUMENT NAME GIVEN TO write_document() IS EMPTY");
+	}
+	if(sys::is_path_absolute(docname)) {
+		return variant(formatter() << "DOCUMENT NAME IS ABSOLUTE PATH " << docname);
+	}
+	if(std::adjacent_find(rel_path.begin(), rel_path.end(), consecutive_periods) != rel_path.end()) {
+		return variant(formatter() << "RELATIVE PATH OUTSIDE ALLOWED " << docname << " : " << rel_path);
+	}
 	get_doc_cache()[docname] = doc;
 
 	sys::write_file(docname, doc.write_json());
+	return variant();
 END_FUNCTION_DEF(write_document)
 
 FUNCTION_DEF(get_document, 1, 1, "get_document(string filename): return reference to the given JSON document")

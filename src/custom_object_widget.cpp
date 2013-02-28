@@ -2,9 +2,14 @@
 
 #include "custom_object_widget.hpp"
 #include "level.hpp"
+#include "widget_factory.hpp"
 
 namespace gui
 {
+	namespace {
+		int do_commands_on_process = 0;
+	}
+
 	custom_object_widget::custom_object_widget(const variant& v, game_logic::formula_callable* e)
 		: widget(v, e)
 	{
@@ -20,6 +25,7 @@ namespace gui
 	void custom_object_widget::init(const variant& v)
 	{
 		entity_.reset();
+		handle_process_on_entity_ = v["handle_process"].as_bool(false);
 		if(v["object"].is_string()) {
 			// type name, has obj_x, obj_y, facing			
 			entity_ = entity_ptr(new custom_object(v["object"].as_string(), v["obj_x"].as_int(0), v["obj_y"].as_int(0), v["facing"].as_int(0)));
@@ -41,29 +47,41 @@ namespace gui
 				entity_->mutate_value(keys[n].as_string(), value);
 			}
 		}
+		if(v.has_key("commands")) {
+			do_commands_on_process = 10;
+			commands_handler_ = entity_->create_formula(v["commands"]);
+			using namespace game_logic;
+			map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(entity_.get()));
+			callable->add("id", variant(id()));
+			variant value = commands_handler_->execute(*callable);
+			entity_->execute_command(value);
+		}
 		if(v.has_key("on_click")) {
 			click_handler_ = get_environment()->create_formula(v["on_click"]);
-			on_click_ = boost::bind(&custom_object_widget::click, this);
+			on_click_ = boost::bind(&custom_object_widget::click, this, _1);
 		}
 		if(v.has_key("on_mouse_enter")) {
 			mouse_enter_handler_ = get_environment()->create_formula(v["on_mouse_enter"]);
-			on_mouse_enter_ = boost::bind(&custom_object_widget::click, this);
+			on_mouse_enter_ = boost::bind(&custom_object_widget::mouse_enter, this);
 		}
 		if(v.has_key("on_mouse_leave")) {
 			mouse_leave_handler_ = get_environment()->create_formula(v["on_mouse_leave"]);
 			on_mouse_leave_ = boost::bind(&custom_object_widget::mouse_leave, this);
 		}
+		if(v.has_key("overlay") && v["overlay"].is_null() == false) {
+			overlay_ = widget_factory::create(v["overlay"], get_environment());
+		}
 		set_dim(entity_->current_frame().width(), entity_->current_frame().height());
-		handle_process_on_entity_ = v["handle_process"].as_bool(false);
 	}
 
-	void custom_object_widget::click()
+	void custom_object_widget::click(int button)
 	{
 		using namespace game_logic;
 		if(get_environment()) {
 			map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
 			callable->add("id", variant(id()));
 			callable->add("object", variant(entity_.get()));
+			callable->add("mouse_button", variant(button));
 			variant value = click_handler_->execute(*callable);
 			get_environment()->execute_command(value);
 		} else {
@@ -121,6 +139,8 @@ namespace gui
 			m[variant("object")] = value;
 			init(variant(&m));
 			return;
+		} else if(key == "overlay") {
+			overlay_ = widget_factory::create(value, get_environment());
 		}
 		widget::set_value(key, value);
 	}
@@ -131,6 +151,8 @@ namespace gui
 			return variant(entity_.get());
 		} else if(key == "handle_process") {
 			return variant::from_bool(handle_process_on_entity_);
+		} else if(key == "overlay") {
+			return variant(overlay_.get());
 		}
 		return widget::get_value(key);
 	}
@@ -144,6 +166,10 @@ namespace gui
 			entity_->draw(x(), y());
 			entity_->draw_later(x(), y());
 			glPopMatrix();
+		}
+		if(overlay_) {
+			overlay_->set_loc(x() + width()/2 - overlay_->width()/2, y() + height()/2 - overlay_->height()/2);
+			overlay_->draw();
 		}
 	}
 
@@ -183,7 +209,7 @@ namespace gui
 			const SDL_MouseButtonEvent& e = event.button;
 			if(in_widget(e.x,e.y)) {
 				if(on_click_) {
-					on_click_();
+					on_click_(event.button.button);
 				}
 				claimed = true;
 			}
@@ -203,6 +229,15 @@ namespace gui
 			custom_object* obj = static_cast<custom_object*>(entity_.get());
 			obj->process(level::current());
 		}
+
+		if(overlay_) {
+			overlay_->process();
+		}
+
+//		if(do_commands_on_process && --do_commands_on_process == 0) {
+//			variant value = commands_handler_->execute();
+//			entity_->execute_command(value);
+//		}
 	}
 
 }

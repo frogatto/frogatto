@@ -139,6 +139,13 @@ bool scrollbar_widget::handle_event(const SDL_Event& event, bool claimed)
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 	if(event.type == SDL_MOUSEWHEEL) {
+		int mx, my;
+		SDL_GetMouseState(&mx, &my);
+		if(mx < x() || mx > x() + width() 
+			|| my < y() || my > y() + height()) {
+			return claimed;
+		}
+
 		const int start_pos = window_pos_;
 		if(event.wheel.y > 0) {
 			window_pos_ -= 3 * step_;
