@@ -57,6 +57,7 @@ public:
 
 	void process();
 	bool handle_event(const SDL_Event& event, bool swallowed);
+	void handle_scrolling();
 
 	int xpos() const { return xpos_; }
 	int ypos() const { return ypos_; }

@@ -1410,7 +1410,7 @@ bool level_runner::play_cycle()
 #ifndef NO_EDITOR
 			const int xpos = editor_->xpos();
 			const int ypos = editor_->ypos();
-			//editor_->handle_scrolling();
+			editor_->handle_scrolling();
 			last_draw_position().x += (editor_->xpos() - xpos)*100;
 			last_draw_position().y += (editor_->ypos() - ypos)*100;
 
