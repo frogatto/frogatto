@@ -850,9 +850,7 @@ private:
 		variant right = right_->evaluate(variables);
 		switch(op_) {
 			case OP_IN:
-				if(!right.is_list()) {
-					return variant();
-				} else {
+				if(right.is_list()) {
 					for(int n = 0; n != right.num_elements(); ++n) {
 						if(left == right[n]) {
 							return variant(1);
@@ -860,6 +858,10 @@ private:
 					}
 					
 					return variant(0);
+				} else if(right.is_map()) {
+					return variant(right.has_key(left) ? 1 : 0);
+				} else {
+					return variant();
 				}
 			case OP_AND: 
 				return left.as_bool() == false ? left : right;
