@@ -1,3 +1,5 @@
+#include <boost/bind.hpp>
+
 #include "custom_object_widget.hpp"
 #include "level.hpp"
 
@@ -39,7 +41,50 @@ namespace gui
 				entity_->mutate_value(keys[n].as_string(), value);
 			}
 		}
+		if(v.has_key("on_click")) {
+			click_handler_ = get_environment()->create_formula(v["on_click"]);
+			on_click_ = boost::bind(&custom_object_widget::click, this);
+		}
+		if(v.has_key("on_mouse_enter")) {
+			mouse_enter_handler_ = get_environment()->create_formula(v["on_mouse_enter"]);
+			on_mouse_enter_ = boost::bind(&custom_object_widget::click, this);
+		}
+		if(v.has_key("on_mouse_leave")) {
+			mouse_leave_handler_ = get_environment()->create_formula(v["on_mouse_leave"]);
+			on_mouse_leave_ = boost::bind(&custom_object_widget::mouse_leave, this);
+		}
+		set_dim(entity_->current_frame().width(), entity_->current_frame().height());
 		handle_process_on_entity_ = v["handle_process"].as_bool(false);
+	}
+
+	void custom_object_widget::click()
+	{
+		if(get_environment()) {
+			variant value = click_handler_->execute(*get_environment());
+			get_environment()->execute_command(value);
+		} else {
+			std::cerr << "custom_object_widget::click() called without environment!" << std::endl;
+		}
+	}
+
+	void custom_object_widget::mouse_enter()
+	{
+		if(get_environment()) {
+			variant value = mouse_enter_handler_->execute(*get_environment());
+			get_environment()->execute_command(value);
+		} else {
+			std::cerr << "custom_object_widget::mouse_enter() called without environment!" << std::endl;
+		}
+	}
+
+	void custom_object_widget::mouse_leave()
+	{
+		if(get_environment()) {
+			variant value = mouse_leave_handler_->execute(*get_environment());
+			get_environment()->execute_command(value);
+		} else {
+			std::cerr << "custom_object_widget::mouse_leave() called without environment!" << std::endl;
+		}
 	}
 
 	void custom_object_widget::set_entity(entity_ptr e)
@@ -72,6 +117,8 @@ namespace gui
 	{
 		if(key == "object") {
 			return variant(entity_.get());
+		} else if(key == "handle_process") {
+			return variant::from_bool(handle_process_on_entity_);
 		}
 		return widget::get_value(key);
 	}
@@ -90,6 +137,46 @@ namespace gui
 
 	bool custom_object_widget::handle_event(const SDL_Event& event, bool claimed)
 	{
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		if((event.type == SDL_MOUSEWHEEL) 
+#else
+		if((event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEBUTTONUP) 
+			&& (event.button.button == SDL_BUTTON_WHEELUP || event.button.button == SDL_BUTTON_WHEELDOWN)
+#endif
+			&& in_widget(event.button.x, event.button.y)) {
+			// skip processing if mousewheel event
+			if(entity_) {
+				custom_object* obj = static_cast<custom_object*>(entity_.get());
+				return obj->handle_sdl_event(event, claimed);
+			}
+		}
+
+		if(event.type == SDL_MOUSEMOTION) {
+			const SDL_MouseMotionEvent& e = event.motion;
+			if(in_widget(e.x,e.y)) {
+				if(on_mouse_enter_) {
+					on_mouse_enter_();
+				}
+			} else {
+				if(on_mouse_leave_) {
+					on_mouse_leave_();
+				}
+			}
+		} else if(event.type == SDL_MOUSEBUTTONDOWN) {
+			const SDL_MouseButtonEvent& e = event.button;
+			if(in_widget(e.x,e.y)) {
+				claimed = true;
+			}
+		} else if(event.type == SDL_MOUSEBUTTONUP) {
+			const SDL_MouseButtonEvent& e = event.button;
+			if(in_widget(e.x,e.y)) {
+				if(on_click_) {
+					on_click_();
+				}
+				claimed = true;
+			}
+		}
+
 		if(entity_) {
 			custom_object* obj = static_cast<custom_object*>(entity_.get());
 			return obj->handle_sdl_event(event, claimed);
