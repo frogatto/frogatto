@@ -63,6 +63,7 @@ namespace gui
 		if(get_environment()) {
 			map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
 			callable->add("id", variant(id()));
+			callable->add("object", variant(entity_.get()));
 			variant value = click_handler_->execute(*callable);
 			get_environment()->execute_command(value);
 		} else {
@@ -76,6 +77,7 @@ namespace gui
 		if(get_environment()) {
 			map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
 			callable->add("id", variant(id()));
+			callable->add("object", variant(entity_.get()));
 			variant value = click_handler_->execute(*callable);
 			get_environment()->execute_command(value);
 		} else {
@@ -89,6 +91,7 @@ namespace gui
 		if(get_environment()) {
 			map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
 			callable->add("id", variant(id()));
+			callable->add("object", variant(entity_.get()));
 			variant value = click_handler_->execute(*callable);
 			get_environment()->execute_command(value);
 		} else {
