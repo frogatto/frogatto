@@ -243,6 +243,7 @@ void grid::reset_contents(const variant& v)
 	if(v.is_null()) {
 		return;
 	}
+	bool check_end = false;
 	foreach(const variant& row, v.as_list()) {
 		if(row.is_list()) {
 			foreach(const variant& col, row.as_list()) {
@@ -252,7 +253,11 @@ void grid::reset_contents(const variant& v)
 		} else {
 			add_col(widget_factory::create(row,get_environment()));
 				//.finish_row();
+			check_end = true;
 		}
+	}
+	if(check_end && v.num_elements() % ncols_) {
+		finish_row();
 	}
 }
 
