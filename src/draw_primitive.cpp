@@ -7,6 +7,7 @@
 #include "asserts.hpp"
 #include "color_utils.hpp"
 #include "draw_primitive.hpp"
+#include "foreach.hpp"
 #include "geometry.hpp"
 
 namespace graphics
@@ -174,6 +175,17 @@ void arrow_primitive::handle_draw() const
 
 variant arrow_primitive::get_value(const std::string& key) const
 {
+	if(key == "points") {
+		std::vector<variant> result;
+		foreach(const FPoint& p, points_) {
+			std::vector<variant> pos;
+			pos.push_back(variant(static_cast<int>(p[0])));
+			pos.push_back(variant(static_cast<int>(p[1])));
+			result.push_back(variant(&pos));
+		}
+
+		return variant(&result);
+	}
 	ASSERT_LOG(false, "ILLEGAL KEY IN ARROW: " << key);
 	return variant();
 }
@@ -208,9 +220,11 @@ void arrow_primitive::set_points(const variant& points)
 {
 	ASSERT_LOG(points.is_list(), "arrow points is not a list: " << points.debug_location());
 
+	points_.clear();
+
 	for(int n = 0; n != points.num_elements(); ++n) {
 		variant p = points[n];
-		ASSERT_LOG(p.is_list() && p.num_elements() == 2, "arrow points in invalid format: " << points.debug_location());
+		ASSERT_LOG(p.is_list() && p.num_elements() == 2, "arrow points in invalid format: " << points.debug_location() << " : " << p.write_json());
 		FPoint point;
 		point[0] = p[0].as_int();
 		point[1] = p[1].as_int();

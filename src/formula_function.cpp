@@ -2195,13 +2195,30 @@ namespace {
 bool consecutive_periods(char a, char b) {
 	return a == '.' && b == '.';
 }
+
+std::map<std::string, variant>& get_doc_cache() {
+	static std::map<std::string, variant> cache;
+	return cache;
 }
+}
+
+FUNCTION_DEF(write_document, 2, 2, "write_document(string filename, doc): writes 'doc' to the given filename")
+	const std::string docname = args()[0]->evaluate(variables).as_string();
+	variant doc = args()[1]->evaluate(variables);
+
+	ASSERT_LOG(docname.empty() == false, "DOCUMENT NAME GIVEN TO write_document() IS EMPTY");
+	ASSERT_LOG(docname[0] != '/', "DOCUMENT NAME BEGINS WITH / " << docname);
+	ASSERT_LOG(std::adjacent_find(docname.begin(), docname.end(), consecutive_periods) == docname.end(), "DOCUMENT NAME CONTAINS ADJACENT PERIODS " << docname);
+
+	get_doc_cache()[docname] = doc;
+
+	sys::write_file(docname, doc.write_json());
+END_FUNCTION_DEF(write_document)
 
 FUNCTION_DEF(get_document, 1, 1, "get_document(string filename): return reference to the given JSON document")
 	const std::string docname = args()[0]->evaluate(variables).as_string();
 
-	static std::map<std::string, variant> cache;
-	variant& v = cache[docname];
+	variant& v = get_doc_cache()[docname];
 	if(v.is_null() == false) {
 		return v;
 	}
