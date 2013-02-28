@@ -59,8 +59,11 @@ namespace gui
 
 	void custom_object_widget::click()
 	{
+		using namespace game_logic;
 		if(get_environment()) {
-			variant value = click_handler_->execute(*get_environment());
+			map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
+			callable->add("id", variant(id()));
+			variant value = click_handler_->execute(*callable);
 			get_environment()->execute_command(value);
 		} else {
 			std::cerr << "custom_object_widget::click() called without environment!" << std::endl;
@@ -69,8 +72,11 @@ namespace gui
 
 	void custom_object_widget::mouse_enter()
 	{
+		using namespace game_logic;
 		if(get_environment()) {
-			variant value = mouse_enter_handler_->execute(*get_environment());
+			map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
+			callable->add("id", variant(id()));
+			variant value = click_handler_->execute(*callable);
 			get_environment()->execute_command(value);
 		} else {
 			std::cerr << "custom_object_widget::mouse_enter() called without environment!" << std::endl;
@@ -79,8 +85,11 @@ namespace gui
 
 	void custom_object_widget::mouse_leave()
 	{
+		using namespace game_logic;
 		if(get_environment()) {
-			variant value = mouse_leave_handler_->execute(*get_environment());
+			map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
+			callable->add("id", variant(id()));
+			variant value = click_handler_->execute(*callable);
 			get_environment()->execute_command(value);
 		} else {
 			std::cerr << "custom_object_widget::mouse_leave() called without environment!" << std::endl;
