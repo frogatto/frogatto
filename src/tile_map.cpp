@@ -696,7 +696,9 @@ void tile_map::flip_variation(int x, int y, int delta)
 
 void tile_map::prepare_for_copy_to_worker_thread()
 {
+#ifndef NO_EDITOR
 	node_ = variant();
+#endif
 }
 
 namespace {

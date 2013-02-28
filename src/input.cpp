@@ -30,14 +30,14 @@ namespace input {
                 SDL_PushEvent(&event);
                 break;
                 
-#if defined(__ANDROID__)
+#if defined(__ANDROID__) && !SDL_VERSION_ATLEAST(2, 0, 0)
             case SDL_VIDEORESIZE: 
                 // Allow restore from app going to the background on android, while a modal dialog is up.
                 video_resize( event ); 
                 break;
 #endif
 
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE || (defined(__ANDROID__) && SDL_VERSION_ATLEAST(2, 0, 0))
 				case SDL_WINDOWEVENT:
 				if (event.window.event == SDL_WINDOWEVENT_MINIMIZED)
 				{

@@ -5,6 +5,10 @@
 #include "texture.hpp"
 #include "texture_frame_buffer.hpp"
 
+#if defined(__ANDROID__)
+#include <GLES/glext.h>
+#endif
+
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 #include <EGL/egl.h>
 #define glGenFramebuffersOES        preferences::glGenFramebuffersOES
@@ -45,7 +49,7 @@ void init_internal(int buffer_width, int buffer_height)
 	frame_buffer_texture_width = buffer_width;
 	frame_buffer_texture_height = buffer_height;
 
-#if /*defined(__ANDROID__) ||*/ defined(__native_client__)
+#if defined(__native_client__)
 	{
 		supported = false;
 		LOG("FRAME BUFFER OBJECT NOT SUPPORTED");

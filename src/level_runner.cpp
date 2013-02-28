@@ -423,7 +423,7 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 
 	switch(event.type)
 	{
-#if defined(__ANDROID__)
+#if defined(__ANDROID__) && !SDL_VERSION_ATLEAST(2, 0, 0)
 		case SDL_JOYBUTTONDOWN:
 		case SDL_JOYBUTTONUP:
 		case SDL_JOYBALLMOTION:
@@ -1137,7 +1137,7 @@ bool level_runner::play_cycle()
 #if !SDL_VERSION_ATLEAST(2, 0, 0)
 			case SDL_VIDEORESIZE: video_resize(event); video_resize_event(event); continue;
 #endif
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE || (defined(__ANDROID__) && SDL_VERSION_ATLEAST(2, 0, 0))
 			// make sure nothing happens while the app is supposed to be "inactive"
 			case SDL_WINDOWEVENT:
 				if (event.window.event == SDL_WINDOWEVENT_MINIMIZED)
@@ -1184,7 +1184,7 @@ bool level_runner::play_cycle()
 					should_pause = true;
 				}
 			break;
-#elif defined(__ANDROID__)
+#elif defined(__ANDROID__) && !SDL_VERSION_ATLEAST(2, 0, 0)
 			// make sure nothing happens while the app is supposed to be "inactive"
 			case SDL_ACTIVEEVENT:
 				if (event.active.state & SDL_APPACTIVE && !event.active.gain)

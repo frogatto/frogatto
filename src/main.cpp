@@ -353,7 +353,7 @@ extern "C" int main(int argcount, char** argvec)
 	std::string profile_output_buf;
 
 #if defined(__ANDROID__)
-	monstartup("libapplication.so");
+	//monstartup("libapplication.so");
 #endif
 
 	std::string orig_level_cfg = level_cfg;
@@ -690,6 +690,26 @@ extern "C" int main(int argcount, char** argvec)
 	}
 	preferences::init_oes();
 #elif defined(__ANDROID__)
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	int num_video_displays = SDL_GetNumVideoDisplays();
+	SDL_Rect r;
+	if(num_video_displays < 0) {
+		std::cerr << "no video displays available" << std::endl;
+		return -1;
+	}
+	if(SDL_GetDisplayBounds(0, &r) < 0) {
+        preferences::set_actual_screen_width(r.w);
+        preferences::set_actual_screen_height(r.h);
+		if(r.w < 640) {
+        	preferences::set_virtual_screen_width(r.w*2);
+        	preferences::set_virtual_screen_height(r.h*2);
+		} else {
+			preferences::set_virtual_screen_width(r.w);
+			preferences::set_virtual_screen_height(r.h);
+		}
+		preferences::set_control_scheme(r.h >= 1024 ? "ipad_2d" : "android_med");
+    }
+#else
     SDL_Rect** r = SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_OPENGL);
     if( r != (SDL_Rect**)0 && r != (SDL_Rect**)-1 ) {
         preferences::set_actual_screen_width(r[0]->w);
@@ -703,8 +723,13 @@ extern "C" int main(int argcount, char** argvec)
 		}
 		preferences::set_control_scheme(r[0]->h >= 1024 ? "ipad_2d" : "android_med");
     }
+#endif
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	if(!graphics::set_video_mode(preferences::actual_screen_width(), preferences::actual_screen_height())) {
+#else
     if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_FULLSCREEN|SDL_OPENGL) == NULL) {
+#endif
 		std::cerr << "could not set video mode\n";
 		return -1;
     }

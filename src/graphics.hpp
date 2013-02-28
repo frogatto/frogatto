@@ -10,7 +10,9 @@
 #include "SDL_thread.h"
 
 #if defined(__ANDROID__)
+#if !SDL_VERSION_ATLEAST(2, 0, 0)
 #include "SDL_screenkeyboard.h"
+#endif
 #endif
 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_HARMATTAN && !TARGET_OS_IPHONE
