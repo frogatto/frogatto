@@ -14,6 +14,7 @@
    
 #include <boost/bind.hpp>
 #include <boost/uuid/sha1.hpp>
+#include <boost/algorithm/string.hpp>
 #include <iomanip>
 #include <iostream>
 #include <iomanip>
@@ -2689,6 +2690,12 @@ FUNCTION_DEF(seed_rng, 0, 0, "seed_rng() -> none: Seeds the peudo-RNG used.")
 	::srand(::time(NULL));
 	return variant();
 END_FUNCTION_DEF(seed_rng)
+
+FUNCTION_DEF(lower, 1, 1, "lower(s) -> string: lowercase version of string")
+	std::string s = args()[0]->evaluate(variables).as_string();
+	boost::algorithm::to_lower(s);
+	return variant(s);
+END_FUNCTION_DEF(lower)
 
 
 class console_output_to_screen_command : public game_logic::command_callable
