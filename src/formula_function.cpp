@@ -2223,22 +2223,47 @@ FUNCTION_DEF(write_document, 2, 2, "write_document(string filename, doc): writes
 	return variant();
 END_FUNCTION_DEF(write_document)
 
-FUNCTION_DEF(get_document, 1, 1, "get_document(string filename): return reference to the given JSON document")
-	const std::string docname = args()[0]->evaluate(variables).as_string();
+FUNCTION_DEF(get_document, 1, 2, "get_document(string filename, list_of_strings flags): return reference to the given JSON document. flags can contain 'null_on_failure' and 'user_preferences_dir'")
+	std::string docname = args()[0]->evaluate(variables).as_string();
+
+	bool allow_failure = false;
+	bool prefs_directory = false;
+
+	if(args().size() > 1) {
+		const variant flags = args()[1]->evaluate(variables);
+		for(int n = 0; n != flags.num_elements(); ++n) {
+			const std::string& flag = flags[n].as_string();
+			if(flag == "null_on_failure") {
+				allow_failure = true;
+			} else if(flag == "user_preferences_dir") {
+				prefs_directory = true;
+			} else {
+				ASSERT_LOG(false, "illegal flag given to get_document: " << flag);
+			}
+		}
+	}
 
 	variant& v = get_doc_cache()[docname];
 	if(v.is_null() == false) {
 		return v;
 	}
 
+	if(prefs_directory) {
+		docname = sys::compute_relative_path(preferences::user_data_path(), docname);
+	}
+
 	ASSERT_LOG(docname.empty() == false, "DOCUMENT NAME GIVEN TO get_document() IS EMPTY");
-	ASSERT_LOG(docname[0] != '/', "DOCUMENT NAME BEGINS WITH / " << docname);
+	ASSERT_LOG(!sys::is_path_absolute(docname), "DOCUMENT NAME USES AN ABSOLUTE PATH WHICH IS NOT ALLOWED: " << docname);
 	ASSERT_LOG(std::adjacent_find(docname.begin(), docname.end(), consecutive_periods) == docname.end(), "DOCUMENT NAME CONTAINS ADJACENT PERIODS " << docname);
 
 	try {
 		const variant v = json::parse_from_file(docname);
 		return v;
 	} catch(json::parse_error& e) {
+		if(allow_failure) {
+			return variant();
+		}
+
 		ASSERT_LOG(false, "COULD NOT LOAD DOCUMENT: " << e.error_message());
 		return variant();
 	}
