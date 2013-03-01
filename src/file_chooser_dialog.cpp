@@ -23,6 +23,7 @@
 #include "grid_widget.hpp"
 #include "label.hpp"
 #include "module.hpp"
+#include "preferences.hpp"
 #include "raster.hpp"
 #include "text_editor_widget.hpp"
 #include "unit_test.hpp"
@@ -100,6 +101,30 @@ file_chooser_dialog::file_chooser_dialog(int x, int y, int w, int h, const filte
 
 	init();
 }
+
+file_chooser_dialog::file_chooser_dialog(variant v, game_logic::formula_callable* e)
+	: dialog(v, e),  widget(v, e), filter_selection_(0), file_open_dialog_(v["open_dialog"].as_bool(true)), 
+	use_relative_paths_(v["use_relative_paths"].as_bool(false))
+{
+	if(v.has_key("filters")) {
+		ASSERT_LOG(v["filters"].is_list(), "Expected filters parameter to be a list");
+		for(size_t n = 0; n != v["filters"].num_elements(); ++n) {
+			ASSERT_LOG(v["filters"][n].is_list() && v["filters"][n].num_elements() == 2, 
+				"Expected inner filter parameter to be a two element list");
+			filters_.push_back(filter_pair(v["filters"][n][0].as_string(), v["filters"][n][1].as_string()));
+		}
+	}
+	relative_path_ = sys::get_absolute_path(preferences::user_data_path());
+	set_default_path(preferences::user_data_path());
+
+	editor_ = new text_editor_widget(400, 32);
+	editor_->set_font_size(16);
+	//file_text->set_on_change_handler(boost::bind(&file_chooser_dialog::change_text_attribute, this, change_entry, attr));
+	editor_->set_on_enter_handler(boost::bind(&file_chooser_dialog::text_enter, this, editor_));
+	editor_->set_on_tab_handler(boost::bind(&file_chooser_dialog::text_enter, this, editor_));
+	init();
+}
+
 
 void file_chooser_dialog::set_default_path(const std::string& path)
 {
@@ -404,6 +429,20 @@ void file_chooser_dialog::use_relative_paths(bool val, const std::string& rel_pa
 	if(editor_) {
 		editor_->set_text(get_path());
 	}
+}
+
+void file_chooser_dialog::set_value(const std::string& key, const variant& value)
+{
+	// XXX
+	dialog::set_value(key, value);
+}
+
+variant file_chooser_dialog::get_value(const std::string& key) const
+{
+	if(key == "relative_file_name") {
+		return variant(get_file_name());
+	}
+	return dialog::get_value(key);
 }
 
 }
