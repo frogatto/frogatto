@@ -2740,6 +2740,10 @@ FUNCTION_DEF(console_output_to_screen, 1, 1, "console_output_to_screen(bool) -> 
 	return variant(new console_output_to_screen_command(args()[0]->evaluate(variables).as_bool()));
 END_FUNCTION_DEF(console_output_to_screen)
 
+FUNCTION_DEF(user_preferences_path, 0, 0, "user_preferences_path() -> string: Returns the users preferences path")
+	return variant(preferences::user_data_path());
+END_FUNCTION_DEF(user_preferences_path)
+
 }
 
 UNIT_TEST(modulo_operation) {
