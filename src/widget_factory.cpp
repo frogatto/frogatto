@@ -14,6 +14,7 @@
 #include "custom_object_widget.hpp"
 #include "dialog.hpp"
 #include "drag_widget.hpp"
+#include "file_chooser_dialog.hpp"
 #include "graphical_font_label.hpp"
 #include "grid_widget.hpp"
 #include "image_widget.hpp"
@@ -93,6 +94,8 @@ widget_ptr create(const variant& v, game_logic::formula_callable* e)
 		return widget_ptr(new gui::custom_object_widget(v, e));
 	} else if(wtype == "bar") {
 		return widget_ptr(new gui::bar_widget(v, e));
+	} else if(wtype == "file_chooser") {
+		return widget_ptr(new gui::file_chooser_dialog(v, e));
 	//} else if(wtype == "scrollable") {
 	//} else if(wtype == "widget") {
 	} else {

@@ -27,6 +27,21 @@ namespace gui
 		bool handle_event(const SDL_Event& event, bool claimed);
 		virtual void handle_process();
 	private:
+		void click(int button);
+		void mouse_enter();
+		void mouse_leave();
+
+		boost::function<void (int)> on_click_;
+		game_logic::formula_ptr click_handler_;
+		boost::function<void ()> on_mouse_enter_;
+		game_logic::formula_ptr mouse_enter_handler_;
+		boost::function<void ()> on_mouse_leave_;
+		game_logic::formula_ptr mouse_leave_handler_;
+
+		game_logic::formula_ptr commands_handler_;
+
+		widget_ptr overlay_;
+
 		entity_ptr entity_;
 		bool handle_process_on_entity_;
 	};

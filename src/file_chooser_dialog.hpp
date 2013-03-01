@@ -22,7 +22,8 @@ class file_chooser_dialog : public virtual dialog
 {
 public:
 	file_chooser_dialog(int x, int y, int w, int h, const filter_list& filters=filter_list(), bool dir_only=false, const std::string& default_path=".");
-	std::string get_file_name() { return file_name_; }
+	file_chooser_dialog(variant value, game_logic::formula_callable* e);
+	std::string get_file_name() const { return file_name_; }
 	std::string get_path();
 	void set_saveas_dialog() { file_open_dialog_ = false; }
 	void set_open_dialog() { file_open_dialog_ = true; }
@@ -41,6 +42,8 @@ protected:
 	void execute_dir_name_select(int row);
 	void change_filter(int selection, const std::string& s);
 	void set_default_path(const std::string& path);
+	virtual void set_value(const std::string& key, const variant& v);
+	virtual variant get_value(const std::string& key) const;
 private:
 	std::string abs_default_path_;
 	std::string current_path_;

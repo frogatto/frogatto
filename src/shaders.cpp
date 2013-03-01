@@ -1124,7 +1124,7 @@ variant shader_program::get_value(const std::string& key) const
 	if(key == "vars") {
 		return variant(vars_.get());
 	} else if(key == "parent" || key == "object") {
-		ASSERT_LOG(parent_ != NULL, "Tried to request parent, when value is null");
+		ASSERT_LOG(parent_ != NULL, "Tried to request parent, when value is null: " << name());
 		return variant(parent_);
 	}
 	return program_object_->get_value(key);

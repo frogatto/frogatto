@@ -1622,6 +1622,77 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 	}
 }
 
+void editor::handle_scrolling()
+{
+	if(code_dialog_ && code_dialog_->has_keyboard_focus()) {
+		return;
+	}
+	const int ScrollSpeed = 24*zoom_;
+	const int FastScrollSpeed = 384*zoom_;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	const Uint8* keystate = SDL_GetKeyboardState(NULL);
+#else
+	const Uint8* keystate = SDL_GetKeyState(NULL); 
+#endif
+
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	if(keystate[SDL_SCANCODE_LEFT]) {
+#else
+	if(keystate[SDLK_LEFT]) {
+#endif
+		xpos_ -= ScrollSpeed;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		if(keystate[SDL_SCANCODE_KP_0]) {
+#else
+		if(keystate[SDLK_KP0]) {
+#endif
+			xpos_ -= FastScrollSpeed;
+		}
+	}
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	if(keystate[SDL_SCANCODE_RIGHT]) {
+#else
+	if(keystate[SDLK_RIGHT]) {
+#endif
+		xpos_ += ScrollSpeed;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		if(keystate[SDL_SCANCODE_KP_0]) {
+#else
+		if(keystate[SDLK_KP0]) {
+#endif
+			xpos_ += FastScrollSpeed;
+		}
+	}
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	if(keystate[SDL_SCANCODE_UP]) {
+#else
+	if(keystate[SDLK_UP]) {
+#endif
+		ypos_ -= ScrollSpeed;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		if(keystate[SDL_SCANCODE_KP_0]) {
+#else
+		if(keystate[SDLK_KP0]) {
+#endif
+			ypos_ -= FastScrollSpeed;
+		}
+	}
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	if(keystate[SDL_SCANCODE_DOWN]) {
+#else
+	if(keystate[SDLK_DOWN]) {
+#endif
+		ypos_ += ScrollSpeed;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		if(keystate[SDL_SCANCODE_KP_0]) {
+#else
+		if(keystate[SDLK_KP0]) {
+#endif
+			ypos_ += FastScrollSpeed;
+		}
+	}
+}
+
 void editor::reset_playing_level(bool keep_player)
 {
 	if(levels_.size() == 2 && lvl_ == levels_.back()) {

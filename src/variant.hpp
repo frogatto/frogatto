@@ -241,11 +241,14 @@ public:
 		debug_info() : filename(0), line(-1), column(-1), end_line(-1), end_column(-1)
 		{}
 		std::string message() const;
+
 		const std::string* filename;
 		int line, column;
 		int end_line, end_column;
 	};
 
+	const game_logic::formula_expression* get_source_expression() const;
+	void set_source_expression(const game_logic::formula_expression* expr);
 	void set_debug_info(const debug_info& info);
 	const debug_info* get_debug_info() const;
 	std::string debug_location() const;

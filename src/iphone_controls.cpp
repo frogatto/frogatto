@@ -154,7 +154,13 @@ void iphone_controls::read_controls()
 	}
 }
 
-#if defined(__ANDROID__)
+#if defined(__ANDROID__) 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+void iphone_controls::handle_event (const SDL_Event& event)
+{
+	// XXX
+}
+#else
 void iphone_controls::handle_event (const SDL_Event& event)
 {
 	int x = event.type == SDL_JOYBALLMOTION ? event.jball.xrel : event.jbutton.x;
@@ -177,7 +183,7 @@ void iphone_controls::handle_event (const SDL_Event& event)
 	all_mice[i].y = y;
 	all_mice[i].active = event.type != SDL_JOYBUTTONUP;
 }
-     
+#endif // defined(__ANDROID__)
 #elif defined(TARGET_OS_HARMATTAN) || defined(TARGET_BLACKBERRY)
 
 void iphone_controls::handle_event (const SDL_Event& event)

@@ -40,13 +40,17 @@
 #include <iomanip>
 #include <sstream>
 #include <set>
+#include <vector>
 
 #include <jni.h>
 #include "SDL.h"
+#if !SDL_VERSION_ATLEAST(2, 0, 0)
 #include "SDL_screenkeyboard.h"
+#endif
 #include <android/asset_manager_jni.h>
 #include <android/log.h>
 #include "SDL_rwops.h"
+#include "foreach.hpp"
 #include "preferences.hpp"
 
 #include <boost/algorithm/string.hpp>
@@ -281,6 +285,30 @@ bool file_exists(const std::string& name)
 	return do_file_exists(find_file(name));
 }
 
+void move_file(const std::string& from, const std::string& to)
+{
+	rename(from.c_str(), to.c_str());
+}
+
+void remove_file(const std::string& fname)
+{
+	unlink(fname.c_str());
+}
+
+void rmdir_recursive(const std::string& path)
+{
+	std::vector<std::string> files, dirs;
+	sys::get_files_in_dir(path, &files, &dirs, sys::ENTIRE_FILE_PATH);
+	foreach(const std::string& file, files) {
+		sys::remove_file(file);
+	}
+
+	foreach(const std::string& dir, dirs) {
+		rmdir_recursive(dir);
+	}
+
+	rmdir(path.c_str());
+}
 
 std::string read_file(const std::string& fname)
 {
@@ -338,8 +366,8 @@ void write_file(const std::string& fname, const std::string& data)
 	file << data;
 }
 
-#if SDL_VERSION_ATLEAST(1, 3, 0)
-static SDLCALL long aa_rw_seek(struct SDL_RWops* ops, long offset, int whence)
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+static SDLCALL Sint64 aa_rw_seek(struct SDL_RWops* ops, Sint64 offset, int whence)
 #else
 static SDLCALL int aa_rw_seek(struct SDL_RWops* ops, int offset, int whence)
 #endif
@@ -387,6 +415,11 @@ SDL_RWops* read_sdl_rw_from_asset(const std::string& name)
 	ops->seek = aa_rw_seek;
 	ops->close = aa_rw_close;
 	return ops;
+}
+
+void notify_on_file_modification(const std::string& path, boost::function<void()> handler)
+{
+	// XXX do nothing currently
 }
 
 }

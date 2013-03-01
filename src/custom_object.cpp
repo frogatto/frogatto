@@ -2280,6 +2280,11 @@ class widgets_callable : public formula_callable {
 			gui::widget_ptr w = obj_->get_widget_by_id(key);
 			ASSERT_LOG(w != NULL, "no widget with identifier " << key << " found");
 			obj_->remove_widget(w);
+		} else {
+			gui::widget_ptr w = obj_->get_widget_by_id(key);
+			ASSERT_LOG(w != NULL, "no widget with identifier " << key << " found");
+			obj_->remove_widget(w);
+			obj_->add_widget(widget_factory::create(value, obj_.get()));
 		}
 	}
 public:

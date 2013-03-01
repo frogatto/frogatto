@@ -14,6 +14,7 @@
    
 #include <boost/bind.hpp>
 #include <boost/uuid/sha1.hpp>
+#include <boost/algorithm/string.hpp>
 #include <iomanip>
 #include <iostream>
 #include <iomanip>
@@ -2194,25 +2195,75 @@ namespace {
 bool consecutive_periods(char a, char b) {
 	return a == '.' && b == '.';
 }
+
+std::map<std::string, variant>& get_doc_cache() {
+	static std::map<std::string, variant> cache;
+	return cache;
+}
 }
 
-FUNCTION_DEF(get_document, 1, 1, "get_document(string filename): return reference to the given JSON document")
+FUNCTION_DEF(write_document, 2, 2, "write_document(string filename, doc): writes 'doc' to the given filename")
 	const std::string docname = args()[0]->evaluate(variables).as_string();
+	variant doc = args()[1]->evaluate(variables);
 
-	static std::map<std::string, variant> cache;
-	variant& v = cache[docname];
+	std::string rel_path = sys::compute_relative_path(preferences::user_data_path(), docname);
+
+	if(docname.empty()) {
+		return variant("DOCUMENT NAME GIVEN TO write_document() IS EMPTY");
+	}
+	if(sys::is_path_absolute(docname)) {
+		return variant(formatter() << "DOCUMENT NAME IS ABSOLUTE PATH " << docname);
+	}
+	if(std::adjacent_find(rel_path.begin(), rel_path.end(), consecutive_periods) != rel_path.end()) {
+		return variant(formatter() << "RELATIVE PATH OUTSIDE ALLOWED " << docname << " : " << rel_path);
+	}
+	get_doc_cache()[docname] = doc;
+
+	sys::write_file(docname, doc.write_json());
+	return variant();
+END_FUNCTION_DEF(write_document)
+
+FUNCTION_DEF(get_document, 1, 2, "get_document(string filename, list_of_strings flags): return reference to the given JSON document. flags can contain 'null_on_failure' and 'user_preferences_dir'")
+	std::string docname = args()[0]->evaluate(variables).as_string();
+
+	bool allow_failure = false;
+	bool prefs_directory = false;
+
+	if(args().size() > 1) {
+		const variant flags = args()[1]->evaluate(variables);
+		for(int n = 0; n != flags.num_elements(); ++n) {
+			const std::string& flag = flags[n].as_string();
+			if(flag == "null_on_failure") {
+				allow_failure = true;
+			} else if(flag == "user_preferences_dir") {
+				prefs_directory = true;
+			} else {
+				ASSERT_LOG(false, "illegal flag given to get_document: " << flag);
+			}
+		}
+	}
+
+	variant& v = get_doc_cache()[docname];
 	if(v.is_null() == false) {
 		return v;
 	}
 
+	if(prefs_directory) {
+		docname = sys::compute_relative_path(preferences::user_data_path(), docname);
+	}
+
 	ASSERT_LOG(docname.empty() == false, "DOCUMENT NAME GIVEN TO get_document() IS EMPTY");
-	ASSERT_LOG(docname[0] != '/', "DOCUMENT NAME BEGINS WITH / " << docname);
+	ASSERT_LOG(!sys::is_path_absolute(docname), "DOCUMENT NAME USES AN ABSOLUTE PATH WHICH IS NOT ALLOWED: " << docname);
 	ASSERT_LOG(std::adjacent_find(docname.begin(), docname.end(), consecutive_periods) == docname.end(), "DOCUMENT NAME CONTAINS ADJACENT PERIODS " << docname);
 
 	try {
 		const variant v = json::parse_from_file(docname);
 		return v;
 	} catch(json::parse_error& e) {
+		if(allow_failure) {
+			return variant();
+		}
+
 		ASSERT_LOG(false, "COULD NOT LOAD DOCUMENT: " << e.error_message());
 		return variant();
 	}
@@ -2690,6 +2741,12 @@ FUNCTION_DEF(seed_rng, 0, 0, "seed_rng() -> none: Seeds the peudo-RNG used.")
 	return variant();
 END_FUNCTION_DEF(seed_rng)
 
+FUNCTION_DEF(lower, 1, 1, "lower(s) -> string: lowercase version of string")
+	std::string s = args()[0]->evaluate(variables).as_string();
+	boost::algorithm::to_lower(s);
+	return variant(s);
+END_FUNCTION_DEF(lower)
+
 
 class console_output_to_screen_command : public game_logic::command_callable
 {
@@ -2707,6 +2764,10 @@ FUNCTION_DEF(console_output_to_screen, 1, 1, "console_output_to_screen(bool) -> 
 	formula::fail_if_static_context();
 	return variant(new console_output_to_screen_command(args()[0]->evaluate(variables).as_bool()));
 END_FUNCTION_DEF(console_output_to_screen)
+
+FUNCTION_DEF(user_preferences_path, 0, 0, "user_preferences_path() -> string: Returns the users preferences path")
+	return variant(preferences::user_data_path());
+END_FUNCTION_DEF(user_preferences_path)
 
 }
 

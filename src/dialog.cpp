@@ -76,6 +76,7 @@ dialog::dialog(const variant& v, game_logic::formula_callable* e)
 	opened_(false), cancelled_(false), 
 	add_x_(0), add_y_(0), last_draw_(-1)
 {
+	forced_dimensions_ = rect(x(), y(), width(), height());
 	padding_ = v["padding"].as_int(10);
 	if(v.has_key("background_frame")) {
 		background_framed_gui_element_ = v["background_frame"].as_string();
@@ -95,7 +96,13 @@ dialog::dialog(const variant& v, game_logic::formula_callable* e)
 	}
 	if(v.has_key("on_quit")) {
 		on_quit_ = boost::bind(&dialog::quit_delegate, this);
+		ASSERT_LOG(get_environment() != NULL, "environment not set");
 		ffl_on_quit_ = get_environment()->create_formula(v["on_quit"]);
+	}
+	if(v.has_key("on_close")) {
+		on_close_ = boost::bind(&dialog::close_delegate, this, _1);
+		ASSERT_LOG(get_environment() != NULL, "environment not set");
+		ffl_on_close_ = get_environment()->create_formula(v["on_close"]);
 	}
 	std::vector<variant> children = v["children"].as_list();
 	foreach(const variant& child, children) {
@@ -109,7 +116,6 @@ dialog::dialog(const variant& v, game_logic::formula_callable* e)
 			add_widget(w);
 		}
 	}
-	forced_dimensions_ = rect(x(), y(), width(), height());
 	recalculate_dimensions();
 }
 
@@ -142,6 +148,19 @@ void dialog::quit_delegate()
 {
 	if(get_environment()) {
 		variant value = ffl_on_quit_->execute(*get_environment());
+		get_environment()->execute_command(value);
+	} else {
+		std::cerr << "dialog::quit_delegate() called without environment!" << std::endl;
+	}
+}
+
+void dialog::close_delegate(bool cancelled)
+{
+	using namespace game_logic;
+	if(get_environment()) {
+		map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
+		callable->add("cancelled", variant::from_bool(cancelled));
+		variant value = ffl_on_close_->execute(*callable);
 		get_environment()->execute_command(value);
 	} else {
 		std::cerr << "dialog::quit_delegate() called without environment!" << std::endl;
@@ -323,6 +342,15 @@ bool dialog::handle_event_children(const SDL_Event &event, bool claimed) {
     return input::listener_container::process_event(ev, claimed);
 }
 
+void dialog::close() 
+{ 
+	opened_ = false; 
+	if(on_close_) {
+		on_close_(cancelled_);
+	}
+}
+
+
 bool dialog::handle_event(const SDL_Event& ev, bool claimed)
 {
 
@@ -371,9 +399,11 @@ bool dialog::has_focus() const
 widget_ptr dialog::get_widget_by_id(const std::string& id)
 {
 	foreach(widget_ptr w, widgets_) {
-		widget_ptr wx = w->get_widget_by_id(id);
-		if(wx) {
-			return wx;
+		if(w) {
+			widget_ptr wx = w->get_widget_by_id(id);
+			if(wx) {
+				return wx;
+			}
 		}
 	}
 	return widget::get_widget_by_id(id);
@@ -382,9 +412,11 @@ widget_ptr dialog::get_widget_by_id(const std::string& id)
 const_widget_ptr dialog::get_widget_by_id(const std::string& id) const
 {
 	foreach(widget_ptr w, widgets_) {
-		widget_ptr wx = w->get_widget_by_id(id);
-		if(wx) {
-			return wx;
+		if(w) {
+			widget_ptr wx = w->get_widget_by_id(id);
+			if(wx) {
+				return wx;
+			}
 		}
 	}
 	return widget::get_widget_by_id(id);

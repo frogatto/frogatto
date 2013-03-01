@@ -44,7 +44,7 @@ public:
 	void clear();
 	int padding() const { return padding_; }
 	void set_padding(int pad) { padding_ = pad; }
-	void close() { opened_ = false; }
+	void close();
 	void cancel() { cancelled_ = true; close(); }
 
 	bool closed() { return !opened_; }
@@ -88,11 +88,14 @@ private:
 	bool cancelled_;
 	int clear_bg_;
 	
-	boost::function<void ()> on_quit_;
+	boost::function<void()> on_quit_;
+	boost::function<void(bool)> on_close_;
 
 	void quit_delegate();
+	void close_delegate(bool cancelled);
 
 	game_logic::formula_ptr ffl_on_quit_;
+	game_logic::formula_ptr ffl_on_close_;
 
 	//default padding between widgets
 	int padding_;

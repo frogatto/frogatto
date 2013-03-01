@@ -168,10 +168,12 @@ void grid::set_dim(int w, int h)
 
 void grid::handle_process()
 {
-	widget::handle_process();
     foreach(widget_ptr w, cells_) {
-		w->process();
+		if(w != NULL) {
+			w->process();
+		}
 	}
+	widget::handle_process();
 }
 
 void grid::add_row(const std::vector<widget_ptr>& widgets)
@@ -241,6 +243,7 @@ void grid::reset_contents(const variant& v)
 	if(v.is_null()) {
 		return;
 	}
+	bool check_end = false;
 	foreach(const variant& row, v.as_list()) {
 		if(row.is_list()) {
 			foreach(const variant& col, row.as_list()) {
@@ -250,7 +253,11 @@ void grid::reset_contents(const variant& v)
 		} else {
 			add_col(widget_factory::create(row,get_environment()));
 				//.finish_row();
+			check_end = true;
 		}
+	}
+	if(check_end && v.num_elements() % ncols_) {
+		finish_row();
 	}
 }
 
@@ -403,6 +410,37 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 		}
 	}
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	if(!claimed && event.type == SDL_MOUSEWHEEL) {
+		int mx, my;
+		SDL_GetMouseState(&mx, &my);
+		point p(mx, my);
+		rect r(x(), y(), width(), height());
+		if(point_in_rect(p, r)) {
+			if(event.wheel.y > 0) {
+				set_yscroll(yscroll() - 3*row_height_ < 0 ? 0 : yscroll() - 3*row_height_);
+				if(allow_selection_) {
+					selected_row_ -= 3;
+					if(selected_row_ < 0) {
+						selected_row_ = 0;
+					}
+				}
+			} else {
+				int y3 = yscroll() + 3*row_height_;
+				set_yscroll(virtual_height() - y3 < height() 
+					? virtual_height() - height()
+					: y3);
+				if(allow_selection_) {
+					selected_row_ += 3;
+					if(selected_row_ >= nrows()) {
+						selected_row_ = nrows() - 1;
+					}
+				}
+			}
+			claimed = true;
+		}
+	}
+#endif
 	if(!claimed && allow_selection_) {
 		if(event.type == SDL_MOUSEMOTION) {
 			const SDL_MouseMotionEvent& e = event.motion;
@@ -413,32 +451,6 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 					on_mouseover_(new_row);
 				}
 			}
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-		} else if(event.type == SDL_MOUSEWHEEL) {
-			int mx, my;
-			SDL_GetMouseState(&mx, &my);
-			point p(mx, my);
-			rect r(x(), y(), width(), height());
-			if(point_in_rect(p, r)) {
-				if(event.wheel.y < 0) {
-					set_yscroll(yscroll() - 3*row_height_ < 0 ? 0 : yscroll() - 3*row_height_);
-					selected_row_ -= 3;
-					if(selected_row_ < 0) {
-						selected_row_ = 0;
-					}
-				} else {
-					int y3 = yscroll() + 3*row_height_;
-					set_yscroll(virtual_height() - y3 < height() 
-						? virtual_height() - height()
-						: y3);
-					selected_row_ += 3;
-					if(selected_row_ >= nrows()) {
-						selected_row_ = nrows() - 1;
-					}
-				}
-				claimed = true;
-			}
-#endif
 		} else if(event.type == SDL_MOUSEBUTTONDOWN) {
 			point p(event.button.x, event.button.y);
 			rect r(x(), y(), width(), height());
@@ -546,9 +558,11 @@ void grid::mouseover_delegate(int selection)
 const_widget_ptr grid::get_widget_by_id(const std::string& id) const
 {
 	foreach(widget_ptr w, cells_) {
-		widget_ptr wx = w->get_widget_by_id(id);
-		if(wx) {
-			return wx;
+		if(w) {
+			widget_ptr wx = w->get_widget_by_id(id);
+			if(wx) {
+				return wx;
+			}
 		}
 	}
 	return widget::get_widget_by_id(id);
@@ -557,9 +571,11 @@ const_widget_ptr grid::get_widget_by_id(const std::string& id) const
 widget_ptr grid::get_widget_by_id(const std::string& id)
 {
 	foreach(widget_ptr w, cells_) {
-		widget_ptr wx = w->get_widget_by_id(id);
-		if(wx) {
-			return wx;
+		if(w) {
+			widget_ptr wx = w->get_widget_by_id(id);
+			if(wx) {
+				return wx;
+			}
 		}
 	}
 	return widget::get_widget_by_id(id);
@@ -575,13 +591,14 @@ void grid::set_value(const std::string& key, const variant& v)
 		add_col(widget_factory::create(v, get_environment()))
 			.finish_row();
 		recalculate_dimensions();
-	}
-	gui::widget_ptr w = get_widget_by_id(key);
-	if(v.is_null() && w != NULL) {
-		cells_.erase(std::remove(cells_.begin(), cells_.end(), w), cells_.end());
-		recalculate_dimensions();
 	} else {
-		widget::set_value(key, v);
+		gui::widget_ptr w = get_widget_by_id(key);
+		if(v.is_null() && w != NULL) {
+			cells_.erase(std::remove(cells_.begin(), cells_.end(), w), cells_.end());
+			recalculate_dimensions();
+		} else {
+			widget::set_value(key, v);
+		}
 	}
 }
 
