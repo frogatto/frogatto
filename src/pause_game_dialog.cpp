@@ -43,7 +43,7 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 	show_exit = false;
 	show_controls = false;
-	show_button_swap = true;
+	show_button_swap = false;
 	show_of = true;
 #elif TARGET_BLACKBERRY
 	show_exit = false;
