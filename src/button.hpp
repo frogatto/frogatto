@@ -55,6 +55,7 @@ private:
 	boost::function<void ()> onclick_;
 	bool down_;
 	game_logic::formula_ptr click_handler_;
+	game_logic::formula_callable_ptr handler_arg_;
 	
 	const_framed_gui_element_ptr normal_button_image_set_,depressed_button_image_set_,focus_button_image_set_,current_button_image_set_;
 };
