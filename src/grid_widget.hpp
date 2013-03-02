@@ -114,6 +114,8 @@ private:
 
 	game_logic::formula_ptr ffl_on_select_;
 	game_logic::formula_ptr ffl_on_mouseover_;
+	game_logic::formula_callable_ptr select_arg_;
+	game_logic::formula_callable_ptr mouseover_arg_;
 
 	friend class dropdown_widget;
 };

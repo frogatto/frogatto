@@ -2269,6 +2269,10 @@ class widgets_callable : public formula_callable {
 	boost::intrusive_ptr<custom_object> obj_;
 
 	variant get_value(const std::string& key) const {
+		if(key == "children") {
+			std::vector<variant> v = obj_->get_variant_widget_list();
+			return variant(&v);
+		}
 		return variant(obj_->get_widget_by_id(key).get());
 	}
 	void set_value(const std::string& key, const variant& value) {
@@ -4819,6 +4823,15 @@ void custom_object::update_type(const_custom_object_type_ptr old_type,
 		effects_.back()->init(this);
 	}
 #endif
+}
+
+std::vector<variant> custom_object::get_variant_widget_list()
+{
+	std::vector<variant> v;
+	for(widget_list::iterator it = widgets_.begin(); it != widgets_.end(); ++it) {
+		v.push_back(variant(it->get()));
+	}
+	return v;
 }
 
 void custom_object::add_widget(const gui::widget_ptr& w)

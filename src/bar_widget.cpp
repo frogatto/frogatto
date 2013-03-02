@@ -175,6 +175,8 @@ namespace gui
 		} else if(key == "max_width") { 
 			bar_max_width_ = value.as_int();
 			init();
+		} else if(key == "animation_position") {
+			animation_current_position_ = value.as_decimal().as_float();
 		}
 		widget::set_value(key, value);
 	}
@@ -187,6 +189,7 @@ namespace gui
 				// gaining segments
 				animation_current_position_ += (1.0 / drain_rate_) * segment_length_;
 				if(animation_current_position_ >= end_point_unscaled) {
+					animation_current_position_ = 0;
 					drained_segments_ = drained_segments_after_anim_;
 					init();
 					animating_ = false;
@@ -195,6 +198,7 @@ namespace gui
 				// loosing segments
 				animation_current_position_ -= (1.0 / drain_rate_) * segment_length_;
 				if(animation_current_position_ <= end_point_unscaled) {
+					animation_current_position_ = 0;
 					drained_segments_ = drained_segments_after_anim_;
 					init();
 					animating_ = false;
@@ -248,7 +252,7 @@ namespace gui
 			graphics::draw_rect(rect(x()+left_cap_width_+total_bar_length_, y()+scale_, right_cap_width_-scale_, height()-2*scale_), graphics::color(drained_segments_ ? drained_bar_color_ : bar_color_));
 
 			// background for active segments.
-			int anim_offset = animating_ ? animation_current_position_*scale_ : 0;
+			int anim_offset = animation_current_position_*scale_;
 			graphics::draw_rect(rect(x()+left_cap_width_, y(), active_bar_length_+anim_offset, height()), graphics::color(bar_color_));
 
 			// background for drained segments.
