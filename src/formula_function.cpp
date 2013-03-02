@@ -2203,10 +2203,8 @@ std::map<std::string, variant>& get_doc_cache() {
 }
 
 FUNCTION_DEF(write_document, 2, 2, "write_document(string filename, doc): writes 'doc' to the given filename")
-	const std::string docname = args()[0]->evaluate(variables).as_string();
+	std::string docname = args()[0]->evaluate(variables).as_string();
 	variant doc = args()[1]->evaluate(variables);
-
-	std::string rel_path = sys::compute_relative_path(preferences::user_data_path(), docname);
 
 	if(docname.empty()) {
 		return variant("DOCUMENT NAME GIVEN TO write_document() IS EMPTY");
@@ -2214,17 +2212,20 @@ FUNCTION_DEF(write_document, 2, 2, "write_document(string filename, doc): writes
 	if(sys::is_path_absolute(docname)) {
 		return variant(formatter() << "DOCUMENT NAME IS ABSOLUTE PATH " << docname);
 	}
-	if(std::adjacent_find(rel_path.begin(), rel_path.end(), consecutive_periods) != rel_path.end()) {
-		return variant(formatter() << "RELATIVE PATH OUTSIDE ALLOWED " << docname << " : " << rel_path);
+	if(std::adjacent_find(docname.begin(), docname.end(), consecutive_periods) != docname.end()) {
+		return variant(formatter() << "RELATIVE PATH OUTSIDE ALLOWED " << docname);
 	}
+
 	get_doc_cache()[docname] = doc;
 
+	docname = preferences::user_data_path() + docname;
 	sys::write_file(docname, doc.write_json());
 	return variant();
 END_FUNCTION_DEF(write_document)
 
 FUNCTION_DEF(get_document, 1, 2, "get_document(string filename, list_of_strings flags): return reference to the given JSON document. flags can contain 'null_on_failure' and 'user_preferences_dir'")
 	std::string docname = args()[0]->evaluate(variables).as_string();
+	ASSERT_LOG(docname.empty() == false, "DOCUMENT NAME GIVEN TO get_document() IS EMPTY");
 
 	bool allow_failure = false;
 	bool prefs_directory = false;
@@ -2248,13 +2249,14 @@ FUNCTION_DEF(get_document, 1, 2, "get_document(string filename, list_of_strings 
 		return v;
 	}
 
-	if(prefs_directory) {
-		docname = sys::compute_relative_path(preferences::user_data_path(), docname);
-	}
-
-	ASSERT_LOG(docname.empty() == false, "DOCUMENT NAME GIVEN TO get_document() IS EMPTY");
-	ASSERT_LOG(!sys::is_path_absolute(docname), "DOCUMENT NAME USES AN ABSOLUTE PATH WHICH IS NOT ALLOWED: " << docname);
 	ASSERT_LOG(std::adjacent_find(docname.begin(), docname.end(), consecutive_periods) == docname.end(), "DOCUMENT NAME CONTAINS ADJACENT PERIODS " << docname);
+
+	if(prefs_directory) {
+		//docname = sys::compute_relative_path(preferences::user_data_path(), docname);
+		docname = preferences::user_data_path() + docname;
+	} else {
+		ASSERT_LOG(!sys::is_path_absolute(docname), "DOCUMENT NAME USES AN ABSOLUTE PATH WHICH IS NOT ALLOWED: " << docname);
+	}
 
 	try {
 		const variant v = json::parse_from_file(docname);
