@@ -30,6 +30,13 @@ public:
 	static level_runner* get_current();
 	level_runner(boost::intrusive_ptr<level>& lvl, std::string& level_cfg, std::string& original_level_cfg);
 
+	const debug_console::console_dialog* get_debug_console() const {
+#ifndef NO_EDITOR
+		return console_.get();
+#endif
+		return NULL;
+	}
+
 	bool play_level();
 	bool play_cycle();
 

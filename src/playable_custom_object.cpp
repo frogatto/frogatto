@@ -5,6 +5,7 @@
 #include "iphone_controls.hpp"
 #include "joystick.hpp"
 #include "level.hpp"
+#include "level_runner.hpp"
 #include "playable_custom_object.hpp"
 #include "string_utils.hpp"
 #include "variant_utils.hpp"
@@ -155,6 +156,11 @@ variant playable_custom_object::get_value(const std::string& key) const
 		return variant(SDL_GetModState());
 	} else if(key == "ctrl_keys") {
 		std::vector<variant> result;
+		if(level_runner::get_current() && level_runner::get_current()->get_debug_console() && level_runner::get_current()->get_debug_console()->has_keyboard_focus()) {
+			//the debug console is stealing all keystrokes.
+			return variant(&result);
+		}
+
 #if !defined(TARGET_OS_IPHONE) && !defined(TARGET_IPHONE_SIMULATOR)
 		int ary_length;
 #if SDL_VERSION_ATLEAST(2, 0, 0)
