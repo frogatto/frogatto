@@ -1669,10 +1669,6 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 	}
 	}
 
-	if(get_debug_info()) {
-		s << " (" << get_debug_info()->message() << ")";
-	}
-
 	return s.str();
 }
 
