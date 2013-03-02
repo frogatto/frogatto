@@ -164,6 +164,11 @@ public:
 	//binds a closure to a lambda function.
 	variant bind_closure(const game_logic::formula_callable* callable);
 
+	//precondition: is_function(). Gives the min/max arguments the function
+	//accepts.
+	int min_function_arguments() const;
+	int max_function_arguments() const;
+
 	std::string as_string_default(const char* default_value=NULL) const;
 	const std::string& as_string() const;
 

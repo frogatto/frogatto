@@ -913,6 +913,18 @@ variant variant::bind_closure(const game_logic::formula_callable* callable)
 	return result;
 }
 
+int variant::min_function_arguments() const
+{
+	must_be(VARIANT_TYPE_FUNCTION);
+	return fn_->end_args - fn_->begin_args - fn_->default_args.size();
+}
+
+int variant::max_function_arguments() const
+{
+	must_be(VARIANT_TYPE_FUNCTION);
+	return fn_->end_args - fn_->begin_args;
+}
+
 std::string variant::as_string_default(const char* default_value) const
 {
 	if(is_null()) {

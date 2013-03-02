@@ -51,7 +51,21 @@ button::button(const variant& v, game_logic::formula_callable* e) : widget(v,e),
 	ASSERT_LOG(v.has_key("on_click"), "Button must be supplied with an on_click handler");
 	// create delegate for onclick
 	ASSERT_LOG(get_environment() != 0, "You must specify a callable environment");
-	click_handler_ = get_environment()->create_formula(v["on_click"]);
+
+	const variant on_click_value = v["on_click"];
+	if(on_click_value.is_function()) {
+		ASSERT_LOG(on_click_value.min_function_arguments() == 0, "on_click button function should take 0 arguments: " << v.debug_location());
+		static const variant fml("fn()");
+		click_handler_.reset(new game_logic::formula(fml));
+
+		game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
+		callable->add("fn", on_click_value);
+
+		handler_arg_.reset(callable);
+	} else { 
+		click_handler_ = get_environment()->create_formula(on_click_value);
+	}
+
 	onclick_ = boost::bind(&button::click, this);
 	button_resolution_ = v["resolution"].as_string_default("normal") == "normal" ? BUTTON_SIZE_NORMAL_RESOLUTION : BUTTON_SIZE_DOUBLE_RESOLUTION;
 	button_style_ = v["style"].as_string_default("default") == "default" ? BUTTON_STYLE_DEFAULT : BUTTON_STYLE_NORMAL;
@@ -67,7 +81,10 @@ button::button(const variant& v, game_logic::formula_callable* e) : widget(v,e),
 
 void button::click()
 {
-	if(get_environment()) {
+	if(handler_arg_) {
+		variant value = click_handler_->execute(*handler_arg_);
+		get_environment()->execute_command(value);
+	} else if(get_environment()) {
 		variant value = click_handler_->execute(*get_environment());
 		get_environment()->execute_command(value);
 	} else {
