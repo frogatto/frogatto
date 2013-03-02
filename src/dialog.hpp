@@ -97,6 +97,9 @@ private:
 	game_logic::formula_ptr ffl_on_quit_;
 	game_logic::formula_ptr ffl_on_close_;
 
+	game_logic::formula_callable_ptr quit_arg_;
+	game_logic::formula_callable_ptr close_arg_;
+
 	//default padding between widgets
 	int padding_;
 

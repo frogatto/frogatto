@@ -97,12 +97,36 @@ dialog::dialog(const variant& v, game_logic::formula_callable* e)
 	if(v.has_key("on_quit")) {
 		on_quit_ = boost::bind(&dialog::quit_delegate, this);
 		ASSERT_LOG(get_environment() != NULL, "environment not set");
-		ffl_on_quit_ = get_environment()->create_formula(v["on_quit"]);
+		const variant on_quit_value = v["on_quit"];
+		if(on_quit_value.is_function()) {
+			ASSERT_LOG(on_quit_value.min_function_arguments() == 0, "on_quit_value dialog function should take 0 arguments: " << v.debug_location());
+			static const variant fml("fn()");
+			ffl_on_quit_.reset(new game_logic::formula(fml));
+
+			game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
+			callable->add("fn", on_quit_value);
+
+			quit_arg_.reset(callable);
+		} else {
+			ffl_on_quit_ = get_environment()->create_formula(v["on_quit"]);
+		}
 	}
 	if(v.has_key("on_close")) {
 		on_close_ = boost::bind(&dialog::close_delegate, this, _1);
 		ASSERT_LOG(get_environment() != NULL, "environment not set");
-		ffl_on_close_ = get_environment()->create_formula(v["on_close"]);
+		const variant on_close_value = v["on_close"];
+		if(on_close_value.is_function()) {
+			ASSERT_LOG(on_close_value.min_function_arguments() <= 1 && on_close_value.max_function_arguments() >= 1, "on_close dialog function should take 1 argument: " << v.debug_location());
+			static const variant fml("fn(selection)");
+			ffl_on_close_.reset(new game_logic::formula(fml));
+
+			game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
+			callable->add("fn", on_close_value);
+
+			close_arg_.reset(callable);
+		} else {
+			ffl_on_close_ = get_environment()->create_formula(v["on_close"]);
+		}
 	}
 	std::vector<variant> children = v["children"].as_list();
 	foreach(const variant& child, children) {
@@ -146,7 +170,11 @@ void dialog::draw_last_scene()
 
 void dialog::quit_delegate()
 {
-	if(get_environment()) {
+	if(quit_arg_) {
+		using namespace game_logic;
+		variant value = ffl_on_quit_->execute(*quit_arg_);
+		get_environment()->execute_command(value);
+	} else if(get_environment()) {
 		variant value = ffl_on_quit_->execute(*get_environment());
 		get_environment()->execute_command(value);
 	} else {
@@ -157,13 +185,19 @@ void dialog::quit_delegate()
 void dialog::close_delegate(bool cancelled)
 {
 	using namespace game_logic;
-	if(get_environment()) {
+	if(close_arg_) {
+		using namespace game_logic;
+		map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(close_arg_.get()));
+		callable->add("cancelled", variant::from_bool(cancelled));
+		variant value = ffl_on_close_->execute(*callable);
+		get_environment()->execute_command(value);
+	} else if(get_environment()) {
 		map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(get_environment()));
 		callable->add("cancelled", variant::from_bool(cancelled));
 		variant value = ffl_on_close_->execute(*callable);
 		get_environment()->execute_command(value);
 	} else {
-		std::cerr << "dialog::quit_delegate() called without environment!" << std::endl;
+		std::cerr << "dialog::close_delegate() called without environment!" << std::endl;
 	}
 }
 
