@@ -559,7 +559,7 @@ void grid::select_delegate(int selection)
 		using namespace game_logic;
 		map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(select_arg_.get()));
 		callable->add("selection", variant(selection));
-		variant value = ffl_on_select_->execute();
+		variant value = ffl_on_select_->execute(*callable);
 		get_environment()->execute_command(value);
 	} else if(get_environment()) {
 		game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
@@ -578,7 +578,7 @@ void grid::mouseover_delegate(int selection)
 		using namespace game_logic;
 		map_formula_callable_ptr callable = map_formula_callable_ptr(new map_formula_callable(mouseover_arg_.get()));
 		callable->add("selection", variant(selection));
-		variant value = ffl_on_mouseover_->execute();
+		variant value = ffl_on_mouseover_->execute(*callable);
 		get_environment()->execute_command(value);
 	} else if(get_environment()) {
 		game_logic::map_formula_callable* callable = new game_logic::map_formula_callable(get_environment());
