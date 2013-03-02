@@ -218,6 +218,7 @@ public:
 	void remove_widget(gui::widget_ptr w);
 	gui::widget_ptr get_widget_by_id(const std::string& id);
 	gui::const_widget_ptr get_widget_by_id(const std::string& id) const;
+	std::vector<variant> get_variant_widget_list();
 	bool get_clip_area(rect* clip_area) {
 		if(clip_area_ && clip_area) {
 			*clip_area = *clip_area_.get();
