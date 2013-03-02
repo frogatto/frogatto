@@ -44,8 +44,8 @@ grid::grid(const variant& v, game_logic::formula_callable* e)
 	if(v.has_key("on_select")) {
 		const variant on_select_value = v["on_select"];
 		if(on_select_value.is_function()) {
-			ASSERT_LOG(on_select_value.min_function_arguments() == 0, "on_select button function should take 0 arguments: " << v.debug_location());
-			static const variant fml("fn()");
+			ASSERT_LOG(on_select_value.min_function_arguments() <= 1 && on_select_value.max_function_arguments() >= 1, "on_select grid function should take 1 argument: " << v.debug_location());
+			static const variant fml("fn(selection)");
 			ffl_on_select_.reset(new game_logic::formula(fml));
 
 			game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;
@@ -62,8 +62,8 @@ grid::grid(const variant& v, game_logic::formula_callable* e)
 		on_mouseover_ = boost::bind(&grid::mouseover_delegate, this, _1);
 		const variant on_mouseover_value = v["on_mouseover"];
 		if(on_mouseover_value.is_function()) {
-			ASSERT_LOG(on_mouseover_value.min_function_arguments() == 0, "on_select button function should take 0 arguments: " << v.debug_location());
-			static const variant fml("fn()");
+			ASSERT_LOG(on_mouseover_value.min_function_arguments() <= 1 && on_mouseover_value.max_function_arguments() >= 1, "on_mouseover grid function should take 1 argument: " << v.debug_location());
+			static const variant fml("fn(selection)");
 			ffl_on_mouseover_.reset(new game_logic::formula(fml));
 
 			game_logic::map_formula_callable* callable = new game_logic::map_formula_callable;

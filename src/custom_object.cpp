@@ -2270,7 +2270,8 @@ class widgets_callable : public formula_callable {
 
 	variant get_value(const std::string& key) const {
 		if(key == "children") {
-			return variant(&obj_->get_variant_widget_list());
+			std::vector<variant> v = obj_->get_variant_widget_list();
+			return variant(&v);
 		}
 		return variant(obj_->get_widget_by_id(key).get());
 	}
