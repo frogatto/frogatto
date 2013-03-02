@@ -742,6 +742,8 @@ namespace preferences {
 		controls::set_keycode(controls::CONTROL_ATTACK, static_cast<key_type>(node["key_attack"].as_int(SDLK_d)));
 		controls::set_keycode(controls::CONTROL_JUMP, static_cast<key_type>(node["key_jump"].as_int(SDLK_a)));
 		controls::set_keycode(controls::CONTROL_TONGUE, static_cast<key_type>(node["key_tongue"].as_int(SDLK_s)));
+        
+        preferences::set_32bpp_textures_if_kb_memory_at_least( 512000 );
 #endif
 	}
 	
@@ -842,16 +844,7 @@ namespace preferences {
 		} else if(s == "--textures32") {
 			use_16bpp_textures_ = false;
 		} else if(arg_name == "--textures32_if_kb_memory_at_least") {
-			const int memory_required = atoi(arg_value.c_str());
-			sys::available_memory_info mem_info;
-			const bool result = sys::get_available_memory(&mem_info);
-			if(result) {
-				use_16bpp_textures_ = mem_info.mem_total_kb < memory_required;
-				std::cerr << "USING " << (use_16bpp_textures_ ? 16 : 32) << "bpp TEXTURES BECAUSE SYSTEM HAS " << mem_info.mem_total_kb << "KB AND " << memory_required << "KB REQUIRED FOR 32bpp TEXTURES\n";
-			} else {
-				use_16bpp_textures_ = true;
-				std::cerr << "USING 16bpp TEXTURES BECAUSE WE COULD NOT DISCOVER HOW MUCH MEMORY THE SYSTEM HAS\n";
-			}
+            preferences::set_32bpp_textures_if_kb_memory_at_least( atoi(arg_value.c_str()) );
 		} else if(s == "--debug") {
 			debug_ = true;
 		} else if(s == "--no-debug") {
@@ -951,7 +944,19 @@ namespace preferences {
 	bool use_16bpp_textures() {
 		return use_16bpp_textures_;
 	}
-	
+
+	void set_32bpp_textures_if_kb_memory_at_least( int memory_required ) {
+        sys::available_memory_info mem_info;
+        const bool result = sys::get_available_memory(&mem_info);
+        if(result) {
+            use_16bpp_textures_ = mem_info.mem_total_kb < memory_required;
+            std::cerr << "USING " << (use_16bpp_textures_ ? 16 : 32) << "bpp TEXTURES BECAUSE SYSTEM HAS " << mem_info.mem_total_kb << "KB AND " << memory_required << "KB REQUIRED FOR 32bpp TEXTURES\n";
+        } else {
+            use_16bpp_textures_ = true;
+            std::cerr << "USING 16bpp TEXTURES BECAUSE WE COULD NOT DISCOVER HOW MUCH MEMORY THE SYSTEM HAS\n";
+        }
+    }
+    
 	bool sim_iphone() {
 		return sim_iphone_;
 	}

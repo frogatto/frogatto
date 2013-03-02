@@ -134,6 +134,8 @@ void set_bequ( bool value );
 
 	bool use_16bpp_textures();
 
+	void set_32bpp_textures_if_kb_memory_at_least(int memory_required );
+    
 	bool sim_iphone();
 
 	bool no_iphone_controls();
