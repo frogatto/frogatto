@@ -1056,6 +1056,10 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 bool text_editor_widget::handle_text_input(const SDL_TextInputEvent& event)
 {
+	if(!has_focus_) {
+		return false;
+	}
+
 	if(record_op("chars")) {
 		save_undo_state();
 	}
@@ -1075,6 +1079,9 @@ bool text_editor_widget::handle_text_input(const SDL_TextInputEvent& event)
 
 bool text_editor_widget::handle_text_editing(const SDL_TextEditingEvent& event)
 {
+	if(!has_focus_) {
+		return false;
+	}
 	return false;
 }
 #endif
