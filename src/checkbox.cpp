@@ -50,8 +50,8 @@ checkbox::checkbox(const variant& v, game_logic::formula_callable* e)
 	}
 	checked_ = v["checked"].as_bool(false);
 	variant label_var = v["text"];
-	label_ = label_var.is_map() ? "" : label_var.as_string_default("Button");
-	label_widget_ = label_var.is_map() 
+	label_ = (label_var.is_map() || label_var.is_callable()) ? "" : label_var.as_string_default("Button");
+	label_widget_ = (label_var.is_map() || label_var.is_callable())
 		? widget_factory::create(label_var, e) 
 		: widget_ptr(new graphical_font_label(label_, "door_label", 2));
 	ASSERT_LOG(get_environment() != 0, "You must specify a callable environment");
