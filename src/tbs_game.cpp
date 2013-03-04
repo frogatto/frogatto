@@ -354,6 +354,7 @@ void game::send_game_state(int nplayer)
 
 		current_message_ = "";
 	} else if(nplayer >= 0 && nplayer < players().size()) {
+		std::cerr << "GAME STATE SENDING: " << write(0).write_json() << "\n";
 		queue_message(write(nplayer), nplayer);
 	}
 }

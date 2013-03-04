@@ -115,7 +115,6 @@ void bot::handle_response(const std::string& type, game_logic::formula_callable_
 	internal_client_.reset();
 
 	tbs::web_server::set_debug_state(generate_report());
-	std::cerr << "SET STATE: " << generate_report().write_json() << "\n";
 }
 
 variant bot::get_value(const std::string& key) const
