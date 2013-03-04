@@ -366,7 +366,7 @@ public:
 		} else if(op == "-") {
 			op_ = OP_SUB;
 		} else {
-			ASSERT_LOG(false, "illegal unary operator: '" << op << "'\n" << debug_pinpoint_location());
+			ASSERT_LOG(false, "illegal unary operator: '" << op << "'\n" << arg->debug_pinpoint_location());
 		}
 	}
 private:
