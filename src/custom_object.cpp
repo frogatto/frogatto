@@ -4260,6 +4260,8 @@ bool custom_object::execute_command(const variant& var)
 						swallow_mouse_command_callable* cmd = var.try_convert<swallow_mouse_command_callable>();
 						if(cmd) {
 							swallow_mouse_event_ = true;
+						} else {
+							ASSERT_LOG(false, "COMMAND WAS EXPECTED, BUT FOUND: " << var.to_debug_string());
 						}
 					}
 				}

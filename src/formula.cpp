@@ -88,6 +88,10 @@ namespace game_logic
 
 	bool formula_callable::execute_command(const variant &v) 
 	{
+		if(v.is_null()) {
+			return true;
+		}
+
 		if(v.is_list()) {
 			for(int n = 0; n != v.num_elements(); ++n) {
 				execute_command(v[n]);
@@ -96,6 +100,8 @@ namespace game_logic
 			command_callable* callable = v.try_convert<command_callable>();
 			if(callable) {
 				callable->run_command(*this);
+			} else {
+				ASSERT_LOG(false, "EXPECTED EXECUTABLE COMMAND OBJECT, INSTEAD FOUND: " << v.to_debug_string());
 			}
 		}
 
