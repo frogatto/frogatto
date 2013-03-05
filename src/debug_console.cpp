@@ -349,7 +349,15 @@ bool console_dialog::on_begin_enter()
 
 			game_logic::formula f(ffl_variant, &get_custom_object_functions_symbol_table(), focus_->get_definition());
 			variant v = f.execute(*focus_);
-			focus_->execute_command(v);
+			try {
+				focus_->execute_command(v);
+			} catch(validation_failure_exception& e) {
+				//if this was a failure due to it not being a real command,
+				//that's fine, since we just want to output the result.
+				if(!strstr(e.msg.c_str(), "COMMAND WAS EXPECTED, BUT FOUND")) {
+					throw e;
+				}
+			}
 
 			std::string output = v.to_debug_string();
 			debug_console::add_message(output);
