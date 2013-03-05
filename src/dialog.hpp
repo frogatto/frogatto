@@ -114,6 +114,8 @@ private:
 
 	std::string background_framed_gui_element_;
 	boost::function<void()> draw_background_fn_;
+
+	bool upscale_frame_;
 };
 
 typedef boost::intrusive_ptr<dialog> dialog_ptr;

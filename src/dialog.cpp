@@ -63,7 +63,7 @@ std::string get_dialog_file(const std::string& fname)
 
 dialog::dialog(int x, int y, int w, int h)
   : opened_(false), cancelled_(false), clear_bg_(196), padding_(10),
-    add_x_(0), add_y_(0), bg_alpha_(1.0), last_draw_(-1)
+    add_x_(0), add_y_(0), bg_alpha_(1.0), last_draw_(-1), upscale_frame_(true)
 {
 	set_environment();
 	set_loc(x,y);
@@ -74,7 +74,8 @@ dialog::dialog(int x, int y, int w, int h)
 dialog::dialog(const variant& v, game_logic::formula_callable* e)
 	: widget(v,e),
 	opened_(false), cancelled_(false), 
-	add_x_(0), add_y_(0), last_draw_(-1)
+	add_x_(0), add_y_(0), last_draw_(-1),
+	upscale_frame_(v["upscale_frame"].as_bool(true))
 {
 	forced_dimensions_ = rect(x(), y(), width(), height());
 	padding_ = v["padding"].as_int(10);
@@ -357,7 +358,7 @@ void dialog::handle_draw() const
 		SDL_Color col = {0,0,0,0};
 		graphics::draw_rect(rect, col, get_alpha() >= 255 ? 204 : get_alpha());
 		const_framed_gui_element_ptr window(framed_gui_element::get(background_framed_gui_element_));
-		window->blit(x(),y(),width(),height(), 1);
+		window->blit(x(),y(),width(),height(), upscale_frame_);
 	}
 
 	glColor4f(current_color[0], current_color[1], current_color[2], current_color[3]);
