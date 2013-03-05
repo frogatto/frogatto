@@ -87,6 +87,9 @@ void image_widget::set_value(const std::string& key, const variant& v)
 		area_ = rect(v);
 	} else if(key == "rotation") {
 		rotate_ = v.as_decimal().as_float();
+	} else if(key == "image_wh") {
+		ASSERT_LOG(v.is_list() && v.num_elements() == 2, "parameter to 'image_wv' must be two-element list. Found: " << v.to_debug_string());
+		init(v[0].as_int(), v[1].as_int());
 	}
 	return widget::set_value(key, v);
 }
