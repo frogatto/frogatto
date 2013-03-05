@@ -44,6 +44,7 @@ private:
 	graphics::texture texture_;
 	GLfloat rotate_;
 	rect area_;
+	std::string image_name_;
 };
 
 class gui_section_widget : public widget

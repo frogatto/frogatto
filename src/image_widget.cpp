@@ -18,7 +18,7 @@
 namespace gui {
 
 image_widget::image_widget(const std::string& fname, int w, int h)
-  : texture_(graphics::texture::get(fname)), rotate_(0.0)
+  : texture_(graphics::texture::get(fname)), rotate_(0.0), image_name_(fname)
 {
 	set_environment();
 	init(w, h);
@@ -32,14 +32,14 @@ image_widget::image_widget(graphics::texture tex, int w, int h)
 }
 
 image_widget::image_widget(const variant& v, game_logic::formula_callable* e) 
-	: widget(v, e)
+	: widget(v, e), image_name_(v["image"].as_string())
 {
 	set_environment();
 	if(v.has_key("area")) {
 		area_ = rect(v["area"]);
 	}
 
-	texture_ = graphics::texture::get(v["image"].as_string());
+	texture_ = graphics::texture::get(image_name_);
 	rotate_ = v.has_key("rotation") ? v["rotation"].as_decimal().as_float() : 0.0;
 	init(v["image_width"].as_int(-1), v["image_height"].as_int(-1));
 }
@@ -81,7 +81,10 @@ void image_widget::handle_draw() const
 void image_widget::set_value(const std::string& key, const variant& v)
 {
 	if(key == "image") {
-		texture_ = graphics::texture::get(v.as_string());
+		image_name_ = v.as_string();
+		texture_ = graphics::texture::get(image_name_);
+	} else if(key == "area") {
+		area_ = rect(v);
 	} else if(key == "rotation") {
 		rotate_ = v.as_decimal().as_float();
 	}
@@ -91,6 +94,15 @@ void image_widget::set_value(const std::string& key, const variant& v)
 variant image_widget::get_value(const std::string& key) const
 {
 	if(key == "image") {
+		return variant(image_name_);
+	} else if(key == "area") {
+		std::vector<variant> v;
+		v.push_back(variant(area_.x()));
+		v.push_back(variant(area_.y()));
+		v.push_back(variant(area_.x2()));
+		v.push_back(variant(area_.y2()));
+		return variant(&v);
+	} else if(key == "texture") {
 		return variant(texture_.get_id());
 	} else if(key == "rotation") {
 		return variant(rotate_);
