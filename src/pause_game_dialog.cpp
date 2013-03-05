@@ -44,6 +44,7 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	bool show_button_swap = false;
 	bool show_of = false;
 	gui::BUTTON_RESOLUTION button_resolution = gui::BUTTON_SIZE_DOUBLE_RESOLUTION;
+	bool upscale_dialog_frame = true;
 	
 #if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
 	show_exit = false;
@@ -102,6 +103,9 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 			} else {
 				ASSERT_LOG(false, "Unrecognised button resolution, either string or int");
 			}
+		}
+		if(v.has_key("dialog_upscale")) {
+			upscale_dialog_frame = v["dialog_upscale"].as_bool();
 		}
 	} catch(...) {
 		// skipping errors
@@ -176,6 +180,7 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	dialog d((preferences::virtual_screen_width()/2 - window_w/2) & ~1, (preferences::virtual_screen_height()/2 - window_h/2) & ~1, window_w, window_h);
 	d.set_padding(padding);
 	d.set_background_frame("empty_window");
+	d.set_upscale_frame(upscale_dialog_frame);
 
 	d.set_draw_background_fn(do_draw_scene);
 	
