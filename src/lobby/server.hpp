@@ -63,11 +63,19 @@ private:
   /// Acceptor used to listen for incoming connections.
   boost::asio::ip::tcp::acceptor acceptor_;
 
+  void heartbeat(const boost::system::error_code& error);
+
   /// The next connection to be accepted.
   connection_ptr new_connection_;
 
   /// The handler for all incoming requests.
   request_handler request_handler_;
+
+  // Shared data store
+  game_server::shared_data& data_;
+
+  // Processing timer
+  boost::asio::deadline_timer timer_;
 };
 
 } // namespace server

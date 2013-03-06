@@ -1,8 +1,15 @@
+#ifdef _MSC_VER
+#include "targetver.h"
+#endif
+
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int.hpp>
 #include <boost/random/variate_generator.hpp>
 #include <boost/uuid/sha1.hpp>
 
+#include "asserts.hpp"
+#include "connection.hpp"
+#include "reply.hpp"
 #include "shared_data.hpp"
 
 namespace game_server 
@@ -20,6 +27,7 @@ namespace game_server
 			s.get_digest(digest);
 			std::stringstream str;
 			str << std::hex << std::setfill('0')  << std::setw(sizeof(unsigned int)*2) << digest[0] << digest[1] << digest[2] << digest[3] << digest[4];
+			std::cerr << "check_password: " << str.str() << " " << salt << " " << pword << " " << phash << std::endl;
 			return (phash.compare(str.str()) == 0);
 		}
 
@@ -105,6 +113,25 @@ namespace game_server
 		return true;
 	}
 
+	bool shared_data::check_client_in_games(const std::string& user, int* game_id)
+	{
+		bool erased_game = false;
+		for(auto it = games_.begin(); it != games_.end();) {
+			it->second.clients.erase(std::remove(it->second.clients.begin(), it->second.clients.end(), user), it->second.clients.end());
+			if(game_id) {
+				*game_id = it->first;
+			}
+			// remove games with no users left.
+			if(it->second.clients.empty()) {
+				games_.erase(it++);
+				erased_game = true;
+			} else {
+				++it;
+			}
+		}
+		return erased_game;
+	}
+
 	void shared_data::get_status_list(json_spirit::mObject* users)
 	{
 		boost::mutex::scoped_lock lock(guard_);
@@ -170,5 +197,143 @@ namespace game_server
 	int shared_data::make_session_id()
 	{
 		return generate_session_id();
+	}
+
+	client_message_queue_ptr shared_data::get_message_queue(const std::string& user)
+	{
+		boost::mutex::scoped_lock lock(guard_);
+		auto it = clients_.find(user);
+		if(it == clients_.end()) {
+			return client_message_queue_ptr();
+		}
+		return it->second.msg_q;
+	}
+
+	void shared_data::set_waiting_connection(const std::string& user, http::server::connection_ptr conn)
+	{
+		boost::mutex::scoped_lock lock(guard_);
+		auto it = clients_.find(user);
+		if(it == clients_.end()) {
+			return;
+		}
+		if(it->second.conn == nullptr) {
+			it->second.conn = conn;
+			it->second.counter = 60;
+		}
+	}
+
+	void shared_data::process_waiting_connections()
+	{
+		boost::mutex::scoped_lock lock(guard_);
+		static int tick_time = 10;
+
+		for(auto it = clients_.begin(); it != clients_.end(); ++it) {
+			client_info& ci = it->second;
+			json_spirit::mValue mv;
+			if(ci.conn && ci.msg_q && ci.msg_q->try_pop(mv)) {
+				http::server::reply::create_json_reply(mv, ci.conn->get_reply());
+				ci.conn->handle_delayed_write();
+				ci.conn.reset();
+				ci.counter = 0;
+			}
+		}
+
+		if(--tick_time == 0) {
+			tick_time = 10;
+
+			for(auto it = clients_.begin(); it != clients_.end();) {
+				client_info& ci = it->second;
+				std::string user;
+				if(ci.last_seen_count && --ci.last_seen_count == 0) {
+					user = it->first;
+					clients_.erase(it++);
+				} else {
+					++it;
+				}
+				// remove user from any games
+				if(user.empty() == false) {
+					check_client_in_games(user);
+				}
+			}
+
+			for(auto it = clients_.begin(); it != clients_.end(); ++it) {
+				client_info& ci = it->second;
+				if (it->second.counter && --it->second.counter == 0) {
+					if(it->second.conn) {
+						json_spirit::mObject obj;
+						obj["type"] = "lobby_heartbeat_reply";					
+						http::server::reply::create_json_reply(json_spirit::mValue(obj), ci.conn->get_reply());
+						ci.conn->handle_delayed_write();
+						ci.conn.reset();
+					}
+				}
+			}
+		}
+	}
+
+	void shared_data::update_last_seen_count(const std::string& user)
+	{
+		auto it = clients_.find(user);
+		if(it == clients_.end()) {
+			return;
+		}
+		it->second.last_seen_count = last_seen_counter_reload_value;
+	}
+
+	bool shared_data::post_message_to_client(const std::string& user, const json_spirit::mValue& val)
+	{
+		boost::mutex::scoped_lock lock(guard_);
+		auto it = clients_.find(user);
+		if(it == clients_.end()) {
+			return false;
+		}
+		if(it->second.msg_q) {
+			it->second.msg_q->push(val);
+		} else {
+			return false;
+		}
+		return true;
+	}
+
+	void shared_data::post_message_to_all_clients(const json_spirit::mValue& val)
+	{
+		boost::mutex::scoped_lock lock(guard_);		
+		for(auto it = clients_.begin(); it != clients_.end(); ++it) {
+			client_info& ci = it->second;
+			if(ci.msg_q) {
+				ci.msg_q->push(val);
+			}
+		}
+	}
+
+	bool shared_data::post_message_to_game_clients(int game_id, const json_spirit::mValue& val)
+	{
+		auto it = games_.find(game_id);
+		if(it == games_.end()) {
+			return false;
+		}
+		for(auto client : it->second.clients) {
+			auto cit = clients_.find(client);
+			if(cit != clients_.end()) {
+				client_info& ci = cit->second;
+				if(ci.msg_q) {
+					ci.msg_q->push(val);
+				}
+			}
+		}
+		return true;
+	}
+
+	bool shared_data::check_game_and_client(int game_id, const std::string& user)
+	{
+		auto it = games_.find(game_id);
+		if(it == games_.end()) {
+			return false;
+		}
+		auto cit = std::find(it->second.clients.begin(), it->second.clients.end(), user);
+		if(cit == it->second.clients.end()) {
+			return false;
+		}
+		return true;
 	}
 }

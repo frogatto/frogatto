@@ -10,8 +10,16 @@
 #include <map>
 #include <vector>
 
+#include "connection_fwd.hpp"
+#include "queue.hpp"
+
 namespace game_server
 {
+	typedef boost::shared_ptr<queue::queue<json_spirit::mValue> > client_message_queue_ptr;
+	
+	// Reload time in seconds. 
+	const int last_seen_counter_reload_value = 5 * 60;
+
 	struct client_info
 	{
 		client_info()
@@ -19,14 +27,24 @@ namespace game_server
 		{}
 		client_info(int sid, bool human, const std::string& slt)
 			: session_id(sid), is_human(human), salt(slt), signed_in(false),
-			waiting_for_players(false)
-		{}
+			waiting_for_players(false), counter(0), last_seen_count(last_seen_counter_reload_value)
+		{
+			msg_q = client_message_queue_ptr(new queue::queue<json_spirit::mValue>);
+		}
 		int session_id;
 		std::string salt;
 		bool is_human;
 		bool signed_in;
 		bool waiting_for_players;
 		std::string game;
+		// Message queue for the client.
+		client_message_queue_ptr msg_q;
+		// Saved connection for sending deferred replies on.
+		http::server::connection_ptr conn;
+		// Counter for tracking deferred replies.
+		int counter;
+		// Counter decremented every second, after five minutes of no activity we expire sessions.
+		int last_seen_count;
 	};
 
 	struct server_info
@@ -77,6 +95,15 @@ namespace game_server
 		void add_server(const server_info& si);
 		bool create_game(const std::string& user, const std::string& game_type);
 		static int make_session_id();
+		client_message_queue_ptr get_message_queue(const std::string& user);
+		void set_waiting_connection(const std::string& user, http::server::connection_ptr conn);
+		void process_waiting_connections();
+		bool post_message_to_client(const std::string& user, const json_spirit::mValue& val);
+		void post_message_to_all_clients(const json_spirit::mValue& val);
+		bool post_message_to_game_clients(int game_id, const json_spirit::mValue& val);
+		bool check_game_and_client(int game_id, const std::string& user);
+		void update_last_seen_count(const std::string& user);
+		bool check_client_in_games(const std::string& user, int* game_id = nullptr);
 	private:
 		game_list games_;
 		client_map clients_;

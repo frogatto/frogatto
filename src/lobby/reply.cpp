@@ -268,5 +268,17 @@ reply reply::bad_request_with_detail(const std::string& detail)
   return rep;
 }
 
+bool reply::create_json_reply(const json_spirit::mValue& value, reply& rep)
+{
+	rep.content = json_spirit::write(value);
+	rep.status = reply::ok;
+	rep.headers.resize(2);
+	rep.headers[0].name = "Content-Length";
+	rep.headers[0].value = boost::lexical_cast<std::string>(rep.content.size());
+	rep.headers[1].name = "Content-Type";
+	rep.headers[1].value = "application/json";
+	return true;
+}
+
 } // namespace server
 } // namespace http

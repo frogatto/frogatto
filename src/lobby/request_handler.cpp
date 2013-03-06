@@ -17,6 +17,7 @@
 #include <map>
 
 #include "asserts.hpp"
+#include "connection.hpp"
 #include "request_handler.hpp"
 #include "mime_types.hpp"
 #include "name.hpp"
@@ -127,27 +128,28 @@ request_handler::request_handler(const std::string& doc_root, game_server::share
 {
 }
 
-void request_handler::handle_request(const request& req, reply& rep)
+bool request_handler::handle_request(const request& req, reply& rep, http::server::connection_ptr conn)
 {
 	if(req.method == "POST") {
-		handle_post(req, rep);
+		return handle_post(req, rep, conn);
 	} else if(req.method == "GET") {
-		handle_get(req, rep);
+		return handle_get(req, rep, conn);
 	} else {
 		// handled
 		std::cerr << "Unhandled request: " << req.method << std::endl;
 		rep = reply::stock_reply(reply::not_implemented);
 	}
+	return true;
 }
 
-void request_handler::handle_get(const request& req, reply& rep)
+bool request_handler::handle_get(const request& req, reply& rep, http::server::connection_ptr conn)
 {
   // Decode url to path.
   std::string request_path; 
   if (!url_decode(req.uri, request_path))
   {
     rep = reply::stock_reply(reply::bad_request);
-    return;
+    return true;
   }
 
   // Request path must be absolute and not contain "..".
@@ -155,7 +157,7 @@ void request_handler::handle_get(const request& req, reply& rep)
       || request_path.find("..") != std::string::npos)
   {
     rep = reply::stock_reply(reply::bad_request);
-    return;
+    return true;
   }
 
   // If path ends in slash (i.e. is a directory) then add "index.html".
@@ -179,7 +181,7 @@ void request_handler::handle_get(const request& req, reply& rep)
   if(is == nullptr || !(*is))
   {
 	rep = reply::stock_reply(reply::not_found);
-	return;
+	return true;
   }
 
   // Fill out the reply to be sent to the client.
@@ -192,6 +194,7 @@ void request_handler::handle_get(const request& req, reply& rep)
   rep.headers[0].value = boost::lexical_cast<std::string>(rep.content.size());
   rep.headers[1].name = "Content-Type";
   rep.headers[1].value = mime_types::extension_to_type(extension);
+  return true;
 }
 
 bool request_handler::url_decode(const std::string& in, std::string& out)
@@ -233,23 +236,24 @@ bool request_handler::url_decode(const std::string& in, std::string& out)
   return true;
 }
 
-void request_handler::create_json_reply(const json_spirit::mValue& value, reply& rep)
+bool request_handler::check_messages(const std::string& user, reply& rep, http::server::connection_ptr conn)
 {
-	rep.content = json_spirit::write(value);
-	rep.status = reply::ok;
-	rep.headers.resize(2);
-	rep.headers[0].name = "Content-Length";
-	rep.headers[0].value = boost::lexical_cast<std::string>(rep.content.size());
-	rep.headers[1].name = "Content-Type";
-	rep.headers[1].value = "application/json";
+	game_server::client_message_queue_ptr msg_q = data_.get_message_queue(user);
+	json_spirit::mValue mv;
+	if(msg_q && msg_q->try_pop(mv)) {
+		return reply::create_json_reply(mv, rep);
+	}
+	// set the connection waiting for a reply.
+	data_.set_waiting_connection(user, conn);
+	return false;
 }
 
-void request_handler::handle_post(const request& req, reply& rep)
+bool request_handler::handle_post(const request& req, reply& rep, http::server::connection_ptr conn)
 {
 	json_spirit::mObject obj;
 	if(req.uri != "/tbs") {
 		rep = reply::stock_reply(reply::not_found);
-		return;
+		return true;
 	}
 	std::cerr << "POST /tbs" << std::endl;
 	std::cerr << "BODY: " << req.body << std::endl;
@@ -259,16 +263,32 @@ void request_handler::handle_post(const request& req, reply& rep)
 
 	if(value.type() != json_spirit::obj_type) {
 		rep = reply::bad_request_with_detail("Not valid JSON data. Data was: <pre>" + req.body + "</pre>");
-		return;
+		return true;
 	}
 	auto req_obj = value.get_obj();
 	auto it = req_obj.find("type");
 	if(it == req_obj.end()) {
 		obj["type"] = "error";
 		obj["description"] = "No 'type' field in request";
-		return create_json_reply(json_spirit::mValue(obj), rep);
+		return reply::create_json_reply(json_spirit::mValue(obj), rep);
 	}
 	const std::string& type = it->second.get_str();
+
+	if(type == "lobby_get_status") {
+		json_spirit::mObject uo;
+		data_.get_status_list(&uo);
+		obj["type"] = "lobby_status";
+		obj["clients"] = uo;
+		return reply::create_json_reply(json_spirit::mValue(obj), rep);
+	}
+
+	if(type == "lobby_get_server_info") {
+		json_spirit::mObject si_obj;
+		game_server::worker::get_server_info(&si_obj);
+		obj["type"] = "lobby_server_info";
+		obj["servers"] = si_obj;
+		return reply::create_json_reply(json_spirit::mValue(obj), rep);
+	}
 
 	int session_id = -1;
 	it = req_obj.find("session_id");
@@ -278,7 +298,7 @@ void request_handler::handle_post(const request& req, reply& rep)
 		} else {
 			obj["type"] = "error";
 			obj["error"] = "'session_id' attribute must be integer type";
-			return create_json_reply(json_spirit::mValue(obj), rep);
+			return reply::create_json_reply(json_spirit::mValue(obj), rep);
 		}
 	}
 
@@ -286,18 +306,18 @@ void request_handler::handle_post(const request& req, reply& rep)
 	if(it == req_obj.end()) {
 		obj["type"] = "error";
 		obj["error"] = "No 'user' field in request";
-		return create_json_reply(json_spirit::mValue(obj), rep);
+		return reply::create_json_reply(json_spirit::mValue(obj), rep);
 	}
 	if(it->second.type() != json_spirit::str_type) {
 		obj["type"] = "error";
 		obj["error"] = "'user' attribute must be string type";
-		return create_json_reply(json_spirit::mValue(obj), rep);
+		return reply::create_json_reply(json_spirit::mValue(obj), rep);
 	}
 	const std::string& user = it->second.get_str();
 	if(user.empty()) {
 		obj["type"] = "error";
 		obj["error"] = "'user' field is empty.";
-		return create_json_reply(json_spirit::mValue(obj), rep);
+		return reply::create_json_reply(json_spirit::mValue(obj), rep);
 	}
 
 	std::string pass;
@@ -331,16 +351,6 @@ void request_handler::handle_post(const request& req, reply& rep)
 		} else {
 			ASSERT_LOG(false, "Unhandled state: " << static_cast<int>(action));
 		}
-	} else if(type == "lobby_get_status") {
-		json_spirit::mObject uo;
-		data_.get_status_list(&uo);
-		obj["type"] = "lobby_status";
-		obj["clients"] = uo;
-	} else if(type == "lobby_get_server_info") {
-		json_spirit::mObject si_obj;
-		game_server::worker::get_server_info(&si_obj);
-		obj["type"] = "lobby_server_info";
-		obj["servers"] = si_obj;
 	} else if(type == "lobby_create_game") {
 		// waiting for other players
 		auto gt_it = req_obj.find("game_type");
@@ -367,13 +377,82 @@ void request_handler::handle_post(const request& req, reply& rep)
 	} else if(type == "lobby_quit") {
 		if(data_.sign_off(user, session_id)) {
 			obj["type"] = "lobby_bye";
+			// check if user was in any games and notify based on that.
+			int game_id;
+			if(!data_.check_client_in_games(user, &game_id)) {
+				// Still users in game post a message to them
+				json_spirit::mObject player_left_obj;
+				player_left_obj["type"] = "lobby_player_left_game";
+				player_left_obj["user"] = user;
+				data_.post_message_to_game_clients(game_id, json_spirit::mValue(player_left_obj));
+			}
 		}
 		// We just return no content if session id and username not valid.
+	} else if(type == "lobby_heartbeat") {
+		return check_messages(user, rep, conn);
+	} else if(type == "lobby_chat") {
+		if(req_obj.find("message") == req_obj.end()) {
+			obj["type"] = "error";
+			obj["description"] = "'lobby_chat' message must have a 'message' attribute.";
+		} else {
+			if(req_obj.find("to") != req_obj.end()) {
+				data_.post_message_to_client(req_obj["to"].get_str(), json_spirit::mValue(req_obj["message"]));
+			} else {
+				data_.post_message_to_all_clients(json_spirit::mValue(req_obj["message"]));
+			}
+			return check_messages(user, rep, conn);
+		}
+	} else if(type == "lobby_join_game") {
+		if(req_obj.find("game_id") == req_obj.end()) {
+			obj["type"] = "error";
+			obj["description"] = "'lobby_join_game' message must have a 'game_id' attribute.";
+		} else {
+			json_spirit::mObject req_to_join;
+			req_to_join["type"] = "lobby_request_to_join";
+			req_to_join["user"] = user;
+			data_.post_message_to_game_clients(req_obj["game_id"].get_int(), json_spirit::mValue(req_to_join));
+			return check_messages(user, rep, conn);
+		}
+	} else if(type == "lobby_leave_game") {
+		if(req_obj.find("game_id") != req_obj.end()) {
+			if(data_.check_game_and_client(req_obj["game_id"].get_int(), user)) {
+				if(!data_.check_client_in_games(user)) {
+					// Still users in game post a message to them
+					json_spirit::mObject player_left_obj;
+					player_left_obj["type"] = "lobby_player_left_game";
+					player_left_obj["user"] = user;
+					data_.post_message_to_game_clients(req_obj["game_id"].get_int(), json_spirit::mValue(player_left_obj));
+				}
+				obj["type"] = "leave_game_success";
+			} else {
+				obj["type"] = "error";
+				obj["description"] = "Invalid 'game_id' or you are not in that game.";
+			}
+		} else {
+			obj["type"] = "error";
+			obj["description"] = "'leave_game' message must have a 'game_id' attribute.";
+		}
+	} else if(type == "lobby_join_reply") {
+		if(req_obj.find("game_id") != req_obj.end() && req_obj.find("accept") != req_obj.end() && req_obj.find("requesting_user") != req_obj.end()) {
+			if(data_.check_game_and_client(req_obj["game_id"].get_int(), user)) {
+				json_spirit::mObject join_reply_obj;
+				join_reply_obj["requesting_user"] = req_obj["requesting_user"].get_str();
+				join_reply_obj["accept"] = req_obj["accept"].get_bool();
+				data_.post_message_to_game_clients(req_obj["game_id"].get_int(), json_spirit::mValue(join_reply_obj));
+				return check_messages(user, rep, conn);
+			} else {
+				obj["type"] = "error";
+				obj["description"] = "Invalid 'game_id' or you are not in that game.";
+			}
+		} else {
+			obj["type"] = "error";
+			obj["description"] = "'lobby_join_reply' message must have 'game_id', 'accept' and 'requesting_user' attributes.";
+		}
 	} else {
 		obj["type"] = "error";
 		obj["description"] = "Unknown type of request";
 	}
-	create_json_reply(json_spirit::mValue(obj), rep);
+	return reply::create_json_reply(json_spirit::mValue(obj), rep);
 }
 
 } // namespace server

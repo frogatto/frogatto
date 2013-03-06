@@ -17,6 +17,7 @@
 
 #include <string>
 #include <vector>
+#include <json_spirit.h>
 #include <boost/asio.hpp>
 #include "header.hpp"
 
@@ -64,6 +65,9 @@ struct reply
   /// Bad request with some detail supplied. The detail is expected to be already
   /// html formatted.
   static reply bad_request_with_detail(const std::string& detail);
+
+  // Create a json reply
+  static bool reply::create_json_reply(const json_spirit::mValue& value, reply& rep);
 };
 
 } // namespace server

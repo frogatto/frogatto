@@ -19,6 +19,7 @@
 #include <boost/noncopyable.hpp>
 #include <json_spirit.h>
 
+#include "connection_fwd.hpp"
 #include "shared_data.hpp"
 
 namespace http {
@@ -37,14 +38,15 @@ public:
 	  game_server::shared_data& data);
 
   /// Handle a request and produce a reply.
-  void handle_request(const request& req, reply& rep);
+  bool handle_request(const request& req, reply& rep, http::server::connection_ptr conn);
 
   // Handle post's.
-  void handle_post(const request& req, reply& rep);
+  bool handle_post(const request& req, reply& rep, http::server::connection_ptr conn);
   // Handle get
-  void handle_get(const request& req, reply& rep);
-  // Handle the boring details of writing out json into a reply.
-  void create_json_reply(const json_spirit::mValue& v, reply& rep);
+  bool handle_get(const request& req, reply& rep, http::server::connection_ptr conn);
+
+  // Check message queue and reply based on that.
+  bool check_messages(const std::string& user, reply& rep, http::server::connection_ptr conn);
 private:
   /// The directory containing the files to be served.
   std::string doc_root_;

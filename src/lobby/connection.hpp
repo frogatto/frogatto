@@ -44,6 +44,12 @@ public:
   /// Start the first asynchronous operation for the connection.
   void start();
 
+  /// start writing data to the connection that has been delayed.
+  void handle_delayed_write();
+
+  /// Get reply
+  reply& get_reply() { return reply_; }
+
 private:
   /// Handle completion of a read operation.
   void handle_read(const boost::system::error_code& e,

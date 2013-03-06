@@ -67,11 +67,16 @@ void connection::handle_read(const boost::system::error_code& e,
 					  boost::asio::placeholders::bytes_transferred)));
 		  }
 	  }
-      request_handler_.handle_request(request_, reply_);
-      boost::asio::async_write(socket_, reply_.to_buffers(),
-          strand_.wrap(
-            boost::bind(&connection::handle_write, shared_from_this(),
-              boost::asio::placeholders::error)));
+
+      if(request_handler_.handle_request(request_, reply_, shared_from_this())) {
+		  std::cerr << "Reply: " << reply_.content << std::endl;
+	      boost::asio::async_write(socket_, reply_.to_buffers(),
+              strand_.wrap(
+                boost::bind(&connection::handle_write, shared_from_this(),
+                boost::asio::placeholders::error)));
+	  } else {
+		  std::cerr << "Reply deferred" << std::endl;
+	  }
     }
     else if (!result)
     {
@@ -127,6 +132,15 @@ void connection::handle_write(const boost::system::error_code& e)
   // references to the connection object will disappear and the object will be
   // destroyed automatically after this handler returns. The connection class's
   // destructor closes the socket.
+}
+
+void connection::handle_delayed_write()
+{
+	std::cerr << "Deferred Reply(" << this << "): " << reply_.content << std::endl;
+	boost::asio::async_write(socket_, reply_.to_buffers(),
+		strand_.wrap(
+		boost::bind(&connection::handle_write, shared_from_this(),
+		boost::asio::placeholders::error)));
 }
 
 } // namespace server
