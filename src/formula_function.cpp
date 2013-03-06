@@ -23,7 +23,9 @@
 
 #include "array_callable.hpp"
 #include "asserts.hpp"
+#include "base64.hpp"
 #include "compress.hpp"
+#include "data_blob.hpp"
 #include "dialog.hpp"
 #include "debug_console.hpp"
 #include "foreach.hpp"
@@ -1616,8 +1618,35 @@ END_FUNCTION_DEF(compress)
 FUNCTION_DEF(decompress, 1, 1, "decompress(expr): Tries to decompress the given object, returns the data if successful.")
 	variant compressed = args()[0]->evaluate(variables);
 	zip::compressed_data_ptr cd = boost::intrusive_ptr<zip::compressed_data>(compressed.try_convert<zip::compressed_data>());
-	return cd->get_value("decompress");
+	if(cd == NULL) {
+		ASSERT_LOG(compressed.is_string(), "decompress takes either a compressed_data object or string.");
+		std::string s = compressed.as_string();
+		std::string key = s.length() > 10 ? s.substr(0,10) : s;
+		int n;
+		if((n = s.find(':')) != std::string::npos) {
+			key = s.substr(0, n);
+			s = s.substr(n+1);
+		}
+		std::vector<char> vc = zip::decompress(base64::b64decode(std::vector<char>(s.begin(), s.end())));
+		return variant(new data_blob(key, vc));
+	} else {
+		return cd->get_value("decompress");
+	}
 END_FUNCTION_DEF(decompress)
+
+FUNCTION_DEF(unencode, 1, 1, "unencode(expr) -> data_blob: Tries to unencode the given base64 encoded data.")
+	variant encoded = args()[0]->evaluate(variables);
+	ASSERT_LOG(encoded.is_string(), "encoded data must be a string");
+	std::string s = encoded.as_string();
+	std::string key = s.length() > 10 ? s.substr(0,10) : s;
+	int n;
+	if((n = s.find(':')) != std::string::npos) {
+		key = s.substr(0, n);
+		s = s.substr(n+1);
+	}
+	std::vector<char> vc = base64::b64decode(std::vector<char>(s.begin(), s.end()));
+	return variant(new data_blob(key, vc));
+END_FUNCTION_DEF(unencode)
 
 	class size_function : public function_expression {
 	public:

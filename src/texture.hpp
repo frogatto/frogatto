@@ -18,6 +18,7 @@
 #include <boost/shared_ptr.hpp>
 #include <vector>
 
+#include "data_blob.hpp"
 #include "graphics.hpp"
 #include "surface.hpp"
 
@@ -58,6 +59,7 @@ public:
 	void set_as_current_texture() const;
 	bool valid() const { return id_; }
 
+	static texture get(data_blob_ptr blob);
 	static texture get(const std::string& str, int options=0);
 	static texture get(const std::string& str, const std::string& algorithm);
 	static texture get_palette_mapped(const std::string& str, int palette);

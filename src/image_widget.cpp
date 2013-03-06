@@ -10,6 +10,7 @@
 
    See the COPYING file for more details.
 */
+#include "data_blob.hpp"
 #include "image_widget.hpp"
 #include "raster.hpp"
 
@@ -32,14 +33,22 @@ image_widget::image_widget(graphics::texture tex, int w, int h)
 }
 
 image_widget::image_widget(const variant& v, game_logic::formula_callable* e) 
-	: widget(v, e), image_name_(v["image"].as_string())
+	: widget(v, e)
 {
-	set_environment();
 	if(v.has_key("area")) {
 		area_ = rect(v["area"]);
 	}
 
-	texture_ = graphics::texture::get(image_name_);
+	if(v["image"].is_string()) {
+		image_name_ = v["image"].as_string();
+		texture_ = graphics::texture::get(image_name_);
+	} else if(v["image"].is_callable()) {
+		data_blob_ptr image_blob = data_blob_ptr(v["image"].try_convert<data_blob>());
+		ASSERT_LOG(image_blob != NULL, "Couldn't convert callable in 'image' attribute into a data_blob.");
+		image_name_ = (*image_blob)();
+		texture_ = graphics::texture::get(image_blob);
+	}
+
 	rotate_ = v.has_key("rotation") ? v["rotation"].as_decimal().as_float() : 0.0;
 	init(v["image_width"].as_int(-1), v["image_height"].as_int(-1));
 }
@@ -81,8 +90,15 @@ void image_widget::handle_draw() const
 void image_widget::set_value(const std::string& key, const variant& v)
 {
 	if(key == "image") {
-		image_name_ = v.as_string();
-		texture_ = graphics::texture::get(image_name_);
+		if(v.is_string()) {
+			image_name_ = v.as_string();
+			texture_ = graphics::texture::get(image_name_);
+		} else if(v.is_callable()) {
+			data_blob_ptr image_blob = data_blob_ptr(v.try_convert<data_blob>());
+			ASSERT_LOG(image_blob != NULL, "Couldn't convert callable in 'image' attribute into a data_blob.");
+			image_name_ = (*image_blob)();
+			texture_ = graphics::texture::get(image_blob);
+		}
 	} else if(key == "area") {
 		area_ = rect(v);
 	} else if(key == "rotation") {

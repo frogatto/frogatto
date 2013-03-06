@@ -17,6 +17,7 @@
 #include <string>
 #include <vector>
 
+#include "data_blob.hpp"
 #include "surface.hpp"
 
 namespace graphics
@@ -31,6 +32,7 @@ namespace surface_cache
 
 surface get(const std::string& key);
 surface get_no_cache(const std::string& key, std::string* fname=0);
+surface get_no_cache(data_blob_ptr blob);
 void invalidate_modified(std::vector<std::string>* keys);
 void clear_unused();
 void clear();

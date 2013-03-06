@@ -81,6 +81,17 @@ surface get(const std::string& key)
 	return surf;
 }
 
+surface get_no_cache(data_blob_ptr blob)
+{
+	ASSERT_LOG(blob != NULL, "Invalid data_blob in surface::get_no_cache");
+	surface surf = surface(IMG_Load_RW(blob->get_rw_ops(), 0));
+	if(surf.get() == false || surf->w == 0) {
+		std::cerr << "failed to load image '" << (*blob)() << "'\n";
+		throw load_image_error();
+	}
+	return surf;
+}
+
 surface get_no_cache(const std::string& key, std::string* full_filename)
 {
 	std::string fname = path + key;

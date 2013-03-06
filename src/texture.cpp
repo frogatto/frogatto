@@ -501,6 +501,27 @@ void texture::set_as_current_texture() const
 	//std::cerr << gluErrorString(glGetError()) << "~set_as_current_texture~\n";
 }
 
+texture texture::get(data_blob_ptr blob)
+{
+	ASSERT_LOG(blob != NULL, "NULL data_blob passed to texture::get()");
+	
+	texture result = texture_cache().get((*blob)()).t;
+	ASSERT_LOG(result.width() % 2 == 0, "\nIMAGE WIDTH IS NOT AN EVEN NUMBER OF PIXELS:" << (*blob)());
+
+	if(!result.valid()) {
+		key surfs;
+		CacheEntry entry;
+		surfs.push_back(surface_cache::get_no_cache(blob));
+		entry.t = result = texture(surfs, 0);
+		result.id_->info = (*blob)();
+
+		fprintf(stderr, "LOADTEXTURE: %s -> %p\n", (*blob)().c_str(), result.id_.get());
+
+		texture_cache().put((*blob)(), entry);
+	}
+	return result;
+}
+
 texture texture::get(const std::string& str, int options)
 {
 	ASSERT_LOG(str.empty() == false, "Empty string passed to texture::get()");
