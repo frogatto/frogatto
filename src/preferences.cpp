@@ -951,9 +951,6 @@ namespace preferences {
         if(result) {
             use_16bpp_textures_ = mem_info.mem_total_kb < memory_required;
             std::cerr << "USING " << (use_16bpp_textures_ ? 16 : 32) << "bpp TEXTURES BECAUSE SYSTEM HAS " << mem_info.mem_total_kb << "KB AND " << memory_required << "KB REQUIRED FOR 32bpp TEXTURES\n";
-        } else {
-            //use_16bpp_textures_ = true;
-            std::cerr << "COULD NOT DISCOVER HOW MUCH MEMORY THE SYSTEM HAS, SO NOT USING 16bpp TEXTURES\n";
         }
     }
     
