@@ -436,6 +436,7 @@ bool request_handler::handle_post(const request& req, reply& rep, http::server::
 		if(req_obj.find("game_id") != req_obj.end() && req_obj.find("accept") != req_obj.end() && req_obj.find("requesting_user") != req_obj.end()) {
 			if(data_.check_game_and_client(req_obj["game_id"].get_int(), user)) {
 				json_spirit::mObject join_reply_obj;
+				join_reply_obj["type"] = "lobby_player_join_reply";
 				join_reply_obj["requesting_user"] = req_obj["requesting_user"].get_str();
 				join_reply_obj["accept"] = req_obj["accept"].get_bool();
 				data_.post_message_to_game_clients(req_obj["game_id"].get_int(), json_spirit::mValue(join_reply_obj));
