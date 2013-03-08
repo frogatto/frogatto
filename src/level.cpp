@@ -4564,6 +4564,10 @@ void level::launch_new_module(const std::string& module_id, game_logic::const_fo
 	reload_level_paths();
 	custom_object_type::reload_file_paths();
 	font::reload_font_paths();
+#if defined(USE_GLES2)
+	gles2::init_default_shader();
+#endif
+
 
 	const std::vector<entity_ptr> players = this->players();
 	foreach(entity_ptr e, players) {
