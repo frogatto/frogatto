@@ -184,14 +184,20 @@ END_FUNCTION_DEF(set_clipboard_text)
 #if !defined(__native_client__)
 FUNCTION_DEF(tbs_client, 2, 3, "tbs_client(host, port, session=-1): creates a client object to the tbs server")
 	const std::string host = args()[0]->evaluate(variables).as_string();
-	const int port = args()[1]->evaluate(variables).as_int();
+	variant port_var = args()[1]->evaluate(variables);
+	std::string port;
+	if(port_var.is_string()) {
+		port = port_var.as_string();
+	} else {
+		port = formatter() << port_var.as_int();
+	}
 	const int session = args().size() >= 3 ? args()[2]->evaluate(variables).as_int() : -1;
 
 	if(host == "localhost" && preferences::internal_tbs_server()) {
 		return variant(new tbs::internal_client(session));
 	}
 
-	return variant(new tbs::client(host, formatter() << port, session));
+	return variant(new tbs::client(host, port, session));
 END_FUNCTION_DEF(tbs_client)
 
 
