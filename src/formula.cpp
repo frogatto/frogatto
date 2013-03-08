@@ -467,7 +467,7 @@ public:
 		return def->type_definition;
 	}
 private:
-	variant execute_member(const formula_callable& variables, std::string& id) const {
+	variant execute_member(const formula_callable& variables, std::string& id, variant* variant_id) const {
 		id = id_;
 		return variables.query_value("self");
 	}
@@ -525,7 +525,7 @@ public:
 	}
 
 private:
-	variant execute_member(const formula_callable& variables, std::string& id) const {
+	variant execute_member(const formula_callable& variables, std::string& id, variant* variant_id) const {
 		id = id_;
 		return variables.query_value("self");
 	}
@@ -618,7 +618,7 @@ private:
 		return right_->evaluate(*left.as_callable());
 	}
 	
-	variant execute_member(const formula_callable& variables, std::string& id) const {
+	variant execute_member(const formula_callable& variables, std::string& id, variant* variant_id) const {
 		variant left = left_->evaluate(variables);
 		
 		if(!right_->is_identifier(&id)) {
@@ -657,11 +657,15 @@ private:
 		}
 	}
 	
-	variant execute_member(const formula_callable& variables, std::string& id) const {
+	variant execute_member(const formula_callable& variables, std::string& id, variant* variant_id) const {
 		const variant left = left_->evaluate(variables);
 		const variant key = key_->evaluate(variables);
 
-		id = key.as_string();
+		if(key.is_string()) {
+			id = key.as_string();
+		} else if(variant_id) {
+			*variant_id = key;
+		}
 		return left;
 	}
 	

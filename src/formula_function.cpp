@@ -164,7 +164,7 @@ std::string formula_expression::debug_pinpoint_location() const
 	return pinpoint_location(parent_formula_, begin_str_, end_str_);
 }
 
-variant formula_expression::execute_member(const formula_callable& variables, std::string& id) const
+variant formula_expression::execute_member(const formula_callable& variables, std::string& id, variant* variant_id) const
 {
 	formula::fail_if_static_context();
 	ASSERT_LOG(false, "Trying to set illegal value: " << str_ << "\n" << debug_pinpoint_location());
@@ -1942,43 +1942,57 @@ END_FUNCTION_DEF(unencode)
 class set_command : public game_logic::command_callable
 {
 public:
-	set_command(variant target, const std::string& attr, variant val)
-	  : target_(target), attr_(attr), val_(val)
+	set_command(variant target, const std::string& attr, const variant& variant_attr, variant val)
+	  : target_(target), attr_(attr), variant_attr_(variant_attr), val_(val)
 	{}
 	virtual void execute(game_logic::formula_callable& ob) const {
 		if(target_.is_callable()) {
+			ASSERT_LOG(!attr_.empty(), "ILLEGAL KEY IN SET OF CALLABLE: " << val_.write_json());
 			target_.mutable_callable()->mutate_value(attr_, val_);
 		} else if(target_.is_map()) {
-			target_.add_attr_mutation(variant(attr_), val_);
+			if(!attr_.empty()) {
+				target_.add_attr_mutation(variant(attr_), val_);
+			} else {
+				target_.add_attr_mutation(variant_attr_, val_);
+			}
 		} else {
+			ASSERT_LOG(!attr_.empty(), "ILLEGAL KEY IN SET OF CALLABLE: " << val_.write_json());
 			ob.mutate_value(attr_, val_);
 		}
 	}
 private:
 	mutable variant target_;
 	std::string attr_;
+	variant variant_attr_;
 	variant val_;
 };
 
 class add_command : public game_logic::command_callable
 {
 public:
-	add_command(variant target, const std::string& attr, variant val)
-	  : target_(target), attr_(attr), val_(val)
+	add_command(variant target, const std::string& attr, const variant& variant_attr, variant val)
+	  : target_(target), attr_(attr), variant_attr_(variant_attr), val_(val)
 	{}
 	virtual void execute(game_logic::formula_callable& ob) const {
 		if(target_.is_callable()) {
+			ASSERT_LOG(!attr_.empty(), "ILLEGAL KEY IN ADD OF CALLABLE: " << val_.write_json());
 			target_.mutable_callable()->mutate_value(attr_, target_.mutable_callable()->query_value(attr_) + val_);
 		} else if(target_.is_map()) {
-			variant key(attr_);
-			target_.add_attr_mutation(key, target_[key] + val_);
+			if(!attr_.empty()) {
+				variant key(attr_);
+				target_.add_attr_mutation(key, target_[key] + val_);
+			} else {
+				target_.add_attr_mutation(variant_attr_, target_[variant_attr_] + val_);
+			}
 		} else {
+			ASSERT_LOG(!attr_.empty(), "ILLEGAL KEY IN ADD OF CALLABLE: " << val_.write_json());
 			ob.mutate_value(attr_, ob.query_value(attr_) + val_);
 		}
 	}
 private:
 	mutable variant target_;
 	std::string attr_;
+	variant variant_attr_;
 	variant val_;
 };
 
@@ -2055,16 +2069,17 @@ private:
 		if(!key_.empty()) {
 			static const std::string MeKey = "me";
 			variant target = variables.query_value(MeKey);
-			set_command* cmd = new set_command(target, key_, args()[1]->evaluate(variables));
+			set_command* cmd = new set_command(target, key_, variant(), args()[1]->evaluate(variables));
 			cmd->set_expression(this);
 			return variant(cmd);
 		}
 
 		if(args().size() == 2) {
 			std::string member;
-			variant target = args()[0]->evaluate_with_member(variables, member);
+			variant variant_member;
+			variant target = args()[0]->evaluate_with_member(variables, member, &variant_member);
 			set_command* cmd = new set_command(
-			  target, member, args()[1]->evaluate(variables));
+			  target, member, variant_member, args()[1]->evaluate(variables));
 			cmd->set_expression(this);
 			return variant(cmd);
 		}
@@ -2076,7 +2091,7 @@ private:
 		const int begin_index = args().size() == 2 ? 0 : 1;
 		set_command* cmd = new set_command(
 		    target,
-		    args()[begin_index]->evaluate(variables).as_string(),
+		    args()[begin_index]->evaluate(variables).as_string(), variant(),
 			args()[begin_index + 1]->evaluate(variables));
 		cmd->set_expression(this);
 		return variant(cmd);
@@ -2124,16 +2139,17 @@ private:
 		if(!key_.empty()) {
 			static const std::string MeKey = "me";
 			variant target = variables.query_value(MeKey);
-			add_command* cmd = new add_command(target, key_, args()[1]->evaluate(variables));
+			add_command* cmd = new add_command(target, key_, variant(), args()[1]->evaluate(variables));
 			cmd->set_expression(this);
 			return variant(cmd);
 		}
 
 		if(args().size() == 2) {
 			std::string member;
-			variant target = args()[0]->evaluate_with_member(variables, member);
+			variant variant_member;
+			variant target = args()[0]->evaluate_with_member(variables, member, &variant_member);
 			add_command* cmd = new add_command(
-			      target, member, args()[1]->evaluate(variables));
+			      target, member, variant_member, args()[1]->evaluate(variables));
 			cmd->set_expression(this);
 			return variant(cmd);
 		}
@@ -2145,7 +2161,7 @@ private:
 		const int begin_index = args().size() == 2 ? 0 : 1;
 		add_command* cmd = new add_command(
 		    target,
-		    args()[begin_index]->evaluate(variables).as_string(),
+		    args()[begin_index]->evaluate(variables).as_string(), variant(),
 			args()[begin_index + 1]->evaluate(variables));
 		cmd->set_expression(this);
 		return variant(cmd);

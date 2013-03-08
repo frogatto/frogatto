@@ -61,11 +61,11 @@ public:
 		return execute(variables);
 	}
 
-	variant evaluate_with_member(const formula_callable& variables, std::string& id) const {
+	variant evaluate_with_member(const formula_callable& variables, std::string& id, variant* variant_id=NULL) const {
 #if !TARGET_OS_IPHONE
 		call_stack_manager manager(this);
 #endif
-		return execute_member(variables, id);
+		return execute_member(variables, id, variant_id);
 	}
 
 	virtual expression_ptr optimize() const {
@@ -97,7 +97,7 @@ public:
 
 	int ntimes_called() const { return ntimes_called_; }
 protected:
-	virtual variant execute_member(const formula_callable& variables, std::string& id) const;
+	virtual variant execute_member(const formula_callable& variables, std::string& id, variant* variant_id) const;
 private:
 	virtual variant execute(const formula_callable& variables) const = 0;
 	const char* name_;
