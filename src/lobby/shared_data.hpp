@@ -54,7 +54,6 @@ namespace game_server
 		size_t max_players;
 		std::string name;
 		std::string display_name;
-		json_spirit::mValue display;
 		json_spirit::mObject other;
 		bool has_bots;
 	};

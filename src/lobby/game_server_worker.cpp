@@ -131,15 +131,12 @@ namespace game_server
 						} else if(it.first == "has_bots") {
 							si_.has_bots = it.second.get_bool();
 							++field_counter;
-						} else if(it.first == "display") {
-							si_.display = it.second.get_obj();
-							++field_counter;
 						} else {
 							si_.other[it.first] = it.second;
 						}
 					}
 
-					if(field_counter != 7) {
+					if(field_counter != 6) {
 						throw new processing_exception("Missing attribute in get_server_info reply.");
 					}
 
@@ -238,7 +235,6 @@ namespace game_server
 			g_obj["min_humans"] = int(si.min_humans);
 			g_obj["max_players"] = int(si.max_players);
 			g_obj["has_bots"] = si.has_bots;
-			g_obj["display"] = si.display;
 			for(auto it : si.other) {
 				g_obj[it.first] = it.second;
 			}
