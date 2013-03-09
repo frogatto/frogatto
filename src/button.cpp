@@ -159,7 +159,7 @@ bool button::handle_event(const SDL_Event& event, bool claimed)
 		if(in_widget(e.x,e.y)) {
 			current_button_image_set_ = depressed_button_image_set_;
 			down_ = true;
-			claimed = true;
+			claimed = claim_mouse_events();
 		}
 	} else if(event.type == SDL_MOUSEBUTTONUP) {
 		down_ = false;
@@ -168,7 +168,7 @@ bool button::handle_event(const SDL_Event& event, bool claimed)
 			if(in_widget(e.x,e.y)) {
 				current_button_image_set_ = focus_button_image_set_;
 				onclick_();
-				claimed = true;
+				claimed = claim_mouse_events();
 			} else {
 				current_button_image_set_ = normal_button_image_set_;
 			}

@@ -149,16 +149,16 @@ bool slider::handle_event(const SDL_Event& event, bool claimed)
 			onchange_(pos);
 		}
 
-		return true;
+		return claim_mouse_events();
 	} else if(event.type == SDL_MOUSEBUTTONDOWN) {
 		const SDL_MouseButtonEvent& e = event.button;
 		if(in_button(e.x,e.y)) {
 			dragging_ = true;
-			return true;
+			return claim_mouse_events();
 		}
 	} else if(event.type == SDL_MOUSEBUTTONUP && dragging_) {
 		dragging_ = false;
-		claimed = true;
+		claimed = claim_mouse_events();
 		if(ondragend_) {
 			const SDL_MouseButtonEvent& e = event.button;
 			int mouse_x = e.x;

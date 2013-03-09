@@ -223,14 +223,14 @@ namespace gui
 			left_arrow_->width(), 
 			left_arrow_->height()))) {
 			select_left();
-			claimed = true;
+			claimed = claim_mouse_events();
 		}
 		if(point_in_rect(p, rect(right_arrow_->x(), 
 			right_arrow_->y(), 
 			right_arrow_->width(), 
 			right_arrow_->height()))) {
 			select_right();
-			claimed = true;
+			claimed = claim_mouse_events();
 		}
 		widget_ptr& cur = list_[current_selection_].second;
 		if(point_in_rect(p, rect(cur->x(), cur->y(), cur->width(), cur->height())) && on_select_) {

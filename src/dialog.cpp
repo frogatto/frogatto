@@ -63,8 +63,7 @@ std::string get_dialog_file(const std::string& fname)
 
 dialog::dialog(int x, int y, int w, int h)
   : opened_(false), cancelled_(false), clear_bg_(196), padding_(10),
-    add_x_(0), add_y_(0), bg_alpha_(1.0), last_draw_(-1), upscale_frame_(true),
-	ignore_mouse_events_(false)
+    add_x_(0), add_y_(0), bg_alpha_(1.0), last_draw_(-1), upscale_frame_(true)
 {
 	set_environment();
 	set_loc(x,y);
@@ -76,8 +75,7 @@ dialog::dialog(const variant& v, game_logic::formula_callable* e)
 	: widget(v,e),
 	opened_(false), cancelled_(false), 
 	add_x_(0), add_y_(0), last_draw_(-1),
-	upscale_frame_(v["upscale_frame"].as_bool(true)),
-	ignore_mouse_events_(v["ignore_mouse_events"].as_bool(false))
+	upscale_frame_(v["upscale_frame"].as_bool(true))
 {
 	forced_dimensions_ = rect(x(), y(), width(), height());
 	padding_ = v["padding"].as_int(10);
@@ -412,7 +410,7 @@ bool dialog::handle_event(const SDL_Event& ev, bool claimed)
 		//then we claim it because nobody else should get it.
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP: {
-			if(ignore_mouse_events_ == false && in_widget(ev.button.x, ev.button.y)) {
+			if(claim_mouse_events() && in_widget(ev.button.x, ev.button.y)) {
 				claimed = true;
 			}
 			break;

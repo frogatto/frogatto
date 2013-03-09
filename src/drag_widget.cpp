@@ -225,7 +225,7 @@ bool drag_widget::handle_mousedown(const SDL_MouseButtonEvent& event, bool claim
 			if(drag_start_) {
 				drag_start_(p.x, p.y);
 			}
-			claimed = true;
+			claimed = claim_mouse_events();
 		}
 	}
 	return claimed;
@@ -240,7 +240,7 @@ bool drag_widget::handle_mouseup(const SDL_MouseButtonEvent& event, bool claimed
 		if(drag_end_) {
 			drag_end_(mousex, mousey);
 		}
-		claimed = true;
+		claimed = claim_mouse_events();
 	}
 	return claimed;
 }

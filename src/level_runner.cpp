@@ -1124,16 +1124,12 @@ bool level_runner::play_cycle()
 
 #endif
 			{
-				// N.B. We ignore claimed events from widgets attached to custom_objects so 
-				// that we can pass the mouse events to the objects themselves in the handle_mouse_even
-				// code.
-				bool claimed = swallowed;
 				// pre-translate the mouse positions.
 				SDL_Event ev(event);
 				translate_mouse_event(&ev);
 				foreach(const entity_ptr& e, lvl_->get_active_chars()) {
 					custom_object* custom_obj = dynamic_cast<custom_object*>(e.get());
-					claimed = custom_obj->handle_sdl_event(ev, claimed);
+					swallowed = custom_obj->handle_sdl_event(ev, swallowed);
 				}
 			}
 

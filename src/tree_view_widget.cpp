@@ -366,7 +366,7 @@ bool tree_view_widget::handle_event(const SDL_Event& event, bool claimed)
 						selected_row_ = nrows() - 1;
 					}
 				}
-				claimed = true;
+				claimed = claim_mouse_events();
 			}
 #endif
 		} else if(event.type == SDL_MOUSEBUTTONDOWN) {
@@ -378,7 +378,7 @@ bool tree_view_widget::handle_event(const SDL_Event& event, bool claimed)
 				if(selected_row_ < 0) {
 					selected_row_ = 0;
 				}
-				claimed = true;
+				claimed = claim_mouse_events();
 			} else if(event.button.button == SDL_BUTTON_WHEELDOWN  && point_in_rect(p, r)) {
 				int y3 = yscroll() + 3*row_height_;
 				set_yscroll(virtual_height() - y3 < height() 
@@ -388,7 +388,7 @@ bool tree_view_widget::handle_event(const SDL_Event& event, bool claimed)
 				if(selected_row_ >= nrows()) {
 					selected_row_ = nrows() - 1;
 				}
-				claimed = true;
+				claimed = claim_mouse_events();
 			} else 
 #endif
 			{
@@ -515,11 +515,11 @@ bool tree_editor_widget::handle_event(const SDL_Event& event, bool claimed)
 	}
 
 	if(context_menu_ && context_menu_->process_event(event, claimed)) {
-		return true;
+		return claim_mouse_events();
 	}
 
 	if(claimed || tree_view_widget::handle_event(event, claimed)) {
-		return true;
+		return claim_mouse_events();
 	}
 	return claimed;
 }

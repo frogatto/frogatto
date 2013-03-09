@@ -203,7 +203,7 @@ namespace gui
 		} else if(event.type == SDL_MOUSEBUTTONDOWN) {
 			const SDL_MouseButtonEvent& e = event.button;
 			if(in_widget(e.x,e.y)) {
-				claimed = true;
+				claimed = claim_mouse_events();
 			}
 		} else if(event.type == SDL_MOUSEBUTTONUP) {
 			const SDL_MouseButtonEvent& e = event.button;
@@ -211,7 +211,7 @@ namespace gui
 				if(on_click_) {
 					on_click_(event.button.button);
 				}
-				claimed = true;
+				claimed = claim_mouse_events();
 			}
 		}
 

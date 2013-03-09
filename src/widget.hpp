@@ -68,6 +68,8 @@ public:
 	std::string id() const { return id_; }
 	bool disabled() const { return disabled_; }
 	void enable(bool val=true) { disabled_ = val; }
+	bool claim_mouse_events() const { return claim_mouse_events_; }
+	void set_claim_mouse_events(bool claim=true) { claim_mouse_events_ = claim; }
 
 	unsigned get_tooltip_delay() const { return tooltip_display_delay_; }
 	void set_tooltip_delay(unsigned tooltip_delay) { tooltip_display_delay_ = tooltip_delay; }
@@ -134,6 +136,7 @@ private:
 	int display_alpha_;
 	int pad_h_;
 	int pad_w_;
+	bool claim_mouse_events_;
 
 	HORIZONTAL_ALIGN align_h_;
 	VERTICAL_ALIGN   align_v_;

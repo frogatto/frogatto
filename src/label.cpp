@@ -68,6 +68,7 @@ label::label(const variant& v, game_logic::formula_callable* e)
 		highlight_color_ = graphics::color(v["highlight_color"]).as_sdl_color();
 	}
 	highlight_on_mouseover_ = v["highlight_on_mouseover"].as_bool(false);
+	set_claim_mouse_events(v["claim_mouse_events"].as_bool(false));
 	recalculate_texture();
 }
 
@@ -200,13 +201,13 @@ bool label::handle_event(const SDL_Event& event, bool claimed)
 			} else {
 				draw_highlight_ = false;
 			}
-			claimed = true;
+			claimed = claim_mouse_events();
 		}
 	} else if(event.type == SDL_MOUSEBUTTONDOWN) {
 		const SDL_MouseButtonEvent& e = event.button;
 		if(in_label(e.x,e.y)) {
 			down_ = true;
-			claimed = true;
+			claimed = claim_mouse_events();
 		}
 	} else if(event.type == SDL_MOUSEBUTTONUP) {
 		down_ = false;
@@ -215,7 +216,7 @@ bool label::handle_event(const SDL_Event& event, bool claimed)
 			if(on_click_) {
 				on_click_();
 			}
-			claimed = true;
+			claimed = claim_mouse_events();
 		}
 	}
 	return claimed;}

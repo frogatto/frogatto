@@ -171,7 +171,7 @@ bool scrollbar_widget::handle_event(const SDL_Event& event, bool claimed)
 
 		const int start_pos = window_pos_;
 
-		claimed = true;
+		claimed = claim_mouse_events();
 
 #if !SDL_VERSION_ATLEAST(2, 0, 0)
 		if( e.button == SDL_BUTTON_WHEELUP || e.button == SDL_BUTTON_WHEELDOWN ) {

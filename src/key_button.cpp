@@ -238,7 +238,7 @@ bool key_button::handle_event(const SDL_Event& event, bool claimed)
 				current_button_image_set_ = focus_button_image_set_;
 				grab_keys_ = true;
 				dynamic_cast<graphical_font_label*>(label_.get())->set_text("...");
-				claimed = true;
+				claimed = claim_mouse_events();
 			} else {
 				current_button_image_set_ = normal_button_image_set_;
 			}

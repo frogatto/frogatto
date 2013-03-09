@@ -61,7 +61,6 @@ public:
 	void set_background_frame(const std::string& id) { background_framed_gui_element_ = id; }
 	void set_draw_background_fn(boost::function<void()> fn) { draw_background_fn_ = fn; }
 	void set_upscale_frame(bool upscale=true) { upscale_frame_ = upscale; }
-	void set_ignore_mouse_events(bool ignore=false) { ignore_mouse_events_ = ignore; }
 
 	virtual bool has_focus() const;
 	void set_process_hook(boost::function<void()> fn) { on_process_ = fn; }
@@ -118,8 +117,6 @@ private:
 	boost::function<void()> draw_background_fn_;
 
 	bool upscale_frame_;
-
-	bool ignore_mouse_events_;
 };
 
 typedef boost::intrusive_ptr<dialog> dialog_ptr;

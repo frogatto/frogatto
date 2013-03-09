@@ -30,7 +30,7 @@ widget::widget()
 	true_x_(0), true_y_(0), disabled_(false), disabled_opacity_(127),
 	tooltip_displayed_(false), visible_(true), zorder_(0), environ_(0),
 	tooltip_display_delay_(0), tooltip_ticks_(INT_MAX), resolution_(0),
-	display_alpha_(256), pad_h_(0), pad_w_(0)
+	display_alpha_(256), pad_h_(0), pad_w_(0), claim_mouse_events_(true)
 	{}
 
 widget::widget(const variant& v, game_logic::formula_callable* e) 
@@ -39,7 +39,7 @@ widget::widget(const variant& v, game_logic::formula_callable* e)
 	tooltip_displayed_(false), id_(v["id"].as_string_default()), align_h_(HALIGN_LEFT), align_v_(VALIGN_TOP),
 	tooltip_display_delay_(v["tooltip_delay"].as_int(500)), tooltip_ticks_(INT_MAX),
 	resolution_(v["frame_size"].as_int(0)), display_alpha_(v["alpha"].as_int(256)),
-	pad_w_(0), pad_h_(0)
+	pad_w_(0), pad_h_(0), claim_mouse_events_(v["claim_mouse_events"].as_bool(true))
 {
 	set_alpha(display_alpha_ < 0 ? 0 : (display_alpha_ > 256 ? 256 : display_alpha_));
 	if(v.has_key("width")) {

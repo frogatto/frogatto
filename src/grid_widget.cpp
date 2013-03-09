@@ -461,7 +461,7 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 					}
 				}
 			}
-			claimed = true;
+			claimed = claim_mouse_events();
 		}
 	}
 #endif
@@ -485,7 +485,7 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 				if(selected_row_ < 0) {
 					selected_row_ = 0;
 				}
-				claimed = true;
+				claimed = claim_mouse_events();
 			} else if(event.button.button == SDL_BUTTON_WHEELDOWN  && point_in_rect(p, r)) {
 				int y3 = yscroll() + 3*row_height_;
 				set_yscroll(virtual_height() - y3 < height() 
@@ -495,7 +495,7 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 				if(selected_row_ >= nrows()) {
 					selected_row_ = nrows() - 1;
 				}
-				claimed = true;
+				claimed = claim_mouse_events();
 			} else {
 #endif
 				const SDL_MouseButtonEvent& e = event.button;
@@ -529,12 +529,12 @@ bool grid::handle_event(const SDL_Event& event, bool claimed)
 				if(selected_row_-- == 0) {
 					selected_row_ = nrows()-1;
 				}
-				claimed = true;
+				claimed = claim_mouse_events();
 			} else if(event.key.keysym.sym == SDLK_DOWN) {
 				if(++selected_row_ == nrows()) {
 					selected_row_ = 0;
 				}
-				claimed = true;
+				claimed = claim_mouse_events();
 			}
 		}
 	}

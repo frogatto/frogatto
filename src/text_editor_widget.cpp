@@ -605,7 +605,7 @@ bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& ev
 				cursor_.col = find_equivalent_col(cursor_.col, cursor_.row-3, cursor_.row);
 				on_move_cursor();
 			}
-			return true;
+			return claim_mouse_events();
 		}
 #endif
 		set_focus(true);
@@ -645,7 +645,7 @@ bool text_editor_widget::handle_mouse_button_down(const SDL_MouseButtonEvent& ev
 		last_click_at_ = SDL_GetTicks();
 
 		is_dragging_ = true;
-		return true;
+		return claim_mouse_events();
 	}
 
 	if(has_focus_ != false && on_change_focus_) {
