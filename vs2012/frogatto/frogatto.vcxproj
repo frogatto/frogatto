@@ -125,7 +125,7 @@
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <DisableSpecificWarnings>4250</DisableSpecificWarnings>
       <ExceptionHandling>SyncCThrow</ExceptionHandling>
-      <AdditionalIncludeDirectories>..\..\..\zlib;..\..\..\lpng1512;..\..\..\Box2D_v2.2.1;..\..\..\glew-1.9.0\include;..\..\..\boost_1_52_0;..\..\..\SDL\include;..\..\..\SDL_mixer;..\..\..\SDL_image;..\..\..\SDL_ttf;..\..\..\lpng160;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\zlib;..\..\..\lpng1512;..\..\..\Box2D_v2.2.1;..\..\..\glew-1.9.0\include;..\..\..\boost;..\..\..\SDL\include;..\..\..\SDL_mixer;..\..\..\SDL_image;..\..\..\SDL_ttf;..\..\..\lpng160;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <UndefinePreprocessorDefinitions>_USE_MATH_DEFINES</UndefinePreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -135,7 +135,7 @@
       <SubSystem>Console</SubSystem>
       <StackReserveSize>10000000</StackReserveSize>
       <IgnoreSpecificDefaultLibraries>libcmt</IgnoreSpecificDefaultLibraries>
-      <AdditionalLibraryDirectories>..\..\..\glew-1.9.0\build\vc10\shared\release;..\..\..\SDL_ttf\VisualC\Release;..\..\..\SDL_mixer\VisualC\Release;..\..\..\SDL_image\VisualC\Win32\Release;..\..\..\SDL\VisualC\SDL\Win32\Release;..\..\..\Box2D_v2.2.1\Build\vs2010\bin\Release;..\..\..\zlib;..\..\..\lpng160;..\..\..\boost_1_52_0\stage32-release-static\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\glew-1.9.0\build\vc10\shared\release;..\..\..\SDL_ttf\VisualC\Release;..\..\..\SDL_mixer\VisualC\Release;..\..\..\SDL_image\VisualC\Win32\Release;..\..\..\SDL\VisualC\SDL\Win32\Release;..\..\..\Box2D_v2.2.1\Build\vs2010\bin\Release;..\..\..\zlib;..\..\..\lpng160;..\..\..\boost\stage32-release-static\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glu32.lib;libpng.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -364,6 +364,7 @@
     <ClInclude Include="..\..\..\frogatto\src\widget_factory.hpp" />
     <ClInclude Include="..\..\..\frogatto\src\wml_formula_callable.hpp" />
     <ClInclude Include="..\..\src\bar_widget.hpp" />
+    <ClInclude Include="..\..\src\data_blob.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\frogatto\src\achievements.cpp" />

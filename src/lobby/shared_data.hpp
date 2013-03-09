@@ -56,6 +56,9 @@ namespace game_server
 		std::string display_name;
 		json_spirit::mObject other;
 		bool has_bots;
+
+		std::string server_address;
+		std::string server_port;
 	};
 
 	typedef std::map<std::string, client_info> client_map;
@@ -66,6 +69,7 @@ namespace game_server
 		int bot_count;
 		std::string name;
 		std::vector<std::string> clients;
+		std::vector<std::string> bot_types;
 	};
 
 	typedef std::map<int, game_info> game_list;
@@ -92,7 +96,7 @@ namespace game_server
 		void check_add_game(int gid, const game_info& gi);
 		void get_status_list(json_spirit::mObject* users);
 		void add_server(const server_info& si);
-		bool create_game(const std::string& user, const std::string& game_type);
+		bool create_game(const std::string& user, const std::string& game_type, int* game_id);
 		static int make_session_id();
 		client_message_queue_ptr get_message_queue(const std::string& user);
 		void set_waiting_connection(const std::string& user, http::server::connection_ptr conn);
@@ -100,13 +104,21 @@ namespace game_server
 		bool post_message_to_client(const std::string& user, const json_spirit::mValue& val);
 		void post_message_to_all_clients(const json_spirit::mValue& val);
 		bool post_message_to_game_clients(int game_id, const json_spirit::mValue& val);
-		bool check_game_and_client(int game_id, const std::string& user);
+		bool check_game_and_client(int game_id, const std::string& user, const std::string& user_to_add);
 		void update_last_seen_count(const std::string& user);
 		bool check_client_in_games(const std::string& user, int* game_id = nullptr);
+		bool is_user_in_game(const std::string& user, int game_id) const;
+		const game_info* get_game_info(int game_id) const;
+		int get_user_session_id(const std::string& user) const;
 	private:
+		// This is now the list of games that the lobby has created.
 		game_list games_;
+		// List of clients the lobby knows about.
 		client_map clients_;
 		std::vector<server_info> servers_;
+
+		// List of games from server.
+		game_list server_games_;
 
 		boost::mutex guard_;
 

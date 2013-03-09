@@ -42,7 +42,7 @@ namespace
 		game_server_bad_response,
 	};
 
-	void process_start_game_message(const std::string& game_type, 
+	bool process_start_game_message(const std::string& game_type, 
 		const json_spirit::mArray& players, 
 		size_t bots, 
 		const json_spirit::mArray& bot_type,
@@ -54,12 +54,12 @@ namespace
 		if(players.size() > si.max_players) {
 			reply_object["type"] = "error";
 			reply_object["description"] = "Maximum number of human players exceeded.";
-			return;
+			return false;
 		}
 		if(players.size() < si.min_humans) {
 			reply_object["type"] = "error";
 			reply_object["description"] = "Not enough human players supplied.";
-			return;
+			return false;
 		}
 		if(players.size() + bots < si.min_players) {
 			bots = si.min_players - players.size();
@@ -70,7 +70,7 @@ namespace
 		if(bots != bot_type.size()) {
 			reply_object["type"] = "error";
 			reply_object["description"] = "Not enough bot types specified.";
-			return;
+			return false;
 		}
 		json_spirit::mArray u_ary;
 		// {type: 'create_game', game_type: 'citadel', users: [{user: 'a', session_id: 1}, {user: 'b', bot: true, session_id: 2}]}
@@ -90,6 +90,7 @@ namespace
 		// Push 'create_game' message to the game server.
 		game_server::message msg;
 		msg.msg = json_spirit::write(m);
+		std::cerr << "Writing message to game_server: " << msg.msg << std::endl;
 		msg.reply = game_server::string_queue_ptr(new game_server::string_queue);
 		w.get_queue()->push(msg);
 		std::string reply;
@@ -103,23 +104,30 @@ namespace
 					reply_object["type"] = "error";
 					reply_object["description"] = "Server replied: Create game failed.";
 				} else if(type == "game_created") {
-
 					for(auto it : ro) {
 						reply_object[it.first] = it.second;
 					}
+					reply_object["game_server_address"] = si.server_address;
+					reply_object["game_server_port"] = si.server_port;
+					return true;
 				} else {
 					reply_object["type"] = "error";
 					reply_object["description"] = "Didn't understand server response. 'type' unknown: " + type;
+					return false;
 				}
 			} else {
 				reply_object["type"] = "error";
 				reply_object["description"] = "Didn't understand server response. No 'type' attribute";
+				return false;
 			}
 		} else {
 			// XXX we could really do a fail-over and retry the another server with this.
 			reply_object["type"] = "error";
 			reply_object["description"] = "Timeout waiting for game server to reply.";
+			return false;
 		}
+		ASSERT_LOG(false, "Entered code path not accessible");
+		return false;
 	}
 }
 
@@ -348,6 +356,11 @@ bool request_handler::handle_post(const request& req, reply& rep, http::server::
 		} else if(action == game_server::shared_data::login_success) {
 			obj["type"] = "lobby_login_success";
 			obj["session_id"] = ci.session_id;
+			// Post message to all the other users that someone new is on.
+			json_spirit::mObject mobj;
+			mobj["type"] = "lobby_user_login";
+			mobj["user"] = user;
+			data_.post_message_to_all_clients(json_spirit::mValue(mobj));
 		} else {
 			ASSERT_LOG(false, "Unhandled state: " << static_cast<int>(action));
 		}
@@ -359,9 +372,17 @@ bool request_handler::handle_post(const request& req, reply& rep, http::server::
 			obj["description"] = "No 'game_type' attribute given.";
 		} else {
 			const std::string& game_type = gt_it->second.get_str();
-			if(data_.create_game(user, game_type)) {
-				obj["type"] = "lobby_game_created";
-				obj["game_id"] = game_server::shared_data::make_session_id();
+			int game_id;
+			if(data_.create_game(user, game_type, &game_id)) {
+				//obj["type"] = "lobby_game_created";
+				//obj["game_id"] = game_server::shared_data::make_session_id();
+				// Send game_created message to other waiting clients (or send lobby status update)
+				json_spirit::mObject game_created_obj;
+				game_created_obj["type"] = "lobby_game_created";
+				game_created_obj["user"] = user;
+				game_created_obj["game_id"] = game_id;
+				data_.post_message_to_all_clients(json_spirit::mValue(game_created_obj));
+				return check_messages(user, rep, conn);
 			} else {
 				obj["type"] = "error";
 				obj["description"] = "Unable to create game.";
@@ -369,11 +390,33 @@ bool request_handler::handle_post(const request& req, reply& rep, http::server::
 		}
 	} else if(type == "lobby_start_game") {
 		// Sending the "create_game" message to the tbs server
-		std::string game_type = req_obj["game_type"].get_str();
-		json_spirit::mArray players = req_obj["players"].get_array();
-		int bots = req_obj["bots"].get_int();
-		json_spirit::mArray bot_types = req_obj["bot_type"].get_array();
-		process_start_game_message(game_type, players, bots, bot_types, obj);
+		int game_id = req_obj["game_id"].get_int();
+		if(data_.is_user_in_game(user, game_id)) {
+			const game_server::game_info* gi = data_.get_game_info(game_id);
+			if(gi) {
+				json_spirit::mArray players;
+				for(auto pit : gi->clients) {
+					json_spirit::mObject pobj;
+					pobj["user"] = pit;
+					pobj["session_id"] = data_.get_user_session_id(pit);
+					players.push_back(pobj);
+				}
+
+				if(process_start_game_message(gi->name, 
+					players, 
+					gi->bot_count, 
+					json_spirit::mArray(gi->bot_types.begin(), gi->bot_types.end()), obj)) {
+					data_.post_message_to_game_clients(game_id, json_spirit::mValue(obj));
+				return check_messages(user, rep, conn);
+				}
+			} else {
+				obj["type"] = "error";
+				obj["description"] = "No game_info structure available for game_id";
+			}
+		} else {
+			obj["type"] = "error";
+			obj["description"] = "user is not in game with given identifier";
+		}
 	} else if(type == "lobby_quit") {
 		if(data_.sign_off(user, session_id)) {
 			obj["type"] = "lobby_bye";
@@ -386,6 +429,11 @@ bool request_handler::handle_post(const request& req, reply& rep, http::server::
 				player_left_obj["user"] = user;
 				data_.post_message_to_game_clients(game_id, json_spirit::mValue(player_left_obj));
 			}
+			// Post message to all the other users that someone left.
+			json_spirit::mObject mobj;
+			mobj["type"] = "lobby_user_quit";
+			mobj["user"] = user;
+			data_.post_message_to_all_clients(json_spirit::mValue(mobj));
 		}
 		// We just return no content if session id and username not valid.
 	} else if(type == "lobby_heartbeat") {
@@ -415,7 +463,7 @@ bool request_handler::handle_post(const request& req, reply& rep, http::server::
 		}
 	} else if(type == "lobby_leave_game") {
 		if(req_obj.find("game_id") != req_obj.end()) {
-			if(data_.check_game_and_client(req_obj["game_id"].get_int(), user)) {
+			if(data_.check_game_and_client(req_obj["game_id"].get_int(), user, "")) {
 				if(!data_.check_client_in_games(user)) {
 					// Still users in game post a message to them
 					json_spirit::mObject player_left_obj;
@@ -434,13 +482,15 @@ bool request_handler::handle_post(const request& req, reply& rep, http::server::
 		}
 	} else if(type == "lobby_join_reply") {
 		if(req_obj.find("game_id") != req_obj.end() && req_obj.find("accept") != req_obj.end() && req_obj.find("requesting_user") != req_obj.end()) {
-			if(data_.check_game_and_client(req_obj["game_id"].get_int(), user)) {
+			int game_id = req_obj["game_id"].get_int();
+			if(data_.check_game_and_client(game_id, user, req_obj["requesting_user"].get_str())) {
 				json_spirit::mObject join_reply_obj;
 				join_reply_obj["type"] = "lobby_player_join_reply";
 				join_reply_obj["requesting_user"] = req_obj["requesting_user"].get_str();
 				join_reply_obj["accept"] = req_obj["accept"].get_bool();
-				data_.post_message_to_game_clients(req_obj["game_id"].get_int(), json_spirit::mValue(join_reply_obj));
-				return check_messages(user, rep, conn);
+				join_reply_obj["game_id"] = game_id;
+				data_.post_message_to_game_clients(game_id, json_spirit::mValue(join_reply_obj));
+				return check_messages(user, rep, conn);	
 			} else {
 				obj["type"] = "error";
 				obj["description"] = "Invalid 'game_id' or you are not in that game.";

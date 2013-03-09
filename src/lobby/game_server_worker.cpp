@@ -97,115 +97,124 @@ namespace game_server
 		int last_status = 0;
 		bool got_server_info = false;
 		// First send a message to get the server info
-		while(running_ && !got_server_info) {
-			try {
-				http::client::reply reply;
-				http::client::request req;
-				json_spirit::mObject req_obj;
-				req_obj["type"] = "get_server_info";
-				req.body = json_spirit::write(req_obj);
-				if(http::client::client(server_address_, server_port_, req, reply)) {
-					json_spirit::mValue value;
-					json_spirit::read(reply.body, value);
-					if(value.type() != json_spirit::obj_type) {
-						throw new processing_exception("Couldn't parse response as json: " + reply.body);
-					}
-					auto& obj = value.get_obj();
-					int field_counter = 0;
-					for(auto it : obj) {
-						if(it.first == "name") {
-							si_.name = it.second.get_str();
-							++field_counter;
-						} else if(it.first == "display_name") {
-							si_.display_name = it.second.get_str();
-							++field_counter;
-						} else if(it.first == "min_players") {
-							si_.min_players = it.second.get_int();
-							++field_counter;
-						} else if(it.first == "min_humans") {
-							si_.min_humans = it.second.get_int();
-							++field_counter;
-						} else if(it.first == "max_players") {
-							si_.max_players = it.second.get_int();
-							++field_counter;
-						} else if(it.first == "has_bots") {
-							si_.has_bots = it.second.get_bool();
-							++field_counter;
-						} else {
-							si_.other[it.first] = it.second;
-						}
-					}
-
-					if(field_counter != 6) {
-						throw new processing_exception("Missing attribute in get_server_info reply.");
-					}
-
-					got_server_info = true;
-					data_.add_server(si_);
-				}
-			} catch(std::exception& e) {
-				std::cerr << "exception: " << e.what() << " " << server_address_ << ":" << server_port_ << std::endl;
-			}
-			boost::this_thread::sleep(boost::posix_time::milliseconds(polling_interval_));
-		}
-
-		// Register the game
-		game_registry()[si_.name].insert(boost::shared_ptr<worker>(this));
-
-		// Then do main processing
 		while(running_) {
-			try {
-				http::client::reply reply;
-				http::client::request req;
-				json_spirit::mObject req_obj;
-				req_obj["type"] = "get_status";
-				req_obj["last_seen"] = last_status;
-				req.body = json_spirit::write(req_obj);
-				if(http::client::client(server_address_, server_port_, req, reply)) {
-					json_spirit::mValue value;
-					json_spirit::read(reply.body, value);
-					if(value.type() != json_spirit::obj_type) {
-						throw new processing_exception("Couldn't parse response as json: " + reply.body);
-					}
-					auto& obj = value.get_obj();
-					auto games_it = obj.find("games");
-					auto status_it = obj.find("status_id");
-					auto type_it = obj.find("type");
-					if(games_it == obj.end()) {
-						throw new processing_exception("Returned object must have 'games' attribute");
-					}
-					if(status_it == obj.end()) {
-						throw new processing_exception("Returned object must have 'status_id' attribute");
-					}
-					if(type_it == obj.end()) {
-						throw new processing_exception("Returned object must have 'type' attribute");
-					}
-					// update our last status code
-					last_status = status_it->second.get_int();
-
-					std::cerr << "POLL: " << type_it->second.get_str() << " " << last_status << std::endl;
-					if(games_it->second.type() == json_spirit::array_type) {
-						for(auto it : games_it->second.get_array()) {
-							process_game(it.get_obj());
+			if(got_server_info == false) {
+				try {
+					http::client::reply reply;
+					http::client::request req;
+					json_spirit::mObject req_obj;
+					req_obj["type"] = "get_server_info";
+					req.body = json_spirit::write(req_obj);
+					if(http::client::client(server_address_, server_port_, req, reply)) {
+						json_spirit::mValue value;
+						json_spirit::read(reply.body, value);
+						if(value.type() != json_spirit::obj_type) {
+							throw new processing_exception("Couldn't parse response as json: " + reply.body);
 						}
-					} else {
-						throw new processing_exception("Type of games");
+						auto& obj = value.get_obj();
+						int field_counter = 0;
+						for(auto it : obj) {
+							if(it.first == "name") {
+								si_.name = it.second.get_str();
+								++field_counter;
+							} else if(it.first == "display_name") {
+								si_.display_name = it.second.get_str();
+								++field_counter;
+							} else if(it.first == "min_players") {
+								si_.min_players = it.second.get_int();
+								++field_counter;
+							} else if(it.first == "min_humans") {
+								si_.min_humans = it.second.get_int();
+								++field_counter;
+							} else if(it.first == "max_players") {
+								si_.max_players = it.second.get_int();
+								++field_counter;
+							} else if(it.first == "has_bots") {
+								si_.has_bots = it.second.get_bool();
+								++field_counter;
+							} else {
+								si_.other[it.first] = it.second;
+							}
+						}
+
+						if(field_counter != 6) {
+							throw new processing_exception("Missing attribute in get_server_info reply.");
+						}
+
+						si_.server_address = server_address_;
+						si_.server_port = server_port_;
+						got_server_info = true;
+						data_.add_server(si_);
+
+						// Register the game
+						game_registry()[si_.name].insert(boost::shared_ptr<worker>(this));
 					}
+				} catch(std::exception& e) {
+					std::cerr << "exception: " << e.what() << " " << server_address_ << ":" << server_port_ << std::endl;
 				}
-			} catch(processing_exception& e) {
-				std::cerr << "http client exception: " << e.what() << std::endl;
-			} catch(std::exception& e) {
-				std::cerr << "exception: " << e.what() << std::endl;
-			}
-			message msg;
-			if(q_->wait_and_pop(msg, polling_interval_)) {
-				http::client::reply reply;
-				http::client::request req;
-				req.body = msg.msg;
-				if(http::client::client(server_address_, server_port_, req, reply)) {
-					msg.reply->push(reply.body);
-				} else {
-					msg.reply->push("{\"type\":\"error\", \"description\":\"No response from game server.\"");
+				boost::this_thread::sleep(boost::posix_time::milliseconds(polling_interval_));
+			} else {
+				// got_server_info == true
+				try {
+					http::client::reply reply;
+					http::client::request req;
+					json_spirit::mObject req_obj;
+					req_obj["type"] = "get_status";
+					req_obj["last_seen"] = last_status;
+					req.body = json_spirit::write(req_obj);
+					if(http::client::client(server_address_, server_port_, req, reply)) {
+						json_spirit::mValue value;
+						json_spirit::read(reply.body, value);
+						if(value.type() != json_spirit::obj_type) {
+							throw new processing_exception("Couldn't parse response as json: " + reply.body);
+						}
+						auto& obj = value.get_obj();
+						auto games_it = obj.find("games");
+						auto status_it = obj.find("status_id");
+						auto type_it = obj.find("type");
+						if(games_it == obj.end()) {
+							throw new processing_exception("Returned object must have 'games' attribute");
+						}
+						if(status_it == obj.end()) {
+							throw new processing_exception("Returned object must have 'status_id' attribute");
+						}
+						if(type_it == obj.end()) {
+							throw new processing_exception("Returned object must have 'type' attribute");
+						}
+						// update our last status code
+						last_status = status_it->second.get_int();
+
+						std::cerr << "POLL: " << type_it->second.get_str() << " " << last_status << std::endl;
+						if(games_it->second.type() == json_spirit::array_type) {
+							for(auto it : games_it->second.get_array()) {
+								process_game(it.get_obj());
+							}
+						} else {
+							throw new processing_exception("Type of games");
+						}
+					}
+				} catch(processing_exception& e) {
+					std::cerr << "http client exception: " << e.what() << std::endl;
+				} catch(std::exception& e) {
+					std::cerr << "exception: " << e.what() << std::endl;
+					got_server_info = false;
+				}
+				message msg;
+				if(q_->wait_and_pop(msg, polling_interval_)) {
+					http::client::reply reply;
+					http::client::request req;
+					req.body = msg.msg;
+					try {
+						if(http::client::client(server_address_, server_port_, req, reply)) {
+							msg.reply->push(reply.body);
+						} else {
+							msg.reply->push("{\"type\":\"error\", \"description\":\"No response from game server.\"");
+						}
+					} catch(std::exception& e) {
+						msg.reply->push("{\"type\":\"error\", \"description\":\"Exceptional response from game server.\"");
+						std::cerr << "exception: " << e.what() << std::endl;
+						got_server_info = false;
+					}
 				}
 			}
 		}
