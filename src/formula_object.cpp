@@ -403,7 +403,7 @@ variant formula_object::get_value(const std::string& key) const
 		return variant(this);
 	}
 
-	if(key == "type") {
+	if(key == "_class") {
 		return class_->name_variant();
 	}
 
