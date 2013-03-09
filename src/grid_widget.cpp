@@ -181,6 +181,10 @@ grid::grid(const variant& v, game_logic::formula_callable* e)
 	if(on_select_ && default_selection_ >= 0) {
 		on_select_(default_selection_);
 	}
+
+	if(!ffl_on_select_ && !ffl_on_mouseover_) {
+		set_claim_mouse_events(v["claim_mouse_events"].as_bool(false));
+	}
 }
 
 void grid::set_dim(int w, int h)

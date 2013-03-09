@@ -51,6 +51,8 @@ image_widget::image_widget(const variant& v, game_logic::formula_callable* e)
 
 	rotate_ = v.has_key("rotation") ? v["rotation"].as_decimal().as_float() : 0.0;
 	init(v["image_width"].as_int(-1), v["image_height"].as_int(-1));
+
+	set_claim_mouse_events(v["claim_mouse_events"].as_bool(false));
 }
 
 void image_widget::init(int w, int h)

@@ -151,6 +151,8 @@ rich_text_label::rich_text_label(const variant& v, game_logic::formula_callable*
 	}
 
 	set_dim(width(), ypos + line_height);
+
+	set_claim_mouse_events(v["claim_mouse_events"].as_bool(false));
 }
 
 void rich_text_label::handle_process()
