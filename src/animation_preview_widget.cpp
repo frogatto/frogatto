@@ -633,14 +633,14 @@ bool animation_preview_widget::handle_event(const SDL_Event& event, bool claimed
 		anchor_pad_ = frame_->pad();
 		has_motion_ = false;
 		if(point_in_rect(p, dst_rect_)) {
-			claimed = true;
+			claimed = claim_mouse_events();
 			anchor_x_ = e.x;
 			anchor_y_ = e.y;
 		} else {
 			anchor_x_ = anchor_y_ = -1;
 
 			if(point_in_rect(p, solid_rect_)) {
-				moving_solid_rect_ = true;
+				moving_solid_rect_ = claim_mouse_events();
 				anchor_solid_x_ = e.x/2;
 				anchor_solid_y_ = e.y/2;
 			}
@@ -651,7 +651,7 @@ bool animation_preview_widget::handle_event(const SDL_Event& event, bool claimed
 		point anchor(anchor_x_, anchor_y_);
 		point p(e.x, e.y);
 		if(anchor == p && !has_motion_) {
-			claimed = true;
+			claimed = claim_mouse_events();
 			p = mouse_point_to_image_loc(p);
 			graphics::surface surf = graphics::surface_cache::get(obj_["image"].as_string());
 			std::vector<graphics::surface> surf_key;
@@ -687,7 +687,7 @@ bool animation_preview_widget::handle_event(const SDL_Event& event, bool claimed
 				}
 			}
 		} else if(!dragging_sides_bitmap_ && point_in_rect(anchor, dst_rect_) && point_in_rect(p, dst_rect_)) {
-			claimed = true;
+			claimed = claim_mouse_events();
 
 			anchor = mouse_point_to_image_loc(anchor);
 			p = mouse_point_to_image_loc(p);
