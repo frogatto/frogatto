@@ -113,6 +113,24 @@ namespace game_server
 		return true;
 	}
 
+	const game_info* shared_data::get_game_info(int game_id) const
+	{
+		auto game = games_.find(game_id);
+		if(game == games_.end()) {
+			return nullptr;
+		}
+		return &game->second;
+	}
+
+	bool shared_data::is_user_in_game(const std::string& user, int game_id) const
+	{
+		auto game = games_.find(game_id);
+		if(game == games_.end()) {
+			return false;
+		}
+		return std::find(game->second.clients.begin(), game->second.clients.end(), user) != game->second.clients.end();
+	}
+
 	bool shared_data::check_client_in_games(const std::string& user, int* game_id)
 	{
 		bool erased_game = false;
@@ -138,11 +156,17 @@ namespace game_server
 		for(auto u : clients_) {
 			json_spirit::mObject uo;
 			const std::string& user = u.first;
-			uo["waiting_for_players"] = u.second.waiting_for_players;
-			uo["created_game"] = u.second.game;
 			auto it = std::find_if(games_.begin(), games_.end(), 
 				[user](const std::pair<int, game_info>& v) { return std::find(v.second.clients.begin(), v.second.clients.end(), user) != v.second.clients.end(); });
-			uo["game"] = it == games_.end() ? "lobby" : it->second.name;
+			if(it != games_.end()) {
+				uo["game_id"] = it->first;
+				uo["waiting_for_players"] = u.second.waiting_for_players;
+				uo["created_game"] = u.second.game;
+			}
+
+			auto server_it = std::find_if(server_games_.begin(), server_games_.end(), 
+				[user](const std::pair<int, game_info>& v) { return std::find(v.second.clients.begin(), v.second.clients.end(), user) != v.second.clients.end(); });
+			uo["game"] = server_it == server_games_.end() ? "lobby" : server_it->second.name;
 
 			(*users)[user] = uo;
 		}
@@ -169,10 +193,10 @@ namespace game_server
 	void shared_data::check_add_game(int gid, const game_info& gi)
 	{
 		boost::mutex::scoped_lock lock(guard_);
-		auto it = games_.find(gid);
-		if(it == games_.end()) {
+		auto it = server_games_.find(gid);
+		if(it == server_games_.end()) {
 			// Game not on list!
-			games_[gid] = gi;
+			server_games_[gid] = gi;
 		}
 	}
 
@@ -182,7 +206,16 @@ namespace game_server
 		servers_.push_back(si);
 	}
 
-	bool shared_data::create_game(const std::string& user, const std::string& game_type)
+	int shared_data::get_user_session_id(const std::string& user) const
+	{
+		auto it = clients_.find(user);
+		if(it == clients_.end()) {
+			return -1;
+		}
+		return it->second.session_id;
+	}
+
+	bool shared_data::create_game(const std::string& user, const std::string& game_type, int* game_id)
 	{
 		boost::mutex::scoped_lock lock(guard_);
 		auto it = clients_.find(user);
@@ -191,6 +224,14 @@ namespace game_server
 		}
 		it->second.game	= game_type;
 		it->second.waiting_for_players = true;
+		ASSERT_LOG(game_id != nullptr, "Invalid game_id pointer passed in");
+		*game_id = make_session_id();
+		game_info gi;
+		gi.started = false;
+		gi.bot_count = 0;
+		gi.clients.push_back(user);
+		gi.name = game_type;
+		games_[*game_id] = gi;
 		return true;
 	}
 
@@ -324,7 +365,7 @@ namespace game_server
 		return true;
 	}
 
-	bool shared_data::check_game_and_client(int game_id, const std::string& user)
+	bool shared_data::check_game_and_client(int game_id, const std::string& user, const std::string& user_to_add)
 	{
 		auto it = games_.find(game_id);
 		if(it == games_.end()) {
@@ -333,6 +374,13 @@ namespace game_server
 		auto cit = std::find(it->second.clients.begin(), it->second.clients.end(), user);
 		if(cit == it->second.clients.end()) {
 			return false;
+		}
+		if(user_to_add.empty() == false) {
+			it->second.clients.push_back(user_to_add);
+			//auto cit = clients_.find(user_to_add);
+			//if(cit != clients_.end()) {
+			//	client_info& ci = cit->second;
+			//}
 		}
 		return true;
 	}
