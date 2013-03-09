@@ -34,6 +34,10 @@ project.xcworkspace
 
 Device-Debug
 Device-Release
-vs2010/lobby/Debug
-vs2010/lobby/ipch
-vs2010/lobby/lobby.sdf
+vs2012/lobby/Debug
+vs2012/lobby/ipch
+vs2012/lobby/lobby.sdf
+vs2012/frogatto/frogatto.sdf
+vs2012/frogatto/Win32
+vs2012/frogatto/Debug
+vs2012/frogatto/Release
