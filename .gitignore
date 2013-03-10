@@ -26,6 +26,7 @@ compiled-*
 tiles-compiled-*
 
 compiled/
+modules/Citadel
 
 MacOS/include
 MacOS/lib
