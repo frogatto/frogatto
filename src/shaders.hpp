@@ -67,7 +67,9 @@ public:
 	std::string name() const { return name_; }
 	game_logic::formula_ptr create_formula(const variant& v);
 	bool execute_command(const variant& var);
+	std::map<std::string,actives>::iterator get_uniform_reference(const std::string& name);
 	void set_uniform(const std::map<std::string,actives>::iterator& it, const variant& value);
+	void set_uniform_or_defer(const std::map<std::string,actives>::iterator& it, const variant& value);
 	void set_uniform_or_defer(const std::string& key, const variant& value);
 	variant get_uniform_value(const std::string& key) const;
 	void set_attributes(const std::string& key, const variant& value);
@@ -117,7 +119,7 @@ private:
 	std::map<std::string, actives> attribs_;
 	std::map<std::string, actives> uniforms_;
 
-	std::vector<std::string> uniforms_to_update_;
+	std::vector<std::map<std::string, actives>::iterator> uniforms_to_update_;
 
 	GLint u_mvp_matrix_;
 	GLint u_color_;
@@ -130,6 +132,7 @@ class shader_program : public game_logic::formula_callable
 {
 public:
 	shader_program();
+	shader_program(const shader_program& o);
 	explicit shader_program(const variant& node, entity* obj = NULL);
 	explicit shader_program(const std::string& program_name);
 	virtual ~shader_program()
@@ -141,6 +144,7 @@ public:
 	int zorder() const { return zorder_; }
 
 	void prepare_draw();
+	void refresh_uniforms();
 	program_ptr shader() const;
 	const std::string& name() const { return name_; }
 	entity* parent() const { return parent_; }
@@ -154,7 +158,30 @@ public:
 protected:
 	virtual variant get_value(const std::string& key) const;
 	virtual void set_value(const std::string& key, const variant& value);
+
+	struct DrawCommand {
+		DrawCommand();
+		std::map<std::string, actives>::iterator target;
+		variant value;
+		bool increment;
+	};
+
+	class uniform_commands_callable : public game_logic::formula_callable
+	{
+	public:
+		void set_program(program_ptr program) { program_ = program; }
+		void execute_on_draw();
+	private:
+		virtual variant get_value(const std::string& key) const;
+		virtual void set_value(const std::string& key, const variant& value);
+
+		program_ptr program_;
+		std::vector<DrawCommand> uniform_commands_;
+	};
+
 private:
+	void operator=(const shader_program&);
+
 	std::string name_;
 	program_ptr program_object_;
 
@@ -164,6 +191,8 @@ private:
 	std::vector<std::string> draw_commands_;
 	std::vector<game_logic::formula_ptr> create_formulas_;
 	std::vector<game_logic::formula_ptr> draw_formulas_;
+
+	boost::intrusive_ptr<uniform_commands_callable> uniform_commands_;
 
 	// fake zorder value
 	int zorder_;

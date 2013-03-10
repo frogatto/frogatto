@@ -923,6 +923,9 @@ void custom_object::draw(int xx, int yy) const
 	}
 
 	gles2::manager manager(shader_);
+	if(shader_) {
+		shader_->refresh_uniforms();
+	}
 #endif
 
 	if(clip_area_) {

@@ -211,29 +211,29 @@ void program::set_uniform(const std::map<std::string,actives>::iterator& it, con
 	}
 	case GL_FLOAT_VEC2: {
 		WRITE_LOG(value.num_elements() == 2, "Must be four(2) elements in vector.");
-		std::vector<GLfloat> f;
+		GLfloat v[2];
 		for(size_t n = 0; n < value.num_elements(); ++n) {
-			f.push_back(GLfloat(value[n].as_decimal().as_float()));
+			v[n] = GLfloat(value[n].as_decimal().as_float());
 		}
-		glUniform2fv(u.location, u.num_elements, &f[0]);
+		glUniform2fv(u.location, u.num_elements, &v[0]);
 		break;
 	}
 	case GL_FLOAT_VEC3: {
 		WRITE_LOG(value.num_elements() == 3, "Must be three(3) elements in vector.");
-		std::vector<GLfloat> f;
+		GLfloat v[3];
 		for(size_t n = 0; n < value.num_elements(); ++n) {
-			f.push_back(GLfloat(value[n].as_decimal().as_float()));
+			v[n] = GLfloat(value[n].as_decimal().as_float());
 		}
-		glUniform3fv(u.location, u.num_elements, &f[0]);
+		glUniform3fv(u.location, u.num_elements, &v[0]);
 		break;
 	}
 	case GL_FLOAT_VEC4: {
 		WRITE_LOG(value.num_elements() == 4, "Must be four(4) elements in vector.");
-		std::vector<GLfloat> f;
+		GLfloat v[4];
 		for(size_t n = 0; n < value.num_elements(); ++n) {
-			f.push_back(GLfloat(value[n].as_decimal().as_float()));
+			v[n] = GLfloat(value[n].as_decimal().as_float());
 		}
-		glUniform4fv(u.location, u.num_elements, &f[0]);
+		glUniform4fv(u.location, u.num_elements, &v[0]);
 		break;
 	}
 	case GL_INT:		glUniform1i(u.location, value.as_int()); break;
@@ -264,29 +264,29 @@ void program::set_uniform(const std::map<std::string,actives>::iterator& it, con
 		break;
 	case GL_FLOAT_MAT2:	{
 		WRITE_LOG(value.num_elements() == 4, "Must be four(4) elements in matrix.");
-		std::vector<GLfloat> f;
+		GLfloat v[4];
 		for(size_t n = 0; n < value.num_elements(); ++n) {
-			f.push_back(GLfloat(value[n].as_decimal().as_float()));
+			v[n] = GLfloat(value[n].as_decimal().as_float());
 		}
-		glUniformMatrix2fv(u.location, u.num_elements, GL_FALSE, &f[0]);
+		glUniformMatrix2fv(u.location, u.num_elements, GL_FALSE, &v[0]);
 		break;
 	}
 	case GL_FLOAT_MAT3: {
 		WRITE_LOG(value.num_elements() == 9, "Must be nine(9) elements in matrix.");
-		std::vector<GLfloat> f;
+		GLfloat v[9];
 		for(size_t n = 0; n < value.num_elements(); ++n) {
-			f.push_back(GLfloat(value[n].as_decimal().as_float()));
+			v[n] = GLfloat(value[n].as_decimal().as_float());
 		}
-		glUniformMatrix3fv(u.location, u.num_elements, GL_FALSE, &f[0]);
+		glUniformMatrix3fv(u.location, u.num_elements, GL_FALSE, &v[0]);
 		break;
 	}
 	case GL_FLOAT_MAT4: {
-		WRITE_LOG(value.num_elements() == 16, "Must be four(16) elements in matrix.");
-		std::vector<GLfloat> f;
+		WRITE_LOG(value.num_elements() == 16, "Must be 16 elements in matrix.");
+		GLfloat v[16];
 		for(size_t n = 0; n < value.num_elements(); ++n) {
-			f.push_back(GLfloat(value[n].as_decimal().as_float()));
+			v[n] = GLfloat(value[n].as_decimal().as_float());
 		}
-		glUniformMatrix4fv(u.location, u.num_elements, GL_FALSE, &f[0]);
+		glUniformMatrix4fv(u.location, u.num_elements, GL_FALSE, &v[0]);
 		break;
 	}
 
@@ -298,16 +298,30 @@ void program::set_uniform(const std::map<std::string,actives>::iterator& it, con
 	}
 }
 
+std::map<std::string,actives>::iterator program::get_uniform_reference(const std::string& key)
+{
+	std::map<std::string, actives>::iterator it = uniforms_.find(key);
+	ASSERT_LOG(it != uniforms_.end(), "COULD NOT FIND UNIFORM: " << key);
+	return it;
+}
+
+
 void program::set_uniform_or_defer(const std::string& key, const variant& value)
 {
 	std::map<std::string, actives>::iterator it = uniforms_.find(key);
 	WRITE_LOG(it != uniforms_.end(), "No uniform found with name: " << key);
+
+	set_uniform_or_defer(it, value);
+}
+
+void program::set_uniform_or_defer(const std::map<std::string,actives>::iterator& it, const variant& value)
+{
 	it->second.last_value = value;
 
 	GLint cur_prog;
 	glGetIntegerv(GL_CURRENT_PROGRAM, &cur_prog);
 	if(cur_prog != get()) {
-		uniforms_to_update_.push_back(key);
+		uniforms_to_update_.push_back(it);
 		return;
 	}
 	set_uniform(it, value);
@@ -961,9 +975,9 @@ void program::clear_shaders()
 
 void program::set_deferred_uniforms()
 {
-	foreach(const std::string& key, uniforms_to_update_) {
-		std::map<std::string, actives>::iterator it = uniforms_.find(key);
-		ASSERT_LOG(it != uniforms_.end(), "No uniform found with name: " << key);
+	typedef std::map<std::string, actives>::iterator Itor;
+	foreach(Itor it, uniforms_to_update_) {
+		ASSERT_LOG(it != uniforms_.end(), "No uniform found with name: " << it->first);
 		set_uniform(it, it->second.last_value);
 	}
 	uniforms_to_update_.clear();
@@ -990,7 +1004,17 @@ void program::set_known_uniforms()
 // shader_program
 
 shader_program::shader_program()
-	: vars_(new game_logic::formula_variable_storage()), parent_(NULL), zorder_(-1)
+	: vars_(new game_logic::formula_variable_storage()), parent_(NULL), zorder_(-1),
+	  uniform_commands_(new shader_program::uniform_commands_callable)
+{
+}
+
+shader_program::shader_program(const shader_program& o)
+  : name_(o.name_), program_object_(o.program_object_), vars_(o.vars_),
+    create_commands_(o.create_commands_), draw_commands_(o.draw_commands_),
+	create_formulas_(o.create_formulas_), draw_formulas_(o.draw_formulas_),
+	uniform_commands_(new uniform_commands_callable(*o.uniform_commands_)),
+	zorder_(o.zorder_), parent_(o.parent_)
 {
 }
 
@@ -1001,10 +1025,12 @@ shader_program::shader_program(const variant& node, entity* obj)
 }
 
 shader_program::shader_program(const std::string& program_name)
-	: vars_(new game_logic::formula_variable_storage()), zorder_(-1)
+	: vars_(new game_logic::formula_variable_storage()), zorder_(-1),
+	  uniform_commands_(new shader_program::uniform_commands_callable)
 {
 	name_ = program_name;
 	program_object_ = program::find_program(name_);
+	uniform_commands_->set_program(program_object_);
 }
 
 void shader_program::configure(const variant& node, entity* obj)
@@ -1012,6 +1038,8 @@ void shader_program::configure(const variant& node, entity* obj)
 	ASSERT_LOG(node.is_map(), "shader attribute must be a map.");
 	name_ = node["program"].as_string();
 	program_object_ = program::find_program(name_);
+	uniform_commands_.reset(new shader_program::uniform_commands_callable);
+	uniform_commands_->set_program(program_object_);
 	game_logic::formula_callable* e = this;
 	ASSERT_LOG(e != NULL, "Environment was not set.");
 
@@ -1119,6 +1147,11 @@ void shader_program::prepare_draw()
 	}
 }
 
+void shader_program::refresh_uniforms()
+{
+	uniform_commands_->execute_on_draw();
+}
+
 variant shader_program::get_value(const std::string& key) const
 {
 	if(key == "vars") {
@@ -1126,7 +1159,10 @@ variant shader_program::get_value(const std::string& key) const
 	} else if(key == "parent" || key == "object") {
 		ASSERT_LOG(parent_ != NULL, "Tried to request parent, when value is null: " << name());
 		return variant(parent_);
+	} else if(key == "uniform_commands") {
+		return variant(uniform_commands_.get());
 	}
+
 	return program_object_->get_value(key);
 }
 
@@ -1177,6 +1213,55 @@ bool shader_program::execute_command(const variant& var)
 game_logic::formula_ptr shader_program::create_formula(const variant& v)
 {
 	return game_logic::formula_ptr(new game_logic::formula(v, &get_shader_symbol_table()));
+}
+
+static std::map<std::string, actives> target_end_itor;
+
+shader_program::DrawCommand::DrawCommand() : target(target_end_itor.end()), increment(false)
+{
+}
+
+void shader_program::uniform_commands_callable::execute_on_draw()
+{
+	foreach(DrawCommand& cmd, uniform_commands_) {
+		if(cmd.increment) {
+			cmd.value = cmd.value + variant(1);
+		}
+
+		program_->set_uniform_or_defer(cmd.target, cmd.value);
+	}
+}
+
+variant shader_program::uniform_commands_callable::get_value(const std::string& key) const
+{
+	return variant();
+}
+
+void shader_program::uniform_commands_callable::set_value(const std::string& key, const variant& value)
+{
+	ASSERT_LOG(program_.get() != NULL, "NO PROGRAM SET FOR UNIFORM CALLABLE");
+
+	shader_program::DrawCommand* target = NULL;
+	foreach(shader_program::DrawCommand& cmd, uniform_commands_) {
+		if(cmd.target->first == key) {
+			target = &cmd;
+			break;
+		}
+	}
+
+	if(target == NULL) {
+		uniform_commands_.push_back(DrawCommand());
+		target = &uniform_commands_.back();
+		target->target = program_->get_uniform_reference(key);
+	}
+
+	if(value.is_map()) {
+		target->increment = value["increment"].as_bool(false);
+		target->value = value["value"];
+	} else {
+		target->value = value;
+		target->increment = false;
+	}
 }
 
 }
