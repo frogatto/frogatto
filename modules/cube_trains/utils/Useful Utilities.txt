@@ -44,7 +44,13 @@ Chart all metrics:
     debug_chart('process', constrain(0, performance().process, 100)),
     debug_chart('flip', constrain(0, performance().flip, 100)),
     debug_chart('nevents', constrain(0, performance().nevent, 100)),
-    debug_chart('time', time()%100),
+    debug_chart('time', time().unix%100),
+    
+Chart Sound Controllers VS Framerate    
+    debug_chart('delay', constrain(0, performance().delay, 50)),
+    debug_chart('process', constrain(0, performance().process, 50)),
+    debug_chart('frame delay', constrain(0, performance().cycles_per_second - performance().fps, 50)),
+    debug_chart('sfx count ', size(filter(level.active_chars, value.vars.sound_enabled or value.vars.effect_name))),
     
     
 List authors in git:
