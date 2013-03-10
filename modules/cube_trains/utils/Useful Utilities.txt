@@ -60,3 +60,9 @@ git shortlog -sn
 Offset an entire Cube Trains map by x/y/z:
 set(ctm, <map data>)
 ctm + {'map': map(ctm['map'], list_replace_elements(value, 1, [list_add(value[1], offset)] ) )} where offset = [0,0,1]
+
+Code for Frogatto, to chart the performance VS sound objects: (put in on_process)
+    debug_chart('delay', constrain(0, performance().delay, 50)),
+    debug_chart('process', constrain(0, performance().process, 50)),
+    debug_chart('frame delay', constrain(0, performance().cycles_per_second - performance().fps, 50)),
+    debug_chart('sfx count ', size(filter(level.active_chars, value.vars.sound_enabled or value.vars.effect_name))),
