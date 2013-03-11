@@ -993,7 +993,9 @@ void custom_object::draw(int xx, int yy) const
 	glTranslatef(GLfloat(x()), GLfloat(y()), 0.0);
 	foreach(const gui::widget_ptr& w, widgets_) {
 		if(w->zorder() < widget_zorder_draw_later_threshold) {
-			w->draw();
+			if(w->draw_with_object_shader()) {
+				w->draw();
+			}
 		}
 	}
 	foreach(const gui::vector_text_ptr& txt, vector_text_) {
@@ -1098,6 +1100,17 @@ void custom_object::draw(int xx, int yy) const
 		gles2::shader::set_runtime_error("HEX MAP SHADER ERROR: " + e.msg);
 	}
 #endif
+
+	glPushMatrix();
+	glTranslatef(GLfloat(x()&~1), GLfloat(y()&~1), 0.0);
+	foreach(const gui::widget_ptr& w, widgets_) {
+		if(w->zorder() < widget_zorder_draw_later_threshold) {
+			if(w->draw_with_object_shader() == false) {
+				w->draw();
+			}
+		}
+	}
+	glPopMatrix();
 
 	if(use_absolute_screen_coordinates_) {
 		glPopMatrix();
