@@ -414,7 +414,7 @@ variant formula_object::get_value(const std::string& key) const
 	}
 
 	std::map<std::string, property_entry>::const_iterator itor = class_->properties().find(key);
-	ASSERT_LOG(itor != class_->properties().end(), "UNKNOWN PROPERTY ACCESS " << key << " IN CLASS " << class_->name());
+	ASSERT_LOG(itor != class_->properties().end(), "UNKNOWN PROPERTY ACCESS " << key << " IN CLASS " << class_->name() << "\nFORMULA LOCATION: " << get_call_stack());
 
 	if(itor->second.getter) {
 		private_data_scope scope(expose_private_data_);

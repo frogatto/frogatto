@@ -1005,7 +1005,8 @@ void program::set_known_uniforms()
 
 shader_program::shader_program()
 	: vars_(new game_logic::formula_variable_storage()), parent_(NULL), zorder_(-1),
-	  uniform_commands_(new shader_program::uniform_commands_callable)
+	  uniform_commands_(new shader_program::uniform_commands_callable),
+	  enabled_(true)
 {
 }
 
@@ -1014,19 +1015,20 @@ shader_program::shader_program(const shader_program& o)
     create_commands_(o.create_commands_), draw_commands_(o.draw_commands_),
 	create_formulas_(o.create_formulas_), draw_formulas_(o.draw_formulas_),
 	uniform_commands_(new uniform_commands_callable(*o.uniform_commands_)),
-	zorder_(o.zorder_), parent_(o.parent_)
+	zorder_(o.zorder_), parent_(o.parent_), enabled_(o.enabled_)
 {
 }
 
 shader_program::shader_program(const variant& node, entity* obj)
-	: vars_(new game_logic::formula_variable_storage()), parent_(obj), zorder_(-1)
+	: vars_(new game_logic::formula_variable_storage()), parent_(obj), zorder_(-1), enabled_(true)
 {
 	configure(node, obj);
 }
 
 shader_program::shader_program(const std::string& program_name)
 	: vars_(new game_logic::formula_variable_storage()), zorder_(-1),
-	  uniform_commands_(new shader_program::uniform_commands_callable)
+	  uniform_commands_(new shader_program::uniform_commands_callable),
+	  enabled_(true)
 {
 	name_ = program_name;
 	program_object_ = program::find_program(name_);
@@ -1037,6 +1039,7 @@ void shader_program::configure(const variant& node, entity* obj)
 {
 	ASSERT_LOG(node.is_map(), "shader attribute must be a map.");
 	name_ = node["program"].as_string();
+	enabled_ = node["enabled"].as_bool(true);
 	program_object_ = program::find_program(name_);
 	uniform_commands_.reset(new shader_program::uniform_commands_callable);
 	uniform_commands_->set_program(program_object_);
@@ -1161,6 +1164,8 @@ variant shader_program::get_value(const std::string& key) const
 		return variant(parent_);
 	} else if(key == "uniform_commands") {
 		return variant(uniform_commands_.get());
+	} else if(key == "enabled") {
+		return variant(enabled_);
 	}
 
 	return program_object_->get_value(key);
@@ -1168,7 +1173,11 @@ variant shader_program::get_value(const std::string& key) const
 
 void shader_program::set_value(const std::string& key, const variant& value)
 {
-	program_object_->set_value(key, value);
+	if(key == "enabled") {
+		enabled_ = value.as_bool();
+	} else {
+		program_object_->set_value(key, value);
+	}
 }
 
 program_ptr shader_program::shader() const 

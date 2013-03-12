@@ -23,7 +23,27 @@
 #if (defined(_X11) || defined(__linux__)) && !defined(__APPLE__) && !defined(__ANDROID__)
 #define CLIPBOARD_FUNCS_DEFINED
 
-#ifdef THIS_STUFF_BREAKS_ON_LINUX_DAVID_TO_LOOK_INTO
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+
+void copy_to_clipboard(const std::string& text, const bool mouse)
+{
+	SDL_SetClipboardText(text.c_str());
+}
+
+std::string copy_from_clipboard(const bool mouse)
+{
+	char* str = SDL_GetClipboardText();
+	std::string result(str);
+	SDL_free(str);
+	return result;
+}
+
+bool clipboard_handle_event(const SDL_Event& ev)
+{
+	return false;
+}
+
+#else
 #include "SDL_syswm.h"
 
 #include <unistd.h>
@@ -286,8 +306,9 @@ void copy_to_clipboard(const std::string& text, const bool mouse)
 		primary_string = text;
 		XSetSelectionOwner(x11->dpy(), XA_PRIMARY, x11->window(), CurrentTime);
 	} else {
+
+		std::cerr << "SET CLIPBOARD: " << text << "\n";
 		clipboard_string = text;
-	//currently disabled due to crash bugs in X
 		XSetSelectionOwner(x11->dpy(), x11->XA_CLIPBOARD(), x11->window(), CurrentTime);
 	}
 }
@@ -385,22 +406,8 @@ std::string copy_from_clipboard(const bool mouse)
 
 	return "";
 }
-#else
-void copy_to_clipboard(const std::string& text, const bool mouse)
-{
-}
 
-std::string copy_from_clipboard(const bool mouse)
-{
-	return std::string();
-}
-
-bool clipboard_handle_event(const SDL_Event& ev)
-{
-	return false;
-}
-
-#endif // THIS_STUFF_BREAKS_ON_LINUX_DAVID_TO_LOOK_INTO
+#endif // SDL 1.2
 
 #endif
 #ifdef _WIN32

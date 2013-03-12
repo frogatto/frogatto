@@ -1114,6 +1114,7 @@ void text_editor_widget::handle_paste(std::string txt)
 
 void text_editor_widget::handle_copy(bool mouse_based)
 {
+	std::cerr << "HANDLE COPY...\n";
 	if(mouse_based && !clipboard_has_mouse_area()) {
 		return;
 	}
@@ -1145,6 +1146,8 @@ void text_editor_widget::handle_copy(bool mouse_based)
 
 		str += "\n" + std::string(text_[end.row].begin(), text_[end.row].begin() + end.col);
 	}
+
+	std::cerr << "COPY TO CLIPBOARD: " << str << " " << mouse_based << "\n";
 
 	copy_to_clipboard(str, mouse_based);
 }

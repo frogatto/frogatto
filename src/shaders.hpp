@@ -137,6 +137,8 @@ public:
 	explicit shader_program(const std::string& program_name);
 	virtual ~shader_program()
 	{}
+
+	bool enabled() const { return enabled_; }
 	void configure(const variant& node, entity* obj = NULL);
 	void init(entity* obj);
 	game_logic::formula_ptr create_formula(const variant& v);
@@ -198,6 +200,8 @@ private:
 	int zorder_;
 
 	entity* parent_;
+
+	bool enabled_;
 };
 
 typedef boost::intrusive_ptr<shader_program> shader_ptr;
