@@ -71,6 +71,9 @@ public:
 	bool claim_mouse_events() const { return claim_mouse_events_; }
 	void set_claim_mouse_events(bool claim=true) { claim_mouse_events_ = claim; }
 
+	bool draw_with_object_shader() const { return draw_with_object_shader_; }
+	void set_draw_with_object_shader(bool dwos=true) { draw_with_object_shader_ = dwos; }
+
 	unsigned get_tooltip_delay() const { return tooltip_display_delay_; }
 	void set_tooltip_delay(unsigned tooltip_delay) { tooltip_display_delay_ = tooltip_delay; }
 
@@ -137,6 +140,7 @@ private:
 	int pad_h_;
 	int pad_w_;
 	bool claim_mouse_events_;
+	bool draw_with_object_shader_;
 
 	HORIZONTAL_ALIGN align_h_;
 	VERTICAL_ALIGN   align_v_;
