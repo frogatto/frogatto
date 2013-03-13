@@ -99,7 +99,6 @@ namespace game_server
 		}
 	}
 
-
 	bool shared_data::sign_off(const std::string& uname, int session_id) 
 	{
 		auto it = clients_.find(uname);
@@ -110,6 +109,18 @@ namespace game_server
 			return false;
 		}
 		clients_.erase(it);
+		return true;
+	}
+
+	bool shared_data::check_user_and_session(const std::string& uname, int session_id)
+	{
+		auto it = clients_.find(uname);
+		if(it == clients_.end()) {
+			return false;
+		}
+		if(it->second.session_id != session_id) {
+			return false;
+		}
 		return true;
 	}
 
@@ -131,6 +142,19 @@ namespace game_server
 		return std::find(game->second.clients.begin(), game->second.clients.end(), user) != game->second.clients.end();
 	}
 
+	bool shared_data::is_user_in_any_games(const std::string& user, int* game_id) const
+	{
+		for(auto it = games_.begin(); it != games_.end();) {
+			if(std::find(it->second.clients.begin(), it->second.clients.end(), user) != it->second.clients.end()) {
+				if(game_id) {
+					*game_id = it->first;
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+
 	bool shared_data::check_client_in_games(const std::string& user, int* game_id)
 	{
 		bool erased_game = false;
@@ -150,25 +174,11 @@ namespace game_server
 		return erased_game;
 	}
 
-	void shared_data::get_status_list(json_spirit::mObject* users)
+	void shared_data::get_user_list(json_spirit::mArray* users)
 	{
 		boost::mutex::scoped_lock lock(guard_);
 		for(auto u : clients_) {
-			json_spirit::mObject uo;
-			const std::string& user = u.first;
-			auto it = std::find_if(games_.begin(), games_.end(), 
-				[user](const std::pair<int, game_info>& v) { return std::find(v.second.clients.begin(), v.second.clients.end(), user) != v.second.clients.end(); });
-			if(it != games_.end()) {
-				uo["game_id"] = it->first;
-				uo["waiting_for_players"] = u.second.waiting_for_players;
-				uo["created_game"] = u.second.game;
-			}
-
-			auto server_it = std::find_if(server_games_.begin(), server_games_.end(), 
-				[user](const std::pair<int, game_info>& v) { return std::find(v.second.clients.begin(), v.second.clients.end(), user) != v.second.clients.end(); });
-			uo["game"] = server_it == server_games_.end() ? "lobby" : server_it->second.name;
-
-			(*users)[user] = uo;
+			users->push_back(u.first);
 		}
 	}
 

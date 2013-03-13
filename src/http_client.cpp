@@ -170,8 +170,8 @@ void http_client::handle_receive(connection_ptr conn, const boost::system::error
 {
 	if(e) {
 		--in_flight_;
-		fprintf(stderr, "ERROR IN HTTP RECEIVE: (%d, %s)\n", e.value(), conn->response.c_str());
-		if(e.value() == 2) {
+		fprintf(stderr, "ERROR IN HTTP RECEIVE: (%d(%s), %s)\n", e.value(), e.message().c_str(), conn->response.c_str());
+		if(e.value() == boost::system::errc::no_such_file_or_directory) {
 			const char* end_headers = strstr(conn->response.c_str(), "\n\n");
 			const char* end_headers2 = strstr(conn->response.c_str(), "\r\n\r\n");
 			if(end_headers2 && (end_headers == NULL || end_headers2 < end_headers)) {
@@ -182,9 +182,7 @@ void http_client::handle_receive(connection_ptr conn, const boost::system::error
 				conn->handler(std::string(end_headers+2));
 				return;
 			}
-		}
-
-		if(conn->error_handler) {
+		} else if(conn->error_handler) {
 			conn->error_handler("ERROR RECEIVING DATA");
 		}
 

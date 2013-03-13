@@ -107,8 +107,12 @@ namespace
 					for(auto it : ro) {
 						reply_object[it.first] = it.second;
 					}
-					reply_object["game_server_address"] = si.server_address;
-					reply_object["game_server_port"] = si.server_port;
+					if(reply_object.find("game_server_address") == reply_object.end()) {
+						reply_object["game_server_address"] = si.server_address;
+					}
+					if(reply_object.find("game_server_port") == reply_object.end()) {
+						reply_object["game_server_port"] = si.server_port;
+					}
 					return true;
 				} else {
 					reply_object["type"] = "error";
@@ -282,11 +286,11 @@ bool request_handler::handle_post(const request& req, reply& rep, http::server::
 	}
 	const std::string& type = it->second.get_str();
 
-	if(type == "lobby_get_status") {
-		json_spirit::mObject uo;
-		data_.get_status_list(&uo);
-		obj["type"] = "lobby_status";
-		obj["clients"] = uo;
+	if(type == "lobby_get_users") {
+		json_spirit::mArray ua;
+		data_.get_user_list(&ua);
+		obj["type"] = "lobby_users";
+		obj["users"] = ua;
 		return reply::create_json_reply(json_spirit::mValue(obj), rep);
 	}
 
@@ -354,13 +358,14 @@ bool request_handler::handle_post(const request& req, reply& rep, http::server::
 			obj["type"] = "error";
 			obj["description"] = "Password failed.";
 		} else if(action == game_server::shared_data::login_success) {
-			obj["type"] = "lobby_login_success";
-			obj["session_id"] = ci.session_id;
+			//obj["type"] = "lobby_login_success";
+			//obj["session_id"] = ci.session_id;
 			// Post message to all the other users that someone new is on.
 			json_spirit::mObject mobj;
 			mobj["type"] = "lobby_user_login";
 			mobj["user"] = user;
 			data_.post_message_to_all_clients(json_spirit::mValue(mobj));
+			return check_messages(user, rep, conn);
 		} else {
 			ASSERT_LOG(false, "Unhandled state: " << static_cast<int>(action));
 		}
@@ -374,13 +379,12 @@ bool request_handler::handle_post(const request& req, reply& rep, http::server::
 			const std::string& game_type = gt_it->second.get_str();
 			int game_id;
 			if(data_.create_game(user, game_type, &game_id)) {
-				//obj["type"] = "lobby_game_created";
-				//obj["game_id"] = game_server::shared_data::make_session_id();
 				// Send game_created message to other waiting clients (or send lobby status update)
 				json_spirit::mObject game_created_obj;
 				game_created_obj["type"] = "lobby_game_created";
 				game_created_obj["user"] = user;
 				game_created_obj["game_id"] = game_id;
+				game_created_obj["game_type"] = game_type;
 				data_.post_message_to_all_clients(json_spirit::mValue(game_created_obj));
 				return check_messages(user, rep, conn);
 			} else {
@@ -419,7 +423,6 @@ bool request_handler::handle_post(const request& req, reply& rep, http::server::
 		}
 	} else if(type == "lobby_quit") {
 		if(data_.sign_off(user, session_id)) {
-			obj["type"] = "lobby_bye";
 			// check if user was in any games and notify based on that.
 			int game_id;
 			if(!data_.check_client_in_games(user, &game_id)) {
@@ -434,6 +437,13 @@ bool request_handler::handle_post(const request& req, reply& rep, http::server::
 			mobj["type"] = "lobby_user_quit";
 			mobj["user"] = user;
 			data_.post_message_to_all_clients(json_spirit::mValue(mobj));
+
+			// We specifically have to send the lobby_user_quit message back to the client here
+			// as the sign_off function erases the client and the associated queue, etc.
+			obj["type"] =  "lobby_user_quit";
+			obj["user"] = user;
+		} else {
+			std::cerr << "lobby_quit failed for user: " << user << " : " << session_id << std::endl;
 		}
 		// We just return no content if session id and username not valid.
 	} else if(type == "lobby_heartbeat") {

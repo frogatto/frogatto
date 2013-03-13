@@ -92,9 +92,10 @@ namespace game_server
 			const std::string& phash, 
 			int session_id);
 		bool sign_off(const std::string& uname, int session_id);
+		bool check_user_and_session(const std::string& uname, int session_id);
 		void check_add_client(const std::string& user, const client_info& ci);
 		void check_add_game(int gid, const game_info& gi);
-		void get_status_list(json_spirit::mObject* users);
+		void get_user_list(json_spirit::mArray* users);
 		void add_server(const server_info& si);
 		bool create_game(const std::string& user, const std::string& game_type, int* game_id);
 		static int make_session_id();
@@ -110,6 +111,7 @@ namespace game_server
 		bool is_user_in_game(const std::string& user, int game_id) const;
 		const game_info* get_game_info(int game_id) const;
 		int get_user_session_id(const std::string& user) const;
+		bool is_user_in_any_games(const std::string& user, int* game_id) const;
 	private:
 		// This is now the list of games that the lobby has created.
 		game_list games_;
