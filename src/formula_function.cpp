@@ -1016,19 +1016,31 @@ FUNCTION_DEF(sort, 1, 2, "sort(list, criteria): Returns a nicely-ordered list. I
 	return variant(&vars);
 END_FUNCTION_DEF(sort)
 
+namespace {
+//our own shuffle, to guarantee consistency across different machines.
+template<typename RnIt>
+void myshuffle(RnIt i1, RnIt i2)
+{
+	while(i2 - i1 > 1) {
+		std::swap(*(i2-1), i1[rand()%(i2-i1)]);
+		--i2;
+	}
+}
+}
+
 FUNCTION_DEF(shuffle, 1, 1, "shuffle(list) - Returns a shuffled version of the list. Like shuffling cards.")
 	variant list = args()[0]->evaluate(variables);
 	boost::intrusive_ptr<float_array_callable> f = list.try_convert<float_array_callable>();
 	if(f != NULL) {
 		std::vector<GLfloat> floats(f->floats().begin(), f->floats().end());
-		std::random_shuffle(floats.begin(), floats.end());
+		myshuffle(floats.begin(), floats.end());
 		return variant(new float_array_callable(&floats));
 	}
 	
 	boost::intrusive_ptr<short_array_callable> s = list.try_convert<short_array_callable>();
 	if(s != NULL) {
 		std::vector<GLshort> shorts(s->shorts().begin(), s->shorts().end());
-		std::random_shuffle(shorts.begin(), shorts.end());
+		myshuffle(shorts.begin(), shorts.end());
 		return variant(new short_array_callable(&shorts));
 	}
 
@@ -1038,7 +1050,7 @@ FUNCTION_DEF(shuffle, 1, 1, "shuffle(list) - Returns a shuffled version of the l
 		vars.push_back(list[n]);
 	}
 
-	std::random_shuffle(vars.begin(), vars.end());
+	myshuffle(vars.begin(), vars.end());
 
 	return variant(&vars);
 END_FUNCTION_DEF(shuffle)

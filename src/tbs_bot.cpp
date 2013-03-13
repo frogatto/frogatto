@@ -59,7 +59,8 @@ void bot::process(const boost::system::error_code& error)
 			internal_client_->send_request(send, session_id, callable, boost::bind(&bot::handle_response, this, _1, callable));
 		} else {
 			client_.reset(new client(host_, port_, session_id, &service_));
-			client_->send_request(send.write_json(), callable, boost::bind(&bot::handle_response, this, _1, callable));
+			client_->set_use_local_cache(false);
+			client_->send_request(send, callable, boost::bind(&bot::handle_response, this, _1, callable));
 		}
 	}
 

@@ -12,6 +12,7 @@
 #include "json_parser.hpp"
 #include "module.hpp"
 #include "preferences.hpp"
+#include "random.hpp"
 #include "tbs_ai_player.hpp"
 #include "tbs_internal_server.hpp"
 #include "tbs_game.hpp"
@@ -42,6 +43,7 @@ struct game_type {
 		}
 	}
 
+	std::string name;
 	boost::shared_ptr<game_logic::function_symbol_table> functions;
 	std::map<std::string, game_logic::const_formula_ptr> handlers;
 };
@@ -57,6 +59,7 @@ std::map<std::string, game_type> generate_game_types() {
 			std::string type(fname.begin(), fname.end()-4);
 			boost::algorithm::to_lower(type);
 			result[type] = game_type(json::parse_from_file("data/tbs/" + fname));
+			result[type].name = type;
 			std::cerr << "LOADED TBS GAME TYPE: " << type << "\n";
 		}
 	}
@@ -145,7 +148,7 @@ boost::intrusive_ptr<game> game::create(const variant& v)
 
 game::game(const game_type& type)
   : type_(type), game_id_(generate_game_id()),
-    started_(false), state_(STATE_SETUP), state_id_(0),
+    started_(false), state_(STATE_SETUP), state_id_(0), rng_seed_(rng::get_seed()),
 	backup_callable_(NULL)
 {
 }
@@ -155,9 +158,27 @@ game::game(const variant& value)
 	game_id_(generate_game_id()),
     started_(value["started"].as_bool(false)),
 	state_(STATE_SETUP),
-	state_id_(0),
+	state_id_(0), rng_seed_(rng::get_seed()),
 	backup_callable_(NULL)
 {
+}
+
+game::game(const std::string& game_type, const variant& doc)
+  : type_(all_types()[game_type]),
+    game_id_(doc["id"].as_int()),
+	started_(doc["started"].as_bool()),
+	state_(started_ ? STATE_PLAYING : STATE_SETUP),
+	state_id_(doc["state_id"].as_int()),
+	rng_seed_(doc["rng_seed"].as_int()),
+	backup_callable_(NULL),
+	doc_(doc["state"])
+{
+	log_ = util::split(doc["log"].as_string(), '\n');
+
+	variant players_val = doc["players"];
+	for(int n = 0; n != players_val.num_elements(); ++n) {
+		add_player(players_val[n].as_string());
+	}
 }
 
 game::~game()
@@ -172,8 +193,18 @@ variant game::write(int nplayer) const
 	variant_builder result;
 	result.add("id", game_id_);
 	result.add("type", "game");
+	result.add("game_type", variant(type_.name));
 	result.add("started", started_);
 	result.add("state_id", state_id_);
+	result.add("rng_seed", rng_seed_);
+	result.add("nplayer", variant(nplayer));
+
+	std::vector<variant> players_val;
+	foreach(const player& p, players_) {
+		players_val.push_back(variant(p.name));
+	}
+
+	result.add("players", variant(&players_val));
 
 	if(current_message_.empty() == false) {
 		result.add("message", current_message_);
@@ -434,6 +465,7 @@ void game::set_value(const std::string& key, const variant& value)
 
 void game::handle_message(int nplayer, const variant& msg)
 {
+	rng::set_seed(rng_seed_);
 	const std::string type = msg["type"].as_string();
 	if(type == "start_game") {
 		start_game();
@@ -451,7 +483,9 @@ void game::handle_message(int nplayer, const variant& msg)
 	game_logic::map_formula_callable_ptr vars(new game_logic::map_formula_callable);
 	vars->add("message", msg);
 	vars->add("player", variant(nplayer));
+	rng::set_seed(rng_seed_);
 	handle_event("message", vars.get());
+	rng_seed_ = rng::get_seed();
 	send_game_state();
 }
 

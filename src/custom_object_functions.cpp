@@ -221,7 +221,7 @@ public:
 			ASSERT_LOG(tbs_iclient != NULL, "tbs_client object isn't valid.");
 			tbs_iclient->send_request(msg_, tbs_iclient->session_id(), callable, boost::bind(tbs_send_event, entity_ptr(&ob), callable, _1));
 		} else {
-			tbs_client->send_request(msg_.write_json(), callable, boost::bind(tbs_send_event, entity_ptr(&ob), callable, _1));
+			tbs_client->send_request(msg_, callable, boost::bind(tbs_send_event, entity_ptr(&ob), callable, _1));
 		}
 	}
 

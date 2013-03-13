@@ -1574,7 +1574,7 @@ void editor::handle_key_press(const SDL_KeyboardEvent& key)
 		  boost::bind(execute_functions, undo));
 	}
 
-	if(key.keysym.sym == SDLK_o) {
+	if(key.keysym.sym == SDLK_o && (key.keysym.mod&KMOD_CTRL)) {
 		editor_menu_dialog_->open_level();
 	}
 

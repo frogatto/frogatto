@@ -30,6 +30,7 @@ public:
 
 	explicit game(const game_type& type);
 	explicit game(const variant& v);
+	game(const std::string& game_type, const variant& doc);
 	virtual ~game();
 
 	virtual variant write(int nplayer=-1) const;
@@ -75,6 +76,8 @@ public:
 	virtual void set_as_current_game(bool set) {}
 
 	void process();
+	
+	int state_id() const { return state_id_; }
 
 protected:
 	void start_game();
@@ -84,8 +87,6 @@ protected:
 
 	void send_notify(const std::string& msg, int nplayer=-1);
 	void send_error(const std::string& msg, int nplayer=-1);
-
-	int state_id() const { return state_id_; }
 
 	void set_message(const std::string& msg);
 
@@ -104,6 +105,8 @@ private:
 	bool started_;
 
 	int state_id_; //upward counting integer keeping track of the game state.
+
+	int rng_seed_;
 
 	//a message which explains the reason for the last game state change.
 	std::string current_message_;

@@ -22,7 +22,7 @@ public:
 					  boost::function<void(std::string)> handler,
 					  boost::function<void(std::string)> error_handler,
 					  boost::function<void(int,int,bool)> progress_handler);
-	void process();
+	virtual void process();
 
 protected:
 	variant get_value(const std::string& key) const;
