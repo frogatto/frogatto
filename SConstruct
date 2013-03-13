@@ -1,7 +1,14 @@
 # vi: syntax=python:et:ts=4
 
 import os.path
+import subprocess
 import sys
+
+try:
+    subprocess.Popen("sdl2-config", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    use_sdl2 = True
+except OSError:
+    use_sdl2 = False
 
 # Warn user of current set of build options.
 if os.path.exists('.scons-option-cache'):
@@ -25,8 +32,13 @@ opts.AddVariables(
 
 env = Environment(options = opts, CPPPATH = ".")
 
-env.ParseConfig("sdl-config --libs --cflags")
-env.Append(LIBS = ["GL", "GLU", "GLEW", "SDL_mixer", "SDL_image", "SDL_ttf", "boost_regex", "boost_system", "boost_iostreams", "png", "z"])
+if use_sdl2:
+    env.ParseConfig("sdl2-config --libs --cflags")
+    env.Append(LIBS = ["SDL2_mixer", "SDL2_image", "SDL2_ttf"])
+else:
+    env.ParseConfig("sdl-config --libs --cflags")
+    env.Append(LIBS = ["SDL_mixer", "SDL_image", "SDL_ttf"])
+env.Append(LIBS = ["GL", "GLU", "GLEW", "boost_regex", "boost_system", "boost_iostreams", "png", "z"])
 env.Append(CXXFLAGS= ["-pthread", "-DIMPLEMENT_SAVE_PNG"], LINKFLAGS = ["-pthread"])
 if sys.platform.startswith('linux'):
     env.Append(LIBS = ["X11"])
@@ -103,5 +115,5 @@ if env['ccache']:
 if env['jobs'] > 1:
     SetOption("num_jobs", env['jobs'])
 
-Export(["env"])
+Export(["env", "use_sdl2"])
 env.SConscript(dirs=["src"], variant_dir = build_dir, duplicate = False)

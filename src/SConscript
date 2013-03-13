@@ -16,6 +16,9 @@ for line in objectlines:
         target = target.rstrip("_")
     sources_map[target] = [x.replace("src/", "", 1) for x in [o for o in [object.strip().replace(".o", ".cpp") for object in rest.strip().split()] if o not in env["exclude"]]]
 
+if not use_sdl2:
+    sources_map["game"].append("wm.cpp")
+
 binaries = []
 
 for key in sources_map:
