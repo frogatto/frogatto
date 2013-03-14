@@ -39,7 +39,11 @@ namespace game_server
 		{
 			boost::uniform_int<> dist(1, 2147483647);
 			boost::variate_generator<boost::mt19937&, boost::uniform_int<> > sid(gen, dist);
+#ifdef BOOST_NO_CXX11_NULLPTR
+			sid.engine().seed(static_cast<uint32_t>(time(NULL)));
+#else
 			sid.engine().seed(static_cast<uint32_t>(time(nullptr)));
+#endif
 			return sid();
 		}
 
@@ -132,7 +136,11 @@ namespace game_server
 		boost::recursive_mutex::scoped_lock lock(guard_);
 		auto game = games_.find(game_id);
 		if(game == games_.end()) {
+#ifdef BOOST_NO_CXX11_NULLPTR
+			return NULL;
+#else
 			return nullptr;
+#endif
 		}
 		return &game->second;
 	}
@@ -197,7 +205,11 @@ namespace game_server
 	void shared_data::get_user_list(json_spirit::mArray* users)
 	{
 		boost::recursive_mutex::scoped_lock lock(guard_);
+#ifdef BOOST_NO_CXX11_NULLPTR
+		ASSERT_LOG(users != NULL, "get_user_list: null pointer passed in");
+#else
 		ASSERT_LOG(users != nullptr, "get_user_list: null pointer passed in");
+#endif
 #ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
 		BOOST_FOREACH(auto u, clients_) {
 #else
@@ -210,7 +222,11 @@ namespace game_server
 	void shared_data::get_games_list(json_spirit::mArray* games)
 	{
 		boost::recursive_mutex::scoped_lock lock(guard_);
+#ifdef BOOST_NO_CXX11_NULLPTR
+		ASSERT_LOG(games != NULL, "get_games_list: null pointer passed in");
+#else
 		ASSERT_LOG(games != nullptr, "get_games_list: null pointer passed in");
+#endif
 #ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
 		BOOST_FOREACH(auto g, games_) {
 #else
@@ -289,7 +305,11 @@ namespace game_server
 			check_client_in_games(user, &gid);
 		}
 
+#ifdef BOOST_NO_CXX11_NULLPTR
+		ASSERT_LOG(game_id != NULL, "Invalid game_id pointer passed in");
+#else
 		ASSERT_LOG(game_id != nullptr, "Invalid game_id pointer passed in");
+#endif
 		*game_id = make_session_id();
 		game_info gi;
 		gi.started = false;
@@ -323,7 +343,11 @@ namespace game_server
 		if(it == clients_.end()) {
 			return;
 		}
+#ifdef BOOST_NO_CXX11_NULLPTR
+		if(it->second.conn == NULL) {
+#else
 		if(it->second.conn == nullptr) {
+#endif
 			it->second.conn = conn;
 			it->second.counter = 60;
 		}

@@ -102,7 +102,6 @@ int main(int argc, char* argv[])
 		auto gs_ary = cfg_obj["game_server"].get_array();
 			// Create a tasks to poll the game servers
 #ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
-#error testing...
 		BOOST_FOREACH(auto game_servers, gs_ary) {
 #else
 		for(auto game_servers : gs_ary) {
