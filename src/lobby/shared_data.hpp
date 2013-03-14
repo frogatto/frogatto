@@ -122,7 +122,7 @@ namespace game_server
 		// List of games from server.
 		game_list server_games_;
 
-		boost::mutex guard_;
+		mutable boost::recursive_mutex guard_;
 
 		shared_data(shared_data&);
 	};
