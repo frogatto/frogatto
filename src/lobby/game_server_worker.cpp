@@ -118,7 +118,11 @@ namespace game_server
 						}
 						auto& obj = value.get_obj();
 						int field_counter = 0;
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+						BOOST_FOREACH(auto it, obj) {
+#else
 						for(auto it : obj) {
+#endif
 							if(it.first == "name") {
 								si_.name = it.second.get_str();
 								++field_counter;
@@ -191,7 +195,11 @@ namespace game_server
 
 						std::cerr << "POLL: " << type_it->second.get_str() << " " << last_status << std::endl;
 						if(games_it->second.type() == json_spirit::array_type) {
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+							BOOST_FOREACH(auto it, games_it->second.get_array()) {
+#else
 							for(auto it : games_it->second.get_array()) {
+#endif
 								process_game(it.get_obj());
 							}
 						} else {
