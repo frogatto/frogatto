@@ -2,6 +2,7 @@
 #include "targetver.h"
 #endif
 
+#include <boost/foreach.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int.hpp>
 #include <boost/random/variate_generator.hpp>
@@ -197,7 +198,11 @@ namespace game_server
 	{
 		boost::recursive_mutex::scoped_lock lock(guard_);
 		ASSERT_LOG(users != nullptr, "get_user_list: null pointer passed in");
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+		BOOST_FOREACH(auto u, clients_) {
+#else
 		for(auto u : clients_) {
+#endif
 			users->push_back(u.first);
 		}
 	}
@@ -206,13 +211,21 @@ namespace game_server
 	{
 		boost::recursive_mutex::scoped_lock lock(guard_);
 		ASSERT_LOG(games != nullptr, "get_games_list: null pointer passed in");
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+		BOOST_FOREACH(auto g, games_) {
+#else
 		for(auto g : games_) {
+#endif
 			json_spirit::mObject obj;
 			obj["game_type"] = g.second.name;
 			obj["game_id"] = g.first;
 			obj["max_players"] = int(g.second.max_players);
 			json_spirit::mArray user_ary;
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+			BOOST_FOREACH(auto client, g.second.clients) {
+#else
 			for(auto client : g.second.clients) {
+#endif
 				user_ary.push_back(client);
 			}
 			obj["users"] = user_ary;
@@ -407,7 +420,11 @@ namespace game_server
 		if(it == games_.end()) {
 			return false;
 		}
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+		BOOST_FOREACH(auto client, it->second.clients) {
+#else
 		for(auto client : it->second.clients) {
+#endif
 			auto cit = clients_.find(client);
 			if(cit != clients_.end()) {
 				client_info& ci = cit->second;

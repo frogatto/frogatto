@@ -8,6 +8,7 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 
 #include <iomanip>
@@ -104,7 +105,11 @@ namespace
 					reply_object["type"] = "error";
 					reply_object["description"] = "Server replied: Create game failed.";
 				} else if(type == "game_created") {
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+					BOOST_FOREACH(auto it, ro) {
+#else
 					for(auto it : ro) {
+#endif
 						reply_object[it.first] = it.second;
 					}
 					if(reply_object.find("game_server_address") == reply_object.end()) {
@@ -410,7 +415,11 @@ bool request_handler::handle_post(const request& req, reply& rep, http::server::
 			const game_server::game_info* gi = data_.get_game_info(game_id);
 			if(gi) {
 				json_spirit::mArray players;
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+				BOOST_FOREACH(auto pit, gi->clients) {
+#else
 				for(auto pit : gi->clients) {
+#endif
 					json_spirit::mObject pobj;
 					pobj["user"] = pit;
 					pobj["session_id"] = data_.get_user_session_id(pit);

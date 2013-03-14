@@ -7,6 +7,7 @@
 #include <string>
 #include <boost/algorithm/string.hpp>
 #include <boost/asio.hpp>
+#include <boost/foreach.hpp>
 #include <boost/lambda/lambda.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
@@ -37,7 +38,11 @@ int main(int argc, char* argv[])
 		args.push_back(argv[i]);
 	}
 
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+	BOOST_FOREACH(auto a, args) {
+#else
 	for(auto a : args) {
+#endif
 		std::vector<std::string> seperated_args;
 		boost::split(seperated_args, a, boost::lambda::_1 == '=');
 		if(seperated_args[0] == "--config-file" || seperated_args[0] == "-n") {
@@ -51,7 +56,11 @@ int main(int argc, char* argv[])
 	ASSERT_LOG(value.type() == json_spirit::obj_type, "lobby-config.cfg should be an object.");
 	auto cfg_obj = value.get_obj();
 	if(cfg_obj.find("arguments") != cfg_obj.end()) {
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+		BOOST_FOREACH(const auto&v, cfg_obj["arguments"].get_array()) {
+#else
 		for(const auto& v : cfg_obj["arguments"].get_array()) {
+#endif
 			args.push_back(v.get_str());
 		}
 	}
@@ -84,7 +93,12 @@ int main(int argc, char* argv[])
 
 		auto gs_ary = cfg_obj["game_server"].get_array();
 			// Create a tasks to poll the game servers
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+#error testing...
+		BOOST_FOREACH(auto game_servers, gs_ary) {
+#else
 		for(auto game_servers : gs_ary) {
+#endif
 			auto gs_obj = game_servers.get_obj();
 			std::string gs_addr = gs_obj["address"].get_str();
 			std::string gs_port = gs_obj["port"].get_str();
@@ -105,7 +119,11 @@ int main(int argc, char* argv[])
 		s.run();
 
 		// Abort thread and wait till it finishes
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+		BOOST_FOREACH(auto p, server_thread_list) {
+#else
 		for(auto p : server_thread_list) {
+#endif
 			p.first->abort();
 			p.second->join();
 		}
