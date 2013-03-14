@@ -27,7 +27,7 @@ namespace game_server
 		{}
 		client_info(int sid, bool human, const std::string& slt)
 			: session_id(sid), is_human(human), salt(slt), signed_in(false),
-			waiting_for_players(false), counter(0), last_seen_count(last_seen_counter_reload_value)
+			counter(0), last_seen_count(last_seen_counter_reload_value)
 		{
 			msg_q = client_message_queue_ptr(new queue::queue<json_spirit::mValue>);
 		}
@@ -35,8 +35,6 @@ namespace game_server
 		std::string salt;
 		bool is_human;
 		bool signed_in;
-		bool waiting_for_players;
-		std::string game;
 		// Message queue for the client.
 		client_message_queue_ptr msg_q;
 		// Saved connection for sending deferred replies on.
@@ -67,6 +65,7 @@ namespace game_server
 	{
 		bool started;
 		int bot_count;
+		size_t max_players;
 		std::string name;
 		std::vector<std::string> clients;
 		std::vector<std::string> bot_types;
@@ -96,8 +95,9 @@ namespace game_server
 		void check_add_client(const std::string& user, const client_info& ci);
 		void check_add_game(int gid, const game_info& gi);
 		void get_user_list(json_spirit::mArray* users);
+		void get_games_list(json_spirit::mArray* games);
 		void add_server(const server_info& si);
-		bool create_game(const std::string& user, const std::string& game_type, int* game_id);
+		bool create_game(const std::string& user, const std::string& game_type, size_t max_players, int* game_id);
 		static int make_session_id();
 		client_message_queue_ptr get_message_queue(const std::string& user);
 		void set_waiting_connection(const std::string& user, http::server::connection_ptr conn);

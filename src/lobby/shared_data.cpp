@@ -177,8 +177,27 @@ namespace game_server
 	void shared_data::get_user_list(json_spirit::mArray* users)
 	{
 		boost::mutex::scoped_lock lock(guard_);
+		ASSERT_LOG(users != nullptr, "get_user_list: null pointer passed in");
 		for(auto u : clients_) {
 			users->push_back(u.first);
+		}
+	}
+
+	void shared_data::get_games_list(json_spirit::mArray* games)
+	{
+		boost::mutex::scoped_lock lock(guard_);
+		ASSERT_LOG(games != nullptr, "get_games_list: null pointer passed in");
+		for(auto g : games_) {
+			json_spirit::mObject obj;
+			obj["game_type"] = g.second.name;
+			obj["game_id"] = g.first;
+			obj["max_players"] = int(g.second.max_players);
+			json_spirit::mArray user_ary;
+			for(auto client : g.second.clients) {
+				user_ary.push_back(client);
+			}
+			obj["users"] = user_ary;
+			games->push_back(obj);
 		}
 	}
 
@@ -225,15 +244,27 @@ namespace game_server
 		return it->second.session_id;
 	}
 
-	bool shared_data::create_game(const std::string& user, const std::string& game_type, int* game_id)
+	bool shared_data::create_game(const std::string& user, const std::string& game_type, size_t max_players, int* game_id)
 	{
 		boost::mutex::scoped_lock lock(guard_);
 		auto it = clients_.find(user);
 		if(it == clients_.end()) {
 			return false;
 		}
-		it->second.game	= game_type;
-		it->second.waiting_for_players = true;
+		// user request to create game, delete user from any other games.
+		int gid;
+		if(is_user_in_any_games(user, &gid)) {
+			json_spirit::mObject obj;
+			if(check_client_in_games(user, &gid)) {
+				obj["type"] = "lobby_remove_game";
+				obj["game_id"] = gid;
+			} else {
+				obj["type"] = "lobby_player_left_game";
+				obj["user"] = user;
+			}
+			post_message_to_game_clients(gid, json_spirit::mValue(obj));
+		}
+
 		ASSERT_LOG(game_id != nullptr, "Invalid game_id pointer passed in");
 		*game_id = make_session_id();
 		game_info gi;
@@ -241,6 +272,7 @@ namespace game_server
 		gi.bot_count = 0;
 		gi.clients.push_back(user);
 		gi.name = game_type;
+		gi.max_players = max_players;
 		games_[*game_id] = gi;
 		return true;
 	}

@@ -291,6 +291,9 @@ bool request_handler::handle_post(const request& req, reply& rep, http::server::
 		data_.get_user_list(&ua);
 		obj["type"] = "lobby_users";
 		obj["users"] = ua;
+		json_spirit::mArray ga;
+		data_.get_games_list(&ga);
+		obj["games"] = ga;
 		return reply::create_json_reply(json_spirit::mValue(obj), rep);
 	}
 
@@ -377,14 +380,22 @@ bool request_handler::handle_post(const request& req, reply& rep, http::server::
 			obj["description"] = "No 'game_type' attribute given.";
 		} else {
 			const std::string& game_type = gt_it->second.get_str();
+			game_server::worker& w = game_server::worker::get_server_from_game_type(game_type);
+			const game_server::server_info& si = w.get_server_info();
+
 			int game_id;
-			if(data_.create_game(user, game_type, &game_id)) {
+			size_t max_players = si.max_players;
+			if(req_obj.find("max_players") != req_obj.end()) {
+				max_players = std::max(size_t(req_obj["max_players"].get_int()), si.max_players);
+			}
+			if(data_.create_game(user, game_type, max_players, &game_id)) {
 				// Send game_created message to other waiting clients (or send lobby status update)
 				json_spirit::mObject game_created_obj;
 				game_created_obj["type"] = "lobby_game_created";
 				game_created_obj["user"] = user;
 				game_created_obj["game_id"] = game_id;
 				game_created_obj["game_type"] = game_type;
+				game_created_obj["max_players"] = int(max_players);
 				data_.post_message_to_all_clients(json_spirit::mValue(game_created_obj));
 				return check_messages(user, rep, conn);
 			} else {
