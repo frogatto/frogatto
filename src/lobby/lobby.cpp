@@ -66,12 +66,20 @@ int main(int argc, char* argv[])
 	}
 
 #if defined(USE_SQLITE)
+#ifdef BOOST_NO_CXX11_NULLPTR
+	sqlite3* db = NULL;
+#else
 	sqlite3* db = nullptr;
+#endif
 	int rc = sqlite3_open("lobby-data.db", &db);
 	if(rc) {
 		std::cerr << "Can't open database!" << sqlite3_errmsg(db) << std::endl;
 		sqlite3_close(db);
+#ifdef BOOST_NO_CXX11_NULLPTR
+		db = NULL;
+#else
 		db = nullptr;
+#endif
 	}
 #endif
 

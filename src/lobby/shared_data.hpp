@@ -107,7 +107,11 @@ namespace game_server
 		bool post_message_to_game_clients(int game_id, const json_spirit::mValue& val);
 		bool check_game_and_client(int game_id, const std::string& user, const std::string& user_to_add);
 		void update_last_seen_count(const std::string& user);
+#ifdef BOOST_NO_CXX11_NULLPTR
+		bool check_client_in_games(const std::string& user, int* game_id = NULL);
+#else
 		bool check_client_in_games(const std::string& user, int* game_id = nullptr);
+#endif
 		bool is_user_in_game(const std::string& user, int game_id) const;
 		const game_info* get_game_info(int game_id) const;
 		int get_user_session_id(const std::string& user) const;

@@ -195,7 +195,11 @@ bool request_handler::handle_get(const request& req, reply& rep, http::server::c
   // Open the file to send back.
   std::string full_path = doc_root_ + request_path;
   std::unique_ptr<std::istream> is = std::unique_ptr<std::istream>(new std::ifstream(full_path.c_str(), std::ios::in | std::ios::binary));
+#ifdef BOOST_NO_CXX11_NULLPTR
+  if(is == NULL || !(*is))
+#else
   if(is == nullptr || !(*is))
+#endif
   {
 	rep = reply::stock_reply(reply::not_found);
 	return true;
