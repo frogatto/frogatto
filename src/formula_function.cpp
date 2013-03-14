@@ -45,6 +45,7 @@
 #include "controls.hpp"
 #include "pathfinding.hpp"
 #include "preferences.hpp"
+#include "random.hpp"
 #include "level.hpp"
 #include "json_parser.hpp"
 #include "variant_utils.hpp"
@@ -1022,7 +1023,7 @@ template<typename RnIt>
 void myshuffle(RnIt i1, RnIt i2)
 {
 	while(i2 - i1 > 1) {
-		std::swap(*(i2-1), i1[rand()%(i2-i1)]);
+		std::swap(*(i2-1), i1[rng::generate()%(i2-i1)]);
 		--i2;
 	}
 }
