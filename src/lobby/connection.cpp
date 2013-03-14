@@ -38,6 +38,22 @@ void connection::start()
           boost::asio::placeholders::bytes_transferred)));
 }
 
+#ifdef BOOST_NO_CXX11_LAMBDAS
+namespace
+{
+	struct request_headers_finder
+	{
+		std::string s_;
+		request_headers_finder(const std::string& s) : s_(s)
+		{}
+		bool operator()(const header& v) 
+		{
+			return v.name.compare(s_) == 0;
+		}
+	};
+}
+#endif
+
 void connection::handle_read(const boost::system::error_code& e,
     std::size_t bytes_transferred)
 {
@@ -50,8 +66,14 @@ void connection::handle_read(const boost::system::error_code& e,
 
     if (result)
     {
+#ifdef BOOST_NO_CXX11_LAMBDAS
+		auto it = std::find_if(request_.headers.begin(), 
+			request_.headers.end(), 
+			request_headers_finder("Content-Length"));
+#else
 	  auto it = std::find_if(request_.headers.begin(), request_.headers.end(), 
 		  [](const header& v) { return v.name.compare("Content-Length") == 0; });
+#endif
 
 	  if(it != request_.headers.end()) {
 #ifdef BOOST_NO_CXX11_NULLPTR
