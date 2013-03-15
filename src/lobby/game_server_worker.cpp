@@ -75,14 +75,13 @@ namespace game_server
 #endif
 			auto cobj = cid.get_obj();
 			auto nick_it = cobj.find("nick");
-			auto cid_it = cobj.find("id");
 			auto bot_it = cobj.find("bot");
-			if(nick_it == cobj.end() || cid_it == cobj.end() || bot_it == cobj.end()) {
+			if(nick_it == cobj.end() || bot_it == cobj.end()) {
 				throw new processing_exception("Missing required attribute.");
 			}
 			const bool is_bot = bot_it->second.get_bool();
 			const std::string& user = nick_it->second.get_str();
-			client_info new_ci(cid_it->second.get_int(), !is_bot, "");
+			client_info new_ci(-1, !is_bot, "");
 			data_.check_add_client(user, new_ci);
 			if(!is_bot) {
 				gi.clients.push_back(user);
@@ -104,7 +103,6 @@ namespace game_server
 		bool got_server_info = false;
 		// First send a message to get the server info
 		while(running_) {
-			std::cerr << "game_server_worker_: " << running_ << std::endl;
 			if(got_server_info == false) {
 				try {
 					http::client::reply reply;

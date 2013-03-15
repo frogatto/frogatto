@@ -92,6 +92,7 @@ namespace game_server
 			}
 		}
 		if(phash.empty()) {
+			it->second.session_id = generate_session_id();
 			return boost::make_tuple(send_salt, it->second);
 		} else {
 			if(check_password(it->second.salt, fixed_password, phash)) {
@@ -262,7 +263,7 @@ namespace game_server
 				clients_[user] = ci;
 			} else {
 				// user on list check compare details.
-				if(it->second.session_id != ci.session_id) {
+				if(it->second.session_id != ci.session_id && ci.session_id != -1) {
 					std::cerr << "Detected user with multiple session ID's, correcting: " << it->second.session_id << ":" << ci.session_id << std::endl;
 					if(ci.salt.empty()) {
 						ci.salt = generate_salt();
