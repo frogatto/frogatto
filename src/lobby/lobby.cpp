@@ -90,7 +90,7 @@ int main(int argc, char* argv[])
 		polling_interval = int64_t(it->second.get_real() * 1000.0);
 	}
 
-	std::vector<std::pair<boost::shared_ptr<game_server::worker>, boost::shared_ptr<boost::thread> > > server_thread_list;
+	std::vector<std::pair<game_server::worker*, boost::shared_ptr<boost::thread> > > server_thread_list;
 
 	try {
 		auto listen_obj = cfg_obj["listen"].get_obj();
@@ -110,9 +110,11 @@ int main(int argc, char* argv[])
 			std::string gs_addr = gs_obj["address"].get_str();
 			std::string gs_port = gs_obj["port"].get_str();
 
-			boost::shared_ptr<game_server::worker> game_server_reader = boost::shared_ptr<game_server::worker>(new game_server::worker(polling_interval, shared_data, gs_addr, gs_port));
-			boost::shared_ptr<boost::thread> game_server_thread = boost::shared_ptr<boost::thread>(new boost::thread(*game_server_reader));
-			server_thread_list.push_back(std::pair<boost::shared_ptr<game_server::worker>, boost::shared_ptr<boost::thread> >(game_server_reader, game_server_thread));
+			// n.b. that boost thread takes it's callable by value, we use boost::ref to make it use a reference
+			// to our created object. boost::thread manages the lifetime of the worker, hence it doesn't leak.
+			game_server::worker* worker = new game_server::worker(polling_interval, shared_data, gs_addr, gs_port);
+			boost::shared_ptr<boost::thread> game_server_thread = boost::shared_ptr<boost::thread>(new boost::thread(boost::ref(*worker)));
+			server_thread_list.push_back(std::make_pair(worker, game_server_thread));
 		}
 	
 		// Initialise the server.
