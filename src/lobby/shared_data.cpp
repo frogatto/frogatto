@@ -249,18 +249,24 @@ namespace game_server
 		}
 	}
 
-	void shared_data::check_add_client(const std::string& user, const client_info& ci)
+	void shared_data::check_add_client(const std::string& user, client_info& ci)
 	{
 		boost::recursive_mutex::scoped_lock lock(guard_);
 		if(ci.is_human) {
 			auto it = clients_.find(user);
 			if(it == clients_.end()) {
 				// user not on list add it -- recovery from lobby being killed/breaking.
+				if(ci.salt.empty()) {
+					ci.salt = generate_salt();
+				}
 				clients_[user] = ci;
 			} else {
 				// user on list check compare details.
 				if(it->second.session_id != ci.session_id) {
 					std::cerr << "Detected user with multiple session ID's, correcting: " << it->second.session_id << ":" << ci.session_id << std::endl;
+					if(ci.salt.empty()) {
+						ci.salt = generate_salt();
+					}
 					clients_[user] = ci;
 				}
 			}
@@ -319,6 +325,22 @@ namespace game_server
 		gi.max_players = max_players;
 		games_[*game_id] = gi;
 		return true;
+	}
+
+	void shared_data::remove_game(const std::string& user, int game_id)
+	{
+		auto it = games_.find(game_id);
+		if(it != games_.end()) {
+			auto client = std::find(it->second.clients.begin(), it->second.clients.end(), user);
+			if(client != it->second.clients.end()) {
+				games_.erase(it);
+
+				json_spirit::mObject obj;
+				obj["type"] = "lobby_remove_game";
+				obj["game_id"] = game_id;
+				post_message_to_all_clients(obj);
+			}
+		}
 	}
 
 	int shared_data::make_session_id()

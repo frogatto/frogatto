@@ -92,12 +92,13 @@ namespace game_server
 			int session_id);
 		bool sign_off(const std::string& uname, int session_id);
 		bool check_user_and_session(const std::string& uname, int session_id);
-		void check_add_client(const std::string& user, const client_info& ci);
+		void check_add_client(const std::string& user, client_info& ci);
 		void check_add_game(int gid, const game_info& gi);
 		void get_user_list(json_spirit::mArray* users);
 		void get_games_list(json_spirit::mArray* games);
 		void add_server(const server_info& si);
 		bool create_game(const std::string& user, const std::string& game_type, size_t max_players, int* game_id);
+		void remove_game(const std::string& user, int game_id);
 		static int make_session_id();
 		client_message_queue_ptr get_message_queue(const std::string& user);
 		void set_waiting_connection(const std::string& user, http::server::connection_ptr conn);

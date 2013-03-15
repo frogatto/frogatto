@@ -435,6 +435,7 @@ bool request_handler::handle_post(const request& req, reply& rep, http::server::
 					gi->bot_count, 
 					json_spirit::mArray(gi->bot_types.begin(), gi->bot_types.end()), obj)) {
 					data_.post_message_to_game_clients(game_id, json_spirit::mValue(obj));
+					data_.remove_game(user, game_id);
 				return check_messages(user, rep, conn);
 				}
 			} else {
