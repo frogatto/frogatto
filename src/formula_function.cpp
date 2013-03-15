@@ -2261,6 +2261,7 @@ std::map<std::string, variant>& get_doc_cache() {
 }
 
 FUNCTION_DEF(write_document, 2, 2, "write_document(string filename, doc): writes 'doc' to the given filename")
+	formula::fail_if_static_context();
 	std::string docname = args()[0]->evaluate(variables).as_string();
 	variant doc = args()[1]->evaluate(variables);
 
@@ -2282,6 +2283,7 @@ FUNCTION_DEF(write_document, 2, 2, "write_document(string filename, doc): writes
 END_FUNCTION_DEF(write_document)
 
 FUNCTION_DEF(get_document, 1, 2, "get_document(string filename, list_of_strings flags): return reference to the given JSON document. flags can contain 'null_on_failure' and 'user_preferences_dir'")
+	formula::fail_if_static_context();
 	std::string docname = args()[0]->evaluate(variables).as_string();
 	ASSERT_LOG(docname.empty() == false, "DOCUMENT NAME GIVEN TO get_document() IS EMPTY");
 
