@@ -82,7 +82,8 @@ namespace game_server
 			}
 			const bool is_bot = bot_it->second.get_bool();
 			const std::string& user = nick_it->second.get_str();
-			data_.check_add_client(user, client_info(cid_it->second.get_int(), !is_bot, ""));
+			client_info new_ci(cid_it->second.get_int(), !is_bot, "");
+			data_.check_add_client(user, new_ci);
 			if(!is_bot) {
 				gi.clients.push_back(user);
 			} else {
@@ -103,6 +104,7 @@ namespace game_server
 		bool got_server_info = false;
 		// First send a message to get the server info
 		while(running_) {
+			std::cerr << "game_server_worker_: " << running_ << std::endl;
 			if(got_server_info == false) {
 				try {
 					http::client::reply reply;
