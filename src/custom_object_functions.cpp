@@ -572,15 +572,15 @@ END_FUNCTION_DEF(music_onetime)
 class sound_command : public entity_command_callable
 {
 public:
-	explicit sound_command(const std::string& name, const bool loops, float volume)
-	  : names_(util::split(name)), loops_(loops), volume_(volume)
+	explicit sound_command(const std::string& name, const bool loops, float volume, float fade_in_time)
+	  : names_(util::split(name)), loops_(loops), volume_(volume), fade_in_time_(fade_in_time)
 	{}
 	virtual void execute(level& lvl, entity& ob) const {
 		if(loops_){
 			if (names_.empty() == false){
 				int randomNum = rand()%names_.size();  //like a 1d-size die
 				if(names_[randomNum].empty() == false) {
-					sound::play_looped(names_[randomNum], &ob, volume_);
+					sound::play_looped(names_[randomNum], &ob, volume_, fade_in_time_);
 				}
 			}
 			
@@ -589,7 +589,7 @@ public:
 			if (names_.empty() == false){
 				int randomNum = rand()%names_.size();  //like a 1d-size die
 				if(names_[randomNum].empty() == false) {
-					sound::play(names_[randomNum], &ob, volume_);
+					sound::play(names_[randomNum], &ob, volume_, fade_in_time_);
 				}
 			}
 		}
@@ -598,22 +598,25 @@ private:
 	std::vector<std::string> names_;
 	bool loops_;
 	float volume_;
+	float fade_in_time_;
 };
 
-FUNCTION_DEF(sound, 1, 2, "sound(string id, decimal volume): plays the sound file given by 'id'")
+FUNCTION_DEF(sound, 1, 3, "sound(string id, decimal volume, decimal fade_in_time): plays the sound file given by 'id', reaching full volume after fade_in_time seconds.")
 	sound_command* cmd = (new sound_command(
 									 args()[0]->evaluate(variables).as_string(),
 									 false,
-									 args().size() > 1 ? args()[1]->evaluate(variables).as_decimal().as_float() : 1.0));
+									 args().size() > 1 ? args()[1]->evaluate(variables).as_decimal().as_float() : 1.0f,
+									 args().size() > 2 ? args()[2]->evaluate(variables).as_decimal().as_float() : 0.0f));
 	cmd->set_expression(this);
 	return variant(cmd);
 END_FUNCTION_DEF(sound)
 
-FUNCTION_DEF(sound_loop, 1, 2, "sound_loop(string id, decimal volume): plays the sound file given by 'id' in a loop")
+FUNCTION_DEF(sound_loop, 1, 3, "sound_loop(string id, decimal volume, decimal fade_in_time): plays the sound file given by 'id' in a loop, if fade_in_time is given it will reach full volume after this time.")
 	sound_command* cmd = (new sound_command(
 									 args()[0]->evaluate(variables).as_string(),
 									 true,
-									 args().size() > 1 ? args()[1]->evaluate(variables).as_decimal().as_float() : 1.0));
+									 args().size() > 1 ? args()[1]->evaluate(variables).as_decimal().as_float() : 1.0f,
+									 args().size() > 2 ? args()[2]->evaluate(variables).as_decimal().as_float() : 0.0f));
 	cmd->set_expression(this);
 	return variant(cmd);
 END_FUNCTION_DEF(sound_loop)
@@ -643,19 +646,21 @@ END_FUNCTION_DEF(sound_volume)
 class stop_sound_command : public entity_command_callable
 {
 public:
-	explicit stop_sound_command(const std::string& name)
-	  : name_(name)
+	explicit stop_sound_command(const std::string& name, float fade_out_time)
+	  : name_(name), fade_out_time_(fade_out_time)
 	{}
 	virtual void execute(level& lvl, entity& ob) const {
-		sound::stop_sound(name_, &ob);
+		sound::stop_sound(name_, &ob, fade_out_time_);
 	}
 private:
 	std::string name_;
+	float fade_out_time_;
 };
 
-FUNCTION_DEF(stop_sound, 1, 1, "stop_sound(string id): stops the sound that the current object is playing with the given id")
+FUNCTION_DEF(stop_sound, 1, 2, "stop_sound(string id, (opt) decimal fade_out_time): stops the sound that the current object is playing with the given id, if fade_out_time is given the sound fades out over this time before stopping")
 	stop_sound_command* cmd = (new stop_sound_command(
-					args()[0]->evaluate(variables).as_string()));
+					args()[0]->evaluate(variables).as_string(),
+					args().size() > 1 ? args()[1]->evaluate(variables).as_decimal().as_float() : 0.0f));
 	cmd->set_expression(this);
 	return variant(cmd);
 END_FUNCTION_DEF(stop_sound)

@@ -90,6 +90,9 @@ struct sound_playing {
 	const void* object;
 	int	loops;		//not strictly boolean.  -1=true, 0=false
 	float volume;
+	float fade_in_time;
+	float time_cnt;
+	float fade_out_time;
 };
 
 std::vector<sound_playing> channels_to_sounds_playing, queued_sounds;
@@ -421,7 +424,7 @@ void preload(const std::string& file)
 
 namespace {
 
-int play_internal(const std::string& file, int loops, const void* object, float volume)
+int play_internal(const std::string& file, int loops, const void* object, float volume, float fade_in_time)
 {
 	if(!sound_ok) {
 		return -1;
@@ -434,6 +437,7 @@ int play_internal(const std::string& file, int loops, const void* object, float 
 		queued_sounds.back().loops = loops;
 		queued_sounds.back().object = object;
 		queued_sounds.back().volume = volume;
+		queued_sounds.back().fade_in_time = fade_in_time;
 		
 		return -1;
 	}
@@ -461,12 +465,20 @@ int play_internal(const std::string& file, int loops, const void* object, float 
 			channels_to_sounds_playing.resize(result + 1);
 		}
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-		Mix_Volume(result, volume*sfx_volume*MIX_MAX_VOLUME); //start sound at full volume
+		if(fade_in_time == 0.0f) {
+			Mix_Volume(result, volume*sfx_volume*MIX_MAX_VOLUME); //start sound at full volume
+		} else {
+			Mix_Volume(result, 0); 
+		}
 #endif
 
 		channels_to_sounds_playing[result].file = file;
 		channels_to_sounds_playing[result].object = object;
 		channels_to_sounds_playing[result].loops = loops;
+		channels_to_sounds_playing[result].volume = volume;
+		channels_to_sounds_playing[result].fade_in_time = fade_in_time;
+		channels_to_sounds_playing[result].time_cnt = 0.0f;
+		channels_to_sounds_playing[result].fade_out_time = 0.0f;
 	}
 
 	return result;
@@ -492,28 +504,63 @@ void process()
 		std::vector<sound_playing> sounds;
 		sounds.swap(queued_sounds);
 		foreach(const sound_playing& sfx, sounds) {
-			play_internal(sfx.file, sfx.loops, sfx.object, sfx.volume);
+			play_internal(sfx.file, sfx.loops, sfx.object, sfx.volume, sfx.fade_in_time);
 		}
 	}
+
+	for(int n = 0; n != channels_to_sounds_playing.size(); ++n) {
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
+		sound_playing& snd = channels_to_sounds_playing[n];
+		snd.time_cnt += 0.02;
+		if(snd.fade_in_time > 0.0f) {
+			float volume = snd.volume;
+			if(snd.time_cnt > snd.fade_in_time) {
+				snd.time_cnt = 0.0f;
+				snd.fade_in_time = 0.0f;
+			} else {
+				volume *= snd.time_cnt / snd.fade_in_time;
+			}
+			//std::cerr << "Sound: " << snd.file << ", " << snd.fade_in_time << " : " << snd.time_cnt << "  " << (volume * sfx_volume) << std::endl;
+			Mix_Volume(n, volume * sfx_volume * MIX_MAX_VOLUME);
+		}
+		if(snd.fade_out_time > 0.0f) {
+			if(snd.time_cnt > snd.fade_out_time) {
+				snd.fade_out_time = 0.0f;
+				snd.object = NULL;
+				Mix_HaltChannel(n);
+			} else {
+				float volume = snd.volume;
+				volume *= (1.0 - snd.time_cnt / snd.fade_out_time);
+				Mix_Volume(n, volume * sfx_volume * MIX_MAX_VOLUME);
+			}
+		}
+	}
+#endif
 }
 
-void play(const std::string& file, const void* object, float volume)
+void play(const std::string& file, const void* object, float volume, float fade_in_time)
 {
 	if(preferences::no_sound() || mute_) {
 		return;
 	}
 
-	play_internal(file, 0, object, volume);
+	play_internal(file, 0, object, volume, fade_in_time);
 }
 
-void stop_sound(const std::string& file, const void* object)
+void stop_sound(const std::string& file, const void* object, float fade_out_time)
 {
 	for(int n = 0; n != channels_to_sounds_playing.size(); ++n) {
 		if(channels_to_sounds_playing[n].object == object &&
 		   channels_to_sounds_playing[n].file == file) {
-			channels_to_sounds_playing[n].object = NULL;
+			if(fade_out_time == 0.0f) {
+				channels_to_sounds_playing[n].object = NULL;
+			}
+			channels_to_sounds_playing[n].fade_out_time = fade_out_time;
+			channels_to_sounds_playing[n].time_cnt = 0.0f;
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-			Mix_HaltChannel(n);
+			if(fade_out_time == 0.0f) {
+				Mix_HaltChannel(n);
+			}
 #else
 			sdl_stop_channel(n);
 #endif
@@ -564,14 +611,14 @@ void stop_looped_sounds(const void* object)
 	}
 }
 	
-int play_looped(const std::string& file, const void* object, float volume)
+int play_looped(const std::string& file, const void* object, float volume, float fade_in_time)
 {
 	if(preferences::no_sound() || mute_) {
 		return -1;
 	}
 
 
-	const int result = play_internal(file, -1, object, volume);
+	const int result = play_internal(file, -1, object, volume, fade_in_time);
 	std::cerr << "PLAY: " << object << " " << file << " -> " << result << "\n";
 	return result;
 }
@@ -589,6 +636,10 @@ void change_volume(const void* object, int volume)
 	for(int n = 0; n != channels_to_sounds_playing.size(); ++n) {
 		if(channels_to_sounds_playing[n].object == object) {
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
+			if(channels_to_sounds_playing[n].fade_in_time > 0.0f) {
+				channels_to_sounds_playing[n].fade_in_time = 0.0f;
+				channels_to_sounds_playing[n].time_cnt = 0.0f;
+			}
 			Mix_Volume(n, sfx_volume*volume);
 #else
 			mixer.channels[n].volume = sfx_volume*volume;
