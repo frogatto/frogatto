@@ -104,6 +104,7 @@ namespace
 				if(type == "create_game_failed") {
 					reply_object["type"] = "error";
 					reply_object["description"] = "Server replied: Create game failed.";
+					return false;
 				} else if(type == "game_created") {
 #ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
 					BOOST_FOREACH(auto it, ro) {
