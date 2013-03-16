@@ -933,13 +933,11 @@ FUNCTION_DEF(object, 1, 5, "object(string type_id, int midpoint_x, int midpoint_
 	//adjust so the object's x/y is its midpoint.
 	obj->set_pos(obj->x() - obj->current_frame().width() / 2 , obj->y() - obj->current_frame().height() / 2);
 
-	fprintf(stderr, "OBJECT: %d\n", (int)args().size());
 	if(args().size() > 4) {
 		variant properties = args()[4]->evaluate(variables);
 		variant keys = properties.get_keys();
 		for(int n = 0; n != keys.num_elements(); ++n) {
 			variant value = properties[keys[n]];
-			fprintf(stderr, "OBJECT MUTATE: %s -> %s\n", keys[n].as_string().c_str(), value.write_json().c_str());
 			obj->mutate_value(keys[n].as_string(), value);
 		}
 	}
