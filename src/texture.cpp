@@ -516,6 +516,11 @@ void texture::set_as_current_texture() const
 	//std::cerr << gluErrorString(glGetError()) << "~set_as_current_texture~\n";
 }
 
+unsigned int texture::get_current_texture()
+{
+	return current_texture;
+}
+
 texture texture::get(data_blob_ptr blob)
 {
 	ASSERT_LOG(blob != NULL, "NULL data_blob passed to texture::get()");

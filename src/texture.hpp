@@ -60,6 +60,7 @@ public:
 
 	unsigned int get_id() const;
 	static void set_current_texture(unsigned int id);
+	static unsigned int get_current_texture();
 	void set_as_current_texture() const;
 	bool valid() const { return id_; }
 

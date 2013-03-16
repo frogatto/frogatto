@@ -374,6 +374,8 @@ variant program::get_value(const std::string& key) const
 #if defined(USE_GLES2)
 	if(key == "uniforms") {
 		return variant(new uniforms_callable(*this));
+	} else if(key == "current_texture") {
+		return variant(graphics::texture::get_current_texture());
 	} else if(key == "attributes") {
 		return variant(new attributes_callable(*this));
 	} else if(key == "alpha") {
@@ -569,7 +571,11 @@ namespace {
 		virtual void execute(formula_callable& ob) const
 		{
 			glActiveTexture(GL_TEXTURE0 + active_);
+			GLenum err = glGetError();
+			ASSERT_LOG(err == GL_NO_ERROR, "glActiveTexture failed: " << active_ << ", " << (active_ + GL_TEXTURE0) << ", " << err);
 			glBindTexture(GL_TEXTURE_2D, tex_id_);
+			err = glGetError();
+			ASSERT_LOG(err == GL_NO_ERROR, "glBindTexture failed: " << tex_id_ << ", " << err);
 		}
 	private:
 		GLuint tex_id_;
