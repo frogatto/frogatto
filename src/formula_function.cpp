@@ -2817,7 +2817,8 @@ public:
 	explicit console_output_to_screen_command(bool value) : value_(value)
 	{}
 
-	virtual void execute(game_logic::formula_callable& ob) const {
+	virtual void execute(game_logic::formula_callable& ob) const 
+	{
 		debug_console::enable_screen_output(value_);
 	}
 };
@@ -2830,6 +2831,29 @@ END_FUNCTION_DEF(console_output_to_screen)
 FUNCTION_DEF(user_preferences_path, 0, 0, "user_preferences_path() -> string: Returns the users preferences path")
 	return variant(preferences::user_data_path());
 END_FUNCTION_DEF(user_preferences_path)
+
+class set_user_details_command : public game_logic::command_callable
+{
+	std::string username_;
+	std::string password_;
+public:
+	explicit set_user_details_command(const std::string& username, const std::string& password) 
+		: username_(username), password_(password)
+	{}
+	virtual void execute(game_logic::formula_callable& ob) const 
+	{
+		preferences::set_username(username_);
+		if(password_.empty() == false) {
+			preferences::set_password(password_);
+		}
+	}
+};
+
+FUNCTION_DEF(set_user_details, 1, 2, "set_user_details(string username, (opt) string password) -> none: Sets the username and password in the preferences.")
+	formula::fail_if_static_context();
+	return variant(new set_user_details_command(args()[0]->evaluate(variables).as_string(),
+		args().size() > 1 ? args()[1]->evaluate(variables).as_string() : ""));
+END_FUNCTION_DEF(set_user_details)
 
 }
 
