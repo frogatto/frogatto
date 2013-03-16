@@ -171,6 +171,9 @@ void set_bequ( bool value );
 	uri::uri get_tbs_uri();
 	std::string get_username();
 	std::string get_password();
+	void set_username(const std::string& uname);
+	void set_password(const std::string& pword);
+
 	bool internal_tbs_server();
 
 	class editor_screen_size_scope {

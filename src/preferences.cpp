@@ -1,10 +1,12 @@
 #include <iostream>
 #include <algorithm>
 #include <string>
+#include <iomanip>
 #include "graphics.hpp"
 
 #include <boost/regex.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/uuid/sha1.hpp>
 
 #include "controls.hpp"
 #include "difficulty.hpp"
@@ -603,7 +605,23 @@ namespace preferences {
 	{
 		return password_;
 	}
-	
+
+	void set_username(const std::string& uname)
+	{
+		username_ = uname;
+	}
+
+	void set_password(const std::string& pword)
+	{
+		boost::uuids::detail::sha1 hash;
+		hash.process_bytes(pword.c_str(), pword.length());
+		unsigned int digest[5];
+		hash.get_digest(digest);
+		std::stringstream str;
+		str << std::hex << std::setfill('0')  << std::setw(sizeof(unsigned int)*2) << digest[0] << digest[1] << digest[2] << digest[3] << digest[4];
+		password_ = str.str();
+	}
+
 #if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
 	bool use_fbo()
 	{
@@ -733,6 +751,9 @@ namespace preferences {
 		if(node["code_editor"].is_map()) {
 			external_code_editor_ = node["code_editor"];
 		}
+
+		username_ = node["username"].as_string_default("");
+		password_ = node["passhash"].as_string_default("");
 		
 #if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
 		controls::set_keycode(controls::CONTROL_UP, static_cast<key_type>(node["key_up"].as_int(SDLK_UP)));
@@ -767,6 +788,8 @@ namespace preferences {
 		node.add("key_tongue", controls::get_keycode(controls::CONTROL_TONGUE));
 		node.add("show_iphone_controls", variant::from_bool(show_iphone_controls_));
 		node.add("locale", locale_);
+		node.add("username", variant(get_username()));
+		node.add("passhash", variant(get_password()));
 		
 		if(external_code_editor_.is_null() == false) {
 			node.add("code_editor", external_code_editor_);
@@ -912,7 +935,7 @@ namespace preferences {
 		} else if(arg_name == "--user") {
 			username_ = arg_value;
 		} else if(arg_name == "--pass") {
-			password_ = arg_value;
+			set_password(arg_value);
 		} else if(arg_name == "--module-args") {
 			game_logic::const_formula_callable_ptr callable = map_into_callable(json::parse(arg_value));
 			module::set_module_args(callable);
