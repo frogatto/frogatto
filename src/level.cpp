@@ -2455,10 +2455,12 @@ bool compare_entity_num_parents(const entity_ptr& a, const entity_ptr& b) {
 
 void level::set_active_chars()
 {
-	const int screen_left = last_draw_position().x/100;
-	const int screen_right = last_draw_position().x/100 + graphics::screen_width();
-	const int screen_top = last_draw_position().y/100;
-	const int screen_bottom = last_draw_position().y/100 + graphics::screen_height();
+	const decimal inverse_zoom_level = zoom_level_ != decimal(0) ? (decimal(1.0)/zoom_level_) : decimal(0);
+	const int zoom_buffer = (std::max(decimal(0.0),(inverse_zoom_level - decimal(1.0))) * graphics::screen_width()).as_int(); //pad the screen if we're zoomed out so stuff now-visible becomes active 
+	const int screen_left = last_draw_position().x/100 - zoom_buffer;
+	const int screen_right = last_draw_position().x/100 + graphics::screen_width() + zoom_buffer;
+	const int screen_top = last_draw_position().y/100 - zoom_buffer;
+	const int screen_bottom = last_draw_position().y/100 + graphics::screen_height() + zoom_buffer;
 
 	const rect screen_area(screen_left, screen_top, screen_right - screen_left, screen_bottom - screen_top);
 	active_chars_.clear();
