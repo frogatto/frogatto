@@ -1127,4 +1127,22 @@ namespace preferences {
 		}
 	}
 #endif
-	}
+
+screen_dimension_override_scope::screen_dimension_override_scope(int width, int height, int vwidth, int vheight) : vold_width(virtual_screen_width_), vold_height(virtual_screen_height_), old_width(actual_screen_width_), old_height(actual_screen_height_)
+{
+	actual_screen_width_ = width;
+	actual_screen_height_ = height;
+	virtual_screen_width_ = vwidth;
+	virtual_screen_height_ = vheight;
+}
+
+screen_dimension_override_scope::~screen_dimension_override_scope()
+{
+	actual_screen_width_ = old_width;
+	actual_screen_height_ = old_height;
+	virtual_screen_width_ = vold_width;
+	virtual_screen_height_ = vold_height;
+	
+}
+
+}

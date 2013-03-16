@@ -311,7 +311,7 @@ bool update_camera_position(const level& lvl, screen_position& pos, const entity
 	return draw_level;
 }
 
-void render_scene(const level& lvl, screen_position& pos, const entity* focus, bool do_draw) {
+void render_scene(const level& lvl, const screen_position& pos, const entity* focus, bool do_draw) {
 		formula_profiler::instrument instrumentation("DRAW");
 #ifndef NO_EDITOR
 	const int sidebar_width = editor::sidebar_width();

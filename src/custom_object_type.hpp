@@ -232,13 +232,13 @@ private:
 
 	int timer_frequency_;
 
-	typedef boost::shared_ptr<frame> frame_ptr;
+	typedef boost::intrusive_ptr<frame> frame_ptr;
 
 	typedef std::map<std::string, std::vector<frame_ptr> > frame_map;
 	frame_map frames_;
 	variant available_frames_;
 
-	boost::shared_ptr<frame> default_frame_;
+	boost::intrusive_ptr<frame> default_frame_;
 
 	game_logic::const_formula_ptr next_animation_formula_;
 

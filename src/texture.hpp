@@ -28,6 +28,9 @@ namespace graphics
 class texture
 {
 public:
+	static unsigned int next_power_of_2(unsigned int n);
+	static bool allows_npot();
+
 	enum {NO_STRIP_SPRITESHEET_ANNOTATIONS = 1};
 	//error thrown if an operation is done from a worker thread that
 	//must be completed by the main graphics thread.
@@ -49,6 +52,7 @@ public:
 
 	texture();
 	texture(const texture& t);
+	texture(unsigned int id, int width, int height);
 	~texture();
 
 	typedef std::vector<surface> key;
@@ -112,6 +116,7 @@ public:
 
 	static texture get_no_cache(const key& k);
 
+private:
 	mutable boost::shared_ptr<ID> id_;
 	unsigned int width_, height_;
 	GLfloat ratio_w_, ratio_h_;

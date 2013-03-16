@@ -58,6 +58,7 @@ objects = \
 	src/editor_level_properties_dialog.o \
 	src/editor_module_properties_dialog.o \
 	src/entity.o \
+	src/fbo_scene.o \
 	src/file_chooser_dialog.o \
 	src/filesystem.o \
 	src/font.o \

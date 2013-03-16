@@ -30,6 +30,8 @@ namespace graphics
 
 namespace {
 
+bool g_flip_draws = false;
+
 static void transform_point(GLfloat out[4], const GLfloat m[16], const GLfloat in[4])
 {
 #define M(row,col)  m[col*4+row]
@@ -70,6 +72,16 @@ static GLboolean gluProjectf(GLfloat objx, GLfloat objy, GLfloat objz,
 	return GL_TRUE;
 }
 
+}
+
+flip_draw_scope::flip_draw_scope() : old_value(g_flip_draws)
+{
+	g_flip_draws = true;
+}
+
+flip_draw_scope::~flip_draw_scope()
+{
+	g_flip_draws = old_value;
 }
 
 void reset_opengl_state()
@@ -246,16 +258,26 @@ SDL_Surface* set_video_mode(int w, int h, int bitsperpixel, int flags)
 		
 		if(preferences::screen_rotated()) {
 			//		glOrtho(0, 640, 960, 0, -1.0, 1.0);
+			int top = screen_width();
+			int bot = 0;
+			if(g_flip_draws) {
+				std::swap(top, bot);
+			}
 #if defined(USE_GLES2) && defined(GL_ES_VERSION_2_0)
-			glOrthof(0, screen_height(), screen_width(), 0, -1.0, 1.0);
+			glOrthof(0, screen_height(), top, bot, -1.0, 1.0);
 #else
-			glOrtho(0, screen_height(), screen_width(), 0, -1.0, 1.0);
+			glOrtho(0, screen_height(), top, bot, -1.0, 1.0);
 #endif
 		} else {
+			int top = screen_height();
+			int bot = 0;
+			if(g_flip_draws) {
+				std::swap(top, bot);
+			}
 #if defined(USE_GLES2) && defined(GL_ES_VERSION_2_0)
-			glOrthof(0, screen_width(), screen_height(), 0, -1.0, 1.0);
+			glOrthof(0, screen_width(), top, bot, -1.0, 1.0);
 #else
-			glOrtho(0, screen_width(), screen_height(), 0, -1.0, 1.0);
+			glOrtho(0, screen_width(), top, bot, -1.0, 1.0);
 #endif
 		}
 		

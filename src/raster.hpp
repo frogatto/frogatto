@@ -30,6 +30,14 @@ extern int xypos_draw_mask;
 namespace graphics
 {
 
+struct flip_draw_scope
+{
+	flip_draw_scope();
+	~flip_draw_scope();
+
+	bool old_value;
+};
+
 bool set_video_mode(int w, int h);
 void reset_opengl_state();
 #if SDL_VERSION_ATLEAST(2, 0, 0)

@@ -99,12 +99,14 @@ public:
 	virtual const frame& current_frame() const { return *frame_; }
 
 	void set_frame(const std::string& name);
+	void set_frame(const frame& new_frame);
 
 	virtual rect draw_rect() const;
 
 	//bare setting of the frame without adjusting position/checking solidity
 	//etc etc.
 	void set_frame_no_adjustments(const std::string& name);
+	void set_frame_no_adjustments(const frame& new_frame);
 	void die();
 	void die_with_no_event();
 	virtual bool is_active(const rect& screen_area) const;
@@ -303,7 +305,7 @@ private:
 	const_custom_object_type_ptr type_; //the type after variations are applied
 	const_custom_object_type_ptr base_type_; //the type without any variation
 	std::vector<std::string> current_variation_;
-	const frame* frame_;
+	boost::intrusive_ptr<const frame> frame_;
 	std::string frame_name_;
 	int time_in_frame_;
 	int time_in_frame_delta_;

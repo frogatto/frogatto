@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+#include "formula.hpp"
 #include "geometry.hpp"
 #include "solid_map_fwd.hpp"
 #include "texture.hpp"
@@ -15,7 +16,7 @@ namespace graphics {
 class blit_queue;
 }
 
-class frame
+class frame : public game_logic::formula_callable
 {
 public:
 	//exception thrown when there's a loading error.
@@ -178,6 +179,8 @@ private:
 	std::vector<pivot_schedule> pivots_;
 
 	void set_palettes(unsigned int palettes);
+
+	variant get_value(const std::string& key) const;
 };
 
 #endif

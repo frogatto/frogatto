@@ -43,7 +43,7 @@ struct animation_area {
 		dst_image = -1;
 	}
 	    
-	boost::shared_ptr<frame> anim;
+	boost::intrusive_ptr<frame> anim;
 	int width, height;
 
 	std::string src_image;

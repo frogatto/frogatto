@@ -14,7 +14,7 @@ class level;
 
 class gui_algorithm;
 typedef boost::intrusive_ptr<gui_algorithm> gui_algorithm_ptr;
-typedef boost::shared_ptr<frame> frame_ptr;
+typedef boost::intrusive_ptr<frame> frame_ptr;
 
 class gui_algorithm : public game_logic::formula_callable {
 public:

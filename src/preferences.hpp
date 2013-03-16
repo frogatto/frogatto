@@ -71,6 +71,13 @@ namespace preferences {
 	int actual_screen_width();
 	int actual_screen_height();
 
+	class screen_dimension_override_scope {
+		int old_width, old_height, vold_width, vold_height;
+	public:
+		screen_dimension_override_scope(int width, int height, int vwidth, int vheight);
+		~screen_dimension_override_scope();
+	};
+
 	//whether we are debugging
 	bool debug();
 	

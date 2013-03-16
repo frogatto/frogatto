@@ -4,6 +4,7 @@
 #include <boost/lexical_cast.hpp>
 
 #include "asserts.hpp"
+#include "fbo_scene.hpp"
 #include "foreach.hpp"
 #include "frame.hpp"
 #include "object_events.hpp"
@@ -34,7 +35,7 @@ frame::frame(variant node)
 	 end_event_id_(get_object_event_id("end_" + id_ + "_anim")),
 	 leave_event_id_(get_object_event_id("leave_" + id_ + "_anim")),
 	 process_event_id_(get_object_event_id("process_" + id_)),
-     texture_(graphics::texture::get(image_, node["image_formula"].as_string_default())),
+     texture_(node.has_key("fbo") ? node["fbo"].convert_to<texture_object>()->texture() : graphics::texture::get(image_, node["image_formula"].as_string_default())),
 	 solid_(solid_info::create(node)),
      collide_rect_(node.has_key("collide") ? rect(node["collide"]) :
 	               rect(node["collide_x"].as_int(),
@@ -798,4 +799,9 @@ point frame::pivot(const std::string& name, int time_in_frame) const
 	}
 
 	return point(feet_x(),feet_y()); //default is to pivot around feet.
+}
+
+variant frame::get_value(const std::string& key) const
+{
+	return variant();
 }

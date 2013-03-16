@@ -81,7 +81,7 @@ private:
 
 	struct KnownFile {
 		std::string fname;
-		boost::shared_ptr<frame> anim;
+		boost::intrusive_ptr<frame> anim;
 		gui::code_editor_widget_ptr editor;
 	};
 

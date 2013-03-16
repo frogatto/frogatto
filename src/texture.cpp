@@ -134,18 +134,6 @@ namespace {
 	GLfloat width_multiplier = -1.0;
 	GLfloat height_multiplier = -1.0;
 
-	unsigned int next_power_of_2(unsigned int n)
-	{
-		--n;
-		n = n|(n >> 1);
-		n = n|(n >> 2);
-		n = n|(n >> 4);
-		n = n|(n >> 8);
-		n = n|(n >> 16);
-		++n;
-		return n;
-	}
-
 	bool is_npot_allowed()
     {
 		static bool once = false;
@@ -214,6 +202,23 @@ namespace {
 			return "??";
 		}
 	}
+}
+
+unsigned int texture::next_power_of_2(unsigned int n)
+{
+	--n;
+	n = n|(n >> 1);
+	n = n|(n >> 2);
+	n = n|(n >> 4);
+	n = n|(n >> 8);
+	n = n|(n >> 16);
+	++n;
+	return n;
+}
+
+bool texture::allows_npot()
+{
+	return npot_allowed;
 }
 
 texture::manager::manager() {
@@ -288,6 +293,16 @@ texture::texture(const texture& t)
    alpha_map_(t.alpha_map_)
 {
 	add_texture_to_registry(this);
+}
+
+texture::texture(unsigned int id, int width, int height)
+	: width_(width), height_(height), ratio_w_(1.0), ratio_h_(1.0),
+      alpha_map_(new std::vector<bool>(width_*height_))
+{
+	id_.reset(new ID);
+	id_->id = id;
+	id_->width = width;
+	id_->height = height;
 }
 
 texture::~texture()

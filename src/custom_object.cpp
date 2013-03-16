@@ -275,7 +275,7 @@ custom_object::custom_object(variant node)
 
 	assert(type_.get());
 	//set_frame_no_adjustments(frame_name_);
-	frame_ = &type_->get_frame(frame_name_);
+	frame_.reset(&type_->get_frame(frame_name_));
 	calculate_solid_rect();
 
 	next_animation_formula_ = type_->next_animation_formula();
@@ -1867,7 +1867,7 @@ void custom_object::process(level& lvl)
 	}
 
 	if(blur_) {
-		blur_->next_frame(start_x, start_y, x(), y(), frame_, time_in_frame_, face_right(), upside_down(), float(start_rotate.as_float()), float(rotate_.as_float()));
+		blur_->next_frame(start_x, start_y, x(), y(), frame_.get(), time_in_frame_, face_right(), upside_down(), float(start_rotate.as_float()), float(rotate_.as_float()));
 		if(blur_->destroyed()) {
 			blur_.reset();
 		}
@@ -3113,7 +3113,14 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		time_in_frame_delta_ = value.as_int();
 		break;
 	case CUSTOM_OBJECT_ANIMATION:
-		set_frame(value.as_string());
+		if(value.is_string()) {
+			set_frame(value.as_string());
+		} else if(value.is_map()) {
+			frame_ptr f(new frame(value));
+			set_frame(*f);
+		} else {
+			set_frame(*value.convert_to<frame>());
+		}
 		break;
 	
 	case CUSTOM_OBJECT_X: {
@@ -3844,6 +3851,12 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 
 void custom_object::set_frame(const std::string& name)
 {
+	set_frame(type_->get_frame(name));
+}
+
+void custom_object::set_frame(const frame& new_frame)
+{
+	const std::string& name = new_frame.id();
 	const std::string previous_animation = frame_name_;
 
 	const bool changing_anim = name != frame_name_;
@@ -3856,7 +3869,7 @@ void custom_object::set_frame(const std::string& name)
 	const int start_x = feet_x();
 	const int start_y = feet_y();
 
-	frame_ = &type_->get_frame(name);
+	frame_.reset(&new_frame);
 	calculate_solid_rect();
 	++current_animation_id_;
 
@@ -3867,7 +3880,7 @@ void custom_object::set_frame(const std::string& name)
 		move_centipixels(-diff_x*100, -diff_y*100);
 	}
 
-	set_frame_no_adjustments(name);
+	set_frame_no_adjustments(new_frame);
 
 	frame_->play_sound(this);
 
@@ -3900,8 +3913,13 @@ rect custom_object::draw_rect() const
 
 void custom_object::set_frame_no_adjustments(const std::string& name)
 {
-	frame_ = &type_->get_frame(name);
-	frame_name_ = name;
+	set_frame_no_adjustments(type_->get_frame(name));
+}
+
+void custom_object::set_frame_no_adjustments(const frame& new_frame)
+{
+	frame_.reset(&new_frame);
+	frame_name_ = new_frame.id();
 	time_in_frame_ = 0;
 	if(frame_->velocity_x() != INT_MIN) {
 		velocity_x_ = frame_->velocity_x() * (face_right() ? 1 : -1);
@@ -4825,7 +4843,7 @@ void custom_object::update_type(const_custom_object_type_ptr old_type,
 	vars_->disallow_new_keys(type_->is_strict());
 	tmp_vars_->disallow_new_keys(type_->is_strict());
 
-	frame_ = &type_->get_frame(frame_name_);
+	frame_.reset(&type_->get_frame(frame_name_));
 
 	std::map<std::string, particle_system_ptr> systems;
 	systems.swap(particle_systems_);
