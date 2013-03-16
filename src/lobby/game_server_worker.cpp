@@ -5,6 +5,7 @@
 #include <map>
 #include <set>
 #include <boost/asio.hpp>
+#include <boost/foreach.hpp>
 #include <json_spirit.h>
 
 #include "game_server_worker.hpp"
@@ -67,17 +68,21 @@ namespace game_server
 		int gid = gid_it->second.get_int();
 		gi.started = started_it->second.get_bool();
 		gi.bot_count = 0;
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+		BOOST_FOREACH(auto cid, clients_it->second.get_array()) {
+#else
 		for(auto cid : clients_it->second.get_array()) {
+#endif
 			auto cobj = cid.get_obj();
 			auto nick_it = cobj.find("nick");
-			auto cid_it = cobj.find("id");
 			auto bot_it = cobj.find("bot");
-			if(nick_it == cobj.end() || cid_it == cobj.end() || bot_it == cobj.end()) {
+			if(nick_it == cobj.end() || bot_it == cobj.end()) {
 				throw new processing_exception("Missing required attribute.");
 			}
 			const bool is_bot = bot_it->second.get_bool();
 			const std::string& user = nick_it->second.get_str();
-			data_.check_add_client(user, client_info(cid_it->second.get_int(), !is_bot, ""));
+			client_info new_ci(-1, !is_bot, "");
+			data_.check_add_client(user, new_ci);
 			if(!is_bot) {
 				gi.clients.push_back(user);
 			} else {
@@ -113,7 +118,11 @@ namespace game_server
 						}
 						auto& obj = value.get_obj();
 						int field_counter = 0;
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+						BOOST_FOREACH(auto it, obj) {
+#else
 						for(auto it : obj) {
+#endif
 							if(it.first == "name") {
 								si_.name = it.second.get_str();
 								++field_counter;
@@ -186,7 +195,11 @@ namespace game_server
 
 						std::cerr << "POLL: " << type_it->second.get_str() << " " << last_status << std::endl;
 						if(games_it->second.type() == json_spirit::array_type) {
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+							BOOST_FOREACH(auto it, games_it->second.get_array()) {
+#else
 							for(auto it : games_it->second.get_array()) {
+#endif
 								process_game(it.get_obj());
 							}
 						} else {
@@ -236,7 +249,11 @@ namespace game_server
 
 	void worker::get_server_info(json_spirit::mObject* obj)
 	{
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+		BOOST_FOREACH(auto game, game_registry()) {
+#else
 		for(auto game : game_registry()) {
+#endif
 			const server_info& si = (*game.second.begin())->get_server_info();
 			json_spirit::mObject g_obj;
 			g_obj["display_name"] = si.display_name;
@@ -244,7 +261,11 @@ namespace game_server
 			g_obj["min_humans"] = int(si.min_humans);
 			g_obj["max_players"] = int(si.max_players);
 			g_obj["has_bots"] = si.has_bots;
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+			BOOST_FOREACH(auto it, si.other) {
+#else
 			for(auto it : si.other) {
+#endif
 				g_obj[it.first] = it.second;
 			}
 			(*obj)[game.first] = g_obj;

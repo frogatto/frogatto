@@ -8,6 +8,7 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 
 #include <iomanip>
@@ -103,8 +104,13 @@ namespace
 				if(type == "create_game_failed") {
 					reply_object["type"] = "error";
 					reply_object["description"] = "Server replied: Create game failed.";
+					return false;
 				} else if(type == "game_created") {
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+					BOOST_FOREACH(auto it, ro) {
+#else
 					for(auto it : ro) {
+#endif
 						reply_object[it.first] = it.second;
 					}
 					if(reply_object.find("game_server_address") == reply_object.end()) {
@@ -190,7 +196,11 @@ bool request_handler::handle_get(const request& req, reply& rep, http::server::c
   // Open the file to send back.
   std::string full_path = doc_root_ + request_path;
   std::unique_ptr<std::istream> is = std::unique_ptr<std::istream>(new std::ifstream(full_path.c_str(), std::ios::in | std::ios::binary));
+#ifdef BOOST_NO_CXX11_NULLPTR
+  if(is == NULL || !(*is))
+#else
   if(is == nullptr || !(*is))
+#endif
   {
 	rep = reply::stock_reply(reply::not_found);
 	return true;
@@ -410,7 +420,11 @@ bool request_handler::handle_post(const request& req, reply& rep, http::server::
 			const game_server::game_info* gi = data_.get_game_info(game_id);
 			if(gi) {
 				json_spirit::mArray players;
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+				BOOST_FOREACH(auto pit, gi->clients) {
+#else
 				for(auto pit : gi->clients) {
+#endif
 					json_spirit::mObject pobj;
 					pobj["user"] = pit;
 					pobj["session_id"] = data_.get_user_session_id(pit);
@@ -422,6 +436,7 @@ bool request_handler::handle_post(const request& req, reply& rep, http::server::
 					gi->bot_count, 
 					json_spirit::mArray(gi->bot_types.begin(), gi->bot_types.end()), obj)) {
 					data_.post_message_to_game_clients(game_id, json_spirit::mValue(obj));
+					data_.remove_game(user, game_id);
 				return check_messages(user, rep, conn);
 				}
 			} else {

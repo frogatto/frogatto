@@ -68,7 +68,7 @@ namespace http
 		  static reply bad_request_with_detail(const std::string& detail);
 
 		  // Create a json reply
-		  static bool reply::create_json_reply(const json_spirit::mValue& value, reply& rep);
+		  static bool create_json_reply(const json_spirit::mValue& value, reply& rep);
 		};
 	} // namespace server
 } // namespace http

@@ -10,7 +10,8 @@ BASE_CXXFLAGS += -O2
 endif
 
 # Initial compiler options, used before CXXFLAGS and CPPFLAGS.
-BASE_CXXFLAGS += -g -Werror -std=c++11 -I/usr/local/include
+# -std=c++11
+BASE_CXXFLAGS += -g -Werror -std=gnu++0x -I/usr/local/include
 BASE_CCFLAGS += -g -Werror
 BASE_LDFLAGS += -L/usr/local/lib -lboost_regex -lboost_system -lboost_chrono -lboost_thread -ljson_spirit -lpthread -ldl -fthreadsafe-statics
 

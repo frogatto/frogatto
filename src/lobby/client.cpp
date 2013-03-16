@@ -4,6 +4,7 @@
 
 #include <boost/asio.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 
 #include "client.hpp"
@@ -42,7 +43,11 @@ namespace http
 			request_stream << "POST /tbs" << " HTTP/1.0\r\n";
 			request_stream << "Host: " << addr << "\r\n";
 			request_stream << "Accept: */*\r\n";
-			for(auto it : req.headers) {
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+			BOOST_FOREACH(auto it, req.headers) {
+#else
+			for(auto it : req.headers) {		
+#endif
 				request_stream << it.name << ": " << it.value << "\r\n";
 			}
 			if(!req.body.empty()) {

@@ -92,12 +92,13 @@ namespace game_server
 			int session_id);
 		bool sign_off(const std::string& uname, int session_id);
 		bool check_user_and_session(const std::string& uname, int session_id);
-		void check_add_client(const std::string& user, const client_info& ci);
+		void check_add_client(const std::string& user, client_info& ci);
 		void check_add_game(int gid, const game_info& gi);
 		void get_user_list(json_spirit::mArray* users);
 		void get_games_list(json_spirit::mArray* games);
 		void add_server(const server_info& si);
 		bool create_game(const std::string& user, const std::string& game_type, size_t max_players, int* game_id);
+		void remove_game(const std::string& user, int game_id);
 		static int make_session_id();
 		client_message_queue_ptr get_message_queue(const std::string& user);
 		void set_waiting_connection(const std::string& user, http::server::connection_ptr conn);
@@ -107,7 +108,11 @@ namespace game_server
 		bool post_message_to_game_clients(int game_id, const json_spirit::mValue& val);
 		bool check_game_and_client(int game_id, const std::string& user, const std::string& user_to_add);
 		void update_last_seen_count(const std::string& user);
+#ifdef BOOST_NO_CXX11_NULLPTR
+		bool check_client_in_games(const std::string& user, int* game_id = NULL);
+#else
 		bool check_client_in_games(const std::string& user, int* game_id = nullptr);
+#endif
 		bool is_user_in_game(const std::string& user, int game_id) const;
 		const game_info* get_game_info(int game_id) const;
 		int get_user_session_id(const std::string& user) const;
@@ -122,7 +127,7 @@ namespace game_server
 		// List of games from server.
 		game_list server_games_;
 
-		boost::mutex guard_;
+		mutable boost::recursive_mutex guard_;
 
 		shared_data(shared_data&);
 	};

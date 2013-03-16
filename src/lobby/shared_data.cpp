@@ -2,6 +2,7 @@
 #include "targetver.h"
 #endif
 
+#include <boost/foreach.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_int.hpp>
 #include <boost/random/variate_generator.hpp>
@@ -38,7 +39,11 @@ namespace game_server
 		{
 			boost::uniform_int<> dist(1, 2147483647);
 			boost::variate_generator<boost::mt19937&, boost::uniform_int<> > sid(gen, dist);
+#ifdef BOOST_NO_CXX11_NULLPTR
+			sid.engine().seed(static_cast<uint32_t>(time(NULL)));
+#else
 			sid.engine().seed(static_cast<uint32_t>(time(nullptr)));
+#endif
 			return sid();
 		}
 
@@ -60,7 +65,7 @@ namespace game_server
 		const std::string& phash, 
 		int session_id)
 	{
-		boost::mutex::scoped_lock lock(guard_);
+		boost::recursive_mutex::scoped_lock lock(guard_);
 		// XXX Get password from database.
 		// if(lookup_username_in_database_fails) {
 		//     return boost::make_tuple(user_not_found, it->second);
@@ -87,6 +92,7 @@ namespace game_server
 			}
 		}
 		if(phash.empty()) {
+			it->second.session_id = generate_session_id();
 			return boost::make_tuple(send_salt, it->second);
 		} else {
 			if(check_password(it->second.salt, fixed_password, phash)) {
@@ -101,6 +107,7 @@ namespace game_server
 
 	bool shared_data::sign_off(const std::string& uname, int session_id) 
 	{
+		boost::recursive_mutex::scoped_lock lock(guard_);
 		auto it = clients_.find(uname);
 		if(it == clients_.end()) {
 			return false;
@@ -114,6 +121,7 @@ namespace game_server
 
 	bool shared_data::check_user_and_session(const std::string& uname, int session_id)
 	{
+		boost::recursive_mutex::scoped_lock lock(guard_);
 		auto it = clients_.find(uname);
 		if(it == clients_.end()) {
 			return false;
@@ -126,15 +134,21 @@ namespace game_server
 
 	const game_info* shared_data::get_game_info(int game_id) const
 	{
+		boost::recursive_mutex::scoped_lock lock(guard_);
 		auto game = games_.find(game_id);
 		if(game == games_.end()) {
+#ifdef BOOST_NO_CXX11_NULLPTR
+			return NULL;
+#else
 			return nullptr;
+#endif
 		}
 		return &game->second;
 	}
 
 	bool shared_data::is_user_in_game(const std::string& user, int game_id) const
 	{
+		boost::recursive_mutex::scoped_lock lock(guard_);
 		auto game = games_.find(game_id);
 		if(game == games_.end()) {
 			return false;
@@ -144,7 +158,8 @@ namespace game_server
 
 	bool shared_data::is_user_in_any_games(const std::string& user, int* game_id) const
 	{
-		for(auto it = games_.begin(); it != games_.end();) {
+		boost::recursive_mutex::scoped_lock lock(guard_);
+		for(auto it = games_.begin(); it != games_.end(); ++it) {
 			if(std::find(it->second.clients.begin(), it->second.clients.end(), user) != it->second.clients.end()) {
 				if(game_id) {
 					*game_id = it->first;
@@ -157,17 +172,31 @@ namespace game_server
 
 	bool shared_data::check_client_in_games(const std::string& user, int* game_id)
 	{
+		boost::recursive_mutex::scoped_lock lock(guard_);
 		bool erased_game = false;
 		for(auto it = games_.begin(); it != games_.end();) {
+			int gid = it->first;
+			// Erase user from client list.
 			it->second.clients.erase(std::remove(it->second.clients.begin(), it->second.clients.end(), user), it->second.clients.end());
 			if(game_id) {
-				*game_id = it->first;
+				*game_id = gid;
 			}
 			// remove games with no users left.
 			if(it->second.clients.empty()) {
 				games_.erase(it++);
 				erased_game = true;
+
+				// Post removed game message to user
+				json_spirit::mObject obj;
+				obj["type"] = "lobby_remove_game";
+				obj["game_id"] = gid;
+				post_message_to_client(user, obj);
 			} else {
+				json_spirit::mObject obj;
+				obj["type"] = "lobby_player_left_game";
+				obj["user"] = user;
+				post_message_to_game_clients(gid, json_spirit::mValue(obj));
+
 				++it;
 			}
 		}
@@ -176,24 +205,44 @@ namespace game_server
 
 	void shared_data::get_user_list(json_spirit::mArray* users)
 	{
-		boost::mutex::scoped_lock lock(guard_);
+		boost::recursive_mutex::scoped_lock lock(guard_);
+#ifdef BOOST_NO_CXX11_NULLPTR
+		ASSERT_LOG(users != NULL, "get_user_list: null pointer passed in");
+#else
 		ASSERT_LOG(users != nullptr, "get_user_list: null pointer passed in");
+#endif
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+		BOOST_FOREACH(auto u, clients_) {
+#else
 		for(auto u : clients_) {
+#endif
 			users->push_back(u.first);
 		}
 	}
 
 	void shared_data::get_games_list(json_spirit::mArray* games)
 	{
-		boost::mutex::scoped_lock lock(guard_);
+		boost::recursive_mutex::scoped_lock lock(guard_);
+#ifdef BOOST_NO_CXX11_NULLPTR
+		ASSERT_LOG(games != NULL, "get_games_list: null pointer passed in");
+#else
 		ASSERT_LOG(games != nullptr, "get_games_list: null pointer passed in");
+#endif
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+		BOOST_FOREACH(auto g, games_) {
+#else
 		for(auto g : games_) {
+#endif
 			json_spirit::mObject obj;
 			obj["game_type"] = g.second.name;
 			obj["game_id"] = g.first;
 			obj["max_players"] = int(g.second.max_players);
 			json_spirit::mArray user_ary;
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+			BOOST_FOREACH(auto client, g.second.clients) {
+#else
 			for(auto client : g.second.clients) {
+#endif
 				user_ary.push_back(client);
 			}
 			obj["users"] = user_ary;
@@ -201,18 +250,24 @@ namespace game_server
 		}
 	}
 
-	void shared_data::check_add_client(const std::string& user, const client_info& ci)
+	void shared_data::check_add_client(const std::string& user, client_info& ci)
 	{
-		boost::mutex::scoped_lock lock(guard_);
+		boost::recursive_mutex::scoped_lock lock(guard_);
 		if(ci.is_human) {
 			auto it = clients_.find(user);
 			if(it == clients_.end()) {
 				// user not on list add it -- recovery from lobby being killed/breaking.
+				if(ci.salt.empty()) {
+					ci.salt = generate_salt();
+				}
 				clients_[user] = ci;
 			} else {
 				// user on list check compare details.
-				if(it->second.session_id != ci.session_id) {
+				if(it->second.session_id != ci.session_id && ci.session_id != -1) {
 					std::cerr << "Detected user with multiple session ID's, correcting: " << it->second.session_id << ":" << ci.session_id << std::endl;
+					if(ci.salt.empty()) {
+						ci.salt = generate_salt();
+					}
 					clients_[user] = ci;
 				}
 			}
@@ -221,7 +276,7 @@ namespace game_server
 
 	void shared_data::check_add_game(int gid, const game_info& gi)
 	{
-		boost::mutex::scoped_lock lock(guard_);
+		boost::recursive_mutex::scoped_lock lock(guard_);
 		auto it = server_games_.find(gid);
 		if(it == server_games_.end()) {
 			// Game not on list!
@@ -231,7 +286,7 @@ namespace game_server
 
 	void shared_data::add_server(const server_info& si)
 	{
-		boost::mutex::scoped_lock lock(guard_);
+		boost::recursive_mutex::scoped_lock lock(guard_);
 		servers_.push_back(si);
 	}
 
@@ -246,7 +301,7 @@ namespace game_server
 
 	bool shared_data::create_game(const std::string& user, const std::string& game_type, size_t max_players, int* game_id)
 	{
-		boost::mutex::scoped_lock lock(guard_);
+		boost::recursive_mutex::scoped_lock lock(guard_);
 		auto it = clients_.find(user);
 		if(it == clients_.end()) {
 			return false;
@@ -254,18 +309,14 @@ namespace game_server
 		// user request to create game, delete user from any other games.
 		int gid;
 		if(is_user_in_any_games(user, &gid)) {
-			json_spirit::mObject obj;
-			if(check_client_in_games(user, &gid)) {
-				obj["type"] = "lobby_remove_game";
-				obj["game_id"] = gid;
-			} else {
-				obj["type"] = "lobby_player_left_game";
-				obj["user"] = user;
-			}
-			post_message_to_game_clients(gid, json_spirit::mValue(obj));
+			check_client_in_games(user, &gid);
 		}
 
+#ifdef BOOST_NO_CXX11_NULLPTR
+		ASSERT_LOG(game_id != NULL, "Invalid game_id pointer passed in");
+#else
 		ASSERT_LOG(game_id != nullptr, "Invalid game_id pointer passed in");
+#endif
 		*game_id = make_session_id();
 		game_info gi;
 		gi.started = false;
@@ -277,6 +328,22 @@ namespace game_server
 		return true;
 	}
 
+	void shared_data::remove_game(const std::string& user, int game_id)
+	{
+		auto it = games_.find(game_id);
+		if(it != games_.end()) {
+			auto client = std::find(it->second.clients.begin(), it->second.clients.end(), user);
+			if(client != it->second.clients.end()) {
+				games_.erase(it);
+
+				json_spirit::mObject obj;
+				obj["type"] = "lobby_remove_game";
+				obj["game_id"] = game_id;
+				post_message_to_all_clients(obj);
+			}
+		}
+	}
+
 	int shared_data::make_session_id()
 	{
 		return generate_session_id();
@@ -284,7 +351,7 @@ namespace game_server
 
 	client_message_queue_ptr shared_data::get_message_queue(const std::string& user)
 	{
-		boost::mutex::scoped_lock lock(guard_);
+		boost::recursive_mutex::scoped_lock lock(guard_);
 		auto it = clients_.find(user);
 		if(it == clients_.end()) {
 			return client_message_queue_ptr();
@@ -294,12 +361,16 @@ namespace game_server
 
 	void shared_data::set_waiting_connection(const std::string& user, http::server::connection_ptr conn)
 	{
-		boost::mutex::scoped_lock lock(guard_);
+		boost::recursive_mutex::scoped_lock lock(guard_);
 		auto it = clients_.find(user);
 		if(it == clients_.end()) {
 			return;
 		}
+#ifdef BOOST_NO_CXX11_NULLPTR
+		if(it->second.conn == NULL) {
+#else
 		if(it->second.conn == nullptr) {
+#endif
 			it->second.conn = conn;
 			it->second.counter = 60;
 		}
@@ -307,7 +378,7 @@ namespace game_server
 
 	void shared_data::process_waiting_connections()
 	{
-		boost::mutex::scoped_lock lock(guard_);
+		boost::recursive_mutex::scoped_lock lock(guard_);
 		static int tick_time = 10;
 
 		for(auto it = clients_.begin(); it != clients_.end(); ++it) {
@@ -365,7 +436,7 @@ namespace game_server
 
 	bool shared_data::post_message_to_client(const std::string& user, const json_spirit::mValue& val)
 	{
-		boost::mutex::scoped_lock lock(guard_);
+		boost::recursive_mutex::scoped_lock lock(guard_);
 		auto it = clients_.find(user);
 		if(it == clients_.end()) {
 			return false;
@@ -380,7 +451,7 @@ namespace game_server
 
 	void shared_data::post_message_to_all_clients(const json_spirit::mValue& val)
 	{
-		boost::mutex::scoped_lock lock(guard_);		
+		boost::recursive_mutex::scoped_lock lock(guard_);
 		for(auto it = clients_.begin(); it != clients_.end(); ++it) {
 			client_info& ci = it->second;
 			if(ci.msg_q) {
@@ -391,11 +462,16 @@ namespace game_server
 
 	bool shared_data::post_message_to_game_clients(int game_id, const json_spirit::mValue& val)
 	{
+		boost::recursive_mutex::scoped_lock lock(guard_);
 		auto it = games_.find(game_id);
 		if(it == games_.end()) {
 			return false;
 		}
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+		BOOST_FOREACH(auto client, it->second.clients) {
+#else
 		for(auto client : it->second.clients) {
+#endif
 			auto cit = clients_.find(client);
 			if(cit != clients_.end()) {
 				client_info& ci = cit->second;
