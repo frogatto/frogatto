@@ -162,6 +162,8 @@ void set_bequ( bool value );
 	bool run_failing_unit_tests();
 
 	bool serialize_bad_objects();
+	
+	bool die_on_assert();
 
 	game_logic::formula_callable* registry();
 

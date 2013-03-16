@@ -6,6 +6,7 @@
 
 #include "asserts.hpp"
 #include "level.hpp"
+#include "preferences.hpp"
 #include "stats.hpp"
 #include "variant.hpp"
 
@@ -62,7 +63,7 @@ namespace {
 
 bool throw_validation_failure_on_assert()
 {
-	return throw_validation_failure != 0;
+	return throw_validation_failure != 0 && !preferences::die_on_assert();
 }
 
 assert_recover_scope::assert_recover_scope()
@@ -82,7 +83,7 @@ void output_backtrace()
 
 bool throw_fatal_error_on_assert()
 {
-	return throw_fatal != 0;
+	return throw_fatal != 0 && !preferences::die_on_assert();
 }
 
 fatal_assert_scope::fatal_assert_scope()

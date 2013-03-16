@@ -318,6 +318,7 @@ namespace preferences {
 		
 		bool run_failing_unit_tests_ = false;
 		bool serialize_bad_objects_ = false;
+		bool die_on_assert_ = false;
 	}
 	
 	int get_unique_user_id() {
@@ -922,6 +923,8 @@ namespace preferences {
 			run_failing_unit_tests_ = true;
 		} else if(s == "--serialize-bad-objects") {
 			serialize_bad_objects_ = true;
+		} else if(s == "--die-on-assert") {
+			die_on_assert_ = true;
 		} else if(s == "--tbs-server") {
 			internal_tbs_server_ = true;
 		} else if(s == "--no-autopause") {
@@ -992,6 +995,10 @@ namespace preferences {
 	
 	bool serialize_bad_objects() {
 		return serialize_bad_objects_;
+	}
+
+	bool die_on_assert() {
+		return die_on_assert_;
 	}
 	
 	const std::string& locale() {

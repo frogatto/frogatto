@@ -28,7 +28,7 @@ namespace gui
 		handle_process_on_entity_ = v["handle_process"].as_bool(false);
 		if(v["object"].is_string()) {
 			// type name, has obj_x, obj_y, facing			
-			entity_ = entity_ptr(new custom_object(v["object"].as_string(), v["obj_x"].as_int(0), v["obj_y"].as_int(0), v["facing"].as_int(0)));
+			entity_ = entity_ptr(new custom_object(v["object"].as_string(), v["obj_x"].as_int(0), v["obj_y"].as_int(0), v["facing"].as_int(1)));
 			entity_->finish_loading(NULL);
 		} else if(v["object"].is_map()) {
 			entity_ = entity_ptr(new custom_object(v["object"]));
