@@ -149,10 +149,14 @@ bool update_camera_position(const level& lvl, screen_position& pos, const entity
 		//find the boundary values for the camera position based on the size
 		//of the level. These boundaries keep the camera from ever going out
 		//of the bounds of the level.
-		const int min_x = lvl.boundaries().x() + screen_width/2 - x_screen_pad/2;
-		const int max_x = lvl.boundaries().x2() - screen_width/2 + x_screen_pad/2;
-		const int min_y = lvl.boundaries().y() + screen_height/2 - y_screen_pad/2;
-		const int max_y = lvl.boundaries().y2() - screen_height/2 + y_screen_pad/2;
+		
+		const decimal inverse_zoom_level = lvl.zoom_level() != decimal(0) ? (decimal(1.0)/lvl.zoom_level()) : decimal(0);
+		
+		
+		const int min_x = lvl.boundaries().x() + ((screen_width/2 - x_screen_pad/2)*inverse_zoom_level).as_int();
+		const int max_x = lvl.boundaries().x2() - ((screen_width/2 + x_screen_pad/2)*inverse_zoom_level).as_int();
+		const int min_y = lvl.boundaries().y() + ((screen_height/2 - y_screen_pad/2)*inverse_zoom_level).as_int();
+		const int max_y = lvl.boundaries().y2() - ((screen_height/2 + y_screen_pad/2)*inverse_zoom_level).as_int();
 
 		//std::cerr << "BOUNDARIES: " << lvl.boundaries().x() << ", " << lvl.boundaries().x2() << " WIDTH: " << screen_width << " PAD: " << x_screen_pad << "\n";
 
