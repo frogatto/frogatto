@@ -12,6 +12,7 @@
 
 #include "connection_fwd.hpp"
 #include "queue.hpp"
+#include "sqlite3.h"
 
 namespace game_server
 {
@@ -85,6 +86,10 @@ namespace game_server
 		};
 		shared_data()
 		{}
+		shared_data(boost::shared_ptr<sqlite3> db_ptr)
+			: db_ptr_(db_ptr)
+		{
+		}
 		virtual ~shared_data()
 		{}
 		boost::tuple<action, client_info> process_user(const std::string& uname, 
@@ -118,6 +123,8 @@ namespace game_server
 		int get_user_session_id(const std::string& user) const;
 		bool is_user_in_any_games(const std::string& user, int* game_id) const;
 	private:
+		boost::shared_ptr<sqlite3> db_ptr_;
+
 		// This is now the list of games that the lobby has created.
 		game_list games_;
 		// List of clients the lobby knows about.

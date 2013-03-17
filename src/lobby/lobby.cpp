@@ -27,6 +27,17 @@ namespace
 	const std::string default_lobby_config_file = "lobby-config.cfg";
 }
 
+#if defined(USE_SQLITE)
+struct database_close
+{
+	void operator()(sqlite3* db)
+	{
+		if(db) {
+			sqlite3_close(db);
+		}
+	}
+};
+#endif
 
 int main(int argc, char* argv[])
 {
@@ -80,7 +91,8 @@ int main(int argc, char* argv[])
 #else
 		db = nullptr;
 #endif
-	}
+	} 
+	boost::shared_ptr<sqlite3> db_ptr(db, database_close());
 #endif
 
 	int64_t polling_interval = default_polling_interval;
@@ -97,7 +109,7 @@ int main(int argc, char* argv[])
 		std::size_t num_threads = cfg_obj["threads"].get_int();
 		std::string file_path = cfg_obj["file_path"].get_str();
 
-		game_server::shared_data shared_data;
+		game_server::shared_data shared_data(db_ptr);
 
 		auto gs_ary = cfg_obj["game_server"].get_array();
 			// Create a tasks to poll the game servers
@@ -140,10 +152,5 @@ int main(int argc, char* argv[])
 		ASSERT_LOG(false, "exception: " << e.what());
 	}
 
-#if defined(USE_SQLITE)
-	if(db) {
-		sqlite3_close(db);
-	}
-#endif
 	return 0;
 }

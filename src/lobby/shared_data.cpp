@@ -19,17 +19,20 @@ namespace game_server
 	{
 		const std::string fixed_password = "Hello there";
 
-		bool check_password(const std::string& salt, const std::string& pword, const std::string& phash)
+		std::string sha1(const std::string s)
 		{
-			boost::uuids::detail::sha1 s;
-			std::string mash = salt + pword;
-			s.process_bytes(mash.c_str(), mash.length());
+			boost::uuids::detail::sha1 hash;
+			hash.process_bytes(s.c_str(), s.length());
 			unsigned int digest[5];
-			s.get_digest(digest);
+			hash.get_digest(digest);
 			std::stringstream str;
 			str << std::hex << std::setfill('0')  << std::setw(sizeof(unsigned int)*2) << digest[0] << digest[1] << digest[2] << digest[3] << digest[4];
-			std::cerr << "check_password: " << str.str() << " " << salt << " " << pword << " " << phash << std::endl;
-			return (phash.compare(str.str()) == 0);
+			return str.str();
+		}
+
+		bool check_password(const std::string& salt, const std::string& pword, const std::string& phash)
+		{
+			return (phash.compare(sha1(salt + pword)) == 0);
 		}
 
 		// Global generator, so it's not being constantly instantiated.
@@ -66,6 +69,9 @@ namespace game_server
 		int session_id)
 	{
 		boost::recursive_mutex::scoped_lock lock(guard_);
+		//ASSERT_LOG(db_ptr_ != NULL, "No open database");
+		//sqlite3_exec(db_ptr, 
+		//	"SELECT password FROM users_table WHERE username = ?", 
 		// XXX Get password from database.
 		// if(lookup_username_in_database_fails) {
 		//     return boost::make_tuple(user_not_found, it->second);
@@ -95,7 +101,7 @@ namespace game_server
 			it->second.session_id = generate_session_id();
 			return boost::make_tuple(send_salt, it->second);
 		} else {
-			if(check_password(it->second.salt, fixed_password, phash)) {
+			if(check_password(it->second.salt, sha1(fixed_password), phash)) {
 				it->second.signed_in = true;
 				return boost::make_tuple(login_success, it->second);
 			} else {

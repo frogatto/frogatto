@@ -11,8 +11,8 @@ endif
 
 # Initial compiler options, used before CXXFLAGS and CPPFLAGS.
 # -std=c++11
-BASE_CXXFLAGS += -g -Werror -std=gnu++0x -I/usr/local/include
-BASE_CCFLAGS += -g -Werror
+BASE_CXXFLAGS += -g -Werror -std=gnu++0x -I/usr/local/include -DUSE_SQLITE
+BASE_CCFLAGS += -g -Werror -DSQLITE_THREADSAFE=1
 BASE_LDFLAGS += -L/usr/local/lib -lboost_regex -lboost_system -lboost_chrono -lboost_thread -ljson_spirit -lpthread -ldl -fthreadsafe-statics
 
 objects = \
@@ -43,15 +43,15 @@ lobby: $(objects)
 		sed -e 's/^ *//' -e 's/$$/:/' >> $*.d
 	@rm -f $*.d.tmp
 
-#sqlite3.o: ../src/sqlite3.c
-#	@echo "Building: " $<
-#	@$(CC) $(BASE_CCFLAGS) $(CCFLAGS) -c $<
-#	@$(CC) $(BASE_CCFLAGS) $(CCFLAGS) -MM $< > $*.d
-#	@mv -f $*.d $*.d.tmp
-#	@sed -e 's|.*:|$*.o:|' < $*.d.tmp > $*.d
-#	@sed -e 's/.*://' -e 's/\\$$//' < $*.d.tmp | fmt -1 | \
-#		sed -e 's/^ *//' -e 's/$$/:/' >> $*.d
-#	@rm -f $*.d.tmp
+sqlite3.o: sqlite3.c
+	@echo "Building: " $<
+	@$(CC) $(BASE_CCFLAGS) $(CCFLAGS) -c $<
+	@$(CC) $(BASE_CCFLAGS) $(CCFLAGS) -MM $< > $*.d
+	@mv -f $*.d $*.d.tmp
+	@sed -e 's|.*:|$*.o:|' < $*.d.tmp > $*.d
+	@sed -e 's/.*://' -e 's/\\$$//' < $*.d.tmp | fmt -1 | \
+		sed -e 's/^ *//' -e 's/$$/:/' >> $*.d
+	@rm -f $*.d.tmp
 
 # pull in dependency info for *existing* .o files
 -include $(objects:.o=.d)
