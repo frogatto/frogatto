@@ -132,7 +132,8 @@ namespace game_server
 			std::string& password, 
 			std::string& email,
 			std::string& avatar);
-		bool update_user_data(const std::string& user, const json_spirit::mValue& obj);
+		bool get_user_data(const std::string& user, json_spirit::mValue& obj) const;
+		bool set_user_data(const std::string& user, const json_spirit::mValue& obj);
 	private:
 		sqlite::sqlite_wrapper_ptr db_ptr_;
 

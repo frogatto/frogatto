@@ -80,7 +80,23 @@ namespace game_server
 		return false;
 	}
 
-	bool shared_data::update_user_data(const std::string& user, const json_spirit::mValue& obj)
+	bool shared_data::get_user_data(const std::string& user, json_spirit::mValue& obj) const
+	{
+		boost::recursive_mutex::scoped_lock lock(guard_);
+
+		sqlite::bindings_type bindings;
+		sqlite::rows_type result;
+		std::string username_clean(user);
+		boost::algorithm::to_lower(username_clean);
+		bindings[json_spirit::mValue(1)] = json_spirit::mValue(username_clean);
+		if(db_ptr_->exec("SELECT user_data FROM 'users_table' WHERE username_clean = ?", bindings, &result) && result.size() > 0) {
+			obj = result[0].get_obj();
+			return true;
+		}
+		return false;
+	}
+
+	bool shared_data::set_user_data(const std::string& user, const json_spirit::mValue& obj)
 	{
 		boost::recursive_mutex::scoped_lock lock(guard_);
 

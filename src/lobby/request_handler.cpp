@@ -139,6 +139,194 @@ namespace
 		ASSERT_LOG(false, "Entered code path not accessible");
 		return false;
 	}
+
+	bool check_create_user(json_spirit::mObject& req_obj, reply& rep, game_server::shared_data& data)
+	{
+		json_spirit::mObject obj;
+
+		if(req_obj.find("type") == req_obj.end()) {
+			obj["type"] = "error";
+			obj["description"] = "No 'type' field in request";
+			return reply::create_json_reply(json_spirit::mValue(obj), rep);
+		}
+		const std::string& type = req_obj["type"].get_str();
+
+		if(req_obj.find("user") == req_obj.end()) {
+			obj["type"] = "error";
+			obj["description"] = "No 'user' field in request";
+			return reply::create_json_reply(json_spirit::mValue(obj), rep);
+		}
+		const std::string& user = req_obj["user"].get_str();
+
+		if(type == "create_new_user") {
+			if(data.is_user_in_database(user)) {
+				obj["type"] = "error";
+				obj["description"] = "Yser already exists in database";
+				return reply::create_json_reply(json_spirit::mValue(obj), rep);
+			}
+			if(req_obj.find("password") == req_obj.end()) {
+				obj["type"] = "error";
+				obj["description"] = "No 'password' field in request";
+				return reply::create_json_reply(json_spirit::mValue(obj), rep);
+			}
+			const std::string& password = req_obj["password"].get_str();
+			if(req_obj.find("email") == req_obj.end()) {
+				obj["type"] = "error";
+				obj["description"] = "No 'password' field in request";
+				return reply::create_json_reply(json_spirit::mValue(obj), rep);
+			}
+			const std::string& email = req_obj["email"].get_str();
+			std::string avatar;
+			if(req_obj.find("avatar") != req_obj.end() && req_obj["avatar"].type() == json_spirit::str_type) {
+				avatar = req_obj["avatar"].get_str();
+			}
+			if(data.add_user_to_database(user, password, email, avatar)) {
+				obj["type"] = "success";
+				return reply::create_json_reply(json_spirit::mValue(obj), rep);
+			} else {
+				obj["type"] = "error";
+				obj["description"] = "user could not be added at this time.";
+				return reply::create_json_reply(json_spirit::mValue(obj), rep);
+			}
+		} else if(type == "update_user_details") {
+			std::string password;
+			std::string email;
+			std::string avatar;
+			if(!data.get_user_from_database(user, password, email, avatar)) {
+				obj["type"] = "error";
+				obj["description"] = "user does not exist in database";
+				return reply::create_json_reply(json_spirit::mValue(obj), rep);
+			}
+			if(req_obj.find("password") != req_obj.end()) {
+				if(req_obj["password"].type() == json_spirit::obj_type) {
+					auto pwd_obj = req_obj["password"].get_obj();
+					if(pwd_obj.find("new") != pwd_obj.end() && pwd_obj.find("old") != pwd_obj.end()) {
+						const std::string& new_password = pwd_obj["new"].get_str();
+						const std::string& old_password = pwd_obj["old"].get_str();
+						if(old_password == password) {
+							password = new_password;
+						} else {
+							obj["type"] = "error";
+							obj["description"] = "old password is incorrect";
+							return reply::create_json_reply(json_spirit::mValue(obj), rep);
+						}
+					}
+				} else if(req_obj["password"].type() == json_spirit::str_type) {
+					if(req_obj["password"].get_str() != password) {
+						obj["type"] = "error";
+						obj["description"] = "password is incorrect";
+						return reply::create_json_reply(json_spirit::mValue(obj), rep);
+					}
+				} else {
+					obj["type"] = "error";
+					obj["description"] = "Unrecognised 'password' field";
+					return reply::create_json_reply(json_spirit::mValue(obj), rep);
+				}
+			} else {
+				obj["type"] = "error";
+				obj["description"] = "No password supplied";
+				return reply::create_json_reply(json_spirit::mValue(obj), rep);
+			}
+			if(req_obj.find("email") != req_obj.end()) {
+				email = req_obj["email"].get_str();
+			}
+			if(req_obj.find("avatar") != req_obj.end()) {
+				avatar = req_obj["avatar"].get_str();
+			}
+			if(data.add_user_to_database(user, password, email, avatar)) {
+				obj["type"] = "success";
+				return reply::create_json_reply(json_spirit::mValue(obj), rep);
+			} else {
+				obj["type"] = "error";
+				obj["description"] = "user could not be added at this time.";
+				return reply::create_json_reply(json_spirit::mValue(obj), rep);
+			}
+		}
+		return false;
+	}
+
+	// Check for setting/getting the user_data in the database.
+	bool check_user_data(json_spirit::mObject& req_obj, reply& rep, game_server::shared_data& data)
+	{
+		json_spirit::mObject obj;
+
+		if(req_obj.find("type") == req_obj.end()) {
+			obj["type"] = "error";
+			obj["description"] = "No 'type' field in request";
+			return reply::create_json_reply(json_spirit::mValue(obj), rep);
+		}
+		const std::string& type = req_obj["type"].get_str();
+
+		if(req_obj.find("user") == req_obj.end()) {
+			obj["type"] = "error";
+			obj["description"] = "No 'user' field in request";
+			return reply::create_json_reply(json_spirit::mValue(obj), rep);
+		}
+		const std::string& user = req_obj["user"].get_str();
+
+		if(type == "get_user_data") {
+			std::string password;
+			std::string email;
+			std::string avatar;
+			if(!data.get_user_from_database(user, password, email, avatar)) {
+				obj["type"] = "error";
+				obj["description"] = "user does not exist in database";
+				return reply::create_json_reply(json_spirit::mValue(obj), rep);
+			}
+			if(req_obj.find("password") == req_obj.end()) {
+				obj["type"] = "error";
+				obj["description"] = "No password supplied";
+				return reply::create_json_reply(json_spirit::mValue(obj), rep);
+			}
+			if(password != req_obj["password"].get_str()) {
+				obj["type"] = "error";
+				obj["description"] = "password is incorrect";
+				return reply::create_json_reply(json_spirit::mValue(obj), rep);
+			}
+			json_spirit::mValue dobj;
+			if(data.get_user_data(user, dobj)) {
+				obj["type"] = "get_user_data_reply";
+				obj["user_data"] = dobj;
+				return reply::create_json_reply(json_spirit::mValue(obj), rep);
+			}
+			obj["type"] = "error";
+			obj["description"] = "Failed to get user_data from database";
+			return reply::create_json_reply(json_spirit::mValue(obj), rep);
+		} else if(type == "set_user_data") {
+			std::string password;
+			std::string email;
+			std::string avatar;
+			if(!data.get_user_from_database(user, password, email, avatar)) {
+				obj["type"] = "error";
+				obj["description"] = "user does not exist in database";
+				return reply::create_json_reply(json_spirit::mValue(obj), rep);
+			}
+			if(req_obj.find("password") == req_obj.end()) {
+				obj["type"] = "error";
+				obj["description"] = "No password supplied";
+				return reply::create_json_reply(json_spirit::mValue(obj), rep);
+			}
+			if(password != req_obj["password"].get_str()) {
+				obj["type"] = "error";
+				obj["description"] = "password is incorrect";
+				return reply::create_json_reply(json_spirit::mValue(obj), rep);
+			}
+			if(req_obj.find("user_data") == req_obj.end()) {
+				obj["type"] = "error";
+				obj["description"] = "No 'user_data' field in request";
+				return reply::create_json_reply(json_spirit::mValue(obj), rep);
+			}		
+			if(data.set_user_data(user, req_obj["user_data"])) {
+				obj["type"] = "set_user_data_reply";
+				return reply::create_json_reply(json_spirit::mValue(obj), rep);
+			}
+			obj["type"] = "error";
+			obj["description"] = "Failed to get user_data from database";
+			return reply::create_json_reply(json_spirit::mValue(obj), rep);
+		}
+
+		return false;
+	}
 }
 
 request_handler::request_handler(const std::string& doc_root, game_server::shared_data& data)
@@ -277,6 +465,7 @@ bool request_handler::check_messages(const std::string& user, reply& rep, http::
 	return false;
 }
 
+
 bool request_handler::handle_post_user(const request& req, reply& rep, http::server::connection_ptr conn)
 {
 	json_spirit::mObject obj;
@@ -292,72 +481,12 @@ bool request_handler::handle_post_user(const request& req, reply& rep, http::ser
 	}
 
 	auto req_obj = value.get_obj();
-	if(req_obj.find("type") == req_obj.end()) {
-		obj["type"] = "error";
-		obj["description"] = "No 'type' field in request";
-		return reply::create_json_reply(json_spirit::mValue(obj), rep);
-	}
-	const std::string& type = req_obj["type"].get_str();
 
-	if(req_obj.find("user") == req_obj.end()) {
-		obj["type"] = "error";
-		obj["description"] = "No 'user' field in request";
-		return reply::create_json_reply(json_spirit::mValue(obj), rep);
+	if(check_create_user(req_obj, rep, data_)) {
+		return true;
 	}
-	const std::string& user = req_obj["user"].get_str();
-
-	if(type == "create_new_user") {
-		if(req_obj.find("password") == req_obj.end()) {
-			obj["type"] = "error";
-			obj["description"] = "No 'password' field in request";
-			return reply::create_json_reply(json_spirit::mValue(obj), rep);
-		}
-		const std::string& password = req_obj["password"].get_str();
-		if(req_obj.find("email") == req_obj.end()) {
-			obj["type"] = "error";
-			obj["description"] = "No 'password' field in request";
-			return reply::create_json_reply(json_spirit::mValue(obj), rep);
-		}
-		const std::string& email = req_obj["email"].get_str();
-		std::string avatar;
-		if(req_obj.find("avatar") != req_obj.end() && req_obj["avatar"].type() == json_spirit::str_type) {
-			avatar = req_obj["avatar"].get_str();
-		}
-		if(data_.add_user_to_database(user, password, email, avatar)) {
-			obj["type"] = "success";
-		} else {
-			obj["type"] = "error";
-			obj["description"] = "user could not be added at this time.";
-		}
-	} else if(type == "update_user_details") {
-		std::string password;
-		std::string email;
-		std::string avatar;
-		if(!data_.get_user_from_database(user, password, email, avatar)) {
-			obj["type"] = "error";
-			obj["description"] = "user does not exist in database";
-			return reply::create_json_reply(json_spirit::mValue(obj), rep);
-		}
-		if(req_obj.find("password") != req_obj.end()) {
-			password = req_obj["password"].get_str();
-		}	
-		if(req_obj.find("email") != req_obj.end()) {
-			email = req_obj["email"].get_str();
-		}
-		if(req_obj.find("avatar") != req_obj.end()) {
-			avatar = req_obj["avatar"].get_str();
-		}
-		if(data_.add_user_to_database(user, password, email, avatar)) {
-			obj["type"] = "success";
-		} else {
-			obj["type"] = "error";
-			obj["description"] = "user could not be added at this time.";
-		}
-	} else {
-		obj["type"] = "error";
-		obj["description"] = "Unknown type of request";
-	}
-
+	obj["type"] = "error";
+	obj["description"] = "Unknown type of request";
 	return reply::create_json_reply(json_spirit::mValue(obj), rep);
 }
 
@@ -400,6 +529,14 @@ bool request_handler::handle_post_tbs(const request& req, reply& rep, http::serv
 		obj["type"] = "lobby_server_info";
 		obj["servers"] = si_obj;
 		return reply::create_json_reply(json_spirit::mValue(obj), rep);
+	}
+
+	if(check_create_user(req_obj, rep, data_)) {
+		return true;
+	}
+
+	if(check_user_data(req_obj, rep, data_)) {
+		return true;
 	}
 
 	int session_id = -1;
