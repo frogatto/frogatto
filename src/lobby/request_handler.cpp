@@ -149,7 +149,14 @@ request_handler::request_handler(const std::string& doc_root, game_server::share
 bool request_handler::handle_request(const request& req, reply& rep, http::server::connection_ptr conn)
 {
 	if(req.method == "POST") {
-		return handle_post(req, rep, conn);
+		if(req.uri == "/tbs") {
+			return handle_post_tbs(req, rep, conn);
+		} else if(req.uri == "/user") {
+			return handle_post_user(req, rep, conn);
+		} else {
+			rep = reply::stock_reply(reply::not_found);
+			return true;
+		}
 	} else if(req.method == "GET") {
 		return handle_get(req, rep, conn);
 	} else {
@@ -270,13 +277,93 @@ bool request_handler::check_messages(const std::string& user, reply& rep, http::
 	return false;
 }
 
-bool request_handler::handle_post(const request& req, reply& rep, http::server::connection_ptr conn)
+bool request_handler::handle_post_user(const request& req, reply& rep, http::server::connection_ptr conn)
 {
 	json_spirit::mObject obj;
-	if(req.uri != "/tbs") {
-		rep = reply::stock_reply(reply::not_found);
+	std::cerr << "POST /user" << std::endl;
+	std::cerr << "BODY: " << req.body << std::endl;
+
+	json_spirit::mValue value;
+	json_spirit::read(req.body, value);
+
+	if(value.type() != json_spirit::obj_type) {
+		rep = reply::bad_request_with_detail("Not valid JSON data. Data was: <pre>" + req.body + "</pre>");
 		return true;
 	}
+
+	auto req_obj = value.get_obj();
+	if(req_obj.find("type") == req_obj.end()) {
+		obj["type"] = "error";
+		obj["description"] = "No 'type' field in request";
+		return reply::create_json_reply(json_spirit::mValue(obj), rep);
+	}
+	const std::string& type = req_obj["type"].get_str();
+
+	if(req_obj.find("user") == req_obj.end()) {
+		obj["type"] = "error";
+		obj["description"] = "No 'user' field in request";
+		return reply::create_json_reply(json_spirit::mValue(obj), rep);
+	}
+	const std::string& user = req_obj["user"].get_str();
+
+	if(type == "create_new_user") {
+		if(req_obj.find("password") == req_obj.end()) {
+			obj["type"] = "error";
+			obj["description"] = "No 'password' field in request";
+			return reply::create_json_reply(json_spirit::mValue(obj), rep);
+		}
+		const std::string& password = req_obj["password"].get_str();
+		if(req_obj.find("email") == req_obj.end()) {
+			obj["type"] = "error";
+			obj["description"] = "No 'password' field in request";
+			return reply::create_json_reply(json_spirit::mValue(obj), rep);
+		}
+		const std::string& email = req_obj["email"].get_str();
+		std::string avatar;
+		if(req_obj.find("avatar") != req_obj.end() && req_obj["avatar"].type() == json_spirit::str_type) {
+			avatar = req_obj["avatar"].get_str();
+		}
+		if(data_.add_user_to_database(user, password, email, avatar)) {
+			obj["type"] = "success";
+		} else {
+			obj["type"] = "error";
+			obj["description"] = "user could not be added at this time.";
+		}
+	} else if(type == "update_user_details") {
+		std::string password;
+		std::string email;
+		std::string avatar;
+		if(!data_.get_user_from_database(user, password, email, avatar)) {
+			obj["type"] = "error";
+			obj["description"] = "user does not exist in database";
+			return reply::create_json_reply(json_spirit::mValue(obj), rep);
+		}
+		if(req_obj.find("password") != req_obj.end()) {
+			password = req_obj["password"].get_str();
+		}	
+		if(req_obj.find("email") != req_obj.end()) {
+			email = req_obj["email"].get_str();
+		}
+		if(req_obj.find("avatar") != req_obj.end()) {
+			avatar = req_obj["avatar"].get_str();
+		}
+		if(data_.add_user_to_database(user, password, email, avatar)) {
+			obj["type"] = "success";
+		} else {
+			obj["type"] = "error";
+			obj["description"] = "user could not be added at this time.";
+		}
+	} else {
+		obj["type"] = "error";
+		obj["description"] = "Unknown type of request";
+	}
+
+	return reply::create_json_reply(json_spirit::mValue(obj), rep);
+}
+
+bool request_handler::handle_post_tbs(const request& req, reply& rep, http::server::connection_ptr conn)
+{
+	json_spirit::mObject obj;
 	std::cerr << "POST /tbs" << std::endl;
 	std::cerr << "BODY: " << req.body << std::endl;
 

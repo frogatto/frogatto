@@ -7,6 +7,7 @@
 #include <boost/random/uniform_int.hpp>
 #include <boost/random/variate_generator.hpp>
 #include <boost/uuid/sha1.hpp>
+#include <boost/algorithm/string.hpp>
 
 #include "asserts.hpp"
 #include "connection.hpp"
@@ -17,7 +18,7 @@ namespace game_server
 {
 	namespace
 	{
-		const std::string fixed_password = "Hello there";
+		//const std::string fixed_password = "Hello there";
 
 		std::string sha1(const std::string s)
 		{
@@ -63,20 +64,140 @@ namespace game_server
 			return ssalt;
 		}
 	}
+	
+	bool shared_data::is_user_in_database(const std::string& user) const
+	{
+		boost::recursive_mutex::scoped_lock lock(guard_);
+
+		sqlite::bindings_type bindings;
+		sqlite::rows_type result;
+		std::string username_clean(user);
+		boost::algorithm::to_lower(username_clean);
+		bindings["username_clean"] = json_spirit::mValue(username_clean);
+		if(db_ptr_->exec("SELECT COUNT(*) from 'users_table' WHERE username_clean = ?", bindings, &result)) {
+			return result[0].get_int() != 0;
+		}
+		return false;
+	}
+
+	bool shared_data::update_user_data(const std::string& user, const json_spirit::mValue& obj)
+	{
+		boost::recursive_mutex::scoped_lock lock(guard_);
+
+		sqlite::bindings_type bindings;
+		sqlite::rows_type result;
+		std::string username_clean(user);
+		boost::algorithm::to_lower(username_clean);
+		bindings["username_clean"] = json_spirit::mValue(username_clean);
+		if(!db_ptr_->exec("SELECT COUNT(*) from 'users_table' WHERE username_clean = ?", bindings, &result)) {
+			return false;
+		}
+		if(result[0].get_int() != 0) {
+			bindings["user_data"] = obj;
+			if(db_ptr_->exec("UPDATE 'users_table' SET user_data=?", bindings, &result)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool shared_data::get_user_from_database(const std::string& user, 
+		std::string& password, 
+		std::string& email,
+		std::string& avatar)
+	{
+		boost::recursive_mutex::scoped_lock lock(guard_);
+
+		sqlite::bindings_type bindings;
+		sqlite::rows_type result;
+		std::string username_clean(user);
+		boost::algorithm::to_lower(username_clean);
+		bindings[json_spirit::mValue(1)] = json_spirit::mValue(username_clean);
+		if(!db_ptr_->exec("SELECT COUNT(*) from 'users_table' WHERE username_clean = ?", bindings, &result)) {
+			return false;
+		}
+		if(result[0].get_int() != 0) {
+			if(!db_ptr_->exec("SELECT password, user_email, user_avatar FROM 'users_table' WHERE username_clean = ?", bindings, &result)) {
+				return false;
+			}
+		} else {
+			return false;
+		}
+		if(result.size() == 3) {
+			if(result[0].type() == json_spirit::str_type) {
+				password = result[0].get_str();
+			}
+			if(result[1].type() == json_spirit::str_type) {
+				email = result[1].get_str();
+			}
+			if(result[2].type() == json_spirit::str_type) {
+				avatar = result[2].get_str();
+			}
+			return true;
+		}
+		return false;
+	}
+
+
+	bool shared_data::add_user_to_database(const std::string& user, 
+		const std::string& password, 
+		const std::string& email,
+		const std::string& avatar)
+	{
+		boost::recursive_mutex::scoped_lock lock(guard_);
+
+		sqlite::bindings_type bindings;
+		sqlite::rows_type result;
+		std::string username_clean(user);
+		boost::algorithm::to_lower(username_clean);
+		bindings[json_spirit::mValue(1)] = json_spirit::mValue(username_clean);
+		if(!db_ptr_->exec("SELECT COUNT(*) from 'users_table' WHERE username_clean = ?", bindings, &result)) {
+			return false;
+		}
+		if(result[0].get_int() != 0) {
+			// do update
+			bindings[json_spirit::mValue(1)] = json_spirit::mValue(password);
+			bindings[json_spirit::mValue(2)] = json_spirit::mValue(email);
+			bindings[json_spirit::mValue(3)] = json_spirit::mValue(avatar);
+			bindings[json_spirit::mValue(4)] = json_spirit::mValue(username_clean);
+			if(!db_ptr_->exec("UPDATE 'users_table' SET password=?, user_avatar=?, user_email=? WHERE username_clean = ?", bindings, &result)) {
+				return false;
+			}
+		} else {
+			// do insert
+			bindings[json_spirit::mValue(1)] = json_spirit::mValue(username_clean);
+			bindings[json_spirit::mValue(2)] = json_spirit::mValue(user);
+			bindings[json_spirit::mValue(3)] = json_spirit::mValue(password);
+			bindings[json_spirit::mValue(4)] = json_spirit::mValue(avatar);
+			bindings[json_spirit::mValue(5)] = json_spirit::mValue(email);
+			bindings[json_spirit::mValue(6)] = json_spirit::mValue();
+			if(!db_ptr_->exec("INSERT INTO 'users_table' values(?,?,?,?,?,?)", bindings, &result)) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	boost::tuple<shared_data::action, client_info> shared_data::process_user(const std::string& uname, 
 		const std::string& phash, 
 		int session_id)
 	{
 		boost::recursive_mutex::scoped_lock lock(guard_);
-		//ASSERT_LOG(db_ptr_ != NULL, "No open database");
-		//sqlite3_exec(db_ptr, 
-		//	"SELECT password FROM users_table WHERE username = ?", 
-		// XXX Get password from database.
-		// if(lookup_username_in_database_fails) {
-		//     return boost::make_tuple(user_not_found, it->second);
-		// }
+
 		auto it = clients_.find(uname);
+
+		bool user_in_db = false;
+		std::string password;
+		sqlite::bindings_type bindings;
+		sqlite::rows_type result;
+		std::string username_clean(uname);
+		boost::algorithm::to_lower(username_clean);
+		bindings[json_spirit::mValue("username_clean")] = json_spirit::mValue(username_clean);
+		if(db_ptr_->exec("SELECT password from 'users_table' WHERE username_clean = :username_clean", bindings, &result) && result.size() > 0) {
+			password = result[0].get_str();
+			user_in_db = true;
+		}
+		
 		if(session_id == -1) {
 			// No session id, check if user name in list already.
 			if(it == clients_.end()) {
@@ -101,7 +222,11 @@ namespace game_server
 			it->second.session_id = generate_session_id();
 			return boost::make_tuple(send_salt, it->second);
 		} else {
-			if(check_password(it->second.salt, sha1(fixed_password), phash)) {
+			if(user_in_db == false) {
+				it->second.signed_in = true;
+				return boost::make_tuple(login_success, it->second);
+			}
+			if(check_password(it->second.salt, password, phash)) {
 				it->second.signed_in = true;
 				return boost::make_tuple(login_success, it->second);
 			} else {

@@ -95,7 +95,7 @@ void connection::handle_read(const boost::system::error_code& e,
 	  }
 
       if(request_handler_.handle_request(request_, reply_, shared_from_this())) {
-		  std::cerr << "Reply: " << reply_.content << std::endl;
+		  //std::cerr << "Reply: " << reply_.content << std::endl;
 	      boost::asio::async_write(socket_, reply_.to_buffers(),
               strand_.wrap(
                 boost::bind(&connection::handle_write, shared_from_this(),

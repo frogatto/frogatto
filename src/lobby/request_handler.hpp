@@ -41,7 +41,8 @@ public:
   bool handle_request(const request& req, reply& rep, http::server::connection_ptr conn);
 
   // Handle post's.
-  bool handle_post(const request& req, reply& rep, http::server::connection_ptr conn);
+  bool handle_post_tbs(const request& req, reply& rep, http::server::connection_ptr conn);
+  bool handle_post_user(const request& req, reply& rep, http::server::connection_ptr conn);
   // Handle get
   bool handle_get(const request& req, reply& rep, http::server::connection_ptr conn);
 

@@ -12,14 +12,12 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
 #include <json_spirit.h>
-#if defined(USE_SQLITE)
-#include "sqlite3.h"
-#endif
 
 #include "asserts.hpp"
 #include "server.hpp"
 #include "shared_data.hpp"
 #include "game_server_worker.hpp"
+#include "sqlite_wrapper.hpp"
 
 namespace 
 {
@@ -27,17 +25,6 @@ namespace
 	const std::string default_lobby_config_file = "lobby-config.cfg";
 }
 
-#if defined(USE_SQLITE)
-struct database_close
-{
-	void operator()(sqlite3* db)
-	{
-		if(db) {
-			sqlite3_close(db);
-		}
-	}
-};
-#endif
 
 int main(int argc, char* argv[])
 {
@@ -76,24 +63,14 @@ int main(int argc, char* argv[])
 		}
 	}
 
-#if defined(USE_SQLITE)
-#ifdef BOOST_NO_CXX11_NULLPTR
-	sqlite3* db = NULL;
-#else
-	sqlite3* db = nullptr;
-#endif
-	int rc = sqlite3_open("lobby-data.db", &db);
-	if(rc) {
-		std::cerr << "Can't open database!" << sqlite3_errmsg(db) << std::endl;
-		sqlite3_close(db);
-#ifdef BOOST_NO_CXX11_NULLPTR
-		db = NULL;
-#else
-		db = nullptr;
-#endif
-	} 
-	boost::shared_ptr<sqlite3> db_ptr(db, database_close());
-#endif
+	sqlite::sqlite_wrapper_ptr db_ptr = sqlite::sqlite_wrapper_ptr(new sqlite::wrapper("lobby-data.db"));
+	sqlite::bindings_type bindings;
+	sqlite::rows_type result;
+	bool res = db_ptr->exec("SELECT COUNT(*) FROM [sqlite_master] where tbl_name = 'users_table'", bindings, &result);
+	if(res && result[0].get_int() == 0) {
+		// No database found, let's make one.
+		db_ptr->exec("CREATE TABLE users_table(username_clean varchar(255), username varchar(255), password varchar(255), user_avatar varchar(255), user_email varchar(255), user_data blob)", bindings, &result);
+	}
 
 	int64_t polling_interval = default_polling_interval;
 	auto it = cfg_obj.find("server_polling_interval");
