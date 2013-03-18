@@ -8,6 +8,7 @@
 #include <map>
 #include <vector>
 #include <boost/shared_ptr.hpp>
+#include <boost/foreach.hpp>
 #include <json_spirit.h>
 
 
@@ -94,7 +95,11 @@ namespace sqlite
 				sqlite3_reset(stmt);
 				sqlite3_clear_bindings(stmt);
 			}
+#ifdef BOOST_NO_CXX11_RANGE_BASED_FOR
+			BOOST_FOREACH(auto bit, bindings) {
+#else
 			for(auto bit : bindings) {
+#endif
 				int ndx = 0;
 				if(bit.first.type() == json_spirit::int_type) {
 					ndx = bit.first.get_int();
