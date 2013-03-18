@@ -73,7 +73,7 @@ namespace game_server
 		sqlite::rows_type result;
 		std::string username_clean(user);
 		boost::algorithm::to_lower(username_clean);
-		bindings["username_clean"] = json_spirit::mValue(username_clean);
+		bindings[json_spirit::mValue(1)] = json_spirit::mValue(username_clean);
 		if(db_ptr_->exec("SELECT COUNT(*) from 'users_table' WHERE username_clean = ?", bindings, &result)) {
 			return result[0].get_int() != 0;
 		}
@@ -88,13 +88,14 @@ namespace game_server
 		sqlite::rows_type result;
 		std::string username_clean(user);
 		boost::algorithm::to_lower(username_clean);
-		bindings["username_clean"] = json_spirit::mValue(username_clean);
+		bindings[json_spirit::mValue(1)] = json_spirit::mValue(username_clean);
 		if(!db_ptr_->exec("SELECT COUNT(*) from 'users_table' WHERE username_clean = ?", bindings, &result)) {
 			return false;
 		}
 		if(result[0].get_int() != 0) {
-			bindings["user_data"] = obj;
-			if(db_ptr_->exec("UPDATE 'users_table' SET user_data=?", bindings, &result)) {
+			bindings[json_spirit::mValue(1)] = obj;
+			bindings[json_spirit::mValue(2)] = json_spirit::mValue(username_clean);
+			if(db_ptr_->exec("UPDATE 'users_table' SET user_data=? WHERE username_clean = ?", bindings, &result)) {
 				return true;
 			}
 		}
@@ -192,8 +193,8 @@ namespace game_server
 		sqlite::rows_type result;
 		std::string username_clean(uname);
 		boost::algorithm::to_lower(username_clean);
-		bindings[json_spirit::mValue("username_clean")] = json_spirit::mValue(username_clean);
-		if(db_ptr_->exec("SELECT password from 'users_table' WHERE username_clean = :username_clean", bindings, &result) && result.size() > 0) {
+		bindings[json_spirit::mValue(1)] = json_spirit::mValue(username_clean);
+		if(db_ptr_->exec("SELECT password from 'users_table' WHERE username_clean = ?", bindings, &result) && result.size() > 0) {
 			password = result[0].get_str();
 			user_in_db = true;
 		}
