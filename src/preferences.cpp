@@ -160,6 +160,7 @@ namespace preferences {
 		
 		std::string username_;
 		std::string password_;
+		variant cookie_;
 
 		bool internal_tbs_server_ = false;
 
@@ -612,6 +613,16 @@ namespace preferences {
 		username_ = uname;
 	}
 
+	variant get_cookie()
+	{
+		return cookie_;
+	}
+
+	void set_cookie(const variant &v)
+	{
+		cookie_ = v;
+	}
+
 	void set_password(const std::string& pword)
 	{
 		boost::uuids::detail::sha1 hash;
@@ -755,6 +766,7 @@ namespace preferences {
 
 		username_ = node["username"].as_string_default("");
 		password_ = node["passhash"].as_string_default("");
+		cookie_ = node.has_key("cookie") ? node["cookie"] : variant();
 		
 #if !TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
 		controls::set_keycode(controls::CONTROL_UP, static_cast<key_type>(node["key_up"].as_int(SDLK_UP)));
@@ -791,6 +803,7 @@ namespace preferences {
 		node.add("locale", locale_);
 		node.add("username", variant(get_username()));
 		node.add("passhash", variant(get_password()));
+		node.add("cookie", get_cookie());
 		
 		if(external_code_editor_.is_null() == false) {
 			node.add("code_editor", external_code_editor_);

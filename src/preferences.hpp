@@ -175,6 +175,8 @@ void set_bequ( bool value );
 	std::string get_password();
 	void set_username(const std::string& uname);
 	void set_password(const std::string& pword);
+	variant get_cookie();
+	void set_cookie(const variant &v);
 
 	bool internal_tbs_server();
 

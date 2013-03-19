@@ -2855,6 +2855,29 @@ FUNCTION_DEF(set_user_details, 1, 2, "set_user_details(string username, (opt) st
 		args().size() > 1 ? args()[1]->evaluate(variables).as_string() : ""));
 END_FUNCTION_DEF(set_user_details)
 
+class set_cookie_command : public game_logic::command_callable
+{
+	variant cookie_;
+public:
+	explicit set_cookie_command(const variant& cookie) 
+		: cookie_(cookie)
+	{}
+	virtual void execute(game_logic::formula_callable& ob) const 
+	{
+		preferences::set_cookie(cookie_);
+	}
+};
+
+FUNCTION_DEF(set_cookie, 1, 1, "set_cookie(data) -> none: Sets the preferences user_data")
+	formula::fail_if_static_context();
+	return variant(new set_cookie_command(args()[0]->evaluate(variables)));
+END_FUNCTION_DEF(set_cookie)
+
+FUNCTION_DEF(get_cookie, 0, 0, "get_cookie() -> none: Returns the preferences user_data")
+	formula::fail_if_static_context();
+	return preferences::get_cookie();
+END_FUNCTION_DEF(get_cookie)
+
 }
 
 UNIT_TEST(modulo_operation) {
