@@ -161,7 +161,11 @@ namespace game_server
 				} catch(std::exception& e) {
 					std::cerr << "exception: " << e.what() << " " << server_address_ << ":" << server_port_ << std::endl;
 				}
-				boost::this_thread::sleep(boost::posix_time::milliseconds(polling_interval_));
+				int64_t counter = 0;
+				while(counter < polling_interval_ && running_) {
+					boost::this_thread::sleep(boost::posix_time::milliseconds(10));
+					counter += 10;
+				}
 			} else {
 				// got_server_info == true
 				try {
