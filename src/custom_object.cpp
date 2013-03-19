@@ -489,7 +489,6 @@ custom_object::custom_object(const custom_object& o) :
 #if defined(USE_GLES2)
 	if(o.shader_) {
 		shader_.reset(new gles2::shader_program(*o.shader_));
-		shader_->init(this);
 	}
 	for(size_t n = 0; n < o.effects_.size(); ++n) {
 		effects_.push_back(new gles2::shader_program(*o.effects_[n]));

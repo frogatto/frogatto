@@ -1026,7 +1026,9 @@ shader_program::shader_program(const shader_program& o)
 }
 
 shader_program::shader_program(const variant& node, entity* obj)
-	: vars_(new game_logic::formula_variable_storage()), parent_(obj), zorder_(-1), enabled_(true)
+	: vars_(new game_logic::formula_variable_storage()),
+	  uniform_commands_(new uniform_commands_callable),
+	  parent_(obj), zorder_(-1), enabled_(true)
 {
 	configure(node, obj);
 }
@@ -1044,9 +1046,28 @@ shader_program::shader_program(const std::string& program_name)
 void shader_program::configure(const variant& node, entity* obj)
 {
 	ASSERT_LOG(node.is_map(), "shader attribute must be a map.");
-	name_ = node["program"].as_string();
 	enabled_ = node["enabled"].as_bool(true);
-	program_object_ = program::find_program(name_);
+
+	if(node.has_key("program")) {
+		name_ = node["program"].as_string();
+		program_object_ = program::find_program(name_);
+	} else {
+		name_ = node["name"].as_string();
+		const std::string vert_code = node["vertex"].as_string();
+		const std::string frag_code = node["fragment"].as_string();
+
+		gles2::shader v_shader(GL_VERTEX_SHADER, name_ + "_vert", vert_code);
+		gles2::shader f_shader(GL_FRAGMENT_SHADER, name_ + "_frag", frag_code);
+		program_object_.reset(new program(name_, v_shader, f_shader));
+
+		if(node.has_key("attributes")) {
+			program_object_->set_fixed_attributes(node["attributes"]);
+		}
+		if(node.has_key("uniforms")) {
+			program_object_->set_fixed_uniforms(node["uniforms"]);
+		}
+	}
+
 	uniform_commands_.reset(new shader_program::uniform_commands_callable);
 	uniform_commands_->set_program(program_object_);
 	game_logic::formula_callable* e = this;
@@ -1095,7 +1116,7 @@ void shader_program::configure(const variant& node, entity* obj)
 void shader_program::init(entity* obj)
 {
 	ASSERT_LOG(name_.empty() != true, "Configure not run, before calling init");
-	game_logic::formula_callable* e = this;
+	game_logic::formula_callable_ptr e(this);
 	parent_ = obj;
 	GLint current_program;
 	glGetIntegerv(GL_CURRENT_PROGRAM, &current_program);
