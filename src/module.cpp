@@ -7,6 +7,7 @@
 #include "compress.hpp"
 #include "filesystem.hpp"
 #include "foreach.hpp"
+#include "formula_constants.hpp"
 #if !defined(NO_TCP)
 #include "http_client.hpp"
 #endif
@@ -250,6 +251,13 @@ void load(const std::string& mod_file_name, bool initial)
 	std::string abbrev = name;
 	std::string fname = make_base_module_path(name) + "module.cfg";
 	variant v = json::parse_from_file(fname);
+
+	const std::string constants_path = make_base_module_path(name) + "data/constants.cfg";
+	if(sys::file_exists(constants_path)) {
+		const std::string contents = sys::read_file(constants_path);
+		variant v = json::parse(contents);
+		new game_logic::constants_loader(v);
+	}
 
 	if(v.is_map()) {
 		ASSERT_LOG(v["min_engine_version"].is_null() == false, "A min_engine_version field in the module.cfg file must be specified.");

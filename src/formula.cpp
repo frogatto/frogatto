@@ -611,6 +611,9 @@ private:
 			} else if(left.is_map()) {
 				return left[variant(right_->str())];
 			}
+
+			ASSERT_LOG(!left.is_null(), "CALL OF DOT OPERATOR ON NULL VALUE: '" << left_->str() << "': " << debug_pinpoint_location());
+			ASSERT_LOG(false, "CALL OF DOT OPERATOR ON ILLEGAL VALUE: " << left.write_json() << " PRODUCED BY '" << left_->str() << "': " << debug_pinpoint_location());
 			
 			return left;
 		}

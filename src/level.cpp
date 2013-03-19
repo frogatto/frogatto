@@ -137,7 +137,6 @@ void level::set_as_current_level()
 			y_resolution_ = starting_y_resolution;
 		}
 
-
 		if(x_resolution_ != preferences::actual_screen_width() || y_resolution_ != preferences::actual_screen_height()) {
 
 			std::cerr << "RESETTING VIDEO MODE: " << x_resolution_ << ", " << y_resolution_ << "\n";
