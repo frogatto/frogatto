@@ -82,3 +82,10 @@ else:
   print('No objects need setting.')
 print('(search in ~/modules/frogatto/data/objects/)\n=== END REPORT ===')
 "
+
+
+Citadel (normal, MP)
+./game --module=Citadel --level=title1.cfg --tbs-server
+./game --module=Citadel --server=theargentlark.com:23056
+git pull                :: pulls from default, ddr0, here.
+git pull parent master  :: pulls from dave's fork
