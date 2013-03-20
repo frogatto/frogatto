@@ -11,6 +11,7 @@
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 
+#include <algorithm>
 #include <iomanip>
 #include <fstream>
 #include <sstream>
@@ -85,6 +86,7 @@ namespace
 			b_obj["session_id"] = game_server::shared_data::make_session_id();
 			u_ary.push_back(b_obj);
 		}
+		std::random_shuffle(u_ary.begin(), u_ary.end());
 		m["type"] = "create_game";
 		m["game_type"] = game_type;
 		m["users"] = u_ary;
