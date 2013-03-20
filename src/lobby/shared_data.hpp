@@ -14,6 +14,12 @@
 #include "queue.hpp"
 #include "sqlite_wrapper.hpp"
 
+#include "mysql_connection.h"
+#include <cppconn/driver.h>
+#include <cppconn/exception.h>
+#include <cppconn/resultset.h>
+#include <cppconn/statement.h>
+
 namespace game_server
 {
 	typedef boost::shared_ptr<queue::queue<json_spirit::mValue> > client_message_queue_ptr;
@@ -86,8 +92,8 @@ namespace game_server
 		};
 		shared_data()
 		{}
-		shared_data(sqlite::sqlite_wrapper_ptr db_ptr)
-			: db_ptr_(db_ptr)
+		shared_data(sqlite::sqlite_wrapper_ptr db_ptr, boost::shared_ptr<sql::Connection> conn)
+			: db_ptr_(db_ptr), conn_(conn)
 		{
 		}
 		virtual ~shared_data()
@@ -136,6 +142,7 @@ namespace game_server
 		bool set_user_data(const std::string& user, const json_spirit::mValue& obj);
 	private:
 		sqlite::sqlite_wrapper_ptr db_ptr_;
+		boost::shared_ptr<sql::Connection> conn_;
 
 		// This is now the list of games that the lobby has created.
 		game_list games_;

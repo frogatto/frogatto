@@ -19,12 +19,17 @@
 #include "game_server_worker.hpp"
 #include "sqlite_wrapper.hpp"
 
+#include "mysql_connection.h"
+#include <cppconn/driver.h>
+#include <cppconn/exception.h>
+#include <cppconn/resultset.h>
+#include <cppconn/statement.h>
+
 namespace 
 {
 	const int64_t default_polling_interval = 5000;
 	const std::string default_lobby_config_file = "lobby-config.cfg";
 }
-
 
 int main(int argc, char* argv[])
 {
@@ -72,6 +77,24 @@ int main(int argc, char* argv[])
 		db_ptr->exec("CREATE TABLE users_table(username_clean varchar(255), username varchar(255), password varchar(255), user_avatar varchar(255), user_email varchar(255), user_data blob)", bindings, &result);
 	}
 
+	ASSERT_LOG(cfg_obj.find("database") != cfg_obj.end(), "No database record found in config file!");
+	auto db_obj = cfg_obj["database"].get_obj();
+	ASSERT_LOG(db_obj.find("address") != db_obj.end(), "No 'address' record found in database section");
+	ASSERT_LOG(db_obj.find("port") != db_obj.end(), "No 'port' record found in database section");
+	ASSERT_LOG(db_obj.find("name") != db_obj.end(), "No 'name' record found in database section");
+	ASSERT_LOG(db_obj.find("username") != db_obj.end(), "No 'username' record found in database section");
+	ASSERT_LOG(db_obj.find("password") != db_obj.end(), "No 'password' record found in database section");
+
+	sql::Driver* driver;
+	boost::shared_ptr<sql::Connection> conn;
+	driver = get_driver_instance();
+	ASSERT_LOG(driver != NULL, "Couldn't create database driver");
+	std::stringstream str;
+	str << "tcp://" << db_obj["address"].get_str() << ":" << db_obj["port"].get_int();
+	conn = boost::shared_ptr<sql::Connection>(driver->connect(str.str(), db_obj["username"].get_str(), db_obj["password"].get_str()));
+	ASSERT_LOG(conn != NULL, "Couldn't connect to the mysql database");
+	conn->setSchema(db_obj["name"].get_str());
+	
 	int64_t polling_interval = default_polling_interval;
 	auto it = cfg_obj.find("server_polling_interval");
 	if(it != cfg_obj.end() && (it->second.type() == json_spirit::real_type 
@@ -86,7 +109,7 @@ int main(int argc, char* argv[])
 		std::size_t num_threads = cfg_obj["threads"].get_int();
 		std::string file_path = cfg_obj["file_path"].get_str();
 
-		game_server::shared_data shared_data(db_ptr);
+		game_server::shared_data shared_data(db_ptr, conn);
 
 		auto gs_ary = cfg_obj["game_server"].get_array();
 			// Create a tasks to poll the game servers

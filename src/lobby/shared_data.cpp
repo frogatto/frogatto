@@ -13,6 +13,7 @@
 #include "connection.hpp"
 #include "reply.hpp"
 #include "shared_data.hpp"
+#include <cppconn/prepared_statement.h>
 
 namespace game_server 
 {
@@ -27,7 +28,9 @@ namespace game_server
 			unsigned int digest[5];
 			hash.get_digest(digest);
 			std::stringstream str;
-			str << std::hex << std::setfill('0')  << std::setw(sizeof(unsigned int)*2) << digest[0] << digest[1] << digest[2] << digest[3] << digest[4];
+			for(int n = 0; n < 5; ++n) {
+				str << std::hex << std::setw(8) << std::setfill('0') << digest[n];
+			}
 			return str.str();
 		}
 
@@ -203,18 +206,35 @@ namespace game_server
 
 		auto it = clients_.find(uname);
 
+		//bool user_in_db = false;
+		//std::string password;
+		//sqlite::bindings_type bindings;
+		//sqlite::rows_type result;
+		//std::string username_clean(uname);
+		//boost::algorithm::to_lower(username_clean);
+		//bindings[json_spirit::mValue(1)] = json_spirit::mValue(username_clean);
+		//if(db_ptr_->exec("SELECT password from 'users_table' WHERE username_clean = ?", bindings, &result) && result.size() > 0) {
+		//	password = result[0].get_str();
+		//	user_in_db = true;
+		//}
 		bool user_in_db = false;
+		boost::shared_ptr<sql::PreparedStatement> stmt;
+		boost::shared_ptr<sql::ResultSet> res;
+		
 		std::string password;
-		sqlite::bindings_type bindings;
-		sqlite::rows_type result;
 		std::string username_clean(uname);
+		boost::algorithm::trim(username_clean);
 		boost::algorithm::to_lower(username_clean);
-		bindings[json_spirit::mValue(1)] = json_spirit::mValue(username_clean);
-		if(db_ptr_->exec("SELECT password from 'users_table' WHERE username_clean = ?", bindings, &result) && result.size() > 0) {
-			password = result[0].get_str();
+		stmt = boost::shared_ptr<sql::PreparedStatement>(conn_->prepareStatement("SELECT passwd FROM smf_members WHERE member_name = ?"));
+		stmt->setString(1, username_clean);
+		res = boost::shared_ptr<sql::ResultSet>(stmt->executeQuery());
+		while(res->next()) {
+			password = res->getString("passwd").asStdString();
+			std::cerr << "Password from db: " << password << std::endl;
+			std::cerr << "Password given  : " << phash << std::endl;
 			user_in_db = true;
 		}
-		
+
 		if(session_id == -1) {
 			// No session id, check if user name in list already.
 			if(it == clients_.end()) {

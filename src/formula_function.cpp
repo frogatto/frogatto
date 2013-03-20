@@ -2788,7 +2788,9 @@ FUNCTION_DEF(sha1, 1, 1, "sha1(string) -> string: Returns the sha1 hash of the g
 	unsigned int digest[5];
 	hash.get_digest(digest);
 	std::stringstream str;
-	str << std::hex << std::setfill('0')  << std::setw(sizeof(unsigned int)*2) << digest[0] << digest[1] << digest[2] << digest[3] << digest[4];
+	for(int n = 0; n < 5; ++n) {
+		str << std::hex << std::setw(8) << std::setfill('0') << digest[n];
+	}
 	return variant(str.str());
 END_FUNCTION_DEF(sha1)
 
