@@ -844,8 +844,6 @@ public:
 
 		lvl.add_character(obj_);
 
-		obj_->execute_command(instantiation_commands_);
-
 		//send an event to the parent to let them know they've spawned a child,
 		//and let them record the child's details.
 		game_logic::map_formula_callable* spawn_callable(new game_logic::map_formula_callable);
@@ -855,6 +853,8 @@ public:
 		ob.handle_event("child_spawned", spawn_callable);
 		obj_->handle_event("spawned", spawn_callable);
 		obj_->create_object();
+
+		obj_->execute_command(instantiation_commands_);
 
 		if(entity_collides(lvl, *obj_, MOVE_NONE)) {
 			lvl.remove_character(obj_);

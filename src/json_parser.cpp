@@ -5,12 +5,14 @@
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "formula_callable.hpp"
+#include "formula_constants.hpp"
 #include "formula_object.hpp"
 #include "json_parser.hpp"
 #include "json_tokenizer.hpp"
 #include "md5.hpp"
 #include "module.hpp"
 #include "preprocessor.hpp"
+#include "string_utils.hpp"
 #include "unit_test.hpp"
 #include "variant_utils.hpp"
 
@@ -359,6 +361,16 @@ variant parse_internal(const std::string& doc, const std::string& fname,
 						v = preprocess_string_value(s, callable);
 					} catch(preprocessor_error& e) {
 						CHECK_PARSE(false, "Preprocessor error: " + s, t.begin - doc.c_str());
+					}
+
+					if(t.type == Token::TYPE_IDENTIFIER) {
+						const variant constant = game_logic::get_constant(s);
+						if(constant.is_null() == false) {
+							v = constant;
+						} else if(stack.back().type != VAL_OBJ &&
+						          std::count_if(s.begin(), s.end(), util::c_isupper) + std::count(s.begin(), s.end(), '_') == s.size()) {
+							CHECK_PARSE(false, "Preprocessor error: symbol not found: " + s, t.begin - doc.c_str());
+						}
 					}
 
 					const std::string CallStr = "@call";
