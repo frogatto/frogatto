@@ -18,6 +18,7 @@
 #include <deque>
 #include <boost/cstdint.hpp>
 #include <math.h>
+#include <algorithm>
 
 #include "asserts.hpp"
 #include "color_utils.hpp"
@@ -725,10 +726,10 @@ public:
 				p->velocity_x -= info_.accel_x/1000.0;
 			}
 			p->velocity_y += info_.accel_y/1000.0;
-			p->rgba[0] += info_.rgba_delta[0];
-			p->rgba[1] += info_.rgba_delta[1];
-			p->rgba[2] += info_.rgba_delta[2];
-			p->rgba[3] += info_.rgba_delta[3];
+			p->rgba[0] = std::min(std::max(0, p->rgba[0] + info_.rgba_delta[0]), 255);
+			p->rgba[1] = std::min(std::max(0, p->rgba[1] + info_.rgba_delta[1]), 255);
+			p->rgba[2] = std::min(std::max(0, p->rgba[2] + info_.rgba_delta[2]), 255);
+			p->rgba[3] = std::min(std::max(0, p->rgba[3] + info_.rgba_delta[3]), 255);
 			p->ttl--;
 		}
 
@@ -769,19 +770,19 @@ public:
 			p.rgba[3] = info_.rgba[3];
 
 			if(info_.rgba_rand[0]) {
-				p.rgba[0] += rand()%info_.rgba_rand[0];
+				p.rgba[0] = std::min(std::max(0, p.rgba[0] + rand()%info_.rgba_rand[0]), 255);
 			}
 
 			if(info_.rgba_rand[1]) {
-				p.rgba[1] += rand()%info_.rgba_rand[1];
+				p.rgba[1] = std::min(std::max(0, p.rgba[1] + rand()%info_.rgba_rand[1]), 255);
 			}
 
 			if(info_.rgba_rand[2]) {
-				p.rgba[2] += rand()%info_.rgba_rand[2];
+				p.rgba[2] = std::min(std::max(0, p.rgba[2] + rand()%info_.rgba_rand[2]), 255);
 			}
 
 			if(info_.rgba_rand[3]) {
-				p.rgba[3] += rand()%info_.rgba_rand[3];
+				p.rgba[3] = std::min(std::max(0, p.rgba[3] + rand()%info_.rgba_rand[3]), 255);
 			}
 
 			particle_generation_ -= 1000;
@@ -865,7 +866,7 @@ private:
 	}
 
 	void set_value(const std::string& key, const variant& value) {
-		if(key == "generation_rate") {
+		if(key == "generation_rate" || key == "generation_rate_millis") {
 			generation_rate_millis_ = value.as_int();
 		} else if (key == "pos_x") {
 			pos_x_ = value.as_int()*1024;
