@@ -852,13 +852,14 @@ public:
 		spawn_callable->add("child", variant(obj_.get()));
 		ob.handle_event("child_spawned", spawn_callable);
 		obj_->handle_event("spawned", spawn_callable);
-		obj_->create_object();
 
 		obj_->execute_command(instantiation_commands_);
 
 		if(entity_collides(lvl, *obj_, MOVE_NONE)) {
 			lvl.remove_character(obj_);
 		}
+
+		obj_->create_object();
 	}
 private:
 	boost::intrusive_ptr<custom_object> obj_;
