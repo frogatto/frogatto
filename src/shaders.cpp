@@ -744,11 +744,11 @@ variant program::get_attributes_value(const std::string& key) const
 	return it->second.last_value;	
 }
 
-void program::set_attributes(const std::string& key, const variant& value)
+
+void program::set_attributes(const std::map<std::string, actives>::iterator& it, const variant& value)
 {
-	std::map<std::string, actives>::iterator it = attribs_.find(key);
-	ASSERT_LOG(it != attribs_.end(), "No attribute found with name: " << key << ", prog: " << get());
 	const actives& a = it->second;
+	ASSERT_LOG(it != attribs_.end(), "No attribute found (" << it->first <<  ") prog: " << get());
 	WRITE_LOG(a.type == GL_FLOAT || a.type == GL_FLOAT_VEC2 || a.type == GL_FLOAT_VEC3 || a.type == GL_FLOAT_VEC4, 
 		"Attribute type must be float not: " << a.type);
 	it->second.last_value = value;
@@ -808,6 +808,19 @@ void program::set_attributes(const std::string& key, const variant& value)
 	//	ASSERT_LOG(false, "Unrecognised attribute type: " << value.type() << " : " << a.name << " : " << a.num_elements << "," << value.num_elements());
 	}
 }
+
+void program::set_attributes(const std::string& key, const variant& value)
+{
+	set_attributes(get_attribute_reference(key), value);
+}
+
+std::map<std::string,actives>::iterator program::get_attribute_reference(const std::string& key)
+{
+	std::map<std::string, actives>::iterator it = attribs_.find(key);
+	ASSERT_LOG(it != attribs_.end(), "No attribute found with name: " << key << ", prog: " << get());
+	return it;
+}
+
 
 void program::disable_vertex_attrib(GLint)
 {
@@ -1027,7 +1040,8 @@ void program::set_known_uniforms()
 
 shader_program::shader_program()
 	: vars_(new game_logic::formula_variable_storage()), parent_(NULL), zorder_(-1),
-	  uniform_commands_(new shader_program::uniform_commands_callable),
+	  uniform_commands_(new uniform_commands_callable),
+	  attribute_commands_(new attribute_commands_callable),
 	  enabled_(true)
 {
 }
@@ -1037,6 +1051,7 @@ shader_program::shader_program(const shader_program& o)
     create_commands_(o.create_commands_), draw_commands_(o.draw_commands_),
 	create_formulas_(o.create_formulas_), draw_formulas_(o.draw_formulas_),
 	uniform_commands_(new uniform_commands_callable(*o.uniform_commands_)),
+	  attribute_commands_(new attribute_commands_callable(*o.attribute_commands_)),
 	zorder_(o.zorder_), parent_(o.parent_), enabled_(o.enabled_)
 {
 }
@@ -1044,6 +1059,7 @@ shader_program::shader_program(const shader_program& o)
 shader_program::shader_program(const variant& node, entity* obj)
 	: vars_(new game_logic::formula_variable_storage()),
 	  uniform_commands_(new uniform_commands_callable),
+	  attribute_commands_(new attribute_commands_callable),
 	  parent_(obj), zorder_(-1), enabled_(true)
 {
 	configure(node, obj);
@@ -1051,12 +1067,14 @@ shader_program::shader_program(const variant& node, entity* obj)
 
 shader_program::shader_program(const std::string& program_name)
 	: vars_(new game_logic::formula_variable_storage()), zorder_(-1),
-	  uniform_commands_(new shader_program::uniform_commands_callable),
+	  uniform_commands_(new uniform_commands_callable),
+	  attribute_commands_(new attribute_commands_callable),
 	  enabled_(true)
 {
 	name_ = program_name;
 	program_object_ = program::find_program(name_);
 	uniform_commands_->set_program(program_object_);
+	attribute_commands_->set_program(program_object_);
 }
 
 void shader_program::configure(const variant& node, entity* obj)
@@ -1084,8 +1102,10 @@ void shader_program::configure(const variant& node, entity* obj)
 		}
 	}
 
-	uniform_commands_.reset(new shader_program::uniform_commands_callable);
+	uniform_commands_.reset(new uniform_commands_callable);
 	uniform_commands_->set_program(program_object_);
+	attribute_commands_.reset(new attribute_commands_callable);
+	attribute_commands_->set_program(program_object_);
 	game_logic::formula_callable* e = this;
 	ASSERT_LOG(e != NULL, "Environment was not set.");
 
@@ -1182,7 +1202,7 @@ variant shader_program::write()
 void shader_program::prepare_draw()
 {
 //#if defined(WIN32)
-//	profile::manager manager;
+//	profile::manager manager("SHADER_INFO:" + program_object_->name());
 //#endif
 	glUseProgram(program_object_->get());
 	program_object_->set_deferred_uniforms();
@@ -1193,9 +1213,10 @@ void shader_program::prepare_draw()
 	}
 }
 
-void shader_program::refresh_uniforms()
+void shader_program::refresh_for_draw()
 {
 	uniform_commands_->execute_on_draw();
+	attribute_commands_->execute_on_draw();
 }
 
 variant shader_program::get_value(const std::string& key) const
@@ -1207,6 +1228,8 @@ variant shader_program::get_value(const std::string& key) const
 		return variant(parent_);
 	} else if(key == "uniform_commands") {
 		return variant(uniform_commands_.get());
+	} else if(key == "attribute_commands") {
+		return variant(attribute_commands_.get());
 	} else if(key == "enabled") {
 		return variant(enabled_);
 	}
@@ -1305,6 +1328,52 @@ void shader_program::uniform_commands_callable::set_value(const std::string& key
 		uniform_commands_.push_back(DrawCommand());
 		target = &uniform_commands_.back();
 		target->target = program_->get_uniform_reference(key);
+	}
+
+	if(value.is_map()) {
+		target->increment = value["increment"].as_bool(false);
+		target->value = value["value"];
+	} else {
+		target->value = value;
+		target->increment = false;
+	}
+}
+
+void shader_program::attribute_commands_callable::execute_on_draw()
+{
+//#if defined(WIN32)
+//	profile::manager manager("EXECUTE_ON_DRAW:" + program_->name());
+//#endif
+	foreach(DrawCommand& cmd, attribute_commands_) {
+		if(cmd.increment) {
+			cmd.value = cmd.value + variant(1);
+		}
+
+		program_->set_attributes(cmd.target, cmd.value);
+	}
+}
+
+variant shader_program::attribute_commands_callable::get_value(const std::string& key) const
+{
+	return variant();
+}
+
+void shader_program::attribute_commands_callable::set_value(const std::string& key, const variant& value)
+{
+	ASSERT_LOG(program_.get() != NULL, "NO PROGRAM SET FOR ATTRIBUTE CALLABLE");
+
+	shader_program::DrawCommand* target = NULL;
+	foreach(shader_program::DrawCommand& cmd, attribute_commands_) {
+		if(cmd.target->first == key) {
+			target = &cmd;
+			break;
+		}
+	}
+
+	if(target == NULL) {
+		attribute_commands_.push_back(DrawCommand());
+		target = &attribute_commands_.back();
+		target->target = program_->get_attribute_reference(key);
 	}
 
 	if(value.is_map()) {

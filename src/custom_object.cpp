@@ -932,13 +932,14 @@ void custom_object::draw(int xx, int yy) const
 #endif
 	for(size_t n = 0; n < effects_.size(); ++n) {
 		if(effects_[n]->zorder() < 0 && effects_[n]->enabled()) {
+			effects_[n]->refresh_for_draw();
 			gles2::manager gles2_manager(effects_[n]);
 		}
 	}
 
 	gles2::manager manager(shader_);
 	if(shader_) {
-		shader_->refresh_uniforms();
+		shader_->refresh_for_draw();
 	}
 #endif
 

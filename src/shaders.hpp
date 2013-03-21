@@ -84,11 +84,13 @@ public:
 	game_logic::formula_ptr create_formula(const variant& v);
 	bool execute_command(const variant& var);
 	std::map<std::string,actives>::iterator get_uniform_reference(const std::string& name);
+	std::map<std::string,actives>::iterator get_attribute_reference(const std::string& name);
 	void set_uniform(const std::map<std::string,actives>::iterator& it, const variant& value);
 	void set_uniform_or_defer(const std::map<std::string,actives>::iterator& it, const variant& value);
 	void set_uniform_or_defer(const std::string& key, const variant& value);
 	variant get_uniform_value(const std::string& key) const;
 	void set_attributes(const std::string& key, const variant& value);
+	void set_attributes(const std::map<std::string, actives>::iterator& it, const variant& value);
 	variant get_attributes_value(const std::string& key) const;
 	game_logic::formula_callable* get_environment() { return environ_; }
 	void set_deferred_uniforms();
@@ -162,7 +164,7 @@ public:
 	int zorder() const { return zorder_; }
 
 	void prepare_draw();
-	void refresh_uniforms();
+	void refresh_for_draw();
 	program_ptr shader() const;
 	const std::string& name() const { return name_; }
 	entity* parent() const { return parent_; }
@@ -182,6 +184,19 @@ protected:
 		std::map<std::string, actives>::iterator target;
 		variant value;
 		bool increment;
+	};
+
+	class attribute_commands_callable : public game_logic::formula_callable
+	{
+	public:
+		void set_program(program_ptr program) { program_ = program; }
+		void execute_on_draw();
+	private:
+		virtual variant get_value(const std::string& key) const;
+		virtual void set_value(const std::string& key, const variant& value);
+
+		program_ptr program_;
+		std::vector<DrawCommand> attribute_commands_;
 	};
 
 	class uniform_commands_callable : public game_logic::formula_callable
@@ -211,6 +226,7 @@ private:
 	std::vector<game_logic::formula_ptr> draw_formulas_;
 
 	boost::intrusive_ptr<uniform_commands_callable> uniform_commands_;
+	boost::intrusive_ptr<attribute_commands_callable> attribute_commands_;
 
 	// fake zorder value
 	int zorder_;

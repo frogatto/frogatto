@@ -24,8 +24,9 @@ namespace profile {
 		LARGE_INTEGER frequency;
 		LARGE_INTEGER t1, t2;
 		double elapsedTime;
+		std::string name;
 
-		manager()
+		manager(const std::string& str) : name(str)
 		{
 			QueryPerformanceFrequency(&frequency);
 			QueryPerformanceCounter(&t1);
@@ -34,8 +35,8 @@ namespace profile {
 		~manager()
 		{
 			QueryPerformanceCounter(&t2);
-			elapsedTime = (t2.QuadPart - t1.QuadPart) * 1000.0 / frequency.QuadPart;
-			std::cerr << elapsedTime << " ms\n";
+			elapsedTime = (t2.QuadPart - t1.QuadPart) * 1000000.0 / frequency.QuadPart;
+			std::cerr << name << ":" << elapsedTime << std::endl;
 		}
 	};
 }
