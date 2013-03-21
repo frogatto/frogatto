@@ -1,17 +1,19 @@
-/* $Id: formula_function.cpp 25895 2008-04-17 18:57:13Z mordante $ */
 /*
-   Copyright (C) 2008 by David White <dave@whitevine.net>
-   Part of the Battle for Wesnoth Project http://www.wesnoth.org/
+	Copyright (C) 2003-2013 by David White <davewx7@gmail.com>
+	
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 2 of the License, or
+    (at your option) any later version.
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License version 2
-   or at your option any later version.
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-   See the COPYING file for more details.
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-   
 #include <boost/bind.hpp>
 #include <boost/uuid/sha1.hpp>
 #include <boost/algorithm/string.hpp>
@@ -2788,7 +2790,9 @@ FUNCTION_DEF(sha1, 1, 1, "sha1(string) -> string: Returns the sha1 hash of the g
 	unsigned int digest[5];
 	hash.get_digest(digest);
 	std::stringstream str;
-	str << std::hex << std::setfill('0')  << std::setw(sizeof(unsigned int)*2) << digest[0] << digest[1] << digest[2] << digest[3] << digest[4];
+	for(int n = 0; n < 5; ++n) {
+		str << std::hex << std::setw(8) << std::setfill('0') << digest[n];
+	}
 	return variant(str.str());
 END_FUNCTION_DEF(sha1)
 
