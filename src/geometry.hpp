@@ -77,6 +77,19 @@ public:
 	bool empty() const { return w() == 0 || h() == 0; }
 
 	game_logic::formula_callable* callable() const;
+
+	void operator+=(const point& p) {
+		top_left_.x += p.x;
+		top_left_.y += p.y;
+		bottom_right_.x += p.x;
+		bottom_right_.y += p.y;
+	}
+	void operator-=(const point& p) {
+		top_left_.x -= p.x;
+		top_left_.y -= p.y;
+		bottom_right_.x -= p.x;
+		bottom_right_.y -= p.y;
+	}
 private:
 	point top_left_, bottom_right_;
 };

@@ -287,6 +287,8 @@ public:
 	bool is_being_dragged() const { return being_dragged_; }
 	void set_being_dragged(bool val=true) { being_dragged_ = val; }
 	virtual bool get_clip_area(rect* clip_area) = 0;
+	void set_mouse_over_area(const rect& area);
+	const rect& mouse_over_area() const;
 
 	virtual const game_logic::formula_callable_definition* get_definition() const = 0;
 
@@ -378,6 +380,7 @@ private:
 
 	int mouseover_delay_;
 	unsigned mouseover_trigger_cycle_;
+	rect mouse_over_area_;
 };
 
 bool zorder_compare(const entity_ptr& e1, const entity_ptr& e2);	

@@ -331,6 +331,10 @@ custom_object::custom_object(variant node)
 		platform_offsets_ = type_->platform_offsets();
 	}
 
+	if(node.has_key("mouseover_area")) {
+		set_mouse_over_area(rect(node["mouseover_area"]));
+	}
+
 	set_mouseover_delay(node["mouseover_delay"].as_int(0));
 
 #if defined(USE_GLES2)
@@ -427,6 +431,9 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	next_animation_formula_ = type_->next_animation_formula();
 
 	set_mouseover_delay(type_->get_mouseover_delay());
+	if(type_->mouse_over_area().w() != 0) {
+		set_mouse_over_area(type_->mouse_over_area());
+	}
 }
 
 custom_object::custom_object(const custom_object& o) :
@@ -518,6 +525,7 @@ custom_object::custom_object(const custom_object& o) :
 	}
 #endif
 	set_mouseover_delay(o.get_mouseover_delay());
+	set_mouse_over_area(o.mouse_over_area());
 }
 
 custom_object::~custom_object()
@@ -2696,6 +2704,9 @@ variant custom_object::get_value_by_slot(int slot) const
 	case CUSTOM_OBJECT_MOUSEOVER_DELAY: {
 		return variant(get_mouseover_delay());
 	}
+	case CUSTOM_OBJECT_MOUSEOVER_AREA: {
+		return mouse_over_area().write();
+	}
 	case CUSTOM_OBJECT_DRAW_PRIMITIVES: {
 		std::vector<variant> v;
 		foreach(boost::intrusive_ptr<graphics::draw_primitive> p, draw_primitives_) {
@@ -3086,6 +3097,8 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		body_.reset(new box2d::body(value));
 		body_->finish_loading(this);
 #endif
+	} else if(key == "mouseover_area") {
+		set_mouse_over_area(rect(value));
 	} else if(!type_->is_strict()) {
 		vars_->add(key, value);
 	} else {
@@ -3775,6 +3788,11 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 
 	case CUSTOM_OBJECT_MOUSEOVER_DELAY: {
 		set_mouseover_delay(value.as_int());
+		break;
+	}
+
+	case CUSTOM_OBJECT_MOUSEOVER_AREA: {
+		set_mouse_over_area(rect(value));
 		break;
 	}
 

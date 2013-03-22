@@ -785,6 +785,10 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 		weak_collide_dimensions_ |= collide_dimensions_;
 	}
 
+	if(node.has_key("mouseover_area")) {
+		mouse_over_area_ = rect(node["mouseover_area"]);
+	}
+
 	foreach(variant anim, node["animation"].as_list()) {
 		boost::intrusive_ptr<frame> f;
 		try {

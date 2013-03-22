@@ -497,14 +497,15 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 				std::set<entity_ptr> mouse_in;
 				for(it = cs.begin(); it != cs.end(); ++it) {
 					entity_ptr& e = *it;
-					rect clip_area;
-					// n.b. clip_area is in level coordinates, not relative to the object.
-					if(e->get_clip_area(&clip_area)) {
+					rect m_area = e->mouse_over_area();
+					m_area += e->midpoint();
+					// n.b. mouse_over_area is relative to the object.
+					if(m_area.w() != 0) {
 						point p(x,y);
 						if(e->use_absolute_screen_coordinates()) {
 							p = point(mx,my);
 						}
-						if(point_in_rect(p, clip_area) == false) {
+						if(point_in_rect(p, m_area) == false) {
 							continue;
 						}
 					}
@@ -582,9 +583,10 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 					level_chars = level::current().get_chars();
 					foreach(const entity_ptr& e, level_chars) {
 						if(e) {
-							// n.b. clip_area is in level coordinates, not relative to the object.
-							rect clip_area;
-							bool has_clip_area = e->get_clip_area(&clip_area);
+							// n.b. mouse_over_area is relative to the object.
+							rect m_area = e->mouse_over_area();
+							m_area += e->midpoint();
+							bool has_m_area = m_area.w() != 0;
 							point p(x,y);
 							if(e->use_absolute_screen_coordinates()) {
 								p = point(mx,my);
@@ -594,11 +596,18 @@ bool level_runner::handle_mouse_events(const SDL_Event &event)
 								e->set_mouseover_trigger_cycle(INT_MAX);
 							}
 
-							if(mouse_in.find(e) == mouse_in.end() 
-								&& ((has_clip_area == false && e->is_mouse_over_entity())
-								|| (e->is_mouse_over_entity() && has_clip_area && point_in_rect(p, clip_area) == false))) {
-								e->handle_event(MouseLeaveID, callable.get());
-								e->set_mouse_over_entity(false);
+							if(mouse_in.find(e) == mouse_in.end()) {
+								if(has_m_area == false) {
+									if(e->is_mouse_over_entity()) {
+										e->handle_event(MouseLeaveID, callable.get());
+										e->set_mouse_over_entity(false);
+									}
+								} else {
+									if(point_in_rect(p, m_area) == false && e->is_mouse_over_entity()) {
+										e->handle_event(MouseLeaveID, callable.get());
+										e->set_mouse_over_entity(false);
+									}
+								}								
 							}
 						}
 					}
@@ -1470,7 +1479,7 @@ bool level_runner::play_cycle()
 
 				editor_->toggle_active_level();
 
-				render_scene(editor_->get_level(), last_draw_position(), NULL, !is_skipping_game());
+				render_scene(editor_->get_level(), last_draw_position());
 
 				editor_->toggle_active_level();
 				lvl_->set_as_current_level();
@@ -1484,7 +1493,7 @@ bool level_runner::play_cycle()
 					}
 				}
 #endif
-				render_scene(*lvl_, last_draw_position(), NULL, !is_skipping_game());
+				render_scene(*lvl_, last_draw_position());
 #ifndef NO_EDITOR
 				int index = 0;
 				if(!history_trails_.empty()) {
@@ -1638,7 +1647,7 @@ void level_runner::reverse_cycle()
 	}
 
 	const bool should_draw = update_camera_position(*lvl_, last_draw_position(), NULL, !is_skipping_game());
-	render_scene(*lvl_, last_draw_position(), NULL, !is_skipping_game());
+	render_scene(*lvl_, last_draw_position());
 	graphics::swap_buffers();
 
 	const int wait_time = begin_time + 20 - SDL_GetTicks();

@@ -132,6 +132,7 @@ public:
 #endif
 
 	int get_mouseover_delay() const { return mouseover_delay_; }
+	const rect& mouse_over_area() const { return mouse_over_area_; }
 
 	bool object_level_collisions() const { return object_level_collisions_; }
 
@@ -301,6 +302,7 @@ private:
 	bool use_absolute_screen_coordinates_;
 
 	int mouseover_delay_;
+	rect mouse_over_area_;
 
 	bool adjust_feet_on_animation_change_;
 
