@@ -41,6 +41,7 @@ public:
 
 	static boost::intrusive_ptr<formula_object> create(const std::string& type, variant args=variant());
 
+	bool is_a(const std::string& class_name) const;
 
 	//construct with data representing private/internal represenation.
 	explicit formula_object(variant data);
@@ -69,6 +70,9 @@ private:
 	//if this is non-zero, then private_data_ will be exposed via get_value.
 	mutable int expose_private_data_;
 };
+
+bool formula_class_valid(const std::string& type);
+
 }
 
 #endif

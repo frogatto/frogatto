@@ -176,6 +176,7 @@ objects = \
 	src/utils.o \
 	src/variant.o \
 	src/variant_callable.o \
+	src/variant_type.o \
 	src/variant_utils.o \
 	src/water.o \
 	src/water_particle_system.o \

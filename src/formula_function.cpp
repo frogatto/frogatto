@@ -2335,9 +2335,9 @@ END_FUNCTION_DEF(get_document)
 
 }
 
-formula_function_expression::formula_function_expression(const std::string& name, const args_list& args, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& arg_names)
+formula_function_expression::formula_function_expression(const std::string& name, const args_list& args, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& arg_names, const std::vector<variant_type_ptr>& variant_types)
 : function_expression(name, args, arg_names.size(), arg_names.size()),
-	formula_(formula), precondition_(precondition), arg_names_(arg_names), star_arg_(-1), has_closure_(false), base_slot_(0)
+	formula_(formula), precondition_(precondition), arg_names_(arg_names), variant_types_(variant_types), star_arg_(-1), has_closure_(false), base_slot_(0)
 {
 	assert(!precondition_ || !precondition_->str().empty());
 	for(size_t n = 0; n != arg_names_.size(); ++n) {
@@ -2387,6 +2387,11 @@ boost::intrusive_ptr<slot_formula_callable> formula_function_expression::calcula
 
 	for(int n = 0; n != arg_names_.size(); ++n) {
 		variant var = args()[n]->evaluate(variables);
+
+		if(n < variant_types_.size() && variant_types_[n]) {
+			ASSERT_LOG(variant_types_[n]->match(var), "FUNCTION ARGUMENT " << (n+1) << " EXPECTED TYPE " << variant_types_[n]->str() << " BUT FOUND " << var.write_json() << " AT " << debug_pinpoint_location());
+		}
+
 		tmp_callable->add(var);
 		if(n == star_arg_) {
 			tmp_callable->set_fallback(var.as_callable());
@@ -2460,12 +2465,12 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 			}
 		}
 
-		return formula_function_expression_ptr(new formula_function_expression(name_, args, formula_, precondition_, args_));
+		return formula_function_expression_ptr(new formula_function_expression(name_, args, formula_, precondition_, args_, variant_types_));
 	}
 
-	void function_symbol_table::add_formula_function(const std::string& name, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& args, const std::vector<variant>& default_args)
+	void function_symbol_table::add_formula_function(const std::string& name, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& args, const std::vector<variant>& default_args, const std::vector<variant_type_ptr>& variant_types)
 	{
-		custom_formulas_[name] = formula_function(name, formula, precondition, args, default_args);
+		custom_formulas_[name] = formula_function(name, formula, precondition, args, default_args, variant_types);
 	}
 
 	expression_ptr function_symbol_table::create_function(const std::string& fn, const std::vector<expression_ptr>& args, const formula_callable_definition* callable_def) const
@@ -2502,8 +2507,8 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 		}
 	}
 
-	recursive_function_symbol_table::recursive_function_symbol_table(const std::string& fn, const std::vector<std::string>& args, const std::vector<variant>& default_args, function_symbol_table* backup, const formula_callable_definition* closure_definition)
-	: name_(fn), stub_(fn, const_formula_ptr(), const_formula_ptr(), args, default_args), backup_(backup), closure_definition_(closure_definition)
+	recursive_function_symbol_table::recursive_function_symbol_table(const std::string& fn, const std::vector<std::string>& args, const std::vector<variant>& default_args, function_symbol_table* backup, const formula_callable_definition* closure_definition, const std::vector<variant_type_ptr>& variant_types)
+	: name_(fn), stub_(fn, const_formula_ptr(), const_formula_ptr(), args, default_args, variant_types), backup_(backup), closure_definition_(closure_definition)
 	{
 	}
 

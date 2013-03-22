@@ -40,6 +40,7 @@
 #include "random.hpp"
 #include "string_utils.hpp"
 #include "unit_test.hpp"
+#include "variant_type.hpp"
 #include "variant_utils.hpp"
 
 namespace {
@@ -551,12 +552,12 @@ private:
 
 class lambda_function_expression : public formula_expression {
 public:
-	lambda_function_expression(const std::vector<std::string>& args, const_formula_ptr fml, int base_slot, const std::vector<variant>& default_args) : args_(args), fml_(fml), base_slot_(base_slot), default_args_(default_args)
+	lambda_function_expression(const std::vector<std::string>& args, const_formula_ptr fml, int base_slot, const std::vector<variant>& default_args, const std::vector<variant_type_ptr>& variant_types) : args_(args), fml_(fml), base_slot_(base_slot), default_args_(default_args), variant_types_(variant_types)
 	{}
 	
 private:
 	variant execute(const formula_callable& variables) const {
-		variant v(fml_, args_, variables, base_slot_, default_args_);
+		variant v(fml_, args_, variables, base_slot_, default_args_, variant_types_);
 		return v;
 	}
 	
@@ -564,6 +565,7 @@ private:
 	game_logic::const_formula_ptr fml_;
 	int base_slot_;
 	std::vector<variant> default_args_;
+	std::vector<variant_type_ptr> variant_types_;
 };
 
 class function_call_expression : public formula_expression {
@@ -1205,6 +1207,7 @@ expression_ptr parse_expression(const variant& formula_str, const token* i1, con
 void parse_function_args(variant formula_str, const token* &i1, const token* i2,
 						 std::vector<std::string>* res,
 						 std::vector<std::string>* types,
+						 std::vector<variant_type_ptr>* variant_types,
 						 std::vector<variant>* default_values)
 {
 	if(i1->type == TOKEN_LPARENS) {
@@ -1214,10 +1217,19 @@ void parse_function_args(variant formula_str, const token* &i1, const token* i2,
 	}
 	
 	while((i1->type != TOKEN_RPARENS) && (i1 != i2)) {
+		variant_type_ptr variant_type_info;
+		if(i1+1 != i2 && i1->type != TOKEN_COMMA && (i1+1)->type != TOKEN_COMMA && (i1+1)->type != TOKEN_RPARENS && std::string((i1+1)->begin, (i1+1)->end) != "=" && get_formula_callable_definition(std::string(i1->begin, i1->end)) == NULL) {
+			std::cerr << "FOUND TYPE STARTING AT: " << std::string(i1->begin, i1->end) << "\n";
+			variant_type_info = parse_variant_type(formula_str, i1, i2);
+		}
+
+		ASSERT_LOG(i1->type != TOKEN_RPARENS && i1 != i2, "UNEXPECTED END OF FUNCTION DEF: " << pinpoint_location(formula_str, (i1-1)->begin, (i1-1)->end));
+
 		if(i1->type == TOKEN_IDENTIFIER) {
 			if(i1+1 != i2 && std::string((i1+1)->begin, (i1+1)->end) == "=") {
 				types->push_back("");
 				res->push_back(std::string(i1->begin, i1->end));
+				variant_types->push_back(variant_type_info);
 
 				i1 += 2;
 				ASSERT_LOG(i1 != i2, "Invalid function definition\n" << pinpoint_location(formula_str, i1->begin, (i2-1)->end));
@@ -1233,6 +1245,9 @@ void parse_function_args(variant formula_str, const token* &i1, const token* i2,
 
 				boost::intrusive_ptr<map_formula_callable> callable(new map_formula_callable);
 				default_values->push_back(expr->evaluate(*callable));
+				if(variant_type_info && !variant_type_info->match(default_values->back())) {
+					ASSERT_LOG(false, "Default argument to function doesn't match type for argument " << (types->size()+1) << " arg: " << default_values->back().write_json() << " AT: " << pinpoint_location(formula_str, i1->begin, (i2-1)->end));
+				}
 
 				continue;
 
@@ -1241,14 +1256,17 @@ void parse_function_args(variant formula_str, const token* &i1, const token* i2,
 			} else if(i1+1 != i2 && std::string((i1+1)->begin, (i1+1)->end) == "*") {
 				types->push_back("");
 				res->push_back(std::string(i1->begin, i1->end) + std::string("*"));
+				variant_types->push_back(variant_type_info);
 				++i1;
 			} else if(i1+1 != i2 && (i1+1)->type == TOKEN_IDENTIFIER) {
 				types->push_back(std::string(i1->begin, i1->end));
 				res->push_back(std::string((i1+1)->begin, (i1+1)->end));
+				variant_types->push_back(variant_type_info);
 				++i1;
 			} else {
 				types->push_back("");
 				res->push_back(std::string(i1->begin, i1->end));
+				variant_types->push_back(variant_type_info);
 			}
 		} else if (i1->type == TOKEN_COMMA) {
 			//do nothing
@@ -1499,7 +1517,8 @@ expression_ptr parse_function_def(const variant& formula_str, const token*& i1, 
 	
 	std::vector<std::string> args, types;
 	std::vector<variant> default_args;
-	parse_function_args(formula_str, i1, i2, &args, &types, &default_args);
+	std::vector<variant_type_ptr> variant_types;
+	parse_function_args(formula_str, i1, i2, &args, &types, &variant_types, &default_args);
 	const token* beg = i1;
 	while((i1 != i2) && (i1->type != TOKEN_SEMICOLON)) {
 		++i1;
@@ -1524,7 +1543,7 @@ expression_ptr parse_function_def(const variant& formula_str, const token*& i1, 
 		function_var.set_debug_info(info);
 	}
 	
-	recursive_function_symbol_table recursive_symbols(formula_name.empty() ? "recurse" : formula_name, args, default_args, symbols, formula_name.empty() ? callable_def : NULL);
+	recursive_function_symbol_table recursive_symbols(formula_name.empty() ? "recurse" : formula_name, args, default_args, symbols, formula_name.empty() ? callable_def : NULL, variant_types);
 
 	//create a definition of the callable representing
 	//function arguments.
@@ -1559,12 +1578,12 @@ expression_ptr parse_function_def(const variant& formula_str, const token*& i1, 
 	recursive_symbols.resolve_recursive_calls(fml);
 	
 	if(formula_name.empty()) {
-		return expression_ptr(new lambda_function_expression(args, fml, callable_def ? callable_def->num_slots() : 0, default_args));
+		return expression_ptr(new lambda_function_expression(args, fml, callable_def ? callable_def->num_slots() : 0, default_args, variant_types));
 	}
 
 	const std::string precond = "";
 	symbols->add_formula_function(formula_name, fml,
-								  formula::create_optional_formula(variant(precond), symbols), args, default_args);
+								  formula::create_optional_formula(variant(precond), symbols), args, default_args, variant_types);
 	return expression_ptr();
 }
 
@@ -1782,7 +1801,7 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 				    new identifier_expression(symbol, callable_def);
 				const formula_function* fn = symbols ? symbols->get_formula_function(symbol) : NULL;
 				if(fn != NULL) {
-					expression_ptr function(new lambda_function_expression(fn->args(), fn->get_formula(), 0, fn->default_args()));
+					expression_ptr function(new lambda_function_expression(fn->args(), fn->get_formula(), 0, fn->default_args(), fn->variant_types()));
 					expr->set_function(function);
 				}
 				return expression_ptr(expr);

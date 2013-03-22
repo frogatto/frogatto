@@ -37,6 +37,10 @@ class formula_callable;
 class formula_expression;
 }
 
+class variant_type;
+typedef boost::shared_ptr<variant_type> variant_type_ptr;
+typedef boost::shared_ptr<const variant_type> const_variant_type_ptr;
+
 void push_call_stack(const game_logic::formula_expression* frame);
 void pop_call_stack();
 std::string get_call_stack();
@@ -93,7 +97,7 @@ public:
 	static variant create_translated_string(const std::string& str);
 	static variant create_translated_string(const std::string& str, const std::string& translation);
 	explicit variant(std::map<variant,variant>* map);
-	variant(game_logic::const_formula_ptr, const std::vector<std::string>& args, const game_logic::formula_callable& callable, int base_slot, const std::vector<variant>& default_args);
+	variant(game_logic::const_formula_ptr, const std::vector<std::string>& args, const game_logic::formula_callable& callable, int base_slot, const std::vector<variant>& default_args, const std::vector<variant_type_ptr>& variant_types);
 
 	static variant create_variant_under_construction(intptr_t id);
 

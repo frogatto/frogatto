@@ -28,6 +28,7 @@
 #include "formula_callable_utils.hpp"
 #include "formula_fwd.hpp"
 #include "variant.hpp"
+#include "variant_type.hpp"
 
 namespace game_logic {
 
@@ -134,7 +135,7 @@ private:
 
 class formula_function_expression : public function_expression {
 public:
-	explicit formula_function_expression(const std::string& name, const args_list& args, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& arg_names);
+	explicit formula_function_expression(const std::string& name, const args_list& args, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& arg_names, const std::vector<variant_type_ptr>& variant_types);
 	virtual ~formula_function_expression() {}
 
 	void set_formula(const_formula_ptr f) { formula_ = f; }
@@ -145,6 +146,7 @@ private:
 	const_formula_ptr formula_;
 	const_formula_ptr precondition_;
 	std::vector<std::string> arg_names_;
+	std::vector<variant_type_ptr> variant_types_;
 	int star_arg_;
 
 	//this is the callable object that is populated with the arguments to the
@@ -155,6 +157,7 @@ private:
 	mutable boost::scoped_ptr<variant> fed_result_;
 	bool has_closure_;
 	int base_slot_;
+
 };
 
 typedef boost::intrusive_ptr<function_expression> function_expression_ptr;
@@ -166,9 +169,10 @@ class formula_function {
 	const_formula_ptr precondition_;
 	std::vector<std::string> args_;
 	std::vector<variant> default_args_;
+	std::vector<variant_type_ptr> variant_types_;
 public:
 	formula_function() {}
-	formula_function(const std::string& name, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& args, const std::vector<variant>& default_args) : name_(name), formula_(formula), precondition_(precondition), args_(args), default_args_(default_args)
+	formula_function(const std::string& name, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& args, const std::vector<variant>& default_args, const std::vector<variant_type_ptr>& variant_types) : name_(name), formula_(formula), precondition_(precondition), args_(args), default_args_(default_args), variant_types_(variant_types)
 	{}
 
 	formula_function_expression_ptr generate_function_expression(const std::vector<expression_ptr>& args) const;
@@ -176,6 +180,7 @@ public:
 	const std::vector<std::string>& args() const { return args_; }
 	const std::vector<variant> default_args() const { return default_args_; }
 	const_formula_ptr get_formula() const { return formula_; }
+	const std::vector<variant_type_ptr>& variant_types() const { return variant_types_; }
 };	
 
 class function_symbol_table {
@@ -185,7 +190,7 @@ public:
 	function_symbol_table() : backup_(0) {}
 	virtual ~function_symbol_table() {}
 	void set_backup(const function_symbol_table* backup) { backup_ = backup; }
-	virtual void add_formula_function(const std::string& name, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& args, const std::vector<variant>& default_args);
+	virtual void add_formula_function(const std::string& name, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& args, const std::vector<variant>& default_args, const std::vector<variant_type_ptr>& variant_types);
 	virtual expression_ptr create_function(const std::string& fn,
 					                       const std::vector<expression_ptr>& args,
 										   const formula_callable_definition* callable_def) const;
@@ -204,7 +209,7 @@ class recursive_function_symbol_table : public function_symbol_table {
 	mutable std::vector<formula_function_expression_ptr> expr_;
 	const formula_callable_definition* closure_definition_;
 public:
-	recursive_function_symbol_table(const std::string& fn, const std::vector<std::string>& args, const std::vector<variant>& default_args, function_symbol_table* backup, const formula_callable_definition* closure_definition);
+	recursive_function_symbol_table(const std::string& fn, const std::vector<std::string>& args, const std::vector<variant>& default_args, function_symbol_table* backup, const formula_callable_definition* closure_definition, const std::vector<variant_type_ptr>& variant_types);
 	virtual expression_ptr create_function(const std::string& fn,
 					                       const std::vector<expression_ptr>& args,
 										   const formula_callable_definition* callable_def) const;

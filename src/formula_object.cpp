@@ -24,6 +24,7 @@
 #include "json_parser.hpp"
 #include "module.hpp"
 #include "string_utils.hpp"
+#include "variant_type.hpp"
 #include "variant_utils.hpp"
 
 namespace game_logic
@@ -55,29 +56,16 @@ struct property_entry {
 			setter = game_logic::formula::create_optional_formula(node["set"]);
 		}
 
-		variant valid_types = node["type"];
-		if(valid_types.is_list()) {
-			for(int n = 0; n != valid_types.num_elements(); ++n) {
-				variant item = valid_types[n];
-				const variant::TYPE t = variant::string_to_type(item.as_string());
-				ASSERT_LOG(t != variant::VARIANT_TYPE_INVALID, "INVALID FORMULA CLASS TYPE: " << item.as_string() << " -- " << item.debug_location());
-
-				types.push_back(t);
-			}
-		} else if(valid_types.is_string()) {
-
-				const variant::TYPE t = variant::string_to_type(valid_types.as_string());
-			ASSERT_LOG(t != variant::VARIANT_TYPE_INVALID, "INVALID FORMULA CLASS TYPE: " << valid_types.as_string() << " -- " << valid_types.debug_location());
-
-				types.push_back(t);
-		} else if(!valid_types.is_null()) {
-			ASSERT_LOG(false, "INVALID FORMULA CLASS TYPE: " << valid_types.to_debug_string() << " -- " << valid_types.debug_location());
+		const variant valid_types = node["type"];
+		if(valid_types.is_null() == false) {
+			type = parse_variant_type(valid_types);
 		}
 	}
 
 	variant variable;
 	game_logic::const_formula_ptr getter, setter;
-	std::vector<variant::TYPE> types;
+
+	variant_type_ptr type;
 };
 
 typedef std::map<std::string, boost::intrusive_ptr<formula_class> > classes_map;
@@ -99,6 +87,8 @@ public:
 	const std::map<std::string, property_entry>& properties() const { return properties_; }
 	const classes_map& sub_classes() const { return sub_classes_; }
 
+	bool is_a(const std::string& name) const;
+
 	void run_unit_tests();
 
 private:
@@ -110,22 +100,24 @@ private:
 	classes_map sub_classes_;
 
 	variant unit_test_;
+
+	std::vector<boost::intrusive_ptr<const formula_class> > bases_;
 };
 
 formula_class::formula_class(const variant& node)
 {
-	std::vector<boost::intrusive_ptr<const formula_class> > bases;
+	std::vector<boost::intrusive_ptr<const formula_class> > bases_;
 	variant bases_v = node["bases"];
 	if(bases_v.is_null() == false) {
 		for(int n = 0; n != bases_v.num_elements(); ++n) {
-			bases.push_back(get_class(bases_v[n].as_string()));
+			bases_.push_back(get_class(bases_v[n].as_string()));
 		}
 	}
 
 	std::map<variant, variant> m;
 	private_data_ = variant(&m);
 
-	foreach(boost::intrusive_ptr<const formula_class> base, bases) {
+	foreach(boost::intrusive_ptr<const formula_class> base, bases_) {
 		merge_variant_over(&private_data_, base->private_data_);
 	}
 
@@ -137,7 +129,7 @@ formula_class::formula_class(const variant& node)
 		constructor_.push_back(game_logic::formula::create_optional_formula(node["constructor"]));
 	}
 
-	foreach(boost::intrusive_ptr<const formula_class> base, bases) {
+	foreach(boost::intrusive_ptr<const formula_class> base, bases_) {
 		for(std::map<std::string, property_entry>::const_iterator i = base->properties_.begin(); i != base->properties_.end(); ++i) {
 			properties_[i->first] = i->second;
 		}
@@ -173,6 +165,21 @@ void formula_class::set_name(const std::string& name)
 	for(classes_map::iterator i = sub_classes_.begin(); i != sub_classes_.end(); ++i) {
 		i->second->set_name(name + "." + i->first);
 	}
+}
+bool formula_class::is_a(const std::string& name) const
+{
+	if(name == name_) {
+		return true;
+	}
+
+	typedef boost::intrusive_ptr<const formula_class> Ptr;
+	foreach(const Ptr& base, bases_) {
+		if(base->is_a(name)) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void formula_class::run_unit_tests()
@@ -341,6 +348,11 @@ formula_object::formula_object(const std::string& type, variant args)
 	private_data_ = deep_copy_variant(class_->private_data());
 }
 
+bool formula_object::is_a(const std::string& class_name) const
+{
+	return class_->is_a(class_name);
+}
+
 void formula_object::call_constructors(variant args)
 {
 	if(args.is_map()) {
@@ -455,8 +467,8 @@ void formula_object::set_value(const std::string& key, const variant& value)
 	std::map<std::string, property_entry>::const_iterator itor = class_->properties().find(key);
 	ASSERT_LOG(itor != class_->properties().end(), "UNKNOWN PROPERTY ACCESS " << key << " IN CLASS " << class_->name());
 
-	if(itor->second.types.empty() == false) {
-		if(std::find(itor->second.types.begin(), itor->second.types.end(), value.type()) == itor->second.types.end()) {
+	if(itor->second.type) {
+		if(!itor->second.type->match(value)) {
 			ASSERT_LOG(false, "ILLEGAL WRITE PROPERTY ACCESS: SETTING VARIABLE " << key << " IN CLASS " << class_->name() << " TO INVALID TYPE " << variant::variant_type_to_string(value.type()));
 		}
 	}
@@ -488,6 +500,11 @@ void formula_object::get_inputs(std::vector<formula_input>* inputs) const
 
 		inputs->push_back(formula_input(i->first, type));
 	}
+}
+
+bool formula_class_valid(const std::string& type)
+{
+	return get_class(type).get() != NULL;
 }
 
 }

@@ -34,6 +34,7 @@
 #include "i18n.hpp"
 #include "unit_test.hpp"
 #include "variant.hpp"
+#include "variant_type.hpp"
 #include "wml_formula_callable.hpp"
 
 namespace {
@@ -227,6 +228,7 @@ std::vector<variant> default_args;
 
 int base_slot;
 int refcount;
+std::vector<variant_type_ptr> variant_types;
 };
 
 struct variant_delayed {
@@ -497,7 +499,7 @@ variant::variant(std::map<variant,variant>* map)
 	increment_refcount();
 }
 
-variant::variant(game_logic::const_formula_ptr fml, const std::vector<std::string>& args, const game_logic::formula_callable& callable, int base_slot, const std::vector<variant>& default_args)
+variant::variant(game_logic::const_formula_ptr fml, const std::vector<std::string>& args, const game_logic::formula_callable& callable, int base_slot, const std::vector<variant>& default_args, const std::vector<variant_type_ptr>& variant_types)
   : type_(VARIANT_TYPE_FUNCTION)
 {
 	fn_ = new variant_fn;
@@ -511,6 +513,7 @@ variant::variant(game_logic::const_formula_ptr fml, const std::vector<std::strin
 	fn_->fn = fml;
 	fn_->callable = &callable;
 	fn_->default_args = default_args;
+	fn_->variant_types = variant_types;
 	increment_refcount();
 
 	if(fml->str_var().get_debug_info()) {
@@ -703,6 +706,12 @@ variant variant::operator()(const std::vector<variant>& args) const
 	}
 
 	for(size_t n = 0; n != args.size(); ++n) {
+		if(n < fn_->variant_types.size() && fn_->variant_types[n]) {
+			if(fn_->variant_types[n]->match(args[n]) == false) {
+				generate_error((formatter() << "FUNCTION ARGUMENT " << (n+1) << " EXPECTED TYPE " << fn_->variant_types[n]->str() << " BUT FOUND " << args[n].write_json()).str());
+			}
+		}
+
 		callable->add(args[n]);
 	}
 
