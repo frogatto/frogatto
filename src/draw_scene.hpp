@@ -64,7 +64,7 @@ bool is_achievement_displayed();
 
 
 bool update_camera_position(const level& lvl, screen_position& pos, const entity* focus=NULL, bool do_draw=true);
-void render_scene(const level& lvl, const screen_position& pos, const entity* focus=NULL, bool do_draw=true);
+void render_scene(const level& lvl, const screen_position& pos);
 
 //draw_scene calls both update_camera_position() and then render_scene()
 void draw_scene(const level& lvl, screen_position& pos, const entity* focus=NULL, bool do_draw=true);

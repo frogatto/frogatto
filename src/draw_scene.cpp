@@ -123,7 +123,7 @@ GLfloat hp_ratio = -1.0;
 void draw_scene(const level& lvl, screen_position& pos, const entity* focus, bool do_draw) {
 	const bool draw_ready = update_camera_position(lvl, pos, focus, do_draw);
 	if(draw_ready) {
-		render_scene(lvl, pos, focus, do_draw);
+		render_scene(lvl, pos);
 	}
 }
 
@@ -331,7 +331,7 @@ bool update_camera_position(const level& lvl, screen_position& pos, const entity
 	return draw_level;
 }
 
-void render_scene(const level& lvl, const screen_position& pos, const entity* focus, bool do_draw) {
+void render_scene(const level& lvl, const screen_position& pos) {
 		formula_profiler::instrument instrumentation("DRAW");
 #ifndef NO_EDITOR
 	const int sidebar_width = editor::sidebar_width();
