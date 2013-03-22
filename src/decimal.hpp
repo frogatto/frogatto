@@ -45,7 +45,7 @@ public:
 
 	int64_t value() const { return value_; }
 	int as_int() const { return int( value_/DECIMAL_PRECISION ); }
-	double as_float() const { return value_/double(DECIMAL_PRECISION); }
+	float as_float() const { return value_/float(DECIMAL_PRECISION); }
 	int64_t fractional() const { return value_%DECIMAL_PRECISION; }
 
 	decimal operator-() const {
