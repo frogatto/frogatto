@@ -181,6 +181,8 @@ void set_bequ( bool value );
 	
 	bool die_on_assert();
 
+	bool type_safety_checks();
+
 	game_logic::formula_callable* registry();
 
 	void load_preferences();

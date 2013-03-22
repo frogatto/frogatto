@@ -23,6 +23,7 @@
 #include "formula_object.hpp"
 #include "json_parser.hpp"
 #include "module.hpp"
+#include "preferences.hpp"
 #include "string_utils.hpp"
 #include "variant_type.hpp"
 #include "variant_utils.hpp"
@@ -56,16 +57,32 @@ struct property_entry {
 			setter = game_logic::formula::create_optional_formula(node["set"]);
 		}
 
-		const variant valid_types = node["type"];
-		if(valid_types.is_null() == false) {
-			type = parse_variant_type(valid_types);
+#ifndef NO_FFL_TYPE_SAFETY_CHECKS
+		if(preferences::type_safety_checks()) {
+			variant valid_types = node["type"];
+			if(valid_types.is_null() && variable_setting.is_bool() && variable_setting.as_bool()) {
+				variant default_value = node["default"];
+				if(default_value.is_null() == false) {
+					valid_types = variant(variant::variant_type_to_string(default_value.type()));
+				}
+			}
+
+			if(valid_types.is_null() == false) {
+				get_type = parse_variant_type(valid_types);
+				set_type = get_type;
+			}
+			valid_types = node["set_type"];
+			if(valid_types.is_null() == false) {
+				set_type = parse_variant_type(valid_types);
+			}
 		}
+#endif
 	}
 
 	variant variable;
 	game_logic::const_formula_ptr getter, setter;
 
-	variant_type_ptr type;
+	variant_type_ptr get_type, set_type;
 };
 
 typedef std::map<std::string, boost::intrusive_ptr<formula_class> > classes_map;
@@ -339,6 +356,7 @@ boost::intrusive_ptr<formula_object> formula_object::create(const std::string& t
 {
 	boost::intrusive_ptr<formula_object> res(new formula_object(type, args));
 	res->call_constructors(args);
+	res->validate();
 	return res;
 }
 
@@ -467,8 +485,8 @@ void formula_object::set_value(const std::string& key, const variant& value)
 	std::map<std::string, property_entry>::const_iterator itor = class_->properties().find(key);
 	ASSERT_LOG(itor != class_->properties().end(), "UNKNOWN PROPERTY ACCESS " << key << " IN CLASS " << class_->name());
 
-	if(itor->second.type) {
-		if(!itor->second.type->match(value)) {
+	if(itor->second.set_type) {
+		if(!itor->second.set_type->match(value)) {
 			ASSERT_LOG(false, "ILLEGAL WRITE PROPERTY ACCESS: SETTING VARIABLE " << key << " IN CLASS " << class_->name() << " TO INVALID TYPE " << variant::variant_type_to_string(value.type()));
 		}
 	}
@@ -482,6 +500,56 @@ void formula_object::set_value(const std::string& key, const variant& value)
 		ASSERT_LOG(false, "ILLEGAL WRITE PROPERTY ACCESS OF NON-WRITABLE VARIABLE " << key << " IN CLASS " << class_->name());
 	}
 
+	if(itor->second.get_type && (itor->second.getter || itor->second.setter)) {
+		//now that we've set the value, retrieve it and ensure it matches
+		//the type we expect.
+		variant var;
+		std::map<std::string, formula_ptr>::const_iterator override_itor = property_overrides_.find(key);
+		if(override_itor != property_overrides_.end()) {
+			private_data_scope scope(expose_private_data_);
+			var = override_itor->second->execute(*this);
+		} else if(itor->second.getter) {
+			private_data_scope scope(expose_private_data_);
+			var = itor->second.getter->execute(*this);
+		} else {
+			var = private_data_[itor->second.variable];
+		}
+
+		ASSERT_LOG(itor->second.get_type->match(var), "AFTER WRITE TO " << key << " IN CLASS " << class_->name() << " TYPE IS INVALID. EXPECTED " << itor->second.get_type->str() << " BUT FOUND " << var.write_json());
+	}
+
+}
+
+void formula_object::validate() const
+{
+#ifndef NO_FFL_TYPE_SAFETY_CHECKS
+	if(preferences::type_safety_checks() == false) {
+		return;
+	}
+
+	for(std::map<std::string, property_entry>::const_iterator itor = class_->properties().begin(); itor != class_->properties().end(); ++itor) {
+		if(!itor->second.get_type) {
+			continue;
+		}
+
+		variant value;
+
+		std::map<std::string, formula_ptr>::const_iterator override_itor = property_overrides_.find(itor->first);
+		if(override_itor != property_overrides_.end()) {
+			private_data_scope scope(expose_private_data_);
+			value = override_itor->second->execute(*this);
+		} else if(itor->second.getter) {
+			private_data_scope scope(expose_private_data_);
+			value = itor->second.getter->execute(*this);
+		} else if(itor->second.variable.is_null() == false) {
+			value = private_data_[itor->second.variable];
+		} else {
+			continue;
+		}
+
+		ASSERT_LOG(itor->second.get_type->match(value), "OBJECT OF CLASS TYPE " << class_->name() << " HAS INVALID PROPERTY " << itor->first << ": " << value.write_json() << " EXPECTED " << itor->second.get_type->str());
+	}
+#endif
 }
 
 void formula_object::get_inputs(std::vector<formula_input>* inputs) const

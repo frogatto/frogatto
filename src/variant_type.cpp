@@ -214,7 +214,10 @@ variant_type_ptr parse_variant_type(const variant& type)
 	std::string::const_iterator i2 = s.end();
 	while(i1 != i2) {
 		try {
-			tokens.push_back(get_token(i1, i2));
+			token tok = get_token(i1, i2);
+			if(tok.type != TOKEN_WHITESPACE && tok.type != TOKEN_COMMENT) {
+				tokens.push_back(tok);
+			}
 		} catch(token_error& e) {
 			ASSERT_LOG(false, "ERROR PARSING TYPE: " << e.msg << " IN '" << s << "' AT " << type.debug_location());
 		}

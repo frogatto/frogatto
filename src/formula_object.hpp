@@ -46,6 +46,8 @@ public:
 	//construct with data representing private/internal represenation.
 	explicit formula_object(variant data);
 	virtual ~formula_object();
+
+	void validate() const;
 private:
 	//construct with type and constructor parameters.
 	//Don't call directly, use create() instead.
