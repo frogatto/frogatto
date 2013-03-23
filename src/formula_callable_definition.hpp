@@ -20,6 +20,7 @@
 #include <string>
 
 #include "formula_callable_definition_fwd.hpp"
+#include "variant_type.hpp"
 
 namespace game_logic
 {
@@ -34,6 +35,8 @@ public:
 
 		//optionally store the reference to the type definition.
 		const_formula_callable_definition_ptr type_definition_holder;
+
+		variant_type_ptr variant_type;
 	};
 
 	formula_callable_definition() : is_strict_(false)

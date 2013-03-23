@@ -33,6 +33,7 @@
 #include "formula_callable_definition.hpp"
 #include "formula_constants.hpp"
 #include "formula_function.hpp"
+#include "formula_object.hpp"
 #include "formula_tokenizer.hpp"
 #include "i18n.hpp"
 #include "map_utils.hpp"
@@ -455,6 +456,7 @@ public:
 	: formula_expression("_id"), slot_(slot), id_(id), callable_def_(callable_def)
 	{
 		ASSERT_LOG(callable_def_->get_entry(slot_) != NULL, "COULD NOT FIND DEFINITION IN SLOT CALLABLE: " << id);
+		variant_type_ = callable_def_->get_entry(slot_)->variant_type;
 	}
 	
 	const std::string& id() const { return id_; }
@@ -469,8 +471,11 @@ public:
 
 	const formula_callable_definition* get_type_definition() const {
 		const formula_callable_definition::entry* def = callable_def_->get_entry(slot_);
+		ASSERT_LOG(def, "DID NOT FIND EXPECTED DEFINITION");
 		return def->type_definition;
 	}
+
+	const variant_type_ptr& variant_type() const { return variant_type_; }
 private:
 	variant execute_member(const formula_callable& variables, std::string& id, variant* variant_id) const {
 		id = id_;
@@ -484,6 +489,7 @@ private:
 	int slot_;
 	std::string id_;
 	const formula_callable_definition* callable_def_;
+	variant_type_ptr variant_type_;
 };
 
 
@@ -491,7 +497,8 @@ class identifier_expression : public formula_expression {
 public:
 	identifier_expression(const std::string& id, const formula_callable_definition* callable_def)
 	: formula_expression("_id"), id_(id), callable_def_(callable_def)
-	{}
+	{
+	}
 	
 	const std::string& id() const { return id_; }
 
@@ -552,12 +559,12 @@ private:
 
 class lambda_function_expression : public formula_expression {
 public:
-	lambda_function_expression(const std::vector<std::string>& args, const_formula_ptr fml, int base_slot, const std::vector<variant>& default_args, const std::vector<variant_type_ptr>& variant_types) : args_(args), fml_(fml), base_slot_(base_slot), default_args_(default_args), variant_types_(variant_types)
+	lambda_function_expression(const std::vector<std::string>& args, const_formula_ptr fml, int base_slot, const std::vector<variant>& default_args, const std::vector<variant_type_ptr>& variant_types, const variant_type_ptr& return_type) : args_(args), fml_(fml), base_slot_(base_slot), default_args_(default_args), variant_types_(variant_types), return_type_(return_type)
 	{}
 	
 private:
 	variant execute(const formula_callable& variables) const {
-		variant v(fml_, args_, variables, base_slot_, default_args_, variant_types_);
+		variant v(fml_, args_, variables, base_slot_, default_args_, variant_types_, return_type_);
 		return v;
 	}
 	
@@ -566,6 +573,7 @@ private:
 	int base_slot_;
 	std::vector<variant> default_args_;
 	std::vector<variant_type_ptr> variant_types_;
+	variant_type_ptr return_type_;
 };
 
 class function_call_expression : public formula_expression {
@@ -1221,6 +1229,9 @@ void parse_function_args(variant formula_str, const token* &i1, const token* i2,
 		if(i1+1 != i2 && i1->type != TOKEN_COMMA && (i1+1)->type != TOKEN_COMMA && (i1+1)->type != TOKEN_RPARENS && std::string((i1+1)->begin, (i1+1)->end) != "=" && get_formula_callable_definition(std::string(i1->begin, i1->end)) == NULL) {
 			std::cerr << "FOUND TYPE STARTING AT: " << std::string(i1->begin, i1->end) << "\n";
 			variant_type_info = parse_variant_type(formula_str, i1, i2);
+			std::string class_name;
+			variant_type_info->is_class(&class_name);
+			std::cerr << "IS CLASS: " << variant_type_info->is_class() << ": " << class_name << "\n";
 		}
 
 		ASSERT_LOG(i1->type != TOKEN_RPARENS && i1 != i2, "UNEXPECTED END OF FUNCTION DEF: " << pinpoint_location(formula_str, (i1-1)->begin, (i1-1)->end));
@@ -1574,11 +1585,23 @@ expression_ptr parse_function_def(const variant& formula_str, const token*& i1, 
 		}
 	}
 
+	if(args_definition) {
+		for(int n = 0; n != variant_types.size(); ++n) {
+			std::string class_name;
+			if(variant_types[n] && variant_types[n]->is_class(&class_name)) {
+				std::cerr << "INSERT CLASS DEFINITION: " << class_name << "\n";
+					const formula_callable_definition* def = get_class_definition(class_name);
+				ASSERT_LOG(def != NULL, "CLASS NOT FOUND: " << class_name);
+				args_definition->get_entry(n)->type_definition = def;
+			}
+		}
+	}
+
 	const_formula_ptr fml(new formula(function_var, &recursive_symbols, args_definition_ptr));
 	recursive_symbols.resolve_recursive_calls(fml);
 	
 	if(formula_name.empty()) {
-		return expression_ptr(new lambda_function_expression(args, fml, callable_def ? callable_def->num_slots() : 0, default_args, variant_types));
+		return expression_ptr(new lambda_function_expression(args, fml, callable_def ? callable_def->num_slots() : 0, default_args, variant_types, variant_type::get_any()));
 	}
 
 	const std::string precond = "";
@@ -1801,7 +1824,7 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 				    new identifier_expression(symbol, callable_def);
 				const formula_function* fn = symbols ? symbols->get_formula_function(symbol) : NULL;
 				if(fn != NULL) {
-					expression_ptr function(new lambda_function_expression(fn->args(), fn->get_formula(), 0, fn->default_args(), fn->variant_types()));
+					expression_ptr function(new lambda_function_expression(fn->args(), fn->get_formula(), 0, fn->default_args(), fn->variant_types(), variant_type::get_any()));
 					expr->set_function(function);
 				}
 				return expression_ptr(expr);

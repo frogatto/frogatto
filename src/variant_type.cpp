@@ -34,11 +34,18 @@ public:
 		ASSERT_LOG(type_ != variant::VARIANT_TYPE_INVALID, "INVALID TYPE: " << std::string(tok.begin, tok.end) << " AT " << original_str.debug_location());
 	}
 
+	explicit variant_type_simple(variant::TYPE type) : type_(type) {}
+
 	bool match(const variant& v) const {
 		return v.type() == type_ || type_ == variant::VARIANT_TYPE_DECIMAL && v.type() == variant::VARIANT_TYPE_INT;
 	}
 private:
 	variant::TYPE type_;
+};
+
+class variant_type_any : public variant_type
+{
+	bool match(const variant& v) const { return true; }
 };
 
 class variant_type_class : public variant_type
@@ -56,6 +63,14 @@ public:
 		}
 
 		return obj->is_a(type_);
+	}
+
+	bool is_class(std::string* class_name) const {
+		if(class_name) {
+			*class_name = type_;
+		}
+
+		return true;
 	}
 private:
 	std::string type_;
@@ -126,6 +141,12 @@ private:
 	variant_type_ptr key_type_, value_type_;
 };
 
+class variant_type_function : public variant_type
+{
+public:
+	
+};
+
 }
 
 variant_type_ptr parse_variant_type(const variant& original_str,
@@ -140,11 +161,14 @@ variant_type_ptr parse_variant_type(const variant& original_str,
 
 	for(;;) {
 		ASSERT_LOG(i1 != i2, "EXPECTED TYPE BUT FOUND EMPTY EXPRESSION: " << original_str.debug_location());
-		if(i1->type == TOKEN_IDENTIFIER && std::equal(i1->begin, i1->end, "class")) {
+		if(i1->type == TOKEN_IDENTIFIER && i1->equals("class")) {
 			++i1;
 			ASSERT_LOG(i1 != i2, "EXPECTED CLASS BUT FOUND EMPTY EXPRESSION: " << original_str.debug_location());
 			v.push_back(variant_type_ptr(new variant_type_class(std::string(i1->begin, i1->end))));
 
+			++i1;
+		} else if(i1->type == TOKEN_IDENTIFIER && i1->equals("any")) {
+			v.push_back(variant_type_ptr(new variant_type_any));
 			++i1;
 		} else if(i1->type == TOKEN_IDENTIFIER || (i1->type == TOKEN_KEYWORD && std::equal(i1->begin, i1->end, "null"))) {
 			v.push_back(variant_type_ptr(new variant_type_simple(original_str, *i1)));
@@ -227,4 +251,38 @@ variant_type_ptr parse_variant_type(const variant& type)
 
 	const token* begin = &tokens[0];
 	return parse_variant_type(type, begin, begin + tokens.size());
+}
+
+variant_type_ptr variant_type::get_any()
+{
+	return variant_type_ptr(new variant_type_any);
+}
+
+variant_type_ptr variant_type::get_type(variant::TYPE type)
+{
+	return variant_type_ptr(new variant_type_simple(type));
+}
+
+variant_type_ptr variant_type::get_union(const std::vector<variant_type_ptr>& items)
+{
+	return variant_type_ptr(new variant_type_union(items));
+}
+
+variant_type_ptr variant_type::get_list(variant_type_ptr element_type)
+{
+	return variant_type_ptr(new variant_type_list(element_type));
+}
+
+variant_type_ptr variant_type::get_map(variant_type_ptr key_type, variant_type_ptr value_type)
+{
+	return variant_type_ptr(new variant_type_map(key_type, value_type));
+}
+
+variant_type_ptr variant_type::get_class(const std::string& class_name)
+{
+	return variant_type_ptr(new variant_type_class(class_name));
+}
+
+variant_type_ptr variant_type::get_function_type(const std::vector<variant_type_ptr>& arg_types, int min_args, variant_type_ptr return_type)
+{
 }

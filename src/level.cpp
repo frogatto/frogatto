@@ -4697,6 +4697,10 @@ UTILITY(compile_levels)
 	variant_builder index_node;
 
 	for(std::map<std::string, std::string>::const_iterator i = file_paths.begin(); i != file_paths.end(); ++i) {
+		if(strstr(i->second.c_str(), "/Unused")) {
+			continue;
+		}
+
 		const std::string& file = module::get_id(i->first);
 		std::cerr << "LOADING LEVEL '" << file << "'\n";
 		boost::intrusive_ptr<level> lvl(new level(file));
