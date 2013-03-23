@@ -101,37 +101,14 @@ namespace {
 	}
 
 	const size_t TextureBufSize = 128;
-	GLuint texture_buf[TextureBufSize];
-	size_t texture_buf_pos = TextureBufSize;
-	std::vector<unsigned int> avail_textures;
 	bool graphics_initialized = false;
 
 	unsigned int current_texture = 0;
 
 	unsigned int get_texture_id() {
-		if(!avail_textures.empty()) {
-			const unsigned int res = avail_textures.back();
-			avail_textures.pop_back();
-			return res;
-		}
-
-		if(texture_buf_pos == TextureBufSize) {
-#if SDL_VERSION_ATLEAST(2, 0, 0)
-			if(graphics_thread_id != SDL_ThreadID()) {
-#else
-			if(graphics_thread_id != SDL_GetThreadID(NULL)) {
-#endif
-				//we are in a worker thread so we can't make an OpenGL
-				//call. Throw an exception.
-				std::cerr << "CANNOT ALLOCATE TEXTURE ID's in WORKER THREAD\n";
-				throw texture::worker_thread_error();
-			}
-
-			glGenTextures(TextureBufSize, texture_buf);
-			texture_buf_pos = 0;
-		}
-
-		return texture_buf[texture_buf_pos++];
+		unsigned int result = 0;
+		glGenTextures(1, &result);
+		return result;
 	}
 
 	bool npot_allowed = true;
@@ -997,7 +974,7 @@ void texture::ID::unbuild_id()
 void texture::ID::destroy()
 {
 	if(graphics_initialized && init()) {
-		avail_textures.push_back(id);
+		glDeleteTextures(1, &id);
 	}
 
 	id = static_cast<unsigned int>(-1);
