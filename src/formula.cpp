@@ -832,6 +832,8 @@ public:
 			op_ = OP_OR;
 		} else if(op == "in") {
 			op_ = OP_IN;
+		} else if(op == "not in") {
+			op_ = OP_NOT_IN;
 		}
 	}
 
@@ -877,19 +879,23 @@ private:
 		variant right = right_->evaluate(variables);
 		switch(op_) {
 			case OP_IN:
+			case OP_NOT_IN: {
+				bool result = op_ == OP_IN;
 				if(right.is_list()) {
 					for(int n = 0; n != right.num_elements(); ++n) {
 						if(left == right[n]) {
-							return variant(1);
+							return variant::from_bool(result);
 						}
 					}
 					
-					return variant(0);
+					return variant::from_bool(!result);
 				} else if(right.is_map()) {
-					return variant(right.has_key(left) ? 1 : 0);
+					return variant(right.has_key(left) ? result : !result);
 				} else {
+					ASSERT_LOG(false, "ILLEGAL OPERAND TO 'in': " << right.write_json() << " AT " << debug_pinpoint_location());
 					return variant();
 				}
+			}
 			case OP_AND: 
 				return left.as_bool() == false ? left : right;
 			case OP_OR: 
@@ -938,7 +944,7 @@ private:
 		return res;
 	}
 	
-	enum OP { OP_IN, OP_AND, OP_OR, OP_NEQ, OP_LTE, OP_GTE, OP_GT='>', OP_LT='<', OP_EQ='=',
+	enum OP { OP_IN, OP_NOT_IN, OP_AND, OP_OR, OP_NEQ, OP_LTE, OP_GTE, OP_GT='>', OP_LT='<', OP_EQ='=',
 		OP_ADD='+', OP_SUB='-', OP_MUL='*', OP_DIV='/', OP_DICE='d', OP_POW='^', OP_MOD='%' };
 	
 	OP op_;
@@ -1908,7 +1914,13 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 															parse_expression(formula_str, op+1,i2,symbols, callable_def, can_optimize)));
 	}
 	
-	const std::string op_name(op->begin,op->end);
+	int consume_backwards = 0;
+	std::string op_name(op->begin,op->end);
+
+	if(op_name == "in" && op > i1 && op-1 > i1 && std::string((op-1)->begin, (op-1)->end) == "not") {
+		op_name = "not in";
+		consume_backwards = 1;
+	}
 	
 	if(op_name == "(") {
 		if(i2 - op < 2) {
@@ -1961,7 +1973,7 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 
 	const bool is_dot = op_name == ".";
 	return expression_ptr(new operator_expression(
-												  op_name, parse_expression(formula_str, i1,op,symbols, callable_def, can_optimize),
+												  op_name, parse_expression(formula_str, i1,op-consume_backwards,symbols, callable_def, can_optimize),
 												  parse_expression(formula_str, op+1,i2,symbols, callable_def, can_optimize)));
 }
 }
@@ -2307,8 +2319,10 @@ UNIT_TEST(formula_slice) {
 	
 	
 UNIT_TEST(formula_in) {
-	CHECK(formula(variant("1 in [4,5,6]")).execute() == variant(0), "test failed");
-	CHECK(formula(variant("5 in [4,5,6]")).execute() == variant(1), "test failed");
+	CHECK(formula(variant("1 in [4,5,6]")).execute() == variant::from_bool(false), "test failed");
+	CHECK(formula(variant("5 in [4,5,6]")).execute() == variant::from_bool(true), "test failed");
+	CHECK(formula(variant("5 not in [4,5,6]")).execute() == variant::from_bool(false), "test failed");
+	CHECK(formula(variant("8 not in [4,5,6]")).execute() == variant::from_bool(true), "test failed");
 }
 
 UNIT_TEST(formula_fn) {
