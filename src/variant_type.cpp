@@ -285,4 +285,6 @@ variant_type_ptr variant_type::get_class(const std::string& class_name)
 
 variant_type_ptr variant_type::get_function_type(const std::vector<variant_type_ptr>& arg_types, int min_args, variant_type_ptr return_type)
 {
+	//TODO: implement me
+	return variant_type_ptr();
 }
