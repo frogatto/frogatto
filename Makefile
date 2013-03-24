@@ -37,7 +37,7 @@ SDL2_CONFIG?=sdl2-config
 USE_SDL2?=$(shell which $(SDL2_CONFIG) 2>&1 > /dev/null && echo yes)
 
 # Initial compiler options, used before CXXFLAGS and CPPFLAGS.
-BASE_CXXFLAGS += -g -fno-inline-functions -fthreadsafe-statics -Wnon-virtual-dtor -Werror -Wignored-qualifiers -Wformat -Wswitch -DUSE_GLES2 -DUTILITY_IN_PROC
+BASE_CXXFLAGS += -g -fno-inline-functions -fthreadsafe-statics -Wnon-virtual-dtor -Werror -Wignored-qualifiers -Wformat -Wswitch -Wreturn-type -DUSE_GLES2 -DUTILITY_IN_PROC
 
 # Compiler include options, used after CXXFLAGS and CPPFLAGS.
 ifeq ($(USE_SDL2),yes)

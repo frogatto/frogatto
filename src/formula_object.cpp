@@ -14,10 +14,12 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <boost/bind.hpp>
 #include <map>
 #include <string>
 #include <stdio.h>
 
+#include "filesystem.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "formula_callable_definition.hpp"
@@ -29,10 +31,13 @@
 #include "variant_type.hpp"
 #include "variant_utils.hpp"
 
+
 namespace game_logic
 {
 
 namespace {
+void invalidate_class_definition(const std::string& class_name);
+
 boost::intrusive_ptr<const formula_class> get_class(const std::string& type);
 
 struct property_entry {
@@ -105,7 +110,12 @@ void load_class_node(const std::string& type, const variant& node)
 
 void load_class_nodes(const std::string& type)
 {
-	const variant v = json::parse_from_file("data/classes/" + type + ".cfg");
+	const std::string path = "data/classes/" + type + ".cfg";
+	const std::string real_path = module::map_file(path);
+
+	sys::notify_on_file_modification(real_path, boost::bind(invalidate_class_definition, type));
+
+	const variant v = json::parse_from_file(path);
 	ASSERT_LOG(v.is_map(), "COULD NOT FIND FFL CLASS: " << type);
 
 	load_class_node(type, v);
@@ -248,7 +258,7 @@ private:
 	std::vector<entry> slots_;
 };
 
-typedef std::map<std::string, boost::shared_ptr<formula_class_definition> > class_definition_map;
+typedef std::map<std::string, formula_class_definition*> class_definition_map;
 class_definition_map class_definitions;
 
 typedef std::map<std::string, boost::intrusive_ptr<formula_class> > classes_map;
@@ -262,11 +272,11 @@ const formula_callable_definition* get_class_definition(const std::string& name)
 {
 	class_definition_map::const_iterator itor = class_definitions.find(name);
 	if(itor != class_definitions.end()) {
-		return itor->second.get();
+		return itor->second;
 	}
 
 	formula_class_definition* def = new formula_class_definition(name, get_class_node(name));
-	class_definitions[name].reset(def);
+	class_definitions[name] = def;
 	def->init();
 	return def;
 }
@@ -468,7 +478,7 @@ private:
 	variant* tmp_value_;
 };
 
-classes_map classes_;
+classes_map classes_, backup_classes_;
 std::set<std::string> known_classes;
 
 void record_classes(const std::string& name, const variant& node)
@@ -482,6 +492,17 @@ void record_classes(const std::string& name, const variant& node)
 			record_classes(name + "." + key.as_string(), class_node);
 		}
 	}
+}
+
+boost::intrusive_ptr<formula_class> build_class(const std::string& type)
+{
+	const variant v = get_class_node(type);
+
+	record_classes(type, v);
+
+	boost::intrusive_ptr<formula_class> result(new formula_class(type, v));
+	result->set_name(type);
+	return result;
 }
 
 boost::intrusive_ptr<const formula_class> get_class(const std::string& type)
@@ -503,12 +524,19 @@ boost::intrusive_ptr<const formula_class> get_class(const std::string& type)
 		return itor->second;
 	}
 
-	const variant v = get_class_node(type);
+	boost::intrusive_ptr<formula_class> result;
+	
+	if(!backup_classes_.empty() && backup_classes_.count(type)) {
+		try {
+			result = build_class(type);
+		} catch(...) {
+			result = backup_classes_[type];
+			std::cerr << "ERROR LOADING NEW CLASS\n";
+		}
+	} else {
+		result = build_class(type);
+	}
 
-	record_classes(type, v);
-
-	boost::intrusive_ptr<formula_class> result(new formula_class(type, v));
-	result->set_name(type);
 	classes_[type] = result;
 	result->run_unit_tests();
 	return boost::intrusive_ptr<const formula_class>(result.get());
@@ -727,7 +755,6 @@ variant formula_object::get_value_by_slot(int slot) const
 
 void formula_object::set_value(const std::string& key, const variant& value)
 {
-	std::cerr << "SET VALUE: " << key << "\n";
 	if(expose_private_data_ && key == "private") {
 		if(value.is_map() == false) {
 			ASSERT_LOG(false, "TRIED TO SET CLASS PRIVATE DATA TO A VALUE WHICH IS NOT A MAP: " << value);
@@ -745,7 +772,6 @@ void formula_object::set_value(const std::string& key, const variant& value)
 
 void formula_object::set_value_by_slot(int slot, const variant& value)
 {
-	std::cerr << "SET VALUE BY SLOT: " << slot << "\n";
 	if(slot < NUM_BASE_FIELDS) {
 		switch(slot) {
 		case FIELD_PRIVATE:
@@ -865,4 +891,53 @@ bool formula_class_valid(const std::string& type)
 	return known_classes.count(type) != false || get_class(type).get() != NULL;
 }
 
+namespace {
+
+void invalidate_class_definition(const std::string& name)
+{
+	std::cerr << "INVALIDATE: " << name << "\n";
+	for(std::map<std::string, variant>::iterator i = class_node_map.begin(); i != class_node_map.end(); ) {
+		const std::string& class_name = i->first;
+		std::string::const_iterator dot = std::find(class_name.begin(), class_name.end(), '.');
+		std::string base_class(class_name.begin(), dot);
+		if(base_class == name) {
+			std::cerr << "REMOVEA: " << class_name << "\n";
+			class_node_map.erase(i++);
+		} else {
+			++i;
+		}
+	}
+
+	for(class_definition_map::iterator i = class_definitions.begin(); i != class_definitions.end(); )
+	{
+		const std::string& class_name = i->first;
+		std::string::const_iterator dot = std::find(class_name.begin(), class_name.end(), '.');
+		std::string base_class(class_name.begin(), dot);
+		if(base_class == name) {
+			std::cerr << "REMOVEB: " << class_name << "\n";
+			class_definitions.erase(i++);
+		} else {
+			++i;
+		}
+	}
+
+	for(classes_map::iterator i = classes_.begin(); i != classes_.end(); )
+	{
+		const std::string& class_name = i->first;
+		std::string::const_iterator dot = std::find(class_name.begin(), class_name.end(), '.');
+		std::string base_class(class_name.begin(), dot);
+		if(base_class == name) {
+			std::cerr << "REMOVEX: " << class_name << "\n";
+			known_classes.erase(class_name);
+			backup_classes_[i->first] = i->second;
+			classes_.erase(i++);
+		} else {
+			++i;
+		}
+	}
 }
+
+}
+
+}
+
