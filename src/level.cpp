@@ -137,6 +137,21 @@ void level::set_as_current_level()
 	current_level = this;
 	frame::set_color_palette(palettes_used_);
 
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+	if(false && preferences::auto_size_window()) {
+		static bool auto_sized = false;
+		if(!auto_sized) {
+			auto_sized = true;
+		}
+
+		const SDL_DisplayMode mode = graphics::set_video_mode_auto_select();
+		preferences::set_actual_screen_width(mode.w);
+		preferences::set_actual_screen_height(mode.h);
+		preferences::set_virtual_screen_width(mode.w);
+		preferences::set_virtual_screen_height(mode.h);
+	}
+#endif
+
 #if !TARGET_OS_IPHONE && !TARGET_BLACKBERRY
 #ifndef NO_EDITOR
 	static const int starting_x_resolution = preferences::actual_screen_width();
@@ -144,7 +159,7 @@ void level::set_as_current_level()
 	static const int starting_virtual_x_resolution = preferences::virtual_screen_width();
 	static const int starting_virtual_y_resolution = preferences::virtual_screen_height();
 
-	if(set_screen_resolution_on_entry_ && !editor_ && !editor_resolution_manager::is_active() && starting_x_resolution == starting_virtual_x_resolution) {
+	if(set_screen_resolution_on_entry_ && !editor_ && !editor_resolution_manager::is_active() && starting_x_resolution == starting_virtual_x_resolution && !preferences::auto_size_window()) {
 		if(!x_resolution_) {
 			x_resolution_ = starting_x_resolution;
 		}

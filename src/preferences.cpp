@@ -156,6 +156,7 @@ namespace preferences {
 		int alt_frame_time_millis_ = -1;
 		bool no_iphone_controls_ = false;
 		bool allow_autopause_ = false;
+		bool auto_size_window_ = false;
 		
 		std::string level_path_ = "data/level/";
 		bool level_path_set_ = false;
@@ -599,6 +600,11 @@ namespace preferences {
 	{
 		return allow_autopause_;
 	}
+
+	bool auto_size_window()
+	{
+		return auto_size_window_;
+	}
 	
 	bool edit_on_start()
 	{
@@ -986,6 +992,8 @@ namespace preferences {
 			allow_autopause_ = false;
 		} else if(s == "--autopause") {
 			allow_autopause_ = true;
+		} else if(s == "--auto-size-window") {
+			auto_size_window_ = true;
 		} else if(arg_name == "--difficulty" && !arg_value.empty()) {
 			if(boost::regex_match(arg_value, boost::regex("-?[0-9]+"))) {
 				force_difficulty_ = boost::lexical_cast<int>(arg_value);

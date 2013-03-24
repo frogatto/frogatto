@@ -149,6 +149,50 @@ bool set_video_mode(int w, int h)
 }
 
 #if SDL_VERSION_ATLEAST(2, 0, 0)
+
+SDL_DisplayMode set_video_mode_auto_select()
+{
+	SDL_DisplayMode mode;
+
+	//uncomment out when support for SDL_GetWindowDisplayIndex stabilizes.
+	const int display_index = 0; //SDL_GetWindowDisplayIndex(graphics::get_window());
+	SDL_GetDesktopDisplayMode(display_index, &mode);
+
+	std::cerr << "CURRENT MODE IS " << mode.w << "x" << mode.h << "\n";
+
+	SDL_DisplayMode best_mode = mode;
+	if(preferences::fullscreen() == false && mode.w > 1024 && mode.h > 768) {
+		const int nmodes = SDL_GetNumDisplayModes(display_index);
+		for(int n = 0; n != nmodes; ++n) {
+			SDL_DisplayMode candidate_mode;
+			const int nvalue = SDL_GetDisplayMode(display_index, n, &candidate_mode);
+			if(nvalue != 0) {
+				std::cerr << "ERROR QUERYING DISPLAY INFO: " << SDL_GetError() << "\n";
+				continue;
+			}
+
+			const float MinReduction = 0.9;
+
+			if(candidate_mode.w < mode.w && candidate_mode.h < mode.w && candidate_mode.w < mode.w*MinReduction && candidate_mode.h < mode.h*MinReduction && (candidate_mode.w >= best_mode.w && candidate_mode.h >= best_mode.h || best_mode.w == mode.w && best_mode.h == mode.h)) {
+	std::cerr << "BETTER MODE IS " << candidate_mode.w << "x" << candidate_mode.h << "\n";
+				best_mode = candidate_mode;
+			} else {
+	std::cerr << "REJECTED MODE IS " << candidate_mode.w << "x" << candidate_mode.h << "\n";
+			}
+		}
+	}
+
+	if(best_mode.w < 1024 || best_mode.h < 768) {
+		best_mode.w = 1024;
+		best_mode.h = 768;
+	}
+
+	const bool result = set_video_mode(best_mode.w, best_mode.h);
+	ASSERT_LOG(result, "FAILED TO SET AUTO SELECT VIDEO MODE: " << best_mode.w << "x" << best_mode.h);
+	
+	return best_mode;
+}
+
 SDL_Window* set_video_mode(int w, int h, int flags)
 {
 	static SDL_Window* wnd = NULL;
