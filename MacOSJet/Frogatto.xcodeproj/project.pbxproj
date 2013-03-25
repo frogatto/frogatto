@@ -197,6 +197,8 @@
 		C026F59D16C23649000482A1 /* rich_text_label.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C026F59C16C23649000482A1 /* rich_text_label.cpp */; };
 		C026F5A116C23963000482A1 /* selector_widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C026F59F16C23963000482A1 /* selector_widget.cpp */; };
 		C026F5A416C74B1E000482A1 /* draw_primitive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C026F5A216C74B1E000482A1 /* draw_primitive.cpp */; };
+		C02ACCAC16FD5F05006274BC /* variant_type.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C02ACCAA16FD5F05006274BC /* variant_type.cpp */; };
+		C02ACCAF16FD6200006274BC /* fbo_scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C02ACCAD16FD6200006274BC /* fbo_scene.cpp */; };
 		C089D452162BDF7B009D2878 /* master-config.cfg in Resources */ = {isa = PBXBuildFile; fileRef = C089D451162BDF7B009D2878 /* master-config.cfg */; };
 		C0B1908916CD9437008FF14A /* ipc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0B1908716CD9437008FF14A /* ipc.cpp */; };
 		C0B87BD4166725A700D66B15 /* formula_object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0B87BD21667256F00D66B15 /* formula_object.cpp */; };
@@ -632,6 +634,10 @@
 		C026F5A016C23963000482A1 /* selector_widget.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = selector_widget.hpp; sourceTree = "<group>"; };
 		C026F5A216C74B1E000482A1 /* draw_primitive.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = draw_primitive.cpp; sourceTree = "<group>"; };
 		C026F5A316C74B1E000482A1 /* draw_primitive.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = draw_primitive.hpp; sourceTree = "<group>"; };
+		C02ACCAA16FD5F05006274BC /* variant_type.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = variant_type.cpp; sourceTree = "<group>"; };
+		C02ACCAB16FD5F05006274BC /* variant_type.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = variant_type.hpp; sourceTree = "<group>"; };
+		C02ACCAD16FD6200006274BC /* fbo_scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fbo_scene.cpp; sourceTree = "<group>"; };
+		C02ACCAE16FD6200006274BC /* fbo_scene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = fbo_scene.hpp; sourceTree = "<group>"; };
 		C0406533163F790000F84F94 /* sys.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sys.cpp; sourceTree = "<group>"; };
 		C0406534163F790000F84F94 /* sys.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sys.hpp; sourceTree = "<group>"; };
 		C089D451162BDF7B009D2878 /* master-config.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "master-config.cfg"; path = "../master-config.cfg"; sourceTree = "<group>"; };
@@ -877,6 +883,8 @@
 				C010C625160AFD4C006E7D90 /* entity_fwd.hpp */,
 				C010C626160AFD4C006E7D90 /* external_text_editor.cpp */,
 				C010C627160AFD4C006E7D90 /* external_text_editor.hpp */,
+				C02ACCAD16FD6200006274BC /* fbo_scene.cpp */,
+				C02ACCAE16FD6200006274BC /* fbo_scene.hpp */,
 				C010C628160AFD4C006E7D90 /* file_chooser_dialog.cpp */,
 				C010C629160AFD4C006E7D90 /* file_chooser_dialog.hpp */,
 				C010C62B160AFD4C006E7D90 /* filesystem.cpp */,
@@ -1133,6 +1141,8 @@
 				C010C72B160AFD4D006E7D90 /* variant.hpp */,
 				C010C72C160AFD4D006E7D90 /* variant_callable.cpp */,
 				C010C72D160AFD4D006E7D90 /* variant_callable.hpp */,
+				C02ACCAA16FD5F05006274BC /* variant_type.cpp */,
+				C02ACCAB16FD5F05006274BC /* variant_type.hpp */,
 				C010C72E160AFD4D006E7D90 /* variant_utils.cpp */,
 				C010C72F160AFD4D006E7D90 /* variant_utils.hpp */,
 				C010C730160AFD4D006E7D90 /* vecmath.hpp */,
@@ -1421,6 +1431,8 @@
 				C0D6EB6D16DB25C000B5ABCA /* tbs_internal_server.cpp in Sources */,
 				C0D6EB6E16DB25C000B5ABCA /* tbs_server_base.cpp in Sources */,
 				C0D6EB7116DB25D700B5ABCA /* bar_widget.cpp in Sources */,
+				C02ACCAC16FD5F05006274BC /* variant_type.cpp in Sources */,
+				C02ACCAF16FD6200006274BC /* fbo_scene.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
