@@ -148,6 +148,8 @@ void set_bequ( bool value );
 	void set_actual_screen_height(int height);
 	void set_virtual_screen_width(int width);
 	void set_virtual_screen_height(int height);
+
+	bool auto_size_window();
 	
 	bool allow_autopause();
 

@@ -245,6 +245,8 @@ private:
 	variant v_;
 };
 
+const formula_callable_definition* get_map_callable_definition(const formula_callable_definition* base_def, variant_type_ptr key_type, variant_type_ptr value_type, const std::string& value_name);
+
 }
 
 #endif

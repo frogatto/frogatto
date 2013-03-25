@@ -31,6 +31,8 @@
 #include "formula.hpp"
 #include "formula_callable.hpp"
 #include "formula_callable_utils.hpp"
+#include "formula_object.hpp"
+
 #include "i18n.hpp"
 #include "unit_test.hpp"
 #include "variant.hpp"
@@ -229,6 +231,7 @@ std::vector<variant> default_args;
 int base_slot;
 int refcount;
 std::vector<variant_type_ptr> variant_types;
+variant_type_ptr return_type;
 };
 
 struct variant_delayed {
@@ -499,7 +502,7 @@ variant::variant(std::map<variant,variant>* map)
 	increment_refcount();
 }
 
-variant::variant(game_logic::const_formula_ptr fml, const std::vector<std::string>& args, const game_logic::formula_callable& callable, int base_slot, const std::vector<variant>& default_args, const std::vector<variant_type_ptr>& variant_types)
+variant::variant(game_logic::const_formula_ptr fml, const std::vector<std::string>& args, const game_logic::formula_callable& callable, int base_slot, const std::vector<variant>& default_args, const std::vector<variant_type_ptr>& variant_types, const variant_type_ptr& return_type)
   : type_(VARIANT_TYPE_FUNCTION)
 {
 	fn_ = new variant_fn;
@@ -514,6 +517,7 @@ variant::variant(game_logic::const_formula_ptr fml, const std::vector<std::strin
 	fn_->callable = &callable;
 	fn_->default_args = default_args;
 	fn_->variant_types = variant_types;
+	fn_->return_type = return_type;
 	increment_refcount();
 
 	if(fml->str_var().get_debug_info()) {
@@ -680,8 +684,11 @@ variant variant::get_list_slice(int begin, int end) const
 	return result;
 }
 
-variant variant::operator()(const std::vector<variant>& args) const
+variant variant::operator()(const std::vector<variant>& passed_args) const
 {
+	const std::vector<variant>* args = &passed_args;
+	std::vector<variant> args_buf;
+
 	must_be(VARIANT_TYPE_FUNCTION);
 	boost::intrusive_ptr<game_logic::slot_formula_callable> callable = new game_logic::slot_formula_callable;
 	if(fn_->callable) {
@@ -693,7 +700,7 @@ variant variant::operator()(const std::vector<variant>& args) const
 	const int max_args = fn_->end_args - fn_->begin_args;
 	const int min_args = max_args - fn_->default_args.size();
 
-	if(args.size() < min_args || args.size() > max_args) {
+	if(args->size() < min_args || args->size() > max_args) {
 		std::ostringstream str;
 		for(const std::string* a = fn_->begin_args; a != fn_->end_args; ++a) {
 			if(a != fn_->begin_args) {
@@ -702,20 +709,34 @@ variant variant::operator()(const std::vector<variant>& args) const
 
 			str << *a;
 		}
-		generate_error(formatter() << "Function passed " << args.size() << " arguments, between " <<  min_args << " and " << max_args << " expected (" << str.str() << ")");
+		generate_error(formatter() << "Function passed " << args->size() << " arguments, between " <<  min_args << " and " << max_args << " expected (" << str.str() << ")");
 	}
 
-	for(size_t n = 0; n != args.size(); ++n) {
+	for(size_t n = 0; n != args->size(); ++n) {
 		if(n < fn_->variant_types.size() && fn_->variant_types[n]) {
-			if(fn_->variant_types[n]->match(args[n]) == false) {
-				generate_error((formatter() << "FUNCTION ARGUMENT " << (n+1) << " EXPECTED TYPE " << fn_->variant_types[n]->str() << " BUT FOUND " << args[n].write_json()).str());
+			if(fn_->variant_types[n]->match((*args)[n]) == false) {
+				std::string class_name;
+				if((*args)[n].is_map() && fn_->variant_types[n]->is_class(&class_name)) {
+					//auto-construct an object from a map in a function argument
+					game_logic::formula::fail_if_static_context();
+
+					boost::intrusive_ptr<game_logic::formula_object> obj(game_logic::formula_object::create(class_name, (*args)[n]));
+
+					args_buf = *args;
+					args = &args_buf;
+
+					args_buf[n] = variant(obj.get());
+
+				} else {
+					generate_error((formatter() << "FUNCTION ARGUMENT " << (n+1) << " EXPECTED TYPE " << fn_->variant_types[n]->str() << " BUT FOUND " << (*args)[n].write_json()).str());
+				}
 			}
 		}
 
-		callable->add(args[n]);
+		callable->add((*args)[n]);
 	}
 
-	for(size_t n = args.size(); n < max_args; ++n) {
+	for(size_t n = args->size(); n < max_args; ++n) {
 		callable->add(fn_->default_args[n - min_args]);
 	}
 

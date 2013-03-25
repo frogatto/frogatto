@@ -770,7 +770,13 @@ extern "C" int main(int argcount, char** argvec)
     }
 #else
 #if SDL_VERSION_ATLEAST(2, 0, 0)
-	if(!graphics::set_video_mode(preferences::actual_screen_width(), preferences::actual_screen_height())) {
+	if(preferences::auto_size_window()) {
+		const SDL_DisplayMode mode = graphics::set_video_mode_auto_select();
+		preferences::set_actual_screen_width(mode.w);
+		preferences::set_actual_screen_height(mode.h);
+		preferences::set_virtual_screen_width(mode.w);
+		preferences::set_virtual_screen_height(mode.h);
+	} else if(!graphics::set_video_mode(preferences::actual_screen_width(), preferences::actual_screen_height())) {
 #else
 	if(SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_OPENGL|(preferences::resizable() ? SDL_RESIZABLE : 0)|(preferences::fullscreen() ? SDL_FULLSCREEN : 0)) == NULL) {
 #endif

@@ -30,7 +30,7 @@ variant_callable::variant_callable(const variant& v) : value_(v)
 
 variant variant_callable::get_value(const std::string& key) const
 {
-	if(key == "self" || key == "me") {
+	if(key == "self") {
 		return variant(this);
 	}
 

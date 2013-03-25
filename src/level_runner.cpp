@@ -818,6 +818,12 @@ bool level_runner::play_cycle()
 		controls_lock.reset(new controls::local_controls_lock);
 	}
 
+	static bool pumped_file_mods = false;
+	if(editor_ || console_ || pumped_file_mods) {
+		sys::pump_file_modifications();
+		pumped_file_mods = true;
+	}
+
 	if(editor_) {
 
 		controls::control_backup_scope ctrl_backup;
@@ -827,8 +833,6 @@ bool level_runner::play_cycle()
 		lvl_->set_as_current_level();
 
 		lvl_->mutate_value("zoom", variant(decimal(1.0/editor_->zoom())));
-
-		sys::pump_file_modifications();
 
 		custom_object_type::reload_modified_code();
 		graphics::texture::clear_modified_files_from_cache();

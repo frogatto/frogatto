@@ -24,20 +24,33 @@
 #include "variant.hpp"
 
 class variant_type;
-typedef boost::shared_ptr<variant_type> variant_type_ptr;
+typedef boost::shared_ptr<const variant_type> variant_type_ptr;
 typedef boost::shared_ptr<const variant_type> const_variant_type_ptr;
 
 class variant_type
 {
 public:
+	static variant_type_ptr get_any();
+	static variant_type_ptr get_type(variant::TYPE type);
+	static variant_type_ptr get_union(const std::vector<variant_type_ptr>& items);
+	static variant_type_ptr get_list(variant_type_ptr element_type);
+	static variant_type_ptr get_map(variant_type_ptr key_type, variant_type_ptr value_type);
+	static variant_type_ptr get_class(const std::string& class_name);
+	static variant_type_ptr get_function_type(const std::vector<variant_type_ptr>& arg_types, int min_args, variant_type_ptr return_type);
+
 	virtual ~variant_type() {}
 	virtual bool match(const variant& v) const = 0;
 
-	void set_str(const std::string& s) { str_ = s; }
+	virtual bool is_class(std::string* class_name=NULL) const { return false; }
+
+	void set_str(const std::string& s) const { str_ = s; }
 	const std::string& str() const { return str_; }
 
+	virtual bool is_equal(const variant_type& o) const = 0;
+
 private:
-	std::string str_;
+	virtual int order_id() const = 0;
+	mutable std::string str_;
 };
 
 variant_type_ptr parse_variant_type(const variant& original_str,

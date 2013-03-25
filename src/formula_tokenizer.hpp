@@ -17,6 +17,9 @@
 #ifndef FORMULA_TOKENIZER_HPP_INCLUDED
 #define FORMULA_TOKENIZER_HPP_INCLUDED
 
+#include <string.h>
+
+#include <algorithm>
 #include <string>
 #include <vector>
 
@@ -40,6 +43,8 @@ enum FFL_TOKEN_TYPE { TOKEN_OPERATOR, TOKEN_STRING_LITERAL,
 struct token {
 	FFL_TOKEN_TYPE type;
 	iterator begin, end;
+
+	bool equals(const char* s) const { return end - begin == strlen(s) && std::equal(begin, end, s); }
 };
 
 token get_token(iterator& i1, iterator i2);

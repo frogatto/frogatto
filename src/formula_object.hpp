@@ -24,6 +24,7 @@
 #include <boost/function.hpp>
 
 #include "formula.hpp"
+#include "formula_callable_definition.hpp"
 #include "variant.hpp"
 #include "wml_formula_callable.hpp"
 
@@ -31,6 +32,7 @@ namespace game_logic
 {
 
 class formula_class;
+const formula_callable_definition* get_class_definition(const std::string& name);
 
 class formula_object : public game_logic::wml_serializable_formula_callable
 {
@@ -57,12 +59,14 @@ private:
 	variant serialize_to_wml() const;
 
 	variant get_value(const std::string& key) const;
+	variant get_value_by_slot(int slot) const;
 	void set_value(const std::string& key, const variant& value);
+	void set_value_by_slot(int slot, const variant& value);
 
 	void get_inputs(std::vector<formula_input>* inputs) const;
 
 	//overrides of the class's read-only properties.
-	std::map<std::string, formula_ptr> property_overrides_;
+	std::vector<formula_ptr> property_overrides_;
 
 	boost::intrusive_ptr<const formula_class> class_;
 	variant private_data_;

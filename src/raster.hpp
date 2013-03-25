@@ -45,6 +45,7 @@ struct flip_draw_scope
 bool set_video_mode(int w, int h);
 void reset_opengl_state();
 #if SDL_VERSION_ATLEAST(2, 0, 0)
+SDL_DisplayMode set_video_mode_auto_select();
 SDL_Window* set_video_mode(int w, int h, int flags);
 SDL_Window* get_window();
 #else

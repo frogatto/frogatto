@@ -2317,6 +2317,10 @@ public:
 		custom_object* custom_obj = dynamic_cast<custom_object*>(e);
 		std::vector<gui::widget_ptr> w;
 		foreach(const variant& v, widgets_) {
+			if(v.is_null()) {
+				continue;
+			}
+
 			gui::dialog_ptr dialog = boost::intrusive_ptr<gui::dialog>(v.try_convert<gui::dialog>());
 			if(dialog) {
 				w.push_back(dialog);
