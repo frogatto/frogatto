@@ -46,7 +46,10 @@ public:
 	void set_str(const std::string& s) const { str_ = s; }
 	const std::string& str() const { return str_; }
 
+	virtual bool is_equal(const variant_type& o) const = 0;
+
 private:
+	virtual int order_id() const = 0;
 	mutable std::string str_;
 };
 

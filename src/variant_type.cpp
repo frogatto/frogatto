@@ -39,13 +39,31 @@ public:
 	bool match(const variant& v) const {
 		return v.type() == type_ || type_ == variant::VARIANT_TYPE_DECIMAL && v.type() == variant::VARIANT_TYPE_INT;
 	}
+
+	bool is_equal(const variant_type& o) const {
+		const variant_type_simple* other = dynamic_cast<const variant_type_simple*>(&o);
+		if(!other) {
+			return false;
+		}
+
+		return type_ == other->type_;
+	}
+
 private:
+	int order_id() const { return 1; }
 	variant::TYPE type_;
 };
 
 class variant_type_any : public variant_type
 {
+public:
 	bool match(const variant& v) const { return true; }
+	bool is_equal(const variant_type& o) const {
+		const variant_type_any* other = dynamic_cast<const variant_type_any*>(&o);
+		return other != NULL;
+	}
+private:
+	int order_id() const { return 2; }
 };
 
 class variant_type_class : public variant_type
@@ -72,8 +90,18 @@ public:
 
 		return true;
 	}
+
+	bool is_equal(const variant_type& o) const {
+		const variant_type_class* other = dynamic_cast<const variant_type_class*>(&o);
+		if(!other) {
+			return false;
+		}
+
+		return type_ == other->type_;
+	}
 private:
 	std::string type_;
+	int order_id() const { return 3; }
 };
 
 class variant_type_union : public variant_type
@@ -90,8 +118,28 @@ public:
 
 		return false;
 	}
+
+	bool is_equal(const variant_type& o) const {
+		const variant_type_union* other = dynamic_cast<const variant_type_union*>(&o);
+		if(!other) {
+			return false;
+		}
+
+		if(types_.size() != other->types_.size()) {
+			return false;
+		}
+
+		for(int n = 0; n != types_.size(); ++n) {
+			if(types_[n]->is_equal(*other->types_[n]) == false) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 private:
 	std::vector<variant_type_ptr> types_;
+	int order_id() const { return 4; }
 };
 
 class variant_type_list : public variant_type
@@ -113,8 +161,18 @@ public:
 
 		return true;
 	}
+
+	bool is_equal(const variant_type& o) const {
+		const variant_type_list* other = dynamic_cast<const variant_type_list*>(&o);
+		if(!other) {
+			return false;
+		}
+
+		return value_type_->is_equal(*other->value_type_);
+	}
 private:
 	variant_type_ptr value_type_;
+	int order_id() const { return 5; }
 };
 
 class variant_type_map : public variant_type
@@ -137,14 +195,27 @@ public:
 
 		return true;
 	}
+
+	bool is_equal(const variant_type& o) const {
+		const variant_type_map* other = dynamic_cast<const variant_type_map*>(&o);
+		if(!other) {
+			return false;
+		}
+
+		return value_type_->is_equal(*other->value_type_) &&
+		       key_type_->is_equal(*other->key_type_);
+	}
 private:
 	variant_type_ptr key_type_, value_type_;
+	int order_id() const { return 6; }
 };
 
 class variant_type_function : public variant_type
 {
 public:
 	
+private:
+	int order_id() const { return 7; }
 };
 
 }

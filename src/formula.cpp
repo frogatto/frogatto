@@ -1299,12 +1299,15 @@ void parse_function_args(variant formula_str, const token* &i1, const token* i2,
 	++i1;
 }
 
-void parse_args(const variant& formula_str, const token* i1, const token* i2,
+void parse_args(const variant& formula_str, const std::string* function_name,
+                const token* i1, const token* i2,
 				std::vector<expression_ptr>* res,
 				function_symbol_table* symbols,
 				const formula_callable_definition* callable_def,
 				bool* can_optimize)
 {
+	std::vector<std::pair<const token*, const token*> > args;
+
 	ASSERT_LE(i1, i2);
 	int parens = 0;
 	const token* beg = i1;
@@ -1314,7 +1317,7 @@ void parse_args(const variant& formula_str, const token* i1, const token* i2,
 		} else if(i1->type == TOKEN_RPARENS || i1->type == TOKEN_RSQUARE || i1->type == TOKEN_RBRACKET) {
 			--parens;
 		} else if(i1->type == TOKEN_COMMA && !parens) {
-			res->push_back(parse_expression(formula_str, beg,i1, symbols, callable_def, can_optimize));
+			args.push_back(std::pair<const token*, const token*>(beg, i1));
 			beg = i1+1;
 		}
 		
@@ -1322,7 +1325,35 @@ void parse_args(const variant& formula_str, const token* i1, const token* i2,
 	}
 	
 	if(beg != i1) {
-		res->push_back(parse_expression(formula_str, beg,i1, symbols, callable_def, can_optimize));
+		args.push_back(std::pair<const token*, const token*>(beg, i1));
+	}
+
+	for(int n = 0; n != args.size(); ++n) {
+		if(n+1 == args.size()) {
+			//Certain special functions take a special callable definition
+			//to evaluate their last argument. Discover what that is here.
+			static const std::string MapCallableFuncs[] = { "count", "filter", "find", "choose", "map", "count" };
+			if(function_name != NULL && std::count(MapCallableFuncs, MapCallableFuncs + sizeof(MapCallableFuncs)/sizeof(*MapCallableFuncs), *function_name)) {
+				std::string value_name = "value";
+
+				static const std::string CustomIdMapCallableFuncs[] = { "filter", "find", "map" };
+				if(args.size() == 3 && std::count(CustomIdMapCallableFuncs, CustomIdMapCallableFuncs + sizeof(CustomIdMapCallableFuncs)/sizeof(*CustomIdMapCallableFuncs), *function_name)) {
+					//invocation like map(range(5), n, n*n) -- need to discover
+					//the string for the second argument to set that in our
+					//callable definition
+					variant literal = res->back()->is_literal();
+					if(literal.is_string()) {
+						value_name = literal.as_string();
+					} else if(res->back()->is_identifier(&value_name) == false) {
+						ASSERT_LOG(false, "Function " << *function_name << " requires a literal as its second argument: " << pinpoint_location(formula_str, args[1].first->begin, (args[1].second-1)->end));
+					}
+				}
+
+				callable_def = get_map_callable_definition(callable_def, variant_type_ptr(), variant_type_ptr(), value_name);
+			}
+		}
+
+		res->push_back(parse_expression(formula_str, args[n].first, args[n].second, symbols, callable_def, can_optimize));
 	}
 }
 
@@ -1753,7 +1784,7 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 					} else {
 						//create a list
 						std::vector<expression_ptr> args;
-						parse_args(formula_str,i1+1,i2-1,&args,symbols, callable_def, can_optimize);
+						parse_args(formula_str,NULL,i1+1,i2-1,&args,symbols, callable_def, can_optimize);
 						return expression_ptr(new list_expression(args));
 					}
 				} else {
@@ -1860,7 +1891,7 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 			if(nleft == nright) {
 				const std::string function_name(i1->begin, i1->end);
 				std::vector<expression_ptr> args;
-				parse_args(formula_str,i1+2,i2-1,&args,symbols, callable_def, can_optimize);
+				parse_args(formula_str,&function_name,i1+2,i2-1,&args,symbols, callable_def, can_optimize);
 				expression_ptr result(create_function(function_name, args, symbols, callable_def));
 				if(result) {
 					return result;
@@ -1928,7 +1959,7 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 		}
 
 		std::vector<expression_ptr> args;
-		parse_args(formula_str,op+1, i2-1, &args, symbols, callable_def, can_optimize);
+		parse_args(formula_str,NULL,op+1, i2-1, &args, symbols, callable_def, can_optimize);
 		
 		return expression_ptr(new function_call_expression(
 														   parse_expression(formula_str, i1, op, symbols, callable_def, can_optimize), args));
@@ -1966,7 +1997,7 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 
 		expression_ptr base_expr(parse_expression(formula_str, i1, op, symbols, callable_def, can_optimize));
 		std::vector<expression_ptr> asserts;
-		parse_args(formula_str,op+1,i2,&asserts,symbols, callable_def, can_optimize);
+		parse_args(formula_str,NULL,op+1,i2,&asserts,symbols, callable_def, can_optimize);
 
 		return expression_ptr(new assert_expression(base_expr, asserts, debug_expr));
 	}

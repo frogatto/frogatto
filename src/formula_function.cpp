@@ -1086,53 +1086,188 @@ FUNCTION_DEF(flatten, 1, 1, "flatten(list): Returns a list with a depth of 1 con
 	flatten_items(input, &output);
 	return variant(&output);
 END_FUNCTION_DEF(flatten)
-	
+
+enum MAP_CALLABLE_SLOT { MAP_CALLABLE_VALUE, MAP_CALLABLE_INDEX, MAP_CALLABLE_CONTEXT, MAP_CALLABLE_KEY, NUM_MAP_CALLABLE_SLOTS };
+static const std::string MapCallableFields[] = { "value", "index", "context", "key" };
+
+class map_callable_definition : public formula_callable_definition
+{
+public:
+	map_callable_definition(const formula_callable_definition* base, variant_type_ptr key_type, variant_type_ptr value_type, const std::string& value_name)
+	  : base_(base), key_type_(key_type), value_type_(value_type)
+	{
+		for(int n = 0; n != NUM_MAP_CALLABLE_SLOTS; ++n) {
+			entries_.push_back(entry(MapCallableFields[n]));
+			std::string class_name;
+			switch(n) {
+			case MAP_CALLABLE_VALUE:
+				if(!value_name.empty()) {
+					entries_.back().id = value_name;
+				}
+
+				if(value_type_) {
+					entries_.back().variant_type = value_type_;
+					if(entries_.back().variant_type->is_class(&class_name)) {
+						entries_.back().type_definition = get_class_definition(class_name);
+					}
+				}
+				break;
+			case MAP_CALLABLE_INDEX:
+				entries_.back().variant_type = variant_type::get_type(variant::VARIANT_TYPE_INT);
+				break;
+			case MAP_CALLABLE_CONTEXT:
+				entries_.back().variant_type = value_type_;
+				entries_.back().type_definition = base;
+				break;
+			case MAP_CALLABLE_KEY:
+				if(key_type_) {
+					entries_.back().variant_type = key_type_;
+					if(key_type_->is_class(&class_name)) {
+						entries_.back().type_definition = get_class_definition(class_name);
+					}
+				}
+				break;
+			}
+		}
+	}
+
+	int get_slot(const std::string& key) const {
+		for(int n = 0; n != entries_.size(); ++n) {
+			if(entries_[n].id == key) {
+				return n;
+			}
+		}
+
+		if(base_) {
+			int result = base_->get_slot(key);
+			if(result >= 0) {
+				result += NUM_MAP_CALLABLE_SLOTS;
+			}
+
+			return result;
+		} else {
+			return -1;
+		}
+	}
+
+	entry* get_entry(int slot) {
+		if(slot < 0) {
+			return NULL;
+		}
+
+		if(slot < entries_.size()) {
+			return &entries_[slot];
+		}
+
+		if(base_) {
+			return const_cast<formula_callable_definition*>(base_)->get_entry(slot - NUM_MAP_CALLABLE_SLOTS);
+		}
+
+		return NULL;
+	}
+
+	const entry* get_entry(int slot) const {
+		if(slot < 0) {
+			return NULL;
+		}
+
+		if(slot < entries_.size()) {
+			return &entries_[slot];
+		}
+
+		if(base_) {
+			return base_->get_entry(slot - NUM_MAP_CALLABLE_SLOTS);
+		}
+
+		return NULL;
+	}
+
+	int num_slots() const {
+		return NUM_MAP_CALLABLE_SLOTS + (base_ ? base_->num_slots() : 0);
+	}
+
+private:
+	const formula_callable_definition* base_;
+	variant_type_ptr key_type_, value_type_;
+
+	std::vector<entry> entries_;
+};
+
 class map_callable : public formula_callable {
 	public:
 		explicit map_callable(const formula_callable& backup)
 		: backup_(&backup)
 		{}
 
+		void set_value_name(const std::string& name) { value_name_ = name; }
+
 		void set(const variant& v, int i)
 		{
 			value_ = v;
 			index_ = i;
 		}
+
+		void set(const variant& k, const variant& v, int i)
+		{
+			key_ = k;
+			value_ = v;
+			index_ = i;
+		}
 	private:
 		variant get_value(const std::string& key) const {
-			if(key == "value") {
+			if(value_name_.empty() && key == "value" ||
+			   !value_name_.empty() && key == value_name_) {
 				return value_;
 			} else if(key == "index") {
 				return variant(index_);
 			} else if(key == "context") {
 				return variant(backup_.get());
+			} else if(key == "key") {
+				return key_;
 			} else {
 				return backup_->query_value(key);
 			}
 		}
 
 		variant get_value_by_slot(int slot) const {
-			return backup_->query_value_by_slot(slot);
+			ASSERT_LOG(slot >= 0, "BAD SLOT VALUE: " << slot);
+			if(slot < NUM_MAP_CALLABLE_SLOTS) {
+				switch(slot) {
+					case MAP_CALLABLE_VALUE: return value_;
+					case MAP_CALLABLE_INDEX: return variant(index_);
+					case MAP_CALLABLE_CONTEXT: return variant(backup_.get());
+					case MAP_CALLABLE_KEY: return key_;
+					default: ASSERT_LOG(false, "BAD GET VALUE BY SLOT");
+				}
+			} else if(backup_) {
+				return backup_->query_value_by_slot(slot - NUM_MAP_CALLABLE_SLOTS);
+			} else {
+				ASSERT_LOG(false, "COULD NOT FIND VALUE FOR SLOT: " << slot);
+			}
 		}
 
 		const const_formula_callable_ptr backup_;
+		variant key_;
 		variant value_;
 		int index_;
+
+		std::string value_name_;
 };
 
 FUNCTION_DEF(count, 2, 2, "count(list, expr): Returns an integer count of how many items in the list 'expr' returns true for.")
 	const variant items = split_variant_if_str(args()[0]->evaluate(variables));
 	if(items.is_map()) {
 		int res = 0;
-		map_formula_callable_ptr callable(new map_formula_callable(&variables));
-		callable->add("context", variant(&variables));
+		boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
+		int index = 0;
 		foreach(const variant_pair& p, items.as_map()) {
-			callable->add("key", p.first);
-			callable->add("value", p.second);
+			callable->set(p.first, p.second, index);
 			const variant val = args().back()->evaluate(*callable);
 			if(val.as_bool()) {
 				++res;
 			}
+
+			++index;
 		}
 
 		return variant(res);
@@ -1169,16 +1304,17 @@ private:
 		if(args().size() == 2) {
 
 			if(items.is_map()) {
-				map_formula_callable_ptr callable(new map_formula_callable(&variables));
+				boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
 				std::map<variant,variant> m;
-				callable->add("context", variant(&variables));
+				int index = 0;
 				foreach(const variant_pair& p, items.as_map()) {
-					callable->add("key", p.first);
-					callable->add("value", p.second);
+					callable->set(p.first, p.second, index);
 					const variant val = args().back()->evaluate(*callable);
 					if(val.as_bool()) {
 						m[p.first] = p.second;
 					}
+
+					++index;
 				}
 
 				return variant(&m);
@@ -1193,19 +1329,13 @@ private:
 				}
 			}
 		} else {
-			map_formula_callable* self_callable = new map_formula_callable;
-			formula_callable_ptr callable(self_callable);
-			self_callable->add("context", variant(&variables));
+			boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
 			const std::string self = identifier_.empty() ? args()[1]->evaluate(variables).as_string() : identifier_;
+			callable->set_value_name(self);
 
-			variant& item_var = self_callable->add_direct_access(self);
-			variant& index_var = self_callable->add_direct_access("index");
 			for(size_t n = 0; n != items.num_elements(); ++n) {
-				item_var = items[n];
-				index_var = variant(unsigned(n));
-				formula_callable_ptr callable_with_backup(new formula_variant_callable_with_backup(items[n], variables));
-				formula_callable_ptr callable_ptr(new formula_callable_with_backup(*self_callable, *callable_with_backup));
-				const variant val = args()[2]->evaluate(*callable_ptr);
+				callable->set(items[n], n);
+				const variant val = args().back()->evaluate(*callable);
 				if(val.as_bool()) {
 					vars.push_back(items[n]);
 				}
@@ -1251,17 +1381,13 @@ private:
 				}
 			}
 		} else {
-			map_formula_callable* self_callable = new map_formula_callable;
-			formula_callable_ptr callable(self_callable);
-			self_callable->add("context", variant(&variables));
+			boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
 
 			const std::string self = identifier_.empty() ? args()[1]->evaluate(variables).as_string() : identifier_;
+			callable->set_value_name(self);
+
 			for(size_t n = 0; n != items.num_elements(); ++n) {
-				self_callable->add(self, items[n]);
-
-				boost::intrusive_ptr<formula_variant_callable_with_backup> callable_backup(new formula_variant_callable_with_backup(items[n], variables));
-
-				formula_callable_ptr callable(new formula_callable_with_backup(*self_callable, *callable_backup));
+				callable->set(items[n], n);
 				const variant val = args().back()->evaluate(*callable);
 				if(val.as_bool()) {
 					return items[n];
@@ -1373,7 +1499,7 @@ FUNCTION_DEF(choose, 1, 2, "choose(list, (optional)scoring_expr) -> value: choos
 		
 		if(args().size() >= 2) {
 			callable->set(items[n], n);
-			val = args()[1]->evaluate(*callable);
+			val = args().back()->evaluate(*callable);
 		} else {
 			val = variant(rand());
 		}
@@ -1412,13 +1538,10 @@ private:
 		if(args().size() == 2) {
 
 			if(items.is_map()) {
-				map_formula_callable_ptr callable(new map_formula_callable(&variables));
-				callable->add("context", variant(&variables));
+				boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
 				int index = 0;
 				foreach(const variant_pair& p, items.as_map()) {
-					callable->add("key", p.first);
-					callable->add("value", p.second);
-					callable->add("index", variant(index));
+					callable->set(p.first, p.second, index);
 					const variant val = args().back()->evaluate(*callable);
 					vars.push_back(val);
 					++index;
@@ -1441,34 +1564,13 @@ private:
 				}
 			}
 		} else {
-			static const std::string index_str = "index";
-			static const std::string context_str = "context";
-			map_formula_callable* self_callable = new map_formula_callable;
-			formula_callable_ptr callable_ref(self_callable);
-			self_callable->add(context_str, variant(&variables));
+			boost::intrusive_ptr<map_callable> callable(new map_callable(variables));
 			const std::string self = identifier_.empty() ? args()[1]->evaluate(variables).as_string() : identifier_;
-
-			variant& self_variant = self_callable->add_direct_access(self);
-
-			//the variant representing the index we are currently at.
-			variant& index_variant = self_callable->add_direct_access(index_str);
-			index_variant = variant(0);
-
-			formula_callable_ptr callable_backup(new formula_callable_with_backup(*self_callable, variables));
-
-			const int nelements = items.num_elements();
-			if(items.is_string()) {
-				const std::string& s = items.as_string();
-				for(int& n = index_variant.int_addr(); n != nelements; ++n) {
-					variant v(s.substr(n,1));
-					self_variant = v;
-					vars.push_back(args().back()->evaluate(*callable_backup));
-				}
-			} else {
-				for(int& n = index_variant.int_addr(); n != nelements; ++n) {
-					self_variant = items[n];
-					vars.push_back(args().back()->evaluate(*callable_backup));
-				}
+			callable->set_value_name(self);
+			for(size_t n = 0; n != items.num_elements(); ++n) {
+				callable->set(items[n], n);
+				const variant val = args().back()->evaluate(*callable);
+				vars.push_back(val);
 			}
 		}
 
@@ -2945,4 +3047,12 @@ BENCHMARK(map_function) {
 	BENCHMARK_LOOP {
 		f.execute(*callable);
 	}
+}
+
+namespace game_logic {
+
+const formula_callable_definition* get_map_callable_definition(const formula_callable_definition* base_def, variant_type_ptr key_type, variant_type_ptr value_type, const std::string& value_name)
+{
+	return new map_callable_definition(base_def, key_type, value_type, value_name);
+}
 }
