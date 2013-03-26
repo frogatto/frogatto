@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-11-28 22:10-0200\n"
-"PO-Revision-Date: 2013-03-24 20:28+0000\n"
-"Last-Translator: lukasf.92 <lukasf.92@gmail.com>\n"
+"POT-Creation-Date: 2013-03-26 13:29-0300\n"
+"PO-Revision-Date: 2013-03-26 16:32+0000\n"
+"Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Czech (http://www.transifex.com/projects/p/Frogatto/language/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,71 +36,83 @@ msgstr "Jazyk"
 msgid "Attack"
 msgstr "Útok"
 
-#: ../../../src/controls_dialog.cpp:62
+#: ../../../src/controls_dialog.cpp:62 ../../../src/language_dialog.cpp:102
 msgid "Back"
 msgstr "Zpět"
 
-#: ../../../src/custom_object_functions.cpp:242
+#: ../../../src/custom_object_functions.cpp:251
 msgid "Select save slot to use."
 msgstr "Vyber slot pro uložení"
 
-#: ../../../src/custom_object_functions.cpp:352
+#: ../../../src/custom_object_functions.cpp:361
 msgid "Select save slot to load."
 msgstr "Vyber slot pro načtení"
 
-#: ../../../src/draw_scene.cpp:428
+#: ../../../src/draw_scene.cpp:442
 msgid "Achievement Unlocked!"
 msgstr "Achievement otevřen"
 
-#: ../../../src/main.cpp:707
+#: ../../../src/language_dialog.cpp:79
+msgid "Language change will take effect in next level."
+msgstr ""
+
+#: ../../../src/language_dialog.cpp:96
+msgid "Use system language"
+msgstr ""
+
+#: ../../../src/main.cpp:701
 msgid "Initializing custom object functions"
 msgstr "Inicializace vlastních funkcí objektů"
 
-#: ../../../src/main.cpp:709
+#: ../../../src/main.cpp:703
 msgid "Initializing textures"
 msgstr "Inicializace textur"
 
-#: ../../../src/main.cpp:711
+#: ../../../src/main.cpp:705
 msgid "Initializing tiles"
 msgstr "Inicializace dlaždic"
 
-#: ../../../src/main.cpp:713 ../../../src/main.cpp:717
+#: ../../../src/main.cpp:707 ../../../src/main.cpp:711
 msgid "Initializing GUI"
 msgstr "Inicializace GUI"
 
-#: ../../../src/main.cpp:724
+#: ../../../src/main.cpp:718
 msgid "Loading level"
 msgstr "Nahrávání úrovně"
 
-#: ../../../src/pause_game_dialog.cpp:53
+#: ../../../src/pause_game_dialog.cpp:54
 msgid "Music Volume:"
 msgstr "Hlasitost hudby:"
 
-#: ../../../src/pause_game_dialog.cpp:55
+#: ../../../src/pause_game_dialog.cpp:56
 msgid "Sound Volume:"
 msgstr "Hlasitost zvuků:"
 
-#: ../../../src/pause_game_dialog.cpp:73
+#: ../../../src/pause_game_dialog.cpp:74
 msgid "Resume"
 msgstr "Pokračovat"
 
-#: ../../../src/pause_game_dialog.cpp:74
+#: ../../../src/pause_game_dialog.cpp:75
 msgid "Controls..."
 msgstr "Ovládání ..."
 
-#: ../../../src/pause_game_dialog.cpp:75
+#: ../../../src/pause_game_dialog.cpp:76
+msgid "Language..."
+msgstr ""
+
+#: ../../../src/pause_game_dialog.cpp:77
 msgid "Return to Titlescreen"
 msgstr "Návrat do menu"
 
-#: ../../../src/pause_game_dialog.cpp:76
+#: ../../../src/pause_game_dialog.cpp:78
 msgid "Exit Game"
 msgstr "Opustit hru"
 
-#: ../../../src/pause_game_dialog.cpp:77
+#: ../../../src/pause_game_dialog.cpp:79
 msgid "Reverse A and B"
 msgstr "Obrátit A a B"
 
-#: ../../../src/pause_game_dialog.cpp:79
+#: ../../../src/pause_game_dialog.cpp:81
 msgid "OpenFeint"
 msgstr "OpenFeint"
 
@@ -907,7 +919,7 @@ msgstr "Určitě!\nZnovu děkuji!"
 msgid "Bon Bosque"
 msgstr "Bon Bosque"
 
-#: ../data/level/bug-mining.cfg:4115
+#: ../data/level/bug-mining.cfg:4114
 msgid "Bug Mining"
 msgstr "Hmyzí dolování"
 
@@ -1310,7 +1322,7 @@ msgid "We can do that."
 msgstr "tak dobře"
 
 #: ../data/level/crevice-village-cave.cfg:1231
-#: ../data/level/crevice-village-central.cfg:4134
+#: ../data/level/crevice-village-central.cfg:4153
 #: ../data/level/crevice-village-heights.cfg:2246
 #: ../data/level/crevice-village.cfg:1647
 #: ../data/objects/playable/map-selector.cfg:17
@@ -1392,7 +1404,7 @@ msgid ""
 "our best bet for a clue."
 msgstr "Zeptám se některého z vězňů, to nám dá\nsnad nějaké vodítko."
 
-#: ../data/level/crevice-village-central.cfg:2811
+#: ../data/level/crevice-village-central.cfg:2830
 msgid "Hey! Over here!"
 msgstr "Hej! Tady jsem!"
 
@@ -1988,8 +2000,8 @@ msgstr "Viděli jsme tam jít Milgramova poručíka."
 msgid "How interesting."
 msgstr "zajímavé."
 
-#: ../data/level/crevice-village-house-3-backroom.cfg:1754
-#: ../data/level/crevice-village-house-3.cfg:1499
+#: ../data/level/crevice-village-house-3-backroom.cfg:1773
+#: ../data/level/crevice-village-house-3.cfg:1516
 #: ../data/level/liberated-crevice-village-house-3.cfg:1312
 msgid "The Danger House"
 msgstr "Nebezpečný dům"
@@ -2901,7 +2913,7 @@ msgstr "stojí tu, \"sklad pokladů.⏎ Nepovolaným vstup zakázán.\""
 msgid "Storeroom Treasure Chamber"
 msgstr ""
 
-#: ../data/level/dungeon-storerooms.cfg:1354
+#: ../data/level/dungeon-storerooms.cfg:1440
 msgid "Storerooms"
 msgstr ""
 
@@ -2922,17 +2934,17 @@ msgstr "Zatopené Jeskyně"
 msgid "Foreboding Forest"
 msgstr "Les Předtuch"
 
-#: ../data/level/frogatto-grotto-frogattos-room.cfg:292
+#: ../data/level/frogatto-grotto-frogattos-room.cfg:291
 msgid ""
 "Ahh, what a beautiful ...\n"
 "<em>...afternoon?!</em>"
 msgstr "Ahh, jak pěkné ...\n<em>...odpoledne?!</em>"
 
-#: ../data/level/frogatto-grotto-frogattos-room.cfg:293
+#: ../data/level/frogatto-grotto-frogattos-room.cfg:292
 msgid "Oh geez! I overslept!"
 msgstr "Á sakra! Zaspal jsem!"
 
-#: ../data/level/frogatto-grotto-frogattos-room.cfg:890
+#: ../data/level/frogatto-grotto-frogattos-room.cfg:889
 msgid "Frogatto's Room"
 msgstr "Frogattův pokoj"
 
@@ -3517,15 +3529,15 @@ msgstr "Travnatá pěšina"
 msgid "Hanging Platforms"
 msgstr "Závěsné plošiny"
 
-#: ../data/level/hidden-depths.cfg:47
-msgid "I'd better be careful."
-msgstr "Raději budu opatrný."
-
-#: ../data/level/hidden-depths.cfg:47
+#: ../data/level/hidden-depths.cfg:48
 msgid "This is a very deep chasm..."
 msgstr "To je velmi hluboká propast ..."
 
-#: ../data/level/hidden-depths.cfg:322
+#: ../data/level/hidden-depths.cfg:50
+msgid "I'd better be careful."
+msgstr "Raději budu opatrný."
+
+#: ../data/level/hidden-depths.cfg:323
 msgid "AAAAAAH! I CAN'T FLY!"
 msgstr "AAAAAAH!  nemůžu létat!"
 
@@ -3537,7 +3549,7 @@ msgstr "Skryté hlubiny"
 msgid "That guy sure doesn't look glad to meet me!"
 msgstr ""
 
-#: ../data/level/killer-bunnies.cfg:4377
+#: ../data/level/killer-bunnies.cfg:4322
 msgid "Killer Bunnies"
 msgstr "Zabiják králíčků"
 
@@ -4937,11 +4949,6 @@ msgstr ""
 msgid "Moonlit Ramparts"
 msgstr ""
 
-#: ../data/level/new-game-screen.cfg:39
-#: ../data/level/titlescreen-difficulty-selector.cfg:39
-msgid "SELECT DIFFICULTY LEVEL:"
-msgstr ""
-
 #: ../data/level/north-courtyard.cfg:648
 msgid "North Courtyard"
 msgstr ""
@@ -5157,90 +5164,152 @@ msgid "I say! Who's there?"
 msgstr "Říkám! Kdo je tam?"
 
 #: ../data/level/secluded-hut-interior.cfg:1063
-#: ../data/level/secluded-hut.cfg:2238
+#: ../data/level/secluded-hut.cfg:2358
 #: ../data/objects/playable/map-selector.cfg:16
 msgid "Secluded Hut"
 msgstr "Chata na samotě"
 
-#: ../data/level/secluded-hut.cfg:1398
+#: ../data/level/secluded-hut.cfg:1462
+msgid ""
+"This is the end of the demo, which you probably\n"
+"can infer from the impassible barrier right ahead."
+msgstr ""
+
+#: ../data/level/secluded-hut.cfg:1463
+msgid ""
+"You're free to keep exploring the first chapter,\n"
+" but you can't go any further forward."
+msgstr ""
+
+#: ../data/level/secluded-hut.cfg:1465
+msgid ""
+"Well... hey, what the hell?\n"
+"I wanted to see what happens..."
+msgstr ""
+
+#: ../data/level/secluded-hut.cfg:1467
+msgid ""
+"I have rather a vested interest in this,\n"
+"you know."
+msgstr ""
+
+#: ../data/level/secluded-hut.cfg:1468
+msgid ""
+"Naturally; but so does the crew that made this.\n"
+"Gotta pay the piper, or he won't play."
+msgstr ""
+
+#: ../data/level/secluded-hut.cfg:1470
+msgid ""
+"I guess.\n"
+"It's so annoying to pay for stuff, though."
+msgstr ""
+
+#: ../data/level/secluded-hut.cfg:1471
+msgid ""
+"Sure, but that's just business.\n"
+"That's what pays for making games like this."
+msgstr ""
+
+#: ../data/level/secluded-hut.cfg:1472
+msgid ""
+"Check out our website, at frogatto.com, if\n"
+"you do want to buy a copy."
+msgstr ""
+
+#: ../data/level/secluded-hut.cfg:1474
+msgid "Uh, sure, I'll keep that in mind."
+msgstr ""
+
+#: ../data/level/secluded-hut.cfg:1475
+msgid ""
+"Of course.  At any rate, enjoy yourself,\n"
+"and if you do choose to buy - thank you."
+msgstr ""
+
+#: ../data/level/secluded-hut.cfg:1476
+msgid "Because that's pretty awesome if you do."
+msgstr ""
+
+#: ../data/level/secluded-hut.cfg:1518
 msgid "Are you quite alright?"
 msgstr "Jste v pořádku?"
 
-#: ../data/level/secluded-hut.cfg:1400
+#: ../data/level/secluded-hut.cfg:1520
 msgid ""
 "Yeah.\n"
 "Who WAS that guy?!"
 msgstr "Jasně. \nKdo byl ten chlap?"
 
-#: ../data/level/secluded-hut.cfg:1401
+#: ../data/level/secluded-hut.cfg:1521
 msgid "One of Milgram's henchmen, no doubt."
 msgstr "Nepochybně, jeden z Milgramových nohsledů."
 
-#: ../data/level/secluded-hut.cfg:1402
+#: ../data/level/secluded-hut.cfg:1522
 msgid ""
 "They may have seen me talking to you,\n"
 "I can't be sure."
 msgstr "Možná s vámi chtěli mluvit,\nale nejsem si tím jistý."
 
-#: ../data/level/secluded-hut.cfg:1404
+#: ../data/level/secluded-hut.cfg:1524
 msgid "Wait, what?  Milgram?"
 msgstr "Počkat? Milgram?"
 
-#: ../data/level/secluded-hut.cfg:1406
+#: ../data/level/secluded-hut.cfg:1526
 msgid ""
 "What's <em>he</em> doing\n"
 "on this side of the island?"
 msgstr "Co <em>on</em> dělá na téhle\nstraně ostrova?"
 
-#: ../data/level/secluded-hut.cfg:1408
+#: ../data/level/secluded-hut.cfg:1528
 msgid "You still haven't heard, then."
 msgstr "Takže jste o tom ještě neslyšel."
 
-#: ../data/level/secluded-hut.cfg:1409
+#: ../data/level/secluded-hut.cfg:1529
 msgid ""
 "Milgram's men showed up\n"
 "early this morning, in town.\n"
 "They've taken the whole place hostage!"
 msgstr "Milgramovi muži se objevili\nbrzy ráno ve městě.\nVšechny vzali jako rukojmí!"
 
-#: ../data/level/secluded-hut.cfg:1410
+#: ../data/level/secluded-hut.cfg:1530
 msgid ""
 "Unfortunately, I don't know the details.\n"
 "I just flew out of there as soon as I could,\n"
 "looking for <em>anyone</em> who could help."
 msgstr "Bohužel, neznám podrobnosti.\nOdletěl jsem hned, jak jsem mohl,\nabych našel <em>někoho</em> kdo může pomoct."
 
-#: ../data/level/secluded-hut.cfg:1412
+#: ../data/level/secluded-hut.cfg:1532
 msgid ""
 "That certainly...\n"
 "changes my plans for the day."
 msgstr "To značně... \nmění mé dnešní plány."
 
-#: ../data/level/secluded-hut.cfg:1414
+#: ../data/level/secluded-hut.cfg:1534
 msgid ""
 "Wow, uhm... \n"
 "I'd sure like to help, but ...\n"
 "I just don't see what I could do."
 msgstr "Páni, uhm...\nRád bych nějak pomohl, ale...\nJá nevím co mám udělat."
 
-#: ../data/level/secluded-hut.cfg:1416
+#: ../data/level/secluded-hut.cfg:1536
 msgid ""
 "I don't think I can promise anything,\n"
 "but if the opportunity presents itself,\n"
 "who knows?"
 msgstr "Nevím jestli to můžu slíbit,\nale pokud se naskytne příležitost, \ntřeba pomůžu, kdo ví?"
 
-#: ../data/level/secluded-hut.cfg:1417
+#: ../data/level/secluded-hut.cfg:1537
 msgid ""
 "Yes, it's unreasonable to expect\n"
 "someone to just charge in there."
 msgstr "Ano, je nerozumné myslet si, že\ntam jen tak někdo vběhne."
 
-#: ../data/level/secluded-hut.cfg:1418
+#: ../data/level/secluded-hut.cfg:1538
 msgid "I'm at a loss for a plan, myself."
 msgstr "Sám nevím, co mám teď dělat."
 
-#: ../data/level/secluded-hut.cfg:1419
+#: ../data/level/secluded-hut.cfg:1539
 msgid ""
 "Nevertheless, I'd better be going.\n"
 "Hopefully, we'll fix that bridge soon.\n"
@@ -5248,27 +5317,27 @@ msgid ""
 "with modular construction and all."
 msgstr "Nicméně, bude lepší když půjdu.\nDoufejme, že most brzy opravíme.\nJe působivé, jak to jde rychle\ns modulární konstrukcí a tím vším."
 
-#: ../data/level/secluded-hut.cfg:1420
+#: ../data/level/secluded-hut.cfg:1540
 msgid ""
 "In the meantime, you might benefit from\n"
 "visiting the fellow who lives here."
 msgstr "Mezitím, třeba budete mít užitek z\nnávštěvy chlapíka, který zde žije."
 
-#: ../data/level/secluded-hut.cfg:1421
+#: ../data/level/secluded-hut.cfg:1541
 msgid ""
 "Bit of a recluse, but he's quite sharp.\n"
 "He lives on top of this rock column."
 msgstr "Je to trochu samotář, ale je dost přísný.\nŽije na vrcholu této skály."
 
-#: ../data/level/secluded-hut.cfg:1423
+#: ../data/level/secluded-hut.cfg:1543
 msgid "And I get up there... how?"
 msgstr "A jak se tam mám... dostat?"
 
-#: ../data/level/secluded-hut.cfg:1427
+#: ../data/level/secluded-hut.cfg:1547
 msgid "Simple, just take to the air!"
 msgstr "Jednoduše, vzduchem!"
 
-#: ../data/level/secluded-hut.cfg:1430
+#: ../data/level/secluded-hut.cfg:1550
 msgid "You ... <em>do</em> realize I can't fly?"
 msgstr "Ty... <em>víš</em> že neumím létat?"
 
@@ -5276,11 +5345,11 @@ msgstr "Ty... <em>víš</em> že neumím létat?"
 msgid "Splash, Hop"
 msgstr "Žbluňk, Hop"
 
-#: ../data/level/starlit-cave.cfg:1056
+#: ../data/level/starlit-cave.cfg:1094
 msgid "Starlit Cave"
 msgstr ""
 
-#: ../data/level/stonepipe-meadow.cfg:2797
+#: ../data/level/stonepipe-meadow.cfg:2796
 msgid "Stonepipe Meadow"
 msgstr "Louka Kamenného Potrubí"
 
@@ -5985,6 +6054,10 @@ msgstr ""
 msgid "COIN RACE"
 msgstr ""
 
+#: ../data/level/titlescreen-difficulty-selector.cfg:39
+msgid "SELECT DIFFICULTY LEVEL:"
+msgstr ""
+
 #: ../data/level/titlescreen-load-game-selector.cfg:23
 msgid "File 1:"
 msgstr "Soubor 1:"
@@ -5997,7 +6070,7 @@ msgstr "Soubor 2:"
 msgid "File 3:"
 msgstr "Soubor 3:"
 
-#: ../data/level/titlescreen-load-game-selector.cfg:122
+#: ../data/level/titlescreen-load-game-selector.cfg:121
 #: ../data/level/titlescreen-new-game-selector.cfg:236
 msgid "Play!"
 msgstr "Hraj!"
