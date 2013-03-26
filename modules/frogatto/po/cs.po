@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2012-11-28 22:10-0200\n"
-"PO-Revision-Date: 2013-01-26 19:12+0000\n"
+"PO-Revision-Date: 2013-03-24 20:28+0000\n"
 "Last-Translator: lukasf.92 <lukasf.92@gmail.com>\n"
 "Language-Team: Czech (http://www.transifex.com/projects/p/Frogatto/language/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -919,7 +919,7 @@ msgstr "Oheň a bublina"
 msgid ""
 "I need to go up... There must be\n"
 "a way to activate this elevator."
-msgstr "Musím jít nahoru ... Musí tam být \nzpůsob, jak aktivovat tento výtah."
+msgstr "Musím jít nahoru ... Musí tam být \nzpůsob, jak aktivovat ten výtah."
 
 #: ../data/level/burning-stone.cfg:3748
 msgid "Burning Stone"
@@ -1275,13 +1275,13 @@ msgstr "Vypadáš, jako velmi \npodezřelá postava."
 
 #: ../data/level/crevice-village-cave.cfg:755
 msgid "Could you just step aside?"
-msgstr "Mohl byste jen krok stranou?"
+msgstr "Mohl byste jen krůček stranou?"
 
 #: ../data/level/crevice-village-cave.cfg:757
 msgid ""
 "I need to take care\n"
 "of something in town."
-msgstr "Musím se o cosi postarat\nve městě."
+msgstr "Musím se o něco postarat\nve městě."
 
 #: ../data/level/crevice-village-cave.cfg:758
 msgid ""
@@ -1325,7 +1325,7 @@ msgstr "Skrytá jeskyně"
 msgid ""
 "Ahh, good, you made it\n"
 "through there in one piece!"
-msgstr "Ach, dobře, že jsi to zvládnul\nPořád tudy!"
+msgstr "Ach, dobře, že jste to zvládnul.\nMusíte pořád tudy!"
 
 #: ../data/level/crevice-village-central.cfg:132
 msgid ""
@@ -1341,7 +1341,7 @@ msgstr "Takže, co teď?"
 msgid ""
 "Well, as you know, the town\n"
 "is split into two halves."
-msgstr "No, jak víš, město \nje rozděleno do dvou polovin."
+msgstr "No, jak víte, město \nje rozděleno do dvou polovin."
 
 #: ../data/level/crevice-village-central.cfg:136
 msgid ""
@@ -1355,7 +1355,7 @@ msgid ""
 "They're tied up inside the houses,\n"
 "under guard. If you free them,\n"
 "I'm sure they can help you."
-msgstr "Jsou svázáni uvnitř domů \na pod dozorem. Pokud je osvobodíš, \njsem si jistý, že ti mohou pomoci."
+msgstr "Jsou svázáni uvnitř domů \na pod dozorem. Pokud je osvobodíte, \njsem si jistý, že vám mohou pomoci."
 
 #: ../data/level/crevice-village-central.cfg:139
 msgid "Makes sense."
@@ -1366,7 +1366,7 @@ msgid ""
 "Your big problem will be that\n"
 "the gate connecting the two halves\n"
 "of town has been locked."
-msgstr "Tvůj velký problém bude, že \nbrána spojujíc obě poloviny \nměsta byla uzamčena."
+msgstr "Váš velký problém bude, že \nbrána spojujíc obě poloviny \nměsta byla uzamčena."
 
 #: ../data/level/crevice-village-central.cfg:141
 msgid ""
@@ -1655,7 +1655,7 @@ msgstr "... Promiň."
 msgid ""
 "Through there,\n"
 "is the way to where Milgram lives."
-msgstr "Tamtudy\nje cesta kde Milgram žije."
+msgstr "Tamtudy\nje cesta k místu, kde Milgram žije."
 
 #: ../data/level/crevice-village-heights.cfg:1500
 msgid ""
@@ -1671,11 +1671,11 @@ msgstr "Ehm, budeš muset přejít most\na potom skrz podzemní průchod."
 
 #: ../data/level/crevice-village-heights.cfg:1504
 msgid "Watch your head in there."
-msgstr "Musíš jít pořád dopředu."
+msgstr "Musíte jít pořád dopředu."
 
 #: ../data/level/crevice-village-heights.cfg:1506
 msgid "Past that, and you come to the forest."
-msgstr "Pak příjdeš do lesa."
+msgstr "Pak dojdete do lesa."
 
 #: ../data/level/crevice-village-heights.cfg:1508
 msgid ""
@@ -1861,7 +1861,7 @@ msgstr "Eh, už bylo líp, ale jo, jsem v pořádku."
 
 #: ../data/level/crevice-village-house-1.cfg:995
 msgid "Besides the obvious cage situation."
-msgstr "Kromě téhle klecové situace."
+msgstr "Ažs téhle klecové situace."
 
 #: ../data/level/crevice-village-house-1.cfg:997
 msgid ""
@@ -1892,7 +1892,7 @@ msgstr "Hmm, víš, já vím něco,\nco ti může pomoci .."
 msgid ""
 "There's supposedly\n"
 "a secret room in this house."
-msgstr "Údajně existuje \n tajná místnost v tomto domě."
+msgstr "Údajně existuje \n v tomto domě tajná místnost."
 
 #: ../data/level/crevice-village-house-1.cfg:1006
 msgid "Oh really?  Where at?"
@@ -2950,13 +2950,13 @@ msgstr "Musíš vstávat dřív."
 
 #: ../data/level/frogatto-grotto-inside.cfg:241
 msgid "Okay, then how's lunch coming?"
-msgstr "OK, tak kdy bude oběd?"
+msgstr "Dobře, tak kdy bude oběd?"
 
 #: ../data/level/frogatto-grotto-inside.cfg:242
 msgid ""
 "Getting there.\n"
 "It's gonna be a while, though."
-msgstr "No bude.\nto chvilku trvat."
+msgstr "No bude\nto chvilku trvat."
 
 #: ../data/level/frogatto-grotto-inside.cfg:244
 msgid "I'll check back later, then."
@@ -3004,11 +3004,11 @@ msgstr "Jo, já vím.  Budu se snažit."
 
 #: ../data/level/frogatto-grotto-inside.cfg:646
 msgid "See to it."
-msgstr "To jsem na to zvědavý."
+msgstr "To jsem na to zvědavej."
 
 #: ../data/level/frogatto-grotto-inside.cfg:657
 msgid "Not like I need to be up,"
-msgstr "Né, že bych to potřeboval,"
+msgstr "Né, že by to vadilol,"
 
 #: ../data/level/frogatto-grotto-inside.cfg:658
 msgid "but it's the principle of the thing."
@@ -3038,7 +3038,7 @@ msgstr "Odtud je takový krásný výhled."
 
 #: ../data/level/frogatto-grotto.cfg:229
 msgid "Nothing to see in my backyard."
-msgstr "Na mém dvorku není nic k vidění."
+msgstr "Na mém dvorku není nic zajímavého."
 
 #: ../data/level/frogatto-grotto.cfg:1889
 #: ../data/objects/playable/map-selector.cfg:15
@@ -3252,7 +3252,7 @@ msgstr "To je velmi užitečné, pokud jsou dvě stěny\nnaproti sobě, protože
 
 #: ../data/level/grassy-path.cfg:441
 msgid "This lets you ascend vertical columns."
-msgstr "Což vám umožní se dostat prakticky kamkoliv."
+msgstr "Což ti umožní se dostat prakticky kamkoliv."
 
 #: ../data/level/grassy-path.cfg:459
 msgid "Frogatto's world is a dangerous place."
@@ -3320,7 +3320,7 @@ msgstr "Velmi užitečný je fakt, že můžeš určit\nsměr kam nepřítele vy
 msgid ""
 "If you hold down the up key while pressing\n"
 "the attack button, you'll spit in a high arc."
-msgstr "Pokud stiskneš šipkou nahoru, při plivání,\ntak nepřítel poletí vysokým obloukem."
+msgstr "Pokud stiskneš šipkou nahoru při plivání,\ntak nepřítel poletí vysokým obloukem."
 
 #: ../data/level/grassy-path.cfg:508
 msgid ""
@@ -3344,7 +3344,7 @@ msgstr "Odlišní nepřátelé znamenají odlišný způsob,\njak se s nimi bude
 msgid ""
 "Also, the tongue can grab useful items, like keys.\n"
 "This is how you carry them to the lock they open."
-msgstr "Jazyk může také pojmout mnoho užitečných\njako třeba klíče. Ty budeš potřebovat na\n otvírání dveří"
+msgstr "Jazyk může také pojmout mnoho užitečných věcí\njako třeba klíče. Ty budeš potřebovat na\n otevírání dveří"
 
 #: ../data/level/grassy-path.cfg:544
 msgid ""
@@ -3362,11 +3362,11 @@ msgstr "Pokud z nich budeš pít,\nobnovíš si celé tvé zdraví!"
 msgid ""
 "Certain bridges and stairways, like this one,\n"
 "allow you to jump up and pass through them."
-msgstr ""
+msgstr "některými mosty a schodištěmi, jako třeba tímhle,\nmůžeš proskočit nebo projít"
 
 #: ../data/level/grassy-path.cfg:565
 msgid "You can also jump down through them."
-msgstr "Můžete také přes ně přeskočit."
+msgstr "Můžeš ním i proskočit."
 
 #: ../data/level/grassy-path.cfg:566
 msgid ""
@@ -3378,7 +3378,7 @@ msgstr ""
 msgid ""
 "To do so, hold down the down key,\n"
 "and then press jump."
-msgstr "Chcete-li tak učinit, podržte klávesu dolů\na pak stiskněte tlačítko skok."
+msgstr "Chceš-li tak učinit, podrž klávesu dolů\na pak stiskni tlačítko pro skok."
 
 #: ../data/level/grassy-path.cfg:605
 msgid ""
@@ -3402,11 +3402,11 @@ msgstr "Ve hře je obchod umístěný\nnedaleko města."
 msgid ""
 "Sometimes, you'll run into rather dangerous-\n"
 "looking terrain, such as these brambles."
-msgstr "Někdy, můžeš narazit na nebezpečný terém-\ntřeba ta ostružina před tebou."
+msgstr "Někdy, můžeš narazit na nebezpečný terén-\ntřeba ta ostružina před tebou."
 
 #: ../data/level/grassy-path.cfg:627
 msgid "As you'd expect, stepping on them would hurt a bit."
-msgstr "Jak se dá očekávat, šlapání na ni bude bolet."
+msgstr "Jak se dá očekávat, šlapnutí na ní bude bolet."
 
 #: ../data/level/grassy-path.cfg:628
 msgid "However, they also hurt your enemies!"
@@ -3466,7 +3466,7 @@ msgstr "Bav se!"
 msgid ""
 "If you've seen a conversation before, it might\n"
 "be annoying to have to read it again."
-msgstr "pokud jste si přečetli nějaký rozhovor jednou,\nmůže být nepříjemné ho číst znovu. "
+msgstr "pokud jsi si přečetl nějaký rozhovor jednou,\nmůže být nepříjemné ho číst znovu. "
 
 #: ../data/level/grassy-path.cfg:781
 msgid ""
@@ -3498,7 +3498,7 @@ msgstr "Najdeš mnoho objektů podobné velikosti,\nna různých místech hry, j
 msgid ""
 "These are an ample source of ammunition,\n"
 "that's almost always available."
-msgstr "Jedná se dostatek munice,\nkterá je snadno k sehnání."
+msgstr "Jedná se o dostatek munice,\nkterá je snadno k sehnání."
 
 #: ../data/level/grassy-path.cfg:895
 msgid ""
@@ -5194,7 +5194,7 @@ msgstr "Co <em>on</em> dělá na téhle\nstraně ostrova?"
 
 #: ../data/level/secluded-hut.cfg:1408
 msgid "You still haven't heard, then."
-msgstr "Takže jsi o tom ještě neslyšel."
+msgstr "Takže jste o tom ještě neslyšel."
 
 #: ../data/level/secluded-hut.cfg:1409
 msgid ""
@@ -5221,7 +5221,7 @@ msgid ""
 "Wow, uhm... \n"
 "I'd sure like to help, but ...\n"
 "I just don't see what I could do."
-msgstr "Páni, uhm...\nRád bych nějak pomohl,ale...\nJá nevím co mám udělat."
+msgstr "Páni, uhm...\nRád bych nějak pomohl, ale...\nJá nevím co mám udělat."
 
 #: ../data/level/secluded-hut.cfg:1416
 msgid ""
@@ -6087,11 +6087,11 @@ msgstr "Dělám koláč. \nDáš si taky?"
 
 #: ../data/level/to-nenes-house-inside.cfg:39
 msgid "Nah, I'd better get to town."
-msgstr "Ne, raději bych se dostal do města."
+msgstr "Ne, musim se dostat do města."
 
 #: ../data/level/to-nenes-house-inside.cfg:41
 msgid "I have serious business to attend to."
-msgstr "Mám vážné vyřizování."
+msgstr "Mám tam vážné vyřizování."
 
 #: ../data/level/to-nenes-house-inside.cfg:45
 msgid ""
@@ -6307,7 +6307,7 @@ msgid ""
 "It smells like Nene's cooking something nice,\n"
 "but I don't think she'd want any ants for lunch.\n"
 "I'd better throw it out before entering!"
-msgstr ""
+msgstr "Voní to jako by Nene vařila něco dobrého,\nale nemyslím si, že má chuť na mravence.\nBude lepší, když ho vyplivnu, než tam půjdu!"
 
 #: ../data/level/to-nenes-house.cfg:178
 msgid ""
@@ -6337,11 +6337,11 @@ msgstr "Mohu vás na chvilku zdržet, pane?"
 msgid ""
 "Sorry, I'm off to town!\n"
 "Not interested!"
-msgstr "Promiň, jsem mimo město!\nNemám zájem!"
+msgstr "Promiňte, spěchám do města!\nNemám zájem!"
 
 #: ../data/level/to-nenes-house.cfg:2161
 msgid "But the town, you see ..."
-msgstr "Ale město, podívej..."
+msgstr "Ale město, podívejte..."
 
 #: ../data/level/to-nenes-house.cfg:2163
 msgid ""
@@ -6353,18 +6353,18 @@ msgstr "Nemám. Zájem.\nOdprejskni."
 msgid ""
 "I don't care what you're preaching,\n"
 "go sell it to someone else."
-msgstr "Nezajímájí mě co prodáváte,\njděte si otravovat někoho jiného."
+msgstr "Nezajímá mě co prodáváte,\njděte si otravovat někoho jiného."
 
 #: ../data/level/to-nenes-house.cfg:2166
 msgid "Very well."
-msgstr "Tak dobře"
+msgstr "Tak dobře."
 
 #: ../data/level/to-nenes-house.cfg:2169
 msgid ""
 "Someday, those door-to-door people\n"
 "will realize that kind of hard-sell tactic\n"
 "just annoys people."
-msgstr "Jednoho dne si tihle podomní obchodníci\nuvědomí, že tenhle druh prodejní taktiky\njen otravuje lidi."
+msgstr "Jednoho dne si snad tihle podomní obchodníci\nuvědomí, že tenhle druh prodejní taktiky\njen otravuje lidi."
 
 #: ../data/level/to-nenes-house.cfg:2171
 msgid "The sooner, the better."

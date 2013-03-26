@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2012-11-28 22:10-0200\n"
-"PO-Revision-Date: 2013-01-17 22:43+0000\n"
+"PO-Revision-Date: 2013-02-20 00:23+0000\n"
 "Last-Translator: GunChleoc <fios@foramnagaidhlig.net>\n"
 "Language-Team: Gaelic, Scottish (http://www.transifex.com/projects/p/Frogatto/language/gd/)\n"
 "MIME-Version: 1.0\n"
@@ -2935,7 +2935,7 @@ msgstr "Murt! Chaidil mi tuilleadh is fada!"
 
 #: ../data/level/frogatto-grotto-frogattos-room.cfg:890
 msgid "Frogatto's Room"
-msgstr "An t-seòmar aig Frogatto"
+msgstr "An seòmar aig Frogatto"
 
 #: ../data/level/frogatto-grotto-inside.cfg:236
 msgid "Hey, how's breakfast coming?"
@@ -2993,7 +2993,7 @@ msgstr "È ... seadh?"
 msgid ""
 "At least <em>try</em> to get a job today,\n"
 "alright?"
-msgstr "Feuch gum faigh thu obair an-diugh,\na laochain."
+msgstr "Feuch am faigh thu obair an-diugh,\na laochain."
 
 #: ../data/level/frogatto-grotto-inside.cfg:641
 msgid "We need some help around here."
@@ -3021,7 +3021,7 @@ msgstr "Taigh Fhrogatto"
 
 #: ../data/level/frogatto-grotto-patos-room.cfg:789
 msgid "Pato's Room"
-msgstr "An t-seòmar aig Tàta"
+msgstr "An seòmar aig Tàta"
 
 #: ../data/level/frogatto-grotto.cfg:61
 msgid "I know!"
@@ -5980,11 +5980,11 @@ msgstr "RUITH"
 
 #: ../data/level/titlescreen-arcade.cfg:220
 msgid "Coin Race"
-msgstr "Rèis bhuinn"
+msgstr "Rèis bhonn"
 
 #: ../data/level/titlescreen-arcade.cfg:247
 msgid "COIN RACE"
-msgstr "RÈIS BHUINN"
+msgstr "RÈIS BHONN"
 
 #: ../data/level/titlescreen-load-game-selector.cfg:23
 msgid "File 1:"
@@ -6164,7 +6164,7 @@ msgid ""
 "But if you're going to be like that\n"
 "I think I left a health capsule down there.\n"
 "If you can clear it out, it's yours."
-msgstr "Ach mas e seo do dhòigh, dh'fhàg mi capsail\nchridhe shìos. Tha e agadsa ma thogras tu."
+msgstr "Ach mas e seo do dhòigh, dh'fhàg mi capsail\nchridhe shìos. Tha e leatsa ma thogras tu."
 
 #: ../data/level/to-nenes-house-inside.cfg:65
 msgid "I might have something else for you."
@@ -6247,7 +6247,7 @@ msgstr "Mar sin ... Co-là-breith sona (caran anmoch) dhut!"
 msgid ""
 "You know, I'm really lucky to\n"
 "have friends like you!"
-msgstr "Nach fortanach a tha mise gu bheil\ncaraidean mar a tha thusa agam!"
+msgstr "Nach fortanach a tha mise gu bheil\ncaraidean do leithid-sa agam!"
 
 #: ../data/level/to-nenes-house-inside.cfg:102
 msgid ""
@@ -6599,7 +6599,7 @@ msgstr "Tha e glaiste."
 #: ../data/objects/effects/control/level_controller_coin_race.cfg:15
 #: ../data/objects/effects/control/level_controller_coin_race.cfg:17
 msgid "You made it to level ${level.player.difficulty} of the coin race."
-msgstr "Ràinig thu leibheil ${level.player.difficulty} na rèise buinn."
+msgstr "Ràinig thu leibheil ${level.player.difficulty} na rèise bhonn."
 
 #: ../data/objects/effects/control/level_controller_coin_race.cfg:18
 msgid ""
