@@ -85,7 +85,8 @@ print('(search in ~/modules/frogatto/data/objects/)\n=== END REPORT ===')
 
 
 Citadel (normal, MP)
-./game --module=Citadel --level=title1.cfg --tbs-server
-./game --module=Citadel --server=theargentlark.com:23056
+./game --module=Citadel --tbs-server
+X ./game --module=Citadel --server=theargentlark.com:23056
+./game --module=Citadel --user=DDR --server=theargentlark.com:18081 --tbs-server
 git pull                :: pulls from default, ddr0, here.
 git pull parent master  :: pulls from dave's fork
