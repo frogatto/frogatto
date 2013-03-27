@@ -517,6 +517,9 @@ variant::variant(game_logic::const_formula_ptr fml, const std::vector<std::strin
 	fn_->callable = &callable;
 	fn_->default_args = default_args;
 	fn_->variant_types = variant_types;
+
+	ASSERT_EQ(fn_->variant_types.size(), fn_->end_args - fn_->begin_args);
+
 	fn_->return_type = return_type;
 	increment_refcount();
 
@@ -971,6 +974,18 @@ int variant::max_function_arguments() const
 	return fn_->end_args - fn_->begin_args;
 }
 
+variant_type_ptr variant::function_return_type() const
+{
+	must_be(VARIANT_TYPE_FUNCTION);
+	return fn_->return_type;
+}
+
+const std::vector<variant_type_ptr>& variant::function_arg_types() const
+{
+	must_be(VARIANT_TYPE_FUNCTION);
+	return fn_->variant_types;
+}
+
 std::string variant::as_string_default(const char* default_value) const
 {
 	if(is_null()) {
@@ -1076,6 +1091,8 @@ variant variant::operator+(const variant& v) const
 			return variant(&res);
 		}
 	}
+
+	ASSERT_LOG(false, "ILLEGAL ADDITION OF VARIANTS: " << write_json() << " + " << v.write_json());
 
 	return variant(as_int() + v.as_int());
 }

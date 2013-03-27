@@ -25,6 +25,7 @@
 #include "formula_function.hpp"
 #include "formula_tokenizer.hpp"
 #include "variant.hpp"
+#include "variant_type.hpp"
 
 namespace game_logic
 {
@@ -82,6 +83,8 @@ public:
 	const_formula_callable_ptr wrap_callable_with_global_where(const formula_callable& callable) const;
 
 	const expression_ptr& expr() const { return expr_; }
+
+	variant_type_ptr query_variant_type() const;
 
 private:
 	formula() {}

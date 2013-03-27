@@ -30,6 +30,7 @@ class formula_callable_definition
 public:
 	struct entry {
 		explicit entry(const std::string& id_) : id(id_), type_definition(0) {}
+		void set_variant_type(variant_type_ptr type);
 		std::string id;
 		const formula_callable_definition* type_definition;
 
@@ -48,13 +49,23 @@ public:
 	virtual const entry* get_entry(int slot) const = 0;
 	virtual int num_slots() const = 0;
 
+	entry* get_entry_by_id(const std::string& key) {
+		const int slot = get_slot(key);
+		if(slot < 0) { return NULL; } else { return get_entry(slot); }
+	}
+
+	const entry* get_entry_by_id(const std::string& key) const {
+		const int slot = get_slot(key);
+		if(slot < 0) { return NULL; } else { return get_entry(slot); }
+	}
+
 	bool is_strict() const { return is_strict_; }
 	void set_strict(bool value=true) { is_strict_ = value; }
 private:
 	bool is_strict_;
 };
 
-formula_callable_definition_ptr create_formula_callable_definition(const std::string* beg, const std::string* end, const formula_callable_definition* base=NULL);
+formula_callable_definition_ptr create_formula_callable_definition(const std::string* beg, const std::string* end, const formula_callable_definition* base=NULL, variant_type_ptr* begin_types=NULL);
 
 int register_formula_callable_definition(const std::string& id, const formula_callable_definition* def);
 const formula_callable_definition* get_formula_callable_definition(const std::string& id);

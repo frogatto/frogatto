@@ -55,6 +55,8 @@ private: \
 
 #define END_FUNCTION_DEF(name) } }; const int name##_dummy_var = register_function_creator(FunctionModule, #name, new specific_function_creator<name##_function>());
 
+#define FUNCTION_TYPE_DEF } variant_type_ptr get_variant_type() const {
+
 #define EVAL_ARG(n) (args()[n]->evaluate(variables))
 #define NUM_ARGS (args().size())
 

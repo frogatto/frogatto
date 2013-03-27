@@ -19,9 +19,19 @@
 
 #include "foreach.hpp"
 #include "formula_callable_definition.hpp"
+#include "formula_object.hpp"
 
 namespace game_logic
 {
+
+void formula_callable_definition::entry::set_variant_type(variant_type_ptr type)
+{
+	variant_type = type;
+	std::string class_name;
+	if(type && type->is_class(&class_name)) {
+		type_definition = get_class_definition(class_name);
+	}
+}
 
 namespace
 {
@@ -86,6 +96,18 @@ public:
 		entries_.push_back(entry(id));
 	}
 
+	void add(const std::string& id, variant_type_ptr type) {
+		entries_.push_back(entry(id));
+
+		if(type) {
+			entries_.back().variant_type = type;
+			std::string class_name;
+			if(type->is_class(&class_name)) {
+				entries_.back().type_definition = get_class_definition(class_name);
+			}
+		}
+	}
+
 	void set_base(const formula_callable_definition* base) { base_ = base; }
 
 private:
@@ -96,12 +118,17 @@ private:
 
 }
 
-formula_callable_definition_ptr create_formula_callable_definition(const std::string* i1, const std::string* i2, const formula_callable_definition* base)
+formula_callable_definition_ptr create_formula_callable_definition(const std::string* i1, const std::string* i2, const formula_callable_definition* base, variant_type_ptr* types)
 {
 	simple_definition* def = new simple_definition;
 	def->set_base(base);
 	while(i1 != i2) {
-		def->add(*i1);
+
+		if(types) {
+			def->add(*i1, *types++);
+		} else {
+			def->add(*i1);
+		}
 		++i1;
 	}
 

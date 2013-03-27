@@ -61,6 +61,7 @@ std::string output_formula_error_info() {
 
 namespace game_logic
 {
+
 	void set_verbatim_string_expressions(bool verbatim) {
 		_verbatim_string_expressions = verbatim;
 	}
@@ -112,6 +113,83 @@ namespace game_logic
 		}
 
 		return true;
+	}
+
+	namespace {
+	
+	variant_type_ptr get_variant_type_from_value(const variant& value) {
+		if(value.is_list()) {
+			std::vector<variant_type_ptr> types;
+			foreach(const variant& item, value.as_list()) {
+				variant_type_ptr new_type = get_variant_type_from_value(item);
+				foreach(const variant_type_ptr& existing, types) {
+					if(existing->is_equal(*new_type)) {
+						new_type.reset();
+						break;
+					}
+				}
+
+				if(new_type) {
+					types.push_back(new_type);
+				}
+			}
+
+			return variant_type::get_list(variant_type::get_union(types));
+		} else if(value.is_map()) {
+
+			std::vector<variant_type_ptr> key_types, value_types;
+
+			foreach(const variant::map_pair& p, value.as_map()) {
+				variant_type_ptr new_key_type = get_variant_type_from_value(p.first);
+				variant_type_ptr new_value_type = get_variant_type_from_value(p.second);
+
+				foreach(const variant_type_ptr& existing, key_types) {
+					if(existing->is_equal(*new_key_type)) {
+						new_key_type.reset();
+						break;
+					}
+				}
+
+				if(new_key_type) {
+					key_types.push_back(new_key_type);
+				}
+
+				foreach(const variant_type_ptr& existing, value_types) {
+					if(existing->is_equal(*new_value_type)) {
+						new_value_type.reset();
+						break;
+					}
+				}
+
+				if(new_value_type) {
+					value_types.push_back(new_value_type);
+				}
+			}
+
+			variant_type_ptr key_type, value_type;
+
+			if(key_types.size() == 1) {
+				key_type = variant_type::get_list(key_types[0]);
+			} else {
+				key_type = variant_type::get_list(variant_type::get_union(key_types));
+			}
+
+			if(value_types.size() == 1) {
+				value_type = variant_type::get_list(value_types[0]);
+			} else {
+				value_type = variant_type::get_list(variant_type::get_union(value_types));
+			}
+
+			return variant_type::get_map(key_type, value_type);
+		} else {
+			return variant_type::get_type(value.type());
+		}
+	}
+
+	}
+
+	variant_type_ptr variant_expression::get_variant_type() const {
+		return get_variant_type_from_value(v_);
 	}
 
 	command_callable::command_callable() : expr_(NULL)
@@ -216,8 +294,11 @@ public:
 	explicit function_list_expression(function_symbol_table *symbols)
 	: formula_expression("_function_list"), symbols_(symbols)
 	{}
-	
+
 private:
+	variant_type_ptr get_variant_type() const {
+		return variant_type::get_list(variant_type::get_type(variant::VARIANT_TYPE_STRING));
+	}
 	variant execute(const formula_callable& /*variables*/) const {
 		std::vector<variant> res;
 		std::vector<std::string> function_names = builtin_function_names();
@@ -237,8 +318,31 @@ public:
 	explicit list_expression(const std::vector<expression_ptr>& items)
 	: formula_expression("_list"), items_(items)
 	{}
-	
+
 private:
+	variant_type_ptr get_variant_type() const {
+		std::vector<variant_type_ptr> types;
+		foreach(const expression_ptr& item, items_) {
+			variant_type_ptr new_type = item->query_variant_type();
+			foreach(const variant_type_ptr& existing, types) {
+				if(existing->is_equal(*new_type)) {
+					new_type.reset();
+					break;
+				}
+			}
+
+			if(new_type) {
+				types.push_back(new_type);
+			}
+		}
+
+		if(types.size() == 1) {
+			return variant_type::get_list(types[0]);
+		} else {
+			return variant_type::get_list(variant_type::get_union(types));
+		}
+	}
+
 	//a special version of static evaluation that doesn't save a
 	//reference to the list, so that we can allow static evaluation
 	//not to be fooled.
@@ -270,6 +374,10 @@ public:
 	}
 	
 private:
+	variant_type_ptr get_variant_type() const {
+		return variant_type::get_list(expr_->query_variant_type());
+	}
+
 	variant execute(const formula_callable& variables) const {
 		std::vector<int> nelements;
 		std::vector<variant> lists;
@@ -348,6 +456,52 @@ public:
 	{}
 	
 private:
+	variant_type_ptr get_variant_type() const {
+		std::vector<variant_type_ptr> key_types, value_types;
+		for(std::vector<expression_ptr>::const_iterator i = items_.begin(); ( i != items_.end() ) && ( i+1 != items_.end() ) ; i+=2) {
+			variant_type_ptr new_key_type = (*i)->query_variant_type();
+			variant_type_ptr new_value_type = (*(i+1))->query_variant_type();
+
+			foreach(const variant_type_ptr& existing, key_types) {
+				if(existing->is_equal(*new_key_type)) {
+					new_key_type.reset();
+					break;
+				}
+			}
+
+			if(new_key_type) {
+				key_types.push_back(new_key_type);
+			}
+
+			foreach(const variant_type_ptr& existing, value_types) {
+				if(existing->is_equal(*new_value_type)) {
+					new_value_type.reset();
+					break;
+				}
+			}
+
+			if(new_value_type) {
+				value_types.push_back(new_value_type);
+			}
+		}
+
+		variant_type_ptr key_type, value_type;
+
+		if(key_types.size() == 1) {
+			key_type = variant_type::get_list(key_types[0]);
+		} else {
+			key_type = variant_type::get_list(variant_type::get_union(key_types));
+		}
+
+		if(value_types.size() == 1) {
+			value_type = variant_type::get_list(value_types[0]);
+		} else {
+			value_type = variant_type::get_list(variant_type::get_union(value_types));
+		}
+
+		return variant_type::get_map(key_type, value_type);
+	}
+
 	variant execute(const formula_callable& variables) const {
 		//since maps can be modified we want any map construction to return
 		//a brand new map.
@@ -382,6 +536,19 @@ public:
 		}
 	}
 private:
+	variant_type_ptr get_variant_type() const {
+		switch(op_) {
+		case NOT: return variant_type::get_type(variant::VARIANT_TYPE_BOOL);
+		case OP_SUB:
+		default:
+			if(operand_->query_variant_type()->is_type(variant::VARIANT_TYPE_INT)) {
+				return variant_type::get_type(variant::VARIANT_TYPE_INT);
+			} else {
+				return variant_type::get_type(variant::VARIANT_TYPE_DECIMAL);
+			}
+		}
+	}
+
 	variant execute(const formula_callable& variables) const {
 		const variant res = operand_->evaluate(variables);
 		switch(op_) {
@@ -446,6 +613,10 @@ private:
 	variant execute(const formula_callable& variables) const {
 		return v_;
 	}
+
+	variant_type_ptr get_variant_type() const {
+		return variant_type::get_type(v_.type());
+	}
 	
 	variant v_;
 };
@@ -486,12 +657,15 @@ private:
 		return variables.query_value_by_slot(slot_);
 	}
 
+	variant_type_ptr get_variant_type() const {
+		return variant_type_;
+	}
+
 	int slot_;
 	std::string id_;
 	const formula_callable_definition* callable_def_;
 	variant_type_ptr variant_type_;
 };
-
 
 class identifier_expression : public formula_expression {
 public:
@@ -550,6 +724,9 @@ private:
 
 		return result;
 	}
+	variant_type_ptr get_variant_type() const {
+		return variant_type::get_any();
+	}
 	std::string id_;
 	const formula_callable_definition* callable_def_;
 
@@ -560,12 +737,27 @@ private:
 class lambda_function_expression : public formula_expression {
 public:
 	lambda_function_expression(const std::vector<std::string>& args, const_formula_ptr fml, int base_slot, const std::vector<variant>& default_args, const std::vector<variant_type_ptr>& variant_types, const variant_type_ptr& return_type) : args_(args), fml_(fml), base_slot_(base_slot), default_args_(default_args), variant_types_(variant_types), return_type_(return_type)
-	{}
+	{
+		if(!return_type_) {
+			return_type_ = variant_type::get_any();
+		}
+
+		variant_types_.resize(args_.size());
+		foreach(variant_type_ptr& t, variant_types_) {
+			if(!t) {
+				t = variant_type::get_any();
+			}
+		}
+	}
 	
 private:
 	variant execute(const formula_callable& variables) const {
 		variant v(fml_, args_, variables, base_slot_, default_args_, variant_types_, return_type_);
 		return v;
+	}
+
+	variant_type_ptr get_variant_type() const {
+		return variant_type::get_function_type(variant_types_, return_type_, variant_types_.size() - default_args_.size());
 	}
 	
 	std::vector<std::string> args_;
@@ -601,6 +793,15 @@ private:
 		}
 		
 		return left(args);
+	}
+
+	variant_type_ptr get_variant_type() const {
+		variant_type_ptr return_type;
+		if(left_->query_variant_type()->is_function(NULL, &return_type, NULL)) {
+			return return_type;
+		}
+
+		return variant_type::get_any();
 	}
 	
 	expression_ptr left_;
@@ -644,6 +845,10 @@ private:
 		
 		return left;
 	}
+
+	variant_type_ptr get_variant_type() const {
+		return right_->query_variant_type();
+	}
 	
 	expression_ptr left_, right_;
 };
@@ -684,6 +889,21 @@ private:
 			*variant_id = key;
 		}
 		return left;
+	}
+
+	variant_type_ptr get_variant_type() const {
+		variant_type_ptr left_type = left_->query_variant_type();
+		variant_type_ptr list_element_type = left_type->is_list_of();
+		if(list_element_type) {
+			return list_element_type;
+		}
+
+		std::pair<variant_type_ptr, variant_type_ptr> p = left_type->is_map_of();
+		if(p.second) {
+			return p.second;
+		}
+
+		return variant_type::get_any();
 	}
 	
 	expression_ptr left_, key_;
@@ -740,39 +960,26 @@ private:
 			ASSERT_LOG(false, "illegal usage of operator [:]'\n" << debug_pinpoint_location() << " called on object of type " << variant::variant_type_to_string(left.type()));
 		}
 	}
+
+	variant_type_ptr get_variant_type() const {
+		return left_->query_variant_type();
+	}
 	
 	expression_ptr left_, start_, end_;
 };
-	
-	
-#define OPTIMIZED_INT_BINARY_OP(name, op) \
-class name##_integer_operator_expression : public formula_expression { \
-public: \
-	name##_integer_operator_expression(expression_ptr left, int value) \
-	  : formula_expression("_" #name), left_(left), value_(value) \
-	{} \
-private: \
-	variant execute(const formula_callable& variables) const { \
-		variant v = left_->evaluate(variables); \
-		if(v.is_decimal()) { return variant(v op variant(value_)); } \
-		return variant(v.as_int() op value_); \
-	} \
-	expression_ptr left_; \
-	int value_; \
+
+variant_type_ptr get_variant_type_and_or(expression_ptr left, expression_ptr right) {
+	variant_type_ptr left_type = left->query_variant_type();
+	variant_type_ptr right_type = right->query_variant_type();
+	if(left_type->is_equal(*right_type)) {
+		return left_type;
+	}
+
+	std::vector<variant_type_ptr> types;
+	types.push_back(left_type);
+	types.push_back(right_type);
+	return variant_type::get_union(types);
 }
-
-OPTIMIZED_INT_BINARY_OP(add, +);
-OPTIMIZED_INT_BINARY_OP(sub, -);
-OPTIMIZED_INT_BINARY_OP(mul, *);
-OPTIMIZED_INT_BINARY_OP(div, /);
-OPTIMIZED_INT_BINARY_OP(eq, ==);
-OPTIMIZED_INT_BINARY_OP(ne, !=);
-OPTIMIZED_INT_BINARY_OP(lt, <);
-OPTIMIZED_INT_BINARY_OP(gt, >);
-OPTIMIZED_INT_BINARY_OP(le, <=);
-OPTIMIZED_INT_BINARY_OP(ge, >=);
-
-#undef OPTIMIZED_INT_BINARY_OP
 
 class and_operator_expression : public formula_expression {
 public:
@@ -789,6 +996,10 @@ private:
 		}
 
 		return right_->evaluate(variables);
+	}
+
+	variant_type_ptr get_variant_type() const {
+		return get_variant_type_and_or(left_, right_);
 	}
 
 	expression_ptr left_, right_;
@@ -809,6 +1020,10 @@ private:
 		}
 
 		return right_->evaluate(variables);
+	}
+
+	variant_type_ptr get_variant_type() const {
+		return get_variant_type_and_or(left_, right_);
 	}
 
 	expression_ptr left_, right_;
@@ -842,29 +1057,6 @@ public:
 			return expression_ptr(new and_operator_expression(left_, right_));
 		} else if(op_ == OP_OR) {
 			return expression_ptr(new or_operator_expression(left_, right_));
-		}
-
-		variant v;
-		if(right_->can_reduce_to_variant(v) && v.is_int()) {
-			switch(op_) {
-			case OP_ADD: return expression_ptr(new add_integer_operator_expression(left_, v.as_int()));
-			case OP_SUB: return expression_ptr(new sub_integer_operator_expression(left_, v.as_int()));
-			case OP_MUL: break; //list*int causes this problems
-			case OP_DIV: if(v.as_int() != 0) { return expression_ptr(new div_integer_operator_expression(left_, v.as_int())); } break;
-			case OP_EQ: return expression_ptr(new eq_integer_operator_expression(left_, v.as_int()));
-			case OP_NEQ: return expression_ptr(new ne_integer_operator_expression(left_, v.as_int()));
-			case OP_LT: return expression_ptr(new lt_integer_operator_expression(left_, v.as_int()));
-			case OP_GT: return expression_ptr(new gt_integer_operator_expression(left_, v.as_int()));
-			case OP_GTE: return expression_ptr(new ge_integer_operator_expression(left_, v.as_int()));
-			case OP_LTE: return expression_ptr(new le_integer_operator_expression(left_, v.as_int()));
-			default: return expression_ptr();
-			}
-		} else if(left_->can_reduce_to_variant(v) && v.is_int()) {
-			switch(op_) {
-			case OP_ADD: return expression_ptr(new add_integer_operator_expression(right_, v.as_int()));
-			case OP_MUL: return expression_ptr(new mul_integer_operator_expression(right_, v.as_int()));
-			default: return expression_ptr();
-			}
 		}
 
 		return expression_ptr();
@@ -943,6 +1135,78 @@ private:
 		}
 		return res;
 	}
+
+	variant_type_ptr get_variant_type() const {
+		switch(op_) {
+		case OP_IN:
+		case OP_NOT_IN:
+		case OP_NEQ:
+		case OP_LTE:
+		case OP_GTE:
+		case OP_GT:
+		case OP_LT:
+		case OP_EQ:
+			return variant_type::get_type(variant::VARIANT_TYPE_BOOL);
+		case OP_AND:
+		case OP_OR: {
+			variant_type_ptr left_type = left_->query_variant_type();
+			variant_type_ptr right_type = left_->query_variant_type();
+			if(left_type->is_equal(*right_type)) {
+				return left_type;
+			}
+
+			std::vector<variant_type_ptr> v;
+			v.push_back(left_type);
+			v.push_back(right_type);
+			return variant_type::get_union(v);
+		}
+
+		case OP_ADD: {
+			variant_type_ptr left_type = left_->query_variant_type();
+			variant_type_ptr right_type = right_->query_variant_type();
+			if(left_type->is_equal(*right_type)) {
+				return left_type;
+			}
+
+			if(left_type->is_type(variant::VARIANT_TYPE_STRING) || right_type->is_type(variant::VARIANT_TYPE_STRING)) {
+				return left_type;
+			}
+
+			if(left_type->is_type(variant::VARIANT_TYPE_DECIMAL) || right_type->is_type(variant::VARIANT_TYPE_DECIMAL)) {
+				return variant_type::get_type(variant::VARIANT_TYPE_DECIMAL);
+			}
+
+			//TODO: improve this, handle remaining cases!
+			return variant_type::get_any();
+		}
+
+		case OP_MUL: {
+			variant_type_ptr left_type = left_->query_variant_type();
+			variant_type_ptr right_type = right_->query_variant_type();
+			//TODO: detect lists here!
+			return variant_type::get_any();
+		}
+
+		case OP_POW:
+		case OP_DIV:
+		case OP_SUB: {
+			variant_type_ptr left_type = left_->query_variant_type();
+			variant_type_ptr right_type = right_->query_variant_type();
+			if(left_type->is_type(variant::VARIANT_TYPE_DECIMAL) || right_type->is_type(variant::VARIANT_TYPE_DECIMAL)) {
+				return variant_type::get_type(variant::VARIANT_TYPE_DECIMAL);
+			}
+
+			return variant_type::get_type(variant::VARIANT_TYPE_INT);
+		}
+
+		case OP_MOD:
+		case OP_DICE:
+			return variant_type::get_type(variant::VARIANT_TYPE_INT);
+		default:
+			ASSERT_LOG(false, "unknown op type: " << op_);
+			
+		}
+	}
 	
 	enum OP { OP_IN, OP_NOT_IN, OP_AND, OP_OR, OP_NEQ, OP_LTE, OP_GTE, OP_GT='>', OP_LT='<', OP_EQ='=',
 		OP_ADD='+', OP_SUB='-', OP_MUL='*', OP_DIV='/', OP_DICE='d', OP_POW='^', OP_MOD='%' };
@@ -957,13 +1221,15 @@ typedef boost::shared_ptr<expr_table> expr_table_ptr;
 const_formula_callable_definition_ptr create_where_definition(expr_table_ptr table, const formula_callable_definition* def)
 {
 	std::vector<std::string> items;
+	std::vector<variant_type_ptr> types;
 	for(std::map<std::string,expression_ptr>::const_iterator i = table->begin(); i != table->end(); ++i) {
 		items.push_back(i->first);
+		types.push_back(i->second->query_variant_type());
 	}
 
 	ASSERT_LOG(items.empty() == false, "EMPTY WHERE CLAUSE");
 
-	return create_formula_callable_definition(&items[0], &items[0] + items.size(), def);
+	return create_formula_callable_definition(&items[0], &items[0] + items.size(), def, &types[0]);
 }
 
 class where_variables: public formula_callable {
@@ -1017,6 +1283,10 @@ public:
 	}
 	
 private:
+	variant_type_ptr get_variant_type() const {
+		return body_->query_variant_type();
+	}
+
 	expression_ptr body_;
 	where_variables_info_ptr info_;
 	
@@ -1059,6 +1329,10 @@ private:
 
 		return body_->evaluate(variables);
 	}
+
+	variant_type_ptr get_variant_type() const {
+		return body_->query_variant_type();
+	}
 };
 
 class null_expression : public formula_expression {
@@ -1067,6 +1341,10 @@ public:
 private:
 	variant execute(const formula_callable& /*variables*/) const {
 		return variant();
+	}
+
+	variant_type_ptr get_variant_type() const {
+		return variant_type::get_type(variant::VARIANT_TYPE_NULL);
 	}
 };
 
@@ -1079,6 +1357,10 @@ private:
 	variant execute(const formula_callable& /*variables*/) const {
 		return i_;
 	}
+
+	variant_type_ptr get_variant_type() const {
+		return variant_type::get_type(variant::VARIANT_TYPE_INT);
+	}
 	
 	variant i_;
 };
@@ -1090,6 +1372,10 @@ public:
 private:
 	variant execute(const formula_callable& /*variables*/) const {
 		return v_;
+	}
+
+	variant_type_ptr get_variant_type() const {
+		return variant_type::get_type(variant::VARIANT_TYPE_DECIMAL);
 	}
 	
 	variant v_;
@@ -1167,6 +1453,10 @@ private:
 			
 			return variant(res);
 		}
+	}
+
+	variant_type_ptr get_variant_type() const {
+		return variant_type::get_type(variant::VARIANT_TYPE_STRING);
 	}
 	
 	struct substitution {
@@ -1333,7 +1623,7 @@ void parse_args(const variant& formula_str, const std::string* function_name,
 			//Certain special functions take a special callable definition
 			//to evaluate their last argument. Discover what that is here.
 			static const std::string MapCallableFuncs[] = { "count", "filter", "find", "choose", "map", "count" };
-			if(function_name != NULL && std::count(MapCallableFuncs, MapCallableFuncs + sizeof(MapCallableFuncs)/sizeof(*MapCallableFuncs), *function_name)) {
+			if(args.size() >= 2 && function_name != NULL && std::count(MapCallableFuncs, MapCallableFuncs + sizeof(MapCallableFuncs)/sizeof(*MapCallableFuncs), *function_name)) {
 				std::string value_name = "value";
 
 				static const std::string CustomIdMapCallableFuncs[] = { "filter", "find", "map" };
@@ -1348,8 +1638,18 @@ void parse_args(const variant& formula_str, const std::string* function_name,
 						ASSERT_LOG(false, "Function " << *function_name << " requires a literal as its second argument: " << pinpoint_location(formula_str, args[1].first->begin, (args[1].second-1)->end));
 					}
 				}
+				ASSERT_LOG(args.size() == 2 || args.size() == 3, std::cerr << "WRONG NUMBER OF ARGS TO " << function_name << " AT " << pinpoint_location(formula_str, args[0].first->begin, (args[0].second-1)->end));
 
-				callable_def = get_map_callable_definition(callable_def, variant_type_ptr(), variant_type_ptr(), value_name);
+				variant_type_ptr key_type, value_type;
+
+				variant_type_ptr sequence_type = (*res)[0]->query_variant_type();
+				value_type = sequence_type->is_list_of();
+				if(!value_type) {
+					key_type = sequence_type->is_map_of().first;
+					value_type = sequence_type->is_map_of().second;
+				}
+
+				callable_def = get_map_callable_definition(callable_def, key_type, value_type, value_name);
 			}
 		}
 
@@ -1610,27 +1910,23 @@ expression_ptr parse_function_def(const variant& formula_str, const token*& i1, 
 
 	if(formula_name.empty() == false) {
 		for(int n = 0; n != types.size(); ++n) {
+			ASSERT_LOG(n < args.size(), "FORMULA ARGS MIS-MATCH");
+
 			if(types[n].empty()) {
 				continue;
 			}
 
-			ASSERT_LOG(args_definition->get_entry(n) != NULL, "FORMULA FUNCTION TYPE ARGS MIS-MATCH\n" << pinpoint_location(formula_str, i1->begin, i1->end));
+			ASSERT_LOG(args_definition->get_entry_by_id(args[n]) != NULL, "FORMULA FUNCTION TYPE ARGS MIS-MATCH\n" << pinpoint_location(formula_str, i1->begin, i1->end));
 
 			const formula_callable_definition* def = get_formula_callable_definition(types[n]);
 			ASSERT_LOG(def != NULL, "TYPE NOT FOUND: " << types[n] << "\n" << pinpoint_location(formula_str, i1->begin, i1->end));
-			args_definition->get_entry(n)->type_definition = def;
+			args_definition->get_entry_by_id(args[n])->type_definition = def;
 		}
 	}
 
 	if(args_definition) {
 		for(int n = 0; n != variant_types.size(); ++n) {
-			std::string class_name;
-			if(variant_types[n] && variant_types[n]->is_class(&class_name)) {
-				std::cerr << "INSERT CLASS DEFINITION: " << class_name << "\n";
-					const formula_callable_definition* def = get_class_definition(class_name);
-				ASSERT_LOG(def != NULL, "CLASS NOT FOUND: " << class_name);
-				args_definition->get_entry(n)->type_definition = def;
-			}
+			args_definition->get_entry_by_id(args[n])->set_variant_type(variant_types[n]);
 		}
 	}
 
@@ -1638,7 +1934,7 @@ expression_ptr parse_function_def(const variant& formula_str, const token*& i1, 
 	recursive_symbols.resolve_recursive_calls(fml);
 	
 	if(formula_name.empty()) {
-		return expression_ptr(new lambda_function_expression(args, fml, callable_def ? callable_def->num_slots() : 0, default_args, variant_types, variant_type::get_any()));
+		return expression_ptr(new lambda_function_expression(args, fml, callable_def ? callable_def->num_slots() : 0, default_args, variant_types, fml->query_variant_type()));
 	}
 
 	const std::string precond = "";
@@ -1746,6 +2042,7 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 						std::vector<expression_ptr> filter_expr;
 
 						std::vector<std::string> items;
+						std::map<std::string, variant_type_ptr> item_types;
 
 						const_formula_callable_definition_ptr def;
 
@@ -1763,10 +2060,26 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 
 								generators[key] = parse_expression(formula_str, arrow+1, arg.second, symbols, callable_def, can_optimize);
 								items.push_back(key);
+								variant_type_ptr gen_type = generators[key]->query_variant_type();
+
+								if(gen_type) {
+									gen_type = gen_type->is_list_of();
+								}
+
+								if(!gen_type) {
+									gen_type = variant_type::get_any();
+								}
+
+								item_types[key] = gen_type;
 							} else {
 								if(!def) {
+									ASSERT_LOG(items.empty() == false, "EMPTY ITEMS IN LIST COMPREHENSION: " << pinpoint_location(formula_str, arrow->begin, arrow->end));
 									std::sort(items.begin(), items.end());
-									def = create_formula_callable_definition(&items[0], &items[0] + items.size(), callable_def);
+									std::vector<variant_type_ptr> types;
+									foreach(const std::string& item, items) {
+										types.push_back(item_types[item]);
+									}
+									def = create_formula_callable_definition(&items[0], &items[0] + items.size(), callable_def, &types[0]);
 								}
 								filter_expr.push_back(parse_expression(formula_str, arg.first, arg.second, symbols, def.get(), can_optimize));
 								seen_filter = true;
@@ -1774,8 +2087,13 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 						}
 
 						if(!def) {
+							ASSERT_LOG(items.empty() == false, "EMPTY ITEMS IN LIST COMPREHENSION: " << pinpoint_location(formula_str, pipe->begin, pipe->end));
 							std::sort(items.begin(), items.end());
-							def = create_formula_callable_definition(&items[0], &items[0] + items.size(), callable_def);
+							std::vector<variant_type_ptr> types;
+							foreach(const std::string& item, items) {
+								types.push_back(item_types[item]);
+							}
+							def = create_formula_callable_definition(&items[0], &items[0] + items.size(), callable_def, &types[0]);
 						}
 
 						expression_ptr expr = parse_expression(formula_str, begin_start_expr, pipe, symbols, def.get(), can_optimize);
@@ -2140,6 +2458,11 @@ const_formula_callable_ptr formula::wrap_callable_with_global_where(const formul
 	}
 }
 
+variant_type_ptr formula::query_variant_type() const
+{
+	return expr_->query_variant_type();
+}
+
 void formula::check_brackets_match(const std::vector<token>& tokens) const
 {
 	std::string error_msg;
@@ -2438,6 +2761,19 @@ UNIT_TEST(formula_where_map) {
 UNIT_TEST(formula_function_default_args) {
 	CHECK_EQ(formula(variant("def f(x=5) x ; f() + f(1)")).execute(), variant(6));
 	CHECK_EQ(formula(variant("f(5) where f = def(x,y=2) x*y")).execute(), variant(10));
+}
+
+UNIT_TEST(formula_typeof) {
+#define TYPEOF_TEST(a, b) CHECK_EQ(formula(variant(a)).execute(), variant(b))
+	TYPEOF_TEST("typeof(def(int n) n+5)", "function(int) -> int");
+	TYPEOF_TEST("typeof(def(int n) n+5.0)", "function(int) -> decimal");
+	TYPEOF_TEST("typeof(def([int] mylist) map(mylist, value+5.0))", "function([int]) -> [decimal]");
+	TYPEOF_TEST("typeof(choose([1,2,3]))", "int");
+	TYPEOF_TEST("typeof(choose([1,2,'abc',4.5]))", "int|string|decimal");
+	TYPEOF_TEST("typeof(if(1d6 = 5, 5))", "int|null");
+	TYPEOF_TEST("typeof(if(1d6 = 2, 5, 8))", "int");
+	TYPEOF_TEST("typeof(if(1d6 = 2, 'abc', 2))", "string|int");
+#undef TYPEOF_TEST
 }
 
 UNIT_TEST(formula_list_comprehension) {

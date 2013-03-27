@@ -189,6 +189,9 @@ public:
 	int min_function_arguments() const;
 	int max_function_arguments() const;
 
+	variant_type_ptr function_return_type() const;
+	const std::vector<variant_type_ptr>& function_arg_types() const;
+
 	std::string as_string_default(const char* default_value=NULL) const;
 	const std::string& as_string() const;
 

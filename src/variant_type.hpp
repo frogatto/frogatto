@@ -20,6 +20,8 @@
 
 #include <boost/shared_ptr.hpp>
 
+#include <map>
+
 #include "formula_tokenizer.hpp"
 #include "variant.hpp"
 
@@ -36,15 +38,23 @@ public:
 	static variant_type_ptr get_list(variant_type_ptr element_type);
 	static variant_type_ptr get_map(variant_type_ptr key_type, variant_type_ptr value_type);
 	static variant_type_ptr get_class(const std::string& class_name);
-	static variant_type_ptr get_function_type(const std::vector<variant_type_ptr>& arg_types, int min_args, variant_type_ptr return_type);
+	static variant_type_ptr get_function_type(const std::vector<variant_type_ptr>& arg_types, variant_type_ptr return_type, int min_args);
 
-	virtual ~variant_type() {}
+	virtual ~variant_type();
 	virtual bool match(const variant& v) const = 0;
 
+	virtual const std::vector<variant_type_ptr>* is_union() const { return NULL; }
+	virtual variant_type_ptr is_list_of() const { return variant_type_ptr(); }
+	virtual std::pair<variant_type_ptr,variant_type_ptr> is_map_of() const { return std::pair<variant_type_ptr,variant_type_ptr>(); }
+	virtual bool is_type(variant::TYPE type) const { return false; }
 	virtual bool is_class(std::string* class_name=NULL) const { return false; }
+
+	virtual bool is_function(std::vector<variant_type_ptr>* args, variant_type_ptr* return_type, int* min_args) const { return false; }
 
 	void set_str(const std::string& s) const { str_ = s; }
 	const std::string& str() const { return str_; }
+
+	virtual std::string to_string() const = 0;
 
 	virtual bool is_equal(const variant_type& o) const = 0;
 

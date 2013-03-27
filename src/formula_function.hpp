@@ -21,6 +21,8 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 
+#include <assert.h>
+
 #include <iostream>
 #include <map>
 
@@ -99,7 +101,11 @@ public:
 	variant parent_formula() const { return parent_formula_; }
 
 	int ntimes_called() const { return ntimes_called_; }
+
+	variant_type_ptr query_variant_type() const { variant_type_ptr res = get_variant_type(); if(res) { return res; } else { return variant_type::get_any(); } }
+
 protected:
+	virtual variant_type_ptr get_variant_type() const { return variant_type_ptr(); }
 	virtual variant execute_member(const formula_callable& variables, std::string& id, variant* variant_id) const;
 private:
 	virtual variant execute(const formula_callable& variables) const = 0;
@@ -241,6 +247,8 @@ private:
 	variant execute(const formula_callable& /*variables*/) const {
 		return v_;
 	}
+
+	virtual variant_type_ptr get_variant_type() const;
 	
 	variant v_;
 };

@@ -23,6 +23,9 @@
 #include "unit_test.hpp"
 #include "variant_type.hpp"
 
+variant_type::~variant_type()
+{}
+
 namespace {
 
 class variant_type_simple : public variant_type
@@ -40,6 +43,10 @@ public:
 		return v.type() == type_ || type_ == variant::VARIANT_TYPE_DECIMAL && v.type() == variant::VARIANT_TYPE_INT;
 	}
 
+	bool is_type(variant::TYPE type) const {
+		return type == type_;
+	}
+
 	bool is_equal(const variant_type& o) const {
 		const variant_type_simple* other = dynamic_cast<const variant_type_simple*>(&o);
 		if(!other) {
@@ -47,6 +54,26 @@ public:
 		}
 
 		return type_ == other->type_;
+	}
+
+	std::string to_string() const {
+		return variant::variant_type_to_string(type_);
+	}
+
+	variant_type_ptr is_list_of() const {
+		if(type_ == variant::VARIANT_TYPE_LIST) {
+			return variant_type::get_any();
+		} else {
+			return variant_type_ptr();
+		}
+	}
+
+	std::pair<variant_type_ptr, variant_type_ptr> is_map_of() const {
+		if(type_ == variant::VARIANT_TYPE_MAP) {
+			return std::pair<variant_type_ptr, variant_type_ptr>(variant_type::get_any(), variant_type::get_any());
+		} else {
+			return std::pair<variant_type_ptr, variant_type_ptr>();
+		}
 	}
 
 private:
@@ -61,6 +88,10 @@ public:
 	bool is_equal(const variant_type& o) const {
 		const variant_type_any* other = dynamic_cast<const variant_type_any*>(&o);
 		return other != NULL;
+	}
+
+	std::string to_string() const {
+		return "any";
 	}
 private:
 	int order_id() const { return 2; }
@@ -98,6 +129,10 @@ public:
 		}
 
 		return type_ == other->type_;
+	}
+
+	std::string to_string() const {
+		return "class " + type_;
 	}
 private:
 	std::string type_;
@@ -137,6 +172,20 @@ public:
 
 		return true;
 	}
+
+	std::string to_string() const {
+		std::string result;
+		for(int n = 0; n != types_.size(); ++n) {
+			if(n != 0) {
+				result += "|";
+			}
+
+			result += types_[n]->to_string();
+		}
+		return result;
+	}
+
+	const std::vector<variant_type_ptr>* is_union() const { return &types_; }
 private:
 	std::vector<variant_type_ptr> types_;
 	int order_id() const { return 4; }
@@ -169,6 +218,14 @@ public:
 		}
 
 		return value_type_->is_equal(*other->value_type_);
+	}
+
+	std::string to_string() const {
+		return "[" + value_type_->to_string() + "]";
+	}
+
+	variant_type_ptr is_list_of() const {
+		return value_type_;
 	}
 private:
 	variant_type_ptr value_type_;
@@ -205,6 +262,14 @@ public:
 		return value_type_->is_equal(*other->value_type_) &&
 		       key_type_->is_equal(*other->key_type_);
 	}
+	std::string to_string() const {
+		return "{" + key_type_->to_string() + " -> " + value_type_->to_string() + "}";
+	}
+
+	std::pair<variant_type_ptr, variant_type_ptr> is_map_of() const {
+		return std::pair<variant_type_ptr, variant_type_ptr>(key_type_, value_type_);
+	}
+
 private:
 	variant_type_ptr key_type_, value_type_;
 	int order_id() const { return 6; }
@@ -213,9 +278,90 @@ private:
 class variant_type_function : public variant_type
 {
 public:
+	variant_type_function(const std::vector<variant_type_ptr>& args,
+	                      variant_type_ptr return_type, int min_args)
+	  : args_(args), return_(return_type), min_args_(min_args)
+	{}
+
+	bool is_function(std::vector<variant_type_ptr>* args, variant_type_ptr* return_type, int* min_args) const
+	{
+		if(args) {
+			*args = args_;
+		}
+
+		if(return_type) {
+			*return_type = return_;
+		}
+
+		if(min_args) {
+			*min_args = min_args_;
+		}
+
+		return true;
+	}
+
+	bool is_equal(const variant_type& o) const {
+		const variant_type_function* other = dynamic_cast<const variant_type_function*>(&o);
+		if(!other) {
+			return false;
+		}
+
+		if(!return_->is_equal(*other->return_) || args_.size() != other->args_.size()) {
+			return false;
+		}
+
+		for(int n = 0; n != args_.size(); ++n) {
+			if(!args_[n]->is_equal(*other->args_[n])) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	std::string to_string() const {
+		std::string result = "function(";
+		for(int n = 0; n != args_.size(); ++n) {
+			if(n != 0) {
+				result += ",";
+			}
+
+			result += args_[n]->to_string();
+		}
+
+		result += ") -> " + return_->to_string();
+		return result;
+	}
+
+	bool match(const variant& v) const {
+		if(v.is_function() == false) {
+			return false;
+		}
+
+		if(v.function_return_type()->is_equal(*return_) == false) {
+			return false;
+		}
+
+		if(v.max_function_arguments() != args_.size() || v.min_function_arguments() != min_args_) {
+			return false;
+		}
+
+		const std::vector<variant_type_ptr>& arg_types = v.function_arg_types();
+		for(int n = 0; n != arg_types.size(); ++n) {
+			if(arg_types[n]->is_equal(*args_[n]) == false) {
+				return false;
+			}
+		}
+
+		return true;
+	}
 	
 private:
 	int order_id() const { return 7; }
+
+	std::vector<variant_type_ptr> args_;
+	variant_type_ptr return_;
+	int min_args_;
 };
 
 }
@@ -334,8 +480,26 @@ variant_type_ptr variant_type::get_type(variant::TYPE type)
 	return variant_type_ptr(new variant_type_simple(type));
 }
 
-variant_type_ptr variant_type::get_union(const std::vector<variant_type_ptr>& items)
+variant_type_ptr variant_type::get_union(const std::vector<variant_type_ptr>& elements)
 {
+	std::vector<variant_type_ptr> items;
+	foreach(variant_type_ptr el, elements) {
+		foreach(variant_type_ptr item, items) {
+			if(el->is_equal(*item)) {
+				el = variant_type_ptr();
+				break;
+			}
+		}
+
+		if(el) {
+			items.push_back(el);
+		}
+	}
+
+	if(items.size() == 1) {
+		return items[0];
+	}
+
 	return variant_type_ptr(new variant_type_union(items));
 }
 
@@ -354,9 +518,7 @@ variant_type_ptr variant_type::get_class(const std::string& class_name)
 	return variant_type_ptr(new variant_type_class(class_name));
 }
 
-variant_type_ptr variant_type::get_function_type(const std::vector<variant_type_ptr>& arg_types, int min_args, variant_type_ptr return_type)
+variant_type_ptr variant_type::get_function_type(const std::vector<variant_type_ptr>& arg_types, variant_type_ptr return_type, int min_args)
 {
-	//TODO: implement me
-	ASSERT_LOG(false, "David is in need of a spanking for not fixing this yet.");
-	return variant_type_ptr();
+	return variant_type_ptr(new variant_type_function(arg_types, return_type, min_args));
 }
