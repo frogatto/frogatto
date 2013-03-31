@@ -43,6 +43,10 @@ namespace tbs
 
 	variant internal_client::get_value(const std::string& key) const
 	{
+		if(key == "in_flight") {
+			return variant(internal_server::requests_in_flight(session_id_));
+		}
+
 		return variant();
 	}
 

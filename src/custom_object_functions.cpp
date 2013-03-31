@@ -254,6 +254,7 @@ public:
 		tbs::client* tbs_client = client_.try_convert<tbs::client>();
 		if(tbs_client == NULL) {
 			tbs::internal_client* tbs_iclient = client_.try_convert<tbs::internal_client>();
+		fprintf(stderr, "XX tbs_send: %d\n", tbs_iclient->session_id());
 			ASSERT_LOG(tbs_iclient != NULL, "tbs_client object isn't valid.");
 			tbs_iclient->send_request(msg_, tbs_iclient->session_id(), callable, boost::bind(tbs_send_event, entity_ptr(&ob), callable, _1));
 		} else {

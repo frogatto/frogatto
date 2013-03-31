@@ -52,6 +52,8 @@ namespace tbs
 		static void process();
 		static void init();
 		static boost::asio::io_service& get_io_service() { return io_service_; }
+
+		static int requests_in_flight(int session_id);
 	protected:
 		virtual void heartbeat_internal(int send_heartbeat, std::map<int, client_info>& clients);
 	private:
@@ -63,6 +65,8 @@ namespace tbs
 
 		void write_queue(send_function send_fn, const variant& v, int session_id);
 		bool read_queue(send_function* send_fn, variant* v, int *session_id);
+
+		void finish_socket(send_function send_fn, client_info& cli_info);
 		
 		socket_info& get_socket_info(send_function send_fn);
 		void disconnect(int session_id);

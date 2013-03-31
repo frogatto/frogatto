@@ -824,8 +824,24 @@ private:
 		std::vector<variant_type_ptr> arg_types;
 		int min_args = 0;
 		const bool is_function = fn_type->is_function(&arg_types, NULL, &min_args);
+
+	//TODO: make this function work.
+#if 0
 		//ASSERT_LOG(is_function, "FUNCTION CALL ON EXPRESSION WHICH ISN'T GUARANTEED TO BE A FUNCTION: " << fn_type->to_string() << " AT " << debug_pinpoint_location());
 		if(!is_function) std::cerr << "XX: FUNCTION CALL ON EXPRESSION WHICH ISN'T GUARANTEED TO BE A FUNCTION: " << fn_type->to_string() << " at '" << str() << "' " << debug_pinpoint_location() << "\n";
+
+		if(is_function) {
+			for(int n = 0; n != args_.size() && n != arg_types.size(); ++n) {
+				variant_type_ptr t = args_[n]->query_variant_type();
+				std::cerr << "MATCH: " << t->to_string() << " WITH " << arg_types[n]->to_string() << "\n";
+				if(variant_types_compatible(arg_types[n], t) == false) {
+					std::cerr << "YY: FUNCTION CALL DOES NOT MATCH: " << debug_pinpoint_location() << " ARGUMENT " << (n+1) << " TYPE " << t->to_string() << " DOES NOT MATCH " << arg_types[n]->to_string() << "\n";
+				}
+
+				std::cerr << "DONE MATCH\n";
+			}
+		}
+#endif
 	}
 	
 	expression_ptr left_;
@@ -1571,11 +1587,9 @@ void parse_function_args(variant formula_str, const token* &i1, const token* i2,
 	while((i1->type != TOKEN_RPARENS) && (i1 != i2)) {
 		variant_type_ptr variant_type_info;
 		if(i1+1 != i2 && i1->type != TOKEN_COMMA && (i1+1)->type != TOKEN_COMMA && (i1+1)->type != TOKEN_RPARENS && std::string((i1+1)->begin, (i1+1)->end) != "=" && get_formula_callable_definition(std::string(i1->begin, i1->end)) == NULL) {
-			std::cerr << "FOUND TYPE STARTING AT: " << std::string(i1->begin, i1->end) << "\n";
 			variant_type_info = parse_variant_type(formula_str, i1, i2);
 			std::string class_name;
 			variant_type_info->is_class(&class_name);
-			std::cerr << "IS CLASS: " << variant_type_info->is_class() << ": " << class_name << "\n";
 		}
 
 		ASSERT_LOG(i1->type != TOKEN_RPARENS && i1 != i2, "UNEXPECTED END OF FUNCTION DEF: " << pinpoint_location(formula_str, (i1-1)->begin, (i1-1)->end));
@@ -2122,7 +2136,6 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 						bool seen_filter = false;
 
 						foreach(const Arg& arg, args) {
-							std::cerr << "ARGUMENT: (((" << std::string(arg.first->begin, (arg.second-1)->end) << ")))\n";
 							const token* arrow = arg.first;
 							if(token_matcher().add(TOKEN_LEFT_POINTER).find_match(arrow, arg.second)) {
 								ASSERT_LOG(arrow - arg.first == 1 && arg.first->type == TOKEN_IDENTIFIER, "expected identifier to the left of <- in list comprehension\n" << pinpoint_location(formula_str, arg.first->begin, arrow->end));

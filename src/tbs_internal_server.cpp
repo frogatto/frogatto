@@ -61,19 +61,6 @@ namespace tbs
 		game_logic::map_formula_callable_ptr callable)
 	{
 		if(handler) {
-			{
-				const game_logic::wml_formula_callable_read_scope read_scope;
-				if(resp.has_key(variant("serialized_objects"))) {
-					foreach(variant obj_node, resp["serialized_objects"]["character"].as_list()) {
-						game_logic::wml_serializable_formula_callable_ptr obj = obj_node.try_convert<game_logic::wml_serializable_formula_callable>();
-						ASSERT_LOG(obj.get() != NULL, "ILLEGAL OBJECT FOUND IN SERIALIZATION");
-						std::string addr_str = obj->addr();
-						const intptr_t addr_id = strtoll(addr_str.c_str(), NULL, 16);
-
-						game_logic::wml_formula_callable_read_scope::register_serialized_object(addr_id, obj);
-					}
-				}
-			}
 			callable->add("message", resp);
 			handler("message_received");
 		}
@@ -89,6 +76,17 @@ namespace tbs
 	void internal_server::init()
 	{
 		server_ptr = internal_server_ptr(new internal_server);
+	}
+
+	int internal_server::requests_in_flight(int session_id)
+	{
+		int result = 0;
+		for(std::map<send_function, socket_info, send_function_less>::iterator i = server_ptr->connections_.begin(); i != server_ptr->connections_.end(); ++i) {
+			if(i->second.session_id == session_id) {
+			}
+		}
+
+		return result;
 	}
 
 	server_base::socket_info& internal_server::get_socket_info(send_function send_fn)
@@ -122,7 +120,7 @@ namespace tbs
 
 			client_info& cli_info = clients[info.session_id];
 			if(cli_info.msg_queue.empty() == false) {
-				messages.push_back(std::pair<send_function,variant>(send_fn, json::parse(cli_info.msg_queue.front())));
+				messages.push_back(std::pair<send_function,variant>(send_fn, game_logic::deserialize_doc_with_objects(cli_info.msg_queue.front())));
 				cli_info.msg_queue.pop_front();
 			} else if(send_heartbeat) {
 				if(!cli_info.game) {
@@ -149,7 +147,7 @@ namespace tbs
 		if(read_queue(&send_fn, &request, &session_id)) {
 			server_ptr->handle_message(
 				send_fn,
-				NULL,
+				boost::bind(&internal_server::finish_socket, this, send_fn, _1),
 				boost::bind(&internal_server::get_socket_info, server_ptr.get(), send_fn),
 				session_id, 
 				request);
@@ -163,13 +161,6 @@ namespace tbs
 	{
 		if(session_id == -1) {
 			return;
-		}
-
-		for(std::map<send_function, socket_info, send_function_less>::iterator i = connections_.begin(); i != connections_.end(); ++i) {
-			if(i->second.session_id == session_id) {
-				i->first(json::parse(msg));
-				return;
-			}
 		}
 
 		server_base::queue_msg(session_id, msg, has_priority);
@@ -190,5 +181,14 @@ namespace tbs
 		boost::tie(*send_fn, *v, *session_id) = msg_queue_.front();
 		msg_queue_.pop_front();
 		return true;
+	}
+
+	void internal_server::finish_socket(send_function send_fn, client_info& cli_info)
+	{
+		if(cli_info.msg_queue.empty() == false) {
+			const std::string msg = cli_info.msg_queue.front();
+			cli_info.msg_queue.pop_front();
+			send_fn(game_logic::deserialize_doc_with_objects(msg));
+		}
 	}
 }

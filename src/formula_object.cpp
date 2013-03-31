@@ -350,7 +350,23 @@ private:
 
 bool is_class_derived_from(const std::string& derived, const std::string& base)
 {
-	return get_class(derived)->is_a(base);
+	if(derived == base) {
+		return true;
+	}
+
+	variant v = get_class_node(derived);
+	if(v.is_map()) {
+		variant bases = v["bases"];
+		if(bases.is_list()) {
+			foreach(const variant& b, bases.as_list()) {
+				if(is_class_derived_from(b.as_string(), base)) {
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
 }
 
 formula_class::formula_class(const std::string& class_name, const variant& node)

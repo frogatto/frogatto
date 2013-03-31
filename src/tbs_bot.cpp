@@ -93,7 +93,6 @@ void bot::handle_response(const std::string& type, game_logic::formula_callable_
 	}
 
 	if(on_message_) {
-		std::cerr << "BOT ON MESSAGE\n";
 		message_type_ = type;
 		message_callable_ = callable;
 		execute_command(on_message_->execute(*this));

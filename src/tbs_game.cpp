@@ -387,10 +387,7 @@ int game::get_player_index(const std::string& nick) const
 
 void game::send_game_state(int nplayer)
 {
-	std::cerr << "XX SEND GAME STATE: " << nplayer << " " << state_id_ << "\n";
 	if(nplayer == -1) {
-		++state_id_;
-
 		for(int n = 0; n != players().size(); ++n) {
 			send_game_state(n);
 		}
@@ -401,7 +398,6 @@ void game::send_game_state(int nplayer)
 
 		current_message_ = "";
 	} else if(nplayer >= 0 && nplayer < players().size()) {
-		std::cerr << "GAME STATE SENDING: " << write(0).write_json() << "\n";
 		queue_message(write(nplayer), nplayer);
 	}
 }
@@ -474,6 +470,8 @@ void game::set_value(const std::string& key, const variant& value)
 				bots_.push_back(new_bot);
 			}
 		}
+	} else if(key == "state_id") {
+		state_id_ = value.as_int();
 	} else if(backup_callable_) {
 		backup_callable_->mutate_value(key, value);
 	}
