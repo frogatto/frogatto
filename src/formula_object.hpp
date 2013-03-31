@@ -73,13 +73,14 @@ private:
 	//overrides of the class's read-only properties.
 	std::vector<formula_ptr> property_overrides_;
 
+	std::vector<variant> variables_;
+
 	boost::intrusive_ptr<const formula_class> class_;
-	variant private_data_;
 
 	variant tmp_value_;
 
 	//if this is non-zero, then private_data_ will be exposed via get_value.
-	mutable int expose_private_data_;
+	mutable int private_data_;
 };
 
 bool formula_class_valid(const std::string& type);
