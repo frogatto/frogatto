@@ -81,7 +81,7 @@ namespace game_logic
 
 	variant formula_callable::get_value_by_slot(int slot) const
 	{
-		ASSERT_LOG(false, "Could not get value by slot from formula callable " << slot);
+		ASSERT_LOG(false, "Could not get value by slot from formula callable " << typeid(*this).name() << ": " << slot);
 		return variant(0); //so VC++ doesn't complain
 	}
 

@@ -41,9 +41,9 @@ void invalidate_class_definition(const std::string& class_name);
 boost::intrusive_ptr<const formula_class> get_class(const std::string& type);
 
 struct property_entry {
-	property_entry() {
+	property_entry() : variable_slot(-1) {
 	}
-	property_entry(const std::string& class_name, const std::string& prop_name, variant node) {
+	property_entry(const std::string& class_name, const std::string& prop_name, variant node, int& state_slot) : variable_slot(-1) {
 		name = prop_name;
 
 		formula_callable_definition* class_def = get_class_definition(class_name);
@@ -62,11 +62,10 @@ struct property_entry {
 			return;
 		}
 
-		variant variable_setting = node["variable"];
-		if(variable_setting.is_bool() && variable_setting.as_bool()) {
-			variable = variant(name);
-		} else if(variable_setting.is_string()) {
-			variable = variable_setting;
+		if(node.is_map()) {
+			if(node["variable"].as_bool(true)) {
+				variable_slot = state_slot++;
+			}
 		}
 
 		if(node["get"].is_string()) {
@@ -77,10 +76,12 @@ struct property_entry {
 			setter = game_logic::formula::create_optional_formula(node["set"], NULL, get_class_definition(class_name));
 		}
 
+		default_value = node["default"];
+
 #ifndef NO_FFL_TYPE_SAFETY_CHECKS
 		if(preferences::type_safety_checks()) {
 			variant valid_types = node["type"];
-			if(valid_types.is_null() && variable_setting.is_bool() && variable_setting.as_bool()) {
+			if(valid_types.is_null() && variable_slot != -1) {
 				variant default_value = node["default"];
 				if(default_value.is_null() == false) {
 					valid_types = variant(variant::variant_type_to_string(default_value.type()));
@@ -100,10 +101,12 @@ struct property_entry {
 	}
 
 	std::string name;
-	variant variable;
 	game_logic::const_formula_ptr getter, setter;
 
 	variant_type_ptr get_type, set_type;
+	int variable_slot;
+
+	variant default_value;
 };
 
 std::map<std::string, variant> class_node_map;
@@ -153,7 +156,7 @@ variant get_class_node(const std::string& type)
 }
 
 enum CLASS_BASE_FIELDS { FIELD_PRIVATE, FIELD_VALUE, FIELD_SELF, FIELD_ME, FIELD_CLASS, NUM_BASE_FIELDS };
-static const std::string BaseFields[] = {"private", "value", "self", "me", "_class"};
+static const std::string BaseFields[] = {"data", "value", "self", "me", "_class"};
 
 class formula_class_definition : public formula_callable_definition
 {
@@ -320,6 +323,8 @@ public:
 
 	bool is_a(const std::string& name) const;
 
+	int nstate_slots() const { return nstate_slots_; }
+
 	void build_nested_classes();
 	void run_unit_tests();
 
@@ -339,6 +344,8 @@ private:
 	std::vector<boost::intrusive_ptr<const formula_class> > bases_;
 
 	variant nested_classes_;
+
+	int nstate_slots_;
 };
 
 bool is_class_derived_from(const std::string& derived, const std::string& base)
@@ -347,7 +354,7 @@ bool is_class_derived_from(const std::string& derived, const std::string& base)
 }
 
 formula_class::formula_class(const std::string& class_name, const variant& node)
-  : name_(class_name)
+  : name_(class_name), nstate_slots_(0)
 {
 	variant bases_v = node["bases"];
 	if(bases_v.is_null() == false) {
@@ -363,22 +370,19 @@ formula_class::formula_class(const std::string& class_name, const variant& node)
 		merge_variant_over(&private_data_, base->private_data_);
 	}
 
-	if(node["private"].is_map()) {
-		merge_variant_over(&private_data_, node["private"]);
-	}
-
 	ASSERT_LOG(bases_.size() <= 1, "Multiple inheritance of classes not currently supported");
 
 	foreach(boost::intrusive_ptr<const formula_class> base, bases_) {
 		slots_ = base->slots();
 		properties_ = base->properties();
+		nstate_slots_ = base->nstate_slots_;
 	}
 
 	const variant properties = node["properties"];
 	if(properties.is_map()) {
 		foreach(variant key, properties.get_keys().as_list()) {
 			const variant prop_node = properties[key];
-			property_entry entry(class_name, key.as_string(), prop_node);
+			property_entry entry(class_name, key.as_string(), prop_node, nstate_slots_);
 
 			if(properties_.count(key.as_string()) == 0) {
 				properties_[key.as_string()] = slots_.size();
@@ -386,10 +390,6 @@ formula_class::formula_class(const std::string& class_name, const variant& node)
 			}
 
 			slots_[properties_[key.as_string()]] = entry;
-
-			if(prop_node.has_key("default") && entry.variable.is_string()) {
-				private_data_.add_attr(entry.variable, prop_node["default"]);
-			}
 		}
 	}
 
@@ -499,24 +499,16 @@ void formula_class::run_unit_tests()
 namespace
 {
 struct private_data_scope {
-	explicit private_data_scope(int& r, variant* tmp_value=NULL, const variant* value=NULL) : r_(r), tmp_value_(tmp_value) {
-		++r_;
-
-		if(tmp_value) {
-			*tmp_value = *value;
-		}
+	explicit private_data_scope(int* r, int new_value) : r_(*r), old_value_(*r) {
+		r_ = new_value;
 	}
 
 	~private_data_scope() {
-		--r_;
-
-		if(tmp_value_) {
-			*tmp_value_ = variant();
-		}
+		r_ = old_value_;
 	}
 private:
 	int& r_;
-	variant* tmp_value_;
+	int old_value_;
 };
 
 classes_map classes_, backup_classes_;
@@ -605,7 +597,10 @@ void formula_object::visit_variants(variant node, boost::function<void (variant)
 		wml_formula_callable_serialization_scope::register_serialized_object(ptr);
 		seen->push_back(obj);
 
-		visit_variants(obj->private_data_, fn, seen);
+		foreach(const variant& v, obj->variables_) {
+			visit_variants(v, fn, seen);
+		}
+
 		seen->pop_back();
 		return;
 	}
@@ -638,9 +633,15 @@ boost::intrusive_ptr<formula_object> formula_object::create(const std::string& t
 }
 
 formula_object::formula_object(const std::string& type, variant args)
-  : class_(get_class(type)), expose_private_data_(false)
+  : class_(get_class(type)), private_data_(-1)
 {
-	private_data_ = deep_copy_variant(class_->private_data());
+	variables_.resize(class_->nstate_slots());
+	std::cerr << "CONSTRUCT " << type << ": " << class_->nstate_slots() << "\n";
+	foreach(const property_entry& slot, class_->slots()) {
+		if(slot.variable_slot != -1) {
+			variables_[slot.variable_slot] = slot.default_value;
+		}
+	}
 }
 
 bool formula_object::is_a(const std::string& class_name) const
@@ -659,7 +660,7 @@ void formula_object::call_constructors(variant args)
 		const formula_callable_definition* def = get_class_definition(class_->name());
 		foreach(const variant& key, args.get_keys().as_list()) {
 			std::map<std::string, int>::const_iterator itor = class_->properties().find(key.as_string());
-			if(itor != class_->properties().end() && class_->slots()[itor->second].setter.get() == NULL && class_->slots()[itor->second].variable.is_null()) {
+			if(itor != class_->properties().end() && class_->slots()[itor->second].setter.get() == NULL && class_->slots()[itor->second].variable_slot == -1) {
 				if(property_overrides_.size() <= itor->second) {
 					property_overrides_.resize(itor->second+1);
 				}
@@ -679,18 +680,26 @@ void formula_object::call_constructors(variant args)
 	}
 
 	foreach(const game_logic::const_formula_ptr f, class_->constructor()) {
-		private_data_scope scope(expose_private_data_, &tmp_value_, &args);
 		execute_command(f->execute(*this));
 	}
 }
 
 formula_object::formula_object(variant data)
-  : class_(get_class(data["@class"].as_string())), expose_private_data_(false)
+  : class_(get_class(data["@class"].as_string())), private_data_(-1)
 {
-	if(data.is_map() && data["private"].is_map()) {
-		private_data_ = deep_copy_variant(data["private"]);
-	} else {
-		private_data_ = deep_copy_variant(class_->private_data());
+	variables_.resize(class_->nstate_slots());
+
+	if(data.is_map() && data["state"].is_map()) {
+		variant state = data["state"];
+		foreach(const variant::map_pair& p, state.as_map()) {
+			std::map<std::string, int>::const_iterator itor = class_->properties().find(p.first.as_string());
+			ASSERT_LOG(itor != class_->properties().end(), "No property " << p.first.as_string() << " in class " << class_->name());
+
+			const property_entry& entry = class_->slots()[itor->second];
+			ASSERT_NE(entry.variable_slot, -1);
+
+			variables_[entry.variable_slot] = p.second;
+		}
 	}
 
 	if(data.is_map() && data["property_overrides"].is_list()) {
@@ -720,7 +729,17 @@ variant formula_object::serialize_to_wml() const
 {
 	std::map<variant, variant> result;
 	result[variant("@class")] = variant(class_->name());
-	result[variant("private")] = deep_copy_variant(private_data_);
+
+	std::map<variant,variant> state;
+	foreach(const property_entry& slot, class_->slots()) {
+		const int nstate_slot = slot.variable_slot;
+		if(nstate_slot != -1 && nstate_slot < variables_.size() &&
+		   variables_[nstate_slot].is_null() == false) {
+			state[variant(slot.name)] = variables_[nstate_slot];
+		}
+	}
+
+	result[variant("state")] = variant(&state);
 
 	if(property_overrides_.empty() == false) {
 		std::vector<variant> properties;
@@ -745,8 +764,9 @@ variant formula_object::get_value(const std::string& key) const
 {
 	/*TODO: MAKE DATA HIDING WORK
 	if(expose_private_data_) */ {
-		if(key == "private") {
-			return private_data_;
+		if(key == "data") {
+			ASSERT_NE(private_data_, -1);
+			return variables_[private_data_];
 		} else if(key == "value") {
 			return tmp_value_;
 		}
@@ -764,17 +784,16 @@ variant formula_object::get_value(const std::string& key) const
 	ASSERT_LOG(itor != class_->properties().end(), "UNKNOWN PROPERTY ACCESS " << key << " IN CLASS " << class_->name() << "\nFORMULA LOCATION: " << get_call_stack());
 
 	if(itor->second < property_overrides_.size() && property_overrides_[itor->second]) {
-		private_data_scope scope(expose_private_data_);
 		return property_overrides_[itor->second]->execute(*this);
 	}
 
 	const property_entry& entry = class_->slots()[itor->second];
 
 	if(entry.getter) {
-		private_data_scope scope(expose_private_data_);
+		private_data_scope scope(&private_data_, entry.variable_slot);
 		return entry.getter->execute(*this);
-	} else if(entry.variable.is_null() == false) {
-		return private_data_[entry.variable];
+	} else if(entry.variable_slot != -1) {
+		return variables_[entry.variable_slot];
 	} else {
 		ASSERT_LOG(false, "ILLEGAL READ PROPERTY ACCESS OF NON-READABLE VARIABLE " << key << " IN CLASS " << class_->name());
 	}
@@ -783,7 +802,10 @@ variant formula_object::get_value(const std::string& key) const
 variant formula_object::get_value_by_slot(int slot) const
 {
 	switch(slot) {
-		case FIELD_PRIVATE: return private_data_;
+		case FIELD_PRIVATE: {
+			ASSERT_NE(private_data_, -1);
+			return variables_[private_data_];
+		}
 		case FIELD_VALUE: return tmp_value_;
 		case FIELD_SELF:
 		case FIELD_ME: return variant(this);
@@ -797,17 +819,16 @@ variant formula_object::get_value_by_slot(int slot) const
 
 
 	if(slot < property_overrides_.size() && property_overrides_[slot]) {
-		private_data_scope scope(expose_private_data_);
 		return property_overrides_[slot]->execute(*this);
 	}
 	
 	const property_entry& entry = class_->slots()[slot];
 
 	if(entry.getter) {
-		private_data_scope scope(expose_private_data_);
+		private_data_scope scope(&private_data_, entry.variable_slot);
 		return entry.getter->execute(*this);
-	} else if(entry.variable.is_null() == false) {
-		return private_data_[entry.variable];
+	} else if(entry.variable_slot != -1) {
+		return variables_[entry.variable_slot];
 	} else {
 		ASSERT_LOG(false, "ILLEGAL READ PROPERTY ACCESS OF NON-READABLE VARIABLE IN CLASS " << class_->name());
 	}
@@ -815,11 +836,8 @@ variant formula_object::get_value_by_slot(int slot) const
 
 void formula_object::set_value(const std::string& key, const variant& value)
 {
-	if(expose_private_data_ && key == "private") {
-		if(value.is_map() == false) {
-			ASSERT_LOG(false, "TRIED TO SET CLASS PRIVATE DATA TO A VALUE WHICH IS NOT A MAP: " << value);
-		}
-		private_data_ = value;
+	if(private_data_ != -1 && key == "data") {
+		variables_[private_data_] = value;
 		return;
 	}
 
@@ -835,10 +853,8 @@ void formula_object::set_value_by_slot(int slot, const variant& value)
 	if(slot < NUM_BASE_FIELDS) {
 		switch(slot) {
 		case FIELD_PRIVATE:
-			if(value.is_map() == false) {
-				ASSERT_LOG(false, "TRIED TO SET CLASS PRIVATE DATA TO A VALUE WHICH IS NOT A MAP: " << value);
-			}
-			private_data_ = value;
+			ASSERT_NE(private_data_, -1);
+			variables_[private_data_] = value;
 			return;
 		default:
 			ASSERT_LOG(false, "TRIED TO SET ILLEGAL KEY IN CLASS: " << BaseFields[slot]);
@@ -857,10 +873,11 @@ void formula_object::set_value_by_slot(int slot, const variant& value)
 	}
 
 	if(entry.setter) {
-		private_data_scope scope(expose_private_data_, &tmp_value_, &value);
+		tmp_value_ = value;
+		private_data_scope scope(&private_data_, entry.variable_slot);
 		execute_command(entry.setter->execute(*this));
-	} else if(entry.variable.is_null() == false) {
-		private_data_.add_attr_mutation(entry.variable, value);
+	} else if(entry.variable_slot != -1) {
+		variables_[entry.variable_slot] = value;
 	} else {
 		ASSERT_LOG(false, "ILLEGAL WRITE PROPERTY ACCESS OF NON-WRITABLE VARIABLE " << entry.name << " IN CLASS " << class_->name());
 	}
@@ -875,13 +892,14 @@ void formula_object::set_value_by_slot(int slot, const variant& value)
 			override = property_overrides_[slot];
 		}
 		if(override) {
-			private_data_scope scope(expose_private_data_);
+			private_data_scope scope(&private_data_, entry.variable_slot);
 			var = override->execute(*this);
 		} else if(entry.getter) {
-			private_data_scope scope(expose_private_data_);
+			private_data_scope scope(&private_data_, entry.variable_slot);
 			var = entry.getter->execute(*this);
 		} else {
-			var = private_data_[entry.variable];
+			ASSERT_NE(entry.variable_slot, -1);
+			var = variables_[entry.variable_slot];
 		}
 
 		ASSERT_LOG(entry.get_type->match(var), "AFTER WRITE TO " << entry.name << " IN CLASS " << class_->name() << " TYPE IS INVALID. EXPECTED " << entry.get_type->str() << " BUT FOUND " << var.write_json());
@@ -909,13 +927,14 @@ void formula_object::validate() const
 			override = property_overrides_[index];
 		}
 		if(override) {
-			private_data_scope scope(expose_private_data_);
+			private_data_scope scope(&private_data_, entry.variable_slot);
 			value = override->execute(*this);
 		} else if(entry.getter) {
-			private_data_scope scope(expose_private_data_);
+			private_data_scope scope(&private_data_, entry.variable_slot);
 			value = entry.getter->execute(*this);
-		} else if(entry.variable.is_null() == false) {
-			value = private_data_[entry.variable];
+		} else if(entry.variable_slot != -1) {
+			private_data_scope scope(&private_data_, entry.variable_slot);
+			value = variables_[entry.variable_slot];
 		} else {
 			++index;
 			continue;
@@ -932,7 +951,7 @@ void formula_object::get_inputs(std::vector<formula_input>* inputs) const
 {
 	foreach(const property_entry& entry, class_->slots()) {
 		FORMULA_ACCESS_TYPE type = FORMULA_READ_ONLY;
-		if(entry.getter && entry.setter || entry.variable.is_null() == false) {
+		if(entry.getter && entry.setter || entry.variable_slot != -1) {
 			type = FORMULA_READ_WRITE;
 		} else if(entry.getter) {
 			type = FORMULA_READ_ONLY;
