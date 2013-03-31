@@ -216,22 +216,31 @@ private:
 };
 
 struct variant_fn {
-variant_fn() : refcount(0)
-{}
+	variant_fn() : refcount(0)
+	{}
 
-const std::string* begin_args;
-const std::string* end_args;
+	const std::string* begin_args;
+	const std::string* end_args;
 
-game_logic::const_formula_ptr fn;
+	game_logic::const_formula_ptr fn;
 
-game_logic::const_formula_callable_ptr callable;
+	game_logic::const_formula_callable_ptr callable;
 
-std::vector<variant> default_args;
+	std::vector<variant> default_args;
 
-int base_slot;
-int refcount;
-std::vector<variant_type_ptr> variant_types;
-variant_type_ptr return_type;
+	int base_slot;
+	int refcount;
+	std::vector<variant_type_ptr> variant_types;
+	variant_type_ptr return_type;
+};
+
+struct variant_multi_fn {
+	variant_multi_fn() : refcount(0)
+	{}
+
+	int refcount;
+
+	std::vector<variant> functions;
 };
 
 struct variant_delayed {
@@ -280,6 +289,9 @@ break;
 case VARIANT_TYPE_FUNCTION:
 ++fn_->refcount;
 break;
+case VARIANT_TYPE_MULTI_FUNCTION:
+++multi_fn_->refcount;
+break;
 case VARIANT_TYPE_DELAYED:
 delayed_variants_loading.insert(this);
 ++delayed_->refcount;
@@ -322,6 +334,11 @@ break;
 case VARIANT_TYPE_FUNCTION:
 if(--fn_->refcount == 0) {
 	delete fn_;
+}
+break;
+case VARIANT_TYPE_MULTI_FUNCTION:
+if(--multi_fn_->refcount == 0) {
+	delete multi_fn_;
 }
 break;
 case VARIANT_TYPE_DELAYED:
@@ -431,6 +448,16 @@ void variant::resolve_delayed()
 	}
 
 	delayed_variants_loading.clear();
+}
+
+variant variant::create_function_overload(const std::vector<variant>& fn)
+{
+	variant result;
+	result.type_ = VARIANT_TYPE_MULTI_FUNCTION;
+	result.multi_fn_ = new variant_multi_fn;
+	result.multi_fn_->functions = fn;
+	result.increment_refcount();
+	return result;
 }
 
 variant::variant(const game_logic::formula_callable* callable)
@@ -687,8 +714,66 @@ variant variant::get_list_slice(int begin, int end) const
 	return result;
 }
 
+bool variant::function_call_valid(const std::vector<variant>& args, std::string* message) const
+{
+	if(type_ == VARIANT_TYPE_MULTI_FUNCTION) {
+		foreach(const variant& v, multi_fn_->functions) {
+			if(v.function_call_valid(args)) {
+				return true;
+			}
+		}
+
+		if(message) {
+			*message = "Arguments do not match any overloaded functions";
+		}
+
+		return false;
+	}
+
+	if(type_ != VARIANT_TYPE_FUNCTION) {
+		if(message) {
+			*message = "Not a function";
+		}
+		return false;
+	}
+
+	const int max_args = fn_->end_args - fn_->begin_args;
+	const int min_args = max_args - fn_->default_args.size();
+
+	if(args.size() > max_args || args.size() < min_args) {
+		if(message) {
+			*message = "Incorrect number of arguments to function";
+		}
+		return false;
+	}
+
+	for(int n = 0; n != args.size(); ++n) {
+		if(n < fn_->variant_types.size() && fn_->variant_types[n]) {
+			if(fn_->variant_types[n]->match(args[n]) == false) {
+				if(message) {
+					*message = formatter() << "Argument " << (n+1) << " does not match. Expects " << fn_->variant_types[n]->to_string() << " but found " << args[n].write_json();
+				}
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
 variant variant::operator()(const std::vector<variant>& passed_args) const
 {
+	if(type_ == VARIANT_TYPE_MULTI_FUNCTION) {
+		foreach(const variant& v, multi_fn_->functions) {
+			if(v.function_call_valid(passed_args)) {
+				return v(passed_args);
+			}
+		}
+
+		generate_error("Function overload has no matches to arguments");
+		return variant();
+	}
+
 	const std::vector<variant>* args = &passed_args;
 	std::vector<variant> args_buf;
 
@@ -1092,6 +1177,21 @@ variant variant::operator+(const variant& v) const
 		}
 	}
 
+	if(is_callable()) {
+		game_logic::formula_object* obj = try_convert<game_logic::formula_object>();
+		if(obj && v.is_map()) {
+			boost::intrusive_ptr<game_logic::formula_object> new_obj(obj->clone());
+			const std::map<variant,variant>& m = v.as_map();
+			for(std::map<variant,variant>::const_iterator i = m.begin();
+			    i != m.end(); ++i) {
+				i->first.must_be(VARIANT_TYPE_STRING);
+				new_obj->mutate_value(i->first.as_string(), i->second);
+			}
+
+			return variant(new_obj.get());
+		}
+	}
+
 	ASSERT_LOG(false, "ILLEGAL ADDITION OF VARIANTS: " << write_json() << " + " << v.write_json());
 
 	return variant(as_int() + v.as_int());
@@ -1249,6 +1349,9 @@ bool variant::operator==(const variant& v) const
 	case VARIANT_TYPE_FUNCTION: {
 		return fn_ == v.fn_;
 	}
+	case VARIANT_TYPE_MULTI_FUNCTION: {
+		return multi_fn_ == v.multi_fn_;
+	}
 	case VARIANT_TYPE_DELAYED:
 	case VARIANT_TYPE_INVALID:
 		assert(false);
@@ -1319,6 +1422,9 @@ bool variant::operator<=(const variant& v) const
 	}
 	case VARIANT_TYPE_FUNCTION: {
 		return fn_ <= v.fn_;
+	}
+	case VARIANT_TYPE_MULTI_FUNCTION: {
+		return multi_fn_ <= v.multi_fn_;
 	}
 	case VARIANT_TYPE_DELAYED:
 	case VARIANT_TYPE_INVALID:
@@ -1700,6 +1806,14 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 		s << ")";
 		break;
 	}
+	case VARIANT_TYPE_MULTI_FUNCTION: {
+		s << "overload(";
+		foreach(const variant& v, multi_fn_->functions) {
+			s << v.to_debug_string() << ", ";
+		}
+		s << ")";
+		break;
+	}
 	case VARIANT_TYPE_DELAYED: {
 		char buf[64];
 		sprintf(buf, "(delayed %p)", delayed_);
@@ -1833,44 +1947,61 @@ void variant::write_json(std::ostream& s, write_flags flags) const
 	}
 	case VARIANT_TYPE_FUNCTION: {
 		s << "\"@eval ";
-
-		//Serialize the closure along with the object, if we can.
-		const bool serialize_closure = fn_->callable && dynamic_cast<const game_logic::wml_serializable_formula_callable*>(fn_->callable.get());
-		if(serialize_closure) {
-			s << "delay_until_end_of_loading(q(bind_closure(";
-		}
-		
-		s << "def(";
-		const int default_base = (fn_->end_args - fn_->begin_args) - fn_->default_args.size();
-		for(const std::string* p = fn_->begin_args; p != fn_->end_args; ++p) {
-			if(p != fn_->begin_args) {
-				s << ",";
-			}
-
-			s << *p;
-			
-			const int index = p - fn_->begin_args;
-			if(index >= default_base) {
-				variant v = fn_->default_args[index - default_base];
-				std::string str;
-				v.serialize_to_string(str);
-				s << "=" << str;
-			}
-		}
-
-		s << ") " << fn_->fn->str();
-
-		if(serialize_closure) {
-			std::string str;
-			variant(fn_->callable.get()).serialize_to_string(str);
-			s << "," << str << ")))";
-		}
-		
+		write_function(s);
 		s << "\"";
+		return;
+	}
+
+	case VARIANT_TYPE_MULTI_FUNCTION: {
+		s << "\"@eval overload(";
+		for(int n = 0; n != multi_fn_->functions.size(); ++n) {
+			const variant& v = multi_fn_->functions[n];
+			if(n != 0) {
+				s << ", ";
+			}
+			v.write_function(s);
+		}
+
+		s << ")\"";
 		return;
 	}
 	default:
 		generate_error(formatter() << "illegal type to serialize to json: " << to_debug_string());
+	}
+}
+
+void variant::write_function(std::ostream& s) const
+{
+	//Serialize the closure along with the object, if we can.
+	const bool serialize_closure = fn_->callable && dynamic_cast<const game_logic::wml_serializable_formula_callable*>(fn_->callable.get());
+	if(serialize_closure) {
+		s << "delay_until_end_of_loading(q(bind_closure(";
+	}
+	
+	s << "def(";
+	const int default_base = (fn_->end_args - fn_->begin_args) - fn_->default_args.size();
+	for(const std::string* p = fn_->begin_args; p != fn_->end_args; ++p) {
+		if(p != fn_->begin_args) {
+			s << ",";
+		}
+
+		s << *p;
+		
+		const int index = p - fn_->begin_args;
+		if(index >= default_base) {
+			variant v = fn_->default_args[index - default_base];
+			std::string str;
+			v.serialize_to_string(str);
+			s << "=" << str;
+		}
+	}
+
+	s << ") " << fn_->fn->str();
+
+	if(serialize_closure) {
+		std::string str;
+		variant(fn_->callable.get()).serialize_to_string(str);
+		s << "," << str << ")))";
 	}
 }
 

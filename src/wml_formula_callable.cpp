@@ -25,6 +25,7 @@
 #include "asserts.hpp"
 #include "foreach.hpp"
 #include "formula_object.hpp"
+#include "json_parser.hpp"
 #include "variant_utils.hpp"
 #include "wml_formula_callable.hpp"
 
@@ -150,6 +151,39 @@ bool wml_formula_callable_read_scope::try_load_object(intptr_t id, variant& v)
 	} else {
 		return false;
 	}
+}
+
+std::string serialize_doc_with_objects(variant v)
+{
+	game_logic::wml_formula_callable_serialization_scope serialization_scope;
+	serialization_scope.write_objects(v);
+	v.add_attr(variant("serialized_objects"), serialization_scope.write_objects(v));
+	return v.write_json();
+}
+
+variant deserialize_doc_with_objects(const std::string& msg)
+{
+	variant v;
+	{
+		const game_logic::wml_formula_callable_read_scope read_scope;
+		try {
+			v = json::parse(msg);
+		} catch(json::parse_error& e) {
+			ASSERT_LOG(false, "ERROR PROCESSING MESSAGE RETURNED FROM TBS SERVER DOC: --BEGIN--" << msg << "--END-- ERROR: " << e.error_message());
+		}
+		if(v.has_key(variant("serialized_objects"))) {
+			foreach(variant obj_node, v["serialized_objects"]["character"].as_list()) {
+				game_logic::wml_serializable_formula_callable_ptr obj = obj_node.try_convert<game_logic::wml_serializable_formula_callable>();
+				ASSERT_LOG(obj.get() != NULL, "ILLEGAL OBJECT FOUND IN SERIALIZATION");
+				std::string addr_str = obj->addr();
+				const intptr_t addr_id = strtoll(addr_str.c_str(), NULL, 16);
+
+				game_logic::wml_formula_callable_read_scope::register_serialized_object(addr_id, obj);
+			}
+		}
+	}
+
+	return v;
 }
 
 }

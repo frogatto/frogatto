@@ -29,7 +29,8 @@ vector_text::vector_text(const variant& node)
 	: text_(i18n::tr(node["text"].as_string())),
 	visible_(node["visible"].as_bool(true)),
 	size_(node["size"].as_int(12)),
-	font_(node["font"].as_string_default())
+	font_(node["font"].as_string_default()),
+	align_(ALIGN_LEFT)
 {
 	std::vector<int> r = node["rect"].as_list_int();
 	draw_area_ = rect(r[0], r[1], r[2], r[3]);

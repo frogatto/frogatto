@@ -387,7 +387,7 @@ int game::get_player_index(const std::string& nick) const
 
 void game::send_game_state(int nplayer)
 {
-	std::cerr << "SEND GAME STATE: " << nplayer << "\n";
+	std::cerr << "XX SEND GAME STATE: " << nplayer << " " << state_id_ << "\n";
 	if(nplayer == -1) {
 		++state_id_;
 

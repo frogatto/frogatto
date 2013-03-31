@@ -210,7 +210,7 @@ void web_server::handle_message(socket_ptr socket, receive_buf_ptr recv_buf)
 		variant doc;
 
 		try {
-			doc = json::parse(std::string(payload), json::JSON_NO_PREPROCESSOR);
+			doc = parse_message(std::string(payload));
 		} catch(...) {
 			std::cerr << "ERROR PARSING JSON\n";
 		}
@@ -309,6 +309,11 @@ void web_server::send_404(socket_ptr socket)
 	boost::shared_ptr<std::string> str(new std::string(buf.str()));
 	boost::asio::async_write(*socket, boost::asio::buffer(*str),
                 boost::bind(&web_server::handle_send, this, socket, _1, _2, str->size(), str));
+}
+
+variant web_server::parse_message(const std::string& msg) const
+{
+	return json::parse(msg, json::JSON_NO_PREPROCESSOR);
 }
 
 }

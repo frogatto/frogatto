@@ -16,15 +16,23 @@
 */
 #include <vector>
 
+#include <stdio.h>
+
 #include "asserts.hpp"
 #include "foreach.hpp"
+#include "formula_function.hpp"
 #include "formula_object.hpp"
 #include "formula_tokenizer.hpp"
 #include "unit_test.hpp"
 #include "variant_type.hpp"
 
+variant_type::variant_type()
+{
+}
+
 variant_type::~variant_type()
-{}
+{
+}
 
 namespace {
 
@@ -34,7 +42,7 @@ public:
 	variant_type_simple(const variant& original_str, const formula_tokenizer::token& tok)
 	  : type_(variant::string_to_type(std::string(tok.begin, tok.end)))
 	{
-		ASSERT_LOG(type_ != variant::VARIANT_TYPE_INVALID, "INVALID TYPE: " << std::string(tok.begin, tok.end) << " AT " << original_str.debug_location());
+		ASSERT_LOG(type_ != variant::VARIANT_TYPE_INVALID, "INVALID TYPE: " << std::string(tok.begin, tok.end) << " AT:\n" << game_logic::pinpoint_location(original_str, tok.begin, tok.end));
 	}
 
 	explicit variant_type_simple(variant::TYPE type) : type_(type) {}
@@ -76,6 +84,29 @@ public:
 		}
 	}
 
+	bool is_compatible(variant_type_ptr type) const {
+		const variant_type_simple* simple_type = dynamic_cast<const variant_type_simple*>(type.get());
+		if(simple_type && simple_type->type_ == type_) {
+			return true;
+		}
+
+		if(type_ == variant::VARIANT_TYPE_DECIMAL) {
+			if(simple_type && simple_type->type_ == variant::VARIANT_TYPE_INT) { 
+				return true;
+			}
+		} else if(type_ == variant::VARIANT_TYPE_LIST) {
+			if(type->is_list_of()) {
+				return true;
+			}
+		} else if(type_ == variant::VARIANT_TYPE_MAP) {
+			if(type->is_map_of().first) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 private:
 	int order_id() const { return 1; }
 	variant::TYPE type_;
@@ -93,8 +124,52 @@ public:
 	std::string to_string() const {
 		return "any";
 	}
+
+	bool is_compatible(variant_type_ptr type) const {
+		return true;
+	}
+
+	bool is_any() const { return true; }
 private:
 	int order_id() const { return 2; }
+};
+
+class variant_type_commands : public variant_type
+{
+public:
+	bool match(const variant& v) const {
+		if(v.is_null()) {
+			return true;
+		}
+
+		if(v.try_convert<game_logic::command_callable>()) {
+			return true;
+		}
+
+		if(v.is_list()) {
+			for(int n = 0; n != v.num_elements(); ++n) {
+				if(!match(v[n])) {
+					return false;
+				}
+			}
+		}
+
+		return false;
+	}
+	bool is_equal(const variant_type& o) const {
+		const variant_type_commands* other = dynamic_cast<const variant_type_commands*>(&o);
+		return other != NULL;
+	}
+
+	std::string to_string() const {
+		return "commands";
+	}
+
+	bool is_compatible(variant_type_ptr type) const {
+		return is_equal(*type);
+	}
+private:
+	int order_id() const { return 12; }
 };
 
 class variant_type_class : public variant_type
@@ -133,6 +208,15 @@ public:
 
 	std::string to_string() const {
 		return "class " + type_;
+	}
+
+	bool is_compatible(variant_type_ptr type) const {
+		const variant_type_class* class_type = dynamic_cast<const variant_type_class*>(type.get());
+		if(class_type) {
+			return game_logic::is_class_derived_from(class_type->type_, type_);
+		}
+
+		return false;
 	}
 private:
 	std::string type_;
@@ -227,6 +311,20 @@ public:
 	variant_type_ptr is_list_of() const {
 		return value_type_;
 	}
+
+	bool is_compatible(variant_type_ptr type) const {
+		variant_type_ptr value_type = type->is_list_of();
+		if(value_type) {
+			return variant_types_compatible(value_type_, value_type);
+		}
+
+		if(type->is_type(variant::VARIANT_TYPE_LIST)) {
+			return variant_types_compatible(value_type_, variant_type::get_any());
+		}
+
+		return false;
+
+	}
 private:
 	variant_type_ptr value_type_;
 	int order_id() const { return 5; }
@@ -270,6 +368,21 @@ public:
 		return std::pair<variant_type_ptr, variant_type_ptr>(key_type_, value_type_);
 	}
 
+	bool is_compatible(variant_type_ptr type) const {
+		std::pair<variant_type_ptr,variant_type_ptr> p = type->is_map_of();
+		if(p.first && p.second) {
+			return variant_types_compatible(key_type_, p.first) &&
+			       variant_types_compatible(value_type_, p.second);
+		}
+
+		if(type->is_type(variant::VARIANT_TYPE_LIST)) {
+			return variant_types_compatible(key_type_, variant_type::get_any()) &&
+			       variant_types_compatible(value_type_, variant_type::get_any());
+		}
+
+		return false;
+
+	}
 private:
 	variant_type_ptr key_type_, value_type_;
 	int order_id() const { return 6; }
@@ -281,7 +394,11 @@ public:
 	variant_type_function(const std::vector<variant_type_ptr>& args,
 	                      variant_type_ptr return_type, int min_args)
 	  : args_(args), return_(return_type), min_args_(min_args)
-	{}
+	{
+	}
+
+	~variant_type_function() {
+	}
 
 	bool is_function(std::vector<variant_type_ptr>* args, variant_type_ptr* return_type, int* min_args) const
 	{
@@ -355,6 +472,35 @@ public:
 
 		return true;
 	}
+
+	bool is_compatible(variant_type_ptr type) const {
+		std::vector<variant_type_ptr> args;
+		variant_type_ptr return_type;
+		int min_args = 0;
+		if(type->is_function(&args, &return_type, &min_args)) {
+			if(min_args != min_args_) {
+				return false;
+			}
+
+			if(!variant_types_compatible(return_, return_type)) {
+				return false;
+			}
+
+			if(args.size() != args_.size()) {
+				return false;
+			}
+
+			for(int n = 0; n != args_.size(); ++n) {
+				if(!variant_types_compatible(args_[n], args[n])) {
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		return false;
+	}
 	
 private:
 	int order_id() const { return 7; }
@@ -364,6 +510,58 @@ private:
 	int min_args_;
 };
 
+}
+
+std::string variant_type_is_class_or_null(variant_type_ptr type)
+{
+	std::string class_name;
+	if(type->is_class(&class_name)) {
+		return class_name;
+	}
+
+	const std::vector<variant_type_ptr>* union_vec = type->is_union();
+	if(union_vec) {
+		foreach(variant_type_ptr t, *union_vec) {
+			bool found_class = false;
+			if(class_name.empty()) {
+				class_name = variant_type_is_class_or_null(t);
+				if(class_name.empty() == false) {
+					found_class = true;
+				}
+			}
+
+			if(found_class == false && t->is_type(variant::VARIANT_TYPE_NULL) == false) {
+				return "";
+			}
+		}
+	}
+
+	return class_name;
+}
+
+bool variant_types_compatible(variant_type_ptr to, variant_type_ptr from)
+{
+	if(from->is_union()) {
+		foreach(variant_type_ptr from_type, *from->is_union()) {
+			if(variant_types_compatible(to, from_type) == false) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	if(to->is_union()) {
+		foreach(variant_type_ptr to_type, *to->is_union()) {
+			if(variant_types_compatible(to_type, from)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	return to->is_compatible(from);
 }
 
 variant_type_ptr parse_variant_type(const variant& original_str,
@@ -377,15 +575,25 @@ variant_type_ptr parse_variant_type(const variant& original_str,
 	const token* begin_token = i1;
 
 	for(;;) {
-		ASSERT_LOG(i1 != i2, "EXPECTED TYPE BUT FOUND EMPTY EXPRESSION: " << original_str.debug_location());
+		ASSERT_LOG(i1 != i2, "EXPECTED TYPE BUT FOUND EMPTY EXPRESSION:" << original_str.debug_location());
 		if(i1->type == TOKEN_IDENTIFIER && i1->equals("class")) {
 			++i1;
-			ASSERT_LOG(i1 != i2, "EXPECTED CLASS BUT FOUND EMPTY EXPRESSION: " << original_str.debug_location());
-			v.push_back(variant_type_ptr(new variant_type_class(std::string(i1->begin, i1->end))));
+			ASSERT_LOG(i1 != i2, "EXPECTED CLASS BUT FOUND EMPTY EXPRESSION:\n" << game_logic::pinpoint_location(original_str, (i1-1)->end));
+			std::string class_name(i1->begin, i1->end);
+
+			while(i1+1 != i2 && i1+2 != i2 && (i1+1)->equals(".")) {
+				class_name += ".";
+				i1 += 2;
+				class_name += std::string(i1->begin, i1->end);
+			}
+			v.push_back(variant_type_ptr(new variant_type_class(class_name)));
 
 			++i1;
 		} else if(i1->type == TOKEN_IDENTIFIER && i1->equals("any")) {
 			v.push_back(variant_type_ptr(new variant_type_any));
+			++i1;
+		} else if(i1->type == TOKEN_IDENTIFIER && i1->equals("commands")) {
+			v.push_back(variant_type_ptr(new variant_type_commands));
 			++i1;
 		} else if(i1->type == TOKEN_IDENTIFIER || (i1->type == TOKEN_KEYWORD && std::equal(i1->begin, i1->end, "null"))) {
 			v.push_back(variant_type_ptr(new variant_type_simple(original_str, *i1)));
@@ -470,9 +678,120 @@ variant_type_ptr parse_variant_type(const variant& type)
 	return parse_variant_type(type, begin, begin + tokens.size());
 }
 
+variant_type_ptr
+parse_optional_function_type(const variant& original_str,
+                             const formula_tokenizer::token*& i1,
+                             const formula_tokenizer::token* i2)
+{
+	using namespace formula_tokenizer;
+
+	if(i1 == i2 || !i1->equals("def")) {
+		return variant_type_ptr();
+	}
+
+	++i1;
+	if(i1 == i2 || i1->type != TOKEN_LPARENS) {
+		return variant_type_ptr();
+	}
+
+	int optional_args = 0;
+
+	std::vector<variant_type_ptr> args;
+
+	++i1;
+	while(i1 != i2 && i1->type != TOKEN_RPARENS) {
+		if(i1->type == TOKEN_IDENTIFIER && i1+1 != i2 &&
+		   ((i1+1)->type == TOKEN_COMMA ||
+		    (i1+1)->type == TOKEN_RPARENS ||
+			(i1+1)->equals("="))) {
+			args.push_back(variant_type::get_any());
+			++i1;
+			if(i1->type == TOKEN_COMMA) {
+				++i1;
+			} else if(i1->equals("=")) {
+				++optional_args;
+				while(i1 != i2 && !i1->equals(",") && !i1->equals(")")) {
+					++i1;
+				}
+
+				if(i1 != i2 && i1->type == TOKEN_COMMA) {
+					++i1;
+				}
+			}
+			continue;
+		}
+
+		variant_type_ptr arg_type = parse_variant_type(original_str, i1, i2);
+		args.push_back(arg_type);
+		ASSERT_LOG(i1 != i2, "UNEXPECTED END OF EXPRESSION: " << original_str.debug_location());
+		if(i1->type == TOKEN_IDENTIFIER) {
+			++i1;
+
+			if(i1 != i2 && i1->equals("=")) {
+				++optional_args;
+
+				while(i1 != i2 && !i1->equals(",") && !i1->equals(")")) {
+					++i1;
+				}
+			}
+		}
+
+		if(i1 != i2 && i1->type == TOKEN_RPARENS) {
+			break;
+		}
+
+		ASSERT_LOG(i1 != i2 && i1->type == TOKEN_COMMA, "ERROR PARSING FUNCTION SIGNATURE: " << original_str.debug_location());
+
+		++i1;
+	}
+
+	ASSERT_LOG(i1 != i2 && i1->type == TOKEN_RPARENS, "UNEXPECTED END OF FUNCTION SIGNATURE: " << original_str.debug_location());
+
+	variant_type_ptr return_type = variant_type::get_any();
+
+	++i1;
+	if(i1 != i2 && i1->type == TOKEN_POINTER) {
+		++i1;
+		return_type = parse_variant_type(original_str, i1, i2);
+	}
+
+	return variant_type::get_function_type(args, return_type, optional_args);
+}
+
+variant_type_ptr parse_optional_function_type(const variant& type)
+{
+	using namespace formula_tokenizer;
+	const std::string& s = type.as_string();
+	std::vector<token> tokens;
+	std::string::const_iterator i1 = s.begin();
+	std::string::const_iterator i2 = s.end();
+	while(i1 != i2) {
+		try {
+			token tok = get_token(i1, i2);
+			if(tok.type != TOKEN_WHITESPACE && tok.type != TOKEN_COMMENT) {
+				tokens.push_back(tok);
+			}
+		} catch(token_error& e) {
+			ASSERT_LOG(false, "ERROR PARSING TYPE: " << e.msg << " IN '" << s << "' AT " << type.debug_location());
+		}
+	}
+
+	ASSERT_LOG(tokens.empty() == false, "ERROR PARSING TYPE: EMPTY STRING AT " << type.debug_location());
+
+	const token* begin = &tokens[0];
+	return parse_optional_function_type(type, begin, begin + tokens.size());
+}
+
 variant_type_ptr variant_type::get_any()
 {
-	return variant_type_ptr(new variant_type_any);
+	static const variant_type_ptr result(new variant_type_any);
+	return result;
+}
+
+variant_type_ptr variant_type::get_commands()
+{
+	static const variant_type_ptr result(new variant_type_commands);
+	return result;
 }
 
 variant_type_ptr variant_type::get_type(variant::TYPE type)
@@ -521,4 +840,29 @@ variant_type_ptr variant_type::get_class(const std::string& class_name)
 variant_type_ptr variant_type::get_function_type(const std::vector<variant_type_ptr>& arg_types, variant_type_ptr return_type, int min_args)
 {
 	return variant_type_ptr(new variant_type_function(arg_types, return_type, min_args));
+}
+
+UNIT_TEST(variant_type) {
+#define TYPES_COMPAT(a, b) CHECK_EQ(variant_types_compatible(parse_variant_type(variant(a)), parse_variant_type(variant(b))), true)
+#define TYPES_INCOMPAT(a, b) CHECK_EQ(variant_types_compatible(parse_variant_type(variant(a)), parse_variant_type(variant(b))), false)
+
+	TYPES_COMPAT("int|bool", "int");
+	TYPES_COMPAT("int|bool|string", "string");
+	TYPES_COMPAT("decimal", "int");
+	TYPES_COMPAT("list", "[int]");
+	TYPES_COMPAT("list", "[int|string]");
+	TYPES_COMPAT("list", "[any]");
+	TYPES_COMPAT("[any]", "[int|string]");
+	TYPES_COMPAT("[any]", "list");
+	TYPES_COMPAT("{int|string -> string}", "{int -> string}");
+	TYPES_COMPAT("map", "{int -> string}");
+
+	TYPES_INCOMPAT("int", "int|bool");
+	TYPES_INCOMPAT("int", "decimal");
+	TYPES_INCOMPAT("int", "decimal");
+	TYPES_INCOMPAT("[int]", "list");
+	TYPES_INCOMPAT("{int -> int}", "map");
+	TYPES_INCOMPAT("{int -> int}", "{string -> int}");
+
+#undef TYPES_COMPAT	
 }

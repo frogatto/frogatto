@@ -98,6 +98,19 @@ bool formula_expression::has_debug_info() const
 	return parent_formula_.is_string() && parent_formula_.get_debug_info();
 }
 
+const formula_callable_definition* formula_expression::get_type_definition() const
+{
+	variant_type_ptr type = query_variant_type();
+	if(type) {
+		std::string class_name = variant_type_is_class_or_null(type);
+		if(class_name.empty() == false) {
+			return get_class_definition(class_name);
+		}
+	}
+
+	return NULL;
+}
+
 std::string pinpoint_location(variant v, std::string::const_iterator begin)
 {
 	return pinpoint_location(v, begin, begin);
@@ -222,6 +235,55 @@ private:
 	int max_entries_;
 };
 
+FUNCTION_DEF(overload, 1, -1, "overload(fn...): makes an overload of functions")
+	std::vector<variant> functions;
+	foreach(expression_ptr expression, args()) {
+		functions.push_back(expression->evaluate(variables));
+		ASSERT_LOG(functions.back().is_function(), "CALL TO overload() WITH NON-FUNCTION VALUE " << functions.back().write_json());
+	}
+
+	return variant::create_function_overload(functions);
+
+FUNCTION_TYPE_DEF
+	int min_args = -1;
+	std::vector<std::vector<variant_type_ptr> > arg_types;
+	std::vector<variant_type_ptr> return_types;
+	for(int n = 0; n != args().size(); ++n) {
+		variant_type_ptr t = args()[n]->query_variant_type();
+		std::vector<variant_type_ptr> a;
+		variant_type_ptr return_type;
+		int nargs = -1;
+		if(t->is_function(&a, &return_type, &nargs) == false) {
+			ASSERT_LOG(false, "CALL to overload() with non-function type: " << args()[n]->debug_pinpoint_location());
+		}
+
+		return_types.push_back(return_type);
+		if(min_args == -1 || nargs < min_args) {
+			min_args = nargs;
+		}
+
+		for(int m = 0; m != a.size(); ++m) {
+			if(arg_types.size() <= m) {
+				arg_types.resize(m+1);
+			}
+
+			arg_types[m].push_back(a[m]);
+		}
+	}
+
+	if(min_args < 0) {
+		min_args = 0;
+	}
+
+	variant_type_ptr return_union = variant_type::get_union(return_types);
+	std::vector<variant_type_ptr> arg_union;
+	for(int n = 0; n != arg_types.size(); ++n) {
+		arg_union.push_back(variant_type::get_union(arg_types[n]));
+	}
+
+	return variant_type::get_function_type(arg_union, return_union, min_args);
+END_FUNCTION_DEF(overload)
+
 FUNCTION_DEF(create_cache, 0, 1, "create_cache(max_entries=4096): makes an FFL cache object")
 	formula::fail_if_static_context();
 	int max_entries = 4096;
@@ -295,6 +357,38 @@ END_FUNCTION_DEF(query_cache)
 
 	};
 
+class bound_command : public game_logic::command_callable
+{
+public:
+	bound_command(variant target, const std::vector<variant>& args)
+	  : target_(target), args_(args)
+	{}
+	virtual void execute(game_logic::formula_callable& ob) const {
+		ob.execute_command(target_(args_));
+	}
+private:
+	variant target_;
+	std::vector<variant> args_;
+};
+
+FUNCTION_DEF(bind_command, 1, -1, "bind_command(fn, args..)")
+	variant fn = args()[0]->evaluate(variables);
+	if(fn.type() != variant::VARIANT_TYPE_MULTI_FUNCTION) {
+		fn.must_be(variant::VARIANT_TYPE_FUNCTION);
+	}
+	std::vector<variant> args_list;
+	for(int n = 1; n != args().size(); ++n) {
+		args_list.push_back(args()[n]->evaluate(variables));
+	}
+
+	std::string message;
+	ASSERT_LOG(fn.function_call_valid(args_list, &message), "Error in bind_command: functions args do not match: " << message);
+	
+	return variant(new bound_command(fn, args_list));
+FUNCTION_TYPE_DEF
+	return variant_type::get_type(variant::VARIANT_TYPE_CALLABLE);
+END_FUNCTION_DEF(bind_command)
+
 FUNCTION_DEF(bind_closure, 2, 2, "bind_closure(fn, obj): binds the given lambda fn to the given object closure")
 	variant fn = args()[0]->evaluate(variables);
 	return fn.bind_closure(args()[1]->evaluate(variables).as_callable());
@@ -315,8 +409,10 @@ FUNCTION_DEF(singleton, 1, 1, "singleton(string typename): create a singleton ob
 FUNCTION_TYPE_DEF
 	variant literal = args()[0]->is_literal();
 	if(literal.is_string()) {
+		std::cerr << "SINGLETON RETURNING CLASS: " << literal.as_string() << "\n";
 		return variant_type::get_class(literal.as_string());
 	} else {
+		std::cerr << "SINGLETON RETURNING ANY: " << literal.write_json() << "\n";
 		return variant_type::get_any();
 	}
 END_FUNCTION_DEF(singleton)
@@ -832,6 +928,124 @@ FUNCTION_TYPE_DEF
 	return variant_type::get_type(variant::VARIANT_TYPE_STRING);
 END_FUNCTION_DEF(regex_match)
 
+namespace {
+class variant_comparator : public formula_callable {
+	expression_ptr expr_;
+	const formula_callable* fallback_;
+	mutable variant a_, b_;
+	variant get_value(const std::string& key) const {
+		if(key == "a") {
+			return a_;
+		} else if(key == "b") {
+			return b_;
+		} else {
+			return fallback_->query_value(key);
+		}
+	}
+
+	variant get_value_by_slot(int slot) const {
+		if(slot == 0) {
+			return a_;
+		} else if(slot == 1) {
+			return b_;
+		}
+
+		return fallback_->query_value_by_slot(slot - 2);
+	}
+
+	void get_inputs(std::vector<formula_input>* inputs) const {
+		fallback_->get_inputs(inputs);
+	}
+public:
+	variant_comparator(const expression_ptr& expr, const formula_callable& fallback) : formula_callable(false), expr_(expr), fallback_(&fallback)
+	{}
+
+	bool operator()(const variant& a, const variant& b) const {
+		a_ = a;
+		b_ = b;
+		return expr_->evaluate(*this).as_bool();
+	}
+
+	variant eval(const variant& a, const variant& b) const {
+		a_ = a;
+		b_ = b;
+		return expr_->evaluate(*this);
+	}
+};
+
+class variant_comparator_definition : public formula_callable_definition
+{
+public:
+	variant_comparator_definition(const formula_callable_definition* base, variant_type_ptr type)
+	  : base_(base), type_(type)
+	{
+		for(int n = 0; n != 2; ++n) {
+			const std::string name = (n == 0) ? "a" : "b";
+			entries_.push_back(entry(name));
+			entries_.back().set_variant_type(type_);
+		}
+	}
+
+	int get_slot(const std::string& key) const {
+		if(key == "a") { return 0; }
+		if(key == "b") { return 1; }
+
+		if(base_) {
+			int result = base_->get_slot(key);
+			if(result >= 0) {
+				result += 2;
+			}
+
+			return result;
+		} else {
+			return -1;
+		}
+	}
+
+	entry* get_entry(int slot) {
+		if(slot < 0) {
+			return NULL;
+		}
+
+		if(slot < entries_.size()) {
+			return &entries_[slot];
+		}
+
+		if(base_) {
+			return const_cast<formula_callable_definition*>(base_)->get_entry(slot - entries_.size());
+		}
+
+		return NULL;
+	}
+
+	const entry* get_entry(int slot) const {
+		if(slot < 0) {
+			return NULL;
+		}
+
+		if(slot < entries_.size()) {
+			return &entries_[slot];
+		}
+
+		if(base_) {
+			return base_->get_entry(slot - entries_.size());
+		}
+
+		return NULL;
+	}
+
+	int num_slots() const {
+		return 2 + (base_ ? base_->num_slots() : 0);
+	}
+
+private:
+	const formula_callable_definition* base_;
+	variant_type_ptr type_;
+
+	std::vector<entry> entries_;
+};
+}
+
 FUNCTION_DEF(fold, 2, 3, "fold(list, expr, [default]) -> value")
 	variant list = args()[0]->evaluate(variables);
 	const int size = list.num_elements();
@@ -845,16 +1059,22 @@ FUNCTION_DEF(fold, 2, 3, "fold(list, expr, [default]) -> value")
 		return list[0];
 	}
 
-	boost::intrusive_ptr<map_formula_callable> callable(new map_formula_callable(&variables));
-	variant& a = callable->add_direct_access("a");
-	variant& b = callable->add_direct_access("b");
-	a = list[0];
+	boost::intrusive_ptr<variant_comparator> callable(new variant_comparator(args()[1], variables));
+
+	variant a = list[0];
 	for(int n = 1; n < list.num_elements(); ++n) {
-		b = list[n];
-		a = args()[1]->evaluate(*callable);
+		a = callable->eval(a, list[n]);
 	}
 
 	return a;
+FUNCTION_TYPE_DEF
+	std::vector<variant_type_ptr> types;
+	types.push_back(args()[1]->query_variant_type());
+	if(args().size() > 2) {
+		types.push_back(args()[2]->query_variant_type());
+	}
+
+	return variant_type::get_union(types);
 END_FUNCTION_DEF(fold)
 
 FUNCTION_DEF(unzip, 1, 1, "unzip(list of lists) -> list of lists: Converts [[1,4],[2,5],[3,6]] -> [[1,2,3],[4,5,6]]")
@@ -1089,40 +1309,6 @@ FUNCTION_DEF(plot_path, 6, 9, "plot_path(level, from_x, from_y, to_x, to_y, heur
 	return variant(pathfinding::a_star_find_path(lvl, src, dst, heuristic, weight_expr, callable, tile_size_x, tile_size_y));
 END_FUNCTION_DEF(plot_path)
 
-namespace {
-class variant_comparator : public formula_callable {
-	expression_ptr expr_;
-	const formula_callable* fallback_;
-	mutable variant a_, b_;
-	variant get_value(const std::string& key) const {
-		if(key == "a") {
-			return a_;
-		} else if(key == "b") {
-			return b_;
-		} else {
-			return fallback_->query_value(key);
-		}
-	}
-
-	variant get_value_by_slot(int slot) const {
-		return fallback_->query_value_by_slot(slot);
-	}
-
-	void get_inputs(std::vector<formula_input>* inputs) const {
-		fallback_->get_inputs(inputs);
-	}
-public:
-	variant_comparator(const expression_ptr& expr, const formula_callable& fallback) : formula_callable(false), expr_(expr), fallback_(&fallback)
-	{}
-
-	bool operator()(const variant& a, const variant& b) const {
-		a_ = a;
-		b_ = b;
-		return expr_->evaluate(*this).as_bool();
-	}
-};
-}
-
 FUNCTION_DEF(sort, 1, 2, "sort(list, criteria): Returns a nicely-ordered list. If you give it an optional formula such as 'a>b' it will sort it according to that. This example favours larger numbers first instead of the default of smaller numbers first.")
 	variant list = args()[0]->evaluate(variables);
 	std::vector<variant> vars;
@@ -1134,7 +1320,8 @@ FUNCTION_DEF(sort, 1, 2, "sort(list, criteria): Returns a nicely-ordered list. I
 	if(args().size() == 1) {
 		std::sort(vars.begin(), vars.end());
 	} else {
-		std::sort(vars.begin(), vars.end(), variant_comparator(args()[1], variables));
+		boost::intrusive_ptr<variant_comparator> comparator(new variant_comparator(args()[1], variables));
+		std::sort(vars.begin(), vars.end(), *comparator);
 	}
 
 	return variant(&vars);
@@ -1532,7 +1719,10 @@ private:
 	}
 
 	variant_type_ptr get_variant_type() const {
-		return args()[0]->query_variant_type()->is_list_of();
+		std::vector<variant_type_ptr> types;
+		types.push_back(args()[0]->query_variant_type()->is_list_of());
+		types.push_back(variant_type::get_type(variant::VARIANT_TYPE_NULL));
+		return variant_type::get_union(types);
 	}
 };
 
@@ -2667,7 +2857,10 @@ FUNCTION_DEF(get_document, 1, 2, "get_document(string filename, list_of_strings 
 		return variant();
 	}
 FUNCTION_TYPE_DEF
-	return variant_type::get_type(variant::VARIANT_TYPE_MAP);
+	std::vector<variant_type_ptr> types;
+	types.push_back(variant_type::get_type(variant::VARIANT_TYPE_MAP));
+	types.push_back(variant_type::get_type(variant::VARIANT_TYPE_NULL));
+	return variant_type::get_union(types);
 END_FUNCTION_DEF(get_document)
 
 }
@@ -3296,5 +3489,10 @@ namespace game_logic {
 const formula_callable_definition* get_map_callable_definition(const formula_callable_definition* base_def, variant_type_ptr key_type, variant_type_ptr value_type, const std::string& value_name)
 {
 	return new map_callable_definition(base_def, key_type, value_type, value_name);
+}
+
+const formula_callable_definition* get_variant_comparator_definition(const formula_callable_definition* base_def, variant_type_ptr type)
+{
+	return new variant_comparator_definition(base_def, type);
 }
 }

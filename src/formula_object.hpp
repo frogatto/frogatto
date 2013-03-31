@@ -32,7 +32,9 @@ namespace game_logic
 {
 
 class formula_class;
-const formula_callable_definition* get_class_definition(const std::string& name);
+formula_callable_definition* get_class_definition(const std::string& name);
+
+bool is_class_derived_from(const std::string& derived, const std::string& base);
 
 class formula_object : public game_logic::wml_serializable_formula_callable
 {
@@ -44,10 +46,13 @@ public:
 	static boost::intrusive_ptr<formula_object> create(const std::string& type, variant args=variant());
 
 	bool is_a(const std::string& class_name) const;
+	const std::string& get_class_name() const;
 
 	//construct with data representing private/internal represenation.
 	explicit formula_object(variant data);
 	virtual ~formula_object();
+
+	boost::intrusive_ptr<formula_object> clone() const;
 
 	void validate() const;
 private:

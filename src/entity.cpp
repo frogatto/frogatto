@@ -51,7 +51,7 @@ entity::entity(int x, int y, bool face_right)
   : x_(x*100), y_(y*100), prev_feet_x_(INT_MIN), prev_feet_y_(INT_MIN),
 	last_move_x_(0), last_move_y_(0),
     face_right_(face_right), upside_down_(false), group_(-1), id_(-1),
-	solid_dimensions_(0), collide_dimensions_(0),
+	respawn_(true), solid_dimensions_(0), collide_dimensions_(0),
 	weak_solid_dimensions_(0), weak_collide_dimensions_(0),	platform_motion_x_(0), 
 	mouse_over_entity_(false), being_dragged_(false), mouse_button_state_(0),
 	mouseover_delay_(0), mouseover_trigger_cycle_(INT_MAX)

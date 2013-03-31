@@ -30,39 +30,19 @@
 
 namespace tbs {
 
-namespace {
-variant deserialize_doc(const std::string& msg)
-{
-	variant v;
-	{
-		const game_logic::wml_formula_callable_read_scope read_scope;
-		try {
-			v = json::parse(msg);
-		} catch(json::parse_error& e) {
-			ASSERT_LOG(false, "ERROR PROCESSING MESSAGE RETURNED FROM TBS SERVER DOC: --BEGIN--" << msg << "--END-- ERROR: " << e.error_message());
-		}
-		if(v.has_key(variant("serialized_objects"))) {
-			foreach(variant obj_node, v["serialized_objects"]["character"].as_list()) {
-				game_logic::wml_serializable_formula_callable_ptr obj = obj_node.try_convert<game_logic::wml_serializable_formula_callable>();
-				ASSERT_LOG(obj.get() != NULL, "ILLEGAL OBJECT FOUND IN SERIALIZATION");
-				std::string addr_str = obj->addr();
-				const intptr_t addr_id = strtoll(addr_str.c_str(), NULL, 16);
+client::client(const std::string& host, const std::string& port,
+               int session, boost::asio::io_service* service)
+  : http_client(host, port, session, service), use_local_cache_(true),
+    local_game_cache_(NULL), local_nplayer_(-1)
+{}
 
-				game_logic::wml_formula_callable_read_scope::register_serialized_object(addr_id, obj);
-			}
-		}
-	}
-
-	return v;
-}
-}
-
-void client::send_request(const variant& request, game_logic::map_formula_callable_ptr callable, boost::function<void(std::string)> handler)
+void client::send_request(variant request, game_logic::map_formula_callable_ptr callable, boost::function<void(std::string)> handler)
 {
 	handler_ = handler;
 	callable_ = callable;
 
-	std::string request_str = request.write_json();
+	std::string request_str = game_logic::serialize_doc_with_objects(request);
+	fprintf(stderr, "SEND ((%s))\n", request_str.c_str());
 
 	http_client::send_request("POST /tbs", 
 		request_str,
@@ -72,7 +52,7 @@ void client::send_request(const variant& request, game_logic::map_formula_callab
 
 	if(local_game_cache_ && request["type"].as_string() == "moves" && request["state_id"].as_int() == local_game_cache_->state_id()) {
 
-		variant request_clone = deserialize_doc(request_str);
+		variant request_clone = game_logic::deserialize_doc_with_objects(request_str);
 
 		local_game_cache_->handle_message(local_nplayer_, request_clone);
 		std::vector<game::message> messages;
@@ -94,13 +74,15 @@ void client::send_request(const variant& request, game_logic::map_formula_callab
 void client::recv_handler(const std::string& msg)
 {
 	if(handler_) {
-		variant v = deserialize_doc(msg);
+		variant v = game_logic::deserialize_doc_with_objects(msg);
 
 		if(use_local_cache_ && v["type"].as_string() == "game") {
-			local_game_cache_.reset(new tbs::game(v["game_type"].as_string(), v));
+			local_game_cache_ = new tbs::game(v["game_type"].as_string(), v);
+			local_game_cache_holder_.reset(local_game_cache_);
+
 			local_nplayer_= v["nplayer"].as_int();
 			std::cerr << "LOCAL: UPDATE CACHE: " << local_game_cache_->state_id() << "\n";
-			v = deserialize_doc(msg);
+			v = game_logic::deserialize_doc_with_objects(msg);
 		}
 
 		//fprintf(stderr, "RECV: (((%s)))\n", msg.c_str());

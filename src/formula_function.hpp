@@ -73,6 +73,10 @@ public:
 		return execute_member(variables, id, variant_id);
 	}
 
+	void perform_static_error_analysis() const {
+		static_error_analysis();
+	}
+
 	virtual expression_ptr optimize() const {
 		return expression_ptr();
 	}
@@ -81,9 +85,7 @@ public:
 		return false;
 	}
 
-	virtual const formula_callable_definition* get_type_definition() const {
-		return NULL;
-	}
+	virtual const formula_callable_definition* get_type_definition() const;
 
 	const char* name() const { return name_; }
 	void set_name(const char* name) { name_ = name; }
@@ -109,6 +111,7 @@ protected:
 	virtual variant execute_member(const formula_callable& variables, std::string& id, variant* variant_id) const;
 private:
 	virtual variant execute(const formula_callable& variables) const = 0;
+	virtual void static_error_analysis() const {}
 	const char* name_;
 
 	variant parent_formula_;
@@ -254,6 +257,7 @@ private:
 };
 
 const formula_callable_definition* get_map_callable_definition(const formula_callable_definition* base_def, variant_type_ptr key_type, variant_type_ptr value_type, const std::string& value_name);
+const formula_callable_definition* get_variant_comparator_definition(const formula_callable_definition* base_def, variant_type_ptr type);
 
 }
 

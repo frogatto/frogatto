@@ -59,6 +59,8 @@ public:
 		if(slot < 0) { return NULL; } else { return get_entry(slot); }
 	}
 
+	virtual const std::string* type_name() const { return NULL; }
+
 	bool is_strict() const { return is_strict_; }
 	void set_strict(bool value=true) { is_strict_ = value; }
 private:

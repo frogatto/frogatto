@@ -49,6 +49,9 @@ namespace {
 	const game_logic::formula* last_executed_formula;
 
 	bool _verbatim_string_expressions = false;
+
+	int g_strict_formula_checking = 0;
+
 }
 
 std::string output_formula_error_info() {
@@ -118,7 +121,9 @@ namespace game_logic
 	namespace {
 	
 	variant_type_ptr get_variant_type_from_value(const variant& value) {
-		if(value.is_list()) {
+		if(value.try_convert<formula_object>()) {
+			return variant_type::get_class(value.try_convert<formula_object>()->get_class_name());
+		} else if(value.is_list()) {
 			std::vector<variant_type_ptr> types;
 			foreach(const variant& item, value.as_list()) {
 				variant_type_ptr new_type = get_variant_type_from_value(item);
@@ -643,7 +648,11 @@ public:
 	const formula_callable_definition* get_type_definition() const {
 		const formula_callable_definition::entry* def = callable_def_->get_entry(slot_);
 		ASSERT_LOG(def, "DID NOT FIND EXPECTED DEFINITION");
-		return def->type_definition;
+		if(def->type_definition) {
+			return def->type_definition;
+		} else {
+			return formula_expression::get_type_definition();
+		}
 	}
 
 	const variant_type_ptr& variant_type() const { return variant_type_; }
@@ -691,8 +700,12 @@ public:
 			const int index = callable_def_->get_slot(id_);
 			if(index != -1) {
 				return expression_ptr(new slot_identifier_expression(id_, index, callable_def_));
-			} else if(callable_def_->is_strict()) {
-				ASSERT_LOG(false, "Unknown value access with strict checking in force: " << id_ << " AT: " << debug_pinpoint_location());
+			} else if(callable_def_->is_strict() || g_strict_formula_checking) {
+				if(callable_def_->type_name() != NULL) {
+					ASSERT_LOG(false, "Unknown symbol '" << id_ << "' in " << *callable_def_->type_name() << " " << debug_pinpoint_location());
+				} else {
+					ASSERT_LOG(false, "Unknown identifier '" << id_ << "' " << debug_pinpoint_location());
+				}
 			}
 		}
 
@@ -702,8 +715,10 @@ public:
 	const formula_callable_definition* get_type_definition() const {
 		if(callable_def_) {
 			const formula_callable_definition::entry* e = callable_def_->get_entry(callable_def_->get_slot(id_));
-			if(e) {
+			if(e && e->type_definition) {
 				return e->type_definition;
+			} else {
+				return formula_expression::get_type_definition();
 			}
 		}
 
@@ -802,6 +817,15 @@ private:
 		}
 
 		return variant_type::get_any();
+	}
+
+	void static_error_analysis() const {
+		variant_type_ptr fn_type = left_->query_variant_type();
+		std::vector<variant_type_ptr> arg_types;
+		int min_args = 0;
+		const bool is_function = fn_type->is_function(&arg_types, NULL, &min_args);
+		//ASSERT_LOG(is_function, "FUNCTION CALL ON EXPRESSION WHICH ISN'T GUARANTEED TO BE A FUNCTION: " << fn_type->to_string() << " AT " << debug_pinpoint_location());
+		if(!is_function) std::cerr << "XX: FUNCTION CALL ON EXPRESSION WHICH ISN'T GUARANTEED TO BE A FUNCTION: " << fn_type->to_string() << " at '" << str() << "' " << debug_pinpoint_location() << "\n";
 	}
 	
 	expression_ptr left_;
@@ -1296,6 +1320,28 @@ private:
 	}
 };
 
+class type_expression : public formula_expression {
+public:
+	type_expression(variant_type_ptr type, expression_ptr expr)
+	: formula_expression("_type"), type_(type), expression_(expr)
+	{
+	}
+	
+private:
+	variant_type_ptr get_variant_type() const {
+		return type_;
+	}
+
+	variant_type_ptr type_;
+	expression_ptr expression_;
+	
+	variant execute(const formula_callable& variables) const {
+		const variant result = expression_->evaluate(variables);
+		ASSERT_LOG(type_->match(result), "TYPE MIS-MATCH: EXPECTED " << type_->to_string() << " BUT FOUND " << result.write_json() << " AT " << debug_pinpoint_location());
+		return result;
+	}
+};
+
 class assert_expression : public formula_expression {
 public:
 	assert_expression(expression_ptr body, const std::vector<expression_ptr> asserts, expression_ptr debug_expr)
@@ -1475,9 +1521,10 @@ int operator_precedence(const token& t)
 	if(precedence_map.empty()) {
 		int n = 0;
 		precedence_map["->"] = ++n;
-		precedence_map["not"] = ++n;
 		precedence_map["where"] = ++n;
 		precedence_map["asserting"] = ++n;
+		precedence_map["<-"] = ++n;
+		precedence_map["not"] = ++n;
 		precedence_map["or"]    = ++n;
 		precedence_map["and"]   = ++n;
 		precedence_map["in"] = ++n;
@@ -1512,7 +1559,8 @@ void parse_function_args(variant formula_str, const token* &i1, const token* i2,
 						 std::vector<std::string>* res,
 						 std::vector<std::string>* types,
 						 std::vector<variant_type_ptr>* variant_types,
-						 std::vector<variant>* default_values)
+						 std::vector<variant>* default_values,
+						 variant_type_ptr* result_type)
 {
 	if(i1->type == TOKEN_LPARENS) {
 		++i1;
@@ -1587,13 +1635,23 @@ void parse_function_args(variant formula_str, const token* &i1, const token* i2,
 		ASSERT_LOG(false, "Invalid function definition\n" << pinpoint_location(formula_str, i1->begin, (i2-1)->end));
 	}
 	++i1;
+
+	if(i1 != i2 && i1->type == TOKEN_POINTER) {
+		++i1;
+		ASSERT_LOG(i1 != i2, "Unexpected end of function definition: " << pinpoint_location(formula_str, (i1-1)->begin, (i1-1)->end));
+
+		variant_type_ptr res = parse_variant_type(formula_str, i1, i2);
+		if(result_type) {
+			*result_type = res;
+		}
+	}
 }
 
 void parse_args(const variant& formula_str, const std::string* function_name,
                 const token* i1, const token* i2,
 				std::vector<expression_ptr>* res,
 				function_symbol_table* symbols,
-				const formula_callable_definition* callable_def,
+				const formula_callable_definition* definition,
 				bool* can_optimize)
 {
 	std::vector<std::pair<const token*, const token*> > args;
@@ -1619,6 +1677,8 @@ void parse_args(const variant& formula_str, const std::string* function_name,
 	}
 
 	for(int n = 0; n != args.size(); ++n) {
+		const formula_callable_definition* callable_def = definition;
+
 		if(n+1 == args.size()) {
 			//Certain special functions take a special callable definition
 			//to evaluate their last argument. Discover what that is here.
@@ -1650,6 +1710,15 @@ void parse_args(const variant& formula_str, const std::string* function_name,
 				}
 
 				callable_def = get_map_callable_definition(callable_def, key_type, value_type, value_name);
+			}
+		}
+
+		if(n == 1) {
+			static const std::string ComparatorFuncs[] = { "sort", "fold" };
+			if(function_name != NULL && std::count(ComparatorFuncs, ComparatorFuncs + sizeof(ComparatorFuncs)/sizeof(*ComparatorFuncs), *function_name)) {
+				variant_type_ptr sequence_type = (*res)[0]->query_variant_type();
+				variant_type_ptr value_type = sequence_type->is_list_of();
+				callable_def = get_variant_comparator_definition(callable_def, value_type);
 			}
 		}
 
@@ -1786,10 +1855,13 @@ struct static_context {
 	~static_context() { --in_static_context; }
 };
 		
-
 expression_ptr optimize_expression(expression_ptr result, function_symbol_table* symbols, const formula_callable_definition* callable_def, bool reduce_to_static)
 {
 	expression_ptr original = result;
+
+	if(g_strict_formula_checking) {
+		original->perform_static_error_analysis();
+	}
 
 	if(reduce_to_static) {
 		//we want to try to evaluate this expression, and see if it is static.
@@ -1866,7 +1938,8 @@ expression_ptr parse_function_def(const variant& formula_str, const token*& i1, 
 	std::vector<std::string> args, types;
 	std::vector<variant> default_args;
 	std::vector<variant_type_ptr> variant_types;
-	parse_function_args(formula_str, i1, i2, &args, &types, &variant_types, &default_args);
+	variant_type_ptr result_type;
+	parse_function_args(formula_str, i1, i2, &args, &types, &variant_types, &default_args, &result_type);
 	const token* beg = i1;
 	while((i1 != i2) && (i1->type != TOKEN_SEMICOLON)) {
 		++i1;
@@ -1934,7 +2007,7 @@ expression_ptr parse_function_def(const variant& formula_str, const token*& i1, 
 	recursive_symbols.resolve_recursive_calls(fml);
 	
 	if(formula_name.empty()) {
-		return expression_ptr(new lambda_function_expression(args, fml, callable_def ? callable_def->num_slots() : 0, default_args, variant_types, fml->query_variant_type()));
+		return expression_ptr(new lambda_function_expression(args, fml, callable_def ? callable_def->num_slots() : 0, default_args, variant_types, result_type ? result_type : fml->query_variant_type()));
 	}
 
 	const std::string precond = "";
@@ -1987,7 +2060,7 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 			if(parens == 0 && i+1 != i2) {
 				fn_call = NULL;
 			}
-		} else if(parens == 0 && i->type == TOKEN_OPERATOR) {
+		} else if(parens == 0 && (i->type == TOKEN_OPERATOR || i->type == TOKEN_LEFT_POINTER)) {
 			if(op == NULL || operator_precedence(*op) >= operator_precedence(*i)) {
 				if(i != i1 && i->end - i->begin == 3 && std::equal(i->begin, i->end, "not")) {
 					//The not operator is always unary and can only
@@ -2249,8 +2322,8 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 		}
 	}
 	
-	if(fn_call && (op == NULL || operator_precedence(*op) >=
-				   operator_precedence(*fn_call))) {
+	if(fn_call && (op == NULL ||
+	   operator_precedence(*op) >= operator_precedence(*fn_call))) {
 		op = fn_call;
 	}
 	
@@ -2269,6 +2342,15 @@ expression_ptr parse_expression_internal(const variant& formula_str, const token
 	if(op_name == "in" && op > i1 && op-1 > i1 && std::string((op-1)->begin, (op-1)->end) == "not") {
 		op_name = "not in";
 		consume_backwards = 1;
+	}
+
+	if(op_name == "<-") {
+		variant_type_ptr type = parse_variant_type(formula_str, i1, op);
+		ASSERT_LOG(type && i1 == op, "UNEXPECTED TOKENS WHEN PARSING TYPE: " << pinpoint_location(formula_str, i1->begin, op->end));
+
+		expression_ptr right(parse_expression(formula_str, op+1,i2,symbols, callable_def, can_optimize));
+
+		return expression_ptr(new type_expression(type, right));
 	}
 	
 	if(op_name == "(") {
@@ -2332,6 +2414,16 @@ void formula::fail_if_static_context()
 	if(in_static_context) {
 		throw non_static_expression_exception();
 	}
+}
+
+formula::strict_check_scope::strict_check_scope()
+{
+	++g_strict_formula_checking;
+}
+
+formula::strict_check_scope::~strict_check_scope()
+{
+	--g_strict_formula_checking;
 }
 
 formula_ptr formula::create_optional_formula(const variant& val, function_symbol_table* symbols, const formula_callable_definition* callable_definition)

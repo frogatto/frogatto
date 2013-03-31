@@ -63,6 +63,11 @@ public:
 		}
 	}
 
+	struct strict_check_scope {
+		strict_check_scope();
+		~strict_check_scope();
+	};
+
 	static formula_ptr create_optional_formula(const variant& str, function_symbol_table* symbols=NULL, const formula_callable_definition* def=NULL);
 	explicit formula(const variant& val, function_symbol_table* symbols=NULL, const formula_callable_definition* def=NULL);
 	~formula();

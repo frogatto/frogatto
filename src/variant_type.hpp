@@ -33,6 +33,7 @@ class variant_type
 {
 public:
 	static variant_type_ptr get_any();
+	static variant_type_ptr get_commands();
 	static variant_type_ptr get_type(variant::TYPE type);
 	static variant_type_ptr get_union(const std::vector<variant_type_ptr>& items);
 	static variant_type_ptr get_list(variant_type_ptr element_type);
@@ -40,9 +41,11 @@ public:
 	static variant_type_ptr get_class(const std::string& class_name);
 	static variant_type_ptr get_function_type(const std::vector<variant_type_ptr>& arg_types, variant_type_ptr return_type, int min_args);
 
+	variant_type();
 	virtual ~variant_type();
 	virtual bool match(const variant& v) const = 0;
 
+	virtual bool is_any() const { return false; }
 	virtual const std::vector<variant_type_ptr>* is_union() const { return NULL; }
 	virtual variant_type_ptr is_list_of() const { return variant_type_ptr(); }
 	virtual std::pair<variant_type_ptr,variant_type_ptr> is_map_of() const { return std::pair<variant_type_ptr,variant_type_ptr>(); }
@@ -58,14 +61,26 @@ public:
 
 	virtual bool is_equal(const variant_type& o) const = 0;
 
+	virtual bool is_compatible(variant_type_ptr type) const { return false; }
+
 private:
 	virtual int order_id() const = 0;
 	mutable std::string str_;
 };
 
+std::string variant_type_is_class_or_null(variant_type_ptr type);
+
+bool variant_types_compatible(variant_type_ptr to, variant_type_ptr from);
+
 variant_type_ptr parse_variant_type(const variant& original_str,
                                     const formula_tokenizer::token*& i1,
                                     const formula_tokenizer::token* i2);
 variant_type_ptr parse_variant_type(const variant& v);
+
+variant_type_ptr
+parse_optional_function_type(const variant& original_str,
+                             const formula_tokenizer::token*& i1,
+                             const formula_tokenizer::token* i2);
+variant_type_ptr parse_optional_function_type(const variant& v);
 
 #endif

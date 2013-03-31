@@ -36,12 +36,9 @@ class game;
 class client : public http_client
 {
 public:
-	client(const std::string& host, const std::string& port, int session=-1, boost::asio::io_service* service=NULL)
-		: http_client(host, port, session, service),
-		  use_local_cache_(true),
-		  local_nplayer_(-1)
-	{}
-	void send_request(const variant& request, 
+	client(const std::string& host, const std::string& port, int session=-1, boost::asio::io_service* service=NULL);
+
+	void send_request(variant request, 
 		game_logic::map_formula_callable_ptr callable, 
 		boost::function<void(std::string)> handler);
 
@@ -57,7 +54,8 @@ private:
 	variant get_value(const std::string& key) const;
 
 	bool use_local_cache_;
-	boost::shared_ptr<tbs::game> local_game_cache_;
+	tbs::game* local_game_cache_;
+	boost::intrusive_ptr<game_logic::formula_callable> local_game_cache_holder_;
 	int local_nplayer_;
 
 	std::vector<std::string> local_responses_;

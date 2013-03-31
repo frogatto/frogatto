@@ -75,6 +75,9 @@ public:
 private:
 };
 
+std::string serialize_doc_with_objects(variant v);
+variant deserialize_doc_with_objects(const std::string& msg);
+
 }
 
 #endif

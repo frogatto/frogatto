@@ -64,6 +64,8 @@ private:
 
 	void handle_message(socket_ptr socket, receive_buf_ptr recv_buf);
 
+	virtual variant parse_message(const std::string& msg) const;
+
 	boost::asio::ip::tcp::acceptor acceptor_;
 };
 

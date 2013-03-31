@@ -46,8 +46,19 @@ struct property_entry {
 	property_entry(const std::string& class_name, const std::string& prop_name, variant node) {
 		name = prop_name;
 
+		formula_callable_definition* class_def = get_class_definition(class_name);
+
+		const formula::strict_check_scope strict_checking;
 		if(node.is_string()) {
 			getter = game_logic::formula::create_optional_formula(node, NULL, get_class_definition(class_name));
+			ASSERT_LOG(getter, "COULD NOT PARSE CLASS FORMULA " << class_name << "." << prop_name);
+
+			ASSERT_LOG(getter->query_variant_type()->is_any() == false, "COULD NOT INFER TYPE FOR CLASS PROPERTY " << class_name << "." << prop_name << ". SET THIS PROPERTY EXPLICITLY");
+
+			formula_callable_definition::entry* entry = class_def->get_entry_by_id(prop_name);
+			ASSERT_LOG(entry != NULL, "COULD NOT FIND CLASS PROPERTY ENTRY " << class_name << "." << prop_name);
+
+			entry->set_variant_type(getter->query_variant_type());
 			return;
 		}
 
@@ -61,6 +72,7 @@ struct property_entry {
 		if(node["get"].is_string()) {
 			getter = game_logic::formula::create_optional_formula(node["get"], NULL, get_class_definition(class_name));
 		}
+
 		if(node["set"].is_string()) {
 			setter = game_logic::formula::create_optional_formula(node["set"], NULL, get_class_definition(class_name));
 		}
@@ -146,10 +158,11 @@ static const std::string BaseFields[] = {"private", "value", "self", "me", "_cla
 class formula_class_definition : public formula_callable_definition
 {
 public:
-	formula_class_definition(const std::string& class_name, const variant& var) {
+	formula_class_definition(const std::string& class_name, const variant& var)
+	  : type_name_("class " + class_name)
+	{
 		for(int n = 0; n != NUM_BASE_FIELDS; ++n) {
-			if(n != FIELD_VALUE)
-				properties_[BaseFields[n]] = slots_.size();
+			properties_[BaseFields[n]] = n;
 			slots_.push_back(entry(BaseFields[n]));
 			switch(n) {
 			case FIELD_PRIVATE:
@@ -209,6 +222,11 @@ public:
 					if(valid_types.is_null() == false) {
 						slots_[slot].variant_type = parse_variant_type(valid_types);
 					}
+				} else if(prop_node.is_string()) {
+					variant_type_ptr fn_type = parse_optional_function_type(prop_node);
+					if(fn_type) {
+						slots_[slot].variant_type = fn_type;
+					}
 				}
 			}
 		}
@@ -253,9 +271,14 @@ public:
 		return slots_.size();
 	}
 
+	const std::string* type_name() const {
+		return &type_name_;
+	}
+
 private:
 	std::map<std::string, int> properties_;
 	std::vector<entry> slots_;
+	std::string type_name_;
 };
 
 typedef std::map<std::string, formula_class_definition*> class_definition_map;
@@ -268,9 +291,9 @@ std::vector<formula_class*> unit_test_queue;
 
 }
 
-const formula_callable_definition* get_class_definition(const std::string& name)
+formula_callable_definition* get_class_definition(const std::string& name)
 {
-	class_definition_map::const_iterator itor = class_definitions.find(name);
+	class_definition_map::iterator itor = class_definitions.find(name);
 	if(itor != class_definitions.end()) {
 		return itor->second;
 	}
@@ -278,6 +301,7 @@ const formula_callable_definition* get_class_definition(const std::string& name)
 	formula_class_definition* def = new formula_class_definition(name, get_class_node(name));
 	class_definitions[name] = def;
 	def->init();
+
 	return def;
 }
 
@@ -296,6 +320,7 @@ public:
 
 	bool is_a(const std::string& name) const;
 
+	void build_nested_classes();
 	void run_unit_tests();
 
 private:
@@ -312,11 +337,18 @@ private:
 	variant unit_test_;
 
 	std::vector<boost::intrusive_ptr<const formula_class> > bases_;
+
+	variant nested_classes_;
 };
 
-formula_class::formula_class(const std::string& class_name, const variant& node)
+bool is_class_derived_from(const std::string& derived, const std::string& base)
 {
-	std::vector<boost::intrusive_ptr<const formula_class> > bases_;
+	return get_class(derived)->is_a(base);
+}
+
+formula_class::formula_class(const std::string& class_name, const variant& node)
+  : name_(class_name)
+{
 	variant bases_v = node["bases"];
 	if(bases_v.is_null() == false) {
 		for(int n = 0; n != bases_v.num_elements(); ++n) {
@@ -333,10 +365,6 @@ formula_class::formula_class(const std::string& class_name, const variant& node)
 
 	if(node["private"].is_map()) {
 		merge_variant_over(&private_data_, node["private"]);
-	}
-
-	if(node["constructor"].is_string()) {
-		constructor_.push_back(game_logic::formula::create_optional_formula(node["constructor"]));
 	}
 
 	ASSERT_LOG(bases_.size() <= 1, "Multiple inheritance of classes not currently supported");
@@ -365,15 +393,28 @@ formula_class::formula_class(const std::string& class_name, const variant& node)
 		}
 	}
 
-	const variant classes = node["classes"];
-	if(classes.is_map()) {
-		foreach(variant key, classes.get_keys().as_list()) {
-			const variant class_node = classes[key];
-			sub_classes_[key.as_string()].reset(new formula_class(key.as_string(), class_node));
-		}
+	nested_classes_ = node["classes"];
+
+	if(node["constructor"].is_string()) {
+		const formula::strict_check_scope strict_checking;
+
+		formula_callable_definition* class_def = get_class_definition(class_name);
+		constructor_.push_back(game_logic::formula::create_optional_formula(node["constructor"], NULL, class_def));
 	}
 
 	unit_test_ = node["test"];
+}
+
+void formula_class::build_nested_classes()
+{
+	if(nested_classes_.is_map()) {
+		foreach(variant key, nested_classes_.get_keys().as_list()) {
+			const variant class_node = nested_classes_[key];
+			sub_classes_[key.as_string()].reset(new formula_class(name_ + "." + key.as_string(), class_node));
+		}
+
+		nested_classes_ = variant();
+	}
 }
 
 void formula_class::set_name(const std::string& name)
@@ -538,6 +579,7 @@ boost::intrusive_ptr<const formula_class> get_class(const std::string& type)
 	}
 
 	classes_[type] = result;
+	result->build_nested_classes();
 	result->run_unit_tests();
 	return boost::intrusive_ptr<const formula_class>(result.get());
 }
@@ -588,6 +630,7 @@ void formula_object::reload_classes()
 
 boost::intrusive_ptr<formula_object> formula_object::create(const std::string& type, variant args)
 {
+	const formula::strict_check_scope strict_checking;
 	boost::intrusive_ptr<formula_object> res(new formula_object(type, args));
 	res->call_constructors(args);
 	res->validate();
@@ -595,7 +638,7 @@ boost::intrusive_ptr<formula_object> formula_object::create(const std::string& t
 }
 
 formula_object::formula_object(const std::string& type, variant args)
-  : class_(get_class(type))
+  : class_(get_class(type)), expose_private_data_(false)
 {
 	private_data_ = deep_copy_variant(class_->private_data());
 }
@@ -605,9 +648,15 @@ bool formula_object::is_a(const std::string& class_name) const
 	return class_->is_a(class_name);
 }
 
+const std::string& formula_object::get_class_name() const
+{
+	return class_->name();
+}
+
 void formula_object::call_constructors(variant args)
 {
 	if(args.is_map()) {
+		const formula_callable_definition* def = get_class_definition(class_->name());
 		foreach(const variant& key, args.get_keys().as_list()) {
 			std::map<std::string, int>::const_iterator itor = class_->properties().find(key.as_string());
 			if(itor != class_->properties().end() && class_->slots()[itor->second].setter.get() == NULL && class_->slots()[itor->second].variable.is_null()) {
@@ -616,7 +665,13 @@ void formula_object::call_constructors(variant args)
 				}
 
 				//A read-only property. Set the formula to what is passed in.
-				property_overrides_[itor->second] = formula_ptr(new formula(args[key]));
+				formula_ptr f(new formula(args[key], NULL, def));
+				const formula_callable_definition::entry* entry = def->get_entry_by_id(key.as_string());
+				ASSERT_LOG(entry, "COULD NOT FIND ENTRY IN CLASS DEFINITION: " << key.as_string());
+				if(entry->variant_type) {
+					ASSERT_LOG(variant_types_compatible(entry->variant_type, f->query_variant_type()), "ERROR: property override in instance of class " << class_->name() << " has mis-matched type for property " << key.as_string() << ": " << entry->variant_type->to_string() << " doesn't match " << f->query_variant_type()->to_string() << " at " << args[key].debug_location());
+				}
+				property_overrides_[itor->second] = f;
 			} else {
 				set_value(key.as_string(), args[key]);
 			}
@@ -630,7 +685,7 @@ void formula_object::call_constructors(variant args)
 }
 
 formula_object::formula_object(variant data)
-  : class_(get_class(data["@class"].as_string()))
+  : class_(get_class(data["@class"].as_string())), expose_private_data_(false)
 {
 	if(data.is_map() && data["private"].is_map()) {
 		private_data_ = deep_copy_variant(data["private"]);
@@ -655,6 +710,11 @@ formula_object::formula_object(variant data)
 
 formula_object::~formula_object()
 {}
+
+boost::intrusive_ptr<formula_object> formula_object::clone() const
+{
+	return boost::intrusive_ptr<formula_object>(new formula_object(*this));
+}
 
 variant formula_object::serialize_to_wml() const
 {
@@ -888,20 +948,19 @@ void formula_object::get_inputs(std::vector<formula_input>* inputs) const
 
 bool formula_class_valid(const std::string& type)
 {
-	return known_classes.count(type) != false || get_class(type).get() != NULL;
+	return known_classes.count(type) != false || get_class_node(type).is_map();
 }
 
 namespace {
 
 void invalidate_class_definition(const std::string& name)
 {
-	std::cerr << "INVALIDATE: " << name << "\n";
+	std::cerr << "INVALIDATE CLASS: " << name << "\n";
 	for(std::map<std::string, variant>::iterator i = class_node_map.begin(); i != class_node_map.end(); ) {
 		const std::string& class_name = i->first;
 		std::string::const_iterator dot = std::find(class_name.begin(), class_name.end(), '.');
 		std::string base_class(class_name.begin(), dot);
 		if(base_class == name) {
-			std::cerr << "REMOVEA: " << class_name << "\n";
 			class_node_map.erase(i++);
 		} else {
 			++i;
@@ -914,7 +973,6 @@ void invalidate_class_definition(const std::string& name)
 		std::string::const_iterator dot = std::find(class_name.begin(), class_name.end(), '.');
 		std::string base_class(class_name.begin(), dot);
 		if(base_class == name) {
-			std::cerr << "REMOVEB: " << class_name << "\n";
 			class_definitions.erase(i++);
 		} else {
 			++i;
@@ -927,7 +985,6 @@ void invalidate_class_definition(const std::string& name)
 		std::string::const_iterator dot = std::find(class_name.begin(), class_name.end(), '.');
 		std::string base_class(class_name.begin(), dot);
 		if(base_class == name) {
-			std::cerr << "REMOVEX: " << class_name << "\n";
 			known_classes.erase(class_name);
 			backup_classes_[i->first] = i->second;
 			classes_.erase(i++);

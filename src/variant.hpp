@@ -65,6 +65,7 @@ struct variant_list;
 struct variant_string;
 struct variant_map;
 struct variant_fn;
+struct variant_multi_fn;
 struct variant_delayed;
 
 struct type_error {
@@ -82,6 +83,8 @@ public:
 
 	static variant create_delayed(game_logic::const_formula_ptr f, boost::intrusive_ptr<const game_logic::formula_callable> callable);
 	static void resolve_delayed();
+
+	static variant create_function_overload(const std::vector<variant>& fn);
 
 	variant() : type_(VARIANT_TYPE_NULL), int_value_(0) {}
 	explicit variant(int n) : type_(VARIANT_TYPE_INT), int_value_(n) {}
@@ -125,6 +128,7 @@ public:
 	bool has_key(const variant& key) const;
 	bool has_key(const std::string& key) const;
 
+	bool function_call_valid(const std::vector<variant>& args, std::string* message=NULL) const;
 	variant operator()(const std::vector<variant>& args) const;
 
 	variant get_member(const std::string& str) const;
@@ -259,8 +263,10 @@ public:
 	void write_json(std::ostream& s, write_flags flags=FSON_MODE) const;
 	void write_json_pretty(std::ostream& s, std::string indent, write_flags flags=FSON_MODE) const;
 
-	enum TYPE { VARIANT_TYPE_NULL, VARIANT_TYPE_BOOL, VARIANT_TYPE_INT, VARIANT_TYPE_DECIMAL, VARIANT_TYPE_CALLABLE, VARIANT_TYPE_CALLABLE_LOADING, VARIANT_TYPE_LIST, VARIANT_TYPE_STRING, VARIANT_TYPE_MAP, VARIANT_TYPE_FUNCTION, VARIANT_TYPE_DELAYED, VARIANT_TYPE_INVALID };
+	enum TYPE { VARIANT_TYPE_NULL, VARIANT_TYPE_BOOL, VARIANT_TYPE_INT, VARIANT_TYPE_DECIMAL, VARIANT_TYPE_CALLABLE, VARIANT_TYPE_CALLABLE_LOADING, VARIANT_TYPE_LIST, VARIANT_TYPE_STRING, VARIANT_TYPE_MAP, VARIANT_TYPE_FUNCTION, VARIANT_TYPE_MULTI_FUNCTION, VARIANT_TYPE_DELAYED, VARIANT_TYPE_INVALID };
 	TYPE type() const { return type_; }
+
+	void write_function(std::ostream& s) const;
 
 	static std::string variant_type_to_string(TYPE type);
 	static TYPE string_to_type(const std::string& str);
@@ -283,7 +289,6 @@ public:
 
 	std::pair<variant*,variant*> range() const;
 
-private:
 	void must_be(TYPE t) const {
 #if !TARGET_OS_IPHONE
 		if(type_ != t) {
@@ -292,6 +297,7 @@ private:
 #endif
 	}
 
+private:
 	void throw_type_error(TYPE expected) const;
 
 	TYPE type_;
@@ -306,6 +312,7 @@ private:
 		variant_string* string_;
 		variant_map* map_;
 		variant_fn* fn_;
+		variant_multi_fn* multi_fn_;
 		variant_delayed* delayed_;
 		debug_info* debug_info_;
 

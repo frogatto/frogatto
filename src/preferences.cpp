@@ -337,7 +337,7 @@ namespace preferences {
 		bool force_no_npot_textures_ = false;
 		
 		bool run_failing_unit_tests_ = false;
-		bool serialize_bad_objects_ = false;
+		bool serialize_bad_objects_ = true;
 		bool die_on_assert_ = false;
 		bool type_safety_checks_ = true;
 	}
@@ -709,7 +709,7 @@ namespace preferences {
 		return alt_frame_time_millis_ != -1;
 	}
 
-	alt_frame_time_scope::alt_frame_time_scope(bool value) : old_value_(frame_time_millis_)
+	alt_frame_time_scope::alt_frame_time_scope(bool value) : old_value_(frame_time_millis_), active_(false)
 	{
 		if(value && has_alt_frame_time()) {
 			frame_time_millis_ = alt_frame_time_millis_;
@@ -980,6 +980,8 @@ namespace preferences {
 			relay_through_server_ = true;
 		} else if(s == "--failing-tests") {
 			run_failing_unit_tests_ = true;
+		} else if(s == "--no-serialize-bad-objects") {
+			serialize_bad_objects_ = false;
 		} else if(s == "--serialize-bad-objects") {
 			serialize_bad_objects_ = true;
 		} else if(s == "--die-on-assert") {
