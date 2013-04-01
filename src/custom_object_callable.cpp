@@ -16,6 +16,7 @@
 */
 #include "asserts.hpp"
 #include "custom_object_callable.hpp"
+#include "formula_object.hpp"
 #include "level.hpp"
 
 namespace {
@@ -41,7 +42,7 @@ custom_object_callable::custom_object_callable(bool is_singleton)
 {
 
 	static const std::string CustomObjectProperties[] = {
-	"consts", "type", "active",
+	"consts", "type", "active", "lib",
 	"time_in_animation", "time_in_animation_delta", "frame_in_animation", "level",
 	"animation", "available_animations",
 	"hitpoints", "max_hitpoints", "mass", "label", "x", "y", "xy", "z",
@@ -92,6 +93,7 @@ custom_object_callable::custom_object_callable(bool is_singleton)
 
 //	global_entries()[CUSTOM_OBJECT_LEVEL].type_definition = &level::get_formula_definition();
 	global_entries()[CUSTOM_OBJECT_PARENT].type_definition = is_singleton ? this : &instance();
+	global_entries()[CUSTOM_OBJECT_LIB].type_definition = game_logic::get_library_definition().get();
 
 	entries_ = global_entries();
 }

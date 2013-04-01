@@ -155,8 +155,8 @@ variant get_class_node(const std::string& type)
 	return i->second;
 }
 
-enum CLASS_BASE_FIELDS { FIELD_PRIVATE, FIELD_VALUE, FIELD_SELF, FIELD_ME, FIELD_CLASS, NUM_BASE_FIELDS };
-static const std::string BaseFields[] = {"data", "value", "self", "me", "_class"};
+enum CLASS_BASE_FIELDS { FIELD_PRIVATE, FIELD_VALUE, FIELD_SELF, FIELD_ME, FIELD_CLASS, FIELD_LIB, NUM_BASE_FIELDS };
+static const std::string BaseFields[] = {"data", "value", "self", "me", "_class", "lib"};
 
 class formula_class_definition : public formula_callable_definition
 {
@@ -181,6 +181,9 @@ public:
 			case FIELD_CLASS:
 			slots_.back().variant_type = variant_type::get_type(variant::VARIANT_TYPE_STRING);
 			break;
+			case FIELD_LIB:
+			slots_.back().type_definition = get_library_definition().get();
+			break;
 			}
 		}
 
@@ -199,12 +202,14 @@ public:
 		std::reverse(nodes.begin(), nodes.end());
 
 		foreach(const variant& node, nodes) {
-			const variant properties = node["properties"];
+			variant properties = node["properties"];
 			if(!properties.is_map()) {
-				continue;
+				properties = node;
 			}
 
 			foreach(variant key, properties.get_keys().as_list()) {
+				ASSERT_LOG(std::count(BaseFields, BaseFields + NUM_BASE_FIELDS, key.as_string()) == 0, "Class " << class_name << " has property '" << key.as_string() << "' which is a reserved word");
+
 				if(properties_.count(key.as_string()) == 0) {
 					properties_[key.as_string()] = slots_.size();
 					slots_.push_back(entry(key.as_string()));
@@ -394,19 +399,21 @@ formula_class::formula_class(const std::string& class_name, const variant& node)
 		nstate_slots_ = base->nstate_slots_;
 	}
 
-	const variant properties = node["properties"];
-	if(properties.is_map()) {
-		foreach(variant key, properties.get_keys().as_list()) {
-			const variant prop_node = properties[key];
-			property_entry entry(class_name, key.as_string(), prop_node, nstate_slots_);
+	variant properties = node["properties"];
+	if(!properties.is_map()) {
+		properties = node;
+	}
 
-			if(properties_.count(key.as_string()) == 0) {
-				properties_[key.as_string()] = slots_.size();
-				slots_.push_back(property_entry());
-			}
+	foreach(variant key, properties.get_keys().as_list()) {
+		const variant prop_node = properties[key];
+		property_entry entry(class_name, key.as_string(), prop_node, nstate_slots_);
 
-			slots_[properties_[key.as_string()]] = entry;
+		if(properties_.count(key.as_string()) == 0) {
+			properties_[key.as_string()] = slots_.size();
+			slots_.push_back(property_entry());
 		}
+
+		slots_[properties_[key.as_string()]] = entry;
 	}
 
 	nested_classes_ = node["classes"];
@@ -796,6 +803,10 @@ variant formula_object::get_value(const std::string& key) const
 		return class_->name_variant();
 	}
 
+	if(key == "lib") {
+		return variant(get_library_object().get());
+	}
+
 	std::map<std::string, int>::const_iterator itor = class_->properties().find(key);
 	ASSERT_LOG(itor != class_->properties().end(), "UNKNOWN PROPERTY ACCESS " << key << " IN CLASS " << class_->name() << "\nFORMULA LOCATION: " << get_call_stack());
 
@@ -826,6 +837,7 @@ variant formula_object::get_value_by_slot(int slot) const
 		case FIELD_SELF:
 		case FIELD_ME: return variant(this);
 		case FIELD_CLASS: return class_->name_variant();
+		case FIELD_LIB: return variant(get_library_object().get());
 		default: break;
 	}
 
@@ -1029,6 +1041,98 @@ void invalidate_class_definition(const std::string& name)
 	}
 }
 
+formula_callable_definition_ptr g_library_definition;
+formula_callable_ptr g_library_obj;
+
+}
+
+formula_class_manager::formula_class_manager()
+{
+}
+
+formula_class_manager::~formula_class_manager()
+{
+}
+
+formula_callable_definition_ptr get_library_definition()
+{
+	if(!g_library_definition) {
+		std::vector<std::string> files;
+
+		const std::string path = "data/classes/";
+		module::get_files_in_dir("data/classes/", &files, NULL);
+
+		std::vector<std::string> classes;
+
+		foreach(const std::string& fname, files) {
+			if(fname.size() > 4 && std::equal(fname.end() - 4, fname.end(), ".cfg")) {
+				const std::string class_name(fname.begin(), fname.end()-4);
+				if(std::count(classes.begin(), classes.end(), class_name) == 0) {
+					classes.push_back(class_name);
+				}
+			}
+		}
+
+		std::vector<variant_type_ptr> types;
+		foreach(const std::string& class_name, classes) {
+			types.push_back(variant_type::get_class(class_name));
+		}
+
+		if(!types.empty()) {
+			g_library_definition = game_logic::create_formula_callable_definition(&classes[0], &classes[0] + classes.size(), NULL);
+
+			for(int n = 0; n != g_library_definition->num_slots(); ++n) {
+				g_library_definition->get_entry(n)->set_variant_type(types[n]);
+			}
+		} else {
+			g_library_definition = game_logic::create_formula_callable_definition(NULL, NULL, NULL, NULL);
+		}
+	}
+
+	return g_library_definition;
+}
+
+namespace {
+class library_callable : public game_logic::formula_callable
+{
+public:
+	library_callable() {
+		items_.resize(get_library_definition()->num_slots());
+	}
+private:
+	variant get_value(const std::string& key) const {
+		formula_callable_definition_ptr def = get_library_definition();
+		return query_value_by_slot(def->get_slot(key));
+	}
+
+	variant get_value_by_slot(int slot) const {
+		ASSERT_LOG(slot >= 0 && slot < items_.size(), "ILLEGAL LOOK UP IN LIBRARY");
+		if(items_[slot].is_null()) {
+			formula_callable_definition_ptr def = get_library_definition();
+			const formula_callable_definition::entry* entry = def->get_entry(slot);
+			ASSERT_LOG(entry != NULL, "INVALID SLOT: " << slot);
+			std::string class_name;
+			if(entry->variant_type->is_class(&class_name) == false) {
+				ASSERT_LOG(false, "ERROR IN LIBRARY");
+			}
+
+			items_[slot] = variant(formula_object::create(class_name).get());
+		}
+
+		return items_[slot];
+	}
+
+	mutable std::vector<variant> items_;
+};
+}
+
+formula_callable_ptr get_library_object()
+{
+	if(g_library_obj.get() == NULL) {
+		g_library_obj.reset(new library_callable);
+	}
+
+	return g_library_obj;
 }
 
 }

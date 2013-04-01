@@ -67,6 +67,7 @@ private:
 	bool is_strict_;
 };
 
+
 formula_callable_definition_ptr create_formula_callable_definition(const std::string* beg, const std::string* end, const formula_callable_definition* base=NULL, variant_type_ptr* begin_types=NULL);
 
 int register_formula_callable_definition(const std::string& id, const formula_callable_definition* def);

@@ -85,6 +85,15 @@ private:
 
 bool formula_class_valid(const std::string& type);
 
+struct formula_class_manager {
+	formula_class_manager();
+	~formula_class_manager();
+};
+
+
+formula_callable_definition_ptr get_library_definition();
+formula_callable_ptr get_library_object();
+
 }
 
 #endif
