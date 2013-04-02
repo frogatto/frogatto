@@ -523,6 +523,37 @@ std::string copy_from_clipboard(const bool)
 
     #if TARGET_OS_IPHONE
         //for now, do nothing
+    #elif TARGET_OS_MAC
+        #define decimal decimal_carbon
+        #import <Cocoa/Cocoa.h>
+        #undef decimal
+        #define CLIPBOARD_FUNCS_DEFINED
+        void copy_to_clipboard(const std::string& text, const bool)
+        {
+            NSString *clipString = [NSString stringWithCString:text.c_str()
+                                                encoding:[NSString defaultCStringEncoding]];
+            NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+            NSInteger changeCount = [pasteboard clearContents];
+            BOOL OK = [pasteboard setString:clipString forType:NSStringPboardType];
+            std::cerr << OK << "okay?\n";
+            NSLog(@"%@",clipString);
+            
+            NSLog(@"%@", [[NSPasteboard generalPasteboard] stringForType:NSStringPboardType]);
+        }
+
+        std::string copy_from_clipboard(const bool)
+        {
+            NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+            NSString *clipString = [pasteboard stringForType:NSStringPboardType];
+            std::string finalClipString = std::string([clipString UTF8String]);
+            return finalClipString;
+        }
+
+        bool clipboard_handle_event(const SDL_Event& )
+        {
+            return false;
+        }
+
 
     #elif TARGET_OS_MAC_DISABLED
     #define CLIPBOARD_FUNCS_DEFINED

@@ -297,7 +297,7 @@
 		C010C5D8160AFD4C006E7D90 /* checkbox.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = checkbox.hpp; sourceTree = "<group>"; };
 		C010C5D9160AFD4C006E7D90 /* checksum.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = checksum.cpp; sourceTree = "<group>"; };
 		C010C5DA160AFD4C006E7D90 /* checksum.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = checksum.hpp; sourceTree = "<group>"; };
-		C010C5DB160AFD4C006E7D90 /* clipboard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = clipboard.cpp; sourceTree = "<group>"; };
+		C010C5DB160AFD4C006E7D90 /* clipboard.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = clipboard.cpp; sourceTree = "<group>"; };
 		C010C5DC160AFD4C006E7D90 /* clipboard.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = clipboard.hpp; sourceTree = "<group>"; };
 		C010C5DE160AFD4C006E7D90 /* code_editor_dialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = code_editor_dialog.cpp; sourceTree = "<group>"; };
 		C010C5DF160AFD4C006E7D90 /* code_editor_dialog.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = code_editor_dialog.hpp; sourceTree = "<group>"; };
