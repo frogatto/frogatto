@@ -29,6 +29,10 @@
 #include "variant_utils.hpp"
 #include "wml_formula_callable.hpp"
 
+#ifdef _MSC_VER
+#define strtoll _strtoui64
+#endif
+
 namespace game_logic
 {
 
