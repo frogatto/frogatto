@@ -394,7 +394,9 @@ void video_resize(SDL_Event &event)
 	preferences::set_actual_screen_width(width);
 	preferences::set_actual_screen_height(height);
 
+#if !SDL_VERSION_ATLEAST(2, 0, 0)
     graphics::set_video_mode(width, height);
+#endif
 }
 
 void level_runner::video_resize_event(const SDL_Event &event)
