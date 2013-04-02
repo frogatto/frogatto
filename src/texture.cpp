@@ -161,6 +161,8 @@ namespace {
 		}
 		if(!npot) {
 			std::cerr << "Using only pot textures\n";
+		} else {
+			std::cerr << "Using npot textures\n";
 		}
 		return npot;
     }

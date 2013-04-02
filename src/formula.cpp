@@ -1727,13 +1727,12 @@ void parse_args(const variant& formula_str, const std::string* function_name,
 			}
 		}
 
-		if(n == 1) {
-			static const std::string ComparatorFuncs[] = { "sort", "fold" };
-			if(function_name != NULL && std::count(ComparatorFuncs, ComparatorFuncs + sizeof(ComparatorFuncs)/sizeof(*ComparatorFuncs), *function_name)) {
-				variant_type_ptr sequence_type = (*res)[0]->query_variant_type();
-				variant_type_ptr value_type = sequence_type->is_list_of();
-				callable_def = get_variant_comparator_definition(callable_def, value_type);
-			}
+		if(function_name != NULL &&
+		   (n == 1 && (*function_name == "sort" || *function_name == "fold") ||
+		    n == 2 &&  *function_name == "zip")) {
+			variant_type_ptr sequence_type = (*res)[0]->query_variant_type();
+			variant_type_ptr value_type = sequence_type->is_list_of();
+			callable_def = get_variant_comparator_definition(callable_def, value_type);
 		}
 
 		res->push_back(parse_expression(formula_str, args[n].first, args[n].second, symbols, callable_def, can_optimize));

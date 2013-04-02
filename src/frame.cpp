@@ -83,7 +83,7 @@ frame::frame(variant node)
 	 frame_time_(node["duration"].as_int(-1)),
 	 reverse_frame_(node["reverse"].as_bool()),
 	 play_backwards_(node["play_backwards"].as_bool()),
-	 scale_(node["scale"].as_int(2)),
+	 scale_(node["scale"].as_decimal(decimal(2.0)).as_float()),
 	 pad_(node["pad"].as_int()),
 	 rotate_(node["rotate"].as_int()),
 	 blur_(node["blur"].as_int()),

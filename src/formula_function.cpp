@@ -1110,35 +1110,28 @@ FUNCTION_DEF(unzip, 1, 1, "unzip(list of lists) -> list of lists: Converts [[1,4
 END_FUNCTION_DEF(unzip)
 
 FUNCTION_DEF(zip, 3, 3, "zip(list1, list2, expr) -> list")
-	map_formula_callable_ptr callable(new map_formula_callable(&variables));
-	variant& a = callable->add_direct_access("a");
-	variant& b = callable->add_direct_access("b");
-	variant item1 = args()[0]->evaluate(variables);
-	variant item2 = args()[1]->evaluate(variables);
+	const variant item1 = args()[0]->evaluate(variables);
+	const variant item2 = args()[1]->evaluate(variables);
 
 	ASSERT_LOG(item1.type() == item2.type(), "zip function arguments must both be the same type.");
 	ASSERT_LOG(item1.is_list() || item1.is_map(), "zip function arguments must be either lists or maps");
+
+	boost::intrusive_ptr<variant_comparator> callable(new variant_comparator(args()[2], variables));
 	const int size = std::min(item1.num_elements(), item2.num_elements());
 
 	if(item1.is_list()) {
-		std::vector<variant> retList;
+		std::vector<variant> result;
 		// is list
-		if(size != 0) {
-			for(int n = 0; n < size; ++n) {
-				a = item1[n];
-				b = item2[n];
-				retList.push_back(args()[2]->evaluate(*callable));
-			}
+		for(int n = 0; n < size; ++n) {
+			result.push_back(callable->eval(item1[n], item2[n]));
 		}
-		return variant(&retList);
+		return variant(&result);
 	} else {
 		std::map<variant,variant> retMap(item1.as_map());
 		variant keys = item2.get_keys();
 		for(int n = 0; n != keys.num_elements(); n++) {
 			if(retMap[keys[n]].is_null() == false) {
-				a = retMap[keys[n]];
-				b = item2[keys[n]];
-				retMap[keys[n]] = args()[2]->evaluate(*callable);
+				retMap[keys[n]] = callable->eval(retMap[keys[n]], item2[keys[n]]);
 			} else {
 				retMap[keys[n]] = item2[keys[n]];
 			}
@@ -2204,6 +2197,12 @@ END_FUNCTION_DEF(unencode)
 			}
 		}
 	};
+
+FUNCTION_DEF(int, 1, -1, "overload(fn...): makes an overload of functions")
+	return variant(args()[0]->evaluate(variables).as_int());
+FUNCTION_TYPE_DEF
+	return variant_type::get_type(variant::VARIANT_TYPE_INT);
+END_FUNCTION_DEF(int)
 
 	class str_function : public function_expression {
 	public:

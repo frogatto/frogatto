@@ -33,8 +33,8 @@ ifeq ($(OPTIMIZE),yes)
 BASE_CXXFLAGS += -O2
 endif
 
-SDL2_CONFIG?=sdl2-config
-USE_SDL2?=$(shell which $(SDL2_CONFIG) 2>&1 > /dev/null && echo yes)
+#SDL2_CONFIG?=sdl2-config
+#USE_SDL2?=$(shell which $(SDL2_CONFIG) 2>&1 > /dev/null && echo yes)
 
 # Initial compiler options, used before CXXFLAGS and CPPFLAGS.
 BASE_CXXFLAGS += -g -fno-inline-functions -fthreadsafe-statics -Wnon-virtual-dtor -Werror -Wignored-qualifiers -Wformat -Wswitch -Wreturn-type -DUSE_GLES2 -DUTILITY_IN_PROC
@@ -85,7 +85,7 @@ game: $(objects)
 		$(LIBS) -lboost_regex -lboost_system -lpthread -fthreadsafe-statics
 
 # pull in dependency info for *existing* .o files
--include $(objects:.o=.d)
+#-include $(objects:.o=.d)
 
 server: $(server_objects)
 	$(CCACHE) $(CXX) \
