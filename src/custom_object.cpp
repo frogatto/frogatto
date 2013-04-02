@@ -3153,6 +3153,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		}
 		break;
 	
+	case CUSTOM_OBJECT_X1:
 	case CUSTOM_OBJECT_X: {
 		const int start_x = centi_x();
 		set_x(value.as_int());
@@ -3163,6 +3164,7 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 		break;
 	}
 	
+	case CUSTOM_OBJECT_Y1:
 	case CUSTOM_OBJECT_Y: {
 		const int start_y = centi_y();
 		set_y(value.as_int());
@@ -3170,6 +3172,32 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 			set_centi_y(start_y);
 		}
 
+		break;
+	}
+
+	case CUSTOM_OBJECT_X2: {
+		const int start_x = centi_x();
+		const int current_x = solid_rect().w() ? solid_rect().x2() :
+		                                         x() + current_frame().width();
+		const int delta_x = value.as_int() - current_x;
+		set_x(x() + delta_x);
+		if(entity_collides(level::current(), *this, MOVE_NONE) &&
+		   entity_in_current_level(this)) {
+			set_centi_x(start_x);
+		}
+		break;
+	}
+
+	case CUSTOM_OBJECT_Y2: {
+		const int start_y = centi_y();
+		const int current_y = solid_rect().h() ? solid_rect().y2() :
+		                                         y() + current_frame().height();
+		const int delta_y = value.as_int() - current_y;
+		set_y(y() + delta_y);
+		if(entity_collides(level::current(), *this, MOVE_NONE) &&
+		   entity_in_current_level(this)) {
+			set_centi_y(start_y);
+		}
 		break;
 	}
 	
