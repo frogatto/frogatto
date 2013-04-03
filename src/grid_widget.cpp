@@ -625,6 +625,11 @@ widget_ptr grid::get_widget_by_id(const std::string& id)
 	return widget::get_widget_by_id(id);
 }
 
+std::vector<widget_ptr> grid::get_children() const
+{
+	return visible_cells_;
+}
+
 void grid::set_value(const std::string& key, const variant& v)
 {
 	if(key == "children") {

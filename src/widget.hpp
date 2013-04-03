@@ -105,6 +105,8 @@ public:
 	int get_pad_height() const { return pad_h_; }
 	void set_padding(int pw, int ph) { pad_w_ = pw; pad_h_ = ph; }
 
+	virtual std::vector<widget_ptr> get_children() const { return std::vector<widget_ptr>(); }
+
 	void process();
 protected:
 	widget();

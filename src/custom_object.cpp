@@ -2317,7 +2317,17 @@ class widgets_callable : public formula_callable {
 	}
 	void set_value(const std::string& key, const variant& value) {
 		if(key == "child") {
-			obj_->add_widget(widget_factory::create(value, obj_.get()));
+
+			gui::widget_ptr new_widget = widget_factory::create(value, obj_.get());
+
+			if(new_widget->id().empty() == false) {
+				gui::widget_ptr existing = obj_->get_widget_by_id(new_widget->id());
+				if(existing != NULL) {
+					obj_->remove_widget(existing);
+				}
+			}
+
+			obj_->add_widget(new_widget);
 			return;
 		}
 		if(value.is_null()) {

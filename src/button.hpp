@@ -39,6 +39,8 @@ public:
 	virtual widget_ptr get_widget_by_id(const std::string& id);
 	virtual const_widget_ptr get_widget_by_id(const std::string& id) const;
 	void set_click_handler(boost::function<void ()> click_fun) { onclick_ = click_fun; }
+
+	std::vector<widget_ptr> get_children() const;
 protected:
 	virtual variant get_value(const std::string& key) const;
 	void set_label(widget_ptr label);

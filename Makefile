@@ -85,7 +85,7 @@ game: $(objects)
 		$(LIBS) -lboost_regex -lboost_system -lpthread -fthreadsafe-statics
 
 # pull in dependency info for *existing* .o files
-#-include $(objects:.o=.d)
+-include $(objects:.o=.d)
 
 server: $(server_objects)
 	$(CCACHE) $(CXX) \

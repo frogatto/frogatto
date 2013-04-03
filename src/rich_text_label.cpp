@@ -171,6 +171,16 @@ rich_text_label::rich_text_label(const variant& v, game_logic::formula_callable*
 	set_claim_mouse_events(v["claim_mouse_events"].as_bool(false));
 }
 
+std::vector<widget_ptr> rich_text_label::get_children() const
+{
+	std::vector<widget_ptr> result;
+	foreach(const std::vector<widget_ptr>& row, children_) {
+		result.insert(result.end(), row.begin(), row.end());
+	}
+
+	return result;
+}
+
 void rich_text_label::handle_process()
 {
 	foreach(const std::vector<widget_ptr>& v, children_) {

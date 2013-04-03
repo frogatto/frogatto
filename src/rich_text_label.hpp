@@ -31,6 +31,8 @@ class rich_text_label : public scrollable_widget
 {
 public:
 	rich_text_label(const variant& v, game_logic::formula_callable* e);
+
+	std::vector<widget_ptr> get_children() const;
 private:
 
 	void handle_process();

@@ -17,6 +17,7 @@
 #include <boost/bind.hpp>
 
 #include "asserts.hpp"
+#include "foreach.hpp"
 #include "preferences.hpp"
 #include "raster.hpp"
 #include "tooltip.hpp"
@@ -353,6 +354,8 @@ variant widget::get_value(const std::string& key) const
 	} else if(key == "tooltip") {
 		if(tooltip_) {
 			return variant(tooltip_->text);
+		} else {
+			return variant();
 		}
 	} else if(key == "is_visible") {
 		return variant(visible_);
@@ -381,7 +384,16 @@ variant widget::get_value(const std::string& key) const
 		v.push_back(variant(get_pad_width()));
 		v.push_back(variant(get_pad_height()));
 		return variant(&v);
+	} else if(key == "children") {
+		std::vector<variant> v;
+		std::vector<widget_ptr> w = get_children();
+		foreach(widget_ptr item, w) {
+			v.push_back(variant(item.get()));
+		}
+
+		return variant(&v);
 	}
+
 	return variant();
 }
 

@@ -73,6 +73,8 @@ public:
 	bool has_focus() const;
 	virtual widget_ptr get_widget_by_id(const std::string& id);
 	virtual const_widget_ptr get_widget_by_id(const std::string& id) const;
+
+	virtual std::vector<widget_ptr> get_children() const;
 protected:
 	virtual bool handle_event(const SDL_Event& event, bool claimed);
 	virtual void handle_draw() const;
