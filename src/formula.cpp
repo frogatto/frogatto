@@ -111,7 +111,7 @@ namespace game_logic
 			if(callable) {
 				callable->run_command(*this);
 			} else {
-				ASSERT_LOG(false, "EXPECTED EXECUTABLE COMMAND OBJECT, INSTEAD FOUND: " << v.to_debug_string());
+				ASSERT_LOG(false, "EXPECTED EXECUTABLE COMMAND OBJECT, INSTEAD FOUND: " << v.to_debug_string() << "\nFORMULA INFO: " << output_formula_error_info() << "\n");
 			}
 		}
 

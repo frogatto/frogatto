@@ -27,6 +27,8 @@
 #include "variant.hpp"
 #include "variant_type.hpp"
 
+std::string output_formula_error_info();
+
 namespace game_logic
 {
 
