@@ -48,6 +48,7 @@
 #include "filesystem.hpp"
 #include "font.hpp"
 #include "foreach.hpp"
+#include "formula_callable_definition.hpp"
 #include "formula_profiler.hpp"
 #include "framed_gui_element.hpp"
 #include "graphical_font.hpp"
@@ -351,6 +352,8 @@ extern "C" int main(int argcount, char** argvec)
 		chdir("app/native");
 		std::cout<< "Changed working directory to: " << getcwd(0, 0) << std::endl;
 	#endif
+
+	game_logic::init_callable_definitions();
 
 	std::string level_cfg = "titlescreen.cfg";
 	bool unit_tests_only = false, skip_tests = false;
