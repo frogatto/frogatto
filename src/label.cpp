@@ -158,7 +158,11 @@ void label::handle_draw() const
 {
 	if(draw_highlight_) {
 		SDL_Rect rect = {x(), y(), width(), height()};
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		graphics::draw_rect(rect, highlight_color_, highlight_color_.a);
+#else
 		graphics::draw_rect(rect, highlight_color_, highlight_color_.unused);
+#endif
 	}
 
 	if(border_texture_.valid()) {
@@ -167,7 +171,7 @@ void label::handle_draw() const
 		graphics::blit_texture(border_texture_, x(), y() - border_size_);
 		graphics::blit_texture(border_texture_, x(), y() + border_size_);
 	}
-
+	std::cerr << "LABEL: \"" << text_ << "\", (" << x() << "," << y() << ")" << std::endl;
 	graphics::blit_texture(texture_, x(), y());
 }
 
@@ -230,7 +234,11 @@ variant label::get_value(const std::string& key) const
 	if(key == "text") {
 		return variant(text_);
 	} else if(key == "color") {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		return graphics::color(color_.r, color_.g, color_.b, color_.a).write();
+#else
 		return graphics::color(color_.r, color_.g, color_.b, color_.unused).write();
+#endif
 	} else if(key == "size") {
 		return variant(size_);
 	} else if(key == "font") {

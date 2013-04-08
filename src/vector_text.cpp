@@ -164,7 +164,11 @@ variant vector_text::get_value(const std::string& key) const
 	if(key == "text") {
 		return variant(text_);
 	} else if(key == "color") {
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		return graphics::color(color_.r, color_.g, color_.b, color_.a).write();
+#else
 		return graphics::color(color_.r, color_.g, color_.b, color_.unused).write();
+#endif
 	} else if(key == "size") {
 		return variant(size_);
 	} else if(key == "font") {

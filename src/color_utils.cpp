@@ -80,7 +80,11 @@ color::color( const std::string& str)
 		c_.rgba[0] = c.r;
 		c_.rgba[1] = c.g;
 		c_.rgba[2] = c.b;
+#if SDL_VERSION_ATLEAST(2, 0, 0)
+		c_.rgba[3] = c.a;
+#else
 		c_.rgba[3] = c.unused;
+#endif
 	}
 }
 
