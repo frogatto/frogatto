@@ -26,6 +26,7 @@
 #include "asserts.hpp"
 #include "entity_fwd.hpp"
 #include "formula_callable.hpp"
+#include "formula_callable_definition.hpp"
 #include "formula_variable_storage.hpp"
 
 namespace gles2
@@ -122,13 +123,12 @@ protected:
 	bool queryUniforms();
 	bool queryAttributes();
 
-	virtual variant get_value(const std::string& key) const;
-	virtual void set_value(const std::string& key, const variant& value);
-
 	std::vector<GLint> active_attributes_;
 	variant stored_attributes_;
 	variant stored_uniforms_;
 private:
+	DECLARE_CALLABLE(program)
+
 	game_logic::formula_callable* environ_;
 	std::string name_;
 	shader vs_;
@@ -176,8 +176,6 @@ public:
 	void clear();
 	variant write();
 protected:
-	virtual variant get_value(const std::string& key) const;
-	virtual void set_value(const std::string& key, const variant& value);
 
 	struct DrawCommand {
 		DrawCommand();
@@ -213,6 +211,8 @@ protected:
 	};
 
 private:
+	DECLARE_CALLABLE(shader_program)
+
 	void operator=(const shader_program&);
 
 	std::string name_;

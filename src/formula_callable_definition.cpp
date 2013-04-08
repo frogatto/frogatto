@@ -138,6 +138,11 @@ formula_callable_definition_ptr create_formula_callable_definition(const std::st
 namespace {
 std::map<std::string, const formula_callable_definition*> registry;
 int num_definitions = 0;
+
+std::vector<boost::function<void()> >& callable_init_routines() {
+	static std::vector<boost::function<void()> > v;
+	return v;
+}
 }
 
 int register_formula_callable_definition(const std::string& id, const formula_callable_definition* def)
@@ -149,6 +154,21 @@ int register_formula_callable_definition(const std::string& id, const formula_ca
 const formula_callable_definition* get_formula_callable_definition(const std::string& id)
 {
 	return registry[id];
+}
+
+int add_callable_definition_init(void(*fn)())
+{
+	callable_init_routines().push_back(fn);
+	return callable_init_routines().size();
+}
+
+void init_callable_definitions()
+{
+	foreach(const boost::function<void()>& fn, callable_init_routines()) {
+		fn();
+	}
+
+	callable_init_routines().clear();
 }
 
 }

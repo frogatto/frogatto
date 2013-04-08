@@ -30,7 +30,6 @@
 #include "pause_game_dialog.hpp"
 #include "preferences.hpp"
 #include "sound.hpp"
-#include "of_bridge.h"
 #include "language_dialog.hpp"
 #include "widget_factory.hpp"
 
@@ -206,9 +205,6 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	widget_ptr b3(new button(return_label, boost::bind(end_dialog, &d, &result, PAUSE_GAME_GO_TO_TITLESCREEN), BUTTON_STYLE_NORMAL, button_resolution));
 	widget_ptr b4(new button(exit_label, boost::bind(end_dialog, &d, &result, PAUSE_GAME_QUIT), BUTTON_STYLE_DEFAULT, button_resolution));
 	widget_ptr b5(new checkbox(button_swap_label, preferences::reverse_ab(), boost::bind(preferences::set_reverse_ab, _1), button_resolution));
-#ifdef ENABLE_OPENFEINT
-	widget_ptr b6(new button(widget_ptr(new graphical_font_label(_("OpenFeint"), "door_label", 2)), of_dashboard, BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
-#endif
 	
 	b1->set_dim(button_width, button_height);
 	b2->set_dim(button_width, button_height);
@@ -216,9 +212,6 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 	b4->set_dim(button_width, button_height);
 	b5->set_dim(button_width, button_height);
 	language_button->set_dim(button_width, button_height);
-#ifdef ENABLE_OPENFEINT
-	b6->set_dim(button_width, button_height);
-#endif
 	
 	d.set_padding(padding-12);
 	d.add_widget(t1, padding*2, padding*2);
@@ -234,9 +227,6 @@ PAUSE_GAME_RESULT show_pause_game_dialog()
 		if (show_button_swap) d.add_widget(b5);
 		d.add_widget(b1);
 		if (show_controls) d.add_widget(b2);
-#ifdef ENABLE_OPENFEINT
-		if (show_of) d.add_widget(b6);
-#endif
 		d.add_widget(language_button);
 		d.add_widget(b3);
 		if (show_exit) d.add_widget(b4);

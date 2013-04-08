@@ -48,6 +48,7 @@
 #include "filesystem.hpp"
 #include "font.hpp"
 #include "foreach.hpp"
+#include "formula_callable_definition.hpp"
 #include "formula_profiler.hpp"
 #include "framed_gui_element.hpp"
 #include "graphical_font.hpp"
@@ -55,7 +56,6 @@
 #include "i18n.hpp"
 #include "ipc.hpp"
 #include "iphone_device_info.h"
-#include "of_bridge.h"
 #include "joystick.hpp"
 #include "json_parser.hpp"
 #include "level.hpp"
@@ -351,6 +351,8 @@ extern "C" int main(int argcount, char** argvec)
 		chdir("app/native");
 		std::cout<< "Changed working directory to: " << getcwd(0, 0) << std::endl;
 	#endif
+
+	game_logic::init_callable_definitions();
 
 	std::string level_cfg = "titlescreen.cfg";
 	bool unit_tests_only = false, skip_tests = false;
@@ -979,18 +981,10 @@ extern "C" int main(int argcount, char** argvec)
 	}
 
 	bool quit = false;
-	bool of_initialized = false;
 
 	while(!quit && !show_title_screen(level_cfg)) {
 		boost::intrusive_ptr<level> lvl(load_level(level_cfg));
 		
-#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-		if (!of_initialized)
-		{
-			of_init();
-			of_initialized = true;
-		}
-#endif
 
 #if !defined(__native_client__)
 		//see if we're loading a multiplayer level, in which case we

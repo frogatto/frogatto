@@ -662,7 +662,7 @@ formula_object::formula_object(const std::string& type, variant args)
 	std::cerr << "CONSTRUCT " << type << ": " << class_->nstate_slots() << "\n";
 	foreach(const property_entry& slot, class_->slots()) {
 		if(slot.variable_slot != -1) {
-			variables_[slot.variable_slot] = slot.default_value;
+			variables_[slot.variable_slot] = deep_copy_variant(slot.default_value);
 		}
 	}
 }

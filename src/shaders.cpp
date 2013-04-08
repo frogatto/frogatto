@@ -385,6 +385,35 @@ namespace {
 	};
 }
 
+BEGIN_DEFINE_CALLABLE(program, 0)
+DEFINE_FIELD(0, uniforms, "object")
+	value = variant(new uniforms_callable(*this));
+DEFINE_FIELD(1, current_texture, "object")
+	value = variant(graphics::texture::get_current_texture());
+DEFINE_FIELD(2, attributes, "object")
+	value = variant(new attributes_callable(*this));
+DEFINE_FIELD(3, alpha, "decimal")
+	value = variant(get_alpha());
+DEFINE_FIELD(4, color, "[int]")
+	std::vector<variant> v;
+	for(int n = 0; n < 4; ++n) {
+		v.push_back(variant(get_color()[n]));
+	}
+	value = variant(&v);
+DEFINE_FIELD(5, point_size, "decimal")
+	GLfloat pt_size;
+	glGetFloatv(GL_POINT_SIZE, &pt_size);
+	value = variant(pt_size);
+
+DEFINE_FIELD(6, mvp_matrix, "any")
+	std::vector<variant> v;
+	for(size_t n = 0; n < 16; n++) {
+		v.push_back(variant(((GLfloat*)(&gles2::get_mvp_matrix().x.x))[n]));
+	}
+	value = variant(&v);
+END_DEFINE_CALLABLE_NOBASE(program)
+
+/*
 variant program::get_value(const std::string& key) const
 {
 #if defined(USE_GLES2)
@@ -420,7 +449,7 @@ variant program::get_value(const std::string& key) const
 
 void program::set_value(const std::string& key, const variant& value)
 {
-}
+}*/
 
 namespace {
 	GLenum convert_mode(const std::string& smode)
@@ -1219,6 +1248,27 @@ void shader_program::refresh_for_draw()
 	attribute_commands_->execute_on_draw();
 }
 
+BEGIN_DEFINE_CALLABLE(shader_program, program_object_)
+
+DEFINE_FIELD(0, vars, "any")
+	value = variant(vars_.get());
+DEFINE_FIELD(1, parent, "object")
+	ASSERT_LOG(parent_ != NULL, "Tried to request parent, when value is null: " << name());
+	value = variant(parent_);
+DEFINE_FIELD(2, object, "object")
+	ASSERT_LOG(parent_ != NULL, "Tried to request parent, when value is null: " << name());
+	value = variant(parent_);
+DEFINE_FIELD(3, uniform_commands, "object")
+	value = variant(uniform_commands_.get());
+DEFINE_FIELD(4, attribute_commands, "object")
+	value = variant(attribute_commands_.get());
+DEFINE_FIELD(5, enabled, "bool")
+	value = variant(enabled_);
+DEFINE_SET_FIELD
+	enabled_ = value.as_bool();
+END_DEFINE_CALLABLE(shader_program, program, program_object_)
+
+/*
 variant shader_program::get_value(const std::string& key) const
 {
 	if(key == "vars") {
@@ -1244,7 +1294,7 @@ void shader_program::set_value(const std::string& key, const variant& value)
 	} else {
 		program_object_->set_value(key, value);
 	}
-}
+}*/
 
 program_ptr shader_program::shader() const 
 { 
