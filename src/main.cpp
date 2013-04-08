@@ -56,7 +56,6 @@
 #include "i18n.hpp"
 #include "ipc.hpp"
 #include "iphone_device_info.h"
-#include "of_bridge.h"
 #include "joystick.hpp"
 #include "json_parser.hpp"
 #include "level.hpp"
@@ -982,18 +981,10 @@ extern "C" int main(int argcount, char** argvec)
 	}
 
 	bool quit = false;
-	bool of_initialized = false;
 
 	while(!quit && !show_title_screen(level_cfg)) {
 		boost::intrusive_ptr<level> lvl(load_level(level_cfg));
 		
-#if TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR
-		if (!of_initialized)
-		{
-			of_init();
-			of_initialized = true;
-		}
-#endif
 
 #if !defined(__native_client__)
 		//see if we're loading a multiplayer level, in which case we

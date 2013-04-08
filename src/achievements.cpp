@@ -25,7 +25,6 @@
 #include "json_parser.hpp"
 #include "preferences.hpp"
 #include "string_utils.hpp"
-#include "of_bridge.h"
 #include "variant.hpp"
 
 namespace {
@@ -56,8 +55,7 @@ achievement_ptr achievement::get(const std::string& id)
 achievement::achievement(variant node)
   : id_(node["id"].as_string()), name_(i18n::tr(node["name"].as_string())),
     description_(i18n::tr(node["description"].as_string())),
-	points_(node["points"].as_int()),
-	of_id_(node["of_id"].as_int())
+	points_(node["points"].as_int())
 {
 }
 
@@ -80,11 +78,6 @@ bool attain_achievement(const std::string& id)
 		return false;
 	}
 	
-	#ifdef ENABLE_OPENFEINT
-	achievement_ptr a = achievement::get(id);
-	of_earn_achievement(a->of_id());
-	#endif
-
 	achievements->push_back(id);
 	std::sort(achievements->begin(), achievements->end());
 
