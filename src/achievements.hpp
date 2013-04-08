@@ -22,10 +22,9 @@ public:
 	const std::string& name() const { return name_; }
 	const std::string& description() const { return description_; }
 	int points() const { return points_; }
-	int of_id() const { return of_id_; }
 private:
 	std::string id_, name_, description_;
-	int points_, of_id_;
+	int points_;
 };
 
 bool attain_achievement(const std::string& id);
