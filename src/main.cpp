@@ -944,7 +944,7 @@ extern "C" int main(int argcount, char** argvec)
 	if(unit_tests_only) {
 		return 0;
 	}
-#if defined(__APPLE__) && !(TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE)
+#if defined(__APPLE__) && !(TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE) && !defined(USE_GLES2)
 	GLint swapInterval = 1;
 	CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &swapInterval);
 #endif

@@ -38,7 +38,7 @@
 
 #ifdef USE_GLES2
 
-#if defined(WIN32) || defined(__linux__)
+#if defined(WIN32) || defined(__linux__) || defined(__APPLE__)
 #include <GL/glew.h>
 #else
 #include <EGL/egl.h>

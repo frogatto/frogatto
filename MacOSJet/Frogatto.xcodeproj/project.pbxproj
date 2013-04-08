@@ -145,7 +145,6 @@
 		C010C7CA160AFD4D006E7D90 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = C010C6DC160AFD4D006E7D90 /* SDLMain.m */; };
 		C010C7CB160AFD4D006E7D90 /* segment_editor_dialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C6DD160AFD4D006E7D90 /* segment_editor_dialog.cpp */; };
 		C010C7CD160AFD4D006E7D90 /* settings_dialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C6E0160AFD4D006E7D90 /* settings_dialog.cpp */; };
-		C010C7CE160AFD4D006E7D90 /* shaders.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C6E2160AFD4D006E7D90 /* shaders.cpp */; };
 		C010C7D0160AFD4D006E7D90 /* slider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C6E6160AFD4D006E7D90 /* slider.cpp */; };
 		C010C7D1160AFD4D006E7D90 /* solid_map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C6E8160AFD4D006E7D90 /* solid_map.cpp */; };
 		C010C7D2160AFD4D006E7D90 /* sound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C6EB160AFD4D006E7D90 /* sound.cpp */; };
@@ -199,6 +198,9 @@
 		C026F5A416C74B1E000482A1 /* draw_primitive.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C026F5A216C74B1E000482A1 /* draw_primitive.cpp */; };
 		C02ACCAC16FD5F05006274BC /* variant_type.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C02ACCAA16FD5F05006274BC /* variant_type.cpp */; };
 		C02ACCAF16FD6200006274BC /* fbo_scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C02ACCAD16FD6200006274BC /* fbo_scene.cpp */; };
+		C0649522171361DE00D8F372 /* shaders.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C6E2160AFD4D006E7D90 /* shaders.cpp */; };
+		C06495251713620E00D8F372 /* gles2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C06495231713620E00D8F372 /* gles2.cpp */; };
+		C06495281713628000D8F372 /* wm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C06495261713628000D8F372 /* wm.cpp */; };
 		C089D452162BDF7B009D2878 /* master-config.cfg in Resources */ = {isa = PBXBuildFile; fileRef = C089D451162BDF7B009D2878 /* master-config.cfg */; };
 		C0B1908916CD9437008FF14A /* ipc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0B1908716CD9437008FF14A /* ipc.cpp */; };
 		C0B87BD4166725A700D66B15 /* formula_object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0B87BD21667256F00D66B15 /* formula_object.cpp */; };
@@ -640,6 +642,10 @@
 		C02ACCAE16FD6200006274BC /* fbo_scene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = fbo_scene.hpp; sourceTree = "<group>"; };
 		C0406533163F790000F84F94 /* sys.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sys.cpp; sourceTree = "<group>"; };
 		C0406534163F790000F84F94 /* sys.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sys.hpp; sourceTree = "<group>"; };
+		C06495231713620E00D8F372 /* gles2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = gles2.cpp; sourceTree = "<group>"; };
+		C06495241713620E00D8F372 /* gles2.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = gles2.hpp; sourceTree = "<group>"; };
+		C06495261713628000D8F372 /* wm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wm.cpp; sourceTree = "<group>"; };
+		C06495271713628000D8F372 /* wm.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = wm.hpp; sourceTree = "<group>"; };
 		C089D451162BDF7B009D2878 /* master-config.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "master-config.cfg"; path = "../master-config.cfg"; sourceTree = "<group>"; };
 		C0B1908716CD9437008FF14A /* ipc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ipc.cpp; sourceTree = "<group>"; };
 		C0B1908816CD9437008FF14A /* ipc.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ipc.hpp; sourceTree = "<group>"; };
@@ -925,6 +931,8 @@
 				C010C64D160AFD4C006E7D90 /* game_registry.hpp */,
 				C010C64E160AFD4C006E7D90 /* geometry.cpp */,
 				C010C64F160AFD4C006E7D90 /* geometry.hpp */,
+				C06495231713620E00D8F372 /* gles2.cpp */,
+				C06495241713620E00D8F372 /* gles2.hpp */,
 				C010C652160AFD4C006E7D90 /* globals.cpp */,
 				C010C653160AFD4C006E7D90 /* globals.h */,
 				C010C654160AFD4C006E7D90 /* graphical_font.cpp */,
@@ -1158,6 +1166,8 @@
 				C010C73A160AFD4D006E7D90 /* widget.hpp */,
 				C010C73B160AFD4D006E7D90 /* widget_factory.cpp */,
 				C010C73C160AFD4D006E7D90 /* widget_factory.hpp */,
+				C06495261713628000D8F372 /* wm.cpp */,
+				C06495271713628000D8F372 /* wm.hpp */,
 				C010C73F160AFD4D006E7D90 /* wml_formula_callable.cpp */,
 				C010C740160AFD4D006E7D90 /* wml_formula_callable.hpp */,
 			);
@@ -1378,7 +1388,7 @@
 				C010C7C9160AFD4D006E7D90 /* scrollbar_widget.cpp in Sources */,
 				C010C7CB160AFD4D006E7D90 /* segment_editor_dialog.cpp in Sources */,
 				C010C7CD160AFD4D006E7D90 /* settings_dialog.cpp in Sources */,
-				C010C7CE160AFD4D006E7D90 /* shaders.cpp in Sources */,
+				C0649522171361DE00D8F372 /* shaders.cpp in Sources */,
 				C010C7D0160AFD4D006E7D90 /* slider.cpp in Sources */,
 				C010C7D1160AFD4D006E7D90 /* solid_map.cpp in Sources */,
 				C010C7D2160AFD4D006E7D90 /* sound.cpp in Sources */,
@@ -1433,6 +1443,8 @@
 				C0D6EB7116DB25D700B5ABCA /* bar_widget.cpp in Sources */,
 				C02ACCAC16FD5F05006274BC /* variant_type.cpp in Sources */,
 				C02ACCAF16FD6200006274BC /* fbo_scene.cpp in Sources */,
+				C06495251713620E00D8F372 /* gles2.cpp in Sources */,
+				C06495281713628000D8F372 /* wm.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1517,10 +1529,10 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					.,
-					/Library/Frameworks/SDL.framework/Headers,
-					/Library/Frameworks/SDL_image.framework/Headers,
-					/Library/Frameworks/SDL_mixer.framework/Headers,
-					/Library/Frameworks/SDL_ttf.framework/Headers,
+					./dylibs/SDL.framework/Headers,
+					./dylibs/SDL_image.framework/Headers,
+					./dylibs/SDL_mixer.framework/Headers,
+					./dylibs/SDL_ttf.framework/Headers,
 					./boost/include,
 					"./glew-1.9.0/include",
 					"./libpng-1.5.5/",
@@ -1531,7 +1543,10 @@
 					"\"$(SRCROOT)/dylibs\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = "-DIMPLEMENT_SAVE_PNG";
+				OTHER_CFLAGS = (
+					"-DIMPLEMENT_SAVE_PNG",
+					"-DUSE_GLES2",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1554,10 +1569,10 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					.,
-					/Library/Frameworks/SDL.framework/Headers,
-					/Library/Frameworks/SDL_image.framework/Headers,
-					/Library/Frameworks/SDL_mixer.framework/Headers,
-					/Library/Frameworks/SDL_ttf.framework/Headers,
+					./dylibs/SDL.framework/Headers,
+					./dylibs/SDL_image.framework/Headers,
+					./dylibs/SDL_mixer.framework/Headers,
+					./dylibs/SDL_ttf.framework/Headers,
 					./boost/include,
 					"./glew-1.9.0/include",
 					"./libpng-1.5.5/",
@@ -1568,7 +1583,10 @@
 					"\"$(SRCROOT)/dylibs\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = "-DIMPLEMENT_SAVE_PNG";
+				OTHER_CFLAGS = (
+					"-DIMPLEMENT_SAVE_PNG",
+					"-DUSE_GLES2",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
