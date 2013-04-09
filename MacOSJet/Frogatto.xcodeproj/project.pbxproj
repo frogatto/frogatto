@@ -141,7 +141,6 @@
 		C010C7C5160AFD4D006E7D90 /* rectangle_rotator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C6CF160AFD4D006E7D90 /* rectangle_rotator.cpp */; };
 		C010C7C8160AFD4D006E7D90 /* scrollable_widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C6D7160AFD4D006E7D90 /* scrollable_widget.cpp */; };
 		C010C7C9160AFD4D006E7D90 /* scrollbar_widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C6D9160AFD4D006E7D90 /* scrollbar_widget.cpp */; };
-		C010C7CA160AFD4D006E7D90 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = C010C6DC160AFD4D006E7D90 /* SDLMain.m */; };
 		C010C7CB160AFD4D006E7D90 /* segment_editor_dialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C6DD160AFD4D006E7D90 /* segment_editor_dialog.cpp */; };
 		C010C7CD160AFD4D006E7D90 /* settings_dialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C6E0160AFD4D006E7D90 /* settings_dialog.cpp */; };
 		C010C7D0160AFD4D006E7D90 /* slider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C010C6E6160AFD4D006E7D90 /* slider.cpp */; };
@@ -190,8 +189,8 @@
 		C010C812160B068B006E7D90 /* SDL_mixer.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C010C5AC160AFC60006E7D90 /* SDL_mixer.framework */; };
 		C010C82C160C69BB006E7D90 /* SDL_ttf.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C010C82B160C69BB006E7D90 /* SDL_ttf.framework */; };
 		C010C835160C750C006E7D90 /* SDL_ttf.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C010C82B160C69BB006E7D90 /* SDL_ttf.framework */; };
-		C017635317137C9A0005478B /* SDL.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C017635117137C8F0005478B /* SDL.framework */; };
-		C017635417137D0A0005478B /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C017635117137C8F0005478B /* SDL.framework */; };
+		C017635317137C9A0005478B /* SDL2.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C017635117137C8F0005478B /* SDL2.framework */; };
+		C017635417137D0A0005478B /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C017635117137C8F0005478B /* SDL2.framework */; };
 		C026F59B16C23629000482A1 /* b2d_ffl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C026F59A16C23629000482A1 /* b2d_ffl.cpp */; };
 		C026F59D16C23649000482A1 /* rich_text_label.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C026F59C16C23649000482A1 /* rich_text_label.cpp */; };
 		C026F5A116C23963000482A1 /* selector_widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C026F59F16C23963000482A1 /* selector_widget.cpp */; };
@@ -234,7 +233,7 @@
 				C0EF2A5A1622296E004CD227 /* libboost_iostreams.dylib in CopyFiles */,
 				C0EF2A5B16222973004CD227 /* libboost_regex.dylib in CopyFiles */,
 				C0EF2A5C16222978004CD227 /* libboost_system.dylib in CopyFiles */,
-				C017635317137C9A0005478B /* SDL.framework in CopyFiles */,
+				C017635317137C9A0005478B /* SDL2.framework in CopyFiles */,
 				C010C812160B068B006E7D90 /* SDL_mixer.framework in CopyFiles */,
 				C010C835160C750C006E7D90 /* SDL_ttf.framework in CopyFiles */,
 				C010C811160B0688006E7D90 /* SDL_image.framework in CopyFiles */,
@@ -626,7 +625,7 @@
 		C010C7FE160AFD82006E7D90 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; name = images; path = ../images; sourceTree = "<group>"; };
 		C010C7FF160AFD82006E7D90 /* modules */ = {isa = PBXFileReference; lastKnownFileType = folder; name = modules; path = ../modules; sourceTree = "<group>"; };
 		C010C82B160C69BB006E7D90 /* SDL_ttf.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL_ttf.framework; sourceTree = "<group>"; };
-		C017635117137C8F0005478B /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL.framework; sourceTree = "<group>"; };
+		C017635117137C8F0005478B /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL2.framework; sourceTree = "<group>"; };
 		C026F59916C23612000482A1 /* b2d_ffl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = b2d_ffl.hpp; sourceTree = "<group>"; };
 		C026F59A16C23629000482A1 /* b2d_ffl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2d_ffl.cpp; sourceTree = "<group>"; };
 		C026F59C16C23649000482A1 /* rich_text_label.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rich_text_label.cpp; sourceTree = "<group>"; };
@@ -679,7 +678,7 @@
 				C010C5B8160AFC8B006E7D90 /* libz.dylib in Frameworks */,
 				C010C572160AFAD9006E7D90 /* Cocoa.framework in Frameworks */,
 				C010C5BB160AFD09006E7D90 /* OpenGL.framework in Frameworks */,
-				C017635417137D0A0005478B /* SDL.framework in Frameworks */,
+				C017635417137D0A0005478B /* SDL2.framework in Frameworks */,
 				C010C5B3160AFC60006E7D90 /* SDL_image.framework in Frameworks */,
 				C010C5B4160AFC60006E7D90 /* SDL_mixer.framework in Frameworks */,
 				C010C82C160C69BB006E7D90 /* SDL_ttf.framework in Frameworks */,
@@ -761,7 +760,7 @@
 				C0EF2A5416215F78004CD227 /* libboost_regex.dylib */,
 				C0EF2A5516215F78004CD227 /* libboost_system.dylib */,
 				C010C5B6160AFC7C006E7D90 /* libz.dylib */,
-				C017635117137C8F0005478B /* SDL.framework */,
+				C017635117137C8F0005478B /* SDL2.framework */,
 				C010C82B160C69BB006E7D90 /* SDL_ttf.framework */,
 				C010C5AB160AFC60006E7D90 /* SDL_image.framework */,
 				C010C5AC160AFC60006E7D90 /* SDL_mixer.framework */,
@@ -1205,7 +1204,7 @@
 		C010C564160AFAD9006E7D90 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Richard Kettering";
 			};
 			buildConfigurationList = C010C567160AFAD9006E7D90 /* Build configuration list for PBXProject "Frogatto" */;
@@ -1254,7 +1253,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C010C7CA160AFD4D006E7D90 /* SDLMain.m in Sources */,
 				C00160CF16A2A8A7001DAEB9 /* http_server.cpp in Sources */,
 				C0DDFDC6163F7FF800F727DD /* sys.cpp in Sources */,
 				C010C741160AFD4D006E7D90 /* achievements.cpp in Sources */,
@@ -1511,6 +1509,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/dylibs\"",
@@ -1523,7 +1522,7 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					.,
-					./dylibs/SDL.framework/Headers,
+					./dylibs/SDL2.framework/Headers,
 					./dylibs/SDL_image.framework/Headers,
 					./dylibs/SDL_mixer.framework/Headers,
 					./dylibs/SDL_ttf.framework/Headers,
@@ -1535,6 +1534,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/dylibs\"",
+					"\"$(SRCROOT)/dylibs/SDL.framework/Versions/A\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
@@ -1551,6 +1551,7 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/dylibs\"",
@@ -1563,7 +1564,7 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					.,
-					./dylibs/SDL.framework/Headers,
+					./dylibs/SDL2.framework/Headers,
 					./dylibs/SDL_image.framework/Headers,
 					./dylibs/SDL_mixer.framework/Headers,
 					./dylibs/SDL_ttf.framework/Headers,
@@ -1575,6 +1576,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/dylibs\"",
+					"\"$(SRCROOT)/dylibs/SDL.framework/Versions/A\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (

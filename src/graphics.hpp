@@ -17,12 +17,12 @@
 #ifndef GRAPHICS_HPP_INCLUDED
 #define GRAPHICS_HPP_INCLUDED
 
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 #include "SDL.h"
+
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 #include "SDL_opengles.h"
 #endif
 
-#include "SDL.h"
 #include "SDL_thread.h"
 
 #if defined(__ANDROID__)

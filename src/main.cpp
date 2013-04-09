@@ -325,7 +325,7 @@ int load_module(const std::string& mod, std::vector<std::string>* argv)
 #if defined(__native_client__)
 extern "C" int game_main(int argcount, char* argvec[])
 #else
-extern "C" int main(int argcount, char** argvec)
+extern "C" int main(int argcount, char* argvec[])
 #endif
 {
 #if defined(__native_client__)
