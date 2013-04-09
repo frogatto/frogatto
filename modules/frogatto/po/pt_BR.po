@@ -4,7 +4,7 @@
 # 
 # Translators:
 #   <josuesupernet@gmail.com>, 2012.
-# Marcos Avila Isidoro <marcavis@yahoo.com.br>, 2011-2012.
+# Marcos Avila Isidoro <marcavis@yahoo.com.br>, 2011-2013.
 # Philipp Zabel <pzabel@gmx.de>, 2011.
 # Psy Shotter <deanheatterville@r7.com>, 2012.
 # Ricardo Manacero <rmanacero@gmail.com>, 2011.
@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2013-03-26 13:29-0300\n"
-"PO-Revision-Date: 2013-03-26 16:32+0000\n"
+"PO-Revision-Date: 2013-04-09 05:10+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/Frogatto/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
@@ -56,11 +56,11 @@ msgstr "Nova Proeza!"
 
 #: ../../../src/language_dialog.cpp:79
 msgid "Language change will take effect in next level."
-msgstr ""
+msgstr "A mudança de idioma terá efeito na próxima fase."
 
 #: ../../../src/language_dialog.cpp:96
 msgid "Use system language"
-msgstr ""
+msgstr "Usar o idioma padrão"
 
 #: ../../../src/main.cpp:701
 msgid "Initializing custom object functions"
@@ -100,7 +100,7 @@ msgstr "Controles..."
 
 #: ../../../src/pause_game_dialog.cpp:76
 msgid "Language..."
-msgstr ""
+msgstr "Idioma..."
 
 #: ../../../src/pause_game_dialog.cpp:77
 msgid "Return to Titlescreen"
@@ -5175,63 +5175,63 @@ msgstr "Observatório"
 msgid ""
 "This is the end of the demo, which you probably\n"
 "can infer from the impassible barrier right ahead."
-msgstr ""
+msgstr "Este é o fim da demonstração,⏎\nque é algo que se pode deduzir a partir da existência⏎\ndessa parede invisível à frente."
 
 #: ../data/level/secluded-hut.cfg:1463
 msgid ""
 "You're free to keep exploring the first chapter,\n"
 " but you can't go any further forward."
-msgstr ""
+msgstr "Fique à vontade para explorar a primeira parte,⏎\nmas não é possível prosseguir além deste ponto."
 
 #: ../data/level/secluded-hut.cfg:1465
 msgid ""
 "Well... hey, what the hell?\n"
 "I wanted to see what happens..."
-msgstr ""
+msgstr "Bom... mas, opa, o que que há?⏎\nEu queria ver o que acontece..."
 
 #: ../data/level/secluded-hut.cfg:1467
 msgid ""
 "I have rather a vested interest in this,\n"
 "you know."
-msgstr ""
+msgstr "Eu tenho um certo interesse especial nisso,⏎\nse é que você me entende."
 
 #: ../data/level/secluded-hut.cfg:1468
 msgid ""
 "Naturally; but so does the crew that made this.\n"
 "Gotta pay the piper, or he won't play."
-msgstr ""
+msgstr "É verdade; mas isso também vale⏎\npra turma que fez este jogo.⏎"
 
 #: ../data/level/secluded-hut.cfg:1470
 msgid ""
 "I guess.\n"
 "It's so annoying to pay for stuff, though."
-msgstr ""
+msgstr "Pois é.⏎\nMas é tão chato pagar pelas coisas..."
 
 #: ../data/level/secluded-hut.cfg:1471
 msgid ""
 "Sure, but that's just business.\n"
 "That's what pays for making games like this."
-msgstr ""
+msgstr "Claro, mas negócios são assim.⏎\nÉ isso o que sustenta o trabalho⏎\nde se fazer jogos, como este."
 
 #: ../data/level/secluded-hut.cfg:1472
 msgid ""
 "Check out our website, at frogatto.com, if\n"
 "you do want to buy a copy."
-msgstr ""
+msgstr "Dê uma olhada no nosso site, em frogatto.com,⏎\nse você desejar comprar o jogo."
 
 #: ../data/level/secluded-hut.cfg:1474
 msgid "Uh, sure, I'll keep that in mind."
-msgstr ""
+msgstr "Hã, claro, vou me lembrar disso."
 
 #: ../data/level/secluded-hut.cfg:1475
 msgid ""
 "Of course.  At any rate, enjoy yourself,\n"
 "and if you do choose to buy - thank you."
-msgstr ""
+msgstr "Bom, de qualquer modo, divirta-se,⏎\ne se você decidir comprar - muito obrigado."
 
 #: ../data/level/secluded-hut.cfg:1476
 msgid "Because that's pretty awesome if you do."
-msgstr ""
+msgstr "Porque será realmente muito legal se você fizer isso."
 
 #: ../data/level/secluded-hut.cfg:1518
 msgid "Are you quite alright?"
