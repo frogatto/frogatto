@@ -1149,17 +1149,17 @@ private:
 			case OP_POW: 
 				return left ^ right;
 			case OP_EQ:  
-				return left == right ? variant(1) : variant(0);
+				return left == right ? variant::from_bool(true) : variant::from_bool(false);
 			case OP_NEQ: 
-				return left != right ? variant(1) : variant(0);
+				return left != right ? variant::from_bool(true) : variant::from_bool(false);
 			case OP_LTE: 
-				return left <= right ? variant(1) : variant(0);
+				return left <= right ? variant::from_bool(true) : variant::from_bool(false);
 			case OP_GTE: 
-				return left >= right ? variant(1) : variant(0);
+				return left >= right ? variant::from_bool(true) : variant::from_bool(false);
 			case OP_LT:  
-				return left < right ? variant(1) : variant(0);
+				return left < right ? variant::from_bool(true) : variant::from_bool(false);
 			case OP_GT:  
-				return left > right ? variant(1) : variant(0);
+				return left > right ? variant::from_bool(true) : variant::from_bool(false);
 			case OP_MOD: 
 				return left % right;
 			case OP_DICE:
@@ -2791,7 +2791,7 @@ UNIT_TEST(formula_fn) {
 UNIT_TEST(array_index) {
 	formula f(variant("map(range(6), 'n', elements[n]) = elements "
 			          "where elements = [5, 6, 7, 8, 9, 10]"));
-	CHECK(f.execute() == variant(1), "test failed");
+	CHECK(f.execute() == variant::from_bool(true), "test failed");
 }
 
 UNIT_TEST(dot_precedence) {
