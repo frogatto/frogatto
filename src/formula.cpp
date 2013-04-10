@@ -558,7 +558,7 @@ private:
 		const variant res = operand_->evaluate(variables);
 		switch(op_) {
 			case NOT: 
-				return res.as_bool() ? variant(0) : variant(1);
+				return res.as_bool() ? variant::from_bool(false) : variant::from_bool(true);
 			case OP_SUB: 
 			default: 
 				return -res;
