@@ -81,6 +81,15 @@
 #include "unit_test.hpp"
 #include "variant_utils.hpp"
 
+#if defined(__APPLE__)
+    #include "TargetConditionals.h"
+    #if TARGET_OS_MAC
+    #define decimal decimal_carbon
+        #import <Cocoa/Cocoa.h>
+        #undef decimal
+    #endif
+#endif
+
 #if defined(USE_BOX2D)
 #include "b2d_ffl.hpp"
 #endif
@@ -338,6 +347,10 @@ extern "C" int main(int argcount, char* argvec[])
 		std::cerr << "Current working directory: " << res << std::endl;
 	}
 #endif 
+
+#if defined(__APPLE__) && TARGET_OS_MAC
+    chdir([[[NSBundle mainBundle] resourcePath] fileSystemRepresentation]);
+#endif
 
 	#ifdef NO_STDERR
 	std::freopen("/dev/null", "w", stderr);
