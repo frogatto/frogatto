@@ -1144,7 +1144,7 @@ FUNCTION_DEF(plot_y, 1, 1, "plot_y(int x): plots a horizontal debug line at the 
 	return variant(cmd);
 END_FUNCTION_DEF(plot_y)
 
-FUNCTION_DEF(object_can_stand, 3, 5, "object_can_stand(level, object, int x, int y) -> boolean: returns true iff the given point is standable")
+FUNCTION_DEF(object_can_stand, 4, 4, "object_can_stand(level, object, int x, int y) -> boolean: returns true iff the given point is standable")
 	level* lvl = args()[0]->evaluate(variables).convert_to<level>();
 	entity* obj = args()[1]->evaluate(variables).convert_to<entity>();
 	const int x = args()[2]->evaluate(variables).as_int();
