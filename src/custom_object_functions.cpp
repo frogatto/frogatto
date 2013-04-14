@@ -1144,6 +1144,15 @@ FUNCTION_DEF(plot_y, 1, 1, "plot_y(int x): plots a horizontal debug line at the 
 	return variant(cmd);
 END_FUNCTION_DEF(plot_y)
 
+FUNCTION_DEF(object_can_stand, 3, 5, "object_can_stand(level, object, int x, int y) -> boolean: returns true iff the given point is standable")
+	level* lvl = args()[0]->evaluate(variables).convert_to<level>();
+	entity* obj = args()[1]->evaluate(variables).convert_to<entity>();
+	const int x = args()[2]->evaluate(variables).as_int();
+	const int y = args()[3]->evaluate(variables).as_int();
+
+	return variant(point_standable(*lvl, *obj, x, y));
+END_FUNCTION_DEF(object_can_stand)
+
 FUNCTION_DEF(standable, 3, 5, "standable(level, int x, int y, (optional)int w=1, (optional) int h=1) -> boolean: returns true iff the level contains standable space within the given (x,y,w,h) rectangle")
 	level* lvl = args()[0]->evaluate(variables).convert_to<level>();
 	const int x = args()[1]->evaluate(variables).as_int();
