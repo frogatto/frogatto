@@ -41,6 +41,9 @@ public:
 	static variant_type_ptr get_class(const std::string& class_name);
 	static variant_type_ptr get_function_type(const std::vector<variant_type_ptr>& arg_types, variant_type_ptr return_type, int min_args);
 
+	//get a version of the type that we now know isn't null.
+	static variant_type_ptr get_null_excluded(variant_type_ptr input);
+
 	variant_type();
 	virtual ~variant_type();
 	virtual bool match(const variant& v) const = 0;
@@ -63,7 +66,10 @@ public:
 
 	virtual bool is_compatible(variant_type_ptr type) const { return false; }
 
+
 private:
+	virtual variant_type_ptr null_excluded() const { return variant_type_ptr(); }
+
 	virtual int order_id() const = 0;
 	mutable std::string str_;
 };
@@ -74,7 +80,8 @@ bool variant_types_compatible(variant_type_ptr to, variant_type_ptr from);
 
 variant_type_ptr parse_variant_type(const variant& original_str,
                                     const formula_tokenizer::token*& i1,
-                                    const formula_tokenizer::token* i2);
+                                    const formula_tokenizer::token* i2,
+									bool allow_failure=false);
 variant_type_ptr parse_variant_type(const variant& v);
 
 variant_type_ptr
@@ -82,5 +89,12 @@ parse_optional_function_type(const variant& original_str,
                              const formula_tokenizer::token*& i1,
                              const formula_tokenizer::token* i2);
 variant_type_ptr parse_optional_function_type(const variant& v);
+
+variant_type_ptr
+parse_optional_formula_type(const variant& original_str,
+                            const formula_tokenizer::token*& i1,
+                            const formula_tokenizer::token* i2);
+variant_type_ptr parse_optional_formula_type(const variant& v);
+
 
 #endif

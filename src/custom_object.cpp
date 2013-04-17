@@ -2763,7 +2763,7 @@ variant custom_object::get_value_by_slot(int slot) const
 
 variant custom_object::get_value(const std::string& key) const
 {
-	const int slot = type_->callable_definition().get_slot(key);
+	const int slot = type_->callable_definition()->get_slot(key);
 	if(slot >= 0 && slot < NUM_CUSTOM_OBJECT_PROPERTIES) {
 		return get_value_by_slot(slot);
 	}
@@ -4806,9 +4806,9 @@ bool custom_object::editor_force_standing() const
 	return type_->editor_force_standing();
 }
 
-const game_logic::formula_callable_definition* custom_object::get_definition() const
+game_logic::const_formula_callable_definition_ptr custom_object::get_definition() const
 {
-	return &type_->callable_definition();
+	return type_->callable_definition();
 }
 
 rect custom_object::platform_rect_at(int xpos) const

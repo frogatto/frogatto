@@ -98,7 +98,7 @@ bool formula_expression::has_debug_info() const
 	return parent_formula_.is_string() && parent_formula_.get_debug_info();
 }
 
-const formula_callable_definition* formula_expression::get_type_definition() const
+const_formula_callable_definition_ptr formula_expression::get_type_definition() const
 {
 	variant_type_ptr type = query_variant_type();
 	if(type) {
@@ -407,7 +407,8 @@ FUNCTION_DEF(singleton, 1, 1, "singleton(string typename): create a singleton ob
 	cache[type] = obj;
 	return variant(obj.get());
 FUNCTION_TYPE_DEF
-	variant literal = args()[0]->is_literal();
+	variant literal;
+	args()[0]->is_literal(literal);
 	if(literal.is_string()) {
 		std::cerr << "SINGLETON RETURNING CLASS: " << literal.as_string() << "\n";
 		return variant_type::get_class(literal.as_string());
@@ -428,7 +429,8 @@ FUNCTION_DEF(construct, 1, 2, "construct(string typename, arg): construct an obj
 	boost::intrusive_ptr<formula_object> obj(formula_object::create(type.as_string(), arg));
 	return variant(obj.get());
 FUNCTION_TYPE_DEF
-	variant literal = args()[0]->is_literal();
+	variant literal;
+	args()[0]->is_literal(literal);
 	if(literal.is_string()) {
 		return variant_type::get_class(literal.as_string());
 	} else {
@@ -734,7 +736,7 @@ FUNCTION_DEF(keys, 1, 1, "keys(map) -> list: gives the keys for a map")
 
 	return map.get_keys();
 FUNCTION_TYPE_DEF
-	return args()[0]->query_variant_type()->is_map_of().first;
+	return variant_type::get_list(args()[0]->query_variant_type()->is_map_of().first);
 END_FUNCTION_DEF(keys)
 
 FUNCTION_DEF(values, 1, 1, "values(map) -> list: gives the values for a map")
@@ -976,7 +978,7 @@ public:
 class variant_comparator_definition : public formula_callable_definition
 {
 public:
-	variant_comparator_definition(const formula_callable_definition* base, variant_type_ptr type)
+	variant_comparator_definition(const_formula_callable_definition_ptr base, variant_type_ptr type)
 	  : base_(base), type_(type)
 	{
 		for(int n = 0; n != 2; ++n) {
@@ -1012,7 +1014,7 @@ public:
 		}
 
 		if(base_) {
-			return const_cast<formula_callable_definition*>(base_)->get_entry(slot - entries_.size());
+			return const_cast<formula_callable_definition*>(base_.get())->get_entry(slot - entries_.size());
 		}
 
 		return NULL;
@@ -1039,7 +1041,7 @@ public:
 	}
 
 private:
-	const formula_callable_definition* base_;
+	const_formula_callable_definition_ptr base_;
 	variant_type_ptr type_;
 
 	std::vector<entry> entries_;
@@ -1400,7 +1402,7 @@ static const std::string MapCallableFields[] = { "value", "index", "context", "k
 class map_callable_definition : public formula_callable_definition
 {
 public:
-	map_callable_definition(const formula_callable_definition* base, variant_type_ptr key_type, variant_type_ptr value_type, const std::string& value_name)
+	map_callable_definition(const_formula_callable_definition_ptr base, variant_type_ptr key_type, variant_type_ptr value_type, const std::string& value_name)
 	  : base_(base), key_type_(key_type), value_type_(value_type)
 	{
 		for(int n = 0; n != NUM_MAP_CALLABLE_SLOTS; ++n) {
@@ -1467,7 +1469,7 @@ public:
 		}
 
 		if(base_) {
-			return const_cast<formula_callable_definition*>(base_)->get_entry(slot - NUM_MAP_CALLABLE_SLOTS);
+			return const_cast<formula_callable_definition*>(base_.get())->get_entry(slot - NUM_MAP_CALLABLE_SLOTS);
 		}
 
 		return NULL;
@@ -1494,7 +1496,7 @@ public:
 	}
 
 private:
-	const formula_callable_definition* base_;
+	const_formula_callable_definition_ptr base_;
 	variant_type_ptr key_type_, value_type_;
 
 	std::vector<entry> entries_;
@@ -2565,10 +2567,11 @@ private:
 
 class set_function : public function_expression {
 public:
-	set_function(const args_list& args, const formula_callable_definition* callable_def)
+	set_function(const args_list& args, const_formula_callable_definition_ptr callable_def)
 	  : function_expression("set", args, 2, 3), slot_(-1) {
 		if(args.size() == 2) {
-			variant literal = args[0]->is_literal();
+			variant literal;
+			args[0]->is_literal(literal);
 			if(literal.is_string()) {
 				key_ = literal.as_string();
 			} else {
@@ -2639,10 +2642,11 @@ private:
 
 class add_function : public function_expression {
 public:
-	add_function(const args_list& args, const formula_callable_definition* callable_def)
+	add_function(const args_list& args, const_formula_callable_definition_ptr callable_def)
 	  : function_expression("add", args, 2, 3), slot_(-1) {
 		if(args.size() == 2) {
-			variant literal = args[0]->is_literal();
+			variant literal;
+			args[0]->is_literal(literal);
 			if(literal.is_string()) {
 				key_ = literal.as_string();
 			} else {
@@ -3002,7 +3006,7 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 		custom_formulas_[name] = formula_function(name, formula, precondition, args, default_args, variant_types);
 	}
 
-	expression_ptr function_symbol_table::create_function(const std::string& fn, const std::vector<expression_ptr>& args, const formula_callable_definition* callable_def) const
+	expression_ptr function_symbol_table::create_function(const std::string& fn, const std::vector<expression_ptr>& args, const_formula_callable_definition_ptr callable_def) const
 	{
 
 		const std::map<std::string, formula_function>::const_iterator i = custom_formulas_.find(fn);
@@ -3036,7 +3040,7 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 		}
 	}
 
-	recursive_function_symbol_table::recursive_function_symbol_table(const std::string& fn, const std::vector<std::string>& args, const std::vector<variant>& default_args, function_symbol_table* backup, const formula_callable_definition* closure_definition, const std::vector<variant_type_ptr>& variant_types)
+	recursive_function_symbol_table::recursive_function_symbol_table(const std::string& fn, const std::vector<std::string>& args, const std::vector<variant>& default_args, function_symbol_table* backup, const_formula_callable_definition_ptr closure_definition, const std::vector<variant_type_ptr>& variant_types)
 	: name_(fn), stub_(fn, const_formula_ptr(), const_formula_ptr(), args, default_args, variant_types), backup_(backup), closure_definition_(closure_definition)
 	{
 	}
@@ -3044,7 +3048,7 @@ variant formula_function_expression::execute(const formula_callable& variables) 
 	expression_ptr recursive_function_symbol_table::create_function(
 					const std::string& fn,
 					const std::vector<expression_ptr>& args,
-					const formula_callable_definition* callable_def) const
+					const_formula_callable_definition_ptr callable_def) const
 	{
 		if(fn == name_) {
 			formula_function_expression_ptr expr = stub_.generate_function_expression(args);
@@ -3115,7 +3119,7 @@ namespace {
 expression_ptr create_function(const std::string& fn,
                                const std::vector<expression_ptr>& args,
 							   const function_symbol_table* symbols,
-							   const formula_callable_definition* callable_def)
+							   const_formula_callable_definition_ptr callable_def)
 {
 	if(fn == "set") {
 		return expression_ptr(new set_function(args, callable_def));
@@ -3485,13 +3489,13 @@ BENCHMARK(map_function) {
 
 namespace game_logic {
 
-const formula_callable_definition* get_map_callable_definition(const formula_callable_definition* base_def, variant_type_ptr key_type, variant_type_ptr value_type, const std::string& value_name)
+const_formula_callable_definition_ptr get_map_callable_definition(const_formula_callable_definition_ptr base_def, variant_type_ptr key_type, variant_type_ptr value_type, const std::string& value_name)
 {
-	return new map_callable_definition(base_def, key_type, value_type, value_name);
+	return const_formula_callable_definition_ptr(new map_callable_definition(base_def, key_type, value_type, value_name));
 }
 
-const formula_callable_definition* get_variant_comparator_definition(const formula_callable_definition* base_def, variant_type_ptr type)
+const_formula_callable_definition_ptr get_variant_comparator_definition(const_formula_callable_definition_ptr base_def, variant_type_ptr type)
 {
-	return new variant_comparator_definition(base_def, type);
+	return const_formula_callable_definition_ptr(new variant_comparator_definition(base_def, type));
 }
 }

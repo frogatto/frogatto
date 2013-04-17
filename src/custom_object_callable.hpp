@@ -190,4 +190,7 @@ private:
 	std::map<std::string, int> properties_;
 };
 
+typedef boost::intrusive_ptr<custom_object_callable> custom_object_callable_ptr;
+typedef boost::intrusive_ptr<const custom_object_callable> const_custom_object_callable_ptr;
+
 #endif

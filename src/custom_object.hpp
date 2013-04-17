@@ -275,7 +275,7 @@ protected:
 
 	virtual bool editor_force_standing() const;
 
-	virtual const game_logic::formula_callable_definition* get_definition() const;
+	virtual game_logic::const_formula_callable_definition_ptr get_definition() const;
 
 	entity_ptr standing_on() const { return standing_on_; }
 	virtual void add_to_level();

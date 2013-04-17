@@ -86,7 +86,7 @@ void bot::process(const boost::system::error_code& error)
 
 void bot::handle_response(const std::string& type, game_logic::formula_callable_ptr callable)
 {
-	std::cerr << "BOT HANDLE RESPONSE...\n";
+	std::cerr << "ZZ: BOT HANDLE RESPONSE...\n";
 	if(on_create_) {
 		execute_command(on_create_->execute(*this));
 		on_create_.reset();

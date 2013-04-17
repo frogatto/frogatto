@@ -81,7 +81,7 @@
 #include "unit_test.hpp"
 #include "variant_utils.hpp"
 
-#if defined(__APPLE__)
+#if defined(__APPLE__) && SDL_VERSION_ATLEAST(2, 0, 0)
     #include "TargetConditionals.h"
     #if TARGET_OS_MAC
     #define decimal decimal_carbon

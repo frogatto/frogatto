@@ -14,6 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include "formula_callable_definition.hpp"
 #include "formula_function_registry.hpp"
 #include "tbs_functions.hpp"
 
@@ -28,13 +29,13 @@ public:
 	expression_ptr create_function(
 	                           const std::string& fn,
 	                           const std::vector<expression_ptr>& args,
-							   const formula_callable_definition* callable_def) const;
+							   const_formula_callable_definition_ptr callable_def) const;
 };
 
 expression_ptr tbs_function_symbol_table::create_function(
                            const std::string& fn,
                            const std::vector<expression_ptr>& args,
-						   const formula_callable_definition* callable_def) const
+						   const_formula_callable_definition_ptr callable_def) const
 {
 	const std::map<std::string, function_creator*>& creators = get_function_creators(FunctionModule);
 	std::map<std::string, function_creator*>::const_iterator i = creators.find(fn);

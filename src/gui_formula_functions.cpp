@@ -338,7 +338,7 @@ public:
 	expression_ptr create_function(
 	                           const std::string& fn,
 	                           const std::vector<expression_ptr>& args,
-							   const formula_callable_definition* callable_def) const
+							   const_formula_callable_definition_ptr callable_def) const
 	{
 		if(fn == "draw_animation") {
 			return expression_ptr(new draw_animation_function(algo_, args));
@@ -371,8 +371,8 @@ enum ALGORITHM_PROPERTY_ID {
 class gui_algorithm_definition : public game_logic::formula_callable_definition
 {
 public:
-	static const gui_algorithm_definition& instance() {
-		static const gui_algorithm_definition def;
+	static boost::intrusive_ptr<const gui_algorithm_definition> instance() {
+		static boost::intrusive_ptr<const gui_algorithm_definition> def(new gui_algorithm_definition);
 		return def;
 	}
 
@@ -382,8 +382,8 @@ public:
 			keys_to_slots_[AlgorithmProperties[n]] = n;
 		}
 
-		entries_[ALGO_OBJECT].type_definition = &custom_object_type::get("dummy_gui_object")->callable_definition();
-		entries_[ALGO_LEVEL].type_definition = &level::get_formula_definition();
+		entries_[ALGO_OBJECT].type_definition = custom_object_type::get("dummy_gui_object")->callable_definition();
+		entries_[ALGO_LEVEL].type_definition = level::get_formula_definition();
 	}
 
 	int get_slot(const std::string& key) const {
@@ -424,7 +424,7 @@ private:
 gui_algorithm::gui_algorithm(variant node)
 	  : lvl_(NULL),
 	  loaded_(false),
-	  process_formula_(formula::create_optional_formula(node["on_process"], &get_custom_object_functions_symbol_table(), &gui_algorithm_definition::instance())),
+	  process_formula_(formula::create_optional_formula(node["on_process"], &get_custom_object_functions_symbol_table(), gui_algorithm_definition::instance())),
 	  cycle_(0), object_(new custom_object("dummy_gui_object", 0, 0, true))
 {
 	gui_command_function_symbol_table symbols(this);
@@ -446,8 +446,8 @@ gui_algorithm::gui_algorithm(variant node)
 		buttons_ = node["buttons"];
 	}
 
-	draw_formula_ = formula::create_optional_formula(node["on_draw"], &symbols, &gui_algorithm_definition::instance());
-	load_formula_ = formula::create_optional_formula(node["on_load"], &get_custom_object_functions_symbol_table(), &gui_algorithm_definition::instance());
+	draw_formula_ = formula::create_optional_formula(node["on_draw"], &symbols, gui_algorithm_definition::instance());
+	load_formula_ = formula::create_optional_formula(node["on_load"], &get_custom_object_functions_symbol_table(), gui_algorithm_definition::instance());
 }
 
 gui_algorithm::~gui_algorithm()
@@ -499,17 +499,17 @@ void gui_algorithm::load(level& lvl) {
 			if(v.has_key("on_mouse_down")) {
 				button_formulas_[id].insert(
 					std::make_pair(SDL_MOUSEBUTTONDOWN, 
-					formula::create_optional_formula(v["on_mouse_down"], &get_custom_object_functions_symbol_table(), &gui_algorithm_definition::instance())));
+					formula::create_optional_formula(v["on_mouse_down"], &get_custom_object_functions_symbol_table(), gui_algorithm_definition::instance())));
 			}
 			if(v.has_key("on_mouse_up")) {
 				button_formulas_[id].insert(
 					std::make_pair(SDL_MOUSEBUTTONUP, 
-					formula::create_optional_formula(v["on_mouse_up"], &get_custom_object_functions_symbol_table(), &gui_algorithm_definition::instance())));
+					formula::create_optional_formula(v["on_mouse_up"], &get_custom_object_functions_symbol_table(), gui_algorithm_definition::instance())));
 			}
 			if(v.has_key("on_mouse_move")) {
 				button_formulas_[id].insert(
 					std::make_pair(SDL_MOUSEMOTION, 
-					formula::create_optional_formula(v["on_mouse_move"], &get_custom_object_functions_symbol_table(), &gui_algorithm_definition::instance())));
+					formula::create_optional_formula(v["on_mouse_move"], &get_custom_object_functions_symbol_table(), gui_algorithm_definition::instance())));
 			}
 		}
  	}

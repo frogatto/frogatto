@@ -15,6 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "foreach.hpp"
+#include "formula_callable_definition.hpp"
 #include "formula_function_registry.hpp"
 #include "unit_test.hpp"
 
