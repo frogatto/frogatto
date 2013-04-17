@@ -799,7 +799,24 @@ namespace preferences {
 		controls::set_keycode(controls::CONTROL_ATTACK, static_cast<key_type>(node["key_attack"].as_int(SDLK_d)));
 		controls::set_keycode(controls::CONTROL_JUMP, static_cast<key_type>(node["key_jump"].as_int(SDLK_a)));
 		controls::set_keycode(controls::CONTROL_TONGUE, static_cast<key_type>(node["key_tongue"].as_int(SDLK_s)));
-        
+
+#if SDL_VERSION_ATLEAST(2,0,0)
+		if(node.has_key("sdl_version") == false || node["sdl_version"].as_int() < SDL_VERSIONNUM(2, 0, 0)) {
+			// SDL version isn't found or isn't high enough, so we remap the keys to defaults
+			controls::set_keycode(controls::CONTROL_UP, SDLK_UP);
+			controls::set_keycode(controls::CONTROL_DOWN, SDLK_DOWN);
+			controls::set_keycode(controls::CONTROL_LEFT, SDLK_LEFT);
+			controls::set_keycode(controls::CONTROL_RIGHT, SDLK_RIGHT);
+		}
+#else
+		if(node.has_key("sdl_version")) {
+			// SDL version found, we're runing an old SDL version so just remap the keys
+			controls::set_keycode(controls::CONTROL_UP, SDLK_UP);
+			controls::set_keycode(controls::CONTROL_DOWN, SDLK_DOWN);
+			controls::set_keycode(controls::CONTROL_LEFT, SDLK_LEFT);
+			controls::set_keycode(controls::CONTROL_RIGHT, SDLK_RIGHT);
+		}
+#endif
         preferences::set_32bpp_textures_if_kb_memory_at_least( 512000 );
 #endif
 	}
@@ -827,7 +844,10 @@ namespace preferences {
 		node.add("username", variant(get_username()));
 		node.add("passhash", variant(get_password()));
 		node.add("cookie", get_cookie());
-		
+
+#if SDL_VERSION_ATLEAST(2,0,0)
+		node.add("sdl_version", SDL_COMPILEDVERSION);
+#endif
 		if(external_code_editor_.is_null() == false) {
 			node.add("code_editor", external_code_editor_);
 		}
