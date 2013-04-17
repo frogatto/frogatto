@@ -3647,10 +3647,10 @@ void init_level_definition()
 	//const_cast<game_logic::formula_callable_definition&>(level::get_formula_definition()).get_entry(LEVEL_PLAYER)->type_definition = &custom_object_callable::instance();
 }
 
-const game_logic::formula_callable_definition& level::get_formula_definition()
+game_logic::const_formula_callable_definition_ptr level::get_formula_definition()
 {
 	static game_logic::formula_callable_definition_ptr result = create_level_definition();
-	return *result;
+	return result;
 }
 
 variant level::get_value_by_slot(int slot) const

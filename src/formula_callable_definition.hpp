@@ -21,29 +21,26 @@
 #include <boost/function.hpp>
 
 #include "formula_callable_definition_fwd.hpp"
+#include "reference_counted_object.hpp"
 #include "variant_type.hpp"
 
 namespace game_logic
 {
 
-class formula_callable_definition
+class formula_callable_definition : public reference_counted_object
 {
 public:
 	struct entry {
 		explicit entry(const std::string& id_) : id(id_), type_definition(0) {}
 		void set_variant_type(variant_type_ptr type);
 		std::string id;
-		const formula_callable_definition* type_definition;
-
-		//optionally store the reference to the type definition.
-		const_formula_callable_definition_ptr type_definition_holder;
+		const_formula_callable_definition_ptr type_definition;
 
 		variant_type_ptr variant_type;
 	};
 
-	formula_callable_definition() : is_strict_(false)
-	{}
-	virtual ~formula_callable_definition() {}
+	formula_callable_definition();
+	virtual ~formula_callable_definition();
 
 	virtual int get_slot(const std::string& key) const = 0;
 	virtual entry* get_entry(int slot) = 0;
@@ -62,17 +59,18 @@ public:
 
 	virtual const std::string* type_name() const { return NULL; }
 
-	bool is_strict() const { return is_strict_; }
+	virtual bool is_strict() const { return is_strict_; }
 	void set_strict(bool value=true) { is_strict_ = value; }
 private:
 	bool is_strict_;
 };
 
+formula_callable_definition_ptr modify_formula_callable_definition(const_formula_callable_definition_ptr base_def, int slot, variant_type_ptr new_type, const formula_callable_definition* new_def=NULL);
 
-formula_callable_definition_ptr create_formula_callable_definition(const std::string* beg, const std::string* end, const formula_callable_definition* base=NULL, variant_type_ptr* begin_types=NULL);
+formula_callable_definition_ptr create_formula_callable_definition(const std::string* beg, const std::string* end, const_formula_callable_definition_ptr base=NULL, variant_type_ptr* begin_types=NULL);
 
-int register_formula_callable_definition(const std::string& id, const formula_callable_definition* def);
-const formula_callable_definition* get_formula_callable_definition(const std::string& id);
+int register_formula_callable_definition(const std::string& id, const_formula_callable_definition_ptr def);
+const_formula_callable_definition_ptr get_formula_callable_definition(const std::string& id);
 
 int add_callable_definition_init(void(*fn)());
 void init_callable_definitions();

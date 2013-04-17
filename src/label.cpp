@@ -171,7 +171,6 @@ void label::handle_draw() const
 		graphics::blit_texture(border_texture_, x(), y() - border_size_);
 		graphics::blit_texture(border_texture_, x(), y() + border_size_);
 	}
-	std::cerr << "LABEL: \"" << text_ << "\", (" << x() << "," << y() << ")" << std::endl;
 	graphics::blit_texture(texture_, x(), y());
 }
 

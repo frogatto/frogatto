@@ -178,7 +178,7 @@ public:
 	expression_ptr create_function(
 	                           const std::string& fn,
 	                           const std::vector<expression_ptr>& args,
-							   const formula_callable_definition* callable_def) const
+							   const_formula_callable_definition_ptr callable_def) const
 	{
 		if(fn == "remove_tiles") {
 			return expression_ptr(new remove_tiles_function(args));

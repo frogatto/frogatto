@@ -14,6 +14,8 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <SDL.h>
+
 #include "asserts.hpp"
 #include "graphics.hpp"
 #include "border_widget.hpp"

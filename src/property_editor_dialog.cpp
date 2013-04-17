@@ -666,12 +666,12 @@ entity_ptr property_editor_dialog::get_static_entity() const
 void property_editor_dialog::change_event_handler(const std::string& id, gui::label_ptr lb, gui::text_editor_widget_ptr text_editor)
 {
 	assert_recover_scope_.reset(new assert_recover_scope);
-	static custom_object_callable custom_object_definition;
+	static boost::intrusive_ptr<custom_object_callable> custom_object_definition(new custom_object_callable);
 
 	std::cerr << "TRYING TO CHANGE EVENT HANDLER...\n";
 	const std::string text = text_editor->text();
 	try {
-		game_logic::formula_ptr f(new game_logic::formula(variant(text), &get_custom_object_functions_symbol_table(), &custom_object_definition));
+		game_logic::formula_ptr f(new game_logic::formula(variant(text), &get_custom_object_functions_symbol_table(), custom_object_definition));
 		
 		foreach(level_ptr lvl, editor_.get_level_list()) {
 			foreach(entity_ptr entity_obj, entity_) {

@@ -337,7 +337,7 @@ public:
 
 	const std::vector<entity_ptr>& focus_override() const { return focus_override_; }
 
-	static const game_logic::formula_callable_definition& get_formula_definition();
+	static game_logic::const_formula_callable_definition_ptr get_formula_definition();
 	
 #ifndef NO_EDITOR
 	bool in_editor() const {return editor_;}

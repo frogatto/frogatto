@@ -26,16 +26,13 @@
 #include "editor_variable_info.hpp"
 #include "entity_fwd.hpp"
 #include "formula_callable.hpp"
+#include "formula_callable_definition_fwd.hpp"
 #include "formula_fwd.hpp"
 #include "geometry.hpp"
 #include "light.hpp"
 #include "solid_map_fwd.hpp"
 #include "wml_formula_callable.hpp"
 #include "variant.hpp"
-
-namespace game_logic {
-class formula_callable_definition;
-}
 
 class character;
 class frame;
@@ -290,7 +287,7 @@ public:
 	void set_mouse_over_area(const rect& area);
 	const rect& mouse_over_area() const;
 
-	virtual const game_logic::formula_callable_definition* get_definition() const = 0;
+	virtual game_logic::const_formula_callable_definition_ptr get_definition() const = 0;
 
 	virtual void create_object() = 0;
 

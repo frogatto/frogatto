@@ -2625,13 +2625,13 @@ public:
 	expression_ptr create_function(
 	                           const std::string& fn,
 	                           const std::vector<expression_ptr>& args,
-							   const formula_callable_definition* callable_def) const;
+							   const_formula_callable_definition_ptr callable_def) const;
 };
 
 expression_ptr custom_object_function_symbol_table::create_function(
                            const std::string& fn,
                            const std::vector<expression_ptr>& args,
-						   const formula_callable_definition* callable_def) const
+						   const_formula_callable_definition_ptr callable_def) const
 {
 	const std::map<std::string, function_creator*>& creators = get_function_creators(FunctionModule);
 	std::map<std::string, function_creator*>::const_iterator i = creators.find(fn);

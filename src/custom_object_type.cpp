@@ -668,7 +668,7 @@ void custom_object_type::init_event_handlers(variant node,
 			if(base_handlers && base_handlers->size() > event_id && (*base_handlers)[event_id] && (*base_handlers)[event_id]->str() == value.second.as_string()) {
 				handlers[event_id] = (*base_handlers)[event_id];
 			} else {
-				handlers[event_id] = game_logic::formula::create_optional_formula(value.second, symbols, &callable_definition_);
+				handlers[event_id] = game_logic::formula::create_optional_formula(value.second, symbols, callable_definition_);
 			}
 		}
 	}
@@ -729,6 +729,8 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 	mouseover_delay_(node["mouseover_delay"].as_int(0)),
 	is_strict_(node["is_strict"].as_bool(false))
 {
+	callable_definition_.reset(new custom_object_callable);
+
 	custom_object_callable::instance();
 	init_level_definition();
 
@@ -876,12 +878,11 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 		}
 
 		if(!var_str. empty()) {
-			game_logic::formula_callable_definition::entry* entry = callable_definition_.get_entry(CUSTOM_OBJECT_VARS);
+			game_logic::formula_callable_definition::entry* entry = callable_definition_->get_entry(CUSTOM_OBJECT_VARS);
 			ASSERT_LOG(entry != NULL, "CANNOT FIND VARS ENTRY IN OBJECT");
 			game_logic::formula_callable_definition_ptr def = game_logic::create_formula_callable_definition(&var_str[0], &var_str[0] + var_str.size());
 			def->set_strict(is_strict_);
-			entry->type_definition_holder = def;
-			entry->type_definition = entry->type_definition_holder.get();
+			entry->type_definition = def;
 		}
 	}
 
@@ -894,12 +895,11 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 		}
 
 		if(!var_str.empty()) {
-			game_logic::formula_callable_definition::entry* entry = callable_definition_.get_entry(CUSTOM_OBJECT_TMP);
+			game_logic::formula_callable_definition::entry* entry = callable_definition_->get_entry(CUSTOM_OBJECT_TMP);
 			ASSERT_LOG(entry != NULL, "CANNOT FIND TMP ENTRY IN OBJECT");
 			game_logic::formula_callable_definition_ptr def = game_logic::create_formula_callable_definition(&var_str[0], &var_str[0] + var_str.size());
 			def->set_strict(is_strict_);
-			entry->type_definition_holder = def;
-			entry->type_definition = entry->type_definition_holder.get();
+			entry->type_definition = def;
 		}
 	}
 
@@ -920,18 +920,18 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 		}
 	}
 
-	slot_properties_base_ = callable_definition_.num_slots();
+	slot_properties_base_ = callable_definition_->num_slots();
 	foreach(variant properties_node, node["properties"].as_list()) {
 		foreach(variant key, properties_node.get_keys().as_list()) {
 			const std::string& k = key.as_string();
-			callable_definition_.add_property(k);
+			callable_definition_->add_property(k);
 			variant value = properties_node[key];
 			property_entry& entry = properties_[k];
 			if(value.is_string()) {
-				entry.getter = game_logic::formula::create_optional_formula(value, function_symbols(), &callable_definition_);
+				entry.getter = game_logic::formula::create_optional_formula(value, function_symbols(), callable_definition_);
 			} else if(value.is_map()) {
-				entry.getter = game_logic::formula::create_optional_formula(value["get"], function_symbols(), &callable_definition_);
-				entry.setter = game_logic::formula::create_optional_formula(value["set"], function_symbols(), &callable_definition_);
+				entry.getter = game_logic::formula::create_optional_formula(value["get"], function_symbols(), callable_definition_);
+				entry.setter = game_logic::formula::create_optional_formula(value["set"], function_symbols(), callable_definition_);
 			} else {
 				entry.const_value.reset(new variant(value));
 			}
@@ -956,7 +956,7 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 		node_ = node;
 	}
 
-	game_logic::register_formula_callable_definition("object_type", &callable_definition_);
+	game_logic::register_formula_callable_definition("object_type", callable_definition_);
 
 #if defined(USE_GLES2)
 	if(node.has_key("shader")) {

@@ -20,7 +20,7 @@
 #include <map>
 #include <string>
 
-#include "formula_callable_definition_fwd.hpp"
+#include "formula_callable_definition.hpp"
 #include "formula_fwd.hpp"
 #include "formula_function.hpp"
 #include "formula_tokenizer.hpp"
@@ -45,6 +45,7 @@ struct where_variables_info : public reference_counted_object {
 	std::vector<std::string> names;
 	std::vector<expression_ptr> entries;
 	int base_slot;
+	const_formula_callable_definition_ptr callable_where_def;
 };
 
 typedef boost::intrusive_ptr<where_variables_info> where_variables_info_ptr;
@@ -66,12 +67,14 @@ public:
 	}
 
 	struct strict_check_scope {
-		strict_check_scope();
+		explicit strict_check_scope(bool is_strict=true);
 		~strict_check_scope();
+
+		bool old_value;
 	};
 
-	static formula_ptr create_optional_formula(const variant& str, function_symbol_table* symbols=NULL, const formula_callable_definition* def=NULL);
-	explicit formula(const variant& val, function_symbol_table* symbols=NULL, const formula_callable_definition* def=NULL);
+	static formula_ptr create_optional_formula(const variant& str, function_symbol_table* symbols=NULL, const_formula_callable_definition_ptr def=NULL);
+	explicit formula(const variant& val, function_symbol_table* symbols=NULL, const_formula_callable_definition_ptr def=NULL);
 	~formula();
 	variant execute(const formula_callable& variables) const;
 	variant execute() const;
@@ -97,6 +100,8 @@ private:
 	formula() {}
 	variant str_;
 	expression_ptr expr_;
+
+	const_formula_callable_definition_ptr def_;
 
 	//for recursive function formulae, we have base cases along with
 	//base expressions.

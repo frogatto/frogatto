@@ -54,8 +54,8 @@ public:
 		return false;
 	}
 
-	virtual variant is_literal() const {
-		return variant();
+	virtual bool is_literal(variant& result) const {
+		return false;
 	}
 
 	variant evaluate(const formula_callable& variables) const {
@@ -85,7 +85,7 @@ public:
 		return false;
 	}
 
-	virtual const formula_callable_definition* get_type_definition() const;
+	virtual const_formula_callable_definition_ptr get_type_definition() const;
 
 	const char* name() const { return name_; }
 	void set_name(const char* name) { name_ = name; }
@@ -106,12 +106,16 @@ public:
 
 	variant_type_ptr query_variant_type() const { variant_type_ptr res = get_variant_type(); if(res) { return res; } else { return variant_type::get_any(); } }
 
+	const_formula_callable_definition_ptr query_modified_definition_based_on_result(bool result, const_formula_callable_definition_ptr current_def) const { return get_modified_definition_based_on_result(result, current_def); }
+
 protected:
 	virtual variant_type_ptr get_variant_type() const { return variant_type_ptr(); }
 	virtual variant execute_member(const formula_callable& variables, std::string& id, variant* variant_id) const;
 private:
 	virtual variant execute(const formula_callable& variables) const = 0;
 	virtual void static_error_analysis() const {}
+	virtual const_formula_callable_definition_ptr get_modified_definition_based_on_result(bool result, const_formula_callable_definition_ptr current_def) const { return NULL; }
+
 	const char* name_;
 
 	variant parent_formula_;
@@ -202,7 +206,7 @@ public:
 	virtual void add_formula_function(const std::string& name, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& args, const std::vector<variant>& default_args, const std::vector<variant_type_ptr>& variant_types);
 	virtual expression_ptr create_function(const std::string& fn,
 					                       const std::vector<expression_ptr>& args,
-										   const formula_callable_definition* callable_def) const;
+										   const_formula_callable_definition_ptr callable_def) const;
 	std::vector<std::string> get_function_names() const;
 	const formula_function* get_formula_function(const std::string& fn) const;
 };
@@ -216,19 +220,19 @@ class recursive_function_symbol_table : public function_symbol_table {
 	formula_function stub_;
 	function_symbol_table* backup_;
 	mutable std::vector<formula_function_expression_ptr> expr_;
-	const formula_callable_definition* closure_definition_;
+	const_formula_callable_definition_ptr closure_definition_;
 public:
-	recursive_function_symbol_table(const std::string& fn, const std::vector<std::string>& args, const std::vector<variant>& default_args, function_symbol_table* backup, const formula_callable_definition* closure_definition, const std::vector<variant_type_ptr>& variant_types);
+	recursive_function_symbol_table(const std::string& fn, const std::vector<std::string>& args, const std::vector<variant>& default_args, function_symbol_table* backup, const_formula_callable_definition_ptr closure_definition, const std::vector<variant_type_ptr>& variant_types);
 	virtual expression_ptr create_function(const std::string& fn,
 					                       const std::vector<expression_ptr>& args,
-										   const formula_callable_definition* callable_def) const;
+										   const_formula_callable_definition_ptr callable_def) const;
 	void resolve_recursive_calls(const_formula_ptr f);
 };
 
 expression_ptr create_function(const std::string& fn,
                                const std::vector<expression_ptr>& args,
 							   const function_symbol_table* symbols,
-							   const formula_callable_definition* callable_def);
+							   const_formula_callable_definition_ptr callable_def);
 bool optimize_function_arguments(const std::string& fn,
                                  const function_symbol_table* symbols);
 std::vector<std::string> builtin_function_names();
@@ -243,8 +247,9 @@ public:
 		return true;
 	}
 
-	variant is_literal() const {
-		return v_;
+	bool is_literal(variant& result) const {
+		result = v_;
+		return true;
 	}
 private:
 	variant execute(const formula_callable& /*variables*/) const {
@@ -256,8 +261,8 @@ private:
 	variant v_;
 };
 
-const formula_callable_definition* get_map_callable_definition(const formula_callable_definition* base_def, variant_type_ptr key_type, variant_type_ptr value_type, const std::string& value_name);
-const formula_callable_definition* get_variant_comparator_definition(const formula_callable_definition* base_def, variant_type_ptr type);
+const_formula_callable_definition_ptr get_map_callable_definition(const_formula_callable_definition_ptr base_def, variant_type_ptr key_type, variant_type_ptr value_type, const std::string& value_name);
+const_formula_callable_definition_ptr get_variant_comparator_definition(const_formula_callable_definition_ptr base_def, variant_type_ptr type);
 
 }
 

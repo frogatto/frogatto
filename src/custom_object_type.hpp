@@ -88,7 +88,7 @@ public:
 
 	const_custom_object_type_ptr get_sub_object(const std::string& id) const;
 
-	const custom_object_callable& callable_definition() const { return callable_definition_; }
+	const_custom_object_callable_ptr callable_definition() const { return callable_definition_; }
 
 	const std::string& id() const { return id_; }
 	int hitpoints() const { return hitpoints_; }
@@ -242,7 +242,7 @@ private:
 	//things off where possible
 	static custom_object_type_ptr recreate(const std::string& id, const custom_object_type* old_type);
 
-	custom_object_callable callable_definition_;
+	custom_object_callable_ptr callable_definition_;
 
 	std::string id_;
 	int hitpoints_;

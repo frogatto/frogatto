@@ -214,6 +214,9 @@ public:
 		const variant_type_class* class_type = dynamic_cast<const variant_type_class*>(type.get());
 		if(class_type) {
 			return game_logic::is_class_derived_from(class_type->type_, type_);
+		} else if(type->is_type(variant::VARIANT_TYPE_MAP)) {
+			//maps can be converted implicity to class type.
+			return true;
 		}
 
 		return false;
@@ -269,8 +272,70 @@ public:
 		return result;
 	}
 
+	bool is_function(std::vector<variant_type_ptr>* args, variant_type_ptr* return_type, int* min_args) const
+	{
+		std::vector<std::vector<variant_type_ptr> > arg_lists(types_.size());
+		std::vector<variant_type_ptr> return_types(types_.size());
+		std::vector<int> min_args_list(types_.size());
+
+		int max_min_args = -1;
+		int num_args = 0;
+		for(int n = 0; n != types_.size(); ++n) {
+			if(!types_[n]->is_function(&arg_lists[n], &return_types[n], &min_args_list[n])) {
+				return false;
+			}
+
+			if(max_min_args == -1 || min_args_list[n] > max_min_args) {
+				max_min_args = min_args_list[n];
+			}
+
+			if(arg_lists[n].size() > num_args) {
+				num_args = arg_lists[n].size();
+			}
+		}
+
+		if(args) {
+			args->clear();
+			for(int n = 0; n != num_args; ++n) {
+				std::vector<variant_type_ptr> a;
+				foreach(const std::vector<variant_type_ptr>& arg, arg_lists) {
+					if(n < arg.size()) {
+						a.push_back(arg[n]);
+					}
+				}
+
+				args->push_back(get_union(a));
+			}
+		}
+
+		if(return_type) {
+			*return_type = get_union(return_types);
+		}
+
+		if(min_args) {
+			*min_args = max_min_args;
+		}
+
+		return true;
+	}
+
 	const std::vector<variant_type_ptr>* is_union() const { return &types_; }
 private:
+	variant_type_ptr null_excluded() const {
+		std::vector<variant_type_ptr> new_types;
+		foreach(variant_type_ptr t, types_) {
+			if(t->is_type(variant::VARIANT_TYPE_NULL) == false) {
+				new_types.push_back(t);
+			}
+		}
+
+		if(new_types.size() != types_.size()) {
+			return get_union(new_types);
+		} else {
+			return variant_type_ptr();
+		}
+	}
+
 	std::vector<variant_type_ptr> types_;
 	int order_id() const { return 4; }
 };
@@ -566,8 +631,11 @@ bool variant_types_compatible(variant_type_ptr to, variant_type_ptr from)
 
 variant_type_ptr parse_variant_type(const variant& original_str,
                                     const formula_tokenizer::token*& i1,
-                                    const formula_tokenizer::token* i2)
+                                    const formula_tokenizer::token* i2,
+									bool allow_failure)
 {
+#define ASSERT_COND(cond, msg) if(cond) {} else if(allow_failure) { return variant_type_ptr(); } else { ASSERT_LOG(cond, msg); }
+
 	using namespace formula_tokenizer;
 
 	std::vector<variant_type_ptr> v;
@@ -575,10 +643,10 @@ variant_type_ptr parse_variant_type(const variant& original_str,
 	const token* begin_token = i1;
 
 	for(;;) {
-		ASSERT_LOG(i1 != i2, "EXPECTED TYPE BUT FOUND EMPTY EXPRESSION:" << original_str.debug_location());
+		ASSERT_COND(i1 != i2, "EXPECTED TYPE BUT FOUND EMPTY EXPRESSION:" << original_str.debug_location());
 		if(i1->type == TOKEN_IDENTIFIER && i1->equals("class")) {
 			++i1;
-			ASSERT_LOG(i1 != i2, "EXPECTED CLASS BUT FOUND EMPTY EXPRESSION:\n" << game_logic::pinpoint_location(original_str, (i1-1)->end));
+			ASSERT_COND(i1 != i2, "EXPECTED CLASS BUT FOUND EMPTY EXPRESSION:\n" << game_logic::pinpoint_location(original_str, (i1-1)->end));
 			std::string class_name(i1->begin, i1->end);
 
 			while(i1+1 != i2 && i1+2 != i2 && (i1+1)->equals(".")) {
@@ -596,24 +664,26 @@ variant_type_ptr parse_variant_type(const variant& original_str,
 			v.push_back(variant_type_ptr(new variant_type_commands));
 			++i1;
 		} else if(i1->type == TOKEN_IDENTIFIER || (i1->type == TOKEN_KEYWORD && std::equal(i1->begin, i1->end, "null"))) {
+			ASSERT_COND(variant::string_to_type(std::string(i1->begin, i1->end)) != variant::VARIANT_TYPE_INVALID,
+			  "INVALID TOKEN WHEN PARSING TYPE: " << std::string(i1->begin, i1->end) << " AT:\n" << game_logic::pinpoint_location(original_str, i1->begin, i1->end));
 			v.push_back(variant_type_ptr(new variant_type_simple(original_str, *i1)));
 			++i1;
 		} else if(i1->type == TOKEN_LBRACKET) {
 			const token* end = i1+1;
 			const bool res = token_matcher().add(TOKEN_RBRACKET).find_match(end, i2);
-			ASSERT_LOG(res, "ERROR PARSING MAP TYPE: " << original_str.debug_location());
+			ASSERT_COND(res, "ERROR PARSING MAP TYPE: " << original_str.debug_location());
 
 			++i1;
-			ASSERT_LOG(i1 != end, "ERROR PARSING MAP TYPE: " << original_str.debug_location());
+			ASSERT_COND(i1 != end, "ERROR PARSING MAP TYPE: " << original_str.debug_location());
 
-			const variant_type_ptr key_type = parse_variant_type(original_str, i1, end);
-			ASSERT_LOG(i1->type == TOKEN_POINTER, "ERROR PARSING MAP TYPE, NO ARROW FOUND: " << original_str.debug_location());
+			const variant_type_ptr key_type = parse_variant_type(original_str, i1, end, allow_failure);
+			ASSERT_COND(i1->type == TOKEN_POINTER, "ERROR PARSING MAP TYPE, NO ARROW FOUND: " << original_str.debug_location());
 		
 			++i1;
-			ASSERT_LOG(i1 != end, "ERROR PARSING MAP TYPE: " << original_str.debug_location());
+			ASSERT_COND(i1 != end, "ERROR PARSING MAP TYPE: " << original_str.debug_location());
 
-			const variant_type_ptr value_type = parse_variant_type(original_str, i1, end);
-			ASSERT_LOG(i1 == end, "ERROR PARSING MAP TYPE: " << original_str.debug_location());
+			const variant_type_ptr value_type = parse_variant_type(original_str, i1, end, allow_failure);
+			ASSERT_COND(i1 == end, "ERROR PARSING MAP TYPE: " << original_str.debug_location());
 
 			v.push_back(variant_type_ptr(new variant_type_map(key_type, value_type)));
 
@@ -622,19 +692,19 @@ variant_type_ptr parse_variant_type(const variant& original_str,
 		} else if(i1->type == TOKEN_LSQUARE) {
 			const token* end = i1+1;
 			const bool res = token_matcher().add(TOKEN_RSQUARE).find_match(end, i2);
-			ASSERT_LOG(res, "ERROR PARSING ARRAY TYPE: " << original_str.debug_location());
+			ASSERT_COND(res, "ERROR PARSING ARRAY TYPE: " << original_str.debug_location());
 	
 			++i1;
-			ASSERT_LOG(i1 != end, "ERROR PARSING ARRAY TYPE: " << original_str.debug_location());
+			ASSERT_COND(i1 != end, "ERROR PARSING ARRAY TYPE: " << original_str.debug_location());
 			
-			const variant_type_ptr value_type = parse_variant_type(original_str, i1, end);
-			ASSERT_LOG(i1 == end, "ERROR PARSING ARRAY TYPE: " << original_str.debug_location());
+			const variant_type_ptr value_type = parse_variant_type(original_str, i1, end, allow_failure);
+			ASSERT_COND(i1 == end, "ERROR PARSING ARRAY TYPE: " << original_str.debug_location());
 	
 			v.push_back(variant_type_ptr(new variant_type_list(value_type)));
 	
 			++i1;
 		} else {
-			ASSERT_LOG(false, "UNEXPECTED TOKENS WHEN PARSING TYPE: " << std::string(i1->begin, (i2-1)->end) << " AT " << original_str.debug_location());
+			ASSERT_COND(false, "UNEXPECTED TOKENS WHEN PARSING TYPE: " << std::string(i1->begin, (i2-1)->end) << " AT " << original_str.debug_location());
 		}
 
 		if(i1 != i2 && i1->type == TOKEN_PIPE) {
@@ -652,6 +722,7 @@ variant_type_ptr parse_variant_type(const variant& original_str,
 		result->set_str(std::string(begin_token->begin, (i1-1)->end));
 		return result;
 	}
+#undef ASSERT_COND
 }
 
 variant_type_ptr parse_variant_type(const variant& type)
@@ -782,6 +853,43 @@ variant_type_ptr parse_optional_function_type(const variant& type)
 	return parse_optional_function_type(type, begin, begin + tokens.size());
 }
 
+variant_type_ptr
+parse_optional_formula_type(const variant& original_str,
+                            const formula_tokenizer::token*& i1,
+                            const formula_tokenizer::token* i2)
+{
+	variant_type_ptr result = parse_variant_type(original_str, i1, i2, true);
+	if(i1 != i2 && i1->equals("<-")) {
+		return result;
+	}
+
+	return variant_type_ptr();
+}
+
+variant_type_ptr parse_optional_formula_type(const variant& type)
+{
+	using namespace formula_tokenizer;
+	const std::string& s = type.as_string();
+	std::vector<token> tokens;
+	std::string::const_iterator i1 = s.begin();
+	std::string::const_iterator i2 = s.end();
+	while(i1 != i2) {
+		try {
+			token tok = get_token(i1, i2);
+			if(tok.type != TOKEN_WHITESPACE && tok.type != TOKEN_COMMENT) {
+				tokens.push_back(tok);
+			}
+		} catch(token_error& e) {
+			ASSERT_LOG(false, "ERROR PARSING TYPE: " << e.msg << " IN '" << s << "' AT " << type.debug_location());
+		}
+	}
+
+	ASSERT_LOG(tokens.empty() == false, "ERROR PARSING TYPE: EMPTY STRING AT " << type.debug_location());
+
+	const token* begin = &tokens[0];
+	return parse_optional_formula_type(type, begin, begin + tokens.size());
+}
+
 variant_type_ptr variant_type::get_any()
 {
 	static const variant_type_ptr result(new variant_type_any);
@@ -801,6 +909,22 @@ variant_type_ptr variant_type::get_type(variant::TYPE type)
 
 variant_type_ptr variant_type::get_union(const std::vector<variant_type_ptr>& elements)
 {
+	foreach(variant_type_ptr el, elements) {
+		if(!el || el->is_any()) {
+			return variant_type::get_any();
+		}
+	}
+
+	foreach(variant_type_ptr el, elements) {
+		const std::vector<variant_type_ptr>* items = el->is_union();
+		if(items) {
+			std::vector<variant_type_ptr> v = elements;
+			v.erase(std::find(v.begin(), v.end(), el));
+			v.insert(v.end(), items->begin(), items->end());
+			return get_union(v);
+		}
+	}
+
 	std::vector<variant_type_ptr> items;
 	foreach(variant_type_ptr el, elements) {
 		foreach(variant_type_ptr item, items) {
@@ -840,6 +964,16 @@ variant_type_ptr variant_type::get_class(const std::string& class_name)
 variant_type_ptr variant_type::get_function_type(const std::vector<variant_type_ptr>& arg_types, variant_type_ptr return_type, int min_args)
 {
 	return variant_type_ptr(new variant_type_function(arg_types, return_type, min_args));
+}
+
+variant_type_ptr variant_type::get_null_excluded(variant_type_ptr input)
+{
+	variant_type_ptr result = input->null_excluded();
+	if(result) {
+		return result;
+	} else {
+		return input;
+	}
 }
 
 UNIT_TEST(variant_type) {

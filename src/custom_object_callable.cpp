@@ -34,8 +34,8 @@ std::map<std::string, int>& keys_to_slots() {
 
 const custom_object_callable& custom_object_callable::instance()
 {
-	static const custom_object_callable obj(true);
-	return obj;
+	static const boost::intrusive_ptr<const custom_object_callable> obj(new custom_object_callable(true));
+	return *obj;
 }
 
 custom_object_callable::custom_object_callable(bool is_singleton)
@@ -91,7 +91,7 @@ custom_object_callable::custom_object_callable(bool is_singleton)
 		}
 	}
 
-//	global_entries()[CUSTOM_OBJECT_LEVEL].type_definition = &level::get_formula_definition();
+//	global_entries()[CUSTOM_OBJECT_LEVEL].type_definition = level::get_formula_definition();
 	global_entries()[CUSTOM_OBJECT_PARENT].type_definition = is_singleton ? this : &instance();
 	global_entries()[CUSTOM_OBJECT_LIB].type_definition = game_logic::get_library_definition().get();
 

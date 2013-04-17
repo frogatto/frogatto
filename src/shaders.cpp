@@ -712,7 +712,7 @@ namespace {
 		game_logic::expression_ptr create_function(
 			const std::string& fn,
 			const std::vector<game_logic::expression_ptr>& args,
-			const game_logic::formula_callable_definition* callable_def) const
+			const game_logic::const_formula_callable_definition_ptr callable_def) const
 		{
 			if(fn == "get_mvp_matrix") {
 				return game_logic::expression_ptr(new get_mvp_matrix_function(args));

@@ -46,7 +46,7 @@ struct property_entry {
 	property_entry(const std::string& class_name, const std::string& prop_name, variant node, int& state_slot) : variable_slot(-1) {
 		name = prop_name;
 
-		formula_callable_definition* class_def = get_class_definition(class_name);
+		formula_callable_definition_ptr class_def = get_class_definition(class_name);
 
 		const formula::strict_check_scope strict_checking;
 		if(node.is_string()) {
@@ -164,6 +164,8 @@ public:
 	formula_class_definition(const std::string& class_name, const variant& var)
 	  : type_name_("class " + class_name)
 	{
+		set_strict();
+
 		for(int n = 0; n != NUM_BASE_FIELDS; ++n) {
 			properties_[BaseFields[n]] = n;
 			slots_.push_back(entry(BaseFields[n]));
@@ -234,6 +236,17 @@ public:
 					variant_type_ptr fn_type = parse_optional_function_type(prop_node);
 					if(fn_type) {
 						slots_[slot].variant_type = fn_type;
+					} else {
+						variant_type_ptr type = parse_optional_formula_type(prop_node);
+						if(type) {
+							slots_[slot].variant_type = type;
+						} else {
+							const formula::strict_check_scope strict_checking(false);
+							formula_ptr f = formula::create_optional_formula(prop_node);
+							if(f) {
+								slots_[slot].variant_type = f->query_variant_type();
+							}
+						}
 					}
 				}
 			}
@@ -299,7 +312,7 @@ std::vector<formula_class*> unit_test_queue;
 
 }
 
-formula_callable_definition* get_class_definition(const std::string& name)
+formula_callable_definition_ptr get_class_definition(const std::string& name)
 {
 	class_definition_map::iterator itor = class_definitions.find(name);
 	if(itor != class_definitions.end()) {
@@ -421,7 +434,7 @@ formula_class::formula_class(const std::string& class_name, const variant& node)
 	if(node["constructor"].is_string()) {
 		const formula::strict_check_scope strict_checking;
 
-		formula_callable_definition* class_def = get_class_definition(class_name);
+		formula_callable_definition_ptr class_def = get_class_definition(class_name);
 		constructor_.push_back(game_logic::formula::create_optional_formula(node["constructor"], NULL, class_def));
 	}
 
@@ -466,6 +479,8 @@ bool formula_class::is_a(const std::string& name) const
 
 void formula_class::run_unit_tests()
 {
+	const formula::strict_check_scope strict_checking(false);
+
 	if(unit_test_.is_null()) {
 		return;
 	}
@@ -680,7 +695,7 @@ const std::string& formula_object::get_class_name() const
 void formula_object::call_constructors(variant args)
 {
 	if(args.is_map()) {
-		const formula_callable_definition* def = get_class_definition(class_->name());
+		const_formula_callable_definition_ptr def = get_class_definition(class_->name());
 		foreach(const variant& key, args.get_keys().as_list()) {
 			std::map<std::string, int>::const_iterator itor = class_->properties().find(key.as_string());
 			if(itor != class_->properties().end() && class_->slots()[itor->second].setter.get() == NULL && class_->slots()[itor->second].variable_slot == -1) {

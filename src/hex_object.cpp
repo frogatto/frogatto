@@ -116,7 +116,7 @@ public:
 	game_logic::expression_ptr create_function(
 		const std::string& fn,
 		const std::vector<game_logic::expression_ptr>& args,
-		const game_logic::formula_callable_definition* callable_def) const
+		game_logic::const_formula_callable_definition_ptr callable_def) const
 	{
 		if(fn == "get_tile") {
 			return game_logic::expression_ptr(new get_tile_function(args));

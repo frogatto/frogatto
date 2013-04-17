@@ -17,6 +17,8 @@
 #include <map>
 #include <vector>
 
+#include <stdio.h>
+
 #include "foreach.hpp"
 #include "formula_callable_definition.hpp"
 #include "formula_object.hpp"
@@ -31,6 +33,16 @@ void formula_callable_definition::entry::set_variant_type(variant_type_ptr type)
 	if(type && type->is_class(&class_name)) {
 		type_definition = get_class_definition(class_name);
 	}
+}
+
+formula_callable_definition::formula_callable_definition() : is_strict_(false)
+{
+	int x = 4;
+	ASSERT_LOG((char*)&x - (char*)this > 10000 || (char*)this - (char*)&x > 10000 , "BAD BAD");
+}
+
+formula_callable_definition::~formula_callable_definition()
+{
 }
 
 namespace
@@ -64,7 +76,7 @@ public:
 
 	entry* get_entry(int slot) {
 		if(base_ && slot < base_num_slots()) {
-			return const_cast<formula_callable_definition*>(base_)->get_entry(slot);
+			return const_cast<formula_callable_definition*>(base_.get())->get_entry(slot);
 		}
 
 		slot -= base_num_slots();
@@ -108,17 +120,73 @@ public:
 		}
 	}
 
-	void set_base(const formula_callable_definition* base) { base_ = base; }
+	void set_base(const_formula_callable_definition_ptr base) { base_ = base; }
 
 private:
 	int base_num_slots() const { return base_ ? base_->num_slots() : 0; }
-	const formula_callable_definition* base_;
+	const_formula_callable_definition_ptr base_;
 	std::vector<entry> entries_;
+};
+
+class modified_definition : public formula_callable_definition
+{
+public:
+	modified_definition(const_formula_callable_definition_ptr base, int modified_slot, const entry& modification) : base_(base), slot_(modified_slot), mod_(modification)
+	{}
+
+	int get_slot(const std::string& key) const {
+		return base_->get_slot(key);
+	}
+
+	entry* get_entry(int slot) {
+		if(slot == slot_) {
+			return &mod_;
+		}
+
+		return const_cast<formula_callable_definition*>(base_.get())->get_entry(slot);
+	}
+
+	const entry* get_entry(int slot) const {
+		if(slot == slot_) {
+			return &mod_;
+		}
+
+		return base_->get_entry(slot);
+	}
+
+	int num_slots() const { return base_->num_slots(); }
+
+	const std::string* type_name() const { return base_->type_name(); }
+
+	bool is_strict() const { return base_->is_strict(); }
+
+private:
+	const_formula_callable_definition_ptr base_;
+	const int slot_;
+	entry mod_;
 };
 
 }
 
-formula_callable_definition_ptr create_formula_callable_definition(const std::string* i1, const std::string* i2, const formula_callable_definition* base, variant_type_ptr* types)
+formula_callable_definition_ptr modify_formula_callable_definition(const_formula_callable_definition_ptr base_def, int slot, variant_type_ptr new_type, const formula_callable_definition* new_def)
+{
+	const formula_callable_definition::entry* e = base_def->get_entry(slot);
+	ASSERT_LOG(e, "NO DEFINITION FOUND");
+
+	formula_callable_definition::entry new_entry(*e);
+
+	if(new_type) {
+		new_entry.variant_type = new_type;
+	}
+
+	if(new_def) {
+		new_entry.type_definition = new_def;
+	}
+
+	return formula_callable_definition_ptr(new modified_definition(base_def, slot, new_entry));
+}
+
+formula_callable_definition_ptr create_formula_callable_definition(const std::string* i1, const std::string* i2, const_formula_callable_definition_ptr base, variant_type_ptr* types)
 {
 	simple_definition* def = new simple_definition;
 	def->set_base(base);
@@ -136,7 +204,7 @@ formula_callable_definition_ptr create_formula_callable_definition(const std::st
 }
 
 namespace {
-std::map<std::string, const formula_callable_definition*> registry;
+std::map<std::string, const_formula_callable_definition_ptr> registry;
 int num_definitions = 0;
 
 std::vector<boost::function<void()> >& callable_init_routines() {
@@ -145,13 +213,13 @@ std::vector<boost::function<void()> >& callable_init_routines() {
 }
 }
 
-int register_formula_callable_definition(const std::string& id, const formula_callable_definition* def)
+int register_formula_callable_definition(const std::string& id, const_formula_callable_definition_ptr def)
 {
 	registry[id] = def;
 	return ++num_definitions;
 }
 
-const formula_callable_definition* get_formula_callable_definition(const std::string& id)
+const_formula_callable_definition_ptr get_formula_callable_definition(const std::string& id)
 {
 	return registry[id];
 }
