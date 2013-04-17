@@ -315,15 +315,39 @@ void add_alpha_channel_to_surface(uint8_t* dst_ptr, const uint8_t* src_ptr, size
 	}
 }
 
+namespace {
+
+const unsigned char* get_alpha_pixel_colors()
+{
+	std::vector<surface> k;
+	k.push_back(surface_cache::get_no_cache("alpha-colors.png"));
+	surface s = texture::build_surface_from_key(k, 2, 1);
+	ASSERT_LOG(s.get(), "COULD NOT LOAD alpha.png");
+
+	const int npixels = s->w*s->h;
+	ASSERT_LOG(npixels == 2, "UNEXPECTED SIZE FOR alpha.png");
+
+	static unsigned char color[6];
+
+	const unsigned char* pixel = reinterpret_cast<const unsigned char*>(s->pixels);
+	memcpy(color, pixel, 3);
+	pixel += 4;
+	memcpy(color+3, pixel, 3);
+	return color;
+}
+
+}
+
 void set_alpha_for_transparent_colors_in_rgba_surface(SDL_Surface* s, int options)
 {
 	const bool strip_red_rects = !(options&texture::NO_STRIP_SPRITESHEET_ANNOTATIONS);
 
 	const int npixels = s->w*s->h;
+	static const unsigned char* AlphaColors = get_alpha_pixel_colors();
 	for(int n = 0; n != npixels; ++n) {
 		//we use a color in our sprite sheets to indicate transparency, rather than an alpha channel
-		static const unsigned char AlphaPixel[] = {0x6f, 0x6d, 0x51}; //the background color, brown
-		static const unsigned char AlphaPixel2[] = {0xf9, 0x30, 0x3d}; //the border color, red
+		static const unsigned char* AlphaPixel = AlphaColors; //the background color, brown
+		static const unsigned char* AlphaPixel2 = AlphaColors+3; //the border color, red
 		unsigned char* pixel = reinterpret_cast<unsigned char*>(s->pixels) + n*4;
 
 		if(pixel[0] == AlphaPixel[0] && pixel[1] == AlphaPixel[1] && pixel[2] == AlphaPixel[2] ||
