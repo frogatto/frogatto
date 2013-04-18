@@ -40,6 +40,8 @@ class code_editor_dialog : public gui::dialog
 public:
 	code_editor_dialog(const rect& r);
 	void init();
+	void add_optional_error_text_area(const std::string& text);
+	void jump_to_error(const std::string& text);
 
 	void load_file(std::string fname, bool focus=true);
 
@@ -48,6 +50,8 @@ public:
 	void process();
 
 	void change_width(int amount);
+
+	void set_close_buttons() { have_close_buttons_ = true; }
 
 private:
 	void init_files_grid();
@@ -62,6 +66,7 @@ private:
 	void set_integer_attr(const char* attr, int value);
 
 	void save();
+	void save_and_close();
 
 	std::string fname_;
 
@@ -72,6 +77,8 @@ private:
 	gui::code_editor_widget_ptr editor_;
 	gui::text_editor_widget_ptr search_;
 	gui::text_editor_widget_ptr replace_;
+
+	gui::text_editor_widget_ptr optional_error_text_area_;
 
 	gui::label_ptr replace_label_, status_label_, error_label_;
 
@@ -116,9 +123,13 @@ private:
 	std::vector<Suggestion> suggestions_;
 	gui::widget_ptr suggestions_grid_;
 	int suggestions_prefix_;
+
+	bool have_close_buttons_;
 };
 
 typedef boost::intrusive_ptr<code_editor_dialog> code_editor_dialog_ptr;
+
+void edit_and_continue_class(const std::string& class_name, const std::string& error);
 
 #endif // !NO_EDITOR
 #endif

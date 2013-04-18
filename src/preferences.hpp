@@ -61,6 +61,8 @@ namespace preferences {
 	void set_save_slot(const std::string& fname);
 	bool show_debug_hitboxes();
 	bool toogle_debug_hitboxes();
+	bool edit_and_continue();
+	void set_edit_and_continue(bool value);
 	bool show_iphone_controls(); //iphone control hit rects
 	bool use_pretty_scaling();
 	void set_use_pretty_scaling(bool value);

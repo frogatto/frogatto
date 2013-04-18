@@ -43,6 +43,8 @@ public:
 	static void visit_variants(variant v, boost::function<void (variant)> fn, std::vector<formula_object*>* seen=NULL);
 
 	static void reload_classes();
+	static void load_all_classes();
+	static void try_load_class(const std::string& name);
 
 	static boost::intrusive_ptr<formula_object> create(const std::string& type, variant args=variant());
 

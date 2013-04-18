@@ -143,6 +143,7 @@ namespace preferences {
 		bool no_sound_ = false;
 		bool no_music_ = false;
 		bool show_debug_hitboxes_ = false;
+		bool edit_and_continue_ = false;
 		bool show_iphone_controls_ = false;
 		bool use_pretty_scaling_ = false;
 		bool fullscreen_ = false;
@@ -474,6 +475,14 @@ namespace preferences {
 		bool shown = show_debug_hitboxes_;
 		show_debug_hitboxes_ = !show_debug_hitboxes_;
 		return shown;
+	}
+
+	bool edit_and_continue() {
+		return edit_and_continue_;
+	}
+
+	void set_edit_and_continue(bool value) {
+		edit_and_continue_ = value;
 	}
 	
 	bool show_iphone_controls() {
