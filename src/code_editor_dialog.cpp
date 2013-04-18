@@ -320,6 +320,8 @@ bool code_editor_dialog::handle_event(const SDL_Event& event, bool claimed)
 				replace_->set_focus(false);
 				editor_->set_focus(false);
 				return true;
+			} else if(event.key.keysym.sym == SDLK_n && (event.key.keysym.mod&KMOD_CTRL) || event.key.keysym.sym == SDLK_F3) {
+				editor_->next_search_match();
 			} else if(event.key.keysym.sym == SDLK_s && (event.key.keysym.mod&KMOD_CTRL)) {
 				save();
 				return true;
@@ -749,7 +751,9 @@ void code_editor_dialog::on_search_changed()
 
 void code_editor_dialog::on_search_enter()
 {
-	editor_->next_search_match();
+	search_->set_focus(false);
+	replace_->set_focus(false);
+	editor_->set_focus(true);
 }
 
 void code_editor_dialog::on_replace_enter()
