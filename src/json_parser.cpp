@@ -22,6 +22,7 @@
 #include "formatter.hpp"
 #include "formula_callable.hpp"
 #include "formula_constants.hpp"
+#include "formula_function.hpp"
 #include "formula_object.hpp"
 #include "json_parser.hpp"
 #include "json_tokenizer.hpp"
@@ -32,6 +33,10 @@
 #include "unit_test.hpp"
 #include "variant_utils.hpp"
 
+namespace game_logic {
+void remove_formula_function_cached_doc(const std::string& name);
+}
+
 namespace json {
 
 namespace {
@@ -40,6 +45,7 @@ std::map<std::string, std::string> pseudo_file_contents;
 
 void set_file_contents(const std::string& path, const std::string& contents)
 {
+	game_logic::remove_formula_function_cached_doc(contents);
 	pseudo_file_contents[path] = contents;
 }
 

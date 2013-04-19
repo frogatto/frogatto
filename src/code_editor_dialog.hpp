@@ -18,6 +18,7 @@
 #define CODE_EDITOR_DIALOG_HPP_INCLUDED
 #ifndef NO_EDITOR
 
+#include <boost/function.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include <string>
@@ -43,7 +44,7 @@ public:
 	void add_optional_error_text_area(const std::string& text);
 	void jump_to_error(const std::string& text);
 
-	void load_file(std::string fname, bool focus=true);
+	void load_file(std::string fname, bool focus=true, boost::function<void()>* fn=NULL);
 
 	bool has_keyboard_focus() const;
 
@@ -106,6 +107,7 @@ private:
 		std::string fname;
 		boost::intrusive_ptr<frame> anim;
 		gui::code_editor_widget_ptr editor;
+		boost::function<void()> op_fn;
 	};
 
 	std::vector<KnownFile> files_;
@@ -125,11 +127,14 @@ private:
 	int suggestions_prefix_;
 
 	bool have_close_buttons_;
+
+	boost::function<void()> op_fn_;
 };
 
 typedef boost::intrusive_ptr<code_editor_dialog> code_editor_dialog_ptr;
 
 void edit_and_continue_class(const std::string& class_name, const std::string& error);
+void edit_and_continue_fn(const std::string& fname, const std::string& error, boost::function<void()> fn);
 
 #endif // !NO_EDITOR
 #endif

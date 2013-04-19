@@ -130,7 +130,13 @@ void code_editor_dialog::add_optional_error_text_area(const std::string& text)
 	using namespace gui;
 	optional_error_text_area_.reset(new text_editor_widget(width() - 40, 160));
 	optional_error_text_area_->set_text(text);
-	editor_.reset();
+	foreach(KnownFile& f, files_) {
+		f.editor->set_dim(width() - 40, height() - (60 + (optional_error_text_area_ ? 170 : 0)));
+	}
+
+	if(editor_) {
+		editor_->set_dim(width() - 40, height() - (60 + (optional_error_text_area_ ? 170 : 0)));
+	}
 }
 
 void code_editor_dialog::jump_to_error(const std::string& text)
@@ -189,7 +195,7 @@ void code_editor_dialog::init_files_grid()
 	add_widget(files_grid_, 2, 2);
 }
 
-void code_editor_dialog::load_file(std::string fname, bool focus)
+void code_editor_dialog::load_file(std::string fname, bool focus, boost::function<void()>* fn)
 {
 	if(fname_ == fname) {
 		return;
@@ -209,7 +215,10 @@ void code_editor_dialog::load_file(std::string fname, bool focus)
 	if(index == files_.size()) {
 		KnownFile f;
 		f.fname = fname;
-		f.editor.reset(new code_editor_widget(width() - 40, height() - 60));
+		if(fn) {
+			f.op_fn = *fn;
+		}
+		f.editor.reset(new code_editor_widget(width() - 40, height() - (60 + (optional_error_text_area_ ? 170 : 0))));
 		std::string text = json::get_file_contents(fname);
 		try {
 			variant doc = json::parse(text, json::JSON_NO_PREPROCESSOR);
@@ -262,6 +271,7 @@ void code_editor_dialog::load_file(std::string fname, bool focus)
 	remove_widget(editor_);
 
 	editor_ = f.editor;
+	op_fn_ = f.op_fn;
 	editor_->set_focus(true);
 
 	init_files_grid();
@@ -378,7 +388,12 @@ void code_editor_dialog::process()
 #endif
 
 
-			if(strstr(fname_.c_str(), "/tiles/")) {
+			if(op_fn_) {
+				json::parse(editor_->text());
+				json::set_file_contents(fname_, editor_->text());
+
+				op_fn_();
+			} else if(strstr(fname_.c_str(), "/tiles/")) {
 				std::cerr << "INIT TILE MAP\n";
 
 				const std::string old_contents = json::get_file_contents(fname_);
@@ -427,6 +442,7 @@ void code_editor_dialog::process()
 				}
 				std::string::const_iterator end = fname_.end()-4;
 				const std::string class_name(slash+1, end);;
+				json::parse(editor_->text());
 				json::set_file_contents(fname_, editor_->text());
 				game_logic::invalidate_class_definition(class_name);
 				game_logic::formula_object::try_load_class(class_name);
@@ -694,7 +710,7 @@ void code_editor_dialog::change_width(int amount)
 
 
 	foreach(KnownFile& f, files_) {
-		f.editor->set_dim(width() - 40, height() - 60);
+		f.editor->set_dim(width() - 40, height() - (60 + (optional_error_text_area_ ? 170 : 0)));
 	}
 	init();
 }
@@ -719,7 +735,7 @@ void code_editor_dialog::on_drag(int dx, int dy)
 
 
 	foreach(KnownFile& f, files_) {
-		f.editor->set_dim(width() - 40, height() - 60);
+		f.editor->set_dim(width() - 40, height() - (60 + (optional_error_text_area_ ? 170 : 0)));
 	}
 	//init();
 }
@@ -878,6 +894,23 @@ void edit_and_continue_class(const std::string& class_name, const std::string& e
 	d->set_close_buttons();
 	d->init();
 	d->load_file(filename);
+	d->jump_to_error(error);
+	d->show_modal();
+
+	if(d->cancelled()) {
+		_exit(0);
+	}
+}
+
+void edit_and_continue_fn(const std::string& filename, const std::string& error, boost::function<void()> fn)
+{
+	boost::intrusive_ptr<code_editor_dialog> d(new code_editor_dialog(rect(0,0,graphics::screen_width(),graphics::screen_height())));
+
+	d->set_process_hook(boost::bind(&code_editor_dialog::process, d.get()));
+	d->add_optional_error_text_area(error);
+	d->set_close_buttons();
+	d->init();
+	d->load_file(filename, true, &fn);
 	d->jump_to_error(error);
 	d->show_modal();
 

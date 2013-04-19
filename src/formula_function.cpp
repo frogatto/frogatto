@@ -26,6 +26,7 @@
 #include "array_callable.hpp"
 #include "asserts.hpp"
 #include "base64.hpp"
+#include "code_editor_dialog.hpp"
 #include "compress.hpp"
 #include "data_blob.hpp"
 #include "dialog.hpp"
@@ -2868,6 +2869,11 @@ END_FUNCTION_DEF(get_document)
 
 }
 
+void remove_formula_function_cached_doc(const std::string& name)
+{
+	get_doc_cache().erase(name);
+}
+
 formula_function_expression::formula_function_expression(const std::string& name, const args_list& args, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& arg_names, const std::vector<variant_type_ptr>& variant_types)
 : function_expression(name, args, arg_names.size(), arg_names.size()),
 	formula_(formula), precondition_(precondition), arg_names_(arg_names), variant_types_(variant_types), star_arg_(-1), has_closure_(false), base_slot_(0)
@@ -3351,6 +3357,37 @@ FUNCTION_DEF(lower, 1, 1, "lower(s) -> string: lowercase version of string")
 	return variant(s);
 END_FUNCTION_DEF(lower)
 
+namespace {
+void run_expression_for_edit_and_continue(expression_ptr expr, const game_logic::formula_callable* variables, bool* success)
+{
+	*success = false;
+	expr->evaluate(*variables);
+	*success = true;
+}
+}
+
+FUNCTION_DEF(edit_and_continue, 2, 2, "edit_and_continue(expr, filename)")
+	if(!preferences::edit_and_continue()) {
+		return args()[0]->evaluate(variables);
+	}
+
+	const std::string filename = args()[1]->evaluate(variables).as_string();
+
+	try {
+		assert_recover_scope scope;
+		return args()[0]->evaluate(variables);
+	} catch (validation_failure_exception& e) {
+		bool success = false;
+		boost::function<void()> fn(boost::bind(run_expression_for_edit_and_continue, args()[0], &variables, &success));
+
+		edit_and_continue_fn(filename, e.msg, fn);
+		if(success == false) {
+			_exit(0);
+		}
+
+		return args()[0]->evaluate(variables);
+	}
+END_FUNCTION_DEF(edit_and_continue)
 
 class console_output_to_screen_command : public game_logic::command_callable
 {

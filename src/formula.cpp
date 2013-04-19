@@ -983,6 +983,7 @@ private:
 	void static_error_analysis() const {
 		variant_type_ptr type = left_->query_variant_type();
 
+		ASSERT_LOG(variant_type::get_null_excluded(type) == type, "Left side of '[]' operator may be null: " << left_->str() << " is " << type->to_string() << " " << debug_pinpoint_location());
 	}
 	
 	expression_ptr left_, key_;
