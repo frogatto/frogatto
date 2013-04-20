@@ -39,6 +39,7 @@
 #include "json_parser.hpp"
 #include "level.hpp"
 #include "level_object.hpp"
+#include "level_runner.hpp"
 #include "light.hpp"
 #include "load_level.hpp"
 #include "module.hpp"
@@ -3863,6 +3864,14 @@ variant level::get_value(const std::string& key) const
 		fb_shaders_variant_ = variant(&v);
 		return fb_shaders_variant_;
 #endif
+	} else if(key == "editor_selection") {
+		return variant(editor_highlight_.get());
+	} else if(key == "is_paused") {
+		if(level_runner::get_current()) {
+			return variant::from_bool(level_runner::get_current()->is_paused());
+		}
+
+		return variant();
 	} else {
 		const_entity_ptr e = get_entity_by_label(key);
 		if(e) {

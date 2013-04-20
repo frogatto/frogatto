@@ -53,6 +53,8 @@ public:
 		return NULL;
 	}
 
+	bool is_paused() const { return paused; }
+
 	bool play_level();
 	bool play_cycle();
 
