@@ -3865,7 +3865,12 @@ variant level::get_value(const std::string& key) const
 		return fb_shaders_variant_;
 #endif
 	} else if(key == "editor_selection") {
-		return variant(editor_highlight_.get());
+		std::vector<variant> result;
+		foreach(entity_ptr s, editor_selection_) {
+			result.push_back(variant(s.get()));
+		}
+
+		return variant(&result);
 	} else if(key == "is_paused") {
 		if(level_runner::get_current()) {
 			return variant::from_bool(level_runner::get_current()->is_paused());
