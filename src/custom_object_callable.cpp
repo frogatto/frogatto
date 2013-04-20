@@ -42,7 +42,7 @@ custom_object_callable::custom_object_callable(bool is_singleton)
 {
 
 	static const std::string CustomObjectProperties[] = {
-	"consts", "type", "active", "lib",
+	"data", "consts", "type", "active", "lib",
 	"time_in_animation", "time_in_animation_delta", "frame_in_animation", "level",
 	"animation", "available_animations",
 	"hitpoints", "max_hitpoints", "mass", "label", "x", "y", "xy", "z",

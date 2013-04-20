@@ -58,7 +58,22 @@
 #include "sound.hpp"
 #include "widget_factory.hpp"
 
+class active_property_scope {
+	const custom_object& obj_;
+	int prev_prop_;
+public:
+	active_property_scope(const custom_object& obj, int prop_num) : obj_(obj), prev_prop_(obj.active_property_)
+	{
+		obj_.active_property_ = prop_num;
+	}
+
+	~active_property_scope() {
+		obj_.active_property_ = prev_prop_;
+	}
+};
+
 namespace {
+
 const int widget_zorder_draw_later_threshold = 1000;
 
 const game_logic::formula_variable_storage_ptr& global_vars()
@@ -122,6 +137,7 @@ custom_object::custom_object(variant node)
 	sound_volume_(128),
 	vars_(new game_logic::formula_variable_storage(type_->variables())),
 	tmp_vars_(new game_logic::formula_variable_storage(type_->tmp_variables())),
+	active_property_(-1),
 	last_hit_by_anim_(0),
 	current_animation_id_(0),
 	cycle_(node["cycle"].as_int()),
@@ -224,6 +240,23 @@ custom_object::custom_object(variant node)
 	max_difficulty_ = node.has_key("max_difficulty") ? difficulty::from_variant(node["max_difficulty"]) : -1;
 
 	vars_->read(node["vars"]);
+
+	const variant property_data_node = node["property_data"];
+	for(std::map<std::string, custom_object_type::property_entry>::const_iterator i = type_->properties().begin(); i != type_->properties().end(); ++i) {
+		if(i->second.storage_slot < 0) {
+			continue;
+		}
+
+		if(property_data_node.is_map()) {
+			const variant key(i->first);
+			if(property_data_node.has_key(key)) {
+				get_property_data(i->second.storage_slot) = property_data_node[key];
+				continue;
+			}
+		}
+
+		get_property_data(i->second.storage_slot) = i->second.default_value;
+	}
 
 	unsigned int solid_dim = type_->solid_dimensions();
 	unsigned int weak_solid_dim = type_->weak_solid_dimensions();
@@ -378,6 +411,7 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 	vars_(new game_logic::formula_variable_storage(type_->variables())),
 	tmp_vars_(new game_logic::formula_variable_storage(type_->tmp_variables())),
 	tags_(new game_logic::map_formula_callable(type_->tags())),
+	active_property_(-1),
 	last_hit_by_anim_(0),
 	cycle_(0),
 	created_(false), loaded_(false), fall_through_platforms_(0),
@@ -392,6 +426,14 @@ custom_object::custom_object(const std::string& type, int x, int y, bool face_ri
 {
 	vars_->disallow_new_keys(type_->is_strict());
 	tmp_vars_->disallow_new_keys(type_->is_strict());
+
+	for(std::map<std::string, custom_object_type::property_entry>::const_iterator i = type_->properties().begin(); i != type_->properties().end(); ++i) {
+		if(i->second.storage_slot < 0) {
+			continue;
+		}
+
+		get_property_data(i->second.storage_slot) = i->second.default_value;
+	}
 
 	get_all().insert(this);
 	get_all(base_type_->id()).insert(this);
@@ -467,6 +509,9 @@ custom_object::custom_object(const custom_object& o) :
 	tmp_vars_(new game_logic::formula_variable_storage(*o.tmp_vars_)),
 	tags_(new game_logic::map_formula_callable(*o.tags_)),
 
+	property_data_(o.property_data_),
+
+	active_property_(-1),
 	last_hit_by_(o.last_hit_by_),
 	last_hit_by_anim_(o.last_hit_by_anim_),
 	current_animation_id_(o.current_animation_id_),
@@ -791,6 +836,19 @@ variant custom_object::write() const
 
 	if(tags_->values() != type_->tags()) {
 		res.add("tags", tags_->write());
+	}
+
+	std::map<variant, variant> property_map;
+	for(std::map<std::string, custom_object_type::property_entry>::const_iterator i = type_->properties().begin(); i != type_->properties().end(); ++i) {
+		if(i->second.storage_slot == -1 || i->second.storage_slot >= property_data_.size()) {
+			continue;
+		}
+
+		property_map[variant(i->first)] = property_data_[i->second.storage_slot];
+	}
+
+	if(property_map.empty() == false) {
+		res.add("property_data", variant(&property_map));
 	}
 
 	if(custom_type_.is_map()) {
@@ -2380,6 +2438,14 @@ variant two_element_variant_list(const variant& a, const variant&b)
 variant custom_object::get_value_by_slot(int slot) const
 {
 	switch(slot) {
+	case CUSTOM_OBJECT_DATA: {
+		ASSERT_LOG(active_property_ >= 0, "Access of 'data' outside of an object property which has data");
+		if(active_property_ < property_data_.size()) {
+			return property_data_[active_property_];
+		} else {
+			return variant();
+		}
+	}
 	case CUSTOM_OBJECT_CONSTS:            return variant(type_->consts().get());
 	case CUSTOM_OBJECT_TYPE:              return variant(type_->id());
 	case CUSTOM_OBJECT_ACTIVE:            return variant::from_bool(last_cycle_active_ >= level::current().cycle() - 2);
@@ -2740,9 +2806,12 @@ variant custom_object::get_value_by_slot(int slot) const
 		if(slot >= type_->slot_properties_base() && (size_t(slot - type_->slot_properties_base()) < type_->slot_properties().size())) {
 			const custom_object_type::property_entry& e = type_->slot_properties()[slot - type_->slot_properties_base()];
 			if(e.getter) {
+				active_property_scope scope(*this, e.storage_slot);
 				return e.getter->execute(*this);
 			} else if(e.const_value) {
 				return *e.const_value;
+			} else if(e.storage_slot >= 0) {
+				return get_property_data(e.storage_slot);
 			} else {
 				ASSERT_LOG(false, "PROPERTY HAS NO GETTER OR CONST VALUE");
 			}
@@ -2771,9 +2840,12 @@ variant custom_object::get_value(const std::string& key) const
 	std::map<std::string, custom_object_type::property_entry>::const_iterator property_itor = type_->properties().find(key);
 	if(property_itor != type_->properties().end()) {
 		if(property_itor->second.getter) {
+			active_property_scope scope(*this, property_itor->second.storage_slot);
 			return property_itor->second.getter->execute(*this);
 		} else if(property_itor->second.const_value) {
 			return *property_itor->second.const_value;
+		} else if(property_itor->second.storage_slot >= 0) {
+			return get_property_data(property_itor->second.storage_slot);
 		}
 	}
 
@@ -2837,8 +2909,13 @@ void custom_object::set_value(const std::string& key, const variant& value)
 	if(property_itor != type_->properties().end() && property_itor->second.setter) {
 		game_logic::map_formula_callable_ptr callable(new game_logic::map_formula_callable(this));
 		callable->add("value", value);
+
+		active_property_scope scope(*this, property_itor->second.storage_slot);
 		variant value = property_itor->second.setter->execute(*callable);
 		execute_command(value);
+		return;
+	} else if(property_itor != type_->properties().end() && property_itor->second.storage_slot >= 0) {
+		get_property_data(property_itor->second.storage_slot) = value;
 		return;
 	}
 
@@ -3121,6 +3198,11 @@ void custom_object::set_value(const std::string& key, const variant& value)
 void custom_object::set_value_by_slot(int slot, const variant& value)
 {
 	switch(slot) {
+	case CUSTOM_OBJECT_DATA: {
+		ASSERT_LOG(active_property_ >= 0, "Illegal access of 'data' in object when not in writable property");
+		get_property_data(active_property_) = value;
+		break;
+	}
 	case CUSTOM_OBJECT_TYPE: {
 		const_custom_object_type_ptr p = custom_object_type::get(value.as_string());
 		if(p) {
@@ -3914,8 +3996,12 @@ void custom_object::set_value_by_slot(int slot, const variant& value)
 			if(e.setter) {
 				game_logic::map_formula_callable* callable(new game_logic::map_formula_callable(this));
 				callable->add("value", value);
+
+				active_property_scope scope(*this, e.storage_slot);
 				variant value = e.setter->execute(*callable);
 				execute_command(value);
+			} else if(e.storage_slot >= 0) {
+				get_property_data(e.storage_slot) = value;
 			}
 		}
 		break;

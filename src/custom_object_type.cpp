@@ -920,6 +920,8 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 		}
 	}
 
+	int storage_slot = 0;
+
 	slot_properties_base_ = callable_definition_->num_slots();
 	foreach(variant properties_node, node["properties"].as_list()) {
 		foreach(variant key, properties_node.get_keys().as_list()) {
@@ -932,6 +934,8 @@ custom_object_type::custom_object_type(variant node, const custom_object_type* b
 			} else if(value.is_map()) {
 				entry.getter = game_logic::formula::create_optional_formula(value["get"], function_symbols(), callable_definition_);
 				entry.setter = game_logic::formula::create_optional_formula(value["set"], function_symbols(), callable_definition_);
+				entry.default_value = value["default"];
+				entry.storage_slot = storage_slot++;
 			} else {
 				entry.const_value.reset(new variant(value));
 			}
