@@ -20,6 +20,7 @@
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "multi_tile_pattern.hpp"
+#include "tile_map.hpp"
 #include "string_utils.hpp"
 #include "variant_utils.hpp"
 
@@ -260,7 +261,7 @@ multi_tile_pattern::multi_tile_pattern(variant node, const std::string& tile_id)
 	
 			objects[value.first.as_string()] = new_object;
 			if(obj_node.has_key("zorder")) {
-				object_zorders[value.first.as_string()] = obj_node["zorder"].as_int();
+				object_zorders[value.first.as_string()] = parse_zorder(obj_node["zorder"]);
 			}
 		}
 	}

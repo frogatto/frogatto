@@ -32,6 +32,7 @@
 #include "surface.hpp"
 #include "surface_cache.hpp"
 #include "surface_palette.hpp"
+#include "tile_map.hpp"
 #include "unit_test.hpp"
 #include "variant_utils.hpp"
 
@@ -62,7 +63,7 @@ level_tile level_object::build_tile(variant node)
 	level_tile res;
 	res.x = node["x"].as_int();
 	res.y = node["y"].as_int();
-	res.zorder = node["zorder"].as_int();
+	res.zorder = parse_zorder(node["zorder"]);
 	if(tiles_cache.count(node["tile"].as_string())) {
 		res.object = tiles_cache[node["tile"].as_string()].get();
 	}

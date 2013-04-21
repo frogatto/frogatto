@@ -528,7 +528,7 @@ void level::read_compiled_tiles(variant node, std::vector<level_tile>::iterator&
 {
 	const int xbase = node["x"].as_int();
 	const int ybase = node["y"].as_int();
-	const int zorder = node["zorder"].as_int();
+	const int zorder = parse_zorder(node["zorder"]);
 
 	int x = xbase;
 	int y = ybase;
@@ -1232,7 +1232,7 @@ variant level::write() const
 			if(n == tiles_.size() || tiles_[n].zorder != last_zorder) {
 				if(!tiles_str.empty()) {
 					variant_builder node;
-					node.add("zorder", last_zorder);
+					node.add("zorder", write_zorder(last_zorder));
 					node.add("x", basex);
 					node.add("y", basey);
 					node.add("tiles", tiles_str);

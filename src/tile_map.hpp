@@ -29,6 +29,9 @@
 #include "point_map.hpp"
 #include "variant.hpp"
 
+int parse_zorder(const variant& v);
+variant write_zorder(int zorder);
+
 struct tile_pattern;
 struct multi_tile_pattern;
 
