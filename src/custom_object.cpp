@@ -2919,6 +2919,8 @@ void custom_object::set_value(const std::string& key, const variant& value)
 		return;
 	}
 
+	ASSERT_LOG(property_itor == type_->properties().end(), "Illegal write to non-writable property " << property_itor->first << " in " << debug_description());
+
 	if(key == "animation") {
 		set_frame(value.as_string());
 	} else if(key == "time_in_animation") {
@@ -3191,7 +3193,12 @@ void custom_object::set_value(const std::string& key, const variant& value)
 	} else if(!type_->is_strict()) {
 		vars_->add(key, value);
 	} else {
-		ASSERT_LOG(false, "ILLEGAL OBJECT ACCESS WITH STRICT CHECKING IN " << debug_description() << ": " << key);
+		std::ostringstream known_properties;
+		for(std::map<std::string, custom_object_type::property_entry>::const_iterator property_itor = type_->properties().begin(); property_itor != type_->properties().end(); ++property_itor) {
+			known_properties << property_itor->first << ", ";
+		}
+
+		ASSERT_LOG(false, "ILLEGAL OBJECT ACCESS WITH STRICT CHECKING IN " << debug_description() << ": " << key << " KNOWN PROPERTIES ARE: " << known_properties.str());
 	}
 }
 
