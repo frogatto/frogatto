@@ -219,14 +219,15 @@ struct variant_fn {
 	variant_fn() : refcount(0)
 	{}
 
-	const std::string* begin_args;
-	const std::string* end_args;
+	std::vector<std::string> arg_names;
 
 	game_logic::const_formula_ptr fn;
 
 	game_logic::const_formula_callable_ptr callable;
 
 	std::vector<variant> default_args;
+
+	std::vector<variant> bound_args;
 
 	int base_slot;
 	int refcount;
@@ -533,19 +534,14 @@ variant::variant(game_logic::const_formula_ptr fml, const std::vector<std::strin
   : type_(VARIANT_TYPE_FUNCTION)
 {
 	fn_ = new variant_fn;
-	if(args.empty()) {
-		fn_->begin_args = fn_->end_args = NULL;
-	} else {
-		fn_->begin_args = &args[0];
-		fn_->end_args = fn_->begin_args + args.size();
-	}
+	fn_->arg_names = args;
 	fn_->base_slot = base_slot;
 	fn_->fn = fml;
 	fn_->callable = &callable;
 	fn_->default_args = default_args;
 	fn_->variant_types = variant_types;
 
-	ASSERT_EQ(fn_->variant_types.size(), fn_->end_args - fn_->begin_args);
+	ASSERT_EQ(fn_->variant_types.size(), fn_->arg_names.size());
 
 	fn_->return_type = return_type;
 	increment_refcount();
@@ -714,11 +710,11 @@ variant variant::get_list_slice(int begin, int end) const
 	return result;
 }
 
-bool variant::function_call_valid(const std::vector<variant>& args, std::string* message) const
+bool variant::function_call_valid(const std::vector<variant>& passed_args, std::string* message, bool allow_partial) const
 {
 	if(type_ == VARIANT_TYPE_MULTI_FUNCTION) {
 		foreach(const variant& v, multi_fn_->functions) {
-			if(v.function_call_valid(args)) {
+			if(v.function_call_valid(passed_args)) {
 				return true;
 			}
 		}
@@ -737,10 +733,19 @@ bool variant::function_call_valid(const std::vector<variant>& args, std::string*
 		return false;
 	}
 
-	const int max_args = fn_->end_args - fn_->begin_args;
+	std::vector<variant> args_buf;
+
+	if(fn_->bound_args.empty() == false) {
+		args_buf = fn_->bound_args;
+		args_buf.insert(args_buf.end(), passed_args.begin(), passed_args.end());
+	}
+
+	const std::vector<variant>& args = args_buf.empty() ? passed_args : args_buf;
+
+	const int max_args = fn_->arg_names.size();
 	const int min_args = max_args - fn_->default_args.size();
 
-	if(args.size() > max_args || args.size() < min_args) {
+	if(args.size() > max_args || (args.size() < min_args && !allow_partial)) {
 		if(message) {
 			*message = "Incorrect number of arguments to function";
 		}
@@ -774,8 +779,13 @@ variant variant::operator()(const std::vector<variant>& passed_args) const
 		return variant();
 	}
 
-	const std::vector<variant>* args = &passed_args;
 	std::vector<variant> args_buf;
+	if(fn_->bound_args.empty() == false) {
+		args_buf = fn_->bound_args;
+		args_buf.insert(args_buf.end(), passed_args.begin(), passed_args.end());
+	}
+
+	const std::vector<variant>* args = args_buf.empty() ? &passed_args : &args_buf;
 
 	must_be(VARIANT_TYPE_FUNCTION);
 	boost::intrusive_ptr<game_logic::slot_formula_callable> callable = new game_logic::slot_formula_callable;
@@ -785,13 +795,13 @@ variant variant::operator()(const std::vector<variant>& passed_args) const
 
 	callable->set_base_slot(fn_->base_slot);
 
-	const int max_args = fn_->end_args - fn_->begin_args;
+	const int max_args = fn_->arg_names.size();
 	const int min_args = max_args - fn_->default_args.size();
 
 	if(args->size() < min_args || args->size() > max_args) {
 		std::ostringstream str;
-		for(const std::string* a = fn_->begin_args; a != fn_->end_args; ++a) {
-			if(a != fn_->begin_args) {
+		for(std::vector<std::string>::const_iterator a = fn_->arg_names.begin(); a != fn_->arg_names.end(); ++a) {
+			if(a != fn_->arg_names.begin()) {
 				str << ", ";
 			}
 
@@ -1035,9 +1045,7 @@ variant* variant::get_index_mutable(int index)
 
 variant variant::bind_closure(const game_logic::formula_callable* callable)
 {
-	if(!is_function()) {
-		return variant();
-	}
+	must_be(VARIANT_TYPE_FUNCTION);
 
 	variant result;
 	result.type_ = VARIANT_TYPE_FUNCTION;
@@ -1047,16 +1055,32 @@ variant variant::bind_closure(const game_logic::formula_callable* callable)
 	return result;
 }
 
+variant variant::bind_args(const std::vector<variant>& args)
+{
+	must_be(VARIANT_TYPE_FUNCTION);
+
+	std::string msg;
+	ASSERT_LOG(function_call_valid(args, &msg, true), "Invalid argument binding: " << msg);
+	
+	variant result;
+	result.type_ = VARIANT_TYPE_FUNCTION;
+	result.fn_ = new variant_fn(*fn_);
+	result.fn_->refcount = 1;
+	result.fn_->bound_args.insert(result.fn_->bound_args.end(), args.begin(), args.end());
+
+	return result;
+}
+
 int variant::min_function_arguments() const
 {
 	must_be(VARIANT_TYPE_FUNCTION);
-	return fn_->end_args - fn_->begin_args - fn_->default_args.size();
+	return std::max<int>(0, fn_->arg_names.size() - static_cast<int>(fn_->default_args.size()) - static_cast<int>(fn_->bound_args.size()));
 }
 
 int variant::max_function_arguments() const
 {
 	must_be(VARIANT_TYPE_FUNCTION);
-	return fn_->end_args - fn_->begin_args;
+	return fn_->arg_names.size() - fn_->bound_args.size();
 }
 
 variant_type_ptr variant::function_return_type() const
@@ -1065,10 +1089,16 @@ variant_type_ptr variant::function_return_type() const
 	return fn_->return_type;
 }
 
-const std::vector<variant_type_ptr>& variant::function_arg_types() const
+std::vector<variant_type_ptr> variant::function_arg_types() const
 {
 	must_be(VARIANT_TYPE_FUNCTION);
-	return fn_->variant_types;
+	std::vector<variant_type_ptr> result = fn_->variant_types;
+	if(fn_->bound_args.empty() == false) {
+		ASSERT_LOG(fn_->bound_args.size() <= fn_->variant_types.size(), "INVALID FUNCTION BINDING: " << fn_->bound_args.size() << "/" << fn_->variant_types.size());
+		result.erase(result.begin(), result.begin() + fn_->bound_args.size());
+	}
+
+	return result;
 }
 
 std::string variant::as_string_default(const char* default_value) const
@@ -1796,7 +1826,7 @@ std::string variant::to_debug_string(std::vector<const game_logic::formula_calla
 		sprintf(buf, "(%p)", fn_);
 		s << buf << "(";
 		bool first = true;
-		for(const std::string *i = fn_->begin_args; i != fn_->end_args; ++i) {
+		for(std::vector<std::string>::const_iterator i = fn_->arg_names.begin(); i != fn_->arg_names.end(); ++i) {
 			if (first)
 				first = false;
 			else
@@ -1979,15 +2009,15 @@ void variant::write_function(std::ostream& s) const
 	}
 	
 	s << "def(";
-	const int default_base = (fn_->end_args - fn_->begin_args) - fn_->default_args.size();
-	for(const std::string* p = fn_->begin_args; p != fn_->end_args; ++p) {
-		if(p != fn_->begin_args) {
+	const int default_base = fn_->arg_names.size() - fn_->default_args.size();
+	for(std::vector<std::string>::const_iterator p = fn_->arg_names.begin(); p != fn_->arg_names.end(); ++p) {
+		if(p != fn_->arg_names.begin()) {
 			s << ",";
 		}
 
 		s << *p;
 		
-		const int index = p - fn_->begin_args;
+		const int index = p - fn_->arg_names.begin();
 		if(index >= default_base) {
 			variant v = fn_->default_args[index - default_base];
 			std::string str;

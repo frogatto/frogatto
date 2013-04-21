@@ -372,6 +372,37 @@ private:
 	std::vector<variant> args_;
 };
 
+FUNCTION_DEF(bind, 1, -1, "bind(fn, args...)")
+	variant fn = args()[0]->evaluate(variables);
+
+	std::vector<variant> arg_values;
+	for(int n = 1; n != args().size(); ++n) {
+		arg_values.push_back(args()[n]->evaluate(variables));
+	}
+
+	return fn.bind_args(arg_values);
+FUNCTION_TYPE_DEF
+	variant_type_ptr type = args()[0]->query_variant_type();
+
+	std::vector<variant_type_ptr> fn_args;
+	variant_type_ptr return_type;
+	int min_args = 0;
+
+	if(type->is_function(&fn_args, &return_type, &min_args)) {
+		const int nargs = args().size()-1;
+		min_args = std::max<int>(0, min_args - nargs);
+		if(fn_args.size() <= nargs) {
+			fn_args.erase(fn_args.begin(), fn_args.begin() + nargs);
+		} else {
+			ASSERT_LOG(false, "bind called with too many arguments");
+		}
+
+		return variant_type::get_function_type(fn_args, return_type, min_args);
+	} else {
+		return variant_type::get_type(variant::VARIANT_TYPE_FUNCTION);
+	}
+END_FUNCTION_DEF(bind)
+
 FUNCTION_DEF(bind_command, 1, -1, "bind_command(fn, args..)")
 	variant fn = args()[0]->evaluate(variables);
 	if(fn.type() != variant::VARIANT_TYPE_MULTI_FUNCTION) {
