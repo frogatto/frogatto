@@ -959,7 +959,11 @@ FUNCTION_DEF(regex_match, 2, 2, "regex_match(string, re_string) -> string: retur
 	}
 	return variant(&v);
 FUNCTION_TYPE_DEF
-	return variant_type::get_type(variant::VARIANT_TYPE_STRING);
+	std::vector<variant_type_ptr> types;
+	types.push_back(variant_type::get_list(variant_type::get_type(variant::VARIANT_TYPE_STRING)));
+	types.push_back(variant_type::get_type(variant::VARIANT_TYPE_STRING));
+	types.push_back(variant_type::get_type(variant::VARIANT_TYPE_NULL));
+	return variant_type::get_union(types);
 END_FUNCTION_DEF(regex_match)
 
 namespace {
