@@ -1,4 +1,6 @@
-Frogatto & Friends is an old-school 2D platformer game, starring a certain quixotic frog. It's a big adventure with all the classic fun - you fight monsters, collect coins, talk to people, and buy new stuff. Also, Frogatto has a very flexible game engine you can use to make your own creations.
+Frogatto & Friends is an action-adventure game, starring a certain quixotic frog.  We're trying to push 2D platforming, pixel-art, and music into uncharted territory; we hope you like the results!
+
+Frogatto is driven by a very flexible, high-performance 2d game engine we've developed, called "Anura" - it's suitable for almost any 2D videogame, and has a few special features for pixel-art and graphical-effects commonly seen in pixel-art titles.  It has already been used to ship another complete game, called Cube Trains, and several others are in the works.
 
 The game's source code license can be found in the LICENSE file in the distribution.
 
