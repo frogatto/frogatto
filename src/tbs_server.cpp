@@ -36,7 +36,7 @@
 
 namespace tbs {
 
-server::game_info::game_info(const variant& value)
+server::game_info::game_info(const variant& value) : nlast_touch(-1)
 {
 	game_state = game::create(value);
 }

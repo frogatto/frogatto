@@ -44,6 +44,7 @@ namespace tbs
 			game_info(const variant& value);
 			game_ptr game_state;
 			std::vector<int> clients;
+			int nlast_touch;
 		};
 
 		typedef boost::shared_ptr<game_info> game_info_ptr;

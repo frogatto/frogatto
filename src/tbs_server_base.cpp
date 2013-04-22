@@ -343,6 +343,7 @@ namespace tbs
 			const bool game_started = cli_info.game->game_state->started();
 			const game_context context(cli_info.game->game_state.get());
 
+			cli_info.game->nlast_touch = nheartbeat_;
 			cli_info.game->game_state->handle_message(cli_info.nplayer, msg);
 			flush_game_messages(*cli_info.game);
 		}
@@ -378,6 +379,23 @@ namespace tbs
 		nheartbeat_++;
 		if(nheartbeat_%10 != 0) {
 			return;
+		}
+
+		foreach(game_info_ptr& g, games_) {
+			if(g->nlast_touch > nheartbeat_ + 300) {
+				g = game_info_ptr();
+			}
+		}
+
+		games_.erase(std::remove(games_.begin(), games_.end(), game_info_ptr()), games_.end());
+
+		for(std::map<int,client_info>::iterator i = clients_.begin();
+		    i != clients_.end(); ) {
+			if(i->second.game->nlast_touch > nheartbeat_ + 300) {
+				clients_.erase(i++);
+			} else {
+				++i;
+			}
 		}
 
 #if !defined(__ANDROID__)
