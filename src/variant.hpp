@@ -128,7 +128,7 @@ public:
 	bool has_key(const variant& key) const;
 	bool has_key(const std::string& key) const;
 
-	bool function_call_valid(const std::vector<variant>& args, std::string* message=NULL) const;
+	bool function_call_valid(const std::vector<variant>& args, std::string* message=NULL, bool allow_partial=false) const;
 	variant operator()(const std::vector<variant>& args) const;
 
 	variant get_member(const std::string& str) const;
@@ -187,6 +187,7 @@ public:
 
 	//binds a closure to a lambda function.
 	variant bind_closure(const game_logic::formula_callable* callable);
+	variant bind_args(const std::vector<variant>& args);
 
 	//precondition: is_function(). Gives the min/max arguments the function
 	//accepts.
@@ -194,7 +195,7 @@ public:
 	int max_function_arguments() const;
 
 	variant_type_ptr function_return_type() const;
-	const std::vector<variant_type_ptr>& function_arg_types() const;
+	std::vector<variant_type_ptr> function_arg_types() const;
 
 	std::string as_string_default(const char* default_value=NULL) const;
 	const std::string& as_string() const;

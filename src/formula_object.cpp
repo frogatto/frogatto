@@ -19,6 +19,7 @@
 #include <string>
 #include <stdio.h>
 
+#include "code_editor_dialog.hpp"
 #include "filesystem.hpp"
 #include "formula.hpp"
 #include "formula_callable.hpp"
@@ -35,8 +36,9 @@
 namespace game_logic
 {
 
-namespace {
 void invalidate_class_definition(const std::string& class_name);
+
+namespace {
 
 boost::intrusive_ptr<const formula_class> get_class(const std::string& type);
 
@@ -605,7 +607,20 @@ boost::intrusive_ptr<const formula_class> get_class(const std::string& type)
 			std::cerr << "ERROR LOADING NEW CLASS\n";
 		}
 	} else {
-		result = build_class(type);
+		if(preferences::edit_and_continue()) {
+			assert_recover_scope recover_scope;
+			try {
+				result = build_class(type);
+			} catch(validation_failure_exception& e) {
+				edit_and_continue_class(type, e.msg);
+			}
+
+			if(!result) {
+				return get_class(type);
+			}
+		} else {
+			result = build_class(type);
+		}
 	}
 
 	classes_[type] = result;
@@ -659,6 +674,23 @@ void formula_object::visit_variants(variant node, boost::function<void (variant)
 void formula_object::reload_classes()
 {
 	classes_.clear();
+}
+
+void formula_object::load_all_classes()
+{
+	std::vector<std::string> files;
+	module::get_files_in_dir("data/classes/", &files, NULL);
+	foreach(std::string f, files) {
+		if(f.size() > 4 && std::equal(f.end()-4,f.end(),".cfg")) {
+			f.resize(f.size()-4);
+			get_class(f);
+		}
+	}
+}
+
+void formula_object::try_load_class(const std::string& name)
+{
+	build_class(name);
 }
 
 boost::intrusive_ptr<formula_object> formula_object::create(const std::string& type, variant args)
@@ -1013,8 +1045,6 @@ bool formula_class_valid(const std::string& type)
 	return known_classes.count(type) != false || get_class_node(type).is_map();
 }
 
-namespace {
-
 void invalidate_class_definition(const std::string& name)
 {
 	std::cerr << "INVALIDATE CLASS: " << name << "\n";
@@ -1055,6 +1085,8 @@ void invalidate_class_definition(const std::string& name)
 		}
 	}
 }
+
+namespace {
 
 formula_callable_definition_ptr g_library_definition;
 formula_callable_ptr g_library_obj;

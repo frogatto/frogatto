@@ -37,6 +37,60 @@
 
 namespace {
 
+const std::map<std::string, int>& str_to_zorder() {
+	static std::map<std::string, int>* instance = NULL;
+	if(!instance) {
+		instance = new std::map<std::string, int>;
+		variant node = json::parse_from_file("data/zorder.cfg");
+
+		foreach(variant::map_pair p, node.as_map()) {
+			(*instance)[p.first.as_string()] = p.second.as_int();
+		}
+	}
+
+	return *instance;
+}
+
+const std::map<int, variant>& zorder_to_str() {
+	static std::map<int, variant>* instance = NULL;
+	if(!instance) {
+		instance = new std::map<int, variant>;
+		variant node = json::parse_from_file("data/zorder.cfg");
+
+		foreach(variant::map_pair p, node.as_map()) {
+			ASSERT_LOG(instance->count(p.second.as_int()) == 0, "Multiple zorders map to same value: " << p.second.as_int());
+
+			(*instance)[p.second.as_int()] = p.first;
+		}
+	}
+
+	return *instance;
+}
+
+}
+
+int parse_zorder(const variant& v)
+{
+	if(v.is_int()) {
+		return v.as_int();
+	}
+
+	const std::string& str = v.as_string();
+	ASSERT_LOG(str_to_zorder().count(str), "Invalid zorder id: " << v.as_string());
+	return str_to_zorder().find(str)->second;
+}
+
+variant write_zorder(int zorder)
+{
+	if(zorder_to_str().count(zorder)) {
+		return zorder_to_str().find(zorder)->second;
+	}
+
+	return variant(zorder);
+}
+
+namespace {
+
 typedef std::map<const boost::regex*, bool> regex_match_map;
 std::map<boost::array<char, 4>, regex_match_map> re_matches;
 
@@ -125,7 +179,7 @@ struct tile_pattern {
 			level_object_ptr new_object(new level_object(var, tile_id.c_str()));
 
 			t.object = new_object.get();
-			t.zorder = var["zorder"].as_int();
+			t.zorder = parse_zorder(var["zorder"]);
 			added_tiles.push_back(t);
 			
 		}
@@ -337,7 +391,7 @@ tile_map::tile_map() : xpos_(0), ypos_(0), x_speed_(100), y_speed_(100), zorder_
 tile_map::tile_map(variant node)
   : xpos_(node["x"].as_int()), ypos_(node["y"].as_int()),
 	x_speed_(node["x_speed"].as_int(100)), y_speed_(node["y_speed"].as_int(100)),
-    zorder_(node["zorder"].as_int())
+    zorder_(parse_zorder(node["zorder"]))
 
 #ifndef NO_EDITOR
 	, node_(node)
@@ -554,7 +608,7 @@ variant tile_map::write() const
 	res.add("y", ypos_);
 	res.add("x_speed", x_speed_);
 	res.add("y_speed", y_speed_);
-	res.add("zorder", zorder_);
+	res.add("zorder", write_zorder(zorder_));
 
 	std::vector<boost::array<char, 4> > unique_tiles;
 	std::ostringstream tiles;

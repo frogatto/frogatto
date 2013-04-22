@@ -32,6 +32,7 @@
 #include "foreach.hpp"
 #include "formatter.hpp"
 #include "formula_function_registry.hpp"
+#include "formula_object.hpp"
 #include "frame.hpp"
 #include "image_widget.hpp"
 #include "json_parser.hpp"
@@ -46,11 +47,16 @@
 #include "tileset_editor_dialog.hpp"
 #include "unit_test.hpp"
 
+namespace game_logic
+{
+void invalidate_class_definition(const std::string& class_name);
+}
+
 std::set<level*>& get_all_levels_set();
 
 code_editor_dialog::code_editor_dialog(const rect& r)
   : dialog(r.x(), r.y(), r.w(), r.h()), invalidated_(0), modified_(false),
-    suggestions_prefix_(-1)
+    suggestions_prefix_(-1), have_close_buttons_(false)
 {
 	init();
 }
@@ -62,7 +68,7 @@ void code_editor_dialog::init()
 	using namespace gui;
 
 	if(!editor_) {
-		editor_.reset(new code_editor_widget(width() - 40, height() - 60));
+		editor_.reset(new code_editor_widget(width() - 40, height() - (60 + (optional_error_text_area_ ? 170 : 0))));
 	}
 
 	button* save_button = new button("Save", boost::bind(&code_editor_dialog::save, this));
@@ -87,9 +93,20 @@ void code_editor_dialog::init()
 	add_widget(replace_label_, MOVE_RIGHT);
 	add_widget(widget_ptr(replace_), MOVE_RIGHT);
 	add_widget(widget_ptr(save_button), MOVE_RIGHT);
+
+	if(have_close_buttons_) {
+		button* save_and_close_button = new button("Save+Close", boost::bind(&code_editor_dialog::save_and_close, this));
+		button* abort_button = new button("Abort", boost::bind(&dialog::cancel, this));
+		add_widget(widget_ptr(save_and_close_button), MOVE_RIGHT);
+		add_widget(widget_ptr(abort_button), MOVE_RIGHT);
+	}
+
 	add_widget(widget_ptr(increase_font), MOVE_RIGHT);
 	add_widget(widget_ptr(decrease_font), MOVE_RIGHT);
 	add_widget(editor_, find_label->x(), find_label->y() + save_button->height() + 2);
+	if(optional_error_text_area_) {
+		add_widget(optional_error_text_area_);
+	}
 	add_widget(status_label_);
 	add_widget(error_label_, status_label_->x() + 480, status_label_->y());
 	add_widget(widget_ptr(dragger));
@@ -106,6 +123,38 @@ void code_editor_dialog::init()
 
 
 	init_files_grid();
+}
+
+void code_editor_dialog::add_optional_error_text_area(const std::string& text)
+{
+	using namespace gui;
+	optional_error_text_area_.reset(new text_editor_widget(width() - 40, 160));
+	optional_error_text_area_->set_text(text);
+	foreach(KnownFile& f, files_) {
+		f.editor->set_dim(width() - 40, height() - (60 + (optional_error_text_area_ ? 170 : 0)));
+	}
+
+	if(editor_) {
+		editor_->set_dim(width() - 40, height() - (60 + (optional_error_text_area_ ? 170 : 0)));
+	}
+}
+
+void code_editor_dialog::jump_to_error(const std::string& text)
+{
+	if(!editor_) {
+		return;
+	}
+
+	const std::string search_for = "At " + fname_ + " ";
+	const char* p = strstr(text.c_str(), search_for.c_str());
+	if(p) {
+		p += search_for.size();
+		const int line_num = atoi(p);
+
+		if(line_num > 0) {
+			editor_->set_cursor(line_num-1, 0);
+		}
+	}
 }
 
 void code_editor_dialog::init_files_grid()
@@ -146,7 +195,7 @@ void code_editor_dialog::init_files_grid()
 	add_widget(files_grid_, 2, 2);
 }
 
-void code_editor_dialog::load_file(std::string fname, bool focus)
+void code_editor_dialog::load_file(std::string fname, bool focus, boost::function<void()>* fn)
 {
 	if(fname_ == fname) {
 		return;
@@ -166,7 +215,10 @@ void code_editor_dialog::load_file(std::string fname, bool focus)
 	if(index == files_.size()) {
 		KnownFile f;
 		f.fname = fname;
-		f.editor.reset(new code_editor_widget(width() - 40, height() - 60));
+		if(fn) {
+			f.op_fn = *fn;
+		}
+		f.editor.reset(new code_editor_widget(width() - 40, height() - (60 + (optional_error_text_area_ ? 170 : 0))));
 		std::string text = json::get_file_contents(fname);
 		try {
 			variant doc = json::parse(text, json::JSON_NO_PREPROCESSOR);
@@ -219,6 +271,7 @@ void code_editor_dialog::load_file(std::string fname, bool focus)
 	remove_widget(editor_);
 
 	editor_ = f.editor;
+	op_fn_ = f.op_fn;
 	editor_->set_focus(true);
 
 	init_files_grid();
@@ -277,6 +330,8 @@ bool code_editor_dialog::handle_event(const SDL_Event& event, bool claimed)
 				replace_->set_focus(false);
 				editor_->set_focus(false);
 				return true;
+			} else if(event.key.keysym.sym == SDLK_n && (event.key.keysym.mod&KMOD_CTRL) || event.key.keysym.sym == SDLK_F3) {
+				editor_->next_search_match();
 			} else if(event.key.keysym.sym == SDLK_s && (event.key.keysym.mod&KMOD_CTRL)) {
 				save();
 				return true;
@@ -333,7 +388,12 @@ void code_editor_dialog::process()
 #endif
 
 
-			if(strstr(fname_.c_str(), "/tiles/")) {
+			if(op_fn_) {
+				json::parse(editor_->text());
+				json::set_file_contents(fname_, editor_->text());
+
+				op_fn_();
+			} else if(strstr(fname_.c_str(), "/tiles/")) {
 				std::cerr << "INIT TILE MAP\n";
 
 				const std::string old_contents = json::get_file_contents(fname_);
@@ -372,18 +432,44 @@ void code_editor_dialog::process()
 					lvl->shaders_updated();
 				}
 #endif
+			} else if(strstr(fname_.c_str(), "classes/") &&
+			          std::equal(fname_.end()-4,fname_.end(),".cfg")) {
+
+				std::cerr << "RELOAD FNAME: " << fname_ << "\n";
+				std::string::const_iterator slash = fname_.end()-1;
+				while(*slash != '/') {
+					--slash;
+				}
+				std::string::const_iterator end = fname_.end()-4;
+				const std::string class_name(slash+1, end);;
+				json::parse(editor_->text());
+				json::set_file_contents(fname_, editor_->text());
+				game_logic::invalidate_class_definition(class_name);
+				game_logic::formula_object::try_load_class(class_name);
 			} else { 
 				std::cerr << "SET FILE: " << fname_ << "\n";
 				custom_object_type::set_file_contents(fname_, editor_->text());
 			}
 			error_label_->set_text("Ok");
 			error_label_->set_tooltip("");
+
+			if(optional_error_text_area_) {
+				optional_error_text_area_->set_text("No errors");
+			}
 		} catch(validation_failure_exception& e) {
 			error_label_->set_text("Error");
 			error_label_->set_tooltip(e.msg);
+
+			if(optional_error_text_area_) {
+				optional_error_text_area_->set_text(e.msg);
+			}
 		} catch(...) {
 			error_label_->set_text("Error");
 			error_label_->set_tooltip("Unknown error");
+
+			if(optional_error_text_area_) {
+				optional_error_text_area_->set_text("Unknown error");
+			}
 		}
 		invalidated_ = 0;
 	} else if(custom_object::current_debug_error()) {
@@ -624,7 +710,7 @@ void code_editor_dialog::change_width(int amount)
 
 
 	foreach(KnownFile& f, files_) {
-		f.editor->set_dim(width() - 40, height() - 60);
+		f.editor->set_dim(width() - 40, height() - (60 + (optional_error_text_area_ ? 170 : 0)));
 	}
 	init();
 }
@@ -649,7 +735,7 @@ void code_editor_dialog::on_drag(int dx, int dy)
 
 
 	foreach(KnownFile& f, files_) {
-		f.editor->set_dim(width() - 40, height() - 60);
+		f.editor->set_dim(width() - 40, height() - (60 + (optional_error_text_area_ ? 170 : 0)));
 	}
 	//init();
 }
@@ -681,7 +767,9 @@ void code_editor_dialog::on_search_changed()
 
 void code_editor_dialog::on_search_enter()
 {
-	editor_->next_search_match();
+	search_->set_focus(false);
+	replace_->set_focus(false);
+	editor_->set_focus(true);
 }
 
 void code_editor_dialog::on_replace_enter()
@@ -769,6 +857,12 @@ void code_editor_dialog::save()
 	modified_ = false;
 }
 
+void code_editor_dialog::save_and_close()
+{
+	save();
+	close();
+}
+
 void code_editor_dialog::select_suggestion(int index)
 {
 	if(index >= 0 && index < suggestions_.size()) {
@@ -785,6 +879,43 @@ void code_editor_dialog::select_suggestion(int index)
 		}
 	} else {
 		suggestions_grid_.reset();
+	}
+}
+
+void edit_and_continue_class(const std::string& class_name, const std::string& error)
+{
+	boost::intrusive_ptr<code_editor_dialog> d(new code_editor_dialog(rect(0,0,graphics::screen_width(),graphics::screen_height())));
+
+	const std::string::const_iterator end_itor = std::find(class_name.begin(), class_name.end(), '.');
+	const std::string filename = "data/classes/" + std::string(class_name.begin(), end_itor) + ".cfg";
+
+	d->set_process_hook(boost::bind(&code_editor_dialog::process, d.get()));
+	d->add_optional_error_text_area(error);
+	d->set_close_buttons();
+	d->init();
+	d->load_file(filename);
+	d->jump_to_error(error);
+	d->show_modal();
+
+	if(d->cancelled()) {
+		_exit(0);
+	}
+}
+
+void edit_and_continue_fn(const std::string& filename, const std::string& error, boost::function<void()> fn)
+{
+	boost::intrusive_ptr<code_editor_dialog> d(new code_editor_dialog(rect(0,0,graphics::screen_width(),graphics::screen_height())));
+
+	d->set_process_hook(boost::bind(&code_editor_dialog::process, d.get()));
+	d->add_optional_error_text_area(error);
+	d->set_close_buttons();
+	d->init();
+	d->load_file(filename, true, &fn);
+	d->jump_to_error(error);
+	d->show_modal();
+
+	if(d->cancelled()) {
+		_exit(0);
 	}
 }
 

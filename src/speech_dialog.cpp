@@ -46,8 +46,6 @@ namespace {
 	const int OptionXPad = 10;
 #endif
 	const int OptionsBorder = 20; // size of the border around the options window
-	const int OptionsX = 135; // these denote the bottom right corner
-	const int OptionsY = 115;
 }
 
 speech_dialog::speech_dialog()
@@ -76,8 +74,8 @@ bool speech_dialog::handle_mouse_move(int x, int y)
 {
 	translate_mouse_coords(&x, &y);
 	rect box(
-		preferences::virtual_screen_width() - OptionsX - option_width_ - OptionsBorder,
-		preferences::virtual_screen_height() - OptionsY - OptionHeight*options_.size() - OptionsBorder,
+		preferences::virtual_screen_width() - option_width_/2 - OptionsBorder*2,
+		0,
 		option_width_ + OptionsBorder*2, OptionHeight*options_.size() + OptionsBorder*2
 	);
 	//std::cerr << "Options box: " << box << " : " << x << " : " << y << "\n";
@@ -112,13 +110,13 @@ bool speech_dialog::key_press(const SDL_Event& event)
 	static int last_mouse = 0;
 	if(text_char_ == num_chars() && options_.empty() == false) {
 		if(event.type == SDL_KEYDOWN) {
-			if(event.key.keysym.scancode == get_keycode(controls::CONTROL_UP)) {
+			if(event.key.keysym.sym == get_keycode(controls::CONTROL_UP)) {
 				move_up();
-			} else if(event.key.keysym.scancode == get_keycode(controls::CONTROL_DOWN)) {
+			} else if(event.key.keysym.sym == get_keycode(controls::CONTROL_DOWN)) {
 				move_down();
 			} else if(event.key.keysym.sym == SDLK_RETURN || event.key.keysym.sym == SDLK_SPACE ||
-				event.key.keysym.scancode == get_keycode(controls::CONTROL_JUMP) ||
-				event.key.keysym.scancode == get_keycode(controls::CONTROL_TONGUE)) {
+				event.key.keysym.sym == get_keycode(controls::CONTROL_JUMP) ||
+				event.key.keysym.sym == get_keycode(controls::CONTROL_TONGUE)) {
 				return true;
 			}
 		}
@@ -366,9 +364,9 @@ void speech_dialog::draw() const
 	if(text_char_ == num_chars() && options_.empty() == false) {
 		//const_gui_section_ptr options_panel = gui_section::get("speech_portrait_pane");
 		const_framed_gui_element_ptr options_panel = framed_gui_element::get("regular_window");
-		int xpos = graphics::screen_width() - OptionsX - option_width_ - OptionsBorder*2;
-		int ypos = graphics::screen_height() - OptionsY - OptionHeight*options_.size() - OptionsBorder*2;
-		options_panel->blit(xpos, ypos, OptionsBorder*2 + option_width_, OptionsBorder*2 + OptionHeight*options_.size(), true);
+		int xpos = graphics::screen_width()/2 - option_width_/2 - OptionsBorder*2;
+		int ypos = 0;
+		options_panel->blit(xpos, ypos, OptionsBorder*4 + option_width_, OptionsBorder*2 + OptionHeight*options_.size(), true);
 
 		xpos += OptionsBorder + OptionXPad;
 		ypos += OptionsBorder;
@@ -387,8 +385,10 @@ void speech_dialog::draw() const
 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 			if(index == option_selected_) {
+				glColor4f(1.0, 1.0, 1.0, 1.0);
 				const_gui_section_ptr cursor = gui_section::get("cursor");
 				cursor->blit(area.x2(), area.y());
+				glColor4ub(255, 187, 10, 255); //reset color to what it was, since draw_rect changes it
 			}
 #endif
 

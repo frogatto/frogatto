@@ -352,6 +352,13 @@ private:
 	game_logic::formula_variable_storage_ptr vars_, tmp_vars_;
 	game_logic::map_formula_callable_ptr tags_;
 
+	variant& get_property_data(int slot) { if(property_data_.size() <= slot) { property_data_.resize(slot+1); } return property_data_[slot]; }
+	variant get_property_data(int slot) const { if(property_data_.size() <= slot) { return variant(); } return property_data_[slot]; }
+	std::vector<variant> property_data_;
+	mutable int active_property_;
+
+	friend class active_property_scope;
+
 	entity_ptr last_hit_by_;
 	int last_hit_by_anim_;
 	int current_animation_id_;

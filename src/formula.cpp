@@ -836,8 +836,6 @@ private:
 		int min_args = 0;
 		const bool is_function = fn_type->is_function(&arg_types, NULL, &min_args);
 
-	//TODO: make this function work.
-
 		ASSERT_LOG(is_function, "FUNCTION CALL ON EXPRESSION WHICH ISN'T GUARANTEED TO BE A FUNCTION: " << fn_type->to_string() << " AT " << debug_pinpoint_location());
 
 		if(is_function) {
@@ -980,6 +978,12 @@ private:
 		}
 
 		return variant_type::get_any();
+	}
+
+	void static_error_analysis() const {
+		variant_type_ptr type = left_->query_variant_type();
+
+		ASSERT_LOG(variant_type::get_null_excluded(type) == type, "Left side of '[]' operator may be null: " << left_->str() << " is " << type->to_string() << " " << debug_pinpoint_location());
 	}
 	
 	expression_ptr left_, key_;

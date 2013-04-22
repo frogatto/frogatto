@@ -931,6 +931,10 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 #ifdef __APPLE__
 		cursor_.row = 0;
 #endif
+		if((SDL_GetModState()&KMOD_CTRL)) {
+			cursor_.row = 0;
+		}
+
 		cursor_.col = 0;
 		on_move_cursor();
 		break;
@@ -939,6 +943,10 @@ bool text_editor_widget::handle_key_press(const SDL_KeyboardEvent& event)
 #ifdef __APPLE__
 		cursor_.row = text_.size()-1;
 #endif
+		if((SDL_GetModState()&KMOD_CTRL)) {
+			cursor_.row = text_.size()-1;
+		}
+
 		cursor_.col = text_[cursor_.row].size();
 		on_move_cursor();
 		break;

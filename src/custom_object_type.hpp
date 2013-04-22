@@ -187,8 +187,11 @@ public:
 	const std::map<std::string, variant>& tags() const { return tags_; }
 
 	struct property_entry {
+		property_entry() : storage_slot(-1) {}
 		game_logic::const_formula_ptr getter, setter;
 		boost::shared_ptr<variant> const_value;
+		variant default_value;
+		int storage_slot;
 	};
 
 	const std::map<std::string, property_entry>& properties() const { return properties_; }

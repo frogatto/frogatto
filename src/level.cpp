@@ -39,6 +39,7 @@
 #include "json_parser.hpp"
 #include "level.hpp"
 #include "level_object.hpp"
+#include "level_runner.hpp"
 #include "light.hpp"
 #include "load_level.hpp"
 #include "module.hpp"
@@ -527,7 +528,7 @@ void level::read_compiled_tiles(variant node, std::vector<level_tile>::iterator&
 {
 	const int xbase = node["x"].as_int();
 	const int ybase = node["y"].as_int();
-	const int zorder = node["zorder"].as_int();
+	const int zorder = parse_zorder(node["zorder"]);
 
 	int x = xbase;
 	int y = ybase;
@@ -1231,7 +1232,7 @@ variant level::write() const
 			if(n == tiles_.size() || tiles_[n].zorder != last_zorder) {
 				if(!tiles_str.empty()) {
 					variant_builder node;
-					node.add("zorder", last_zorder);
+					node.add("zorder", write_zorder(last_zorder));
 					node.add("x", basex);
 					node.add("y", basey);
 					node.add("tiles", tiles_str);
@@ -3863,6 +3864,19 @@ variant level::get_value(const std::string& key) const
 		fb_shaders_variant_ = variant(&v);
 		return fb_shaders_variant_;
 #endif
+	} else if(key == "editor_selection") {
+		std::vector<variant> result;
+		foreach(entity_ptr s, editor_selection_) {
+			result.push_back(variant(s.get()));
+		}
+
+		return variant(&result);
+	} else if(key == "is_paused") {
+		if(level_runner::get_current()) {
+			return variant::from_bool(level_runner::get_current()->is_paused());
+		}
+
+		return variant();
 	} else {
 		const_entity_ptr e = get_entity_by_label(key);
 		if(e) {
@@ -4763,17 +4777,20 @@ BENCHMARK(load_all_levels)
 	}
 }
 
-BENCHMARK(load_and_save_all_levels)
+UTILITY(load_and_save_all_levels)
 {
-	BENCHMARK_LOOP {
-		std::vector<std::string> files;
-		sys::get_files_in_dir(preferences::level_path(), &files);
-		foreach(const std::string& file, files) {
-			std::cerr << "LOAD_LEVEL '" << file << "'\n";
-			boost::intrusive_ptr<level> lvl(new level(file));
-			lvl->finish_loading();
+	std::map<std::string, std::string> files;
+	module::get_unique_filenames_under_dir(preferences::level_path(), &files);
+	for(std::map<std::string,std::string>::const_iterator i = files.begin();
+	    i != files.end(); ++i) {
+		const std::string& file = i->first;
+		std::cerr << "LOAD_LEVEL '" << file << "'\n";
+		boost::intrusive_ptr<level> lvl(new level(file));
+		lvl->finish_loading();
 
-			sys::write_file(preferences::level_path() + file, lvl->write().write_json(true));
-		}
+		const std::string path = get_level_path(file);
+
+		std::cerr << "WRITE_LEVEL: '" << file << "' TO " << path << "\n";
+		sys::write_file(path, lvl->write().write_json(true));
 	}
 }

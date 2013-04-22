@@ -26,6 +26,7 @@
 #include "array_callable.hpp"
 #include "asserts.hpp"
 #include "base64.hpp"
+#include "code_editor_dialog.hpp"
 #include "compress.hpp"
 #include "data_blob.hpp"
 #include "dialog.hpp"
@@ -370,6 +371,37 @@ private:
 	variant target_;
 	std::vector<variant> args_;
 };
+
+FUNCTION_DEF(bind, 1, -1, "bind(fn, args...)")
+	variant fn = args()[0]->evaluate(variables);
+
+	std::vector<variant> arg_values;
+	for(int n = 1; n != args().size(); ++n) {
+		arg_values.push_back(args()[n]->evaluate(variables));
+	}
+
+	return fn.bind_args(arg_values);
+FUNCTION_TYPE_DEF
+	variant_type_ptr type = args()[0]->query_variant_type();
+
+	std::vector<variant_type_ptr> fn_args;
+	variant_type_ptr return_type;
+	int min_args = 0;
+
+	if(type->is_function(&fn_args, &return_type, &min_args)) {
+		const int nargs = args().size()-1;
+		min_args = std::max<int>(0, min_args - nargs);
+		if(fn_args.size() <= nargs) {
+			fn_args.erase(fn_args.begin(), fn_args.begin() + nargs);
+		} else {
+			ASSERT_LOG(false, "bind called with too many arguments");
+		}
+
+		return variant_type::get_function_type(fn_args, return_type, min_args);
+	} else {
+		return variant_type::get_type(variant::VARIANT_TYPE_FUNCTION);
+	}
+END_FUNCTION_DEF(bind)
 
 FUNCTION_DEF(bind_command, 1, -1, "bind_command(fn, args..)")
 	variant fn = args()[0]->evaluate(variables);
@@ -927,7 +959,11 @@ FUNCTION_DEF(regex_match, 2, 2, "regex_match(string, re_string) -> string: retur
 	}
 	return variant(&v);
 FUNCTION_TYPE_DEF
-	return variant_type::get_type(variant::VARIANT_TYPE_STRING);
+	std::vector<variant_type_ptr> types;
+	types.push_back(variant_type::get_list(variant_type::get_type(variant::VARIANT_TYPE_STRING)));
+	types.push_back(variant_type::get_type(variant::VARIANT_TYPE_STRING));
+	types.push_back(variant_type::get_type(variant::VARIANT_TYPE_NULL));
+	return variant_type::get_union(types);
 END_FUNCTION_DEF(regex_match)
 
 namespace {
@@ -2812,7 +2848,7 @@ FUNCTION_DEF(write_document, 2, 2, "write_document(string filename, doc): writes
 	return variant();
 END_FUNCTION_DEF(write_document)
 
-FUNCTION_DEF(get_document, 1, 2, "get_document(string filename, list_of_strings flags): return reference to the given JSON document. flags can contain 'null_on_failure' and 'user_preferences_dir'")
+FUNCTION_DEF(get_document, 1, 2, "get_document(string filename, [string] flags): return reference to the given JSON document. flags can contain 'null_on_failure' and 'user_preferences_dir'")
 	formula::fail_if_static_context();
 	std::string docname = args()[0]->evaluate(variables).as_string();
 	ASSERT_LOG(docname.empty() == false, "DOCUMENT NAME GIVEN TO get_document() IS EMPTY");
@@ -2866,6 +2902,11 @@ FUNCTION_TYPE_DEF
 	return variant_type::get_union(types);
 END_FUNCTION_DEF(get_document)
 
+}
+
+void remove_formula_function_cached_doc(const std::string& name)
+{
+	get_doc_cache().erase(name);
 }
 
 formula_function_expression::formula_function_expression(const std::string& name, const args_list& args, const_formula_ptr formula, const_formula_ptr precondition, const std::vector<std::string>& arg_names, const std::vector<variant_type_ptr>& variant_types)
@@ -3351,6 +3392,37 @@ FUNCTION_DEF(lower, 1, 1, "lower(s) -> string: lowercase version of string")
 	return variant(s);
 END_FUNCTION_DEF(lower)
 
+namespace {
+void run_expression_for_edit_and_continue(expression_ptr expr, const game_logic::formula_callable* variables, bool* success)
+{
+	*success = false;
+	expr->evaluate(*variables);
+	*success = true;
+}
+}
+
+FUNCTION_DEF(edit_and_continue, 2, 2, "edit_and_continue(expr, filename)")
+	if(!preferences::edit_and_continue()) {
+		return args()[0]->evaluate(variables);
+	}
+
+	const std::string filename = args()[1]->evaluate(variables).as_string();
+
+	try {
+		assert_recover_scope scope;
+		return args()[0]->evaluate(variables);
+	} catch (validation_failure_exception& e) {
+		bool success = false;
+		boost::function<void()> fn(boost::bind(run_expression_for_edit_and_continue, args()[0], &variables, &success));
+
+		edit_and_continue_fn(filename, e.msg, fn);
+		if(success == false) {
+			_exit(0);
+		}
+
+		return args()[0]->evaluate(variables);
+	}
+END_FUNCTION_DEF(edit_and_continue)
 
 class console_output_to_screen_command : public game_logic::command_callable
 {

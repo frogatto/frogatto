@@ -696,7 +696,7 @@ void editor::tileset::init(variant node)
 
 editor::tileset::tileset(variant node)
   : category(node["category"].as_string()), type(node["type"].as_string()),
-    zorder(node["zorder"].as_int()),
+    zorder(parse_zorder(node["zorder"])),
 	x_speed(node["x_speed"].as_int(100)),
 	y_speed(node["y_speed"].as_int(100)),
 	sloped(node["sloped"].as_bool()),
