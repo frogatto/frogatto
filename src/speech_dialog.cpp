@@ -46,8 +46,6 @@ namespace {
 	const int OptionXPad = 10;
 #endif
 	const int OptionsBorder = 20; // size of the border around the options window
-	const int OptionsX = 135; // these denote the bottom right corner
-	const int OptionsY = 115;
 }
 
 speech_dialog::speech_dialog()
@@ -76,8 +74,8 @@ bool speech_dialog::handle_mouse_move(int x, int y)
 {
 	translate_mouse_coords(&x, &y);
 	rect box(
-		preferences::virtual_screen_width() - OptionsX - option_width_ - OptionsBorder,
-		preferences::virtual_screen_height() - OptionsY - OptionHeight*options_.size() - OptionsBorder,
+		preferences::virtual_screen_width() - option_width_/2 - OptionsBorder*2,
+		0,
 		option_width_ + OptionsBorder*2, OptionHeight*options_.size() + OptionsBorder*2
 	);
 	//std::cerr << "Options box: " << box << " : " << x << " : " << y << "\n";
@@ -366,9 +364,9 @@ void speech_dialog::draw() const
 	if(text_char_ == num_chars() && options_.empty() == false) {
 		//const_gui_section_ptr options_panel = gui_section::get("speech_portrait_pane");
 		const_framed_gui_element_ptr options_panel = framed_gui_element::get("regular_window");
-		int xpos = graphics::screen_width() - OptionsX - option_width_ - OptionsBorder*2;
-		int ypos = graphics::screen_height() - OptionsY - OptionHeight*options_.size() - OptionsBorder*2;
-		options_panel->blit(xpos, ypos, OptionsBorder*2 + option_width_, OptionsBorder*2 + OptionHeight*options_.size(), true);
+		int xpos = graphics::screen_width()/2 - option_width_/2 - OptionsBorder*2;
+		int ypos = 0;
+		options_panel->blit(xpos, ypos, OptionsBorder*4 + option_width_, OptionsBorder*2 + OptionHeight*options_.size(), true);
 
 		xpos += OptionsBorder + OptionXPad;
 		ypos += OptionsBorder;
