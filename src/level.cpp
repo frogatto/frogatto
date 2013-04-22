@@ -4777,17 +4777,20 @@ BENCHMARK(load_all_levels)
 	}
 }
 
-BENCHMARK(load_and_save_all_levels)
+UTILITY(load_and_save_all_levels)
 {
-	BENCHMARK_LOOP {
-		std::vector<std::string> files;
-		sys::get_files_in_dir(preferences::level_path(), &files);
-		foreach(const std::string& file, files) {
-			std::cerr << "LOAD_LEVEL '" << file << "'\n";
-			boost::intrusive_ptr<level> lvl(new level(file));
-			lvl->finish_loading();
+	std::map<std::string, std::string> files;
+	module::get_unique_filenames_under_dir(preferences::level_path(), &files);
+	for(std::map<std::string,std::string>::const_iterator i = files.begin();
+	    i != files.end(); ++i) {
+		const std::string& file = i->first;
+		std::cerr << "LOAD_LEVEL '" << file << "'\n";
+		boost::intrusive_ptr<level> lvl(new level(file));
+		lvl->finish_loading();
 
-			sys::write_file(preferences::level_path() + file, lvl->write().write_json(true));
-		}
+		const std::string path = get_level_path(file);
+
+		std::cerr << "WRITE_LEVEL: '" << file << "' TO " << path << "\n";
+		sys::write_file(path, lvl->write().write_json(true));
 	}
 }
