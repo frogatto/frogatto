@@ -385,8 +385,10 @@ void speech_dialog::draw() const
 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 			if(index == option_selected_) {
+				glColor4f(1.0, 1.0, 1.0, 1.0);
 				const_gui_section_ptr cursor = gui_section::get("cursor");
 				cursor->blit(area.x2(), area.y());
+				glColor4ub(255, 187, 10, 255); //reset color to what it was, since draw_rect changes it
 			}
 #endif
 
