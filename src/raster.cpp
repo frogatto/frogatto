@@ -111,7 +111,7 @@ void reset_opengl_state()
 #if SDL_VERSION_ATLEAST(2, 0, 0)
 namespace {
 	SDL_Window* global_main_window = NULL;
-	//SDL_Renderer* global_renderer = NULL;
+	SDL_Renderer* global_renderer = NULL;
 }
 
 SDL_Window* get_window()
@@ -203,10 +203,10 @@ SDL_Window* set_video_mode(int w, int h, int flags)
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 #endif
-	//if(global_renderer) {
-	//	SDL_DestroyRenderer(global_renderer);
-	//	global_renderer = NULL;
-	//}
+	if(global_renderer) {
+		SDL_DestroyRenderer(global_renderer);
+		global_renderer = NULL;
+	}
 	if(ctx) {
 		SDL_GL_DeleteContext(ctx);
 		ctx = NULL;
@@ -219,7 +219,7 @@ SDL_Window* set_video_mode(int w, int h, int flags)
 		global_main_window = wnd = SDL_CreateWindow(module::get_module_pretty_name().c_str(), 
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, w, h, flags);
 		ctx = SDL_GL_CreateContext(wnd);
-		//global_renderer = SDL_CreateRenderer(wnd, -1, SDL_RENDERER_ACCELERATED);
+		global_renderer = SDL_CreateRenderer(wnd, -1, SDL_RENDERER_ACCELERATED);
 #if defined(__GLEW_H__)
 	GLenum glew_status = glewInit();
 	ASSERT_EQ(glew_status, GLEW_OK);
