@@ -43,6 +43,7 @@ public:
 	std::string get_path();
 	void set_saveas_dialog() { file_open_dialog_ = false; }
 	void set_open_dialog() { file_open_dialog_ = true; }
+	void set_default_path(const std::string& path);
 	void use_relative_paths(bool val=true, const std::string& rel_path="");
 protected:
 	void init();
@@ -57,7 +58,6 @@ protected:
 	void execute_dir_name_enter(const text_editor_widget_ptr editor);
 	void execute_dir_name_select(int row);
 	void change_filter(int selection, const std::string& s);
-	void set_default_path(const std::string& path);
 	virtual void set_value(const std::string& key, const variant& v);
 	virtual variant get_value(const std::string& key) const;
 private:

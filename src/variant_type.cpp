@@ -142,8 +142,8 @@ public:
 			return true;
 		}
 
-		if(v.try_convert<game_logic::command_callable>()) {
-			return true;
+		if(v.is_callable()) {
+			return v.as_callable()->is_command();
 		}
 
 		if(v.is_list()) {

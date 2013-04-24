@@ -38,6 +38,7 @@ public:
 	explicit custom_object_dialog(editor& e, int x, int y, int w, int h);
 	void init();
 	variant get_object() const { return object_template_; }
+	void show_modal();
 protected:
 	void change_text_attribute(const gui::text_editor_widget_ptr editor, const std::string& s);
 	void change_int_attribute_text(const gui::text_editor_widget_ptr editor, const std::string& s, gui::slider_ptr slide);
@@ -54,7 +55,7 @@ protected:
 	
 	void on_edit_animations();
 	void on_edit_items(const std::string& name, const std::string& attr, bool allow_functions);
-	
+
 	std::vector<gui::widget_ptr> get_widget_for_attribute(const std::string& attr);
 private:
 	module::module_file_pair template_file_;
@@ -66,6 +67,8 @@ private:
 	gui::widget_ptr context_menu_;
 
 	std::string error_text_;
+
+	std::string image_file_, image_file_name_, rel_path_;
 
 	//std::map<std::string, double> slider_magnitude_;
 	std::map<std::string, int> slider_offset_;

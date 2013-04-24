@@ -89,7 +89,7 @@ namespace game_logic
 	{
 		if(preferences::serialize_bad_objects()) {
 			//force serialization of this through so we can work out what's going on.
-			str += "(UNSERIALIZABLE_OBJECT)";
+			str += "(UNSERIALIZABLE_OBJECT " + std::string(typeid(*this).name()) + ")";
 			return;
 		}
 
