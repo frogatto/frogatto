@@ -152,6 +152,8 @@ public:
 					return false;
 				}
 			}
+
+			return true;
 		}
 
 		return false;
