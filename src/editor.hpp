@@ -169,6 +169,7 @@ public:
 	void edit_module_properties();
 	void create_new_object();
 	void edit_shaders();
+	void edit_level_code();
 
 	//make the selected objects part of a group
 	void group_selection();
