@@ -83,6 +83,10 @@ void pop_call_stack()
 	call_stack.pop_back();
 }
 
+struct call_stack_popper {
+	~call_stack_popper() { pop_call_stack(); }
+};
+
 std::string get_call_stack()
 {
 	variant current_frame;
@@ -838,7 +842,14 @@ variant variant::operator()(const std::vector<variant>& passed_args) const
 		callable->add(fn_->default_args[n - min_args]);
 	}
 
-	return fn_->fn->execute(*callable);
+	const variant result = fn_->fn->execute(*callable);
+	if(fn_->return_type && !fn_->return_type->match(result)) {
+		push_call_stack(fn_->fn->expr().get());
+		call_stack_popper popper;
+		generate_error(formatter() << "Function returned incorrect type, expecting " << fn_->return_type->to_string() << " but found " << result.write_json() << " FOR " << fn_->fn->str());
+	}
+
+	return result;
 }
 
 variant variant::get_member(const std::string& str) const

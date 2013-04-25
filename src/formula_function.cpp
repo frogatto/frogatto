@@ -573,8 +573,8 @@ FUNCTION_DEF(switch, 3, -1, "switch(value, case1, result1, case2, result2 ... ca
 	}
 FUNCTION_TYPE_DEF
 	std::vector<variant_type_ptr> types;
-	for(int n = 1; n < args().size(); ++n) {
-		if(n%2 == 1 || n == args().size()-1) {
+	for(int n = 2; n < args().size(); ++n) {
+		if(n%2 == 0 || n == args().size()-1) {
 			types.push_back(args()[n]->query_variant_type());
 		}
 	}
@@ -1938,7 +1938,7 @@ private:
 	}
 
 	variant_type_ptr get_variant_type() const {
-		return variant_type::get_list(args()[args().size()-1]->query_variant_type());
+		return variant_type::get_list(args().back()->query_variant_type());
 	}
 };
 
@@ -2668,7 +2668,7 @@ private:
 	}
 
 	variant_type_ptr get_variant_type() const {
-		return variant_type::get_list(variant_type::get_type(variant::VARIANT_TYPE_CALLABLE));
+		return variant_type::get_commands();
 	}
 
 	std::string key_;
@@ -2743,7 +2743,7 @@ private:
 	}
 
 	variant_type_ptr get_variant_type() const {
-		return variant_type::get_list(variant_type::get_type(variant::VARIANT_TYPE_CALLABLE));
+		return variant_type::get_commands();
 	}
 
 	std::string key_;

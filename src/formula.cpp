@@ -493,15 +493,15 @@ private:
 		variant_type_ptr key_type, value_type;
 
 		if(key_types.size() == 1) {
-			key_type = variant_type::get_list(key_types[0]);
+			key_type = key_types[0];
 		} else {
-			key_type = variant_type::get_list(variant_type::get_union(key_types));
+			key_type = variant_type::get_union(key_types);
 		}
 
 		if(value_types.size() == 1) {
-			value_type = variant_type::get_list(value_types[0]);
+			value_type = value_types[0];
 		} else {
-			value_type = variant_type::get_list(variant_type::get_union(value_types));
+			value_type = variant_type::get_union(value_types);
 		}
 
 		return variant_type::get_map(key_type, value_type);
@@ -1349,11 +1349,11 @@ private:
 		case OP_SUB: {
 			variant_type_ptr left_type = left_->query_variant_type();
 			variant_type_ptr right_type = right_->query_variant_type();
-			if(left_type->is_type(variant::VARIANT_TYPE_DECIMAL) || right_type->is_type(variant::VARIANT_TYPE_DECIMAL)) {
-				return variant_type::get_type(variant::VARIANT_TYPE_DECIMAL);
+			if(left_type->is_type(variant::VARIANT_TYPE_INT) && right_type->is_type(variant::VARIANT_TYPE_INT)) {
+				return variant_type::get_type(variant::VARIANT_TYPE_INT);
 			}
 
-			return variant_type::get_type(variant::VARIANT_TYPE_INT);
+			return variant_type::get_type(variant::VARIANT_TYPE_DECIMAL);
 		}
 
 		case OP_MOD:
