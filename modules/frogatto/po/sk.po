@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-#  <aldebaran7@azet.sk>, 2013.
-#   <aldebaran7@azet.sk>, 2013.
-# Viliam Búr <viliam@bur.sk>, 2011.
+# Matus <aldebaran7@azet.sk>, 2013
+# Matus <aldebaran7@azet.sk>, 2013
+# Viliam Búr <viliam@bur.sk>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2013-03-26 13:29-0300\n"
-"PO-Revision-Date: 2013-03-26 16:32+0000\n"
+"POT-Creation-Date: 2013-04-26 01:54-0300\n"
+"PO-Revision-Date: 2013-04-26 04:55+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Slovak (http://www.transifex.com/projects/p/Frogatto/language/sk/)\n"
 "MIME-Version: 1.0\n"
@@ -60,61 +60,57 @@ msgstr ""
 msgid "Use system language"
 msgstr ""
 
-#: ../../../src/main.cpp:701
+#: ../../../src/main.cpp:700
 msgid "Initializing custom object functions"
 msgstr "Inicializácia objektových funkcii"
 
-#: ../../../src/main.cpp:703
+#: ../../../src/main.cpp:702
 msgid "Initializing textures"
 msgstr "Inicializácia textúr"
 
-#: ../../../src/main.cpp:705
+#: ../../../src/main.cpp:704
 msgid "Initializing tiles"
 msgstr "inicializácia miestností"
 
-#: ../../../src/main.cpp:707 ../../../src/main.cpp:711
+#: ../../../src/main.cpp:706 ../../../src/main.cpp:710
 msgid "Initializing GUI"
 msgstr "Inicializácia GUI"
 
-#: ../../../src/main.cpp:718
+#: ../../../src/main.cpp:717
 msgid "Loading level"
 msgstr "Nahrávanie levelu"
 
-#: ../../../src/pause_game_dialog.cpp:54
+#: ../../../src/pause_game_dialog.cpp:53
 msgid "Music Volume:"
 msgstr "Hlasitosť hudby:"
 
-#: ../../../src/pause_game_dialog.cpp:56
+#: ../../../src/pause_game_dialog.cpp:55
 msgid "Sound Volume:"
 msgstr "Hlasitosť zvukov:"
 
-#: ../../../src/pause_game_dialog.cpp:74
+#: ../../../src/pause_game_dialog.cpp:73
 msgid "Resume"
 msgstr "Pokračovať v hre"
 
-#: ../../../src/pause_game_dialog.cpp:75
+#: ../../../src/pause_game_dialog.cpp:74
 msgid "Controls..."
 msgstr "Ovládanie..."
 
-#: ../../../src/pause_game_dialog.cpp:76
+#: ../../../src/pause_game_dialog.cpp:75
 msgid "Language..."
 msgstr ""
 
-#: ../../../src/pause_game_dialog.cpp:77
+#: ../../../src/pause_game_dialog.cpp:76
 msgid "Return to Titlescreen"
 msgstr "Hlavné menu"
 
-#: ../../../src/pause_game_dialog.cpp:78
+#: ../../../src/pause_game_dialog.cpp:77
 msgid "Exit Game"
 msgstr "Ukončiť hru"
 
-#: ../../../src/pause_game_dialog.cpp:79
+#: ../../../src/pause_game_dialog.cpp:78
 msgid "Reverse A and B"
 msgstr "Prevrátiť A a B"
-
-#: ../../../src/pause_game_dialog.cpp:81
-msgid "OpenFeint"
-msgstr "OpenFeint"
 
 #: ../CHANGELOG:1 ../iOS_CHANGELOG:1
 msgid "Version 1.3:"
@@ -3061,7 +3057,7 @@ msgstr "Frogattov dvor"
 msgid "Gloomy Glade"
 msgstr "Temná čistinka"
 
-#: ../data/level/gnarled-knoll.cfg:3908
+#: ../data/level/gnarled-knoll.cfg:3375
 msgid "Gnarled Knoll"
 msgstr "Vetrom ošľahaný vrch"
 
@@ -6110,8 +6106,16 @@ msgstr "NOVÁ HRA"
 msgid "Press ${LEFT_KEY} or ${RIGHT_KEY} to walk."
 msgstr ""
 
+#: ../data/level/titlescreen.cfg:125
+msgid "Tap ← or → to walk."
+msgstr ""
+
 #: ../data/level/titlescreen.cfg:126
 msgid "Quickly press ${LEFT_KEY} or ${RIGHT_KEY} twice to run."
+msgstr ""
+
+#: ../data/level/titlescreen.cfg:126
+msgid "Quickly tap ← or → twice to run."
 msgstr ""
 
 #: ../data/level/titlescreen.cfg:128
@@ -6119,23 +6123,31 @@ msgid "Press ${DOWN_KEY} to crouch."
 msgstr ""
 
 #: ../data/level/titlescreen.cfg:128
-msgid "Walk in front of a door or person, and press"
-msgstr "Choď pred nejaké dvere alebo postave a stlač"
+msgid "Walk in front of a door or person,"
+msgstr ""
 
 #: ../data/level/titlescreen.cfg:129
 msgid "Press ${UP_KEY} to talk, and use things like doors."
 msgstr ""
 
 #: ../data/level/titlescreen.cfg:129
-msgid "the button that appears to interact with them."
-msgstr "objavený gombík k naviazaniu kontaktu."
+msgid "and tap ☆ to interact with them."
+msgstr ""
 
 #: ../data/level/titlescreen.cfg:130
 msgid "Press ${JUMP_KEY} to jump."
 msgstr ""
 
+#: ../data/level/titlescreen.cfg:130
+msgid "Tap ○ to jump."
+msgstr ""
+
 #: ../data/level/titlescreen.cfg:131
 msgid "Press ${TONGUE_KEY} to use a character's attacks."
+msgstr ""
+
+#: ../data/level/titlescreen.cfg:131
+msgid "Tap □ to use a character's attacks."
 msgstr ""
 
 #: ../data/level/titlescreen.cfg:170
@@ -6724,9 +6736,7 @@ msgid "Press ${ATTACK_KEY} to switch between abilities."
 msgstr ""
 
 #: ../data/objects/items/ability.cfg:12
-msgid ""
-"Tap the upper-left corner of the screen\n"
-"to switch between abilities."
+msgid "Tap ♲ to switch between abilities."
 msgstr ""
 
 #: ../data/objects/items/max_heart_object.cfg:8

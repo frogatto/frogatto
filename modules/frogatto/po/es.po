@@ -3,23 +3,24 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Adolfo Jayme Barrientos <fitoschido@gmail.com>, 2011.
-# Carolina Pérez Garrido <carolinadelpilarperezgarrido@gmail.com>, 2011.
-# C. Daniel Sanchez R. <>, 2012.
-# Cristián Arenas Ulloa <cristian.arenas@gmail.com>, 2012.
-# Donald   <lestat999344@gmail.com>, 2011.
-#   <ignacio.rodriguez.mo@gmail.com>, 2012.
-# Jack Linhart <iatenine@gmail.com>, 2012.
-#   <munoz.basols@gmail.com>, 2011.
-# Philipp Zabel <pzabel@gmx.de>, 2011.
-# Ramiro Chaidez <ramirochaidez@gmail.com>, 2011.
-# Simon Pena <spenap@gmail.com>, 2011.
+# Adolfo Jayme <fitoschido@gmail.com>, 2011
+# BreadMaker <breadmaker666@gmail.com>, 2013
+# Carolina Pérez Garrido <carolinadelpilarperezgarrido@gmail.com>, 2011
+# C. Daniel Sanchez R. <>, 2012
+# Cristián Arenas Ulloa <cristian.arenas@gmail.com>, 2012
+# Donald <lestat999344@gmail.com>, 2011
+# ninovolador <ignacio.rodriguez.mo@gmail.com>, 2012
+# Jack Linhart <iatenine@gmail.com>, 2012
+# mefistor <munoz.basols@gmail.com>, 2011
+# Philipp Zabel <pzabel@gmx.de>, 2011
+# Ramiro Chaidez <ramirochaidez@gmail.com>, 2011
+# Simon Pena <spenap@gmail.com>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2013-03-26 13:29-0300\n"
-"PO-Revision-Date: 2013-03-26 16:32+0000\n"
+"POT-Creation-Date: 2013-04-26 01:54-0300\n"
+"PO-Revision-Date: 2013-04-26 04:55+0000\n"
 "Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/Frogatto/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -62,67 +63,63 @@ msgstr "¡Logro desbloqueado!"
 
 #: ../../../src/language_dialog.cpp:79
 msgid "Language change will take effect in next level."
-msgstr ""
+msgstr "El cambio de idioma tomará efecto en el próximo nivel."
 
 #: ../../../src/language_dialog.cpp:96
 msgid "Use system language"
-msgstr ""
+msgstr "Usar idioma del sistema"
 
-#: ../../../src/main.cpp:701
+#: ../../../src/main.cpp:700
 msgid "Initializing custom object functions"
 msgstr "Inicializando funciones de objetos personalizados"
 
-#: ../../../src/main.cpp:703
+#: ../../../src/main.cpp:702
 msgid "Initializing textures"
 msgstr "Inicializando texturas"
 
-#: ../../../src/main.cpp:705
+#: ../../../src/main.cpp:704
 msgid "Initializing tiles"
 msgstr "Inicializando azulejos"
 
-#: ../../../src/main.cpp:707 ../../../src/main.cpp:711
+#: ../../../src/main.cpp:706 ../../../src/main.cpp:710
 msgid "Initializing GUI"
 msgstr "Inicializando Interfaz Gráfica de Usuario"
 
-#: ../../../src/main.cpp:718
+#: ../../../src/main.cpp:717
 msgid "Loading level"
 msgstr "Cargando nivel"
 
-#: ../../../src/pause_game_dialog.cpp:54
+#: ../../../src/pause_game_dialog.cpp:53
 msgid "Music Volume:"
 msgstr "Volumen de la Música:"
 
-#: ../../../src/pause_game_dialog.cpp:56
+#: ../../../src/pause_game_dialog.cpp:55
 msgid "Sound Volume:"
 msgstr "Volumen del Sonido:"
 
-#: ../../../src/pause_game_dialog.cpp:74
+#: ../../../src/pause_game_dialog.cpp:73
 msgid "Resume"
 msgstr "Continuar"
 
-#: ../../../src/pause_game_dialog.cpp:75
+#: ../../../src/pause_game_dialog.cpp:74
 msgid "Controls..."
 msgstr "Controles..."
 
-#: ../../../src/pause_game_dialog.cpp:76
+#: ../../../src/pause_game_dialog.cpp:75
 msgid "Language..."
-msgstr ""
+msgstr "Idioma..."
 
-#: ../../../src/pause_game_dialog.cpp:77
+#: ../../../src/pause_game_dialog.cpp:76
 msgid "Return to Titlescreen"
 msgstr "Volver a la Pantalla\nde Títulos"
 
-#: ../../../src/pause_game_dialog.cpp:78
+#: ../../../src/pause_game_dialog.cpp:77
 msgid "Exit Game"
 msgstr "Salir del Juego"
 
-#: ../../../src/pause_game_dialog.cpp:79
+#: ../../../src/pause_game_dialog.cpp:78
 msgid "Reverse A and B"
 msgstr "Invertir A y B"
-
-#: ../../../src/pause_game_dialog.cpp:81
-msgid "OpenFeint"
-msgstr "OpenFeint"
 
 #: ../CHANGELOG:1 ../iOS_CHANGELOG:1
 msgid "Version 1.3:"
@@ -3069,7 +3066,7 @@ msgstr "Gruta de Frogatto"
 msgid "Gloomy Glade"
 msgstr "Paso Tenebroso"
 
-#: ../data/level/gnarled-knoll.cfg:3908
+#: ../data/level/gnarled-knoll.cfg:3375
 msgid "Gnarled Knoll"
 msgstr "Loma Retorcida"
 
@@ -5181,63 +5178,63 @@ msgstr "Choza Aislada"
 msgid ""
 "This is the end of the demo, which you probably\n"
 "can infer from the impassible barrier right ahead."
-msgstr ""
+msgstr "Este es el final de la demostración, que probablemente\npodrás deducir por la barrera infranqueable de más adelante."
 
 #: ../data/level/secluded-hut.cfg:1463
 msgid ""
 "You're free to keep exploring the first chapter,\n"
 " but you can't go any further forward."
-msgstr ""
+msgstr "Eres libre de seguir explorando el primer capítulo,\npero no se puede ir más adelante."
 
 #: ../data/level/secluded-hut.cfg:1465
 msgid ""
 "Well... hey, what the hell?\n"
 "I wanted to see what happens..."
-msgstr ""
+msgstr "Bueno... hey, ¿qué diablos?\nQuería ver qué pasaba..."
 
 #: ../data/level/secluded-hut.cfg:1467
 msgid ""
 "I have rather a vested interest in this,\n"
 "you know."
-msgstr ""
+msgstr "Tengo más bien un interés personal en esto,\nya sabes."
 
 #: ../data/level/secluded-hut.cfg:1468
 msgid ""
 "Naturally; but so does the crew that made this.\n"
 "Gotta pay the piper, or he won't play."
-msgstr ""
+msgstr "Naturalmente; pero también lo hace el equipo que hizo esto.\nTengo que pagar los platos rotos, o no jugará."
 
 #: ../data/level/secluded-hut.cfg:1470
 msgid ""
 "I guess.\n"
 "It's so annoying to pay for stuff, though."
-msgstr ""
+msgstr "Supongo.\nEs tan molesto pagar por cosas, sin embargo."
 
 #: ../data/level/secluded-hut.cfg:1471
 msgid ""
 "Sure, but that's just business.\n"
 "That's what pays for making games like this."
-msgstr ""
+msgstr "Claro, pero eso es sólo negocio.\nEso es lo que paga por hacer juegos como este."
 
 #: ../data/level/secluded-hut.cfg:1472
 msgid ""
 "Check out our website, at frogatto.com, if\n"
 "you do want to buy a copy."
-msgstr ""
+msgstr "Echa un vistazo a nuestro sitio web, frogatto.com,\nsi deseas comprar una copia."
 
 #: ../data/level/secluded-hut.cfg:1474
 msgid "Uh, sure, I'll keep that in mind."
-msgstr ""
+msgstr "Ah, claro, tendré eso en mente."
 
 #: ../data/level/secluded-hut.cfg:1475
 msgid ""
 "Of course.  At any rate, enjoy yourself,\n"
 "and if you do choose to buy - thank you."
-msgstr ""
+msgstr "Por supuesto. De todos modos, disfrútelo,\ny si decides comprar - gracias."
 
 #: ../data/level/secluded-hut.cfg:1476
 msgid "Because that's pretty awesome if you do."
-msgstr ""
+msgstr "Porque eso es bastante impresionante si lo haces."
 
 #: ../data/level/secluded-hut.cfg:1518
 msgid "Are you quite alright?"
@@ -6118,33 +6115,49 @@ msgstr "NUEVO JUEGO"
 msgid "Press ${LEFT_KEY} or ${RIGHT_KEY} to walk."
 msgstr "Presiona ${LEFT_KEY} o ${RIGHT_KEY} para caminar."
 
+#: ../data/level/titlescreen.cfg:125
+msgid "Tap ← or → to walk."
+msgstr ""
+
 #: ../data/level/titlescreen.cfg:126
 msgid "Quickly press ${LEFT_KEY} or ${RIGHT_KEY} twice to run."
 msgstr "Presiona rápidamente ${LEFT_KEY} o ${RIGHT_KEY} dos veces para correr."
+
+#: ../data/level/titlescreen.cfg:126
+msgid "Quickly tap ← or → twice to run."
+msgstr ""
 
 #: ../data/level/titlescreen.cfg:128
 msgid "Press ${DOWN_KEY} to crouch."
 msgstr "Presiona ${DOWN_KEY} para agacharte."
 
 #: ../data/level/titlescreen.cfg:128
-msgid "Walk in front of a door or person, and press"
-msgstr "Detente en frente de una puerta o una persona\ny oprime"
+msgid "Walk in front of a door or person,"
+msgstr ""
 
 #: ../data/level/titlescreen.cfg:129
 msgid "Press ${UP_KEY} to talk, and use things like doors."
 msgstr "Presiona ${UP_KEY} para hablar, y úsalo para abrir puertas."
 
 #: ../data/level/titlescreen.cfg:129
-msgid "the button that appears to interact with them."
-msgstr "el botón que aparece para interactuar con ellos."
+msgid "and tap ☆ to interact with them."
+msgstr ""
 
 #: ../data/level/titlescreen.cfg:130
 msgid "Press ${JUMP_KEY} to jump."
 msgstr "Presiona ${JUMP_KEY} para saltar."
 
+#: ../data/level/titlescreen.cfg:130
+msgid "Tap ○ to jump."
+msgstr ""
+
 #: ../data/level/titlescreen.cfg:131
 msgid "Press ${TONGUE_KEY} to use a character's attacks."
 msgstr "Presiona la tecla ${TONGUE_KEY} para usar el ataque de tu personaje."
+
+#: ../data/level/titlescreen.cfg:131
+msgid "Tap □ to use a character's attacks."
+msgstr ""
 
 #: ../data/level/titlescreen.cfg:170
 msgid "ARCADE"
@@ -6732,10 +6745,8 @@ msgid "Press ${ATTACK_KEY} to switch between abilities."
 msgstr "Presiona ${ATTACK_KEY} para cambiar la habilidad."
 
 #: ../data/objects/items/ability.cfg:12
-msgid ""
-"Tap the upper-left corner of the screen\n"
-"to switch between abilities."
-msgstr "Toca la esquina superior-izquierda de la pantalla\npara cambiar la habilidad activa."
+msgid "Tap ♲ to switch between abilities."
+msgstr ""
 
 #: ../data/objects/items/max_heart_object.cfg:8
 msgid ""
