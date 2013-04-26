@@ -55,6 +55,10 @@ public:
 		return type == type_;
 	}
 
+	bool is_numeric() const {
+		return type_ == variant::VARIANT_TYPE_DECIMAL || type_ == variant::VARIANT_TYPE_INT;
+	}
+
 	bool is_equal(const variant_type& o) const {
 		const variant_type_simple* other = dynamic_cast<const variant_type_simple*>(&o);
 		if(!other) {
@@ -108,7 +112,6 @@ public:
 	}
 
 private:
-	int order_id() const { return 1; }
 	variant::TYPE type_;
 };
 
@@ -129,9 +132,12 @@ public:
 		return true;
 	}
 
+	bool maybe_convertible_to(variant_type_ptr type) const {
+		return true;
+	}
+
 	bool is_any() const { return true; }
 private:
-	int order_id() const { return 2; }
 };
 
 class variant_type_commands : public variant_type
@@ -168,10 +174,18 @@ public:
 	}
 
 	bool is_compatible(variant_type_ptr type) const {
+		if(type->is_type(variant::VARIANT_TYPE_NULL)) {
+			return true;
+		}
+
+		variant_type_ptr list_type = type->is_list_of();
+		if(list_type) {
+			return variant_types_compatible(get_commands(), list_type);
+		}
+
 		return is_equal(*type);
 	}
 private:
-	int order_id() const { return 12; }
 };
 
 class variant_type_class : public variant_type
@@ -225,7 +239,6 @@ public:
 	}
 private:
 	std::string type_;
-	int order_id() const { return 3; }
 };
 
 class variant_type_union : public variant_type
@@ -241,6 +254,20 @@ public:
 		}
 
 		return false;
+	}
+
+	bool is_numeric() const {
+		if(types_.empty()) {
+			return false;
+		}
+
+		foreach(const variant_type_ptr& p, types_) {
+			if(p->is_numeric() == false) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	bool is_equal(const variant_type& o) const {
@@ -322,6 +349,31 @@ public:
 	}
 
 	const std::vector<variant_type_ptr>* is_union() const { return &types_; }
+
+	variant_type_ptr is_list_of() const {
+		std::vector<variant_type_ptr> types;
+		foreach(const variant_type_ptr& type, types_) {
+			types.push_back(type->is_list_of());
+			if(!types.back()) {
+				return variant_type_ptr();
+			}
+		}
+
+		return variant_type::get_list(get_union(types));
+	}
+
+	std::pair<variant_type_ptr,variant_type_ptr> is_map_of() const {
+		std::vector<variant_type_ptr> key_types, value_types;
+		foreach(const variant_type_ptr& type, types_) {
+			key_types.push_back(type->is_map_of().first);
+			value_types.push_back(type->is_map_of().second);
+			if(!key_types.back()) {
+				return std::pair<variant_type_ptr,variant_type_ptr>();
+			}
+		}
+
+		return std::pair<variant_type_ptr,variant_type_ptr>(get_union(key_types), get_union(value_types));
+	}
 private:
 	variant_type_ptr null_excluded() const {
 		std::vector<variant_type_ptr> new_types;
@@ -339,7 +391,6 @@ private:
 	}
 
 	std::vector<variant_type_ptr> types_;
-	int order_id() const { return 4; }
 };
 
 class variant_type_list : public variant_type
@@ -394,7 +445,6 @@ public:
 	}
 private:
 	variant_type_ptr value_type_;
-	int order_id() const { return 5; }
 };
 
 class variant_type_map : public variant_type
@@ -452,7 +502,6 @@ public:
 	}
 private:
 	variant_type_ptr key_type_, value_type_;
-	int order_id() const { return 6; }
 };
 
 class variant_type_function : public variant_type
@@ -462,9 +511,6 @@ public:
 	                      variant_type_ptr return_type, int min_args)
 	  : args_(args), return_(return_type), min_args_(min_args)
 	{
-	}
-
-	~variant_type_function() {
 	}
 
 	bool is_function(std::vector<variant_type_ptr>* args, variant_type_ptr* return_type, int* min_args) const
@@ -570,11 +616,101 @@ public:
 	}
 	
 private:
-	int order_id() const { return 7; }
 
 	std::vector<variant_type_ptr> args_;
 	variant_type_ptr return_;
 	int min_args_;
+};
+
+class variant_type_function_overload : public variant_type
+{
+public:
+	variant_type_function_overload(variant_type_ptr overloaded_fn, const std::vector<variant_type_ptr>& fn) : overloaded_(overloaded_fn), fn_(fn)
+	{}
+
+	bool is_function(std::vector<variant_type_ptr>* args, variant_type_ptr* return_type, int* min_args) const
+	{
+		return overloaded_->is_function(args, return_type, min_args);
+	}
+
+	bool match(const variant& v) const {
+		return overloaded_->match(v);
+	}
+
+	bool is_equal(const variant_type& o) const {
+		const variant_type_function_overload* f = dynamic_cast<const variant_type_function_overload*>(&o);
+		if(!f) {
+			return false;
+		}
+
+		if(overloaded_->is_equal(*f->overloaded_) == false) {
+			return false;
+		}
+
+		if(fn_.size() != f->fn_.size()) {
+			return false;
+		}
+
+		for(int n = 0; n != fn_.size(); ++n) {
+			if(fn_[n]->is_equal(*f->fn_[n]) == false) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	std::string to_string() const {
+		std::string result = "overload(";
+		foreach(const variant_type_ptr& p, fn_) {
+			result += p->to_string() + ",";
+		}
+
+		result[result.size()-1] = ')';
+		return result;
+	}
+
+	bool is_compatible(variant_type_ptr type) const {
+		return overloaded_->is_compatible(type);
+	}
+
+	variant_type_ptr function_return_type_with_args(const std::vector<variant_type_ptr>& parms) const
+	{
+		std::vector<variant_type_ptr> result_types;
+		foreach(const variant_type_ptr& fn, fn_) {
+			variant_type_ptr result;
+			std::vector<variant_type_ptr> args;
+			int min_args = 0;
+			if(!fn->is_function(&args, &result, &min_args) ||
+			   min_args > args.size() || parms.size() > args.size()) {
+				continue;
+			}
+
+			bool maybe_match = true, definite_match = true;
+			for(int n = 0; n != parms.size(); ++n) {
+				if(variant_types_might_match(args[n], parms[n]) == false) {
+					maybe_match = definite_match = false;
+					break;
+				}
+
+				definite_match = definite_match && variant_types_compatible(args[n], parms[n]);
+			}
+
+			if(result_types.empty() && definite_match) {
+				return result;
+			}
+
+			if(maybe_match) {
+				result_types.push_back(result);
+			}
+		}
+
+		return get_union(result_types);
+	}
+
+private:
+	variant_type_ptr overloaded_;
+	std::vector<variant_type_ptr> fn_;
 };
 
 }
@@ -629,6 +765,31 @@ bool variant_types_compatible(variant_type_ptr to, variant_type_ptr from)
 	}
 
 	return to->is_compatible(from);
+}
+
+bool variant_types_might_match(variant_type_ptr to, variant_type_ptr from)
+{
+	if(from->is_union()) {
+		foreach(variant_type_ptr from_type, *from->is_union()) {
+			if(variant_types_might_match(to, from_type)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	if(to->is_union()) {
+		foreach(variant_type_ptr to_type, *to->is_union()) {
+			if(variant_types_might_match(to_type, from)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	return to->is_compatible(from) || from->is_compatible(to) || from->maybe_convertible_to(to);
 }
 
 variant_type_ptr parse_variant_type(const variant& original_str,
@@ -966,6 +1127,11 @@ variant_type_ptr variant_type::get_class(const std::string& class_name)
 variant_type_ptr variant_type::get_function_type(const std::vector<variant_type_ptr>& arg_types, variant_type_ptr return_type, int min_args)
 {
 	return variant_type_ptr(new variant_type_function(arg_types, return_type, min_args));
+}
+
+variant_type_ptr variant_type::get_function_overload_type(variant_type_ptr overloaded_fn, const std::vector<variant_type_ptr>& fn)
+{
+	return variant_type_ptr(new variant_type_function_overload(overloaded_fn, fn));
 }
 
 variant_type_ptr variant_type::get_null_excluded(variant_type_ptr input)

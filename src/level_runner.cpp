@@ -782,6 +782,13 @@ void load_level_thread(const std::string& lvl, level** res) {
 		std::cerr << "LOAD LEVEL FAILED: MUST DO IN MAIN THREAD\n";
 	}
 }
+
+std::set<std::string> g_levels_modified;
+
+void level_file_modified(std::string lvl_path) {
+	fprintf(stderr, "XX LVL MODIFIED: %s\n", lvl_path.c_str());
+	g_levels_modified.insert(lvl_path);
+}
 }
 
 bool level_runner::play_cycle()
@@ -845,6 +852,21 @@ bool level_runner::play_cycle()
 
 		if(history_trails_.empty() == false && (tile_rebuild_state_id_ != level::tile_rebuild_state_id() || history_trails_state_id_ != editor_->level_state_id() || object_reloads_state_id_ != custom_object_type::num_object_reloads())) {
 			update_history_trails();
+		}
+
+		static std::set<std::string> monitoring_level_files;
+		const std::string& level_path = get_level_path(lvl_->id());
+		if(monitoring_level_files.count(level_path) == 0) {
+			monitoring_level_files.insert(level_path);
+
+			fprintf(stderr, "XX NOTIFY ON MOD: %s\n", level_path.c_str());
+			sys::notify_on_file_modification(level_path, boost::bind(level_file_modified, level_path));
+		}
+
+		if(g_levels_modified.count(level_path)) {
+			fprintf(stderr, "XX REPLAY ON MOD: %s\n", level_path.c_str());
+			g_levels_modified.erase(level_path);
+			replay_level_from_start();
 		}
 	}
 #endif
@@ -1125,6 +1147,7 @@ bool level_runner::play_cycle()
 				lvl_->set_as_current_level();
 
 				if(editor::last_edited_level() != lvl_->id() && editor_->confirm_quit()) {
+
 					level* new_level = load_level(editor::last_edited_level());
 					if(editor_) {
 						new_level->set_editor();
@@ -1146,6 +1169,7 @@ bool level_runner::play_cycle()
 					lvl_->set_as_current_level();
 					lvl_->set_editor();
 					init_history_slider();
+
 				}
 
 				if(editor_->done()) {
@@ -1780,4 +1804,46 @@ void level_runner::update_history_trails()
 		history_trails_label_ = e->label();
 	}
 }
+
+void level_runner::replay_level_from_start()
+{
+	boost::scoped_ptr<controls::control_backup_scope> backup_ctrl_ptr(new controls::control_backup_scope);
+	level* new_level = load_level(lvl_->id());
+	if(editor_) {
+		new_level->set_editor();
+	}
+
+	new_level->set_as_current_level();
+
+	if(!new_level->music().empty()) {
+		sound::play_music(new_level->music());
+	}
+
+	lvl_.reset(new_level);
+
+	lvl_->editor_clear_selection();
+	editor_ = editor::get_editor(lvl_->id().c_str());
+	editor_->set_playing_level(lvl_);
+	editor_->setup_for_editing();
+	lvl_->set_as_current_level();
+	lvl_->set_editor();
+	init_history_slider();
+
+	backup_ctrl_ptr.reset();
+
+	const int last_frame = controls::local_controls_end();
+
+	if(last_frame > lvl_->cycle()) {
+		const controls::control_backup_scope ctrl_scope;
+		
+		while(lvl_->cycle() < last_frame) {
+			lvl_->process();
+			lvl_->process_draw();
+			lvl_->backup();
+		}
+	}
+
+	lvl_->set_active_chars();
+}
+
 #endif

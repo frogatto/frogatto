@@ -38,6 +38,7 @@
 #include "json_parser.hpp"
 #include "label.hpp"
 #include "level.hpp"
+#include "level_runner.hpp"
 #include "module.hpp"
 #include "object_events.hpp"
 #include "raster.hpp"
@@ -139,10 +140,10 @@ void code_editor_dialog::add_optional_error_text_area(const std::string& text)
 	}
 }
 
-void code_editor_dialog::jump_to_error(const std::string& text)
+bool code_editor_dialog::jump_to_error(const std::string& text)
 {
 	if(!editor_) {
-		return;
+		return false;
 	}
 
 	const std::string search_for = "At " + fname_ + " ";
@@ -154,6 +155,10 @@ void code_editor_dialog::jump_to_error(const std::string& text)
 		if(line_num > 0) {
 			editor_->set_cursor(line_num-1, 0);
 		}
+
+		return true;
+	} else {
+		return false;
 	}
 }
 
@@ -393,6 +398,12 @@ void code_editor_dialog::process()
 				json::set_file_contents(fname_, editor_->text());
 
 				op_fn_();
+			} else if(strstr(fname_.c_str(), "/level/")) {
+				json::parse(editor_->text());
+				json::set_file_contents(fname_, editor_->text());
+
+				level_runner::get_current()->replay_level_from_start();
+				
 			} else if(strstr(fname_.c_str(), "/tiles/")) {
 				std::cerr << "INIT TILE MAP\n";
 
@@ -895,6 +906,7 @@ void edit_and_continue_class(const std::string& class_name, const std::string& e
 	d->init();
 	d->load_file(filename);
 	d->jump_to_error(error);
+	d->set_on_quit(boost::bind(&gui::dialog::cancel, d.get()));
 	d->show_modal();
 
 	if(d->cancelled()) {
@@ -911,7 +923,19 @@ void edit_and_continue_fn(const std::string& filename, const std::string& error,
 	d->set_close_buttons();
 	d->init();
 	d->load_file(filename, true, &fn);
-	d->jump_to_error(error);
+	const bool result = d->jump_to_error(error);
+	if(!result) {
+		const char* fname = strstr(error.c_str(), "\nAt ");
+		if(fname) {
+			fname += 4;
+			const char* end_fname = strstr(fname, " ");
+			if(end_fname) {
+				const std::string file(fname, end_fname);
+				d->load_file(file, true, &fn);
+				d->jump_to_error(error);
+			}
+		}
+	}
 	d->show_modal();
 
 	if(d->cancelled()) {

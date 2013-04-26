@@ -40,6 +40,7 @@ public:
 	static variant_type_ptr get_map(variant_type_ptr key_type, variant_type_ptr value_type);
 	static variant_type_ptr get_class(const std::string& class_name);
 	static variant_type_ptr get_function_type(const std::vector<variant_type_ptr>& arg_types, variant_type_ptr return_type, int min_args);
+	static variant_type_ptr get_function_overload_type(variant_type_ptr overloaded_fn, const std::vector<variant_type_ptr>& fn);
 
 	//get a version of the type that we now know isn't null.
 	static variant_type_ptr get_null_excluded(variant_type_ptr input);
@@ -48,6 +49,7 @@ public:
 	virtual ~variant_type();
 	virtual bool match(const variant& v) const = 0;
 
+	virtual bool is_numeric() const { return false; }
 	virtual bool is_any() const { return false; }
 	virtual const std::vector<variant_type_ptr>* is_union() const { return NULL; }
 	virtual variant_type_ptr is_list_of() const { return variant_type_ptr(); }
@@ -56,6 +58,7 @@ public:
 	virtual bool is_class(std::string* class_name=NULL) const { return false; }
 
 	virtual bool is_function(std::vector<variant_type_ptr>* args, variant_type_ptr* return_type, int* min_args) const { return false; }
+	virtual variant_type_ptr function_return_type_with_args(const std::vector<variant_type_ptr>& args) const { variant_type_ptr result; is_function(NULL, &result, NULL); return result; }
 
 	void set_str(const std::string& s) const { str_ = s; }
 	const std::string& str() const { return str_; }
@@ -66,17 +69,19 @@ public:
 
 	virtual bool is_compatible(variant_type_ptr type) const { return false; }
 
+	virtual bool maybe_convertible_to(variant_type_ptr type) const { return false; }
+
 
 private:
 	virtual variant_type_ptr null_excluded() const { return variant_type_ptr(); }
 
-	virtual int order_id() const = 0;
 	mutable std::string str_;
 };
 
 std::string variant_type_is_class_or_null(variant_type_ptr type);
 
 bool variant_types_compatible(variant_type_ptr to, variant_type_ptr from);
+bool variant_types_might_match(variant_type_ptr to, variant_type_ptr from);
 
 variant_type_ptr parse_variant_type(const variant& original_str,
                                     const formula_tokenizer::token*& i1,

@@ -249,8 +249,10 @@ FUNCTION_TYPE_DEF
 	int min_args = -1;
 	std::vector<std::vector<variant_type_ptr> > arg_types;
 	std::vector<variant_type_ptr> return_types;
+	std::vector<variant_type_ptr> function_types;
 	for(int n = 0; n != args().size(); ++n) {
 		variant_type_ptr t = args()[n]->query_variant_type();
+		function_types.push_back(t);
 		std::vector<variant_type_ptr> a;
 		variant_type_ptr return_type;
 		int nargs = -1;
@@ -282,7 +284,7 @@ FUNCTION_TYPE_DEF
 		arg_union.push_back(variant_type::get_union(arg_types[n]));
 	}
 
-	return variant_type::get_function_type(arg_union, return_union, min_args);
+	return variant_type::get_function_overload_type(variant_type::get_function_type(arg_union, return_union, min_args), function_types);
 END_FUNCTION_DEF(overload)
 
 FUNCTION_DEF(create_cache, 0, 1, "create_cache(max_entries=4096): makes an FFL cache object")
@@ -418,7 +420,7 @@ FUNCTION_DEF(bind_command, 1, -1, "bind_command(fn, args..)")
 	
 	return variant(new bound_command(fn, args_list));
 FUNCTION_TYPE_DEF
-	return variant_type::get_type(variant::VARIANT_TYPE_CALLABLE);
+	return variant_type::get_commands();
 END_FUNCTION_DEF(bind_command)
 
 FUNCTION_DEF(bind_closure, 2, 2, "bind_closure(fn, obj): binds the given lambda fn to the given object closure")
@@ -2784,6 +2786,9 @@ FUNCTION_DEF(debug, 1, -1, "debug(...): outputs arguments to the console")
 	//fprintf(stderr, "DEBUG FUNCTION: %s\n", str.c_str());
 
 	return variant(new debug_command(str));
+
+FUNCTION_TYPE_DEF
+	return variant_type::get_any();
 END_FUNCTION_DEF(debug)
 
 namespace {

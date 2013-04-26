@@ -42,7 +42,7 @@ public:
 	code_editor_dialog(const rect& r);
 	void init();
 	void add_optional_error_text_area(const std::string& text);
-	void jump_to_error(const std::string& text);
+	bool jump_to_error(const std::string& text);
 
 	void load_file(std::string fname, bool focus=true, boost::function<void()>* fn=NULL);
 

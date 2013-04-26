@@ -27,6 +27,7 @@
 #include <iostream>
 
 #include "asserts.hpp"
+#include "code_editor_dialog.hpp"
 #include "collision_utils.hpp"
 #include "custom_object.hpp"
 #include "custom_object_callable.hpp"
@@ -4305,9 +4306,44 @@ bool custom_object::handle_event_delay(int event, const formula_callable* contex
 	return handle_event_internal(event, context, false);
 }
 
+namespace {
+void run_expression_for_edit_and_continue(boost::function<bool()> fn, bool* success, bool* res)
+{
+	*success = false;
+	*res = fn();
+	*success = true;
+}
+}
+
 bool custom_object::handle_event(int event, const formula_callable* context)
 {
-	return handle_event_internal(event, context);
+	if(false && preferences::edit_and_continue()) {
+		const assert_recover_scope scope;
+		try {
+			return handle_event_internal(event, context);
+		} catch(validation_failure_exception& e) {
+			const std::string* path = custom_object_type::get_object_path(type_->id() + ".cfg");
+			if(!path) {
+				std::cerr << "COULD NOT FIND FILE FOR " << type_->id() << "\n";
+				assert(false);
+				throw e;
+			}
+
+			bool success = false, result = false;
+			boost::function<bool()> ev(boost::bind(&custom_object::handle_event_internal, this, event, context, true));
+			boost::function<void()> fn(boost::bind(run_expression_for_edit_and_continue, ev, &success, &result));
+			edit_and_continue_fn(*path, e.msg, fn);
+			if(success == false) {
+				_exit(0);
+			}
+
+			return result;
+		} catch(...) {
+			assert(false);
+		}
+	} else {
+		return handle_event_internal(event, context);
+	}
 }
 
 namespace {
@@ -4385,7 +4421,7 @@ bool custom_object::handle_event_internal(int event, const formula_callable* con
 			event_call_stack.pop_back();
 #endif
 			current_error_msg = "Runtime error evaluating formula: " + e.msg;
-			break;
+			throw e;
 		}
 
 #ifndef DISABLE_FORMULA_PROFILER
@@ -4403,6 +4439,7 @@ bool custom_object::handle_event_internal(int event, const formula_callable* con
 			}
 		} catch(validation_failure_exception& e) {
 			current_error_msg = "Runtime error executing event commands: " + e.msg;
+			throw e;
 		}
 
 #ifndef DISABLE_FORMULA_PROFILER
