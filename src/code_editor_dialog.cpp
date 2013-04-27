@@ -76,6 +76,8 @@ void code_editor_dialog::init()
 	button* increase_font = new button("+", boost::bind(&code_editor_dialog::change_font_size, this, 1));
 	button* decrease_font = new button("-", boost::bind(&code_editor_dialog::change_font_size, this, -1));
 
+	save_button_.reset(save_button);
+
 	//std::cerr << "CED: " << x() << "," << y() << "; " << width() << "," << height() << std::endl;
 	drag_widget* dragger = new drag_widget(x(), y(), width(), height(),
 		drag_widget::DRAG_HORIZONTAL, NULL, 
@@ -114,6 +116,10 @@ void code_editor_dialog::init()
 
 	replace_label_->set_visible(false);
 	replace_->set_visible(false);
+
+	if(fname_.empty() == false && fname_[0] == '@') {
+		save_button->set_visible(false);
+	}
 
 	search_->set_on_tab_handler(boost::bind(&code_editor_dialog::on_tab, this));
 	replace_->set_on_tab_handler(boost::bind(&code_editor_dialog::on_tab, this));
@@ -282,6 +288,10 @@ void code_editor_dialog::load_file(std::string fname, bool focus, boost::functio
 	init_files_grid();
 
 	fname_ = fname;
+
+	if(save_button_) {
+		save_button_->set_visible(fname_.empty() || fname_[0] != '@');
+	}
 
 	modified_ = editor_->text() != sys::read_file(module::map_file(fname));
 	on_move_cursor();
@@ -473,6 +483,12 @@ void code_editor_dialog::process()
 
 			if(optional_error_text_area_) {
 				optional_error_text_area_->set_text(e.msg);
+			}
+		} catch(json::parse_error& e) {
+			error_label_->set_text("Error");
+			error_label_->set_tooltip(e.error_message());
+			if(optional_error_text_area_) {
+				optional_error_text_area_->set_text(e.error_message());
 			}
 		} catch(...) {
 			error_label_->set_text("Error");

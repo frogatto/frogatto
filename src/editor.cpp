@@ -3906,7 +3906,22 @@ void editor::set_code_file()
 	}
 
 	const std::string* path = custom_object_type::get_object_path(type + ".cfg");
-	if(path && code_dialog_) {
+	if(code_dialog_ && lvl_->editor_selection().empty() == false && tool() == TOOL_SELECT_OBJECT && levels_.size() == 2 && lvl_ == levels_.back()) {
+		entity_ptr selected = lvl_->editor_selection().back();
+
+		entity_ptr obj = levels_.front()->get_entity_by_label(selected->label());
+
+		variant v = obj->write();
+		const std::string pseudo_fname = "@instance:" + obj->label();
+		json::set_file_contents(pseudo_fname, v.write_json());
+		if(path) {
+			code_dialog_->load_file(*path);
+		}
+
+		boost::function<void()> fn(boost::bind(&editor::object_instance_modified_in_editor, this, obj->label()));
+		code_dialog_->load_file(pseudo_fname, true, &fn);
+		
+	} else if(path && code_dialog_) {
 		code_dialog_->load_file(*path);
 	}
 }
@@ -3919,5 +3934,27 @@ void editor::start_adding_points(const std::string& field_name)
 		property_dialog_->init();
 	}
 }
-#endif // !NO_EDITOR
 
+void editor::object_instance_modified_in_editor(const std::string& label)
+{
+	std::vector<boost::function<void()> > undo, redo;
+	const std::string pseudo_fname = "@instance:" + label;
+
+	entity_ptr existing_obj = lvl_->get_entity_by_label(label);
+	if(!existing_obj) {
+		return;
+	}
+
+	generate_remove_commands(existing_obj, undo, redo);
+	foreach(level_ptr lvl, levels_) {
+		entity_ptr new_obj(entity::build(json::parse_from_file(pseudo_fname)));
+		redo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, new_obj));
+		undo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, new_obj));
+	}
+
+	execute_command(
+	  boost::bind(execute_functions, redo),
+	  boost::bind(execute_functions, undo));
+}
+
+#endif // !NO_EDITOR

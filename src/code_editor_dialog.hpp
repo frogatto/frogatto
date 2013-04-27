@@ -85,6 +85,8 @@ private:
 
 	gui::grid_ptr files_grid_;
 
+	gui::widget_ptr save_button_;
+
 	void on_tab();
 
 	void on_search_changed();
