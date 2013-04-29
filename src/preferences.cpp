@@ -24,6 +24,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/uuid/sha1.hpp>
 
+#include "asserts.hpp"
 #include "controls.hpp"
 #include "difficulty.hpp"
 #include "filesystem.hpp"
