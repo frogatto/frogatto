@@ -344,7 +344,26 @@ level::level(const std::string& level_cfg, variant node)
 
 	int begin_tile_index = tiles_.size();
 	foreach(variant tile_node, node["tile_map"].as_list()) {
+		variant tiles_value = tile_node["tiles"];
+		if(!tiles_value.is_string()) {
+			continue;
+		}
+
+		const std::string& str = tiles_value.as_string();
+		bool contains_data = false;
+		foreach(char c, str) {
+			if(c != ',' && !util::c_isspace(c)) {
+				contains_data = true;
+				break;
+			}
+		}
+
+		if(!contains_data) {
+			continue;
+		}
+
 		tile_map m(tile_node);
+		ASSERT_LOG(tile_maps_.count(m.zorder()) == 0, "repeated zorder in tile map: " << m.zorder());
 		tile_maps_[m.zorder()] = m;
 		const int before = tiles_.size();
 		tile_maps_[m.zorder()].build_tiles(&tiles_);
