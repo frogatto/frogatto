@@ -202,13 +202,13 @@
 		C089D452162BDF7B009D2878 /* master-config.cfg in Resources */ = {isa = PBXBuildFile; fileRef = C089D451162BDF7B009D2878 /* master-config.cfg */; };
 		C0B1908916CD9437008FF14A /* ipc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0B1908716CD9437008FF14A /* ipc.cpp */; };
 		C0B87BD4166725A700D66B15 /* formula_object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0B87BD21667256F00D66B15 /* formula_object.cpp */; };
-		C0D1B179171E6B8B00D1BD2D /* libpng16.16.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0D1B178171E6B8B00D1BD2D /* libpng16.16.dylib */; };
-		C0D1B17A171E6BA700D1BD2D /* libpng16.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C0D1B178171E6B8B00D1BD2D /* libpng16.16.dylib */; };
 		C0D6EB6C16DB25C000B5ABCA /* tbs_internal_client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0D6EB6616DB25C000B5ABCA /* tbs_internal_client.cpp */; };
 		C0D6EB6D16DB25C000B5ABCA /* tbs_internal_server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0D6EB6816DB25C000B5ABCA /* tbs_internal_server.cpp */; };
 		C0D6EB6E16DB25C000B5ABCA /* tbs_server_base.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0D6EB6A16DB25C000B5ABCA /* tbs_server_base.cpp */; };
 		C0D6EB7116DB25D700B5ABCA /* bar_widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0D6EB6F16DB25D700B5ABCA /* bar_widget.cpp */; };
 		C0D6EB7416DB285D00B5ABCA /* custom_object_widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0D6EB7216DB25EA00B5ABCA /* custom_object_widget.cpp */; };
+		C0D78B5F171F215D00980007 /* libpng15.15.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0D78B5E171F215D00980007 /* libpng15.15.dylib */; };
+		C0D78B60171F239D00980007 /* libpng15.15.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = C0D78B5E171F215D00980007 /* libpng15.15.dylib */; };
 		C0DDFDC6163F7FF800F727DD /* sys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0406533163F790000F84F94 /* sys.cpp */; };
 		C0EF2A5616215F78004CD227 /* libboost_iostreams.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0EF2A5316215F78004CD227 /* libboost_iostreams.dylib */; };
 		C0EF2A5716215F78004CD227 /* libboost_regex.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0EF2A5416215F78004CD227 /* libboost_regex.dylib */; };
@@ -228,7 +228,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C0D1B17A171E6BA700D1BD2D /* libpng16.16.dylib in CopyFiles */,
+				C0D78B60171F239D00980007 /* libpng15.15.dylib in CopyFiles */,
 				C0EF2A5F1622918D004CD227 /* libGLEW.1.9.0.dylib in CopyFiles */,
 				C0EF2A5A1622296E004CD227 /* libboost_iostreams.dylib in CopyFiles */,
 				C0EF2A5B16222973004CD227 /* libboost_regex.dylib in CopyFiles */,
@@ -651,7 +651,6 @@
 		C0B87BD31667256F00D66B15 /* formula_object.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = formula_object.hpp; sourceTree = "<group>"; };
 		C0C2918D1665DFFC00DB88A6 /* signature.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = signature.cfg; path = ../../signature.cfg; sourceTree = "<group>"; };
 		C0C291901665F21600DB88A6 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		C0D1B178171E6B8B00D1BD2D /* libpng16.16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpng16.16.dylib; sourceTree = "<group>"; };
 		C0D6EB6616DB25C000B5ABCA /* tbs_internal_client.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tbs_internal_client.cpp; sourceTree = "<group>"; };
 		C0D6EB6716DB25C000B5ABCA /* tbs_internal_client.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = tbs_internal_client.hpp; sourceTree = "<group>"; };
 		C0D6EB6816DB25C000B5ABCA /* tbs_internal_server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tbs_internal_server.cpp; sourceTree = "<group>"; };
@@ -662,6 +661,7 @@
 		C0D6EB7016DB25D700B5ABCA /* bar_widget.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bar_widget.hpp; sourceTree = "<group>"; };
 		C0D6EB7216DB25EA00B5ABCA /* custom_object_widget.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = custom_object_widget.cpp; sourceTree = "<group>"; };
 		C0D6EB7316DB25EA00B5ABCA /* custom_object_widget.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = custom_object_widget.hpp; sourceTree = "<group>"; };
+		C0D78B5E171F215D00980007 /* libpng15.15.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpng15.15.dylib; sourceTree = "<group>"; };
 		C0EF2A5316215F78004CD227 /* libboost_iostreams.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libboost_iostreams.dylib; sourceTree = "<group>"; };
 		C0EF2A5416215F78004CD227 /* libboost_regex.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libboost_regex.dylib; sourceTree = "<group>"; };
 		C0EF2A5516215F78004CD227 /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libboost_system.dylib; sourceTree = "<group>"; };
@@ -686,7 +686,7 @@
 				C0EF2A5716215F78004CD227 /* libboost_regex.dylib in Frameworks */,
 				C0EF2A5816215F78004CD227 /* libboost_system.dylib in Frameworks */,
 				C0EF2A5E16229160004CD227 /* libGLEW.1.9.0.dylib in Frameworks */,
-				C0D1B179171E6B8B00D1BD2D /* libpng16.16.dylib in Frameworks */,
+				C0D78B5F171F215D00980007 /* libpng15.15.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -754,7 +754,7 @@
 		C010C5A5160AFC60006E7D90 /* External Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C0D1B178171E6B8B00D1BD2D /* libpng16.16.dylib */,
+				C0D78B5E171F215D00980007 /* libpng15.15.dylib */,
 				C0EF2A5D16229160004CD227 /* libGLEW.1.9.0.dylib */,
 				C0EF2A5316215F78004CD227 /* libboost_iostreams.dylib */,
 				C0EF2A5416215F78004CD227 /* libboost_regex.dylib */,
@@ -1517,7 +1517,7 @@
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Resources/Frogatto-Prefix.pch";
+				GCC_PREFIX_HEADER = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
@@ -1528,7 +1528,7 @@
 					./dylibs/SDL2_ttf.framework/Headers,
 					./boost/include,
 					"./glew-1.9.0/include",
-					"./libpng-1.6.1/",
+					"./libpng-1.5.5/",
 				);
 				INFOPLIST_FILE = resources/Info.plist;
 				LIBRARY_SEARCH_PATHS = (
@@ -1563,7 +1563,7 @@
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Resources/Frogatto-Prefix.pch";
+				GCC_PREFIX_HEADER = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
@@ -1574,7 +1574,7 @@
 					./dylibs/SDL2_ttf.framework/Headers,
 					./boost/include,
 					"./glew-1.9.0/include",
-					"./libpng-1.6.1/",
+					"./libpng-1.5.5/",
 				);
 				INFOPLIST_FILE = resources/Info.plist;
 				LIBRARY_SEARCH_PATHS = (
