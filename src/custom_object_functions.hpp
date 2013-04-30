@@ -43,6 +43,8 @@ public:
 
 	void set_expression(const game_logic::formula_expression* expr);
 
+	bool is_command() const { return true; }
+
 private:
 	virtual void execute(level& lvl, entity& ob) const = 0;
 	variant get_value(const std::string& key) const { return variant(); }
@@ -61,6 +63,8 @@ public:
 
 	void set_expression(const game_logic::formula_expression* expr);
 
+	bool is_command() const { return true; }
+
 private:
 	virtual void execute(level& lvl, custom_object& ob) const = 0;
 	variant get_value(const std::string& key) const { return variant(); }
@@ -73,12 +77,16 @@ private:
 };
 
 class swallow_object_command_callable : public game_logic::formula_callable {
+public:
+	bool is_command() const { return true; }
 private:
 	variant get_value(const std::string& key) const { return variant(); }
 	void get_inputs(std::vector<game_logic::formula_input>* inputs) const {}
 };
 
 class swallow_mouse_command_callable : public game_logic::formula_callable {
+public:
+	bool is_command() const { return true; }
 private:
 	variant get_value(const std::string& key) const { return variant(); }
 	void get_inputs(std::vector<game_logic::formula_input>* inputs) const {}

@@ -614,6 +614,32 @@ void custom_object_dialog::on_edit_items(const std::string& name, const std::str
 	}
 }
 
+void custom_object_dialog::show_modal()
+{
+	gui::filter_list f;
+	f.push_back(gui::filter_pair("Image Files", ".*?\\.(png|jpg|gif|bmp|tif|tiff|tga|webp|xpm|xv|pcx)"));
+	f.push_back(gui::filter_pair("All Files", ".*"));
+	gui::file_chooser_dialog open_dlg(
+		int(preferences::virtual_screen_width()*0.1), 
+		int(preferences::virtual_screen_height()*0.1), 
+		int(preferences::virtual_screen_width()*0.8), 
+		int(preferences::virtual_screen_height()*0.8),
+		f, false, module::map_file("images/"));
+	open_dlg.set_background_frame("empty_window");
+	open_dlg.set_draw_background_fn(do_draw_scene);
+	open_dlg.show_modal();
+
+	if(open_dlg.cancelled() == false) {
+		image_file_ = open_dlg.get_file_name();
+		int offs = image_file_.rfind("/");
+		image_file_name_ = image_file_.substr(offs+1);
+
+		dialog::show_modal();
+	} else {
+		cancel();
+	}
+}
+
 }
 
 namespace gui {

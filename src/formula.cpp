@@ -89,7 +89,7 @@ namespace game_logic
 	{
 		if(preferences::serialize_bad_objects()) {
 			//force serialization of this through so we can work out what's going on.
-			str += "(UNSERIALIZABLE_OBJECT)";
+			str += "(UNSERIALIZABLE_OBJECT " + std::string(typeid(*this).name()) + ")";
 			return;
 		}
 
@@ -493,15 +493,15 @@ private:
 		variant_type_ptr key_type, value_type;
 
 		if(key_types.size() == 1) {
-			key_type = variant_type::get_list(key_types[0]);
+			key_type = key_types[0];
 		} else {
-			key_type = variant_type::get_list(variant_type::get_union(key_types));
+			key_type = variant_type::get_union(key_types);
 		}
 
 		if(value_types.size() == 1) {
-			value_type = variant_type::get_list(value_types[0]);
+			value_type = value_types[0];
 		} else {
-			value_type = variant_type::get_list(variant_type::get_union(value_types));
+			value_type = variant_type::get_union(value_types);
 		}
 
 		return variant_type::get_map(key_type, value_type);
@@ -822,8 +822,12 @@ private:
 	}
 
 	variant_type_ptr get_variant_type() const {
-		variant_type_ptr return_type;
-		if(left_->query_variant_type()->is_function(NULL, &return_type, NULL)) {
+		std::vector<variant_type_ptr> arg_types;
+		foreach(const expression_ptr& expr, args_) {
+			arg_types.push_back(expr->query_variant_type());
+		}
+		variant_type_ptr return_type = left_->query_variant_type()->function_return_type_with_args(arg_types);
+		if(return_type) {
 			return return_type;
 		}
 
@@ -1265,7 +1269,84 @@ private:
 		return res;
 	}
 
+	void static_error_analysis() const {
+		variant_type_ptr left_type = left_->query_variant_type();
+		variant_type_ptr right_type = right_->query_variant_type();
+
+		if(left_type->is_numeric() && right_type->is_numeric()) {
+			return;
+		}
+
+		switch(op_) {
+		case OP_IN:
+		case OP_NOT_IN:
+		case OP_NEQ:
+		case OP_LTE:
+		case OP_GTE:
+		case OP_GT:
+		case OP_LT:
+		case OP_EQ:
+		case OP_AND:
+		case OP_OR:
+			return;
+
+		case OP_ADD: {
+			if(left_type->is_numeric() && right_type->is_numeric()) {
+				return;
+			}
+
+			if(left_type->is_type(variant::VARIANT_TYPE_STRING)) {
+				return;
+			}
+
+			if(left_type->is_list_of() && right_type->is_list_of()) {
+				return;
+			}
+
+			if((left_type->is_map_of().first || left_type->is_class()) && right_type->is_map_of().first) {
+				return;
+			}
+
+			ASSERT_LOG(false, "Illegal types to + operator: " << left_type->to_string() << " + " << right_type->to_string() << " At " << debug_pinpoint_location());
+
+			return;
+		}
+
+		case OP_MUL: {
+			if(left_type->is_numeric() && right_type->is_numeric()) {
+				return;
+			}
+
+			if(right_type->is_type(variant::VARIANT_TYPE_INT)) {
+				if(left_type->is_type(variant::VARIANT_TYPE_STRING) || left_type->is_list_of()) {
+					return;
+				}
+			}
+
+			ASSERT_LOG(false, "Illegal types to * operator: " << left_type->to_string() << " + " << right_type->to_string() << " At " << debug_pinpoint_location());
+
+			return;
+		}
+
+		case OP_POW:
+		case OP_DIV:
+		case OP_SUB: {
+			ASSERT_LOG(left_type->is_numeric() && right_type->is_numeric(),
+			           "Illegal types to - operator: " << left_type->to_string() << " - " << right_type->to_string() << " At " << debug_pinpoint_location());
+			return;
+
+		}
+
+		case OP_MOD:
+		case OP_DICE:
+			return;
+		default:
+			ASSERT_LOG(false, "unknown op type: " << op_);
+		}
+	}
+
 	variant_type_ptr get_variant_type() const {
+
 		switch(op_) {
 		case OP_IN:
 		case OP_NOT_IN:
@@ -1297,7 +1378,7 @@ private:
 				return left_type;
 			}
 
-			if(left_type->is_type(variant::VARIANT_TYPE_STRING) || right_type->is_type(variant::VARIANT_TYPE_STRING)) {
+			if(left_type->is_type(variant::VARIANT_TYPE_STRING)) {
 				return left_type;
 			}
 
@@ -1317,6 +1398,17 @@ private:
 				v.push_back(left_list);
 				v.push_back(right_list);
 				return variant_type::get_list(variant_type::get_union(v));
+			}
+
+			std::pair<variant_type_ptr,variant_type_ptr> left_map = left_type->is_map_of();
+			std::pair<variant_type_ptr,variant_type_ptr> right_map = right_type->is_map_of();
+			if(left_map.first && right_map.first) {
+				std::vector<variant_type_ptr> k, v;
+				k.push_back(left_map.first);
+				k.push_back(right_map.first);
+				v.push_back(left_map.second);
+				v.push_back(right_map.second);
+				return variant_type::get_map(variant_type::get_union(k), variant_type::get_union(v));
 			}
 
 			//TODO: improve this, handle remaining cases!
@@ -1349,11 +1441,11 @@ private:
 		case OP_SUB: {
 			variant_type_ptr left_type = left_->query_variant_type();
 			variant_type_ptr right_type = right_->query_variant_type();
-			if(left_type->is_type(variant::VARIANT_TYPE_DECIMAL) || right_type->is_type(variant::VARIANT_TYPE_DECIMAL)) {
-				return variant_type::get_type(variant::VARIANT_TYPE_DECIMAL);
+			if(left_type->is_type(variant::VARIANT_TYPE_INT) && right_type->is_type(variant::VARIANT_TYPE_INT)) {
+				return variant_type::get_type(variant::VARIANT_TYPE_INT);
 			}
 
-			return variant_type::get_type(variant::VARIANT_TYPE_INT);
+			return variant_type::get_type(variant::VARIANT_TYPE_DECIMAL);
 		}
 
 		case OP_MOD:
@@ -1363,6 +1455,7 @@ private:
 			ASSERT_LOG(false, "unknown op type: " << op_);
 			
 		}
+
 	}
 
 	const_formula_callable_definition_ptr get_modified_definition_based_on_result(bool result, const_formula_callable_definition_ptr current_def) const {
@@ -2080,7 +2173,7 @@ expression_ptr parse_function_def(const variant& formula_str, const token*& i1, 
 	std::vector<variant_type_ptr> variant_types;
 	variant_type_ptr result_type;
 	parse_function_args(formula_str, i1, i2, &args, &types, &variant_types, &default_args, &result_type);
-	const token* beg = i1;
+	const token* const beg = i1;
 	while((i1 != i2) && (i1->type != TOKEN_SEMICOLON)) {
 		++i1;
 	}
@@ -2147,6 +2240,9 @@ expression_ptr parse_function_def(const variant& formula_str, const token*& i1, 
 	recursive_symbols.resolve_recursive_calls(fml);
 	
 	if(formula_name.empty()) {
+		if(g_strict_formula_checking) {
+			ASSERT_LOG(!result_type || variant_types_compatible(result_type, fml->query_variant_type()), "Formula function return type mis-match. Expects " << result_type->to_string() << " but expression evaluates to " << fml->query_variant_type()->to_string() << "\n" << pinpoint_location(formula_str, beg->begin, (i2-1)->end));
+		}
 		return expression_ptr(new lambda_function_expression(args, fml, callable_def ? callable_def->num_slots() : 0, default_args, variant_types, result_type ? result_type : fml->query_variant_type()));
 	}
 

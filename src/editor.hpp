@@ -169,6 +169,7 @@ public:
 	void edit_module_properties();
 	void create_new_object();
 	void edit_shaders();
+	void edit_level_code();
 
 	//make the selected objects part of a group
 	void group_selection();
@@ -269,6 +270,8 @@ private:
 	void add_multi_object_to_level(level_ptr lvl, entity_ptr e);
 	void add_object_to_level(level_ptr lvl, entity_ptr e);
 	void remove_object_from_level(level_ptr lvl, entity_ptr e);
+
+	void object_instance_modified_in_editor(const std::string& label);
 
 	void generate_mutate_commands(entity_ptr e, const std::string& attr, variant new_value,
 	                              std::vector<boost::function<void()> >& undo,

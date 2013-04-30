@@ -29,6 +29,9 @@
 #include "variant_callable.hpp"
 
 std::string preprocess(const std::string& input){
+	
+	const game_logic::formula::strict_check_scope strict_checking(false);
+
 	std::string output_string;
 	bool in_comment = false;
 	
@@ -82,6 +85,8 @@ std::string preprocess(const std::string& input){
 
 variant preprocess_string_value(const std::string& input, const game_logic::formula_callable* callable)
 {
+	const game_logic::formula::strict_check_scope strict_checking(false);
+
 	if(input.empty() || input[0] != '@') {
 		return variant(input);
 	}

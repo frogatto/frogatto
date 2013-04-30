@@ -98,10 +98,10 @@ void toggle_draw_stats() {
 	g_draw_stats = !g_draw_stats;
 }
 
-bool g_draw_grid = true;
+PREF_INT_PERSISTENT(editor_grid, 1);
 
 void toggle_draw_grid() {
-	g_draw_grid = !g_draw_grid;
+	g_editor_grid = !g_editor_grid;
 }
 }
 
@@ -153,6 +153,7 @@ class editor_menu_dialog : public gui::dialog
 #if defined(USE_GLES2)
 			"Shaders", "", boost::bind(&editor::edit_shaders, &editor_),
 #endif
+			"Level Code", "", boost::bind(&editor::edit_level_code, &editor_),
 		};
 
 		menu_item duplicate_item = { "Duplicate Object(s)", "ctrl+1", boost::bind(&editor::duplicate_selected_objects, &editor_) };
@@ -176,7 +177,7 @@ class editor_menu_dialog : public gui::dialog
 			editor_.get_level().show_foreground() ? "Hide Foreground" : "Show Foreground", "f", boost::bind(&level::set_show_foreground, &editor_.get_level(), !editor_.get_level().show_foreground()),
 			editor_.get_level().show_background() ? "Hide Background" : "Show Background", "b", boost::bind(&level::set_show_background, &editor_.get_level(), !editor_.get_level().show_background()),
 			g_draw_stats ? "Hide Stats" : "Show Stats", "", toggle_draw_stats,
-			g_draw_grid ? "Hide Grid" : "Show Grid", "", toggle_draw_grid,
+			g_editor_grid ? "Hide Grid" : "Show Grid", "", toggle_draw_grid,
 			preferences::show_debug_hitboxes() ? "Hide Hit Boxes" : "Show Hit Boxes", "h", preferences::toogle_debug_hitboxes,
 		};
 
@@ -3095,12 +3096,12 @@ void editor::draw_gui() const
 	if(lvl_->previous_level().empty()) {
 		previous_level = "(no previous level)";
 	}
-	graphics::texture t = font::render_text(previous_level, graphics::color_black(), 24);
+	graphics::texture t = font::render_text(previous_level, graphics::color_salmon(), 24);
 	int x = lvl_->boundaries().x() - t.width();
 	int y = ypos_ + graphics::screen_height()/2;
 
 	graphics::blit_texture(t, x, y);
-	t = font::render_text(next_level, graphics::color_black(), 24);
+	t = font::render_text(next_level, graphics::color_salmon(), 24);
 	x = lvl_->boundaries().x2();
 	graphics::blit_texture(t, x, y);
 	}
@@ -3269,7 +3270,7 @@ void editor::draw_gui() const
 	}
 
 	//draw grid
-	if(g_draw_grid){
+	if(g_editor_grid){
 #if !defined(USE_GLES2)
 	   glDisable(GL_TEXTURE_2D);
 	   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -3290,16 +3291,16 @@ void editor::draw_gui() const
 #if defined(USE_GLES2)
 	{
 	gles2::manager gles2_manager(gles2::get_simple_shader());
-	if(g_draw_grid) {
+	if(g_editor_grid) {
 		gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, &varray.front());
 	}
 #else
-	if(g_draw_grid) {
+	if(g_editor_grid) {
 		glVertexPointer(2, GL_FLOAT, 0, &varray.front());
 	}
 #endif
 
-	if(g_draw_grid) {
+	if(g_editor_grid) {
 		glDrawArrays(GL_LINES, 0, varray.size()/2);
 	}
 	
@@ -3734,6 +3735,16 @@ void editor::edit_shaders()
 #endif
 }
 
+void editor::edit_level_code()
+{
+	const std::string& path = get_level_path(lvl_->id());
+	if(external_code_editor_ && external_code_editor_->replace_in_game_editor()) {
+		external_code_editor_->load_file(path);
+	}
+	
+	code_dialog_.reset(new code_editor_dialog(rect(graphics::screen_width() - 620, 30, 620, graphics::screen_height() - 30)));
+	code_dialog_->load_file(path);
+}
 
 void editor::add_multi_object_to_level(level_ptr lvl, entity_ptr e)
 {
@@ -3895,7 +3906,22 @@ void editor::set_code_file()
 	}
 
 	const std::string* path = custom_object_type::get_object_path(type + ".cfg");
-	if(path && code_dialog_) {
+	if(code_dialog_ && lvl_->editor_selection().empty() == false && tool() == TOOL_SELECT_OBJECT && levels_.size() == 2 && lvl_ == levels_.back()) {
+		entity_ptr selected = lvl_->editor_selection().back();
+
+		entity_ptr obj = levels_.front()->get_entity_by_label(selected->label());
+
+		variant v = obj->write();
+		const std::string pseudo_fname = "@instance:" + obj->label();
+		json::set_file_contents(pseudo_fname, v.write_json());
+		if(path) {
+			code_dialog_->load_file(*path);
+		}
+
+		boost::function<void()> fn(boost::bind(&editor::object_instance_modified_in_editor, this, obj->label()));
+		code_dialog_->load_file(pseudo_fname, true, &fn);
+		
+	} else if(path && code_dialog_) {
 		code_dialog_->load_file(*path);
 	}
 }
@@ -3908,5 +3934,27 @@ void editor::start_adding_points(const std::string& field_name)
 		property_dialog_->init();
 	}
 }
-#endif // !NO_EDITOR
 
+void editor::object_instance_modified_in_editor(const std::string& label)
+{
+	std::vector<boost::function<void()> > undo, redo;
+	const std::string pseudo_fname = "@instance:" + label;
+
+	entity_ptr existing_obj = lvl_->get_entity_by_label(label);
+	if(!existing_obj) {
+		return;
+	}
+
+	generate_remove_commands(existing_obj, undo, redo);
+	foreach(level_ptr lvl, levels_) {
+		entity_ptr new_obj(entity::build(json::parse_from_file(pseudo_fname)));
+		redo.push_back(boost::bind(&editor::add_object_to_level, this, lvl, new_obj));
+		undo.push_back(boost::bind(&editor::remove_object_from_level, this, lvl, new_obj));
+	}
+
+	execute_command(
+	  boost::bind(execute_functions, redo),
+	  boost::bind(execute_functions, undo));
+}
+
+#endif // !NO_EDITOR

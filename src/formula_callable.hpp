@@ -93,6 +93,9 @@ public:
 	virtual bool execute_command(const variant &v);
 	virtual formula_ptr create_formula(const variant& v);
 
+	//is some kind of command to the engine.
+	virtual bool is_command() const { return false; }
+
 protected:
 	virtual ~formula_callable() {}
 
@@ -221,6 +224,8 @@ public:
 	void run_command(formula_callable& context) const;
 
 	void set_expression(const formula_expression* expr);
+
+	bool is_command() const { return true; }
 private:
 	virtual void execute(formula_callable& context) const = 0;
 	variant get_value(const std::string& key) const { return variant(); }

@@ -60,6 +60,10 @@ public:
 
 	void toggle_pause();
 	void toggle_history_trails();
+
+#ifndef NO_EDITOR
+	void replay_level_from_start();
+#endif
 private:
 	void start_editor();
 	void close_editor();
@@ -71,7 +75,6 @@ private:
 	std::string& original_level_cfg_;
 
 	bool quit_;
-	boost::intrusive_ptr<level> start_lvl_;
 	time_t current_second_;
 
 	int current_fps_, next_fps_, current_cycles_, next_cycles_, current_delay_, next_delay_,

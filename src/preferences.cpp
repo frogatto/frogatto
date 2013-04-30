@@ -24,6 +24,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/uuid/sha1.hpp>
 
+#include "asserts.hpp"
 #include "controls.hpp"
 #include "difficulty.hpp"
 #include "filesystem.hpp"
@@ -125,6 +126,56 @@ WindowsPrefs winPrefs;
 
 
 namespace preferences {
+	namespace {
+	struct RegisteredSetting {
+		RegisteredSetting() : persistent(false), int_value(NULL), string_value(NULL)
+		{}
+		variant write() const {
+			if(int_value) {
+				return variant(*int_value);
+			} else if(string_value) {
+				return variant(*string_value);
+			} else {
+				return variant();
+			}
+		}
+
+		void read(variant value) {
+			if(int_value && value.is_int()) {
+				*int_value = value.as_int();
+			} else if(string_value && value.is_string()) {
+				*string_value = value.as_string();
+			}
+		}
+		bool persistent;
+		int* int_value;
+		std::string* string_value;
+	};
+
+	std::map<std::string, RegisteredSetting>& g_registered_settings() {
+		static std::map<std::string, RegisteredSetting> instance;
+		return instance;
+	}
+	}
+
+	int register_string_setting(const std::string& id, bool persistent, std::string* value)
+	{
+		ASSERT_LOG(g_registered_settings().count(id) == 0, "Multiple definition of registered setting: " << id);
+		RegisteredSetting& setting = g_registered_settings()[id];
+		setting.string_value = value;
+		setting.persistent = persistent;
+		return g_registered_settings().size();
+	}
+
+	int register_int_setting(const std::string& id, bool persistent, int* value)
+	{
+		ASSERT_LOG(g_registered_settings().count(id) == 0, "Multiple definition of registered setting: " << id);
+		RegisteredSetting& setting = g_registered_settings()[id];
+		setting.int_value = value;
+		setting.persistent = persistent;
+		return g_registered_settings().size();
+	}
+
 	const std::string& version() {
 		static const std::string Version = "1.2";
 		return Version;
@@ -768,6 +819,12 @@ namespace preferences {
 		} catch(json::parse_error&) {
 			return;
 		}
+
+		for(std::map<std::string, RegisteredSetting>::iterator i = g_registered_settings().begin(); i != g_registered_settings().end(); ++i) {
+			if(i->second.persistent && node.has_key(i->first)) {
+				i->second.read(node[i->first]);
+			}
+		}
 		
 		unique_user_id = node["user_id"].as_int(0);
 		
@@ -862,6 +919,12 @@ namespace preferences {
 		}
 		
 		node.add("registry", game_registry::instance().write_contents());
+
+		for(std::map<std::string, RegisteredSetting>::const_iterator i = g_registered_settings().begin(); i != g_registered_settings().end(); ++i) {
+			if(i->second.persistent) {
+				node.add(i->first, i->second.write());
+			}
+		}
 		
 		std::cerr << "WRITE PREFS: " << (preferences_path_ + "preferences.cfg") << std::endl;
 		sys::write_file(preferences_path_ + "preferences.cfg", node.build().write_json());
@@ -1032,6 +1095,24 @@ namespace preferences {
 				force_difficulty_ = difficulty::from_string(arg_value);
 			}
 		} else {
+			if(s.size() > 2 && s[0] == '-' && s[1] == '-' && std::find(s.begin(), s.end(), '=') != s.end()) {
+				std::string::const_iterator equal = std::find(s.begin(), s.end(), '=');
+				std::string base_name(s.begin()+2,equal);
+				std::replace(base_name.begin(), base_name.end(), '-', '_');
+				if(g_registered_settings().count(base_name)) {
+					RegisteredSetting& setting = g_registered_settings()[base_name];
+					if(setting.string_value) {
+						*setting.string_value = std::string(equal+1, s.end());
+					} else if(setting.int_value) {
+						*setting.int_value = atoi(std::string(equal+1, s.end()).c_str());
+					} else {
+						ASSERT_LOG(false, "Eerror making sense of preference type " << base_name);
+					}
+
+					return true;
+				}
+			}
+
 			return false;
 		}
 		

@@ -35,6 +35,24 @@ std::string GetAppDataPath();
 #endif
 
 namespace preferences {
+	int register_string_setting(const std::string& id, bool persistent, std::string* value);
+	int register_int_setting(const std::string& id, bool persistent, int* value);
+
+#define PREF_INT(id, default_value) \
+	int g_##id = default_value; \
+	int g_##id_dummy = preferences::register_int_setting(#id, false, &g_##id)
+
+#define PREF_STRING(id, default_value) \
+	std::string g_##id = default_value; \
+	int g_##id_dummy = preferences::register_string_setting(#id, false, &g_##id)
+
+#define PREF_INT_PERSISTENT(id, default_value) \
+	int g_##id = default_value; \
+	int g_##id_dummy = preferences::register_int_setting(#id, true, &g_##id)
+
+#define PREF_STRING_PERSISTENT(id, default_value) \
+	std::string g_##id = default_value; \
+	int g_##id_dummy = preferences::register_string_setting(#id, true, &g_##id)
 
 	const std::string& version();
 	const variant& version_decimal();
