@@ -3096,12 +3096,12 @@ void editor::draw_gui() const
 	if(lvl_->previous_level().empty()) {
 		previous_level = "(no previous level)";
 	}
-	graphics::texture t = font::render_text(previous_level, graphics::color_black(), 24);
+	graphics::texture t = font::render_text(previous_level, graphics::color_salmon(), 24);
 	int x = lvl_->boundaries().x() - t.width();
 	int y = ypos_ + graphics::screen_height()/2;
 
 	graphics::blit_texture(t, x, y);
-	t = font::render_text(next_level, graphics::color_black(), 24);
+	t = font::render_text(next_level, graphics::color_salmon(), 24);
 	x = lvl_->boundaries().x2();
 	graphics::blit_texture(t, x, y);
 	}
