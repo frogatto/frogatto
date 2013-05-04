@@ -1,8 +1,0 @@
-html, body { font-size: 12px; padding: 0px; margin: 0px; }
-div { padding: 0px; margin: 0px; }
-#loadingBar { position: absolute; width: 200px; height: 30px; top: 20px; }
-#graphCanvas { top: 0px; left: 0px; width: 400px; height: 300px; }
-
-.demoHeaders {
-	margin-top: 2em;
-}
