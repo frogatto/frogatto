@@ -85,7 +85,7 @@ void show_language_dialog()
 	int index = 0;
 	foreach(variant_map::value_type pair, languages) {
 		widget_ptr b(new button(
-			widget_ptr(new graphical_font_label(pair.second.as_string(), "door_label", 2)),
+			widget_ptr(new graphical_font_label(pair.second.as_string(), "language_names", 2)),
 			boost::bind(set_locale, pair.first.as_string()),
 			BUTTON_STYLE_NORMAL, BUTTON_SIZE_DOUBLE_RESOLUTION));
 		b->set_dim(button_width, button_height);
