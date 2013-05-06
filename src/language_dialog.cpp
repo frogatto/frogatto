@@ -57,7 +57,7 @@ class grid {
 	}
 
 	int total_height() {
-		return start_y_ + (widget_count_ / column_count_) * (cell_height_ + v_padding_);
+		return start_y_ + (widget_count_ / column_count_ + widget_count_ % column_count_) * (cell_height_ + v_padding_);
 	}
 };
 }
