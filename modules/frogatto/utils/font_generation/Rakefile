@@ -9,32 +9,48 @@ EXTRA_FML = Hash.new('').merge({
 #  'ja' => "kerning=-1",
 })
 
+def source_font(language, style)
+  case style
+  when :dialog
+    ['source_fonts/unifont.pcf.gz', 16]
+  else # :outline, :label
+    case language
+    when 'zh_CN'
+      ['source_fonts/wenquanyi_9pt.pcf.gz', 12]
+    when 'ko'
+      ['source_fonts/dotum+ascii-12.bdf', 12]
+    when 'ja'
+      ['source_fonts/mplus+ascii-12.bdf', 12]
+    end
+  end
+end
+
 # Command template to generate glyph images for each font style
 FONT_STYLES = {
   :dialog => <<-DIALOG, 
-convert -background transparent -font '%{font}' -pointsize 16 \
-        -fill '#f5f5f5' label:%{character} +set label png32:%{glyph}
+convert -background none -font '%{font}' -pointsize %{point_size} \
+        -fill '#f5f5f5' label:%{character} png32:%{glyph}
   DIALOG
 
   :outline => <<-'OUTLINE',
-convert \( -background transparent -fill '#550b0b' -font '%{font}' label:%{character} +set label \) \
-        \( -background transparent -fill '#e9f9f9' -font '%{font}' label:%{character} +set label \) \
-        -background transparent \
-        -page -1-1 -clone 0 \
-        -page -1+1 -clone 0 \
-        -page +1+1 -clone 0 \
-        -page +1-1 -clone 0 \
-        -page +0+0 -clone 1 \
-        -delete 0,1 -layers merge +repage png32:%{glyph}
+convert \( -background none -fill '#550b0b' -font '%{font}' -pointsize %{point_size} \
+        label:%{character} \) \
+        \( -background none -fill '#e9f9f9' -font '%{font}' -pointsize %{point_size} \
+        label:%{character} \) \
+        \( -clone 0 -repage -1-1 \) \
+        \( -clone 0 -repage -1+1 \) \
+        \( -clone 0 -repage +1+1 \) \
+        \( -clone 0 -repage +1-1 \) \
+        -delete 0 -reverse -layers merge +repage png32:%{glyph}
   OUTLINE
-  
+
   :label => <<-'LABEL'
-convert \( -background transparent -fill '#000000' -font '%{font}' label:%{character} +set label \) \
-        \( -background transparent -fill '#ffffff' -font '%{font}' label:%{character} +set label \) \
-        -background transparent \
-        -page -0-1 -clone 0 \
-        -page +0+0 -clone 1 \
-        -delete 0,1 -layers merge +repage png32:%{glyph}
+convert \( -background none -fill '#000000' -font '%{font}' -pointsize %{point_size} \
+        label:%{character} \) \
+        \( -background none -fill '#ffffff' -font '%{font}' -pointsize %{point_size} \
+        label:%{character} \) \
+        \( -clone 0 -repage -0-1 \) \
+        -delete 0 -reverse -layers merge +repage png32:%{glyph}
   LABEL
 }
 
@@ -133,7 +149,6 @@ end)
 
 # We need to generate a texture and snippet for each pair of (language, font style)
 LANGUAGES.each do |language|
-  font = "ttf/#{language}"
   character_list = character_list(language)
   msgstr_text = "#{character_list}.raw"
   po_file = po_file(language)
@@ -181,7 +196,8 @@ LANGUAGES.each do |language|
       else
         character = "'#{character}'"
       end
-      sh(command % {:font => font, :character => character,
+      (font, point_size) = source_font(language, style)
+      sh(command % {:font => font, :point_size => point_size, :character => character,
                     :glyph => glyph, :work_path => work_path})
     end
 
@@ -201,7 +217,7 @@ LANGUAGES.each do |language|
     file font_texture => [work_path, glyphs_task] do
       sh <<-COMMAND
         montage -background transparent -gravity SouthWest \
-                #{glyphs.keys.join(' ')} -geometry '1x1+0+0<' png32:#{font_texture}
+                +set label #{glyphs.keys.join(' ')} -geometry '1x1+0+0<' png32:#{font_texture}
       COMMAND
       # For iOS optimization, the textures need to have even width and height
       (width, height) = image_size(font_texture).map {|length| length + length % 2}
