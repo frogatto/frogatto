@@ -14,6 +14,7 @@
 
 #include <algorithm>
 
+#include "asserts.hpp"
 #include "key.hpp"
 #include "string_utils.hpp"
 
@@ -31,6 +32,7 @@ int CKey::operator[]( int code ) const
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 	return 0;
 #endif
+	ASSERT_LOG(key_list != NULL, "key_list was null");
 	if(require_key_release) {
 		if(std::count(key_list, key_list + num_keys, 0) == num_keys) {
 			require_key_release = false;

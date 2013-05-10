@@ -2,7 +2,7 @@
 
 [Setup]
 AppName=Frogatto & Friends
-AppVersion=1.3
+AppVersion=1.3.2
 DefaultDirName={pf}\Frogatto
 DefaultGroupName=Frogatto & Friends
 UninstallDisplayIcon={app}\frogatto.exe
