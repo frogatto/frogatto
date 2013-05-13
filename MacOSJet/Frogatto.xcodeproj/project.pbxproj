@@ -1437,6 +1437,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CODE_SIGN_ENTITLEMENTS = Frogatto.entitlements;
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Benjamin Anderman";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/dylibs\"",
@@ -1449,10 +1450,10 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					.,
-					/Library/Frameworks/SDL.framework/Headers,
-					/Library/Frameworks/SDL_image.framework/Headers,
-					/Library/Frameworks/SDL_mixer.framework/Headers,
-					/Library/Frameworks/SDL_ttf.framework/Headers,
+					./dylibs/SDL.framework/Headers,
+					./dylibs/SDL_image.framework/Headers,
+					./dylibs/SDL_mixer.framework/Headers,
+					./dylibs/SDL_ttf.framework/Headers,
 					./boost/include,
 					"./glew-1.9.0/include",
 					"./libpng-1.5.5/",
@@ -1476,6 +1477,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CODE_SIGN_ENTITLEMENTS = Frogatto.entitlements;
+				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Benjamin Anderman";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/dylibs\"",
@@ -1488,10 +1490,10 @@
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				HEADER_SEARCH_PATHS = (
 					.,
-					/Library/Frameworks/SDL.framework/Headers,
-					/Library/Frameworks/SDL_image.framework/Headers,
-					/Library/Frameworks/SDL_mixer.framework/Headers,
-					/Library/Frameworks/SDL_ttf.framework/Headers,
+					./dylibs/SDL.framework/Headers,
+					./dylibs/SDL_image.framework/Headers,
+					./dylibs/SDL_mixer.framework/Headers,
+					./dylibs/SDL_ttf.framework/Headers,
 					./boost/include,
 					"./glew-1.9.0/include",
 					"./libpng-1.5.5/",
