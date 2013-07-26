@@ -57,7 +57,7 @@ abort help if glyphs.empty?
 puts "Saving #{texture_path}"
 # Montage the font texture
 system 'montage', '-background', 'transparent', '-gravity', 'West', *glyphs,
-       '-geometry', '1x1+0+0<', "png32:#{texture_path}"
+       '-geometry', '1x1+0+0<', '+set', 'label', "png32:#{texture_path}"
 
 # For iOS optimization, the textures need to have even width and height
 (texture_width, texture_height) = image_size(texture_path).map {|length| length + length % 2}

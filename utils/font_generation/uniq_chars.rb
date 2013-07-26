@@ -6,10 +6,7 @@
 
 # all languages need these characters for missing translations and
 # untranslatable strings
-add = ['a'..'z', 'A'..'Z', '0'..'9',
-       ' `~!#$%^&*()-_=+[]{};:",.<>/?|→←↑↓'.chars,
-      File.read('../../../../data/languages.cfg').chars
-].map(&:to_a).reduce(&:+)
+add = []
 
 # these don't need glyphs, and/or cause the texture generation scripts
 # to fail

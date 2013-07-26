@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-images_paths = ['../../../../images/', '../../images/'].map(&File.method(:expand_path))
+images_paths = ['anura/images/', '../../images/'].map(&File.method(:expand_path))
 
 help = <<"HELP"
   This script extracts glyphs from Frogatto fonts

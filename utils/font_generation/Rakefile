@@ -120,18 +120,6 @@ def character_with_codepoint(codepoint)
   [codepoint].pack('U*')
 end
 
-# Quote a character in FML
-def fml_quote(character)
-  case character
-  when '"'
-    %("\\"")
-  when  "'"  
-    %("'")
-  else
-    %("#{character}")
-  end
-end
-
 task :default => :fonts
 
 desc 'Generate all font textures and fonts.cfg snippets'
@@ -140,12 +128,27 @@ task :fonts => (LANGUAGES.map do |language|
   task language => [
     fonts_cfg(language),
     *FONT_STYLES.keys.map do |style|
-      [
-      # glyphs_task(style, language), 
-       font_texture(style, language), font_cfg_snippet(style, language)]
-    end.flatten
+       font_texture(style, language)
+    end
   ]
 end)
+
+FONT_STYLES.each_key do |style|
+  work_path = work_path(style, 'latin')
+  directory work_path
+
+  task glyphs_task(style, 'latin') => work_path do
+    latin_characters =
+      ['a'..'z', 'A'..'Z', '0'..'9'].map(&:to_a).join + ' `~!#$%^&*()-_=+[]{};:",.<>/?|→←↑↓'
+    latin_font = ["../../", "anura"].map do |prefix|
+      "#{prefix}/data/#{style}_font.cfg"
+    end.find do |file|
+      File.exist? file
+    end
+
+    sh "echo '#{latin_characters}' | ./extract_glyphs.rb #{work_path} #{latin_font}"
+  end
+end
 
 # We need to generate a texture and snippet for each pair of (language, font style)
 LANGUAGES.each do |language|
@@ -214,56 +217,11 @@ LANGUAGES.each do |language|
 
     font_texture = font_texture(style, language)
     desc "Generate #{language} #{style} font texture"
-    file font_texture => [work_path, glyphs_task] do
-      sh <<-COMMAND
-        montage -background transparent -gravity West \
-                +set label #{glyphs.keys.join(' ')} -geometry '1x1+0+0<' png32:#{font_texture}
-      COMMAND
-      # For iOS optimization, the textures need to have even width and height
-      (width, height) = image_size(font_texture).map {|length| length + length % 2}
-     sh "convert #{font_texture} -gravity NorthWest -background transparent -extent #{width}x#{height} png32:#{font_texture}"
-    end
-
-    font_cfg_snippet = font_cfg_snippet(style, language)
-    desc "Generate #{language} #{style} font data"
-    file font_cfg_snippet => [work_path, font_texture, glyphs_task] do
-      (texture_width, texture_height) = image_size(font_texture)
-
-      widths = {}
-      heights = {}
-
-      glyphs.each_pair do |glyph, character|
-        (widths[character], heights[character]) = image_size(glyph)
-      end
-      (grid_width, grid_height) = [widths, heights].map {|h| h.values.max}
-      columns = texture_width / grid_width
-
-      File.open(font_cfg_snippet, 'w') do |cfg|
-        cfg.write <<-HEAD
-          {
-            id: "#{FONT_CFG_IDS[style]}",
-            texture: "#{font_texture.sub %r'^.*images/', ''}",
-            pad: 0,
-            #{EXTRA_FML[language]}
-            chars: [
-        HEAD
-         
-        glyphs.values.each_slice(columns).each_with_index do |characters, row|
-          characters.each_with_index do |character, column|
-            left = column * grid_width
-            top = row * grid_height
-            right = left + widths[character] - 1
-            bottom = top + grid_height - 1
-            cfg.write <<-CHARS
-              {
-                chars: #{fml_quote(character)},
-                rect: [#{left},#{top},#{right},#{bottom}]
-              },
-            CHARS
-          end
-        end
-        cfg.write '] }'
-      end
+    task font_texture => [work_path, glyphs_task, glyphs_task(style, 'latin')] do
+      sh <<-SCRIPT
+      cp #{work_path(style, 'latin')}/* #{work_path}
+      ./build_font.rb #{work_path} ../../data/#{style}_font.#{language}.cfg #{FONT_CFG_IDS[style]}
+      SCRIPT
     end
   end
 end
