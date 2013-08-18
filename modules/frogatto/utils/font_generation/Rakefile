@@ -18,9 +18,9 @@ def source_font(language, style)
     when 'zh_CN'
       ['source_fonts/wenquanyi_9pt.pcf.gz', 12]
     when 'ko'
-      ['source_fonts/dotum+ascii-12.bdf', 12]
+      ['source_fonts/dotum+ascii-10.bdf', 10]
     when 'ja'
-      ['source_fonts/mplus+ascii-12.bdf', 12]
+      ['source_fonts/mplus+ascii-10.bdf', 10]
     end
   end
 end
@@ -216,7 +216,7 @@ LANGUAGES.each do |language|
     desc "Generate #{language} #{style} font texture"
     file font_texture => [work_path, glyphs_task] do
       sh <<-COMMAND
-        montage -background transparent -gravity SouthWest \
+        montage -background transparent -gravity West \
                 +set label #{glyphs.keys.join(' ')} -geometry '1x1+0+0<' png32:#{font_texture}
       COMMAND
       # For iOS optimization, the textures need to have even width and height
@@ -241,7 +241,6 @@ LANGUAGES.each do |language|
       File.open(font_cfg_snippet, 'w') do |cfg|
         cfg.write <<-HEAD
           {
-            kerning: -1,
             id: "#{FONT_CFG_IDS[style]}",
             texture: "#{font_texture.sub %r'^.*images/', ''}",
             pad: 0,

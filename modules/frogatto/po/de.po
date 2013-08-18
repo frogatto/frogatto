@@ -3334,13 +3334,13 @@ msgstr "Es ist gut zu wissen, dass du die\nSpuckrichtung beeinflussen kannst."
 msgid ""
 "If you hold down the up key while pressing\n"
 "the attack button, you'll spit in a high arc."
-msgstr "Wenn du {UP_KEY} hältst, wenn du auf\n{TONGUE_KEY} drückst, dann wird der Gegner\nin hohem Bogen ausgespuckt."
+msgstr "Wenn du ${UP_KEY} hältst, wenn du auf\n${TONGUE_KEY} drückst, dann wird der Gegner\nin hohem Bogen ausgespuckt."
 
 #: ../data/level/grassy-path.cfg:508
 msgid ""
 "If you hold down the down key while pressing\n"
 "the attack button, you'll spit with very little force."
-msgstr "Wenn du {DOWN_KEY} hältst, wenn du auf\n{TONGUE_KEY} drückst, wird der Gegner mit\nsehr geringer Kraft ausgespuckt."
+msgstr "Wenn du ${DOWN_KEY} hältst, wenn du auf\n${TONGUE_KEY} drückst, wird der Gegner mit\nsehr geringer Kraft ausgespuckt."
 
 #: ../data/level/grassy-path.cfg:510
 msgid ""
@@ -3376,7 +3376,7 @@ msgstr "Wenn du aus ihnen trinkst, wird die\ngesamte Lebensenergie wieder aufgef
 msgid ""
 "Certain bridges and stairways, like this one,\n"
 "allow you to jump up and pass through them."
-msgstr "Durch Brücken und Treppen wie diese hier kannst\ndu auch hindurchspringen, indem du dich\ndrauf stellst, die Taste {DOWN_KEY} hältst\nund dann {JUMP_KEY} drückst."
+msgstr "Durch Brücken und Treppen wie diese hier kannst\ndu auch hindurchspringen, indem du dich\ndrauf stellst, die Taste ${DOWN_KEY} hältst\nund dann ${JUMP_KEY} drückst."
 
 #: ../data/level/grassy-path.cfg:565
 msgid "You can also jump down through them."
@@ -6739,7 +6739,7 @@ msgstr "Jetzt kannst du gefährliche\nFeuerbälle mit deinen Fingern\nverschleud
 
 #: ../data/objects/items/ability.cfg:12
 msgid "Press ${ATTACK_KEY} to switch between abilities."
-msgstr "Drücke die Taste $ {ATTACK_KEY},\num zwischen Fähigkeiten wechseln."
+msgstr "Drücke die Taste ${ATTACK_KEY},\num zwischen Fähigkeiten wechseln."
 
 #: ../data/objects/items/ability.cfg:12
 msgid "Tap ♲ to switch between abilities."
