@@ -1,0 +1,2 @@
+APPTITLE="Frogatto Installer"
+DATAFILE="data/data/gui.cfg"
