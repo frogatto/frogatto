@@ -27,6 +27,9 @@ Source: "C:\Projects\frogatto-build\Frogatto\Release\Win32\modules\frogatto\loca
 Source: "C:\Projects\frogatto-build\Frogatto\Release\Win32\modules\frogatto\sounds\*.*"; DestDir: "{app}\modules\frogatto\sounds"; Excludes: ".*"; Flags: recursesubdirs
 Source: "C:\Projects\frogatto-build\Frogatto\Release\Win32\modules\frogatto\music\*.*"; DestDir: "{app}\modules\frogatto\music"; Excludes: ".*"; Flags: recursesubdirs
 
+[UninstallDelete]
+Type: files; Name: "{app}\master-config.cfg"
+Type: files; Name: "{app}\stderr.txt"
 
 [Icons]
 Name: "{group}\Frogatto & Friends"; Filename: "{app}\frogatto.exe"

@@ -29,6 +29,9 @@ Source: "C:\Projects\frogatto-build\Frogatto\Release\Win32\modules\frogatto\musi
 Source: "C:\Projects\frogatto-build\Frogatto\Release\Win32\modules\frogatto\music\general\*.*"; DestDir: "{app}\modules\frogatto\music\general"; Excludes: ".*"; Flags: recursesubdirs
 Source: "C:\Projects\frogatto-build\Frogatto\Release\Win32\modules\frogatto\music\seaside\*.*"; DestDir: "{app}\modules\frogatto\music\seaside"; Excludes: ".*"; Flags: recursesubdirs
 
+[UninstallDelete]
+Type: files; Name: "{app}\master-config.cfg"
+Type: files; Name: "{app}\stderr.txt"
 
 [Icons]
 Name: "{group}\Frogatto & Friends Demo"; Filename: "{app}\frogatto.exe"
@@ -91,7 +94,7 @@ end;
 procedure CreateMasterConfig(Appdir: String);
 begin
   Log('CreateMasterConfig(''' + Appdir + ''')');
-  SaveStringToFile(Appdir + '\master-config.cfg', '{' #10 'id: "frogatto",' #10 'name: "Frogatto & Friends",' #10 'arguments: ["--module=frogatto"', False);
+  SaveStringToFile(Appdir + '\master-config.cfg', '{' #10 'id: "frogatto",' #10 'name: "Frogatto & Friends Demo",' #10 'arguments: ["--module=frogatto"', False);
   if OptionsPage.Values[0] then
 	SaveStringToFile(Appdir + '\master-config.cfg', ',"--fullscreen"', True);
   if OptionsPage.Values[1] then
