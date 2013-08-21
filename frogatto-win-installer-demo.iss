@@ -1,10 +1,10 @@
 ; Windows Installer file for Frogatto&Friends
 
 [Setup]
-AppName=Frogatto & Friends
+AppName=Frogatto & Friends Demo
 AppVersion=1.3.3
-DefaultDirName={pf}\Frogatto
-DefaultGroupName=Frogatto & Friends
+DefaultDirName={pf}\Frogatto Demo
+DefaultGroupName=Frogatto & Friends Demo
 UninstallDisplayIcon={app}\frogatto.exe
 Compression=lzma2
 SolidCompression=yes
@@ -25,12 +25,14 @@ Source: "C:\Projects\frogatto-build\Frogatto\Release\Win32\modules\frogatto\data
 Source: "C:\Projects\frogatto-build\Frogatto\Release\Win32\modules\frogatto\images\*.*"; DestDir: "{app}\modules\frogatto\images"; Excludes: ".*"; Flags: recursesubdirs
 Source: "C:\Projects\frogatto-build\Frogatto\Release\Win32\modules\frogatto\locale\*.*"; DestDir: "{app}\modules\frogatto\locale"; Excludes: ".*"; Flags: recursesubdirs
 Source: "C:\Projects\frogatto-build\Frogatto\Release\Win32\modules\frogatto\sounds\*.*"; DestDir: "{app}\modules\frogatto\sounds"; Excludes: ".*"; Flags: recursesubdirs
-Source: "C:\Projects\frogatto-build\Frogatto\Release\Win32\modules\frogatto\music\*.*"; DestDir: "{app}\modules\frogatto\music"; Excludes: ".*"; Flags: recursesubdirs
+Source: "C:\Projects\frogatto-build\Frogatto\Release\Win32\modules\frogatto\music\arcade\*.*"; DestDir: "{app}\modules\frogatto\music\arcade"; Excludes: ".*"; Flags: recursesubdirs
+Source: "C:\Projects\frogatto-build\Frogatto\Release\Win32\modules\frogatto\music\general\*.*"; DestDir: "{app}\modules\frogatto\music\general"; Excludes: ".*"; Flags: recursesubdirs
+Source: "C:\Projects\frogatto-build\Frogatto\Release\Win32\modules\frogatto\music\seaside\*.*"; DestDir: "{app}\modules\frogatto\music\seaside"; Excludes: ".*"; Flags: recursesubdirs
 
 
 [Icons]
-Name: "{group}\Frogatto & Friends"; Filename: "{app}\frogatto.exe"
-Name: "{group}\Uninstall Frogatto & Friends"; Filename: "{uninstallexe}"
+Name: "{group}\Frogatto & Friends Demo"; Filename: "{app}\frogatto.exe"
+Name: "{group}\Uninstall Frogatto & Friends Demo"; Filename: "{uninstallexe}"
 
 [Run]
 Filename: "{app}\vcredist_x86.exe"; Parameters: "/q"
