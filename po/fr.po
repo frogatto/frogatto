@@ -3,18 +3,18 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# arikel <arikel@free.fr>, 2011.
-#   <arikel@free.fr>, 2011-2012.
-#   <emmanuel.fujioka@free.fr>, 2012.
-# manu <emmanuel.fujioka@free.fr>, 2011.
-# Marcos Avila Isidoro <marcavis@yahoo.com.br>, 2011.
-# Philipp Zabel <pzabel@gmx.de>, 2011.
+# arikel <arikel@free.fr>, 2011
+# arikel <arikel@free.fr>, 2011-2012
+# manu <emmanuel.fujioka@free.fr>, 2012
+# manu <emmanuel.fujioka@free.fr>, 2011-2012
+# Marcos Avila Isidoro <marcavis@yahoo.com.br>, 2011
+# Philipp Zabel <pzabel@gmx.de>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2012-11-28 22:10-0200\n"
-"PO-Revision-Date: 2012-12-01 18:38+0000\n"
+"POT-Creation-Date: 2013-04-26 01:54-0300\n"
+"PO-Revision-Date: 2013-04-27 18:22+0000\n"
 "Last-Translator: Chookrut <pascal.mazon+transifex@mailz.org>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/Frogatto/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -39,39 +39,47 @@ msgstr "Langue"
 msgid "Attack"
 msgstr "Attaque"
 
-#: ../../../src/controls_dialog.cpp:62
+#: ../../../src/controls_dialog.cpp:62 ../../../src/language_dialog.cpp:102
 msgid "Back"
 msgstr "Retour"
 
-#: ../../../src/custom_object_functions.cpp:242
+#: ../../../src/custom_object_functions.cpp:251
 msgid "Select save slot to use."
 msgstr "Choisissez un emplacement\nde sauvegarde à utiliser."
 
-#: ../../../src/custom_object_functions.cpp:352
+#: ../../../src/custom_object_functions.cpp:361
 msgid "Select save slot to load."
 msgstr "Choisissez un emplacement\nde sauvegarde à charger."
 
-#: ../../../src/draw_scene.cpp:428
+#: ../../../src/draw_scene.cpp:442
 msgid "Achievement Unlocked!"
 msgstr "Accomplissement débloqué !"
 
-#: ../../../src/main.cpp:707
+#: ../../../src/language_dialog.cpp:79
+msgid "Language change will take effect in next level."
+msgstr "Le changement de langue prendra effet au prochain niveau."
+
+#: ../../../src/language_dialog.cpp:96
+msgid "Use system language"
+msgstr "Utiliser la langue du système"
+
+#: ../../../src/main.cpp:700
 msgid "Initializing custom object functions"
 msgstr "Initialisation des fonctions\npersonnalisées de l'objet"
 
-#: ../../../src/main.cpp:709
+#: ../../../src/main.cpp:702
 msgid "Initializing textures"
 msgstr "Initialisation des textures"
 
-#: ../../../src/main.cpp:711
+#: ../../../src/main.cpp:704
 msgid "Initializing tiles"
 msgstr "Initialisation des cases"
 
-#: ../../../src/main.cpp:713 ../../../src/main.cpp:717
+#: ../../../src/main.cpp:706 ../../../src/main.cpp:710
 msgid "Initializing GUI"
 msgstr "Initialisation de l'interface graphique"
 
-#: ../../../src/main.cpp:724
+#: ../../../src/main.cpp:717
 msgid "Loading level"
 msgstr "Chargement du niveau"
 
@@ -92,20 +100,20 @@ msgid "Controls..."
 msgstr "Contrôles..."
 
 #: ../../../src/pause_game_dialog.cpp:75
+msgid "Language..."
+msgstr "Langue…"
+
+#: ../../../src/pause_game_dialog.cpp:76
 msgid "Return to Titlescreen"
 msgstr "Revenir à l'écran-titre"
 
-#: ../../../src/pause_game_dialog.cpp:76
+#: ../../../src/pause_game_dialog.cpp:77
 msgid "Exit Game"
 msgstr "Quitter le jeu"
 
-#: ../../../src/pause_game_dialog.cpp:77
+#: ../../../src/pause_game_dialog.cpp:78
 msgid "Reverse A and B"
 msgstr "Inverser A et B"
-
-#: ../../../src/pause_game_dialog.cpp:79
-msgid "OpenFeint"
-msgstr "OpenFeint"
 
 #: ../CHANGELOG:1 ../iOS_CHANGELOG:1
 msgid "Version 1.3:"
@@ -910,7 +918,7 @@ msgstr "Absolument,\nMerci encore !"
 msgid "Bon Bosque"
 msgstr "Bon Bosquet"
 
-#: ../data/level/bug-mining.cfg:4115
+#: ../data/level/bug-mining.cfg:4114
 msgid "Bug Mining"
 msgstr "Mine d'Insectes"
 
@@ -1313,7 +1321,7 @@ msgid "We can do that."
 msgstr "Ça peut s'arranger."
 
 #: ../data/level/crevice-village-cave.cfg:1231
-#: ../data/level/crevice-village-central.cfg:4134
+#: ../data/level/crevice-village-central.cfg:4153
 #: ../data/level/crevice-village-heights.cfg:2246
 #: ../data/level/crevice-village.cfg:1647
 #: ../data/objects/playable/map-selector.cfg:17
@@ -1395,7 +1403,7 @@ msgid ""
 "our best bet for a clue."
 msgstr "La meilleure option est probablement\nde demander à un des prisonniers."
 
-#: ../data/level/crevice-village-central.cfg:2811
+#: ../data/level/crevice-village-central.cfg:2830
 msgid "Hey! Over here!"
 msgstr "Hé ! Par ici."
 
@@ -1991,8 +1999,8 @@ msgstr "On a vu le lieutenant de Milgram s'y rendre."
 msgid "How interesting."
 msgstr "Intéressant."
 
-#: ../data/level/crevice-village-house-3-backroom.cfg:1754
-#: ../data/level/crevice-village-house-3.cfg:1499
+#: ../data/level/crevice-village-house-3-backroom.cfg:1773
+#: ../data/level/crevice-village-house-3.cfg:1516
 #: ../data/level/liberated-crevice-village-house-3.cfg:1312
 msgid "The Danger House"
 msgstr "La Maison des Dangers"
@@ -2904,7 +2912,7 @@ msgstr "Ça dit, \"Salle du Trésor.\nEntrée interdite.\""
 msgid "Storeroom Treasure Chamber"
 msgstr "Chambre du Trésor"
 
-#: ../data/level/dungeon-storerooms.cfg:1354
+#: ../data/level/dungeon-storerooms.cfg:1440
 msgid "Storerooms"
 msgstr "Entrepôts"
 
@@ -2925,17 +2933,17 @@ msgstr "Cavernes Inondées"
 msgid "Foreboding Forest"
 msgstr "Forêt des Mauvais Pressentiments "
 
-#: ../data/level/frogatto-grotto-frogattos-room.cfg:292
+#: ../data/level/frogatto-grotto-frogattos-room.cfg:291
 msgid ""
 "Ahh, what a beautiful ...\n"
 "<em>...afternoon?!</em>"
 msgstr "Ah, quel magnifique...\n<em>après-midi</em> ?!"
 
-#: ../data/level/frogatto-grotto-frogattos-room.cfg:293
+#: ../data/level/frogatto-grotto-frogattos-room.cfg:292
 msgid "Oh geez! I overslept!"
 msgstr "Mince ! J'ai trop dormi !"
 
-#: ../data/level/frogatto-grotto-frogattos-room.cfg:890
+#: ../data/level/frogatto-grotto-frogattos-room.cfg:889
 msgid "Frogatto's Room"
 msgstr "Chambre de Frogatto"
 
@@ -3052,7 +3060,7 @@ msgstr "Grotte de Frogatto"
 msgid "Gloomy Glade"
 msgstr "Clairière Obscure"
 
-#: ../data/level/gnarled-knoll.cfg:3908
+#: ../data/level/gnarled-knoll.cfg:3375
 msgid "Gnarled Knoll"
 msgstr "Tertre Noueux"
 
@@ -3520,15 +3528,15 @@ msgstr "Chemin Herbeux"
 msgid "Hanging Platforms"
 msgstr "Plateformes Suspendues"
 
-#: ../data/level/hidden-depths.cfg:47
-msgid "I'd better be careful."
-msgstr "Je ferais mieux d'être prudent."
-
-#: ../data/level/hidden-depths.cfg:47
+#: ../data/level/hidden-depths.cfg:48
 msgid "This is a very deep chasm..."
 msgstr "En voilà un sacré précipice..."
 
-#: ../data/level/hidden-depths.cfg:322
+#: ../data/level/hidden-depths.cfg:50
+msgid "I'd better be careful."
+msgstr "Je ferais mieux d'être prudent."
+
+#: ../data/level/hidden-depths.cfg:323
 msgid "AAAAAAH! I CAN'T FLY!"
 msgstr "HAAAAA! JE NE SAIS PAS VOLER !"
 
@@ -3540,7 +3548,7 @@ msgstr "Profondeurs Cachées."
 msgid "That guy sure doesn't look glad to meet me!"
 msgstr "Ce gars-là n'a clairement pas l'air d'être\nheureux de me rencontrer !"
 
-#: ../data/level/killer-bunnies.cfg:4377
+#: ../data/level/killer-bunnies.cfg:4322
 msgid "Killer Bunnies"
 msgstr "Lapins Tueurs"
 
@@ -4940,11 +4948,6 @@ msgstr "\"Super dangereux pour les piétons !\nOuvriers seulement !\""
 msgid "Moonlit Ramparts"
 msgstr "Ramparts au Clair de Lune"
 
-#: ../data/level/new-game-screen.cfg:39
-#: ../data/level/titlescreen-difficulty-selector.cfg:39
-msgid "SELECT DIFFICULTY LEVEL:"
-msgstr "SÉLECTIONNER LE NIVEAU DE DIFFICULTÉ :"
-
 #: ../data/level/north-courtyard.cfg:648
 msgid "North Courtyard"
 msgstr "Cours Nord"
@@ -5160,90 +5163,152 @@ msgid "I say! Who's there?"
 msgstr "Qui va là ?"
 
 #: ../data/level/secluded-hut-interior.cfg:1063
-#: ../data/level/secluded-hut.cfg:2238
+#: ../data/level/secluded-hut.cfg:2358
 #: ../data/objects/playable/map-selector.cfg:16
 msgid "Secluded Hut"
 msgstr "Maison du Reclus"
 
-#: ../data/level/secluded-hut.cfg:1398
+#: ../data/level/secluded-hut.cfg:1462
+msgid ""
+"This is the end of the demo, which you probably\n"
+"can infer from the impassible barrier right ahead."
+msgstr "C'est la fin de la démo, comme vous pouviez le\ndeviner à la barrière infranchissable juste devant."
+
+#: ../data/level/secluded-hut.cfg:1463
+msgid ""
+"You're free to keep exploring the first chapter,\n"
+" but you can't go any further forward."
+msgstr "Vous êtes libre d'explorer le premier chapitre,\nmais vous ne pourrez pas aller plus loin."
+
+#: ../data/level/secluded-hut.cfg:1465
+msgid ""
+"Well... hey, what the hell?\n"
+"I wanted to see what happens..."
+msgstr "Eh bien… Attendez, c'est quoi ce bazar ?\nJe voulais voir ce qui se passait…"
+
+#: ../data/level/secluded-hut.cfg:1467
+msgid ""
+"I have rather a vested interest in this,\n"
+"you know."
+msgstr "Vous savez, ça commençait à\nm'intéresser tout ça."
+
+#: ../data/level/secluded-hut.cfg:1468
+msgid ""
+"Naturally; but so does the crew that made this.\n"
+"Gotta pay the piper, or he won't play."
+msgstr "Évidemment ; mais c'est aussi le cas\nde l'équipe qui a fait ça. Il faut bien payer\nle musicien, sinon il ne jouera plus."
+
+#: ../data/level/secluded-hut.cfg:1470
+msgid ""
+"I guess.\n"
+"It's so annoying to pay for stuff, though."
+msgstr "J'imagine. Mais c'est tellement embêtant\nde payer, quand même."
+
+#: ../data/level/secluded-hut.cfg:1471
+msgid ""
+"Sure, but that's just business.\n"
+"That's what pays for making games like this."
+msgstr "Évidemment, mais c'est ça les affaires.\nC'est ce qui permet de réaliser\ndes jeux comme ça."
+
+#: ../data/level/secluded-hut.cfg:1472
+msgid ""
+"Check out our website, at frogatto.com, if\n"
+"you do want to buy a copy."
+msgstr "Visitez notre site, à frogatto.com, si\nvous voulez acheter une copie."
+
+#: ../data/level/secluded-hut.cfg:1474
+msgid "Uh, sure, I'll keep that in mind."
+msgstr "D'accord, je note."
+
+#: ../data/level/secluded-hut.cfg:1475
+msgid ""
+"Of course.  At any rate, enjoy yourself,\n"
+"and if you do choose to buy - thank you."
+msgstr "Très bien. En tout cas, amusez-vous bien,\net si vous décidez d'acheter - merci."
+
+#: ../data/level/secluded-hut.cfg:1476
+msgid "Because that's pretty awesome if you do."
+msgstr "Parce que c'est quand même génial si vous le faites."
+
+#: ../data/level/secluded-hut.cfg:1518
 msgid "Are you quite alright?"
 msgstr "Vous allez bien ?"
 
-#: ../data/level/secluded-hut.cfg:1400
+#: ../data/level/secluded-hut.cfg:1520
 msgid ""
 "Yeah.\n"
 "Who WAS that guy?!"
 msgstr "Ouais.\nC'ÉTAIT qui ce type ?!"
 
-#: ../data/level/secluded-hut.cfg:1401
+#: ../data/level/secluded-hut.cfg:1521
 msgid "One of Milgram's henchmen, no doubt."
 msgstr "Un des hommes de main\nde Milgram, pour sûr."
 
-#: ../data/level/secluded-hut.cfg:1402
+#: ../data/level/secluded-hut.cfg:1522
 msgid ""
 "They may have seen me talking to you,\n"
 "I can't be sure."
 msgstr "Ils pourraient m'avoir vu vous parler,\nje ne peux en être sûr."
 
-#: ../data/level/secluded-hut.cfg:1404
+#: ../data/level/secluded-hut.cfg:1524
 msgid "Wait, what?  Milgram?"
 msgstr "Attendez, qui ? Milgram ?"
 
-#: ../data/level/secluded-hut.cfg:1406
+#: ../data/level/secluded-hut.cfg:1526
 msgid ""
 "What's <em>he</em> doing\n"
 "on this side of the island?"
 msgstr "Que fait-<em>il</em> de ce côté de l'île ?"
 
-#: ../data/level/secluded-hut.cfg:1408
+#: ../data/level/secluded-hut.cfg:1528
 msgid "You still haven't heard, then."
 msgstr "Alors vous n'avez pas entendu."
 
-#: ../data/level/secluded-hut.cfg:1409
+#: ../data/level/secluded-hut.cfg:1529
 msgid ""
 "Milgram's men showed up\n"
 "early this morning, in town.\n"
 "They've taken the whole place hostage!"
 msgstr "Les hommes de Milgram se sont montrés\ntôt ce matin, dans la ville.\nIls l'ont complètement prise en otage !"
 
-#: ../data/level/secluded-hut.cfg:1410
+#: ../data/level/secluded-hut.cfg:1530
 msgid ""
 "Unfortunately, I don't know the details.\n"
 "I just flew out of there as soon as I could,\n"
 "looking for <em>anyone</em> who could help."
 msgstr "Malheureusement, je ne connais pas les détails.\nJe me suis enfui de là dès que j'ai pu,\npour chercher l'aide de <em>n'importe qui</em>."
 
-#: ../data/level/secluded-hut.cfg:1412
+#: ../data/level/secluded-hut.cfg:1532
 msgid ""
 "That certainly...\n"
 "changes my plans for the day."
 msgstr "Visiblement...\nça change mes plans pour la journée."
 
-#: ../data/level/secluded-hut.cfg:1414
+#: ../data/level/secluded-hut.cfg:1534
 msgid ""
 "Wow, uhm... \n"
 "I'd sure like to help, but ...\n"
 "I just don't see what I could do."
 msgstr "Waouh, hum...\nj'aimerais aider, pour sûr, mais...\nje ne vois vraiment pas\nce que je pourrais faire."
 
-#: ../data/level/secluded-hut.cfg:1416
+#: ../data/level/secluded-hut.cfg:1536
 msgid ""
 "I don't think I can promise anything,\n"
 "but if the opportunity presents itself,\n"
 "who knows?"
 msgstr "Je ne pense pas pouvoir promettre\nquoi que ce soit mais si l'occasion\nse présente, qui sait ?"
 
-#: ../data/level/secluded-hut.cfg:1417
+#: ../data/level/secluded-hut.cfg:1537
 msgid ""
 "Yes, it's unreasonable to expect\n"
 "someone to just charge in there."
 msgstr "Oui, il est déraisonnable de s'attendre à\nce que quelqu'un fonce la tête la première\ndans ce pétrin."
 
-#: ../data/level/secluded-hut.cfg:1418
+#: ../data/level/secluded-hut.cfg:1538
 msgid "I'm at a loss for a plan, myself."
 msgstr "Moi-même, je manque d'idées."
 
-#: ../data/level/secluded-hut.cfg:1419
+#: ../data/level/secluded-hut.cfg:1539
 msgid ""
 "Nevertheless, I'd better be going.\n"
 "Hopefully, we'll fix that bridge soon.\n"
@@ -5251,27 +5316,27 @@ msgid ""
 "with modular construction and all."
 msgstr "Quoi qu'il en soit, je ferais mieux d'y aller.\nNous réparerons ce pont bientôt,\nsi tout va bien.\nC'est impressionnant ce qu'on peut faire\navec les constructions modulaires et tout."
 
-#: ../data/level/secluded-hut.cfg:1420
+#: ../data/level/secluded-hut.cfg:1540
 msgid ""
 "In the meantime, you might benefit from\n"
 "visiting the fellow who lives here."
 msgstr "En attendant, il se pourrait que vous trouviez\nvotre bonheur en rendant visite au type qui vit là."
 
-#: ../data/level/secluded-hut.cfg:1421
+#: ../data/level/secluded-hut.cfg:1541
 msgid ""
 "Bit of a recluse, but he's quite sharp.\n"
 "He lives on top of this rock column."
 msgstr "C'est une sorte de reclus,\nmais il est loin d'être bête.\nIl vit au sommet de cette colonne rocheuse."
 
-#: ../data/level/secluded-hut.cfg:1423
+#: ../data/level/secluded-hut.cfg:1543
 msgid "And I get up there... how?"
 msgstr "Et pour y aller... on fait comment ?"
 
-#: ../data/level/secluded-hut.cfg:1427
+#: ../data/level/secluded-hut.cfg:1547
 msgid "Simple, just take to the air!"
 msgstr "Facile, par les airs !"
 
-#: ../data/level/secluded-hut.cfg:1430
+#: ../data/level/secluded-hut.cfg:1550
 msgid "You ... <em>do</em> realize I can't fly?"
 msgstr "Vous vous <em>rendez compte</em> que...\nmoi, je ne peux pas voler ?"
 
@@ -5279,11 +5344,11 @@ msgstr "Vous vous <em>rendez compte</em> que...\nmoi, je ne peux pas voler ?"
 msgid "Splash, Hop"
 msgstr "Plouf, Hop"
 
-#: ../data/level/starlit-cave.cfg:1056
+#: ../data/level/starlit-cave.cfg:1094
 msgid "Starlit Cave"
 msgstr "Caverne Étoilée"
 
-#: ../data/level/stonepipe-meadow.cfg:2797
+#: ../data/level/stonepipe-meadow.cfg:2796
 msgid "Stonepipe Meadow"
 msgstr "Clairière du Tuyau de Pierre"
 
@@ -5988,6 +6053,10 @@ msgstr "Course aux Pièces"
 msgid "COIN RACE"
 msgstr "COURSE AUX PIÈCES"
 
+#: ../data/level/titlescreen-difficulty-selector.cfg:39
+msgid "SELECT DIFFICULTY LEVEL:"
+msgstr "SÉLECTIONNER LE NIVEAU DE DIFFICULTÉ :"
+
 #: ../data/level/titlescreen-load-game-selector.cfg:23
 msgid "File 1:"
 msgstr "Fichier 1 :"
@@ -6000,7 +6069,7 @@ msgstr "Fichier 2 :"
 msgid "File 3:"
 msgstr "Fichier 3 :"
 
-#: ../data/level/titlescreen-load-game-selector.cfg:122
+#: ../data/level/titlescreen-load-game-selector.cfg:121
 #: ../data/level/titlescreen-new-game-selector.cfg:236
 msgid "Play!"
 msgstr "Jouer !"
@@ -6040,33 +6109,49 @@ msgstr "NOUVELLE PARTIE"
 msgid "Press ${LEFT_KEY} or ${RIGHT_KEY} to walk."
 msgstr "Appuyez sur ${LEFT_KEY} ou ${RIGHT_KEY} pour marcher."
 
+#: ../data/level/titlescreen.cfg:125
+msgid "Tap ← or → to walk."
+msgstr "Appuyez sur ← ou → pour marcher."
+
 #: ../data/level/titlescreen.cfg:126
 msgid "Quickly press ${LEFT_KEY} or ${RIGHT_KEY} twice to run."
 msgstr "Appuyez rapidement sur ${LEFT_KEY} ou ${RIGHT_KEY} deux fois pour courir."
+
+#: ../data/level/titlescreen.cfg:126
+msgid "Quickly tap ← or → twice to run."
+msgstr "Pressez deux fois ← ou → rapidement pour courir."
 
 #: ../data/level/titlescreen.cfg:128
 msgid "Press ${DOWN_KEY} to crouch."
 msgstr "Appuyez sur ${DOWN_KEY} pour vous accroupir."
 
 #: ../data/level/titlescreen.cfg:128
-msgid "Walk in front of a door or person, and press"
-msgstr "Placez-vous en face d'une personne ou d'une porte et appuyez sur"
+msgid "Walk in front of a door or person,"
+msgstr "Marchez devant une porte ou une personne,"
 
 #: ../data/level/titlescreen.cfg:129
 msgid "Press ${UP_KEY} to talk, and use things like doors."
 msgstr "Appuyez sur ${UP_KEY} pour parler et utiliser\nles objets, tels que les portes."
 
 #: ../data/level/titlescreen.cfg:129
-msgid "the button that appears to interact with them."
-msgstr "le bouton qui apparaît pour interagir avec eux."
+msgid "and tap ☆ to interact with them."
+msgstr "et appuyez sur ☆ pour interagir avec eux."
 
 #: ../data/level/titlescreen.cfg:130
 msgid "Press ${JUMP_KEY} to jump."
 msgstr "Appuyez sur ${JUMP_KEY} pour sauter."
 
+#: ../data/level/titlescreen.cfg:130
+msgid "Tap ○ to jump."
+msgstr "Appuyez sur ○ pour sauter."
+
 #: ../data/level/titlescreen.cfg:131
 msgid "Press ${TONGUE_KEY} to use a character's attacks."
 msgstr "Appuyez sur ${TONGUE_KEY} pour utiliser l'attaque du personnage."
+
+#: ../data/level/titlescreen.cfg:131
+msgid "Tap □ to use a character's attacks."
+msgstr "Appuyez sur □ pour utiliser les attaques d'un personnage."
 
 #: ../data/level/titlescreen.cfg:170
 msgid "ARCADE"
@@ -6654,10 +6739,8 @@ msgid "Press ${ATTACK_KEY} to switch between abilities."
 msgstr "Appuyez sur ${ATTACK_KEY} pour changer de capacité."
 
 #: ../data/objects/items/ability.cfg:12
-msgid ""
-"Tap the upper-left corner of the screen\n"
-"to switch between abilities."
-msgstr "Appuyez sur le coin en haut à gauche de l'écran\npour changer de pouvoir."
+msgid "Tap ♲ to switch between abilities."
+msgstr "Appuyez sur ♲ pour changer de pouvoir."
 
 #: ../data/objects/items/max_heart_object.cfg:8
 msgid ""
