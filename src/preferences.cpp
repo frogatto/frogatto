@@ -715,7 +715,25 @@ namespace preferences {
 		controls::set_sdlkey(controls::CONTROL_ATTACK, static_cast<SDLKey>(node["key_attack"].as_int(SDLK_d)));
 		controls::set_sdlkey(controls::CONTROL_JUMP, static_cast<SDLKey>(node["key_jump"].as_int(SDLK_a)));
 		controls::set_sdlkey(controls::CONTROL_TONGUE, static_cast<SDLKey>(node["key_tongue"].as_int(SDLK_s)));
-        
+
+#if SDL_VERSION_ATLEAST(2,0,0)
+		if(node.has_key("sdl_version") == false || node["sdl_version"].as_int() < SDL_VERSIONNUM(2, 0, 0)) {
+			// SDL version isn't found or isn't high enough, so we remap the keys to defaults
+			controls::set_sdlkey(controls::CONTROL_UP, SDLK_UP);
+			controls::set_sdlkey(controls::CONTROL_DOWN, SDLK_DOWN);
+			controls::set_sdlkey(controls::CONTROL_LEFT, SDLK_LEFT);
+			controls::set_sdlkey(controls::CONTROL_RIGHT, SDLK_RIGHT);
+		}
+#else
+		if(node.has_key("sdl_version")) {
+			// SDL version found, we're runing an old SDL version so just remap the keys
+			controls::set_sdlkey(controls::CONTROL_UP, SDLK_UP);
+			controls::set_sdlkey(controls::CONTROL_DOWN, SDLK_DOWN);
+			controls::set_sdlkey(controls::CONTROL_LEFT, SDLK_LEFT);
+			controls::set_sdlkey(controls::CONTROL_RIGHT, SDLK_RIGHT);
+		}
+#endif
+
         preferences::set_32bpp_textures_if_kb_memory_at_least( 512000 );
 #endif
 	}
