@@ -12,14 +12,14 @@ msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2013-04-26 01:54-0300\n"
-"PO-Revision-Date: 2013-04-29 10:36+0000\n"
+"PO-Revision-Date: 2013-05-22 15:30+0000\n"
 "Last-Translator: GunChleoc <fios@foramnagaidhlig.net>\n"
 "Language-Team: Gaelic, Scottish (http://www.transifex.com/projects/p/Frogatto/language/gd/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: gd\n"
-"Plural-Forms: nplurals=3; plural=n < 2 ? 0 : n == 2 ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=(n==1 || n==11) ? 0 : (n==2 || n==12) ? 1 : (n > 2 && n < 20) ? 2 : 3;\n"
 
 #: ../../../src/controls_dialog.cpp:51
 msgid "Directions"
@@ -991,7 +991,7 @@ msgstr "B' urrainn dha bhith na bu mhiosa."
 msgid ""
 "That ... uh, \"captain\" cat, or whoever he was,\n"
 "tried to dice me up."
-msgstr "Dh'fheuch a' ... a' phiseag 'caiptein' ud no\nge b' e cò bh' ann ri mo sgudadh ann am pìosan."
+msgstr "Dh'fheuch a' ... a' phiseag \"caiptein\" ud no\nge b' e cò bh' ann ri mo sgudadh ann am pìosan."
 
 #: ../data/level/crevice-bridge.cfg:304
 msgid ""
@@ -1038,7 +1038,7 @@ msgid ""
 "So then he tells this oddball story\n"
 "about how it's all some plot where\n"
 "Milgram's gonna take over the town."
-msgstr "Is an uairsin, dh'innis e an sgeulachd neònach seo\nnach b' e ach cuilbheart a bh' anns a h-uile sìon\nfar a bheil Calum a' fheuchainn ris a' bhaile\na chur fodha fhèin."
+msgstr "Is an uairsin, dh'innis e an sgeulachd neònach seo\nnach b' e ach cuilbheart a bh' anns a h-uile sìon\nfar a bheil Calum a' feuchainn ris a' bhaile\na chur fodha fhèin."
 
 #: ../data/level/crevice-bridge.cfg:321
 msgid "Wow."
@@ -1324,7 +1324,7 @@ msgstr "Uill, b' urrainn dhuinn\nseo a chur air dòigh."
 #: ../data/level/crevice-village.cfg:1647
 #: ../data/objects/playable/map-selector.cfg:17
 msgid "Crevice Village"
-msgstr "Baile a' Chòis"
+msgstr "Àird a' Chòis"
 
 #: ../data/level/crevice-village-central-side-cave.cfg:1111
 msgid "Hidden Cave"
@@ -1497,7 +1497,7 @@ msgstr "Aidh, sheall aon dhe na prìomhachan aca\ndealbh dhethsan dhomh."
 
 #: ../data/level/crevice-village-heights.cfg:263
 msgid "He asked me if I knew who it was."
-msgstr "Dh'fhaighnich e dhiom an robh fios a'm cò bh' ann."
+msgstr "Dh'fhaighnich e dhìom an robh fios a'm cò bh' ann."
 
 #: ../data/level/crevice-village-heights.cfg:265
 msgid "That's very interesting..."
@@ -1586,7 +1586,7 @@ msgstr "'S e, gun teagamh."
 msgid ""
 "Can't be worse than the crap I have\n"
 "to deal with just coming into town, though."
-msgstr "Chan urrainn dha bhith nas miosa\nna 'n cac ris a tha agam ri dèiligeadh\non a thàinig mi dhan bhaile, co-dhiù."
+msgstr "Chan urrainn dha bhith nas miosa\nna 'n cac ris a bh' agam ri dèiligeadh\non a thàinig mi dhan bhaile, co-dhiù."
 
 #: ../data/level/crevice-village-heights.cfg:293
 msgid ""
@@ -2302,7 +2302,7 @@ msgstr "Uill, saoilidh mi gun do shàbhail."
 
 #: ../data/level/crevice-village-house-elder.cfg:518
 msgid "You bet I am."
-msgstr "Tha gu dearbh."
+msgstr "Shàbhail gu dearbh."
 
 #: ../data/level/crevice-village-house-elder.cfg:520
 msgid "Hmm... boy, where do I start?"
@@ -2429,7 +2429,7 @@ msgstr "Nise, 's e \"sàrachair\" a chanar ri daoine\na leithid Chaluim."
 msgid ""
 "He gives me money,\n"
 "then he just 'decides' what I owe him."
-msgstr "Bheir e airgead dhut is an uair sin\n'cuiridh e roimhe' dè tha aige ort."
+msgstr "Bheir e airgead dhut is an uair sin\n\"cuiridh e roimhe\" dè na th' aige ort."
 
 #: ../data/level/crevice-village-house-elder.cfg:566
 msgid ""
@@ -2790,7 +2790,7 @@ msgstr "'Eil Frogattothan a' fuireach sna h-uamhan?"
 msgid ""
 "We're called 'Frogs', actually...\n"
 "I guess sometimes we do, but I don't."
-msgstr "Cha chreid mi nach eil aig amannan,\nach chan eil mi fhìn.\nIs uill, 's e 'losgannan' a th' oirnn dha-rìribh."
+msgstr "Cha chreid mi nach eil aig amannan,\nach chan eil mi fhìn.\nIs uill, 's e \"losgannan\" a th' oirnn dha-rìribh."
 
 #: ../data/level/dungeon-gateway.cfg:155
 msgid ""
@@ -3175,7 +3175,7 @@ msgstr "B' fhearr leam nan toirinn fhèin\nsùil air a leithid rud ro làimh."
 msgid ""
 "Understood.  Though I must emphasize that\n"
 "we had nothing to do with this, sir."
-msgstr "Tha mi tuigsinn. Co-dhiù, feumaidh mi ràdh\nnach robh sinne 'n sàs san fhear seo, uasail."
+msgstr "Tha mi tuigsinn. Co-dhiù, feumaidh mi ràdh\nnach robh sinne 'n sàs sa chùis seo, uasail."
 
 #: ../data/level/golden-glen.cfg:2358
 msgid ""
@@ -4510,7 +4510,7 @@ msgstr "'S e ceist chudromach a tha seo is feumaidh\ndha chuideigin faighinn a-m
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:218
 msgid "Would that someone possibly be you?"
-msgstr "Is an e thu fhèin a bhiodh ann an cuideigin seo?"
+msgstr "Is an tusa fhèin a bhiodh ann an cuideigin seo?"
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:220
 msgid "That is a distinct possibility."
@@ -4570,7 +4570,7 @@ msgstr "Chan eil mise ach toilichte gu bheil\na h-uile duine ceart gu leòr."
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:197
 msgid "Where's your sibling, by the way?"
-msgstr "Eadar da sgeul,\ncà bheil do bhràthair?"
+msgstr "Eadar dà sgeul,\ncà bheil do bhràthair?"
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:198
 msgid "At the store."
@@ -5618,7 +5618,7 @@ msgstr "Nise, cò am fìor-bhàillidh againn ...\nuill ..."
 msgid ""
 "Let's just say the political situation in\n"
 "Crevice Village is a little confusing."
-msgstr "Canamaid gu bheil an suidheachadh ann am\nBaile a' Chòis caran toinnte."
+msgstr "Canamaid gu bheil an suidheachadh ann am\nÀird a' Chòis caran toinnte."
 
 #: ../data/level/tea-with-milgram.cfg:199
 msgid ""
@@ -5736,7 +5736,7 @@ msgid ""
 "but if you'll forgive me, I had the impression\n"
 "it was a bit of a backwater, so I thought\n"
 "we'd do something to help out."
-msgstr "Sin agad e. Chan eil mi uabhasach eòlach air Baile\na' Chòis ach ma ghabhas tu mo leisgeul, bha mi\ndhen bheachd nach b' e ach àite iomallach a\nbh' ann is gun toireadh sinn taic dha."
+msgstr "Sin agad e. Chan eil mi uabhasach eòlach air Àird\na' Chòis ach ma ghabhas tu mo leisgeul, bha mi\ndhen bheachd nach b' e ach àite iomallach a\nbh' ann is gun toireadh sinn taic dha."
 
 #: ../data/level/tea-with-milgram.cfg:255
 msgid ""
