@@ -1,3 +1,10 @@
-Frogatto's files are separated into two licenses; with the exception of two directories, everything is licensed under the CC-BY 3.0 LICENSE ( http://creativecommons.org/licenses/by/3.0/ ).  The two directories which are exempt from this are data/levels, which contains all of our level files, and images/characters, which contains all of our main-character art - the contents of both of these directories are licensed under the CC BY-NC-SA 3.0 LICENSE ( http://creativecommons.org/licenses/by-nc-sa/3.0/ ).
+Frogatto's files are separated into two licenses; with the exception of a few specific directories, everything is licensed under the CC-BY 3.0 LICENSE ( http://creativecommons.org/licenses/by/3.0/ ).
+
+The following directories are exempt from this, and all of their contents are copyrighted to the frogatto team.
+- data/levels, which contains all of our level files
+- images/characters, which contains all of our main-character art
+- images/tiles, which contains our tile art
+- sounds, which contains our sound effects
+- music, which contains our background music
 
 The source code to the game -- limited to the C++ source code files found in the "src" directory of the Anura engine -- is also available for license under the GNU GPL version 2 or later. See the LICENSE file in that directory for the details of the GPL.
