@@ -9,7 +9,7 @@ CC = $(PREFIX)/$(TOOLS)/$(TARGET)gcc
 CXX = $(PREFIX)/$(TOOLS)/$(TARGET)g++
 
 NEON = -mcpu=cortex-a8 -mfpu=neon -ftree-vectorize -mfloat-abi=softfp -ffast-math -fsingle-precision-constant -fno-inline-functions
-OPT = -O2 $(NEON) -DTARGET_PANDORA -DSDL_VIDEO_OPENGL_ES -DGLdouble=GLfloat -DSDL_GL_SwapBuffers=EGL_SwapBuffers
+OPT = -O2 $(NEON) -DTARGET_PANDORA -DUSE_GLES1 -DSDL_VIDEO_OPENGL_ES -DGLdouble=GLfloat -DSDL_GL_SwapBuffers=EGL_SwapBuffers
 
 include Makefile.common
 
