@@ -65,8 +65,10 @@
 #include "prof.h"
 #endif
 
-#if defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
+#if defined(TARGET_PANDORA)
 #include "eglport.h"
+#elif defined(TARGET_TEGRA)
+#include "eglport-tegra.h"
 #elif defined(TARGET_BLACKBERRY)
 #include <EGL/egl.h>
 #endif

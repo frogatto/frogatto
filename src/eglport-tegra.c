@@ -18,7 +18,7 @@
 *
 */
 
-#include "eglport.h"
+#include "eglport-tegra.h"
 
 #define EGLNativeWindowType NativeWindowType
 #define EGLNativeDisplayType NativeDisplayType
