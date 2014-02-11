@@ -639,9 +639,9 @@ extern "C" int main(int argcount, char** argvec)
 
 #if defined(USE_GLES2)
 	GLfloat min_pt_sz;
-	//glGetFloatv(GL_POINT_SIZE_MIN, &min_pt_sz);
+	glGetFloatv(GL_POINT_SIZE_MIN, &min_pt_sz);
 	GLfloat max_pt_sz;
-	//glGetFloatv(GL_POINT_SIZE_MAX, &max_pt_sz);
+	glGetFloatv(GL_POINT_SIZE_MAX, &max_pt_sz);
 	std::cerr << "Point size range: " << min_pt_sz << " < size < " << max_pt_sz << std::endl;
 #if !defined(GL_ES_VERSION_2_0)
 	glEnable(GL_POINT_SPRITE);

@@ -21,13 +21,14 @@
 
 #ifdef USE_GLES2
 
-#if defined(WIN32)
+#if defined(TARGET_PANDORA)
+#include <EGL/egl.h>
+#include <GLES2/gl2.h>
+#elif defined(WIN32) || defined(__linux__)
 #include <GL/glew.h>
 #else
 #include <EGL/egl.h>
 #include <GLES2/gl2.h>
-#define GL_GLEXT_PROTOTYPES
-#include <GLES2/gl2ext.h>
 #endif
 
 #include "gles2.hpp"

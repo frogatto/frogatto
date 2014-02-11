@@ -444,13 +444,9 @@ namespace gles2 {
 
 	GLfloat get_point_size()
 	{
-#if !defined(USE_GLES2)
 		GLfloat pt_size;
 		glGetFloatv(GL_POINT_SIZE, &pt_size);
 		return pt_size;
-#else
-		return 0;
-#endif
 	}
 
 	void init_default_shader()
@@ -509,10 +505,8 @@ namespace gles2 {
 		GLint blend_src_mode;
 		GLint blend_dst_mode;
 		// Save current blend mode
-#if !defined(USE_GLES2)
 		glGetIntegerv(GL_BLEND_SRC, &blend_src_mode);
 		glGetIntegerv(GL_BLEND_DST, &blend_dst_mode);
-#endif
 		blend_stack.push(blend_mode(blend_src_mode, blend_dst_mode, glIsEnabled(GL_BLEND) != 0));
 
 		if(shader == NULL || active_shader_program == shader) {
