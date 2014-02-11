@@ -406,10 +406,6 @@ extern "C" int main(int argcount, char** argvec)
 		return 0;
 	}
 
-#if defined(TARGET_PANDORA)
-    EGL_Open();
-#endif
-
 #if defined(__ANDROID__)
 	std::freopen("stdout.txt","w",stdout);
 	std::freopen("stderr.txt","w",stderr);
@@ -511,11 +507,11 @@ extern "C" int main(int argcount, char** argvec)
 #endif
 
 #if defined(TARGET_PANDORA)
-	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),16,SDL_FULLSCREEN) == NULL) {
+	if (SDL_SetVideoMode(0,0,16,SDL_FULLSCREEN) == NULL) {
 		std::cerr << "could not set video mode\n";
 		return -1;
 	}
-    EGL_Init();
+    EGL_Open( preferences::actual_screen_width(),preferences::actual_screen_height() );
     preferences::init_oes();
 #elif defined(TARGET_TEGRA)
 	//if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,preferences::resizable() ? SDL_RESIZABLE : 0|preferences::fullscreen() ? SDL_FULLSCREEN : 0) == NULL) {
@@ -523,7 +519,7 @@ extern "C" int main(int argcount, char** argvec)
 		std::cerr << "could not set video mode\n";
 		return -1;
 	}
-    EGL_Init();
+    EGL_Open( preferences::actual_screen_width(),preferences::actual_screen_height() );
     preferences::init_oes();
 #elif defined(TARGET_BLACKBERRY)
 	if (SDL_SetVideoMode(preferences::actual_screen_width(),preferences::actual_screen_height(),0,SDL_OPENGL|SDL_FULLSCREEN) == NULL) {
@@ -643,9 +639,9 @@ extern "C" int main(int argcount, char** argvec)
 
 #if defined(USE_GLES2)
 	GLfloat min_pt_sz;
-	glGetFloatv(GL_POINT_SIZE_MIN, &min_pt_sz);
+	//glGetFloatv(GL_POINT_SIZE_MIN, &min_pt_sz);
 	GLfloat max_pt_sz;
-	glGetFloatv(GL_POINT_SIZE_MAX, &max_pt_sz);
+	//glGetFloatv(GL_POINT_SIZE_MAX, &max_pt_sz);
 	std::cerr << "Point size range: " << min_pt_sz << " < size < " << max_pt_sz << std::endl;
 #if !defined(GL_ES_VERSION_2_0)
 	glEnable(GL_POINT_SPRITE);
@@ -825,7 +821,7 @@ extern "C" int main(int argcount, char** argvec)
 	} //end manager scope, make managers destruct before calling SDL_Quit
 //	controls::debug_dump_controls();
 #if defined(TARGET_PANDORA) || defined(TARGET_TEGRA)
-    EGL_Destroy();
+    EGL_Close();
 #endif
 
 #if defined(USE_GLES2)

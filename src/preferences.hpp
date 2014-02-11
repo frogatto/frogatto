@@ -161,7 +161,7 @@ void set_bequ( bool value );
 		~editor_screen_size_scope();
 	};
 
-#if defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY)
+#if defined(USE_GLES1) && (defined(TARGET_OS_HARMATTAN) || defined(TARGET_PANDORA) || defined(TARGET_TEGRA) || defined(TARGET_BLACKBERRY))
 	void init_oes( void );
 	extern PFNGLBLENDEQUATIONOESPROC           glBlendEquationOES;
 	extern PFNGLGENFRAMEBUFFERSOESPROC         glGenFramebuffersOES;

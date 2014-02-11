@@ -799,7 +799,7 @@ public:
 
 #if defined(USE_GLES2)
 		// Not dealing with GL_POINT_SMOOTH right now -- this would probably be better as a frgament shader.
-		glPointSize(info_.dot_size);
+		//glPointSize(info_.dot_size);
 		gles2::manager gles2_manager(gles2::get_simple_col_shader());
 		gles2::active_shader()->shader()->vertex_array(2, GL_SHORT, GL_FALSE, 0, &vertex[0]);
 		gles2::active_shader()->shader()->color_array(4, GL_UNSIGNED_BYTE, GL_TRUE, 0, &colors[0]);

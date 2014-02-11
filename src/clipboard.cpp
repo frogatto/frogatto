@@ -19,7 +19,7 @@
 #include <algorithm>
 #include <iostream>
 
-#if (defined(_X11) || defined(__linux__)) && !defined(__APPLE__) && !defined(__ANDROID__)
+#if (defined(_X11) || defined(__linux__)) && !defined(__APPLE__) && !defined(__ANDROID__) && !defined(__RDU__)
 #define CLIPBOARD_FUNCS_DEFINED
 
 #include "SDL_syswm.h"

@@ -2223,7 +2223,7 @@ void level::draw_debug_solid(int x, int y, int w, int h) const
 					}
 
 #if defined(USE_GLES2)
-					glPointSize(1.0f);
+					//glPointSize(1.0f);
 					gles2::manager gles2_manager(gles2::get_simple_shader());
 					gles2::active_shader()->shader()->vertex_array(2, GL_SHORT, 0, 0, &v[0]);
 #else

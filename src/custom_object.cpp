@@ -984,7 +984,7 @@ void custom_object::draw(int xx, int yy) const
 		if(!v.empty()) {
 #if defined(USE_GLES2)
 			glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-			glPointSize(2.0f);
+			//glPointSize(2.0f);
 			gles2::manager gles2_manager(gles2::get_simple_shader());
 			gles2::active_shader()->shader()->vertex_array(2, GL_FLOAT, 0, 0, &v[0]);
 			glDrawArrays(GL_POINTS, 0, v.size()/2);

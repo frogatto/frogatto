@@ -1,3 +1,5 @@
+#ifdef USE_GLES2
+
 #include <boost/regex.hpp>
 
 #include "array_callable.hpp"
@@ -1132,3 +1134,5 @@ game_logic::formula_ptr shader_program::create_formula(const variant& v)
 }
 
 }
+
+#endif
