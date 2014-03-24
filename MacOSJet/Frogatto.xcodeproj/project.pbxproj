@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C00E2A6F167AEFAA00DEB111 /* signature.cfg in Resources */ = {isa = PBXBuildFile; fileRef = C00E2A6E167AEFAA00DEB111 /* signature.cfg */; };
 		C010C572160AFAD9006E7D90 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C010C571160AFAD9006E7D90 /* Cocoa.framework */; };
 		C010C5A1160AFB8F006E7D90 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C010C596160AFB8F006E7D90 /* InfoPlist.strings */; };
 		C010C5A4160AFB8F006E7D90 /* SDLMain.nib in Resources */ = {isa = PBXBuildFile; fileRef = C010C59F160AFB8F006E7D90 /* SDLMain.nib */; };
@@ -233,7 +232,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		C00E2A6E167AEFAA00DEB111 /* signature.cfg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = signature.cfg; path = ../../signature.cfg; sourceTree = "<group>"; };
 		C010C56D160AFAD9006E7D90 /* Frogatto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Frogatto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C010C571160AFAD9006E7D90 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		C010C574160AFAD9006E7D90 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -703,7 +701,6 @@
 		C010C595160AFB8F006E7D90 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C00E2A6E167AEFAA00DEB111 /* signature.cfg */,
 				C0B87BBF166622BA00D66B15 /* icon.icns */,
 				C0B87BB9166603C300D66B15 /* icon.iconset */,
 				C010C596160AFB8F006E7D90 /* InfoPlist.strings */,
@@ -1140,8 +1137,13 @@
 		C010C564160AFAD9006E7D90 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Richard Kettering";
+				TargetAttributes = {
+					C010C56C160AFAD9006E7D90 = {
+						DevelopmentTeam = QD667438AY;
+					};
+				};
 			};
 			buildConfigurationList = C010C567160AFAD9006E7D90 /* Build configuration list for PBXProject "Frogatto" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1186,7 +1188,6 @@
 				C089D452162BDF7B009D2878 /* master-config.cfg in Resources */,
 				C0B87BBA166603C300D66B15 /* icon.iconset in Resources */,
 				C0B87BC0166622BA00D66B15 /* icon.icns in Resources */,
-				C00E2A6F167AEFAA00DEB111 /* signature.cfg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1437,7 +1438,8 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CODE_SIGN_ENTITLEMENTS = Frogatto.entitlements;
-				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Benjamin Anderman";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/dylibs\"",
@@ -1477,7 +1479,8 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CODE_SIGN_ENTITLEMENTS = Frogatto.entitlements;
-				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Benjamin Anderman";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/dylibs\"",

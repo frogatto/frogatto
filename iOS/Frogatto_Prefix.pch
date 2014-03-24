@@ -1,0 +1,13 @@
+//
+// Prefix header for all source files of the 'Frogatto' target in the 'Frogatto' project
+//
+
+#ifdef __cplusplus
+	#include "SDL_opengles.h"
+	#define SDL_GL_SwapBuffers SDL_RenderPresent
+#endif
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+    #import <UIKit/UIKit.h>
+#endif

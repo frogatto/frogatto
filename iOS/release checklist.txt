@@ -1,0 +1,4 @@
+Check version number (in preferences.cpp and Info.plist)
+Remove incomplete translations and change pt_BR to pt
+Verify all translations work
+Make sure debug output is off
