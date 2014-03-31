@@ -3,7 +3,7 @@ server
 test
 .DS_Store
 *.o
-*.a
+./*.a
 *~
 *.kate-swp
 *.sublime-workspace
