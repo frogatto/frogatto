@@ -6,13 +6,15 @@
 # Matus <aldebaran7@azet.sk>, 2013
 # Matus <aldebaran7@azet.sk>, 2013
 # Matus <aldebaran7@azet.sk>, 2013
+# Svistwarrior273 <romanbeno273@gmail.com>, 2014
+# Svistwarrior273 <romanbeno273@gmail.com>, 2014
 # Viliam Búr <viliam@bur.sk>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2013-04-26 01:54-0300\n"
-"PO-Revision-Date: 2013-08-01 18:19+0000\n"
+"PO-Revision-Date: 2014-04-18 07:24+0000\n"
 "Last-Translator: Svistwarrior273 <romanbeno273@gmail.com>\n"
 "Language-Team: Slovak (http://www.transifex.com/projects/p/Frogatto/language/sk/)\n"
 "MIME-Version: 1.0\n"
@@ -782,7 +784,7 @@ msgstr "Rekord je ${registry.arcade_upper_deck_high_score} points."
 #: ../data/level/arcade-wild-new-wonder.cfg:13
 #: ../data/level/titlescreen-arcade.cfg:130
 msgid "Wild New Wonder"
-msgstr "Divoký nový Div"
+msgstr "Divoký nový div"
 
 #: ../data/level/arcade-wild-new-wonder.cfg:2495
 #: ../data/level/arcade-wild-new-wonder.cfg:2498
@@ -796,7 +798,7 @@ msgstr "Rekord je ${registry.arcade_wild_new_wonder_high_score} bodov."
 
 #: ../data/level/bombing-fools.cfg:2211
 msgid "Bombing Fools"
-msgstr "Blázni bombarďáci"
+msgstr "Bláznivý bombarďáci"
 
 #: ../data/level/bon-bosque.cfg:185
 msgid "Well, you made it!"
@@ -3577,278 +3579,278 @@ msgstr "No, možno...\nPohostinnosť určite ocením!"
 
 #: ../data/level/kitty-dormitory.cfg:1901
 msgid "So is this some kind of dining area?"
-msgstr ""
+msgstr "Takže toto je nejaký druh jedálne?"
 
 #: ../data/level/kitty-dormitory.cfg:1903
 msgid ""
 "Yes, it is.  We have regular meal service\n"
 "for those who are off-duty."
-msgstr ""
+msgstr "Áno, je. Máme tu pravidelné podávanie jedál pre tých,\nktorí sú mimo službu."
 
 #: ../data/level/kitty-dormitory.cfg:1904
 msgid ""
 "Gaston should be coming out any minute now,\n"
 "with a lovely bit of smoked salmon."
-msgstr ""
+msgstr "Gaston by mal teraz každú minútku prísť,\ns krásnym kúskom údeného lososa."
 
 #: ../data/level/kitty-dormitory.cfg:1905
 msgid ""
 "Well, pretty soon, I hope.\n"
 "Sometimes he takes a while."
-msgstr ""
+msgstr "No, dúfam teda, že dosť skoro.\nObčas mu to chvíľu trvá."
 
 #: ../data/level/kitty-dormitory.cfg:1908
 msgid "That sounds pretty classy."
-msgstr ""
+msgstr "To znie celkom super."
 
 #: ../data/level/kitty-dormitory.cfg:1910
 msgid "Yeah, small perks like that make life nice."
-msgstr ""
+msgstr "Áno, drobné pôžitky, ako je ten, robia život pekným."
 
 #: ../data/level/kitty-dormitory.cfg:1913
 msgid "So what is it you do for a, uh... job?"
-msgstr ""
+msgstr "Tak čo ty vlastne máš ach... na práci?"
 
 #: ../data/level/kitty-dormitory.cfg:1915
 msgid ""
 "Basic labor, mostly.\n"
 "I haul construction materials around."
-msgstr ""
+msgstr "Väčšinou dôležitú prácu,\nprenášam stavebné materiály po okolí."
 
 #: ../data/level/kitty-dormitory.cfg:1916
 msgid ""
 "We're still working on the north tower.\n"
 "Be careful if you venture out there."
-msgstr ""
+msgstr "Stále pracujeme na severnej veži, \nbuď opatrný, ak sa tam vyberieš."
 
 #: ../data/level/kitty-dormitory.cfg:1917
 msgid ""
 "It's easy to accidentally fall.\n"
 "It's not really pedestrian-ready yet."
-msgstr ""
+msgstr "Je ľahké tam nešťastne kamsi padnúť.\nZatiaľ to nie je pripravené pre peších."
 
 #: ../data/level/kitty-dormitory.cfg:1920
 msgid "I'll keep that in mind, thanks."
-msgstr ""
+msgstr "Budem to mať na mysli, vďaka."
 
 #: ../data/level/kitty-dormitory.cfg:1948
 msgid "Hi there, what's going on?"
-msgstr ""
+msgstr "Ahoj ty tam, čo sa deje?"
 
 #: ../data/level/kitty-dormitory.cfg:1950
 msgid ""
 "Oh, hello.\n"
 "I'm just eating some fruit."
-msgstr ""
+msgstr "Ach, ahoj.\nLen jem nejaké ovocie."
 
 #: ../data/level/kitty-dormitory.cfg:1951
 msgid "Are you that green guy security is after?"
-msgstr ""
+msgstr "Ty si ten zelený chlapík, po ktorom ide ochranka?"
 
 #: ../data/level/kitty-dormitory.cfg:1954
 msgid ""
 "If I answer yes,\n"
 "are you going to call them in here?"
-msgstr ""
+msgstr "Ak odpoviem áno,\nzavoláš ju sem?"
 
 #: ../data/level/kitty-dormitory.cfg:1956
 msgid "No, I'm not looking for trouble."
-msgstr ""
+msgstr "Nie, nechcem si koledovať o problémy."
 
 #: ../data/level/kitty-dormitory.cfg:1957
 msgid ""
 "Besides which, you don't seem like a bad guy,\n"
 "if you ask my opinion."
-msgstr ""
+msgstr "Okrem toho, nevyzeráš na nejakého zloducha,\nak ťa zaujíma môj názor."
 
 #: ../data/level/kitty-dormitory.cfg:1958
 msgid "Not that anyone's asking me."
-msgstr ""
+msgstr "Nuž, názory niektorých ma nezaujímajú, ale..."
 
 #: ../data/level/kitty-dormitory.cfg:1960
 msgid "Well, thanks, I do appreciate that."
-msgstr ""
+msgstr "Dobre, vďaka, oceňujem to."
 
 #: ../data/level/kitty-dormitory.cfg:1962
 msgid ""
 "Speaking of which, color me curious,\n"
 "but I thought that cats were carnivores?"
-msgstr ""
+msgstr "Keď už o tom hovoríme, odpusť mi moju zvedavosť,\nale nie sú náhodou mačky mäsožravce?"
 
 #: ../data/level/kitty-dormitory.cfg:1964
 msgid "How is it that you're able to eat fruit?"
-msgstr ""
+msgstr "Ako je možné, že ješ ovocie?"
 
 #: ../data/level/kitty-dormitory.cfg:1966
 msgid ""
 "Oh! I guess you wouldn't know these things...\n"
 "I suppose we take that for granted."
-msgstr ""
+msgstr "Ach! Myslím, že o týchto veciach toho veľa nevieš...\nMali sme to brať ako samozrejmosť."
 
 #: ../data/level/kitty-dormitory.cfg:1967
 msgid ""
 "See, strictly speaking, we're not cats.\n"
 "We're simply made to look like them."
-msgstr ""
+msgstr "Pozri, presnejšie povedané, my nie sme mačky.\nJednoducho sme len boli vyrobení tak,\naby sme ako ony vyzerali."
 
 #: ../data/level/kitty-dormitory.cfg:1970
 msgid ""
 "Er... \"made to\", you say?\n"
 "That's an interesting choice of words."
-msgstr ""
+msgstr "Er... povedal si \"vyrobení\"?\nTo je zaujímavá voľba slov."
 
 #: ../data/level/kitty-dormitory.cfg:1972
 msgid ""
 "Yes, that's right - I'm implying we are \"made\".\n"
 "We're made, not born, like you ... presumably are."
-msgstr ""
+msgstr "Áno, to je pravda - ale my sme naozaj \"vyrobení\".\nNenarodili sme sa ako ty ... pravdepodobne teda."
 
 #: ../data/level/kitty-dormitory.cfg:1977
 msgid ""
 "Okay ... I'm kind of at a loss for words.\n"
 "That seems pretty unbelievable."
-msgstr ""
+msgstr "Okej ... Trochu nemám slov.\nZnie to celkom neuveriteľne."
 
 #: ../data/level/kitty-dormitory.cfg:1979
 msgid ""
 "Then again, the world is nothing\n"
 "if not full of surprises."
-msgstr ""
+msgstr "Tak znovu, svet je nič,\nak nie je plný prekvapení."
 
 #: ../data/level/kitty-dormitory.cfg:1981
 msgid ""
 "So you're made, you say...\n"
 "Who, then, is your maker?"
-msgstr ""
+msgstr "Tak keď hovoríš, že si vyrobený...\nKto je potom tvoj výrobca?"
 
 #: ../data/level/kitty-dormitory.cfg:1983
 msgid ""
 "Oh, Milgram, of course.\n"
 "Why else would he be so important?"
-msgstr ""
+msgstr "Ach, Milgram, samozrejme.\nPrečo by inak bol taký dôležitý?"
 
 #: ../data/level/kitty-dormitory.cfg:1984
 msgid ""
 "I confess, I really don't know -how-\n"
 "he creates us,  but I know that he does."
-msgstr ""
+msgstr "Priznám sa, skutočne neviem -ako-\nnás vytvoril, viem len, že tak urobil."
 
 #: ../data/level/kitty-dormitory.cfg:1987
 msgid "So then... are you robots or something?"
-msgstr ""
+msgstr "Tak potom... ste roboti alebo niečo podobné?"
 
 #: ../data/level/kitty-dormitory.cfg:1989
 msgid ""
 "Of course not!  Robots don't eat.\n"
 "We're all living creatures."
-msgstr ""
+msgstr "Samozrejme, že nie! Roboti nejedia.\nMy všetci sme živé stvorenia."
 
 #: ../data/level/kitty-dormitory.cfg:1992
 msgid ""
 "Oh, so he's your parent, then?\n"
 "And just has a lot of kids."
-msgstr ""
+msgstr "Ach, tak potom on je váš rodič?\nA má len jednoducho veľa detí."
 
 #: ../data/level/kitty-dormitory.cfg:1994
 msgid ""
 "Well, I guess we consider him a parent,\n"
 "but we're very much made."
-msgstr ""
+msgstr "Áno, hádam, že ho pokladáme za rodiča,\nale aj tak sme určite vyrobení na mieru."
 
 #: ../data/level/kitty-dormitory.cfg:1995
 msgid ""
 "He chooses what we're shaped like, for one thing.\n"
 "Usually takes inspiration from the animal kingdom."
-msgstr ""
+msgstr "On vybral, ako budeme vyzerať, napríklad.\nZvyčajne čerpal inšpiráciu zo zvieracieho kráľovstva."
 
 #: ../data/level/kitty-dormitory.cfg:1996
 msgid ""
 "He fancies himself an artist in this regard,\n"
 "and for ego's sake I'm not about to disagree."
-msgstr ""
+msgstr "V tomto ohľade sa považuje za veľkého umelca,\na v záujme ega s tým súhlasím."
 
 #: ../data/level/kitty-dormitory.cfg:1997
 msgid ""
 "These days, moreover, we're mass-produced.\n"
 "There's a factory downstairs that churns out\n"
 "the more successful designs."
-msgstr ""
+msgstr "Navyše v týchto dňoch sme vyrábaní masovo.\nNa prízemí je továreň produkujúca vydarenejšie dizajny."
 
 #: ../data/level/kitty-dormitory.cfg:2000
 msgid ""
 "But that's just CRAZY!\n"
 "How does that even work?!  Magic?"
-msgstr ""
+msgstr "Ale to je jednoducho ŠIALENÉ!\nAko to len môže fungovať?! Mágia?"
 
 #: ../data/level/kitty-dormitory.cfg:2002
 msgid "Like I said, I really don't know, myself."
-msgstr ""
+msgstr "Ako som povedal, naozaj to neviem."
 
 #: ../data/level/kitty-dormitory.cfg:2003
 msgid ""
 "But it's not any crazier than\n"
 "you transforming from a tadpole."
-msgstr ""
+msgstr "Ale vôbec to nie je šialenejšie ako ty\ntransformujúci sa zo žubrienky."
 
 #: ../data/level/kitty-dormitory.cfg:2004
 msgid ""
 "I mean, that seems pretty incredible\n"
 "from my perspective."
-msgstr ""
+msgstr "Myslel som to tak, že z môjho pohľadu\nto znie celkom neuveriteľne."
 
 #: ../data/level/kitty-dormitory.cfg:2005
 msgid "But that is how it works for frogs, right?"
-msgstr ""
+msgstr "Ale tak to funguje pre žaby, nemám pravdu?"
 
 #: ../data/level/kitty-dormitory.cfg:2008
 msgid ""
 "It is.\n"
 "It's just a crazy world we live in, huh?"
-msgstr ""
+msgstr "Áno.\nJe to šialený svet, v ktorom to žijeme, no nie?"
 
 #: ../data/level/kitty-dormitory.cfg:2010
 msgid "Madness and wonder every step of the way."
-msgstr ""
+msgstr "Šialenstvo a zázraky sú na každom kroku."
 
 #: ../data/level/kitty-dormitory.cfg:2013
 msgid ""
 "No kidding.  Well, hey, have a nice meal.\n"
 "Thanks for all the info."
-msgstr ""
+msgstr "Bez žartov. Dobre, tak nech ti jedlo chutí.\nVďaka za všetky informácie."
 
 #: ../data/level/kitty-dormitory.cfg:2015
 msgid "No problem."
-msgstr ""
+msgstr "Bez problémov."
 
 #: ../data/level/kitty-dormitory.cfg:2042
 msgid "Hi, what are you doing?"
-msgstr ""
+msgstr "Ahoj, čo robíš?"
 
 #: ../data/level/kitty-dormitory.cfg:2044
 msgid ""
 "Oh, hello there.\n"
 "I haven't met you before."
-msgstr ""
+msgstr "Ach, ahoj ty tam.\nPredtým som ťa tu ešte nestretol."
 
 #: ../data/level/kitty-dormitory.cfg:2045
 msgid "I'm reading a book."
-msgstr ""
+msgstr "Čítam knihu."
 
 #: ../data/level/kitty-dormitory.cfg:2048
 msgid ""
 "That's nice.\n"
 "What's it about?"
-msgstr ""
+msgstr "To je milé.\nO čom je?"
 
 #: ../data/level/kitty-dormitory.cfg:2050
 msgid "Ahh, it's a collection of old fairy tales."
-msgstr ""
+msgstr "Ach, je to zbierka starých rozprávok."
 
 #: ../data/level/kitty-dormitory.cfg:2051
 msgid ""
 "Some of them are kinda\n"
 "thinly-veiled cautionary tales..."
-msgstr ""
+msgstr "Niektoré z nich sú celkom jasne\nvarovné príbehy..."
 
 #: ../data/level/kitty-dormitory.cfg:2052
 msgid ""
@@ -3858,34 +3860,34 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2053
 msgid "I can't decide which ones I like better."
-msgstr ""
+msgstr "Neviem sa rozhodnúť, ktoré mám radšej."
 
 #: ../data/level/kitty-dormitory.cfg:2054
 msgid ""
 "Do I like the ones that have an obvious point,\n"
 "or is it more intellectually satisfying to puzzle\n"
 "over the more engimatic ones?"
-msgstr ""
+msgstr "Mám radšej tie, ktoré sú očividné a jednduché,\nalebo tie intelektuálne náročné puzzle, než tie viac enigmatické?"
 
 #: ../data/level/kitty-dormitory.cfg:2055
 msgid "I can't really say."
-msgstr ""
+msgstr "Naozaj neviem povedať."
 
 #: ../data/level/kitty-dormitory.cfg:2058
 msgid "Hm, I've never really thought about that before."
-msgstr ""
+msgstr "Hm, nikdy predtým som o tom nerozmýšľal."
 
 #: ../data/level/kitty-dormitory.cfg:2060
 msgid ""
 "You're welcome to sit down and join me.\n"
 "The fire is quite nice."
-msgstr ""
+msgstr "V pohode si tu sadni a pridaj sa ku mne.\nOhník je celkom fajn."
 
 #: ../data/level/kitty-dormitory.cfg:2063
 msgid ""
 "Thanks - I'm kind of in a hurry,\n"
 "but I appreciate it."
-msgstr ""
+msgstr "Vďaka - Ponáhľam sa niekam,\nale oceňujem to."
 
 #: ../data/level/kitty-dormitory.cfg:2809
 msgid "WHOA!"
@@ -4012,7 +4014,7 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:2965
 msgid "Uh... hi?"
-msgstr ""
+msgstr "Uh.. ahoj?"
 
 #: ../data/level/kitty-dormitory.cfg:2967
 msgid "^^Hello there."
@@ -4022,19 +4024,19 @@ msgstr ""
 msgid ""
 "You know, I'm not gonna lie - it's really weird\n"
 "to fight you guys in one place and ... uh"
-msgstr ""
+msgstr "Vieš, nebudem klamať - je to naozaj zvláštne,\nna jednom mieste s vami bojovať a .. uh"
 
 #: ../data/level/kitty-dormitory.cfg:2972
 msgid ""
 "... and then just talk, peaceably, here?\n"
 "I still don't get it.  What gives?"
-msgstr ""
+msgstr "... a potom sa tu len tak mierumilovne rozprávať?\nStále mi to nedochádza. Čo s tým?"
 
 #: ../data/level/kitty-dormitory.cfg:2974
 msgid ""
 "Well, the fact that I'm unarmed\n"
 "is a pretty big factor."
-msgstr ""
+msgstr "Dobre, skutočnosť, že som neozbrojený,\nzohráva celkom veľkú úlohu."
 
 #: ../data/level/kitty-dormitory.cfg:2975
 msgid ""
@@ -4466,61 +4468,61 @@ msgstr "Rozumiem."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:206
 msgid "Hey, man, look at you!"
-msgstr ""
+msgstr "Hej, chlape, pozri sa na seba!"
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:207
 msgid ""
 "I hear you had a big hand in scaring\n"
 "those guys off.  Way to go!"
-msgstr ""
+msgstr "Počul som, že si zohral veľkú úlohu v odstrašení hentých chlapíkov. Len tak ďalej!"
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:209
 msgid ""
 "Eh, I'd hardly say they were 'scared' away,\n"
 "but I might have tipped the scales."
-msgstr ""
+msgstr "Ech, ťažko povedať, či som ich 'odstrašil',\nale mohol som trochu nakloniť misky váh."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:210
 msgid ""
 "Well, whatever you did,\n"
 "I'm glad they're gone!"
-msgstr ""
+msgstr "Dobre, čokoľvek si už spravil,\nsom rád, že sú už preč!"
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:212
 msgid ""
 "Yeah, I just hope we don't\n"
 "have a repeat incident..."
-msgstr ""
+msgstr "To hej, len dúfam, že sa to už \nnebude opakovať."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:213
 msgid "Uh ... why would that happen?"
-msgstr ""
+msgstr "Uh ... prečo by sa to stalo?"
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:215
 msgid ""
 "I don't know, but...\n"
 "Why did this happen in the first place?"
-msgstr ""
+msgstr "Ja neviem, ale...\nv prvom rade, prečo sa stalo toto?"
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:217
 msgid ""
 "It's an important question,\n"
 "and someone needs to look into it."
-msgstr ""
+msgstr "To je dôležitá otázka,\nniekto by sa na to mal pozrieť."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:218
 msgid "Would that someone possibly be you?"
-msgstr ""
+msgstr "Mohol by si tým niekým byť ty?"
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:220
 msgid "That is a distinct possibility."
-msgstr ""
+msgstr "To je celkom reálna možnosť."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:221
 msgid ""
 "Well, hey - you be careful, alright?\n"
 "Stay cool."
-msgstr ""
+msgstr "Dobre, ale - buď opatrný - okej?\nA zostaň v pohode."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:604
 msgid "Hey, what's new?"
@@ -4552,21 +4554,21 @@ msgstr "Samozrejme, že nie. To je len klam."
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:191
 msgid "Hey there - is everything going alright?"
-msgstr ""
+msgstr "Hej ty tam - klape všetko poporiadku?"
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:192
 msgid ""
 "It sure is now!  Thanks for\n"
 "taking those guys on!"
-msgstr ""
+msgstr "Som si istý, že áno! Vďaka,\nže si sa postaral o tých chlapov!"
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:193
 msgid "That was really brave of you!"
-msgstr ""
+msgstr "To bolo od teba naozaj hrdinské!"
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:195
 msgid "I'm just glad everyone's okay."
-msgstr ""
+msgstr "Som len rád, že sú všetci okej."
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:197
 msgid "Where's your sibling, by the way?"
@@ -4594,7 +4596,7 @@ msgstr "Mapa sveta"
 
 #: ../data/level/milgrams-basement-junction.cfg:170
 msgid "It says, \"This leads to the cave entrance."
-msgstr ""
+msgstr "Píše sa tam, \"Toto vedie k vchodu do jaskyne."
 
 #: ../data/level/milgrams-basement-junction.cfg:172
 msgid "Be careful about venturing into the caves!\""
@@ -4602,35 +4604,35 @@ msgstr ""
 
 #: ../data/level/milgrams-basement-junction.cfg:191
 msgid "It says, \"This leads to the North Tower.\""
-msgstr ""
+msgstr "Píše sa tam, \"Toto vedie do Severnej veže.\""
 
 #: ../data/level/milgrams-basement-junction.cfg:193
 msgid "\"Still under construction, wear your hard hat!\""
-msgstr ""
+msgstr "\"Stále vo výstavbe, dajte si na hlavu niečo tvrdé!\""
 
 #: ../data/level/milgrams-basement-junction.cfg:212
 msgid ""
 "It says, \"This leads to the west tower,\n"
 "and to the main throne room complex.\""
-msgstr ""
+msgstr "Píše sa tam, \"Toto vedie do západnej veže.\na k hlavnému komplexu trónnej sály.\""
 
 #: ../data/level/milgrams-basement-junction.cfg:214
 msgid "Gee, guess who we'll find there?"
-msgstr ""
+msgstr "Páni, hádaj, koho tam nájdeme?"
 
 #: ../data/level/milgrams-basement-junction.cfg:233
 msgid "It says, \"This leads to the cellar and storerooms.\""
-msgstr ""
+msgstr "Píše sa tam, \"Toto vedie do pivnice a skladov.\""
 
 #: ../data/level/milgrams-basement-junction.cfg:235
 msgid "\"No Admittance without authorization.\""
-msgstr ""
+msgstr "\"Zákaz vstupu bez povolenia.\""
 
 #: ../data/level/milgrams-basement-junction.cfg:254
 msgid ""
 "It says, \"Warning:\n"
 "Transport to this chamber is one-way.\""
-msgstr ""
+msgstr "Píše sa tam, \"Varovanie: Transport do tejto komnaty je iba jednosmerný.\""
 
 #: ../data/level/milgrams-basement-junction.cfg:393
 msgid ""
@@ -4789,7 +4791,7 @@ msgstr ""
 
 #: ../data/level/milgrams-throne-room-entrance.cfg:417
 msgid "Milgram's Throne Room Entrance"
-msgstr ""
+msgstr "Vchod do Milgramovej trónnej sály"
 
 #: ../data/level/milgrams-throne-room.cfg:42
 msgid "No!  You can't be..."
@@ -4819,7 +4821,7 @@ msgstr "Frogatto!⏎ Je PRESNE TU!"
 msgid ""
 "The intruder?\n"
 "How did he get in here?"
-msgstr ""
+msgstr "Votrelec?\nAko sa sem mohol dostať?"
 
 #: ../data/level/milgrams-throne-room.cfg:61
 msgid "We... We tried to stop him, but he's..."
@@ -4827,11 +4829,11 @@ msgstr "My... My sme sa snažili ho zastaviť, ale on je..."
 
 #: ../data/level/milgrams-throne-room.cfg:63
 msgid "Why do I have to deal with everything myself?!"
-msgstr ""
+msgstr "Prečo musím všetko vybavovať sám ?!"
 
 #: ../data/level/milgrams-throne-room.cfg:65
 msgid "Get out of the way!"
-msgstr ""
+msgstr "Uhni!"
 
 #: ../data/level/milgrams-throne-room.cfg:113
 msgid ""
@@ -4853,19 +4855,19 @@ msgstr "Čože si to chcel?"
 
 #: ../data/level/milgrams-throne-room.cfg:122
 msgid "I wanted to ask you about that incident in town."
-msgstr ""
+msgstr "Chcel by som sa ťa spýtať na ten incident v meste."
 
 #: ../data/level/milgrams-throne-room.cfg:124
 msgid ""
 "Remarkable.\n"
 "I really thought you'd come here to attack me."
-msgstr ""
+msgstr "Pozoruhodné,\nnaozaj som si myslel, že si sem prišiel na mňa zaútočiť."
 
 #: ../data/level/milgrams-throne-room.cfg:126
 msgid ""
 "Well, if you really are here for an audience,\n"
 "perhaps I could be obliged.  Shall we?"
-msgstr ""
+msgstr "Dobre, ak si tu naozaj na návšteve,\ntak potom by som mal. Pôjdeme?"
 
 #: ../data/level/milgrams-throne-room.cfg:128
 msgid "Talk it over? Like gentlemen?"
@@ -4887,39 +4889,39 @@ msgstr "Jo, ja som Frogatto!"
 msgid ""
 "Uhh..\n"
 "I was expecting something a bit more ... robust."
-msgstr ""
+msgstr "Ach..\nočakával som niečo omnoho ... väčšie."
 
 #: ../data/level/milgrams-throne-room.cfg:143
 msgid ""
 "So you're the one who's been causing\n"
 "all this trouble, eh?"
-msgstr ""
+msgstr "Takže ty si ten, kto zavinil\nvšetky tieto problémy, hm?"
 
 #: ../data/level/milgrams-throne-room.cfg:145
 msgid "I am?"
-msgstr ""
+msgstr "Ja?"
 
 #: ../data/level/milgrams-throne-room.cfg:147
 msgid ""
 "Yes, I've been getting some rather\n"
 "unpleasant reports about property damage."
-msgstr ""
+msgstr "Áno, dostával som isté nemilé správy\nohľadom poškodenia majetku."
 
 #: ../data/level/milgrams-throne-room.cfg:149
 msgid ""
 "Is there any chance I...\n"
 "can discuss something with you?"
-msgstr ""
+msgstr "Je tu nejaká šanca...\nže by som s tebou mohol čosi prediskutovať?"
 
 #: ../data/level/milgrams-throne-room.cfg:151
 msgid "Sure..."
-msgstr ""
+msgstr "Iste..."
 
 #: ../data/level/milgrams-throne-room.cfg:153
 msgid ""
 "...but the subject's going to be:\n"
 "\"What happens to trespassers.\""
-msgstr ""
+msgstr "... ale témou bude:\n\"Čo sa stane s nepovolanými osobami.\""
 
 #: ../data/level/milgrams-throne-room.cfg:157
 msgid "Fight!"
@@ -4934,13 +4936,13 @@ msgstr "Milgramov trón"
 msgid ""
 "It says, \"Careful!\n"
 "This area is extremely unfinished.\""
-msgstr ""
+msgstr "Píše sa tam, \"Opatrne! \nTáto oblasť vôbec nie je dokončená.\""
 
 #: ../data/level/moonlit-ramparts.cfg:2114
 msgid ""
 "\"Completely unsafe for pedestrian traffic!\n"
 "Workers only!\""
-msgstr ""
+msgstr "\"Príliš nebezpečné pre pešiu prevádzku!\nIba robotníci!\""
 
 #: ../data/level/moonlit-ramparts.cfg:5407
 msgid "Moonlit Ramparts"
@@ -5352,7 +5354,7 @@ msgstr "Kameňopotrubná lúka"
 
 #: ../data/level/suboptimal-design.cfg:2605
 msgid "Suboptimal Design"
-msgstr ""
+msgstr "Suboptimálny dizajn"
 
 #: ../data/level/tea-with-milgram.cfg:54
 msgid "Sound • Foley Artist"
@@ -5364,7 +5366,7 @@ msgstr "Webmajster"
 
 #: ../data/level/tea-with-milgram.cfg:61
 msgid "Programmer • Sound and iOS Code"
-msgstr ""
+msgstr "Programátor • Hudba a kód pre iOS"
 
 #: ../data/level/tea-with-milgram.cfg:62
 msgid "Minor Object Scripter and Level Designer"
@@ -5376,7 +5378,7 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:67
 msgid "Object Scripter • Props and Achievements"
-msgstr ""
+msgstr "Objektový skripter • Rekvizity a Uznania"
 
 #: ../data/level/tea-with-milgram.cfg:68
 msgid "Engine Improvements"
@@ -5401,19 +5403,19 @@ msgstr "Návrh menších levelov"
 
 #: ../data/level/tea-with-milgram.cfg:78
 msgid "Artist • Props"
-msgstr ""
+msgstr "Výtvarník • Rekvizity"
 
 #: ../data/level/tea-with-milgram.cfg:84
 msgid "Artist • Characters, Monsters, and Props"
-msgstr ""
+msgstr "Výtvarník •  Postavy, Príšery a Rekvizity"
 
 #: ../data/level/tea-with-milgram.cfg:85
 msgid "Artist • House interiors and exteriors"
-msgstr ""
+msgstr "Výtvarník • Domové interiéry a exteriéry"
 
 #: ../data/level/tea-with-milgram.cfg:96
 msgid "Level Designer • forest, cave, and dungeon levels"
-msgstr ""
+msgstr "Dizajnér levelo • les, jaskyňa a žaláre"
 
 #: ../data/level/tea-with-milgram.cfg:102
 msgid "Programmer • Engine Development and Improvement"
@@ -5437,15 +5439,15 @@ msgstr "Koordinátor prekladu"
 
 #: ../data/level/tea-with-milgram.cfg:110
 msgid "Bug Fixer"
-msgstr ""
+msgstr "Opravár chýb"
 
 #: ../data/level/tea-with-milgram.cfg:114
 msgid "Translation Code"
-msgstr ""
+msgstr "Kód pre preklady"
 
 #: ../data/level/tea-with-milgram.cfg:115
 msgid "Key Remapping Code"
-msgstr ""
+msgstr "Kód pre premapovanie klávesov"
 
 #: ../data/level/tea-with-milgram.cfg:116
 msgid "Maemo Port"
@@ -5453,7 +5455,7 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:119
 msgid "Our Players"
-msgstr ""
+msgstr "Naši hráči"
 
 #: ../data/level/tea-with-milgram.cfg:120
 msgid "Bug Reports/Fixes"
@@ -5473,7 +5475,7 @@ msgstr "Diablova obhajoba"
 
 #: ../data/level/tea-with-milgram.cfg:126
 msgid "Programmer, Lead Content Wrangler and Lead Object Scripter"
-msgstr ""
+msgstr "Programátor, vedúci správca obsahu a vedúci objektový skripter"
 
 #: ../data/level/tea-with-milgram.cfg:127
 msgid "Artist • Characters, Monsters, Props, Terrain"
@@ -5481,11 +5483,11 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:128
 msgid "Writer • Wrote Main Story and Most Dialogue"
-msgstr ""
+msgstr "Autor textov  • Napísal hlavný príbeh a väčšinu dialógov"
 
 #: ../data/level/tea-with-milgram.cfg:129
 msgid "Level Designer • seaside, town, and forest"
-msgstr ""
+msgstr "Dizajnér levelov • pobrežie, mesto a les"
 
 #: ../data/level/tea-with-milgram.cfg:132
 msgid "Musician"
@@ -5541,7 +5543,7 @@ msgstr "To je pravda!"
 
 #: ../data/level/tea-with-milgram.cfg:165
 msgid "Ouch."
-msgstr ""
+msgstr "Au."
 
 #: ../data/level/tea-with-milgram.cfg:167
 msgid ""
@@ -5551,7 +5553,7 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:169
 msgid "Almost all of which are his fault."
-msgstr ""
+msgstr "Takmer všetko z toho zavinil on."
 
 #: ../data/level/tea-with-milgram.cfg:171
 msgid ""
@@ -5563,46 +5565,46 @@ msgstr ""
 msgid ""
 "He's just plain nuts.\n"
 "He's got a lot of bizarre delusions about things..."
-msgstr ""
+msgstr "To je proste blbosť.\nMá veľa bizarných predstáv o veciach..."
 
 #: ../data/level/tea-with-milgram.cfg:175
 msgid ""
 "...and mostly we just humor him,\n"
 "because he's pretty harmless."
-msgstr ""
+msgstr "... a väčšinou to berieme ako humor,\nkedže je celkom neškodný."
 
 #: ../data/level/tea-with-milgram.cfg:178
 msgid ""
 "We've trumped him up with a pointless job\n"
 "as the gatekeeper on the east side of town."
-msgstr ""
+msgstr "Dali sme mu teda nezmyselnú prácu\n strážcu brány na východnej strane mesta."
 
 #: ../data/level/tea-with-milgram.cfg:181
 msgid ""
 "Which plays to his ego,\n"
 "and keeps him out of trouble."
-msgstr ""
+msgstr "Čo podporovalo jeho ego,\na zároveň ho držalo ďalej od problémov."
 
 #: ../data/level/tea-with-milgram.cfg:183
 msgid "Sounds like a perfect place for him!"
-msgstr ""
+msgstr "Znie to ako perfektné miesto pre neho!"
 
 #: ../data/level/tea-with-milgram.cfg:185
 msgid "Yes, he's our official 'greeter'."
-msgstr ""
+msgstr "Áno, je našim oficiálnym 'uvádzačom'."
 
 #: ../data/level/tea-with-milgram.cfg:187
 msgid ""
 "But I guess he really could cause\n"
 "some issues if other people, like yourself,\n"
 "aren't aware of his background."
-msgstr ""
+msgstr "Ale mám dojem, že naozaj mohol\nniečo spôsobiť, ak niektorí ľudia, ako ty,\nneboli upovedomení o jeho povahe."
 
 #: ../data/level/tea-with-milgram.cfg:189
 msgid ""
 "Intriguing.\n"
 "That'd certainly explain a few things."
-msgstr ""
+msgstr "Fascinujúce.\nTo určite vysvetľuje zopár vecí."
 
 #: ../data/level/tea-with-milgram.cfg:191
 msgid "For starters, uh ... he's <em>NOT</em> our mayor."
@@ -5676,7 +5678,7 @@ msgstr ""
 msgid ""
 "So I don't know what the elder talked you into,\n"
 "but it's almost guaranteed to be lunacy."
-msgstr ""
+msgstr "Takže neviem, čo ti starší nahovoril,\nale takmer určite to sú hlúposti."
 
 #: ../data/level/tea-with-milgram.cfg:222
 msgid ""
@@ -5696,23 +5698,23 @@ msgstr "Mohol by si priniesť, láskavo, niečo pre nášho hosťa?"
 
 #: ../data/level/tea-with-milgram.cfg:234
 msgid "So where was I?"
-msgstr ""
+msgstr "Tak kde som bol?"
 
 #: ../data/level/tea-with-milgram.cfg:236
 msgid "What did the elder actually tell you?"
-msgstr ""
+msgstr "Čo ti teda starší povedal?"
 
 #: ../data/level/tea-with-milgram.cfg:242
 msgid ""
 "Uhm...  so, I'm not even sure what that\n"
 "project was supposed to be, at this point."
-msgstr ""
+msgstr "Hm... tak, neviem ti teraz takto presne\npovedať, čo to malo byť za projekt."
 
 #: ../data/level/tea-with-milgram.cfg:245
 msgid ""
 "Might've been something about a bridge,\n"
 "Fergus was heading that one up."
-msgstr ""
+msgstr "Možno to bol niečo s mostom,\nFergus jeden vyhodil do vzduchu."
 
 #: ../data/level/tea-with-milgram.cfg:247
 msgid ""
@@ -5750,30 +5752,30 @@ msgid ""
 "gets money flowing around, makes the\n"
 "new owners proud of what they built,\n"
 "feels less like charity, et cetera."
-msgstr ""
+msgstr "Vždy je to takto lepšie;\nnechať peniaze tiecť okolo, a urobiť\nnových majiteľov hrdých na to, čo\nvybudovali, neznie to už ako charita, atď."
 
 #: ../data/level/tea-with-milgram.cfg:260
 msgid "But, apparently we just got conned."
-msgstr ""
+msgstr "Ale teraz sme zrejme boli podvedení."
 
 #: ../data/level/tea-with-milgram.cfg:263
 msgid ""
 "And once they figured that out,\n"
 "some of our security guys were\n"
 "a little overzealous about recovering assets."
-msgstr ""
+msgstr "A odkedy na to prišli,\nniektorí chlapci z bezpečnosti boli trochu\nviac horliví, čo sa týka navrátenia majetkov."
 
 #: ../data/level/tea-with-milgram.cfg:265
 msgid ""
 "Uh...\n"
 "That's a pretty spectacular euphemism, there..."
-msgstr ""
+msgstr "Ach...\nTo je celkom dobrý eufemizmus, že..."
 
 #: ../data/level/tea-with-milgram.cfg:267
 msgid ""
 "Yes, okay ...\n"
 "they were just thugs, plain and simple."
-msgstr ""
+msgstr "Áno, áno...\nboli to len kriminálnici, čisto a jasne."
 
 #: ../data/level/tea-with-milgram.cfg:269
 msgid ""
@@ -5793,23 +5795,23 @@ msgid ""
 "I haven't given you a chance to apologize,\n"
 "but no need.\n"
 "Thank you for embarrassing them."
-msgstr ""
+msgstr "Ani som vám nedal príležitosť sa\nospravedlniť, ale to nie je treba.\nĎakujem, že si ich zahambil."
 
 #: ../data/level/tea-with-milgram.cfg:276
 msgid "I hope they've learned a lesson from this."
-msgstr ""
+msgstr "Dúfam, že sa z toho poučia."
 
 #: ../data/level/tea-with-milgram.cfg:278
 msgid ""
 "Regarding THIS incident, I will need\n"
 "to have a talk with them about common sense."
-msgstr ""
+msgstr "Ohľadom tohto incidentu, budem si s nimi\nmusieť pohovoriť o zdravom rozume."
 
 #: ../data/level/tea-with-milgram.cfg:281
 msgid ""
 "Any fool could guess that the\n"
 "money had long since been spent."
-msgstr ""
+msgstr "Každý hlupák mohol uhádnuť,\nže tie peniaze boli minuté už dávno."
 
 #: ../data/level/tea-with-milgram.cfg:288
 msgid "Thank you Jeeves, that will do nicely."
@@ -5817,33 +5819,33 @@ msgstr "Ďakujem Vám Paľko, bude to stačiť."
 
 #: ../data/level/tea-with-milgram.cfg:292
 msgid "Anyhow, I'm quite unsure where to go from here."
-msgstr ""
+msgstr "Teraz som si nejako nie istý, kam ísť odtiaľto ďalej."
 
 #: ../data/level/tea-with-milgram.cfg:294
 msgid ""
 "I'd like to do something\n"
 "to make amends with the town..."
-msgstr ""
+msgstr "Rád by som niečo \nnapravil s mestom..."
 
 #: ../data/level/tea-with-milgram.cfg:296
 msgid ""
 "... what the kitties did there\n"
 "was decidedly impolite."
-msgstr ""
+msgstr "... to, čo tam mačičky robili\nrozhodne bolo neslušné."
 
 #: ../data/level/tea-with-milgram.cfg:299
 msgid ""
 "Then again, I'm almost tempted to cut my\n"
 "losses and leave you guys well enough alone."
-msgstr ""
+msgstr "Tak znova, som takmer v pokušení oželieť\nmoje straty a vás chlapcov nechať tak."
 
 #: ../data/level/tea-with-milgram.cfg:302
 msgid "Would you have any suggestions?"
-msgstr ""
+msgstr "Mal by si nejaké návrhy?"
 
 #: ../data/level/tea-with-milgram.cfg:304
 msgid "One or two."
-msgstr ""
+msgstr "Jeden alebo dva."
 
 #: ../data/level/tea-with-milgram.cfg:307
 msgid ""
@@ -5855,104 +5857,104 @@ msgstr ""
 msgid ""
 "I know it sounds completely nuts,\n"
 "but I honestly think that when he was given it..."
-msgstr ""
+msgstr "Možno to bude znieť úplne hlúpo,\nale úprimne si myslím, že keď to dostal..."
 
 #: ../data/level/tea-with-milgram.cfg:312
 msgid ""
 "...he didn't have a clue what to do with it,\n"
 "so he just ... hid it."
-msgstr ""
+msgstr "... nemal ani poňatia, čo s tým spraviť,\ntak to jednoducho ... skryl."
 
 #: ../data/level/tea-with-milgram.cfg:314
 msgid ""
 "We've all known him for years,\n"
 "and he's a hoarder, and a miser."
-msgstr ""
+msgstr "Všetci ho poznáme už roky,\na je to skrblík a lakomec."
 
 #: ../data/level/tea-with-milgram.cfg:316
 msgid ""
 "We've never seen him suddenly having more\n"
 "money to spend; so it's crazy, but it fits."
-msgstr ""
+msgstr "Nikdy sme nevideli, že by mal nejak veľa peňazí\nna míňanie; takže síce to je šialené, ale sedí to."
 
 #: ../data/level/tea-with-milgram.cfg:318
 msgid "I ... didn't see that coming."
-msgstr ""
+msgstr "Ja ... nemyslel som si, že to príde."
 
 #: ../data/level/tea-with-milgram.cfg:321
 msgid ""
 "When he was getting shaken down by that kitty,\n"
 "we turned our back on him for a second."
-msgstr ""
+msgstr "Keď bol ešte otrasený z tej mačičky,\nna sekundu sme sa mu otočili chrbtom."
 
 #: ../data/level/tea-with-milgram.cfg:324
 msgid ""
 "It turned out he'd hidden\n"
 "in some sort of secret passage."
-msgstr ""
+msgstr "Ukázalo sa, že sa schoval\nv nejakej tajnej pasáži."
 
 #: ../data/level/tea-with-milgram.cfg:326
 msgid ""
 "He may have used some of the money to build it,\n"
 "but his house has some sort of safe room."
-msgstr ""
+msgstr "Mohol použiť na to nejaké peniaze,\nlebo jeho dom má jednu zabezpečenú miestnosť."
 
 #: ../data/level/tea-with-milgram.cfg:328
 msgid ""
 "It's just a guess, but I honestly think he\n"
 "might have hidden the rest right inside it."
-msgstr ""
+msgstr "Je to síce len dohad, ale naozaj si myslím,\nže by tam mohol mať schovaný ten zvyšok."
 
 #: ../data/level/tea-with-milgram.cfg:330
 msgid "Incredible."
-msgstr ""
+msgstr "Neuveriteľné."
 
 #: ../data/level/tea-with-milgram.cfg:332
 msgid ""
 "Knowing that, you could probably\n"
 "just walk in and take it."
-msgstr ""
+msgstr "Keby si to bol vedel, zrejme by si mohol\njednoducho vojsť dnu a zobrať si to."
 
 #: ../data/level/tea-with-milgram.cfg:335
 msgid ""
 "We may.\n"
 "In fact I believe we will!"
-msgstr ""
+msgstr "Môžeme.\nV skutočnosti verím, že tak aj urobíme!"
 
 #: ../data/level/tea-with-milgram.cfg:338
 msgid ""
 "If I may be so bold, I think it's\n"
 "safe to say on behalf of the town..."
-msgstr ""
+msgstr "Ak môžem byť taký smelý, myslím,\nže je bezpečné povedať v mene mesta..."
 
 #: ../data/level/tea-with-milgram.cfg:340
 msgid ""
 "...the rest of us would still appreciate\n"
 "some sort of public-works project."
-msgstr ""
+msgstr "...by zvyšok z nás stále ocenil\nnejaký verejný projekt."
 
 #: ../data/level/tea-with-milgram.cfg:342
 msgid ""
 "You probably should hear what others are\n"
 "interested in, but I for one really wish there\n"
 "was a road of any kind between here and there."
-msgstr ""
+msgstr "Asi by si mal počúvať, o čo majú záujem ostatní,\nale ja som si napríklad želal, aby bola nejaká cesta odtiaľto tam."
 
 #: ../data/level/tea-with-milgram.cfg:344
 msgid "I'm dreading the trip back."
-msgstr ""
+msgstr "Desím sa cesty naspäť."
 
 #: ../data/level/tea-with-milgram.cfg:346
 msgid ""
 "Really?\n"
 "Where's your ship parked?"
-msgstr ""
+msgstr "Naozaj?\nKde je zaparkovaná tvoja loď?"
 
 #: ../data/level/tea-with-milgram.cfg:349
 msgid ""
 "I ... didn't ... use a vehicle.\n"
 "I walked."
-msgstr ""
+msgstr "Ja ... som ... nepoužil dopravný prostriedok.\nIšiel som pešo."
 
 #: ../data/level/tea-with-milgram.cfg:352
 msgid ""
@@ -5964,36 +5966,36 @@ msgstr ""
 msgid ""
 "I like you, little frog!\n"
 "You're quite bold."
-msgstr ""
+msgstr "Uznávam ťa, malá žaba!\nSi celkom odvážny."
 
 #: ../data/level/tea-with-milgram.cfg:356
 msgid ""
 "Well, I can certainly at least\n"
 "guarantee transportation for you!"
-msgstr ""
+msgstr "Dobre, prinajmenšom môžem \npre teba zabezpečiť transport!"
 
 #: ../data/level/tea-with-milgram.cfg:358
 msgid ""
 "And I'd be happy to consider some kind of project.\n"
 "You yourself could be my paid liaison."
-msgstr ""
+msgstr "A rád by som zvážil nejaký druh projektu.\nTy osobne by si mohol byť mojim plateným sprostredkovávateľom."
 
 #: ../data/level/tea-with-milgram.cfg:360
 msgid ""
 "We should keep in touch - hopefully,\n"
 "through you, I can meet some of the\n"
 "more 'level-headed' members of your town."
-msgstr ""
+msgstr "Mali by sme zostať v kontakte - pri troche šťastia,\ns tvojou pomocou by som sa mohol stretnúť s pár\n'vyrovnanejšími' členmi vášho mesta."
 
 #: ../data/level/tea-with-milgram.cfg:363
 msgid "So ... all's well that ends well?"
-msgstr ""
+msgstr "Takže ... všetko dobré, čo končí dobre?"
 
 #: ../data/level/tea-with-milgram.cfg:365
 msgid ""
 "Yes, I do think everyone will have\n"
 "an equitable outcome to this whole mess."
-msgstr ""
+msgstr "Áno, myslím si, že každý bude mať z celého tohto\nneporiadku nakoniec len úžitok."
 
 #: ../data/level/tea-with-milgram.cfg:367
 msgid "Except the elder."
@@ -6684,7 +6686,7 @@ msgstr "Kdeže, je zamknuté."
 #: ../data/objects/effects/control/level_controller_coin_race.cfg:15
 #: ../data/objects/effects/control/level_controller_coin_race.cfg:17
 msgid "You made it to level ${level.player.difficulty} of the coin race."
-msgstr ""
+msgstr "Zvládol si to do ${level.player.difficulty}. levelu mincového závodu."
 
 #: ../data/objects/effects/control/level_controller_coin_race.cfg:18
 msgid ""
