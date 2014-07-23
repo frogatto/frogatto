@@ -5,12 +5,12 @@
 		rect: [3,1,27,28],
 		frames: 1,
 		duration: 6,
-		attack_area: [15,18,26,26],
+		attack_area: [15,14,30,30],
 	},
 	{
 		id: "walk",
 		#blink variant
-		attack_area: [15,18,26,26],
+		attack_area: [15,14,30,30],
 		accel_x: 250,
 		rect: [89,1,113,28],
 		frames: 3,
@@ -18,7 +18,7 @@
 	},
 	{
 		id: "walk",
-		attack_area: [15,18,26,26],
+		attack_area: [15,14,30,30],
 		duplicates: 6,
 		accel_x: 250,
 		rect: [3,1,27,28],
@@ -36,7 +36,7 @@
 		rect: [3,65,27,92],
 		frames: 3,
 		duration: 4,
-		attack_area: [0,18,26,26],
+		attack_area: [0,14,30,30],
 	},
 	{
 		id: "hurt",
