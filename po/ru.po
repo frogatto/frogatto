@@ -4,6 +4,7 @@
 # 
 # Translators:
 # AlexanderR <alexander.r@gmx.com>, 2012
+# AlexanderR <alexander.r@gmx.com>, 2013
 # AlexanderR <alexander.r@gmx.com>, 2012
 # Artem Krosheninnikov <feeblehamster@gmail.com>, 2011-2012
 # Azamat Hackimov <azamat.hackimov@gmail.com>, 2011
@@ -12,23 +13,24 @@
 # Philipp Zabel <pzabel@gmx.de>, 2011
 # <rvacheva@nxt.ru>, 2011
 # AlexanderR <alexander.r@gmx.com>, 2011
+# Sergey Soltys <treefeed@mail.ru>, 2015
 # Tiomik <ArtMOON95@gmail.com>, 2012
-# toxxxsin <toxx@inbox.ru>, 2012
-# Артём Радулов <artmoon95@gmail.com>, 2012
+# Anton <toxx@inbox.ru>, 2012
+# Радулов Артём <artmoon95@gmail.com>, 2012
 # Евгений Лежнин <z_lezhnin@mail2000.ru>, 2011
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
 "POT-Creation-Date: 2013-04-26 01:54-0300\n"
-"PO-Revision-Date: 2013-04-26 04:55+0000\n"
-"Last-Translator: Marcos Avila Isidoro <marcavis@yahoo.com.br>\n"
+"PO-Revision-Date: 2015-06-10 08:58+0000\n"
+"Last-Translator: Sergey Soltys <treefeed@mail.ru>\n"
 "Language-Team: Russian (http://www.transifex.com/projects/p/Frogatto/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ru\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: ../../../src/controls_dialog.cpp:51
 msgid "Directions"
@@ -64,11 +66,11 @@ msgstr "Разблокировано достижение!"
 
 #: ../../../src/language_dialog.cpp:79
 msgid "Language change will take effect in next level."
-msgstr ""
+msgstr "Изменения языка возымеют эффект на следующем уровне."
 
 #: ../../../src/language_dialog.cpp:96
 msgid "Use system language"
-msgstr ""
+msgstr "Использовать язык системы"
 
 #: ../../../src/main.cpp:700
 msgid "Initializing custom object functions"
@@ -108,7 +110,7 @@ msgstr "Управление..."
 
 #: ../../../src/pause_game_dialog.cpp:75
 msgid "Language..."
-msgstr ""
+msgstr "Язык..."
 
 #: ../../../src/pause_game_dialog.cpp:76
 msgid "Return to Titlescreen"
@@ -124,76 +126,76 @@ msgstr "Поменять A и B местами"
 
 #: ../CHANGELOG:1 ../iOS_CHANGELOG:1
 msgid "Version 1.3:"
-msgstr ""
+msgstr "Версия 1.3:"
 
 #: ../CHANGELOG:2 ../iOS_CHANGELOG:2
 msgid ""
 "Expansion and improvements to the plot and dialogue, adding new cutscenes "
 "that give you a closer look at the antagonists' motives."
-msgstr ""
+msgstr "Расширены и улучшены сценарий и диалоги, добавлены новые ролики, которые дают вам более подробный взгляд на мотивы антагонистов."
 
 #: ../CHANGELOG:3 ../iOS_CHANGELOG:3
 msgid ""
 "Several new levels were added to the dungeon environment; with some of them "
 "being optional, there's much more to explore now."
-msgstr ""
+msgstr "Несколько новых уровней добавлены к подземельям; некоторые из них необязательно, но можно дополнительно исследовать."
 
 #: ../CHANGELOG:4 ../iOS_CHANGELOG:4
 msgid ""
 "Some new enemies to be vanquished: a red bat that's much more tenacious than"
 " the regular ones, and the hard-hitting ninja-kitty, that has many tools at "
 "his disposal to fight you. And these are just a few examples!"
-msgstr ""
+msgstr "Несколько новых противников для сражений: красные летучие мыши более свирепы чем обычные, и изворотливый нинзя-кот, что вооружён разными приспособлениями для драки с вами. И это только пара примеров!"
 
 #: ../CHANGELOG:5 ../iOS_CHANGELOG:5
 msgid ""
 "New difficulty level: Challenging. Some enemies will be faster, hardier, "
 "smarter, or all of those put together."
-msgstr ""
+msgstr "Новый уровень сложности: Испытание. Некоторые враги будут быстрее, сложнее, умнее, или всё это сразу."
 
 #: ../CHANGELOG:6 ../iOS_CHANGELOG:6
 msgid ""
 "A better \"New Game/Load Game\" screen, that allows the selection of save "
 "slots."
-msgstr ""
+msgstr "Улучшенный экран \"Новая игра/Загрузка\", что позволяет выбирать слот сохранения."
 
 #: ../CHANGELOG:7 ../iOS_CHANGELOG:7
 msgid ""
 "New power-up system, based on a common \"mana\" resource - now players can "
 "choose what powers to use at any time, if they've acquired them and have "
 "enough mana to use them."
-msgstr ""
+msgstr "Новая система усилений, основанная на ресурсе \"мана\" - теперь игроки могут выбирать, какую силу использовать в данном случае, если они приобрели оную и обладают достаточным количеством маны для использования."
 
 #: ../CHANGELOG:8 ../iOS_CHANGELOG:8
 msgid ""
 "Two new power-ups: Fire-breath attack and an energy shot that homes in on "
 "enemies."
-msgstr ""
+msgstr "Два новых усиления: Огненное дыхание и энергетический выстрел, что наводится на врагов."
 
 #: ../CHANGELOG:9 ../iOS_CHANGELOG:9
 msgid ""
 "Graphical improvements abound: ground tiles on most environments were "
 "reworked, adding better perspective, and being improved on in general."
-msgstr ""
+msgstr "Графические улучшения: текстуры земли большинства окружений переработаны, добавлена лучшая перспектива и общее улучшение вида."
 
 #: ../CHANGELOG:10 ../iOS_CHANGELOG:10
 msgid ""
 "Lots of new objects show up in the foreground and background, giving more "
 "depth and diversity to each map."
-msgstr ""
+msgstr "Больше новых объектов прорисовываются на заднем и переднем плане, придавая больше глубины и разнообразия каждой карте."
 
 #: ../CHANGELOG:11 ../iOS_CHANGELOG:11
 msgid ""
 "Many new tracks were added to the soundtrack, while most of the previous "
 "repertoire has been enhanced."
-msgstr ""
+msgstr "Множество новых звуковых дорожек было добавлено к саундтреку, и многие из прежнего репертуара были улучшены."
 
 #: ../CHANGELOG:12 ../iOS_CHANGELOG:12
 msgid ""
 "A much wider and smarter usage of sound effects; now you'll be able to "
 "notice flying enemies' wings flapping, kitties running around, and even the "
 "sounds Frogatto make are when moving around are dependent on terrain."
-msgstr ""
+msgstr "Более широкое и разумное использование звуковых эффектов; теперь вы заметите летающих врагов по хлопанью крыльев, коты бегают вокруг, и даже звуки шагов Фрогатто зависят от типа местности по которой он шагает."
 
 #: ../CHANGELOG:14 ../iOS_CHANGELOG:14
 msgid "Version 1.2:"
@@ -534,7 +536,7 @@ msgstr "- оригинальное звуковое сопровождение"
 msgid ""
 "- sprawling, complex world with over 70 levels to explore, and tons of "
 "secrets to find"
-msgstr ""
+msgstr "- расползающийся, сложный мир с более чем 70 уровнями для исследования, и тоннами секретов для поиска"
 
 #: ../MAC_APP_STORE_METADATA:14 ../iOS_APP_STORE_METADATA:15
 msgid "To find out more about the game please visit http://www.frogatto.com/"
@@ -546,15 +548,15 @@ msgstr "Обзоры:"
 
 #: ../MAC_APP_STORE_METADATA:17 ../iOS_APP_STORE_METADATA:18
 msgid "- [3/4 SlideToPlay.com] \"a fun and surprisingly deep platformer\""
-msgstr "- [3/4 SlideToPlay.com] \"a fun and surprisingly deep platformer\""
+msgstr "- [3/4 SlideToPlay.com] \"весёлый и удивительно глубокий платформер\""
 
 #: ../MAC_APP_STORE_METADATA:18 ../iOS_APP_STORE_METADATA:19
 msgid "- [4/5 AppSpy.com] \"boy-howdy is this an amazing visual feast!\""
-msgstr "- [4/5 AppSpy.com] \"boy-howdy is this an amazing visual feast!\""
+msgstr "- [4/5 AppSpy.com] \"божечки-мой, это великолепный визуальный праздник!\""
 
 #: ../MAC_APP_STORE_METADATA:19 ../iOS_APP_STORE_METADATA:20
 msgid "- [n/a TouchArcade.com] \"totally worth checking out.\""
-msgstr "- [n/a TouchArcade.com] \"totally worth checking out.\""
+msgstr "- [n/a TouchArcade.com] \"абсолютно стоит заценить.\""
 
 #: ../MAC_APP_STORE_METADATA:21 ../iOS_APP_STORE_METADATA:22
 msgid "keywords:"
@@ -683,7 +685,7 @@ msgstr "Не обошлось без моей шляпы!"
 
 #: ../data/achievements.cfg:105
 msgid "Start a level with no health left."
-msgstr "Начни уровень без потери здоровья."
+msgstr "Начни уровень без здоровья."
 
 #: ../data/level/airplane-boss.cfg:32
 msgid "Ambush!"
@@ -878,13 +880,13 @@ msgstr "Да?"
 msgid ""
 "Yes, I've pulled a few strings,\n"
 "called in a few favors and whatnot..."
-msgstr "Да, пару раз я\nпомог в кое-чём..."
+msgstr "Да, я подёргал за несколько ниточек\nоказал пару услуг и подобное..."
 
 #: ../data/level/bon-bosque.cfg:202
 msgid ""
 "...and got my hands on a Force Talisman.\n"
 "For your use."
-msgstr "...и получил на руки Талисман Силы.\nОн для тебя."
+msgstr "...и наложил ручки на Талисман Силы.\nОн для тебя."
 
 #: ../data/level/bon-bosque.cfg:203
 msgid ""
@@ -1019,7 +1021,7 @@ msgstr "В общем, всё хорошо, что хорошо кончаетс
 msgid ""
 "I did find out what was going on, at least,\n"
 "that is, what the elder <em>says</em> is going on."
-msgstr ""
+msgstr "По крайней мере, я выяснил, что происходит,\nвернее, что происходит <em>по словам старосты</em>."
 
 #: ../data/level/crevice-bridge.cfg:310
 msgid ""
@@ -1077,7 +1079,7 @@ msgstr "И никогда не возникало ощущения, что\nу �
 msgid ""
 "Well, he's <em>bragged</em> about being rich,\n"
 "but that's just his \"dignified family\" schtick."
-msgstr ""
+msgstr "Ну, он <em>хвастался</em> своим фантастическим богатством,\nно это у него \"аристократский\" бзик."
 
 #: ../data/level/crevice-bridge.cfg:333
 msgid ""
@@ -1102,7 +1104,7 @@ msgstr "Он говорит, что заводит знакомства с\nну
 msgid ""
 "Yeah.  Geez.\n"
 "So, uh, here's what I think we know:"
-msgstr ""
+msgstr "Мдаа..\nПока-что нам известно следующее:"
 
 #: ../data/level/crevice-bridge.cfg:340
 msgid ""
@@ -1161,7 +1163,7 @@ msgstr "Ах, это. Я пошел и решил, что это, наверно
 msgid ""
 "<em>Someone</em> needs to go talk to Milgram,\n"
 "and ask what was wrong, so nothing bad happens."
-msgstr ""
+msgstr "<em>Кое-кто</em> должен пойти поговорить с Милграмом,\nи спросить, что не так, и ничего плохого не случиться."
 
 #: ../data/level/crevice-bridge.cfg:361
 msgid ""
@@ -1219,7 +1221,7 @@ msgid ""
 "I'm as curious as you are, about this,\n"
 "and we're more likely to get to the\n"
 "bottom of things if we work together."
-msgstr ""
+msgstr "Мне это так же любопытно, как и вам,\nи мы докопаемся до сути, если\nбудем работать сообща."
 
 #: ../data/level/crevice-bridge.cfg:384
 msgid "Awesome!"
@@ -1229,23 +1231,23 @@ msgstr "Прелестно!"
 msgid ""
 "Anyways, I was planning to go through\n"
 "the forest, to start with."
-msgstr ""
+msgstr "Для начала, я все равно собирался\nидти через лес."
 
 #: ../data/level/crevice-bridge.cfg:389
 msgid "Does that sound like a good idea?"
-msgstr ""
+msgstr "Звучит неплохо?"
 
 #: ../data/level/crevice-bridge.cfg:391
 msgid ""
 "Yes... it is the only path I know of,\n"
 "but be careful in there."
-msgstr ""
+msgstr "Да.. это единственный известный мне путь,\nбудь настороже."
 
 #: ../data/level/crevice-bridge.cfg:394
 msgid ""
 "Yeah, no kidding.\n"
 "Well, see you soon!  Thanks again!"
-msgstr ""
+msgstr "Серьёзно.\nНу давай, скоро увидимся."
 
 #: ../data/level/crevice-bridge.cfg:1277
 msgid "Ahh, there you are!"
@@ -1396,13 +1398,13 @@ msgstr "И я не думаю, что рядом\nс ними есть охра�
 msgid ""
 "In fact I don't think there IS a key.\n"
 "I think that door might be machine-controlled."
-msgstr ""
+msgstr "По правде, я не думаю, что тут\nИСПОЛЬЗУЮТ ключ. Я думаю дверь автоматическая."
 
 #: ../data/level/crevice-village-central.cfg:143
 msgid ""
 "I don't know where the controls would be,\n"
 "though.  I'm not from here, after all."
-msgstr ""
+msgstr "Я не знаю где управление может быть.\nЯ же не местный, знаете ли."
 
 #: ../data/level/crevice-village-central.cfg:144
 msgid ""
@@ -1780,7 +1782,7 @@ msgstr "Кто ты?"
 
 #: ../data/level/crevice-village-house-1.cfg:957
 msgid "I'm whatever the occasion calls for."
-msgstr ""
+msgstr "Я тут по воле случая."
 
 #: ../data/level/crevice-village-house-1.cfg:958
 #: ../data/level/crevice-village-house-1.cfg:976
@@ -1805,13 +1807,13 @@ msgstr "Как классно."
 msgid ""
 "Yes, well, at this particular juncture,\n"
 "who I am isn't very important."
-msgstr ""
+msgstr "Да, хм, на данном этапе,\nкто я не так уж и важно."
 
 #: ../data/level/crevice-village-house-1.cfg:963
 msgid ""
 "What's important is that I'm not in a cage,\n"
 "so I might be able to do something to help."
-msgstr ""
+msgstr "Что важно - я не в клетке,\nтак что возможно смогу помочь."
 
 #: ../data/level/crevice-village-house-1.cfg:965
 msgid "Got any advice?"
@@ -1822,7 +1824,7 @@ msgid ""
 "Yeah, that key right next to you -\n"
 "I think that unlocks a house that\n"
 "has the controls to the town gate."
-msgstr ""
+msgstr "Точно, тот ключ прямо за тобой - \nя предполагаю что он отпирает дом,\nчто управляет городскими воротами."
 
 #: ../data/level/crevice-village-house-1.cfg:967
 msgid "Maybe."
@@ -1833,13 +1835,13 @@ msgid ""
 "I've seen it one time, it's in the\n"
 "house up and to your left from here;\n"
 "up in the cliffside."
-msgstr ""
+msgstr "Я видел его однажды, это дом\nвыше и левее отсюда;\nнаверху обрыва."
 
 #: ../data/level/crevice-village-house-1.cfg:969
 msgid ""
 "Way upstairs there's a control room\n"
 "with a big button to open it."
-msgstr ""
+msgstr "Вверх по лестнице комната управления\nс большой кнопкой для открывания."
 
 #: ../data/level/crevice-village-house-1.cfg:970
 msgid "Keep an eye out for it!"
@@ -1853,11 +1855,11 @@ msgstr "Хорошо.  Пока."
 msgid ""
 "HEY, WAIT!\n"
 "What about me?!"
-msgstr ""
+msgstr "ЭЙ, ПОДОЖДИ!\nКак насчёт меня?!"
 
 #: ../data/level/crevice-village-house-1.cfg:975
 msgid "Does it look like I have a key for your cage?"
-msgstr ""
+msgstr "А по мне видно, что уменя есть ключ от твоей клетки?"
 
 #: ../data/level/crevice-village-house-1.cfg:977
 msgid ""
@@ -1867,7 +1869,7 @@ msgstr "Ах, я вижу…\nоставим на потом."
 
 #: ../data/level/crevice-village-house-1.cfg:991
 msgid "Thank god it's you!"
-msgstr ""
+msgstr "Слава Богу, это ты!"
 
 #: ../data/level/crevice-village-house-1.cfg:993
 msgid "Hey, Hedge, you alright?"
@@ -1940,7 +1942,7 @@ msgstr "Господи, я *клянусь*, что\nэтот дом не выг
 
 #: ../data/level/crevice-village-house-1.cfg:1045
 msgid "Uh, oh, I hear ... trouble."
-msgstr ""
+msgstr "Ай-яй-яй, у нас проблемы."
 
 #: ../data/level/crevice-village-house-1.cfg:2348
 #: ../data/level/liberated-crevice-village-house-1.cfg:1503
@@ -2016,7 +2018,7 @@ msgstr "Опасный дом"
 msgid ""
 "It says, \"Central Gate Control\"\n"
 "That's what we want!"
-msgstr ""
+msgstr "Тут сказано: \"Управление Главными Воротами\"\nЭто то, что нам нужно!"
 
 #: ../data/level/crevice-village-house-4-backroom.cfg:270
 msgid ""
@@ -2113,7 +2115,7 @@ msgstr "Тьфу."
 msgid ""
 "For the last time, we <em>know</em> you've\n"
 "got the money somewhere."
-msgstr ""
+msgstr "В последний раз говорю, мы <em>знаем</em>,\nу тебя где-то есть деньги."
 
 #: ../data/level/crevice-village-house-elder.cfg:330
 msgid "Make this easy on yourself."
@@ -2125,29 +2127,29 @@ msgstr "Не знаю, о чем это ты говоришь."
 
 #: ../data/level/crevice-village-house-elder.cfg:334
 msgid "Are you <em>absolutely</em> sure about that?"
-msgstr ""
+msgstr "Ты <em>абсолютно</em> уверен в этом?"
 
 #: ../data/level/crevice-village-house-elder.cfg:336
 msgid ""
 "Er... no, I'm not.  I ... lied.\n"
 "Listen, I'm sorry... I'm just scared, here!"
-msgstr ""
+msgstr "Ну... нет, я - нет. Я... врал.\nСлушай, прости... Мне просто страшно тут!"
 
 #: ../data/level/crevice-village-house-elder.cfg:338
 msgid ""
 "I've never been threatened like this!\n"
 "I just can't think straight."
-msgstr ""
+msgstr "Я никогда не был испуган как сейчас!\nПросто не могу думать спокойно."
 
 #: ../data/level/crevice-village-house-elder.cfg:340
 msgid "Go on..."
-msgstr ""
+msgstr "Продолжай..."
 
 #: ../data/level/crevice-village-house-elder.cfg:342
 msgid ""
 "Listen... if you just follow me,\n"
 "I'll lead you to it."
-msgstr ""
+msgstr "Слушай... если просто последуешь за мной,\nя отведу тебя туда."
 
 #: ../data/level/crevice-village-house-elder.cfg:350
 msgid "Oh, no you don't!"
@@ -2157,19 +2159,19 @@ msgstr "О, нет, не надо!"
 msgid ""
 "You're not going out that door first.\n"
 "I'm not <em>that</em> stupid."
-msgstr ""
+msgstr "Ты не выйдешь за эту дверь, во-первых.\nЯ не <em>настолько</em> тупой."
 
 #: ../data/level/crevice-village-house-elder.cfg:352
 msgid ""
 "Now, listen up,\n"
 "You're SERIOUSLY testing my patience."
-msgstr ""
+msgstr "Так, слушай,\nТы ДЕЙСТВИТЕЛЬНО испытываешь моё терпение."
 
 #: ../data/level/crevice-village-house-elder.cfg:353
 msgid ""
 "You're gonna <em>sit down,</em>\n"
 "and tell me...  uh..."
-msgstr ""
+msgstr "Ты <em>присядешь</em>\nи расскажешь мне... кхм..."
 
 #: ../data/level/crevice-village-house-elder.cfg:358
 msgid "Oh, hi, what's going on here?"
@@ -2181,7 +2183,7 @@ msgstr "А ты ещё кто такой?"
 
 #: ../data/level/crevice-village-house-elder.cfg:365
 msgid "I sometimes ask myself that question."
-msgstr ""
+msgstr "Я иногда задаю себе этот вопрос."
 
 #: ../data/level/crevice-village-house-elder.cfg:369
 msgid "I don't have to put up with this."
@@ -2193,7 +2195,7 @@ msgstr "Старик, жди здесь,\nпока я разберусь с эт
 
 #: ../data/level/crevice-village-house-elder.cfg:405
 msgid "<em>ouch</em>"
-msgstr ""
+msgstr "<em>Ой</em>"
 
 #: ../data/level/crevice-village-house-elder.cfg:406
 msgid "Okay, I've had enough!  I'm going home."
@@ -2227,7 +2229,7 @@ msgstr "Это моё собственное убежище."
 
 #: ../data/level/crevice-village-house-elder.cfg:480
 msgid "^Wow."
-msgstr ""
+msgstr "^Ого."
 
 #: ../data/level/crevice-village-house-elder.cfg:482
 msgid "Built it for exactly this sort of crisis."
@@ -2249,7 +2251,7 @@ msgstr "Я не могу не спросить: Что побудило тебя
 msgid ""
 "This HAD to be expensive.\n"
 "I mean ... <em>really</em> ... expensive."
-msgstr ""
+msgstr "Это БУДЕТ дорого.\nЯ имею ввиду... <em>действительно</em>... дорого."
 
 #: ../data/level/crevice-village-house-elder.cfg:492
 msgid ""
@@ -2269,7 +2271,7 @@ msgstr "Что теперь?"
 msgid ""
 "Oh for crying out loud,\n"
 "would you NOT play coy with me!"
-msgstr ""
+msgstr "О, с ума сойти,\nможешь НЕ играть скромника!"
 
 #: ../data/level/crevice-village-house-elder.cfg:502
 msgid ""
@@ -2281,7 +2283,7 @@ msgstr "Это был безумный день,\nи моё терпение н�
 msgid ""
 "I set out for just a routine errand run,\n"
 "you know?"
-msgstr ""
+msgstr "Я вроде как искал ненапряжную\nхалтурку, не?"
 
 #: ../data/level/crevice-village-house-elder.cfg:506
 msgid "Just gonna run by town, check the news."
@@ -2303,7 +2305,7 @@ msgstr "Судя по только что услышанному мной,\nты
 msgid ""
 "I insist - it's the <em>least</em> you can do\n"
 "to thank me for saving your hide."
-msgstr ""
+msgstr "Будь уверен - это <em>самое</em> меньшее, что ты можешь\nсделать для меня в благодарность за спасение твоей шкуры."
 
 #: ../data/level/crevice-village-house-elder.cfg:516
 msgid "Ugh, I suppose you're right."
@@ -2311,7 +2313,7 @@ msgstr "Ох, похоже что ты прав."
 
 #: ../data/level/crevice-village-house-elder.cfg:518
 msgid "You bet I am."
-msgstr ""
+msgstr "Ты раскусил меня."
 
 #: ../data/level/crevice-village-house-elder.cfg:520
 msgid "Hmm... boy, where do I start?"
@@ -2333,13 +2335,13 @@ msgstr "Я, как-никак мэр, а мэры они.. Ну ты поним�
 msgid ""
 "No.  Don't do this.  <em>Not</em> today.\n"
 "I'm not putting up with your usual shit."
-msgstr ""
+msgstr "Нет. Не делай так. <em>Не</em> сегодня.\nЯ не поведусь на твоё обычное дерьмо."
 
 #: ../data/level/crevice-village-house-elder.cfg:528
 msgid ""
 "Please, just stop playing games, okay?\n"
 "Don't convince me that you're actually crazy."
-msgstr ""
+msgstr "Пожалуйста, просто прекрати играть в игры, да?\nНе убеждай меня что ты действительно съехал."
 
 #: ../data/level/crevice-village-house-elder.cfg:530
 msgid "Are you done insulting me, yet?"
@@ -2355,19 +2357,19 @@ msgstr "Нет уж. Сначала ответь!"
 msgid ""
 "Seriously - <em>I'm on your side,</em> here!\n"
 "I just risked my butt fighting that guy off."
-msgstr ""
+msgstr "Честное слово, <em>я же на твоей стороне</em>!\nКак-никак я только что жизнью рисковал."
 
 #: ../data/level/crevice-village-house-elder.cfg:536
 msgid ""
 "I know you're trying to hide something,\n"
 "but throw me a line here."
-msgstr ""
+msgstr "Я знаю, ты что-то скрываешь, но\nвсё же будь добр, помоги-а?"
 
 #: ../data/level/crevice-village-house-elder.cfg:538
 msgid ""
 "Maybe ...\n"
 "I can actually <em>help</em> you?"
-msgstr ""
+msgstr "Может быть ...\nМогу я чем-нибудь <em>помочь</em> тебе?"
 
 #: ../data/level/crevice-village-house-elder.cfg:540
 msgid ""
@@ -2379,7 +2381,7 @@ msgstr "Хорошо.\nДа и что мне терять?"
 msgid ""
 "I'm afraid if this gets out,\n"
 "the town might blame <em>me</em> for this incident."
-msgstr ""
+msgstr "Боюсь, если про это станет известно,\nгорожане свалят вину за произошедшее на <em>меня</em>."
 
 #: ../data/level/crevice-village-house-elder.cfg:544
 msgid ""
@@ -2408,7 +2410,7 @@ msgid ""
 "Anyhow, I was all too happy to accept,\n"
 "but it wasn't long before I realized\n"
 "what was <em>really</em> afoot."
-msgstr ""
+msgstr "Я с радостью согласился;\nчтобы вскоре понять что оно неспроста\nбыло <em>таким</em> заманчивым."
 
 #: ../data/level/crevice-village-house-elder.cfg:554
 msgid ""
@@ -2476,7 +2478,7 @@ msgid ""
 "No!\n"
 "You <em>always</em> need an excuse.\n"
 "Otherwise, no one would support your claim!"
-msgstr ""
+msgstr "Нет же!\nВ таких случаях <em>всегда</em> нужен предлог.\nИначе тебя просто никто не поддержит."
 
 #: ../data/level/crevice-village-house-elder.cfg:578
 msgid ""
@@ -2494,7 +2496,7 @@ msgstr "Думаю, нам нужно собрать армию и\nнанест
 msgid ""
 "I don't think that's a good idea!\n"
 "Let's not jump the gun, here."
-msgstr ""
+msgstr "Звучит не очень. Может\nлучше не нарываться?"
 
 #: ../data/level/crevice-village-house-elder.cfg:584
 msgid ""
@@ -2614,7 +2616,7 @@ msgstr "В смысле... звучит-то оно неплохо."
 msgid ""
 "but I'm gonna be a jerk here,\n"
 "and poke some holes in it."
-msgstr ""
+msgstr "Но я собираюсь поработать сосиской,\nи заткнуть несколько дырок."
 
 #: ../data/level/crevice-village.cfg:831
 msgid ""
@@ -2638,13 +2640,13 @@ msgstr "Даже вооружи мы весь город, они бы превз
 msgid ""
 "Plus, they're pretty mobile, too.\n"
 "Planes and such."
-msgstr ""
+msgstr "К тому же, они довольно мобильны.\nСамолеты и все такое."
 
 #: ../data/level/crevice-village.cfg:839
 msgid ""
 "We might get the drop on them for a bit,\n"
 "but we'd get surrounded in no time."
-msgstr ""
+msgstr "На какое-то время мы можем получить преимущество, но будем окружены в одно мгновение."
 
 #: ../data/level/crevice-village.cfg:841
 msgid "Brute force against brute force won't work."
@@ -2740,188 +2742,188 @@ msgstr "Вход"
 
 #: ../data/level/dungeon-gateway.cfg:126
 msgid "h... Hello?"
-msgstr ""
+msgstr "П... Привет?"
 
 #: ../data/level/dungeon-gateway.cfg:130
 msgid "Is everything alright?"
-msgstr ""
+msgstr "Всё в порядке?"
 
 #: ../data/level/dungeon-gateway.cfg:132
 msgid "Oh thank goodness, you can talk!"
-msgstr ""
+msgstr "О, слава богам, ты говоришь!"
 
 #: ../data/level/dungeon-gateway.cfg:135
 msgid "This is a surprise?"
-msgstr ""
+msgstr "Это неожиданно?"
 
 #: ../data/level/dungeon-gateway.cfg:137
 msgid ""
 "Yeah, I thought you were some creature\n"
 "that had shambled in from the caves."
-msgstr ""
+msgstr "Да, поскольку ты тварь\nвыползшая из пещер."
 
 #: ../data/level/dungeon-gateway.cfg:138
 msgid "We get that from time to time."
-msgstr ""
+msgstr "Мы поступаем так время от времени."
 
 #: ../data/level/dungeon-gateway.cfg:139
 msgid ""
 "I hate this job.\n"
 "It's CREEPY down here!"
-msgstr ""
+msgstr "Ненавижу эту службу.\nТут ЧЕРТОВСКИ страшно!"
 
 #: ../data/level/dungeon-gateway.cfg:142
 msgid "What are you even doing?"
-msgstr ""
+msgstr "Чем ты занимаешься?"
 
 #: ../data/level/dungeon-gateway.cfg:144
 msgid ""
 "Cleaning.\n"
 "I'm a janitor."
-msgstr ""
+msgstr "Прибираюсь.\nЯ уборщик."
 
 #: ../data/level/dungeon-gateway.cfg:145
 msgid ""
 "What are YOU doing?\n"
 "For that matter, who are you, anyways?"
-msgstr ""
+msgstr "Что ТЫ делаешь?\nИ что более важно, кто ты?"
 
 #: ../data/level/dungeon-gateway.cfg:148
 #: ../data/level/kitty-dormitory.cfg:3174
 msgid "I'm Frogatto."
-msgstr ""
+msgstr "Я Фрогатто."
 
 #: ../data/level/dungeon-gateway.cfg:150
 msgid "Do Frogattoes live in caves?"
-msgstr ""
+msgstr "Фрогатты живут в пещерах?"
 
 #: ../data/level/dungeon-gateway.cfg:153
 msgid ""
 "We're called 'Frogs', actually...\n"
 "I guess sometimes we do, but I don't."
-msgstr ""
+msgstr "Нас называют 'Лягухи', вообще-то...\nЯ предполагаю иногда да, но я - нет."
 
 #: ../data/level/dungeon-gateway.cfg:155
 msgid ""
 "Anyways, if you must know,\n"
 "I've actually come here to see Milgram."
-msgstr ""
+msgstr "В любом случае, если ты знаешь,\nя тут пришёл повидаться с Милграмом."
 
 #: ../data/level/dungeon-gateway.cfg:157
 msgid ""
 "I'm trying to sneak in, because I hear he's\n"
 "nigh-impossible to get a proper audience with."
-msgstr ""
+msgstr "Я попробовал прокрасться, поскольку слышал\nон \"сверхнедоступный\" для обычного приёма."
 
 #: ../data/level/dungeon-gateway.cfg:159
 msgid ""
 "Wow.\n"
 "That's pretty bold!"
-msgstr ""
+msgstr "Ого.\nЭто довольно смело!"
 
 #: ../data/level/dungeon-gateway.cfg:160
 msgid "What business do you have with him?"
-msgstr ""
+msgstr "Что за дело у тебя к нему?"
 
 #: ../data/level/dungeon-gateway.cfg:163
 msgid ""
 "Well, some of you came to my hometown a little\n"
 "while ago, and went after someone I know."
-msgstr ""
+msgstr "Ну, кое-кто из ваших пришёл в мой город\nнедавно, и увёл кое-кого знакомого."
 
 #: ../data/level/dungeon-gateway.cfg:165
 msgid ""
 "He's not really a friend of mine,\n"
 "but I'd like to know what's going on."
-msgstr ""
+msgstr "Он мне не друг,\nно я хотел бы знать что к чему."
 
 #: ../data/level/dungeon-gateway.cfg:167
 msgid "You guys ... kinda scared a few people."
-msgstr ""
+msgstr "Вы парни... типа напугали кучу народу."
 
 #: ../data/level/dungeon-gateway.cfg:169
 msgid "Geez, I'm sorry to hear that."
-msgstr ""
+msgstr "Эээ, мне прискорбно это слышать."
 
 #: ../data/level/dungeon-gateway.cfg:170
 msgid ""
 "You know, now that you mention it,\n"
 "you look kinda familiar."
-msgstr ""
+msgstr "Ты знаешь, когда ты упомянул об этом,\nя вспомнил тебя."
 
 #: ../data/level/dungeon-gateway.cfg:171
 msgid "I think they put out a security bulletin about you."
-msgstr ""
+msgstr "Я думаю, они выпустили листовку про тебя."
 
 #: ../data/level/dungeon-gateway.cfg:174
 msgid ""
 "Me?  In particular?\n"
 "This is a tad awkward..."
-msgstr ""
+msgstr "Меня? Одного меня?\nЭто немного неловко..."
 
 #: ../data/level/dungeon-gateway.cfg:176
 msgid "No, no, don't get the wrong idea."
-msgstr ""
+msgstr "Нет-нет, не пойми неправильно."
 
 #: ../data/level/dungeon-gateway.cfg:177
 msgid ""
 "Me?  No way I'm going to fight you.\n"
 "You seem like a decent guy anyways."
-msgstr ""
+msgstr "Меня? Я не стану драться с тобой.\nТы выглядишь как порядочный парень."
 
 #: ../data/level/dungeon-gateway.cfg:178
 msgid ""
 "But you might want to be extra careful\n"
 "if you do sneak in."
-msgstr ""
+msgstr "Но тебе нужно быть осторожным\nесли ты прокрадываешься."
 
 #: ../data/level/dungeon-gateway.cfg:181
 msgid "How can I tell who's friendly or not?"
-msgstr ""
+msgstr "Как я отличу друзей от врагов?"
 
 #: ../data/level/dungeon-gateway.cfg:183
 msgid ""
 "Well, if they're armed,\n"
 "assume they're with security."
-msgstr ""
+msgstr "Ну, если они вооружены,\nскорей всего это охрана."
 
 #: ../data/level/dungeon-gateway.cfg:184
 msgid ""
 "They've probably also turned-on\n"
 "our security systems, unfortunately."
-msgstr ""
+msgstr "Они так же врубят наши \nохранные системы, к несчастью."
 
 #: ../data/level/dungeon-gateway.cfg:185
 msgid ""
 "But hey - good luck.\n"
 "I hope this works out for you."
-msgstr ""
+msgstr "Но - удачи.\nЯ надеюсь на тебя не сработает."
 
 #: ../data/level/dungeon-gateway.cfg:186
 msgid "If anyone asks, I didn't see you, okay?"
-msgstr ""
+msgstr "Если кто спросит, я тебя не видел, ладно?"
 
 #: ../data/level/dungeon-gateway.cfg:189
 msgid "Roger!"
-msgstr ""
+msgstr "Принял!"
 
 #: ../data/level/dungeon-gateway.cfg:695
 msgid "Dungeon Gateway"
-msgstr ""
+msgstr "Проход в Темницу"
 
 #: ../data/level/dungeon-storeroom-treasure-chamber.cfg:187
 msgid ""
 "It says, \"Treasure Storage.\n"
 "No entry without authorization.\""
-msgstr ""
+msgstr "Тут сказано \"Сокровищница.\nНе входить без допуска\""
 
 #: ../data/level/dungeon-storeroom-treasure-chamber.cfg:1523
 msgid "Storeroom Treasure Chamber"
-msgstr ""
+msgstr "Склад Сокровищницы"
 
 #: ../data/level/dungeon-storerooms.cfg:1440
 msgid "Storerooms"
-msgstr ""
+msgstr "Склады"
 
 #: ../data/level/eerie-arbor.cfg:4309
 msgid "Eerie Arbor"
@@ -2944,7 +2946,7 @@ msgstr "Проклятый лес"
 msgid ""
 "Ahh, what a beautiful ...\n"
 "<em>...afternoon?!</em>"
-msgstr ""
+msgstr "Ахх, какое прекрасное...\n<em>Уже полдень?!</em>"
 
 #: ../data/level/frogatto-grotto-frogattos-room.cfg:292
 msgid "Oh geez! I overslept!"
@@ -3010,7 +3012,7 @@ msgstr "Эээ... да?"
 msgid ""
 "At least <em>try</em> to get a job today,\n"
 "alright?"
-msgstr ""
+msgstr "Хотя бы <em>попробуй</em> сегодня \nнайти работу, хорошо?"
 
 #: ../data/level/frogatto-grotto-inside.cfg:641
 msgid "We need some help around here."
@@ -3075,146 +3077,146 @@ msgstr "Искривлённый холм"
 #: ../data/level/milgrams-basement-junction.cfg:387
 #: ../data/level/underground-pool.cfg:2453
 msgid "Meanwhile..."
-msgstr ""
+msgstr "Тем временем..."
 
 #: ../data/level/golden-glen.cfg:2306
 msgid ""
 "... well, at any rate,\n"
 "it's good to have that settled."
-msgstr ""
+msgstr "... что же, в любом случае,\nлучше это урегулировать."
 
 #: ../data/level/golden-glen.cfg:2309
 msgid "What's our next order of business?"
-msgstr ""
+msgstr "Какой наш следующий приказ по делу?"
 
 #: ../data/level/golden-glen.cfg:2311
 msgid ""
 "Let's see here... uh...  Right.\n"
 "Prospects in sector 29."
-msgstr ""
+msgstr "Посмотрим... ага... Верно.\nПерспективы сектора 29."
 
 #: ../data/level/golden-glen.cfg:2314
 msgid ""
 "Ah, yes.\n"
 "Do we have any news there?"
-msgstr ""
+msgstr "А, да.\nЕсть новости оттуда?"
 
 #: ../data/level/golden-glen.cfg:2318
 msgid ""
 "Mittens?\n"
 "You were the one in charge of that."
-msgstr ""
+msgstr "Рукавички?\nВы тут единственный ответственный за это."
 
 #: ../data/level/golden-glen.cfg:2322
 msgid "Right..."
-msgstr ""
+msgstr "Верно..."
 
 #: ../data/level/golden-glen.cfg:2323
 msgid ""
 "I'd give about a 38%,\n"
 "with a delta of about 15."
-msgstr ""
+msgstr "Я дал около 38%,\nс дельтой в 15."
 
 #: ../data/level/golden-glen.cfg:2324
 msgid ""
 "It will take us several weeks,\n"
 "and a ground crew to exploit it,\n"
 "but it's probably worth the effort."
-msgstr ""
+msgstr "Это отнимет несколько недель,\nи займёт наземную команду,\nно стоит своих затрат."
 
 #: ../data/level/golden-glen.cfg:2326
 msgid ""
 "If you give the go-ahead, we'll be\n"
 "happy to move on that next week."
-msgstr ""
+msgstr "Если вы даёте отмашку, то вернёмся\nк этому на следующей неделе."
 
 #: ../data/level/golden-glen.cfg:2332
 msgid "Yes, I think so."
-msgstr ""
+msgstr "Да, думаю так."
 
 #: ../data/level/golden-glen.cfg:2334
 msgid ""
 "One other order of business:\n"
 "What's going on with the 7th Airborne?"
-msgstr ""
+msgstr "Ещё одно дело:\nЧто происходит на 7-й Эйрборн?"
 
 #: ../data/level/golden-glen.cfg:2336
 msgid ""
 "Uh...  I haven't the faintest idea.\n"
 "Guys?"
-msgstr ""
+msgstr "Оп... У меня нет понятия.\nПарни?"
 
 #: ../data/level/golden-glen.cfg:2338
 msgid "Anybody?"
-msgstr ""
+msgstr "Кто-нибудь?"
 
 #: ../data/level/golden-glen.cfg:2342
 msgid ""
 "The 7th took off this morning\n"
 "with a full combat group."
-msgstr ""
+msgstr "7-я занята этим утром\nполностью боеспособной группой."
 
 #: ../data/level/golden-glen.cfg:2344
 msgid "Where they were going, I don't know."
-msgstr ""
+msgstr "Как они продвигаются, я не в курсе."
 
 #: ../data/level/golden-glen.cfg:2346
 msgid ""
 "I understand I often complain about\n"
 "having to authorize every little maneuver,"
-msgstr ""
+msgstr "Я понимаю, мне часто жалуются, что\nприходится утверждать каждое движение,"
 
 #: ../data/level/golden-glen.cfg:2348
 msgid ""
 "but actions outside our territory\n"
 "really need some discretion."
-msgstr ""
+msgstr "но действия вне наших территорий\nнужно проводить с осмотрительностью."
 
 #: ../data/level/golden-glen.cfg:2350
 msgid ""
 "Just because people can't say no to us\n"
 "doesn't mean it's a good way to make friends."
-msgstr ""
+msgstr "Просто потому что люди не могут нам сказать нет\nне означает, что это хороший способ заводить друзей."
 
 #: ../data/level/golden-glen.cfg:2352
 msgid "I'd really like it if I personally reviewed these."
-msgstr ""
+msgstr "Мне было бы спокойнее лично следить за этим."
 
 #: ../data/level/golden-glen.cfg:2355
 msgid ""
 "Understood.  Though I must emphasize that\n"
 "we had nothing to do with this, sir."
-msgstr ""
+msgstr "Понятно. Но я подчёркиваю\nмы ничего не можем поделать, сир."
 
 #: ../data/level/golden-glen.cfg:2358
 msgid ""
 "Yes, I'm aware.  Nevertheless,\n"
 "you <em>can</em> get some information, ASAP."
-msgstr ""
+msgstr "Да, я понял. Тем не менее,\nты <em>можешь</em> доставить информацию\nтак быстро, как она поступит."
 
 #: ../data/level/golden-glen.cfg:2359
 msgid "Don't take no for an answer."
-msgstr ""
+msgstr "Ответ \"нет\" не принимается."
 
 #: ../data/level/golden-glen.cfg:2361
 msgid "Yes, sir!"
-msgstr ""
+msgstr "Да, сир!"
 
 #: ../data/level/golden-glen.cfg:2364
 msgid ""
 "That will be all, gentlemen.\n"
 "Dismissed."
-msgstr ""
+msgstr "На этом всё, джентльмены.\nРазойтись."
 
 #: ../data/level/golden-glen.cfg:3660
 msgid "Golden Glen"
-msgstr ""
+msgstr "Золотая Долина"
 
 #: ../data/level/grassy-path.cfg:397
 msgid ""
 "On this level, we give advice on how to play.\n"
 "Each question mark has its own hint."
-msgstr ""
+msgstr "На этом уровне мы подскажем вам, как играть.\nКаждый знак \"?\" указывает на подсказку."
 
 #: ../data/level/grassy-path.cfg:398
 msgid ""
@@ -3246,14 +3248,14 @@ msgstr "Чтобы сделать это, делае пешеходную ска
 msgid ""
 "If you bump into a wall at the crest of a jump,\n"
 "you will cling to the wall and slowly slide down."
-msgstr ""
+msgstr "Ударившись о стену на самой высоте прыжка,\nвы зацепитесь за нее и начнёте медленно сползать."
 
 #: ../data/level/grassy-path.cfg:438
 msgid ""
 "If you don't get a running start, you can still\n"
 "cling on, if you tap the arrow toward the wall,\n"
 "and press jump whilst it's held down."
-msgstr ""
+msgstr "Если вы прыгали не с разбега, то\nвы можете зацепиться за стену,\nудерживая стрелку по направлению\nк стене и нажав прыжок."
 
 #: ../data/level/grassy-path.cfg:439
 msgid ""
@@ -3266,7 +3268,7 @@ msgid ""
 "This is especially useful, if two walls are\n"
 "facing each other, because then you can\n"
 "rebound over and over between them."
-msgstr ""
+msgstr "Это особенно полезно, если две стены\nдруг напротив друга, поскольку вы можете\nотскакивать от них всё выше и выше."
 
 #: ../data/level/grassy-path.cfg:441
 msgid "This lets you ascend vertical columns."
@@ -3286,7 +3288,7 @@ msgstr "В пути может повстречаться много недру�
 msgid ""
 "It's often fine to just avoid them, but if you have\n"
 "to fight, Frogatto's best defense is his tongue."
-msgstr ""
+msgstr "Чаще всего их можно обойти,\nно если приходиться драться, то\nу Фрогатто есть язык для защиты."
 
 #: ../data/level/grassy-path.cfg:462
 msgid ""
@@ -3296,13 +3298,13 @@ msgstr "Вы можете хватать языком врагов,\nа пото
 
 #: ../data/level/grassy-path.cfg:463
 msgid "Once spat out, they become a deadly projectile."
-msgstr ""
+msgstr "Если их выплюнуть, они\nстановятся опасными снарядами."
 
 #: ../data/level/grassy-path.cfg:464
 msgid ""
 "If they don't hit anything, they'll be stunned\n"
 "momentarily, and then will flip upright again."
-msgstr ""
+msgstr "Если они ни в кого не попадают,\nто, полежав немного оглушёнными,\nвновь вскакивают на ноги."
 
 #: ../data/level/grassy-path.cfg:465
 msgid ""
@@ -3332,19 +3334,19 @@ msgstr "И не бойтесь — если вы умрёте,\nвы снова 
 msgid ""
 "A very useful fact is that you can control\n"
 "the direction in which enemies are spat."
-msgstr ""
+msgstr "Очень полезно знать,\nчто вы можете выбирать направление,\nкуда выплёвывать врага."
 
 #: ../data/level/grassy-path.cfg:507
 msgid ""
 "If you hold down the up key while pressing\n"
 "the attack button, you'll spit in a high arc."
-msgstr ""
+msgstr "Зажав кнопку вверх и нажав кнопку атаки,\nвы будете плеваться по высокой дуге."
 
 #: ../data/level/grassy-path.cfg:508
 msgid ""
 "If you hold down the down key while pressing\n"
 "the attack button, you'll spit with very little force."
-msgstr ""
+msgstr "Зажав кнопку вниз и нажав кнопку атаки,\nвы будете слабо плеваться."
 
 #: ../data/level/grassy-path.cfg:510
 msgid ""
@@ -3356,7 +3358,7 @@ msgstr "Будьте внимательны: не всех врагов можн
 msgid ""
 "Different enemies present different challenges,\n"
 "and you'll need to get creative to deal with them."
-msgstr ""
+msgstr "Разные противники представляют разную угрозу,\nи вам нужно креативно подходить к разборкам с ними."
 
 #: ../data/level/grassy-path.cfg:512
 msgid ""
@@ -3402,13 +3404,13 @@ msgstr "Для этого зажмите кнопку вниз\nи нажмит�
 msgid ""
 "As you've played through this level,\n"
 "you've probably noticed the coins."
-msgstr ""
+msgstr "Гуляя по этому уровню, вы\nмогли заметить монеты."
 
 #: ../data/level/grassy-path.cfg:606
 msgid ""
 "You can collect these\n"
 "and then use them to buy stuff!"
-msgstr ""
+msgstr "Вы можете собирать их,\nа затем делать разные покупки!"
 
 #: ../data/level/grassy-path.cfg:607
 msgid ""
@@ -3496,27 +3498,27 @@ msgstr "Можно сделать это, нажав\nклавишу \"Esc\"."
 msgid ""
 "And yes, this applies to the question\n"
 "marks on this level, too."
-msgstr ""
+msgstr "И, конечно же, на подсказки\nэто тоже действует."
 
 #: ../data/level/grassy-path.cfg:892
 msgid ""
 "If you haven't already noticed, the red\n"
 "fruits you sometimes find nestled in\n"
 "the grass are spittable projectiles."
-msgstr ""
+msgstr "Если вы ещё не заметили, красные\nфрукты которые можно найти на\nтраве - плевательные предметы."
 
 #: ../data/level/grassy-path.cfg:893
 msgid ""
 "You'll find many such objects of similar size\n"
 "in different areas of the game, such as crates\n"
 "inside of houses, or nuts hanging from trees."
-msgstr ""
+msgstr "Вы обнаружите много предметов такого размера\nв разных областях игры, как коробки внутри\nдомов, или орехи на деревьях."
 
 #: ../data/level/grassy-path.cfg:894
 msgid ""
 "These are an ample source of ammunition,\n"
 "that's almost always available."
-msgstr ""
+msgstr "Это богатый источник патронов,\nкоторые всегда доступны."
 
 #: ../data/level/grassy-path.cfg:895
 msgid ""
@@ -3524,7 +3526,7 @@ msgid ""
 "if you use them up, walk away from the screen\n"
 "where you found them, and then return again,\n"
 "there will often be a new one waiting to use."
-msgstr ""
+msgstr "Заметьте, что у них необычное свойство:\nесли вы использовали их, удите с экрана\nгде вы нашли их, и они снова появятся,\nи даже появятся несколько новых для использования."
 
 #: ../data/level/grassy-path.cfg:3810
 msgid "Grassy Path"
@@ -3563,660 +3565,660 @@ msgstr "Зайцы-убийцы"
 msgid ""
 "It says, \"Today's Special:\n"
 "Caesar Salad and Avocado Wraps\""
-msgstr ""
+msgstr "Тут сказано \"Блюдо дня:\nСалат Цезарь и голубцы из авокадо\""
 
 #: ../data/level/kitty-dormitory.cfg:735
 msgid ""
 "It says, \"Attention:\n"
 "Please clean up when you are done,\n"
 "and no standing on the filing cabinet.\""
-msgstr ""
+msgstr "Тут сказано \"Внимание:\nУбирайте за собой, после еды и\nне вставайте ногами на шкаф.\""
 
 #: ../data/level/kitty-dormitory.cfg:1896
 msgid ""
 "Oh, I was just sitting down for a bite to eat.\n"
 "Care to join us?"
-msgstr ""
+msgstr "О, я сижу и жду порцию еды.\nХочешь присоединиться?"
 
 #: ../data/level/kitty-dormitory.cfg:1899
 msgid ""
 "Uh, maybe...\n"
 "I certainly appreciate the hospitality!"
-msgstr ""
+msgstr "Ну. возможно...\nЯ всегда рад гостеприимству!"
 
 #: ../data/level/kitty-dormitory.cfg:1901
 msgid "So is this some kind of dining area?"
-msgstr ""
+msgstr "Так это вроде обеденной зоны?"
 
 #: ../data/level/kitty-dormitory.cfg:1903
 msgid ""
 "Yes, it is.  We have regular meal service\n"
 "for those who are off-duty."
-msgstr ""
+msgstr "Да, это так. У нас регулярный приём пищи\nдля тех, кто не на дежурстве."
 
 #: ../data/level/kitty-dormitory.cfg:1904
 msgid ""
 "Gaston should be coming out any minute now,\n"
 "with a lovely bit of smoked salmon."
-msgstr ""
+msgstr "Гастон прибудет с минуты на минуту,\nс большой тарелкой копченой сёмги."
 
 #: ../data/level/kitty-dormitory.cfg:1905
 msgid ""
 "Well, pretty soon, I hope.\n"
 "Sometimes he takes a while."
-msgstr ""
+msgstr "Ну, весьма скоро, я надеюсь.\nИногда он слишком задерживается."
 
 #: ../data/level/kitty-dormitory.cfg:1908
 msgid "That sounds pretty classy."
-msgstr ""
+msgstr "Это звучит весьма здорово."
 
 #: ../data/level/kitty-dormitory.cfg:1910
 msgid "Yeah, small perks like that make life nice."
-msgstr ""
+msgstr "Ага, небольшие дополнения как это\nделают жизнь менее пресной."
 
 #: ../data/level/kitty-dormitory.cfg:1913
 msgid "So what is it you do for a, uh... job?"
-msgstr ""
+msgstr "Так в чём твоя, ну... работа?"
 
 #: ../data/level/kitty-dormitory.cfg:1915
 msgid ""
 "Basic labor, mostly.\n"
 "I haul construction materials around."
-msgstr ""
+msgstr "Обычный подсобник, в основном.\nТаскаю материалы для стройки."
 
 #: ../data/level/kitty-dormitory.cfg:1916
 msgid ""
 "We're still working on the north tower.\n"
 "Be careful if you venture out there."
-msgstr ""
+msgstr "Мы всё ещё работаем над северной башней.\nБудь осторожен, если пойдёшь туда."
 
 #: ../data/level/kitty-dormitory.cfg:1917
 msgid ""
 "It's easy to accidentally fall.\n"
 "It's not really pedestrian-ready yet."
-msgstr ""
+msgstr "Можно легко свалиться.\nОна пока не для пеших прогулок."
 
 #: ../data/level/kitty-dormitory.cfg:1920
 msgid "I'll keep that in mind, thanks."
-msgstr ""
+msgstr "Буду знать, благодарю."
 
 #: ../data/level/kitty-dormitory.cfg:1948
 msgid "Hi there, what's going on?"
-msgstr ""
+msgstr "Привет, что тут происходит?"
 
 #: ../data/level/kitty-dormitory.cfg:1950
 msgid ""
 "Oh, hello.\n"
 "I'm just eating some fruit."
-msgstr ""
+msgstr "О, привет.\nПросто ем фрукты."
 
 #: ../data/level/kitty-dormitory.cfg:1951
 msgid "Are you that green guy security is after?"
-msgstr ""
+msgstr "Это ты тот зелёный, за которым все охотятся?"
 
 #: ../data/level/kitty-dormitory.cfg:1954
 msgid ""
 "If I answer yes,\n"
 "are you going to call them in here?"
-msgstr ""
+msgstr "Ясли я скажу \"да\", мне крышка?"
 
 #: ../data/level/kitty-dormitory.cfg:1956
 msgid "No, I'm not looking for trouble."
-msgstr ""
+msgstr "Нет, мне не нужны проблемы."
 
 #: ../data/level/kitty-dormitory.cfg:1957
 msgid ""
 "Besides which, you don't seem like a bad guy,\n"
 "if you ask my opinion."
-msgstr ""
+msgstr "К тому же, ты не кажешься мне плохим парнем."
 
 #: ../data/level/kitty-dormitory.cfg:1958
 msgid "Not that anyone's asking me."
-msgstr ""
+msgstr "Впрочем, меня никто и не спрашивает."
 
 #: ../data/level/kitty-dormitory.cfg:1960
 msgid "Well, thanks, I do appreciate that."
-msgstr ""
+msgstr "Ну, спасибо и на том."
 
 #: ../data/level/kitty-dormitory.cfg:1962
 msgid ""
 "Speaking of which, color me curious,\n"
 "but I thought that cats were carnivores?"
-msgstr ""
+msgstr "Кстати говоря, а коты разве не хищники?"
 
 #: ../data/level/kitty-dormitory.cfg:1964
 msgid "How is it that you're able to eat fruit?"
-msgstr ""
+msgstr "Почему же ты ешь фрукты?"
 
 #: ../data/level/kitty-dormitory.cfg:1966
 msgid ""
 "Oh! I guess you wouldn't know these things...\n"
 "I suppose we take that for granted."
-msgstr ""
+msgstr "О! Я думаю ты не разбираешься в этих штуках...\nПредполагаю, просто принимаешь их как должное."
 
 #: ../data/level/kitty-dormitory.cfg:1967
 msgid ""
 "See, strictly speaking, we're not cats.\n"
 "We're simply made to look like them."
-msgstr ""
+msgstr "Видишь ли, строго говоря, мы не коты.\nМы просто сделаны похожими на них."
 
 #: ../data/level/kitty-dormitory.cfg:1970
 msgid ""
 "Er... \"made to\", you say?\n"
 "That's an interesting choice of words."
-msgstr ""
+msgstr "Эээ... \"сделаны\", говоришь?\nКакой интересный оборот речи."
 
 #: ../data/level/kitty-dormitory.cfg:1972
 msgid ""
 "Yes, that's right - I'm implying we are \"made\".\n"
 "We're made, not born, like you ... presumably are."
-msgstr ""
+msgstr "Да, это так - я имею ввиду \"сделаны\".\nМы сотворены, а не рождены, как ты... предполагаю, не как ты."
 
 #: ../data/level/kitty-dormitory.cfg:1977
 msgid ""
 "Okay ... I'm kind of at a loss for words.\n"
 "That seems pretty unbelievable."
-msgstr ""
+msgstr "Ладно... Я немного запутался в объяснениях.\nЭто звучит весьма неправдоподобно."
 
 #: ../data/level/kitty-dormitory.cfg:1979
 msgid ""
 "Then again, the world is nothing\n"
 "if not full of surprises."
-msgstr ""
+msgstr "Опять же, слова - ничто,\nесли не полны сюрпризов."
 
 #: ../data/level/kitty-dormitory.cfg:1981
 msgid ""
 "So you're made, you say...\n"
 "Who, then, is your maker?"
-msgstr ""
+msgstr "Так вы созданы, говоришь...\nИ кто ваш создатель?"
 
 #: ../data/level/kitty-dormitory.cfg:1983
 msgid ""
 "Oh, Milgram, of course.\n"
 "Why else would he be so important?"
-msgstr ""
+msgstr "О, Милграм, конечно.\nПочему же ещё он самый главный?"
 
 #: ../data/level/kitty-dormitory.cfg:1984
 msgid ""
 "I confess, I really don't know -how-\n"
 "he creates us,  but I know that he does."
-msgstr ""
+msgstr "Признаюсь, я не знаю точно, -как-\nон создал нас, но знаю, что это он."
 
 #: ../data/level/kitty-dormitory.cfg:1987
 msgid "So then... are you robots or something?"
-msgstr ""
+msgstr "Итак... вы роботы или что?"
 
 #: ../data/level/kitty-dormitory.cfg:1989
 msgid ""
 "Of course not!  Robots don't eat.\n"
 "We're all living creatures."
-msgstr ""
+msgstr "Конечно, нет! роботы не едят.\nМы живые создания."
 
 #: ../data/level/kitty-dormitory.cfg:1992
 msgid ""
 "Oh, so he's your parent, then?\n"
 "And just has a lot of kids."
-msgstr ""
+msgstr "О, так он ваш папаня тогда?\nИ многодетный."
 
 #: ../data/level/kitty-dormitory.cfg:1994
 msgid ""
 "Well, I guess we consider him a parent,\n"
 "but we're very much made."
-msgstr ""
+msgstr "Ну, я думаю можем считать его отцом,\nно с большой натяжкой."
 
 #: ../data/level/kitty-dormitory.cfg:1995
 msgid ""
 "He chooses what we're shaped like, for one thing.\n"
 "Usually takes inspiration from the animal kingdom."
-msgstr ""
+msgstr "Он выбирал, как мы будем выглядеть, с одной стороны.\nОбычно вдохновляясь миром животных."
 
 #: ../data/level/kitty-dormitory.cfg:1996
 msgid ""
 "He fancies himself an artist in this regard,\n"
 "and for ego's sake I'm not about to disagree."
-msgstr ""
+msgstr "Он считает себя скульптором в нашем отношении,\nи по личным причинам я не могу с этим не согласиться."
 
 #: ../data/level/kitty-dormitory.cfg:1997
 msgid ""
 "These days, moreover, we're mass-produced.\n"
 "There's a factory downstairs that churns out\n"
 "the more successful designs."
-msgstr ""
+msgstr "Сейчас, в основном, мы массовый продукт.\nВнизу есть фабрика, что выпускает наиболее\nуспешные модели."
 
 #: ../data/level/kitty-dormitory.cfg:2000
 msgid ""
 "But that's just CRAZY!\n"
 "How does that even work?!  Magic?"
-msgstr ""
+msgstr "Но это СУМАСШЕСТВИЕ!\nКак это вообще работает?! Магия?"
 
 #: ../data/level/kitty-dormitory.cfg:2002
 msgid "Like I said, I really don't know, myself."
-msgstr ""
+msgstr "Я и сам без понятия."
 
 #: ../data/level/kitty-dormitory.cfg:2003
 msgid ""
 "But it's not any crazier than\n"
 "you transforming from a tadpole."
-msgstr ""
+msgstr "Но не более сумасшествие\nчем твоя эволюция из головастика."
 
 #: ../data/level/kitty-dormitory.cfg:2004
 msgid ""
 "I mean, that seems pretty incredible\n"
 "from my perspective."
-msgstr ""
+msgstr "Я имею ввиду, слишком невероятно\nс моей точки зрения."
 
 #: ../data/level/kitty-dormitory.cfg:2005
 msgid "But that is how it works for frogs, right?"
-msgstr ""
+msgstr "Но так это работает у лягушек, верно?"
 
 #: ../data/level/kitty-dormitory.cfg:2008
 msgid ""
 "It is.\n"
 "It's just a crazy world we live in, huh?"
-msgstr ""
+msgstr "Так.\nВ каком чокнутом мире мы живём, а?"
 
 #: ../data/level/kitty-dormitory.cfg:2010
 msgid "Madness and wonder every step of the way."
-msgstr ""
+msgstr "Безумие и чудеса на каждом шагу."
 
 #: ../data/level/kitty-dormitory.cfg:2013
 msgid ""
 "No kidding.  Well, hey, have a nice meal.\n"
 "Thanks for all the info."
-msgstr ""
+msgstr "Без шуток. Что же, приятно аппетита.\nСпасибо за разговор."
 
 #: ../data/level/kitty-dormitory.cfg:2015
 msgid "No problem."
-msgstr ""
+msgstr "Без проблем."
 
 #: ../data/level/kitty-dormitory.cfg:2042
 msgid "Hi, what are you doing?"
-msgstr ""
+msgstr "Привет, чем занят?"
 
 #: ../data/level/kitty-dormitory.cfg:2044
 msgid ""
 "Oh, hello there.\n"
 "I haven't met you before."
-msgstr ""
+msgstr "О, привет.\nНе видел тебя раньше."
 
 #: ../data/level/kitty-dormitory.cfg:2045
 msgid "I'm reading a book."
-msgstr ""
+msgstr "Я читаю книгу."
 
 #: ../data/level/kitty-dormitory.cfg:2048
 msgid ""
 "That's nice.\n"
 "What's it about?"
-msgstr ""
+msgstr "Забавно.\nО чём?"
 
 #: ../data/level/kitty-dormitory.cfg:2050
 msgid "Ahh, it's a collection of old fairy tales."
-msgstr ""
+msgstr "Ах, это сборник старых сказок."
 
 #: ../data/level/kitty-dormitory.cfg:2051
 msgid ""
 "Some of them are kinda\n"
 "thinly-veiled cautionary tales..."
-msgstr ""
+msgstr "Некоторые из них вроде\nзавуалированных предостерагающих рассказов..."
 
 #: ../data/level/kitty-dormitory.cfg:2052
 msgid ""
 "...but some of the other ones\n"
 "are just plain <em>strange.</em>"
-msgstr ""
+msgstr "...но некоторые другие\nпросто чистая <em>выдумка.</em>"
 
 #: ../data/level/kitty-dormitory.cfg:2053
 msgid "I can't decide which ones I like better."
-msgstr ""
+msgstr "Не решил ещё, какие из них больше нравятся мне."
 
 #: ../data/level/kitty-dormitory.cfg:2054
 msgid ""
 "Do I like the ones that have an obvious point,\n"
 "or is it more intellectually satisfying to puzzle\n"
 "over the more engimatic ones?"
-msgstr ""
+msgstr "Нравятся мне те, что понятны,\nили более познавательно довольствоваться\nрешая головоломки в загадочных?"
 
 #: ../data/level/kitty-dormitory.cfg:2055
 msgid "I can't really say."
-msgstr ""
+msgstr "Не могу сказать."
 
 #: ../data/level/kitty-dormitory.cfg:2058
 msgid "Hm, I've never really thought about that before."
-msgstr ""
+msgstr "Хм, я никогда не задумывался над этим ранее."
 
 #: ../data/level/kitty-dormitory.cfg:2060
 msgid ""
 "You're welcome to sit down and join me.\n"
 "The fire is quite nice."
-msgstr ""
+msgstr "Прошу, присядь и присоединяйся.\nОгонь так греет."
 
 #: ../data/level/kitty-dormitory.cfg:2063
 msgid ""
 "Thanks - I'm kind of in a hurry,\n"
 "but I appreciate it."
-msgstr ""
+msgstr "Благодарю - я типа, тороплюсь,\nно я ценю предложение."
 
 #: ../data/level/kitty-dormitory.cfg:2809
 msgid "WHOA!"
-msgstr ""
+msgstr "ОГОГО!"
 
 #: ../data/level/kitty-dormitory.cfg:2812
 msgid "What's wrong?!"
-msgstr ""
+msgstr "Что не так?!"
 
 #: ../data/level/kitty-dormitory.cfg:2814
 msgid "^Uh..."
-msgstr ""
+msgstr "^Оп..."
 
 #: ../data/level/kitty-dormitory.cfg:2815
 msgid "Was I asleep?"
-msgstr ""
+msgstr "Я заснул?"
 
 #: ../data/level/kitty-dormitory.cfg:2818
 msgid "It's possible you were."
-msgstr ""
+msgstr "Это объясняет твоё присутствие."
 
 #: ../data/level/kitty-dormitory.cfg:2820
 msgid "I see..."
-msgstr ""
+msgstr "Понятно..."
 
 #: ../data/level/kitty-dormitory.cfg:2821
 msgid "I think I'm going to go back to sleep."
-msgstr ""
+msgstr "Я думаю вернусь ко сну."
 
 #: ../data/level/kitty-dormitory.cfg:2822
 msgid "I'm pretty tired, you see..."
-msgstr ""
+msgstr "Я так утомился, как видишь..."
 
 #: ../data/level/kitty-dormitory.cfg:2853
 msgid ""
 "God, I don't want to work today.\n"
 "I just want to sleep."
-msgstr ""
+msgstr "Боже, не хочу работать сегодня.\nПросто дрыхнуть."
 
 #: ../data/level/kitty-dormitory.cfg:2854
 msgid "Do you ever feel like that?"
-msgstr ""
+msgstr "У тебя было когда-либо такое?"
 
 #: ../data/level/kitty-dormitory.cfg:2857
 msgid "All the time."
-msgstr ""
+msgstr "Всё время."
 
 #: ../data/level/kitty-dormitory.cfg:2859
 msgid ""
 "I probably give into it\n"
 "too often for my own good, though..."
-msgstr ""
+msgstr "Я вероятно отдаюсь этому\nслишком рьяно, хотя..."
 
 #: ../data/level/kitty-dormitory.cfg:2861
 msgid "Ha."
-msgstr ""
+msgstr "Ха."
 
 #: ../data/level/kitty-dormitory.cfg:2892
 msgid "Hey, what's up?"
-msgstr ""
+msgstr "Эй, что как?"
 
 #: ../data/level/kitty-dormitory.cfg:2894
 msgid ""
 "Oh, hi there.\n"
 "I'm machining metal parts."
-msgstr ""
+msgstr "О, привет.\nЯ сверяю металлические детали."
 
 #: ../data/level/kitty-dormitory.cfg:2897
 msgid "What does that mean?"
-msgstr ""
+msgstr "Что это значит?"
 
 #: ../data/level/kitty-dormitory.cfg:2899
 msgid ""
 "Well, this machine here is a router.\n"
 "It drills holes or grinds out shapes in metal pieces."
-msgstr ""
+msgstr "Ну, эта машина тут - распределитель.\nОна делает дырки или борозды в \nметаллических деталях."
 
 #: ../data/level/kitty-dormitory.cfg:2900
 msgid "It's controlled by this computer."
-msgstr ""
+msgstr "Она управляется компьютером."
 
 #: ../data/level/kitty-dormitory.cfg:2901
 msgid ""
 "It's important because it's much more\n"
 "precise than anything we could do by hand."
-msgstr ""
+msgstr "Это важно, поскольку производительность\nбольше, чем при ручном труде."
 
 #: ../data/level/kitty-dormitory.cfg:2902
 msgid ""
 "The holes and such are all standard,\n"
 "consistent sizes, which means that\n"
 "they fit standard-sized bolts."
-msgstr ""
+msgstr "Дырки и остальное по стандарту,\nопределённых размеров, что \nзначит, они подходят под\nстандартного размера болты."
 
 #: ../data/level/kitty-dormitory.cfg:2903
 msgid "It makes sure everything works together."
-msgstr ""
+msgstr "Это заставляет всё вместе работать."
 
 #: ../data/level/kitty-dormitory.cfg:2906
 msgid "That sounds like a pretty good system."
-msgstr ""
+msgstr "Звучит как отличная система."
 
 #: ../data/level/kitty-dormitory.cfg:2908
 msgid "Yeah, it isn't bad."
-msgstr ""
+msgstr "Да, не плохая."
 
 #: ../data/level/kitty-dormitory.cfg:2909
 msgid ""
 "This thing's kind of a pain to program,\n"
 "but it's a small price to pay."
-msgstr ""
+msgstr "Немного болезненно программировать\nно это малая цена."
 
 #: ../data/level/kitty-dormitory.cfg:2912
 msgid "That makes sense."
-msgstr ""
+msgstr "Это имеет смысл."
 
 #: ../data/level/kitty-dormitory.cfg:2914
 msgid "Anyways, I'd better get back to work."
-msgstr ""
+msgstr "По любому, я лучше вернусь к работе."
 
 #: ../data/level/kitty-dormitory.cfg:2963
 msgid "^Hello there."
-msgstr ""
+msgstr "^Привет."
 
 #: ../data/level/kitty-dormitory.cfg:2965
 msgid "Uh... hi?"
-msgstr ""
+msgstr "Ох... чё?"
 
 #: ../data/level/kitty-dormitory.cfg:2967
 msgid "^^Hello there."
-msgstr ""
+msgstr "^^Привет."
 
 #: ../data/level/kitty-dormitory.cfg:2970
 msgid ""
 "You know, I'm not gonna lie - it's really weird\n"
 "to fight you guys in one place and ... uh"
-msgstr ""
+msgstr "Ты знаешь, я не вру - это странно\nдраться с вами парни в одном месте и... ох"
 
 #: ../data/level/kitty-dormitory.cfg:2972
 msgid ""
 "... and then just talk, peaceably, here?\n"
 "I still don't get it.  What gives?"
-msgstr ""
+msgstr "... и потом болтать мирно тут?\nЯ не понимаю. Как так?"
 
 #: ../data/level/kitty-dormitory.cfg:2974
 msgid ""
 "Well, the fact that I'm unarmed\n"
 "is a pretty big factor."
-msgstr ""
+msgstr "Ну, то что я не вооружён\nвесьма весомый довод."
 
 #: ../data/level/kitty-dormitory.cfg:2975
 msgid ""
 "I wouldn't stand a chance, so I'm willing\n"
 "to hinge my hopes on your being civil."
-msgstr ""
+msgstr "У меня нет и шанса, так что\nя возложу надежду на\nмиролюбивое поведение."
 
 #: ../data/level/kitty-dormitory.cfg:2976
 msgid "Here we are, after all, aren't we?"
-msgstr ""
+msgstr "И мы все тут, после всего,\nразве нет?"
 
 #: ../data/level/kitty-dormitory.cfg:2979
 msgid "This is true."
-msgstr ""
+msgstr "Точно."
 
 #: ../data/level/kitty-dormitory.cfg:2981
 msgid "If you don't mind my asking, where are we?"
-msgstr ""
+msgstr "Если не затруднит ответ: где мы?"
 
 #: ../data/level/kitty-dormitory.cfg:2983
 msgid ""
 "Residential Quarters.\n"
 "It's really a dormitory-like arrangement."
-msgstr ""
+msgstr "Жилые кварталы.\nЭто типа общежития."
 
 #: ../data/level/kitty-dormitory.cfg:2984
 msgid "And don't worry, none of us here work security."
-msgstr ""
+msgstr "И не переживай, ни кто\nтут не работает в охране."
 
 #: ../data/level/kitty-dormitory.cfg:2985
 msgid "I hear you have those guys in a royal fit."
-msgstr ""
+msgstr "Я слышал их полно в королевской части."
 
 #: ../data/level/kitty-dormitory.cfg:2988
 msgid "Yeah, that doesn't surprise me."
-msgstr ""
+msgstr "Да, это меня не удивляет."
 
 #: ../data/level/kitty-dormitory.cfg:2990
 msgid ""
 "Honestly, it's been pretty funny to hear about.\n"
 "Some of those security guys are total dicks."
-msgstr ""
+msgstr "Однако, весьма рад слышать об этом.\nНекоторые из охранников полные придурки."
 
 #: ../data/level/kitty-dormitory.cfg:2991
 msgid ""
 "It's fun to watch them get\n"
 "a taste of their own medicine."
-msgstr ""
+msgstr "Весело смотреть, как им дают\nпопробовать собственных пилюлей."
 
 #: ../data/level/kitty-dormitory.cfg:2994
 msgid "Any chance they might follow me in here?"
-msgstr ""
+msgstr "Есть шанс что они последуют за мной сюда?"
 
 #: ../data/level/kitty-dormitory.cfg:2996
 msgid ""
 "Possible, but it's unlikely.\n"
 "You can probably take a breather in here."
-msgstr ""
+msgstr "Возможно, но вряд ли.\nТы можешь пока отдышаться."
 
 #: ../data/level/kitty-dormitory.cfg:2999
 msgid "That's nice to hear."
-msgstr ""
+msgstr "Приятно это слышать."
 
 #: ../data/level/kitty-dormitory.cfg:3045
 msgid "Oh, hi there!"
-msgstr ""
+msgstr "О, привет!"
 
 #: ../data/level/kitty-dormitory.cfg:3047
 msgid "Hello?"
-msgstr ""
+msgstr "Здравствуй?"
 
 #: ../data/level/kitty-dormitory.cfg:3049
 msgid "Yes, hi."
-msgstr ""
+msgstr "Да, привет."
 
 #: ../data/level/kitty-dormitory.cfg:3050
 msgid "I'm doing laundry!"
-msgstr ""
+msgstr "Я стираю!"
 
 #: ../data/level/kitty-dormitory.cfg:3053
 msgid ""
 "I ... see.\n"
 "Uh... do you live here?"
-msgstr ""
+msgstr "Я... понял.\nО... ты тут живешь?"
 
 #: ../data/level/kitty-dormitory.cfg:3055
 msgid ""
 "Yeah, this is one of our dormitory areas.\n"
 "Quite a few of us live here."
-msgstr ""
+msgstr "Да, это одна из зон общежития.\nНекоторые живут тут."
 
 #: ../data/level/kitty-dormitory.cfg:3056
 msgid "I'd chat at length, but I'm a bit busy."
-msgstr ""
+msgstr "Я бы поболтал подольше,\nно я занят."
 
 #: ../data/level/kitty-dormitory.cfg:3057
 msgid ""
 "By all means, though,\n"
 "you're welcome to wander around."
-msgstr ""
+msgstr "Но во всяком случае,\nты волен шляться тут."
 
 #: ../data/level/kitty-dormitory.cfg:3058
 msgid ""
 "No one in here works security,\n"
 "so we won't come after you."
-msgstr ""
+msgstr "Ни кто не работает охранником,\nтак что мы не последуем за тобой."
 
 #: ../data/level/kitty-dormitory.cfg:3061
 msgid ""
 "...\n"
 "That takes some getting used to."
-msgstr ""
+msgstr "...\nЭто может быть полезно."
 
 #: ../data/level/kitty-dormitory.cfg:3063
 msgid ""
 "But, I'm not gonna turn down a good thing.\n"
 "Thanks!"
-msgstr ""
+msgstr "Но, я не забываю доброе отношение.\nБлагодарю!"
 
 #: ../data/level/kitty-dormitory.cfg:3065
 msgid "No problem!"
-msgstr ""
+msgstr "Без проблем!"
 
 #: ../data/level/kitty-dormitory.cfg:3097
 msgid "Hi.  Haven't seen you around before."
-msgstr ""
+msgstr "Привет. Не встречал тебя раньше."
 
 #: ../data/level/kitty-dormitory.cfg:3100
 msgid ""
 "Yeah, I'm rather far from home\n"
 "at the moment."
-msgstr ""
+msgstr "Да, я далеко от дома\nзабрался сейчас."
 
 #: ../data/level/kitty-dormitory.cfg:3102
 msgid "So what are you doing?"
-msgstr ""
+msgstr "Так чем ты занят?"
 
 #: ../data/level/kitty-dormitory.cfg:3104
 msgid "Eh, trying to get this stupid machine working."
-msgstr ""
+msgstr "Эх, пытаюсь заставить тупую машину работать."
 
 #: ../data/level/kitty-dormitory.cfg:3105
 msgid ""
 "It's supposed to cut these metal bolts,\n"
 "but the timing's off and they have no heads."
-msgstr ""
+msgstr "Она должна нарезать железные болты,\nно разладилась и они получаются без\nголовок."
 
 #: ../data/level/kitty-dormitory.cfg:3108
 msgid "No heads?"
-msgstr ""
+msgstr "Безголовые?"
 
 #: ../data/level/kitty-dormitory.cfg:3110
 msgid ""
 "Yeah, uh ... I don't have an example\n"
 "on-hand, but yeah, there's nothing\n"
 "to screw them in with."
-msgstr ""
+msgstr "Да, ну... у меня нет образца\nна руках, но да, тут не за что\nзакручивать их."
 
 #: ../data/level/kitty-dormitory.cfg:3111
 msgid "Nothing you can put a ratchet on."
-msgstr ""
+msgstr "Ничего, за что зацепить ключ."
 
 #: ../data/level/kitty-dormitory.cfg:3112
 msgid ""
 "Anyways we program this machine with\n"
 "these little tin sheets."
-msgstr ""
+msgstr "В любом случае, мы программируем\nмашину при помощи тонких\nоловянных пластин."
 
 #: ../data/level/kitty-dormitory.cfg:3113
 msgid ""
 "We cut these slots in them that control\n"
 "how long it goes for a certain grind."
-msgstr ""
+msgstr "Вырезаем дырки на них, которые\nрегулируют скорость перемалывания. "
 
 #: ../data/level/kitty-dormitory.cfg:3114
 msgid ""
@@ -4224,85 +4226,85 @@ msgid ""
 "If you set the bolt to turn at just the\n"
 "right speed, you can use it to\n"
 "cut the threads, too."
-msgstr ""
+msgstr "Это насколько глубоко режет измельчитель.\nЕсли ты заставишь болт вращаться с\nнужно скоростью, ты можешь использовать\nэто так же для нарезки резьбы."
 
 #: ../data/level/kitty-dormitory.cfg:3115
 msgid "Uh..."
-msgstr ""
+msgstr "Ух..."
 
 #: ../data/level/kitty-dormitory.cfg:3116
 msgid ""
 "Do I sound like I spend too much\n"
 "time doing this stuff?"
-msgstr ""
+msgstr "Прозвучало как будто я трачу\nслишком много времени на\nэти штуки?"
 
 #: ../data/level/kitty-dormitory.cfg:3119
 msgid ""
 "Eh... \n"
 "I wouldn't be too hard on yourself."
-msgstr ""
+msgstr "Ну...\nВ твоих руках не выглядит сложным."
 
 #: ../data/level/kitty-dormitory.cfg:3121
 msgid ""
 "I mean, someone has to make these things?\n"
 "Right?"
-msgstr ""
+msgstr "Я имею ввиду, кто-то должен делать это?\nВерно?"
 
 #: ../data/level/kitty-dormitory.cfg:3123
 msgid ""
 "Yeah, sometimes I just feel\n"
 "like this is all I do."
-msgstr ""
+msgstr "Да, иногда мне кажется\nэто всё на что я способен."
 
 #: ../data/level/kitty-dormitory.cfg:3126
 msgid ""
 "Well, sometimes what you do is important.\n"
 "Don't ever forget that."
-msgstr ""
+msgstr "Хорошо, иногда то что ты делаешь\nвесьма важно - не забывай об этом."
 
 #: ../data/level/kitty-dormitory.cfg:3128
 msgid ""
 "It may be tedious, but given enough time,\n"
 "everything involves tedium."
-msgstr ""
+msgstr "Это может быть скучным, но по\nпрошествии кучи времени, всё\nстановится скучным."
 
 #: ../data/level/kitty-dormitory.cfg:3130
 msgid "And anything important tends to take time."
-msgstr ""
+msgstr "И все важные скучные вещи занимают время."
 
 #: ../data/level/kitty-dormitory.cfg:3132
 msgid "Hmm..."
-msgstr ""
+msgstr "Мммм..."
 
 #: ../data/level/kitty-dormitory.cfg:3133
 msgid ""
 "I guess for obvious reasons\n"
 "I'm not going to contradict you."
-msgstr ""
+msgstr "Я думаю по понятным причинам\nя не стану возражать тебе."
 
 #: ../data/level/kitty-dormitory.cfg:3134
 msgid ""
 "Sometimes I wish I spent\n"
 "more time outside, though."
-msgstr ""
+msgstr "Иногда я мечтаю проводить\nбольше времени снаружи."
 
 #: ../data/level/kitty-dormitory.cfg:3135
 msgid "Bah."
-msgstr ""
+msgstr "Эхе."
 
 #: ../data/level/kitty-dormitory.cfg:3136
 msgid ""
 "Anyways, please do visit anytime this is\n"
 "actually working, for a tour."
-msgstr ""
+msgstr "Но, прошу приходи в любое время\nкогда эта штука заработает,\nна экскурсию."
 
 #: ../data/level/kitty-dormitory.cfg:3139
 msgid "Of course."
-msgstr ""
+msgstr "Конечно."
 
 #: ../data/level/kitty-dormitory.cfg:3171
 msgid "^Who are you?"
-msgstr ""
+msgstr "^Кто ты?"
 
 #: ../data/level/kitty-dormitory.cfg:3176
 msgid "That's nice."
@@ -4312,224 +4314,224 @@ msgstr "Очень приятно."
 msgid ""
 "If you don't mind,\n"
 "I'd kinda like to be left alone."
-msgstr ""
+msgstr "Если ты не против,\nя желал бы остаться один."
 
 #: ../data/level/kitty-dormitory.cfg:3180
 msgid "Sure, okay..."
-msgstr ""
+msgstr "Конечно, нет проблем..."
 
 #: ../data/level/kitty-dormitory.cfg:3213
 msgid ""
 "Hey there,\n"
 "what's up?"
-msgstr ""
+msgstr "Эй там,\nчё как?"
 
 #: ../data/level/kitty-dormitory.cfg:3215
 msgid "Eh, trying to get this fire going."
-msgstr ""
+msgstr "Ну, пытаюсь раскочегарить огонь."
 
 #: ../data/level/kitty-dormitory.cfg:3218
 msgid ""
 "Really?\n"
 "I don't see any wood."
-msgstr ""
+msgstr "Чего?\nЯ не вижу никаких дров."
 
 #: ../data/level/kitty-dormitory.cfg:3220
 msgid "Oh yeah, haha - it's a gas fire."
-msgstr ""
+msgstr "О да, хе-хе - это газовая горелка."
 
 #: ../data/level/kitty-dormitory.cfg:3221
 msgid ""
 "There's something wrong, though.\n"
 "Not enough gas is flowing."
-msgstr ""
+msgstr "Но тут что-то не так.\nВыходит недостаточно газа."
 
 #: ../data/level/kitty-dormitory.cfg:3222
 msgid "It'll burn for a moment and then go out."
-msgstr ""
+msgstr "Он вспыхивает на секунду и прекращается."
 
 #: ../data/level/kitty-dormitory.cfg:3223
 msgid ""
 "Which makes me think there's a\n"
 "small trickle building up,\n"
 "but it's only that - a trickle."
-msgstr ""
+msgstr "Что заставляет думать, тут\nвстроен регулятор струи,\nно вот только где этот регулятор."
 
 #: ../data/level/kitty-dormitory.cfg:3224
 msgid ""
 "I think the gas flow is\n"
 "way lower than it should be."
-msgstr ""
+msgstr "Я думаю газ идёт слишком\nвяло, чем должен на самом деле."
 
 #: ../data/level/kitty-dormitory.cfg:3227
 msgid "What could cause that?"
-msgstr ""
+msgstr "Что могло вызвать это?"
 
 #: ../data/level/kitty-dormitory.cfg:3229
 msgid ""
 "Mmm, might be a clog.\n"
 "Might be some kind of corrosion."
-msgstr ""
+msgstr "М-м-м, возможно засор.\nНаверное что-то вроде коррозии."
 
 #: ../data/level/kitty-dormitory.cfg:3231
 msgid ""
 "Or some butthead down in a service closet\n"
 "might have turned a valve down."
-msgstr ""
+msgstr "Или какая-то дурная башка из\nобслуживания завернула вентиль."
 
 #: ../data/level/kitty-dormitory.cfg:3234
 msgid "Uh... how many valves lead up to this?"
-msgstr ""
+msgstr "Ох... сколько вентилей ведёт сюда?"
 
 #: ../data/level/kitty-dormitory.cfg:3236
 msgid ""
 "A lot.  I don't even know.\n"
 "I really don't want to have to find out."
-msgstr ""
+msgstr "Дофига. Я даже не знаю все.\nИ совсем не горю желанием искать."
 
 #: ../data/level/kitty-dormitory.cfg:3239
 msgid ""
 "Wow, that really sucks.\n"
 "I hope you can fix this."
-msgstr ""
+msgstr "Ого, это внатуре фигово.\nНадеюсь ты сможешь починить."
 
 #: ../data/level/kitty-dormitory.cfg:3241
 msgid ""
 "Yeah, thanks.\n"
 "This ... could get difficult."
-msgstr ""
+msgstr "Ага, спасибо.\nЭто... становится сложно."
 
 #: ../data/level/kitty-dormitory.cfg:4111
 msgid "Kitty Dormitory"
-msgstr ""
+msgstr "Котобщежитие"
 
 #: ../data/level/kitty-factory-maze.cfg:1958
 #: ../data/level/kitty-factory-old.cfg:4354
 #: ../data/level/kitty-factory-upper.cfg:2153
 #: ../data/level/kitty-factory.cfg:3186
 msgid "The Kitty Factory"
-msgstr ""
+msgstr "Котозавод"
 
 #: ../data/level/kitty-kitchen.cfg:346
 msgid "Do you help out here in the kitchen?"
-msgstr ""
+msgstr "Ты помогаешь по кухне?"
 
 #: ../data/level/kitty-kitchen.cfg:348
 msgid "Yes, in fact I do."
-msgstr ""
+msgstr "Да, практически."
 
 #: ../data/level/kitty-kitchen.cfg:349
 msgid ""
 "Nominally, I am the sous-chef,\n"
 "but in practice I'm an errand-runner."
-msgstr ""
+msgstr "Номинально, су-шеф,\nно практически - \nмальчик на побегушках."
 
 #: ../data/level/kitty-kitchen.cfg:352
 msgid "I suppose someone has to do the job."
-msgstr ""
+msgstr "Я полагаю, кто-то должен\nвыполнять эту работу."
 
 #: ../data/level/kitty-kitchen.cfg:354
 msgid "Well, we could use a bit more help."
-msgstr ""
+msgstr "Хорошо, мы можем использовать больше рук."
 
 #: ../data/level/kitty-kitchen.cfg:355
 msgid ""
 "Nevertheless, Gaston is pretty nice\n"
 "as far as bosses go."
-msgstr ""
+msgstr "Как бы не было, Гастон весьма добр\nкогда начальство уходит."
 
 #: ../data/level/kitty-kitchen.cfg:356
 msgid ""
 "The job is a bit of a pressure-cooker,\n"
 "no pun intended, but he doesn't\n"
 "use that as an excuse to be mean."
-msgstr ""
+msgstr "Это работа для скороварки,\nбез каламбуров, но это не\nзначит, что можно быть таким\nскупым."
 
 #: ../data/level/kitty-kitchen.cfg:359
 msgid "Yeah, that beats the alternative."
-msgstr ""
+msgstr "Да, это незавидная альтернатива."
 
 #: ../data/level/kitty-kitchen.cfg:361
 msgid "Do you guys get a lot of traffic?"
-msgstr ""
+msgstr "У вас ребята загруженный график?"
 
 #: ../data/level/kitty-kitchen.cfg:363
 msgid ""
 "We do.  ... I don't mean to be rude,\n"
 "but I think I'd better get back to work."
-msgstr ""
+msgstr "Так... Не хочу быть грубым,\nно думаю лучше вернуться к работе."
 
 #: ../data/level/kitty-kitchen.cfg:366
 msgid "Sure thing."
-msgstr ""
+msgstr "Конечно."
 
 #: ../data/level/kitty-kitchen.cfg:399
 msgid ""
 "You must excuse me, but I'm terribly busy.\n"
 "I don't have any time to speak right now."
-msgstr ""
+msgstr "Ты должен извинить меня, но я невероятно занят.\nНет времени болтать с тобой сейчас."
 
 #: ../data/level/kitty-kitchen.cfg:402
 msgid "I understand."
-msgstr ""
+msgstr "Я понимаю."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:206
 msgid "Hey, man, look at you!"
-msgstr ""
+msgstr "Эй, мужик, посмотри на себя!"
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:207
 msgid ""
 "I hear you had a big hand in scaring\n"
 "those guys off.  Way to go!"
-msgstr ""
+msgstr "Я слышал у тебя длинные руки\nдля запугивания этих парней.\nПора идти!"
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:209
 msgid ""
 "Eh, I'd hardly say they were 'scared' away,\n"
 "but I might have tipped the scales."
-msgstr ""
+msgstr "Эх, мне тяжело сказать, что они 'напуганы',\nно возможно я вышел за рамки."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:210
 msgid ""
 "Well, whatever you did,\n"
 "I'm glad they're gone!"
-msgstr ""
+msgstr "Что ж, что бы ты не сделал,\nя рад что они ушли!"
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:212
 msgid ""
 "Yeah, I just hope we don't\n"
 "have a repeat incident..."
-msgstr ""
+msgstr "Да, я надеюсь инцидент\nне повторится..."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:213
 msgid "Uh ... why would that happen?"
-msgstr ""
+msgstr "Ох... почему так случилось?"
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:215
 msgid ""
 "I don't know, but...\n"
 "Why did this happen in the first place?"
-msgstr ""
+msgstr "Я не знаю, но...\nКакова первопричина случившегося?"
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:217
 msgid ""
 "It's an important question,\n"
 "and someone needs to look into it."
-msgstr ""
+msgstr "Это важный вопрос,\nи кому то придётся его решать."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:218
 msgid "Would that someone possibly be you?"
-msgstr ""
+msgstr "Возможно, что это будешь ты?"
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:220
 msgid "That is a distinct possibility."
-msgstr ""
+msgstr "Это отчётливая вероятность."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:221
 msgid ""
 "Well, hey - you be careful, alright?\n"
 "Stay cool."
-msgstr ""
+msgstr "Хм, эй - ты будешь осторожен, так ведь?\nОстынь."
 
 #: ../data/level/liberated-crevice-village-house-1.cfg:604
 msgid "Hey, what's new?"
@@ -4561,21 +4563,21 @@ msgstr "Конечно нет.\nЭто звучит глупо."
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:191
 msgid "Hey there - is everything going alright?"
-msgstr ""
+msgstr "Эй там - всё в порядке?"
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:192
 msgid ""
 "It sure is now!  Thanks for\n"
 "taking those guys on!"
-msgstr ""
+msgstr "Теперь да! Спасибо\nчто убрал этих парней!"
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:193
 msgid "That was really brave of you!"
-msgstr ""
+msgstr "А ты герой!"
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:195
 msgid "I'm just glad everyone's okay."
-msgstr ""
+msgstr "Я рад, что все целы."
 
 #: ../data/level/liberated-crevice-village-house-2.cfg:197
 msgid "Where's your sibling, by the way?"
@@ -4595,7 +4597,7 @@ msgstr "Холл"
 
 #: ../data/level/long-plastic-hallway.cfg:287
 msgid "A Long Plastic Hallway"
-msgstr ""
+msgstr "Длинный пластиковый корридор"
 
 #: ../data/level/main-map.cfg:398
 msgid "World Map"
@@ -4603,202 +4605,202 @@ msgstr "Карта мира"
 
 #: ../data/level/milgrams-basement-junction.cfg:170
 msgid "It says, \"This leads to the cave entrance."
-msgstr ""
+msgstr "Надпись гласит:\n\"Эта дорога ведёт к входу в пещеру."
 
 #: ../data/level/milgrams-basement-junction.cfg:172
 msgid "Be careful about venturing into the caves!\""
-msgstr ""
+msgstr "Будь осторожен спускаясь в пещеры!\""
 
 #: ../data/level/milgrams-basement-junction.cfg:191
 msgid "It says, \"This leads to the North Tower.\""
-msgstr ""
+msgstr "Надпись гласит:\n\"Эта дорога ведёт к Северной башне\""
 
 #: ../data/level/milgrams-basement-junction.cfg:193
 msgid "\"Still under construction, wear your hard hat!\""
-msgstr ""
+msgstr "\"Всё ещё ведётся строительство, надевайте каску!\""
 
 #: ../data/level/milgrams-basement-junction.cfg:212
 msgid ""
 "It says, \"This leads to the west tower,\n"
 "and to the main throne room complex.\""
-msgstr ""
+msgstr "Надпись гласит: \"Путь к Западной башне,\nи основному крылу Тронного зала.\""
 
 #: ../data/level/milgrams-basement-junction.cfg:214
 msgid "Gee, guess who we'll find there?"
-msgstr ""
+msgstr "Хе, угадайте, кого мы там обнаружим?"
 
 #: ../data/level/milgrams-basement-junction.cfg:233
 msgid "It says, \"This leads to the cellar and storerooms.\""
-msgstr ""
+msgstr "Надпись гласит: \"Путь к подвалу и кладовым.\""
 
 #: ../data/level/milgrams-basement-junction.cfg:235
 msgid "\"No Admittance without authorization.\""
-msgstr ""
+msgstr "\"Не входить без должного допуска.\""
 
 #: ../data/level/milgrams-basement-junction.cfg:254
 msgid ""
 "It says, \"Warning:\n"
 "Transport to this chamber is one-way.\""
-msgstr ""
+msgstr "Надпись гласит: \"Внимание:\nТранспортировка в эту камеру односторонняя.\""
 
 #: ../data/level/milgrams-basement-junction.cfg:393
 msgid ""
 "Sir, there's something we need\n"
 "to bring to your attention."
-msgstr ""
+msgstr "Сир, тут кое-что требует\nвашего внимания."
 
 #: ../data/level/milgrams-basement-junction.cfg:395
 msgid ""
 "Can it wait?\n"
 "I was just winding down."
-msgstr ""
+msgstr "Не может подождать?\nЯ только что свернулся."
 
 #: ../data/level/milgrams-basement-junction.cfg:396
 msgid "I've had a pretty rough day."
-msgstr ""
+msgstr "У нас был весьма тяжкий день."
 
 #: ../data/level/milgrams-basement-junction.cfg:398
 msgid "No, I don't believe it can."
-msgstr ""
+msgstr "Нет. я не верю, что он смог."
 
 #: ../data/level/milgrams-basement-junction.cfg:399
 msgid ""
 "Cameras have picked up an intruder,\n"
 "which we believe has somehow entered\n"
 "from the cave outlet."
-msgstr ""
+msgstr "Камеры засекли нарушителя,\nкоторый прокрался из\nлабиринта пещер."
 
 #: ../data/level/milgrams-basement-junction.cfg:401
 msgid ""
 "So?  I mean, what the hell?\n"
 "Just do the usual protocol..."
-msgstr ""
+msgstr "И? Я имею ввиду, какого чёрта?\nПросто действуйте\nпо обычной инструкции..."
 
 #: ../data/level/milgrams-basement-junction.cfg:403
 msgid ""
 "No.. sir, you don't understand.\n"
 "We think it's HIM."
-msgstr ""
+msgstr "Нет... сир, вы не понимаете.\nМы думаем, это ОН."
 
 #: ../data/level/milgrams-basement-junction.cfg:405
 msgid "Him...?"
-msgstr ""
+msgstr "Он...?"
 
 #: ../data/level/milgrams-basement-junction.cfg:407
 msgid ""
 "As in \"Frogatto\".\n"
 "It matches the profile you gave us."
-msgstr ""
+msgstr "Известный как \"Фрогатто\".\nОн похож на описание,\nкоторое вы нам дали."
 
 #: ../data/level/milgrams-basement-junction.cfg:409
 msgid ""
 "...\n"
 "Mother of god."
-msgstr ""
+msgstr "...\nМатерь божья!"
 
 #: ../data/level/milgrams-basement-junction.cfg:410
 msgid ""
 "How is that even possible?\n"
 "How did he get here?"
-msgstr ""
+msgstr "Как такое возможно?\nКак он добрался сюда?"
 
 #: ../data/level/milgrams-basement-junction.cfg:412
 msgid ""
 "Beats me.  More to the point, though,\n"
 "what should we do?"
-msgstr ""
+msgstr "Чтоб меня. Важнее всего,\nчто мы должны делать?"
 
 #: ../data/level/milgrams-basement-junction.cfg:413
 msgid "Should we try to negotiate with him?"
-msgstr ""
+msgstr "Должны ли мы вступить в переговоры с ним?"
 
 #: ../data/level/milgrams-basement-junction.cfg:415
 msgid ""
 "Are you kidding me?  With him?\n"
 "Good god no...just kill it!"
-msgstr ""
+msgstr "Ты меня разыгрываешь? С ним?\nБоже нет... просто убейте его!"
 
 #: ../data/level/milgrams-basement-junction.cfg:416
 msgid "Use any means necessary!"
-msgstr ""
+msgstr "Используйте любые средства!"
 
 #: ../data/level/milgrams-basement-junction.cfg:417
 msgid ""
 "That thing's not gonna negotiate.\n"
 "It's clearly out for BLOOD."
-msgstr ""
+msgstr "Эта штука не будет договариваться.\nОна слишком ХЛАДНОКРОВНАЯ."
 
 #: ../data/level/milgrams-basement-junction.cfg:418
 msgid ""
 "I mean, holy hell, if it came this far...\n"
 "ON FOOT?  That's just nuts."
-msgstr ""
+msgstr "Я понимаю, чертова штука, притопала сюда...\nНОГАМИ? Это безумие."
 
 #: ../data/level/milgrams-basement-junction.cfg:419
 msgid ""
 "There's only one thing that can\n"
 "drive a man like that:  Revenge."
-msgstr ""
+msgstr "Только одна вещь может\nподвигнуть на такое:\nМесть."
 
 #: ../data/level/milgrams-basement-junction.cfg:421
 msgid ""
 "Uh... I never said he walked...\n"
 "Listen, aren't we jumping to conclusions here?"
-msgstr ""
+msgstr "Ох... я не говорил, что оно пришло...\nСлушай, мы не манипулируем определениями?"
 
 #: ../data/level/milgrams-basement-junction.cfg:423
 msgid ""
 "No, trust me on this,\n"
 "I've seen this guy firsthand."
-msgstr ""
+msgstr "Нет, доверьтесь мне,\nя видел эту штуку лично."
 
 #: ../data/level/milgrams-basement-junction.cfg:424
 msgid ""
 "Shoot first or you might not\n"
 "get a second chance."
-msgstr ""
+msgstr "Стреляйте сразу или у вас\nне будет второго шанса."
 
 #: ../data/level/milgrams-basement-junction.cfg:425
 msgid "That's an order."
-msgstr ""
+msgstr "Это приказ."
 
 #: ../data/level/milgrams-basement-junction.cfg:428
 msgid "Fine."
-msgstr ""
+msgstr "Отлично."
 
 #: ../data/level/milgrams-basement-junction.cfg:1069
 msgid "Basement Junction"
-msgstr ""
+msgstr "Подвальная развилка"
 
 #: ../data/level/milgrams-throne-room-entrance.cfg:44
 msgid ""
 "Ugh.\n"
 "..."
-msgstr ""
+msgstr "Ух.\n..."
 
 #: ../data/level/milgrams-throne-room-entrance.cfg:46
 msgid ""
 "Remember, if I'm wrong about this,\n"
 "I won't live to regret it."
-msgstr ""
+msgstr "Запомните, если я ошибся на его счёт,\nя не желаю пожалеть об этом."
 
 #: ../data/level/milgrams-throne-room-entrance.cfg:48
 msgid "We can do this."
-msgstr ""
+msgstr "Мы можем всё устроить."
 
 #: ../data/level/milgrams-throne-room-entrance.cfg:50
 msgid ""
 "Blithe audacity might kill us, but\n"
 "at least someone will laugh about it later."
-msgstr ""
+msgstr "Блаженная дерзость может погубить нас,\nно посмотрим, кто посмеётся последним."
 
 #: ../data/level/milgrams-throne-room-entrance.cfg:52
 msgid "Right?"
-msgstr ""
+msgstr "Верно?"
 
 #: ../data/level/milgrams-throne-room-entrance.cfg:417
 msgid "Milgram's Throne Room Entrance"
-msgstr ""
+msgstr "Вход в Тронный зал Милграма"
 
 #: ../data/level/milgrams-throne-room.cfg:42
 msgid "No!  You can't be..."
@@ -4868,13 +4870,13 @@ msgstr "Я хотел бы спросить вас о том, что произ�
 msgid ""
 "Remarkable.\n"
 "I really thought you'd come here to attack me."
-msgstr ""
+msgstr "Впечатляет.\nЯ уверен, что ты пришёл напасть на меня."
 
 #: ../data/level/milgrams-throne-room.cfg:126
 msgid ""
 "Well, if you really are here for an audience,\n"
 "perhaps I could be obliged.  Shall we?"
-msgstr ""
+msgstr "Что же, если ты тут с визитом,\nвозможно, мне следует быть\nпочтительнее. Должен ли?"
 
 #: ../data/level/milgrams-throne-room.cfg:128
 msgid "Talk it over? Like gentlemen?"
@@ -4896,39 +4898,39 @@ msgstr "Ага, я - Фрогатто!"
 msgid ""
 "Uhh..\n"
 "I was expecting something a bit more ... robust."
-msgstr ""
+msgstr "Ухх...\nЯ ожидал нечто более... крепкое."
 
 #: ../data/level/milgrams-throne-room.cfg:143
 msgid ""
 "So you're the one who's been causing\n"
 "all this trouble, eh?"
-msgstr ""
+msgstr "Так ты один из тех, кто\nвызвал все эти проблемы, а?"
 
 #: ../data/level/milgrams-throne-room.cfg:145
 msgid "I am?"
-msgstr ""
+msgstr "Я?"
 
 #: ../data/level/milgrams-throne-room.cfg:147
 msgid ""
 "Yes, I've been getting some rather\n"
 "unpleasant reports about property damage."
-msgstr ""
+msgstr "Да, мне поступили несколько\nнеприятных докладов о повреждениях\nчастной собственности."
 
 #: ../data/level/milgrams-throne-room.cfg:149
 msgid ""
 "Is there any chance I...\n"
 "can discuss something with you?"
-msgstr ""
+msgstr "Есть ли хоть малейший шанс...\nобсудить с тобой кое-что?"
 
 #: ../data/level/milgrams-throne-room.cfg:151
 msgid "Sure..."
-msgstr ""
+msgstr "Уверен..."
 
 #: ../data/level/milgrams-throne-room.cfg:153
 msgid ""
 "...but the subject's going to be:\n"
 "\"What happens to trespassers.\""
-msgstr ""
+msgstr "... но тема будет:\n\"Что делать с нарушителями?\""
 
 #: ../data/level/milgrams-throne-room.cfg:157
 msgid "Fight!"
@@ -4943,21 +4945,21 @@ msgstr "Тронный зал Мильграма"
 msgid ""
 "It says, \"Careful!\n"
 "This area is extremely unfinished.\""
-msgstr ""
+msgstr "Надпись гласит: \"Осторожно!\nЭта область совершенно не готова.\""
 
 #: ../data/level/moonlit-ramparts.cfg:2114
 msgid ""
 "\"Completely unsafe for pedestrian traffic!\n"
 "Workers only!\""
-msgstr ""
+msgstr "\"Полностью не приспособлена для пешеходов!\nТолько рабочие!\""
 
 #: ../data/level/moonlit-ramparts.cfg:5407
 msgid "Moonlit Ramparts"
-msgstr ""
+msgstr "Лунные Бастионы"
 
 #: ../data/level/north-courtyard.cfg:648
 msgid "North Courtyard"
-msgstr ""
+msgstr "Северный двор"
 
 #: ../data/level/pinecone-park.cfg:2165
 msgid "Pinecone Park"
@@ -4973,7 +4975,7 @@ msgstr "Проклятая шахта"
 
 #: ../data/level/platform-peril.cfg:1825
 msgid "Platform Peril"
-msgstr ""
+msgstr "Платформенный ужас"
 
 #: ../data/level/rock-a-fort-cave.cfg:1659 ../data/level/rock-a-fort.cfg:5423
 msgid "Rock-a-Fort"
@@ -4985,7 +4987,7 @@ msgstr "Ого! Летающее растение!"
 
 #: ../data/level/rock-a-fort.cfg:1641
 msgid "^How interesting."
-msgstr ""
+msgstr "^Как интересно."
 
 #: ../data/level/rocky-roots.cfg:149
 msgid "Bleh. A locked door."
@@ -5005,7 +5007,7 @@ msgstr "Привет."
 
 #: ../data/level/secluded-hut-interior.cfg:314
 msgid "^Hi, I'm Frogatto."
-msgstr ""
+msgstr "^Привет, я - Фрогатто."
 
 #: ../data/level/secluded-hut-interior.cfg:315
 msgid ""
@@ -5015,13 +5017,13 @@ msgstr "Рад встрече.\nЯ - Мортимер."
 
 #: ../data/level/secluded-hut-interior.cfg:317
 msgid "^That's nice."
-msgstr ""
+msgstr "^Очень приятно."
 
 #: ../data/level/secluded-hut-interior.cfg:319
 msgid ""
 "Uhm, I hope you don't mind my asking,\n"
 "but what on earth <em>are</em> you, anyway?"
-msgstr ""
+msgstr "Эээ, не хочу тебя обидеть,\nно кто ты <em>такой</em>?"
 
 #: ../data/level/secluded-hut-interior.cfg:320
 msgid "Ostensibly, I am a mole."
@@ -5067,7 +5069,7 @@ msgid ""
 "If you could bring me a golden ant\n"
 "and stick it in one of my cages,\n"
 "I'd reward you <em>handsomely.</em>"
-msgstr ""
+msgstr "Судя по виду, ты много путешествуешь.\nЕсли ты сможешь принести мне \nзолотого муравья и посадить его\nв клетку, то я тебя <em>щедро</em> награжу."
 
 #: ../data/level/secluded-hut-interior.cfg:332
 msgid ""
@@ -5079,69 +5081,69 @@ msgstr "Щедро, говоришь?\nИдёт!"
 msgid ""
 "Oh! You got the golden ant for me.\n"
 "It's beautiful, <em>beautiful!</em>"
-msgstr ""
+msgstr "О! Ты достал золотого муравья.\n<em>Какой он красивый!</em>"
 
 #: ../data/level/secluded-hut-interior.cfg:337
 msgid ""
 "Mmmmmhmmmm.\n"
 "Now you were talking about a <em>reward?</em>"
-msgstr ""
+msgstr "Ммммхммм.\n<em>Так как там насчет награды?</em>"
 
 #: ../data/level/secluded-hut-interior.cfg:338
 msgid ""
 "Yes, yes, a reward!\n"
 "I think I have just the thing."
-msgstr ""
+msgstr "Да, да, награда!\nПохоже у меня есть кое-что."
 
 #: ../data/level/secluded-hut-interior.cfg:339
 msgid ""
 "Some time ago, I bartered my way\n"
 "into the possession of an Energy Talisman."
-msgstr ""
+msgstr "Недавно, я сменил занятие и\nзавладел Энергетическим Талисманом."
 
 #: ../data/level/secluded-hut-interior.cfg:340
 msgid ""
 "A most interesting artifact, but I think\n"
 "I've exhausted what I can learn from it."
-msgstr ""
+msgstr "Весьма занятный артефакт, но я думаю, \nчто я вычерпал, все знания из него."
 
 #: ../data/level/secluded-hut-interior.cfg:341
 msgid ""
 "It's not useful to me, anymore,\n"
 "and I think it could be very useful to you."
-msgstr ""
+msgstr "Для меня он теперь бесполезен, но я думаю,\nчто он может быть очень полезным для тебя."
 
 #: ../data/level/secluded-hut-interior.cfg:342
 msgid ""
 "If I am correct, I believe it would\n"
 "react with your anatomy by allowing you\n"
 "to externally manifest energy."
-msgstr ""
+msgstr "Если я прав, я считаю, что он будет\nвзаимодействовать с твоей структурой,\nдобавляя энергии."
 
 #: ../data/level/secluded-hut-interior.cfg:343
 msgid ""
 "That is, taking your inner physical energy,\n"
 "and allowing you to directly channel\n"
 "it outside your body."
-msgstr ""
+msgstr "То есть, потребляя твою внутреннюю\nфизическую силу, и направляя её прямо\nза пределы твоего тела."
 
 #: ../data/level/secluded-hut-interior.cfg:344
 msgid ""
 "You'll have to try it to see exactly\n"
 "what happens, but I'm sure something will."
-msgstr ""
+msgstr "Тебе нужно попробовать посмотреть, что\nдействительно произойдёт, но я уверен - \nчто-то точно будет."
 
 #: ../data/level/secluded-hut-interior.cfg:345
 msgid ""
 "Good luck,\n"
 "and I hope it serves you well!"
-msgstr ""
+msgstr "Удачи, и надеюсь\nон тебе хорошо послужит!"
 
 #: ../data/level/secluded-hut-interior.cfg:351
 msgid ""
 "Oh <em>my!</em> If that's a golden ant in your stomach,\n"
 "then quick, spit it out into the cage!"
-msgstr ""
+msgstr "Ох, em>ёпт!</em> Если это золотой муравей у тебя в животе,\nто быстрее выплюнь его в эту клетку!"
 
 #: ../data/level/secluded-hut-interior.cfg:352
 msgid ""
@@ -5153,21 +5155,21 @@ msgstr "Кажется, тебе пока не везет\nв поисках з�
 msgid ""
 "I'm working on it.\n"
 "Those things pack a pretty mean bite, you know."
-msgstr ""
+msgstr "Я работаю над этим.\nОни такие кусачие, знаешь ли."
 
 #: ../data/level/secluded-hut-interior.cfg:357
 msgid ""
 "I do hope you are enjoying exploring the island.\n"
 "There are <em>so</em> many wonderful creatures on it."
-msgstr ""
+msgstr "Надеюсь, ты наслаждаешься\nисследованиями острова. Тут <em>так</em>\nмного удивительных созданий."
 
 #: ../data/level/secluded-hut-interior.cfg:359
 msgid "... most of which seem inclined to kill me."
-msgstr ""
+msgstr "... большинство которых жаждет меня прикончить."
 
 #: ../data/level/secluded-hut-interior.cfg:643
 msgid "I say! Who's there?"
-msgstr "Кто здесь?"
+msgstr "Слышь! Кто здесь?"
 
 #: ../data/level/secluded-hut-interior.cfg:1063
 #: ../data/level/secluded-hut.cfg:2358
@@ -5179,63 +5181,63 @@ msgstr "Одинокая хижина."
 msgid ""
 "This is the end of the demo, which you probably\n"
 "can infer from the impassible barrier right ahead."
-msgstr ""
+msgstr "Это конец демонстрации, поэтому вы\nне сможете пройти барьер впереди."
 
 #: ../data/level/secluded-hut.cfg:1463
 msgid ""
 "You're free to keep exploring the first chapter,\n"
 " but you can't go any further forward."
-msgstr ""
+msgstr "Вы вольны исследовать первую часть,\nно не сможете продвинутся далее."
 
 #: ../data/level/secluded-hut.cfg:1465
 msgid ""
 "Well... hey, what the hell?\n"
 "I wanted to see what happens..."
-msgstr ""
+msgstr "Хорошо... что за чёрт?\nЯ хочу посмотреть, что случится..."
 
 #: ../data/level/secluded-hut.cfg:1467
 msgid ""
 "I have rather a vested interest in this,\n"
 "you know."
-msgstr ""
+msgstr "У меня живой интерес,\nзнаешь ли."
 
 #: ../data/level/secluded-hut.cfg:1468
 msgid ""
 "Naturally; but so does the crew that made this.\n"
 "Gotta pay the piper, or he won't play."
-msgstr ""
+msgstr "Естественно; но подумай о сделавшей это команде.\nОплати счёт, или он не будет играть."
 
 #: ../data/level/secluded-hut.cfg:1470
 msgid ""
 "I guess.\n"
 "It's so annoying to pay for stuff, though."
-msgstr ""
+msgstr "Я понял.\nТак раздражает платить за вещи."
 
 #: ../data/level/secluded-hut.cfg:1471
 msgid ""
 "Sure, but that's just business.\n"
 "That's what pays for making games like this."
-msgstr ""
+msgstr "Конечно, но это просто бизнес.\nПоэтому игры и создаются."
 
 #: ../data/level/secluded-hut.cfg:1472
 msgid ""
 "Check out our website, at frogatto.com, if\n"
 "you do want to buy a copy."
-msgstr ""
+msgstr "Посмотри на нашем сайте frogatto.com,\nесли желаешь приобрести копию игры."
 
 #: ../data/level/secluded-hut.cfg:1474
 msgid "Uh, sure, I'll keep that in mind."
-msgstr ""
+msgstr "О, конечно, буду знать."
 
 #: ../data/level/secluded-hut.cfg:1475
 msgid ""
 "Of course.  At any rate, enjoy yourself,\n"
 "and if you do choose to buy - thank you."
-msgstr ""
+msgstr "Несомненно. В любом случае, наслаждайся,\nи если выберешь покупку - спасибо."
 
 #: ../data/level/secluded-hut.cfg:1476
 msgid "Because that's pretty awesome if you do."
-msgstr ""
+msgstr "Потому что это великолепно,\nесли ты так поступишь."
 
 #: ../data/level/secluded-hut.cfg:1518
 msgid "Are you quite alright?"
@@ -5265,7 +5267,7 @@ msgstr "Подожди, что? Мильграм?"
 msgid ""
 "What's <em>he</em> doing\n"
 "on this side of the island?"
-msgstr ""
+msgstr "Что <em>он</em> делает,\nв этой части острова?"
 
 #: ../data/level/secluded-hut.cfg:1528
 msgid "You still haven't heard, then."
@@ -5276,14 +5278,14 @@ msgid ""
 "Milgram's men showed up\n"
 "early this morning, in town.\n"
 "They've taken the whole place hostage!"
-msgstr ""
+msgstr "Люди Мильграма появились\nс утра пораньше в городе.\nОни взяли в заложники всё это место!"
 
 #: ../data/level/secluded-hut.cfg:1530
 msgid ""
 "Unfortunately, I don't know the details.\n"
 "I just flew out of there as soon as I could,\n"
 "looking for <em>anyone</em> who could help."
-msgstr ""
+msgstr "К несчастью, я не посвящён в детали.\nЯ улетел как только смог, искать\nхоть <em>кого-то</em> кто поможет."
 
 #: ../data/level/secluded-hut.cfg:1532
 msgid ""
@@ -5345,7 +5347,7 @@ msgstr "Очень просто, тебe нужно взлететь!"
 
 #: ../data/level/secluded-hut.cfg:1550
 msgid "You ... <em>do</em> realize I can't fly?"
-msgstr ""
+msgstr "Ты...  <em>понимаешь</em> что я не умею летать?"
 
 #: ../data/level/splash-hop.cfg:3057
 msgid "Splash, Hop"
@@ -5361,11 +5363,11 @@ msgstr "Каменная долина"
 
 #: ../data/level/suboptimal-design.cfg:2605
 msgid "Suboptimal Design"
-msgstr ""
+msgstr "Субоптимальный Дизайн"
 
 #: ../data/level/tea-with-milgram.cfg:54
 msgid "Sound • Foley Artist"
-msgstr ""
+msgstr "Звук • Шумы"
 
 #: ../data/level/tea-with-milgram.cfg:60
 msgid "Webmaster"
@@ -5373,7 +5375,7 @@ msgstr "Вебмастер"
 
 #: ../data/level/tea-with-milgram.cfg:61
 msgid "Programmer • Sound and iOS Code"
-msgstr ""
+msgstr "Разработка • Звук и портирование на iOS"
 
 #: ../data/level/tea-with-milgram.cfg:62
 msgid "Minor Object Scripter and Level Designer"
@@ -5385,7 +5387,7 @@ msgstr "Отдел документации"
 
 #: ../data/level/tea-with-milgram.cfg:67
 msgid "Object Scripter • Props and Achievements"
-msgstr ""
+msgstr "Дизайнер объектов • Достижения и текстуры"
 
 #: ../data/level/tea-with-milgram.cfg:68
 msgid "Engine Improvements"
@@ -5410,35 +5412,35 @@ msgstr "Второй дизайнер уровней"
 
 #: ../data/level/tea-with-milgram.cfg:78
 msgid "Artist • Props"
-msgstr ""
+msgstr "Художник • Текстуры"
 
 #: ../data/level/tea-with-milgram.cfg:84
 msgid "Artist • Characters, Monsters, and Props"
-msgstr ""
+msgstr "Художник • персонажи, монстры, текстуры"
 
 #: ../data/level/tea-with-milgram.cfg:85
 msgid "Artist • House interiors and exteriors"
-msgstr ""
+msgstr "Художник • Внешность домов и интерьеров"
 
 #: ../data/level/tea-with-milgram.cfg:96
 msgid "Level Designer • forest, cave, and dungeon levels"
-msgstr ""
+msgstr "Дизайнер уровней • леса, пещеры и подземелья"
 
 #: ../data/level/tea-with-milgram.cfg:102
 msgid "Programmer • Engine Development and Improvement"
-msgstr ""
+msgstr "Программист • Разработка движка и улучшения"
 
 #: ../data/level/tea-with-milgram.cfg:103
 msgid "User Interface Code"
-msgstr ""
+msgstr "Код пользовательского интерфейса"
 
 #: ../data/level/tea-with-milgram.cfg:104
 msgid "Windows Packager"
-msgstr ""
+msgstr "Сборка для Windows"
 
 #: ../data/level/tea-with-milgram.cfg:105
 msgid "Android Port"
-msgstr ""
+msgstr "Портирование на Android"
 
 #: ../data/level/tea-with-milgram.cfg:108
 msgid "Translation Coordinator"
@@ -5446,23 +5448,23 @@ msgstr "Координатор переводов"
 
 #: ../data/level/tea-with-milgram.cfg:110
 msgid "Bug Fixer"
-msgstr ""
+msgstr "Исправление ошибок"
 
 #: ../data/level/tea-with-milgram.cfg:114
 msgid "Translation Code"
-msgstr ""
+msgstr "Программист-переводчик"
 
 #: ../data/level/tea-with-milgram.cfg:115
 msgid "Key Remapping Code"
-msgstr ""
+msgstr "Код переназначения клавиш"
 
 #: ../data/level/tea-with-milgram.cfg:116
 msgid "Maemo Port"
-msgstr ""
+msgstr "Порт на Maemo"
 
 #: ../data/level/tea-with-milgram.cfg:119
 msgid "Our Players"
-msgstr ""
+msgstr "Игроки"
 
 #: ../data/level/tea-with-milgram.cfg:120
 msgid "Bug Reports/Fixes"
@@ -5482,19 +5484,19 @@ msgstr "Адвокат дьявола"
 
 #: ../data/level/tea-with-milgram.cfg:126
 msgid "Programmer, Lead Content Wrangler and Lead Object Scripter"
-msgstr ""
+msgstr "Программист, Ведущий составитель контента и Ведущий писатель скриптов объектов"
 
 #: ../data/level/tea-with-milgram.cfg:127
 msgid "Artist • Characters, Monsters, Props, Terrain"
-msgstr ""
+msgstr "Художник • Персонажи, Монстры, Текстуры, Окружение"
 
 #: ../data/level/tea-with-milgram.cfg:128
 msgid "Writer • Wrote Main Story and Most Dialogue"
-msgstr ""
+msgstr "Писатель • Написал основную линию и большинство диалогов"
 
 #: ../data/level/tea-with-milgram.cfg:129
 msgid "Level Designer • seaside, town, and forest"
-msgstr ""
+msgstr "Дизайнер уровней • Море, город и лес"
 
 #: ../data/level/tea-with-milgram.cfg:132
 msgid "Musician"
@@ -5538,7 +5540,7 @@ msgstr "Я хотел заняться благотворительностью\
 msgid ""
 "I thought a 'mayor' would be responsible,\n"
 "but instead he's spending it all <em>on himself!</em>"
-msgstr ""
+msgstr "Я думал, что \"мэр\" должен быть\nответственным, а он все потратил <em>на себя</em>!"
 
 #: ../data/level/tea-with-milgram.cfg:159
 msgid "And now he's refusing to repay you?"
@@ -5550,148 +5552,148 @@ msgstr "Верно!"
 
 #: ../data/level/tea-with-milgram.cfg:165
 msgid "Ouch."
-msgstr ""
+msgstr "Ой."
 
 #: ../data/level/tea-with-milgram.cfg:167
 msgid ""
 "You know, I really think there are some <em>big</em>\n"
 "misunderstandings that need to get cleared up."
-msgstr ""
+msgstr "Знаете, я думаю, что есть некоторые <em>большие</em>\nнедоразумения, которые действительно нужно прояснить."
 
 #: ../data/level/tea-with-milgram.cfg:169
 msgid "Almost all of which are his fault."
-msgstr ""
+msgstr "Всё это его вина."
 
 #: ../data/level/tea-with-milgram.cfg:171
 msgid ""
 "This might not be obvious from talking to him,\n"
 "but that elder guy is really just ... <em>crazy.</em>"
-msgstr ""
+msgstr "Это может быть не очевидно из разговора с ним, \nно старый парень действительно просто ... <em>поехавший.</em>"
 
 #: ../data/level/tea-with-milgram.cfg:173
 msgid ""
 "He's just plain nuts.\n"
 "He's got a lot of bizarre delusions about things..."
-msgstr ""
+msgstr "Он чисто сбренил. Он источает много\nстранных заблуждений о разном ..."
 
 #: ../data/level/tea-with-milgram.cfg:175
 msgid ""
 "...and mostly we just humor him,\n"
 "because he's pretty harmless."
-msgstr ""
+msgstr "... и в основном мы просто смеемся над ним,\nпотому что он совсем безобиден."
 
 #: ../data/level/tea-with-milgram.cfg:178
 msgid ""
 "We've trumped him up with a pointless job\n"
 "as the gatekeeper on the east side of town."
-msgstr ""
+msgstr "Мы нагрузили его бессмысленной работой\nв качестве привратника на восточной границе города."
 
 #: ../data/level/tea-with-milgram.cfg:181
 msgid ""
 "Which plays to his ego,\n"
 "and keeps him out of trouble."
-msgstr ""
+msgstr "Что тешит его самолюбие,\nи держит подальше от неприятностей."
 
 #: ../data/level/tea-with-milgram.cfg:183
 msgid "Sounds like a perfect place for him!"
-msgstr ""
+msgstr "Звучит, как прекрасное занятие для него!"
 
 #: ../data/level/tea-with-milgram.cfg:185
 msgid "Yes, he's our official 'greeter'."
-msgstr ""
+msgstr "Да, он наш официальный \"привечающий\"."
 
 #: ../data/level/tea-with-milgram.cfg:187
 msgid ""
 "But I guess he really could cause\n"
 "some issues if other people, like yourself,\n"
 "aren't aware of his background."
-msgstr ""
+msgstr "Но я предполагаю, что он действительно\nможет вызвать некоторые проблемы, у других людей,\nкак и ты, что не знают о его прошлом."
 
 #: ../data/level/tea-with-milgram.cfg:189
 msgid ""
 "Intriguing.\n"
 "That'd certainly explain a few things."
-msgstr ""
+msgstr "Интригующе.\nЭто, конечно, объясняет некоторые вещи."
 
 #: ../data/level/tea-with-milgram.cfg:191
 msgid "For starters, uh ... he's <em>NOT</em> our mayor."
-msgstr ""
+msgstr "Для начала. ну... он <em>НЕ</em> наш мэр."
 
 #: ../data/level/tea-with-milgram.cfg:194
 msgid ""
 "Now, as for who <em>is</em> our mayor...\n"
 "well..."
-msgstr ""
+msgstr "Теперь, о том, кто <em>является</em>\nнашим мэром ... ну ..."
 
 #: ../data/level/tea-with-milgram.cfg:197
 msgid ""
 "Let's just say the political situation in\n"
 "Crevice Village is a little confusing."
-msgstr ""
+msgstr "Давайте просто скажем, политическая ситуация\nв Щелевой деревне немного запутанна."
 
 #: ../data/level/tea-with-milgram.cfg:199
 msgid ""
 "I wouldn't call it anarchy, but we're a\n"
 "little weak when it comes to \"social institutions\"."
-msgstr ""
+msgstr "Я бы не назвал это анархия, но мы немного теряемся,\nкогда дело доходит до \"социальных институтов\"."
 
 #: ../data/level/tea-with-milgram.cfg:201
 msgid ""
 "Which as you can guess, has good sides,\n"
 "but also has bad sides."
-msgstr ""
+msgstr "У которых, как вы можете догадаться, есть хорошие,\nно также и плохие стороны."
 
 #: ../data/level/tea-with-milgram.cfg:203
 msgid ""
 "I'll presume this contributes\n"
 "to the poor infrastructure?"
-msgstr ""
+msgstr "Я полагаю, это способствует\nплохой инфраструктуре?"
 
 #: ../data/level/tea-with-milgram.cfg:205
 msgid "Yup!"
-msgstr ""
+msgstr "Ага!"
 
 #: ../data/level/tea-with-milgram.cfg:208
 msgid ""
 "It's very, very hard to get people\n"
 "to work on anything big or long-term."
-msgstr ""
+msgstr "Это очень, очень трудно заставить людей работать\nнад чем-нибудь в большой или\nдолгосрочной перспективе."
 
 #: ../data/level/tea-with-milgram.cfg:211
 msgid ""
 "We can raise a house,\n"
 "but we couldn't build a highway."
-msgstr ""
+msgstr "Мы можем построить дом,\nно не смогли протянуть шоссе."
 
 #: ../data/level/tea-with-milgram.cfg:213
 msgid ""
 "Nevertheless this sounds\n"
 "<em>idyllically</em> free of bureaucracy."
-msgstr ""
+msgstr "Тем не менее, это звучит <em>идеально</em>\nне бюрократично."
 
 #: ../data/level/tea-with-milgram.cfg:215
 msgid ""
 "Hah, right ... unless you count\n"
 "\"dumb arguments with stubborn people\"."
-msgstr ""
+msgstr "Ха, верно... если не считать \"тупые споры с упрямыми людьми\"."
 
 #: ../data/level/tea-with-milgram.cfg:217
 msgid ""
 "Anyways, we do manage to get by,\n"
 "but it really is a mess."
-msgstr ""
+msgstr "В любом случае, мы смогли всё устроить,\nно на самом деле это беспорядок."
 
 #: ../data/level/tea-with-milgram.cfg:219
 msgid ""
 "So I don't know what the elder talked you into,\n"
 "but it's almost guaranteed to be lunacy."
-msgstr ""
+msgstr "Так что я не знаю, в чём уверял вас старейшина,\nно это почти гарантированно было безумием."
 
 #: ../data/level/tea-with-milgram.cfg:222
 msgid ""
 "Yes.\n"
 "No <em>wonder</em> we were confused!"
-msgstr ""
+msgstr "Да. \n<em>Неудивительно, что</em> мы были смущены!"
 
 #: ../data/level/tea-with-milgram.cfg:226
 msgid "Ah, there we are..."
@@ -5701,43 +5703,43 @@ msgstr "А вот и чай."
 msgid ""
 "Fetch some for our guest,\n"
 "would you, kindly?"
-msgstr "Принеси ещё чая для нашего гостя, если тебe не трудно."
+msgstr "Принеси ещё чая для нашего гостя,\nбудь любезен."
 
 #: ../data/level/tea-with-milgram.cfg:234
 msgid "So where was I?"
-msgstr ""
+msgstr "Так на чём я остановился?"
 
 #: ../data/level/tea-with-milgram.cfg:236
 msgid "What did the elder actually tell you?"
-msgstr ""
+msgstr "Стоп, что тебе сказал старейшина?"
 
 #: ../data/level/tea-with-milgram.cfg:242
 msgid ""
 "Uhm...  so, I'm not even sure what that\n"
 "project was supposed to be, at this point."
-msgstr ""
+msgstr "Хм... так, я даже не уверен, что\nэтот проект должен существовать,\nна данный момент."
 
 #: ../data/level/tea-with-milgram.cfg:245
 msgid ""
 "Might've been something about a bridge,\n"
 "Fergus was heading that one up."
-msgstr ""
+msgstr "Вероятно получены данные о мосте,\nФергус возглавляет там всё."
 
 #: ../data/level/tea-with-milgram.cfg:247
 msgid ""
 "He's one of my kitties.\n"
 "Heads up one of our engineering divisions."
-msgstr ""
+msgstr "Он один из моих котят.\nВозглавляет инженерный отдел."
 
 #: ../data/level/tea-with-milgram.cfg:249
 msgid ""
 "I honestly have no involvement in\n"
 "stuff like this; I delegate all of it out."
-msgstr ""
+msgstr "Я при возможности не участвую в таких вещах;\nДелегирую полномочия."
 
 #: ../data/level/tea-with-milgram.cfg:251
 msgid "Which sometimes doesn't work out as expected?"
-msgstr ""
+msgstr "Которые иногда не работают, как ожидалось?"
 
 #: ../data/level/tea-with-milgram.cfg:253
 msgid ""
@@ -5745,13 +5747,13 @@ msgid ""
 "but if you'll forgive me, I had the impression\n"
 "it was a bit of a backwater, so I thought\n"
 "we'd do something to help out."
-msgstr ""
+msgstr "Да. Я не знаю много о Щелевой деревне,\nно если вы простите меня, у меня было впечатление,\nчто там есть запруда, так что я думал,\nчто мы что-то можем сделать, чтобы помочь."
 
 #: ../data/level/tea-with-milgram.cfg:255
 msgid ""
 "We thought we'd actually hire you guys\n"
 "as labor, to do whatever you could."
-msgstr ""
+msgstr "Мы думали, что мы на самом деле наняли вас, ребята,\nкак работников, что бы сделать все, что вы могли бы."
 
 #: ../data/level/tea-with-milgram.cfg:258
 msgid ""
@@ -5759,66 +5761,66 @@ msgid ""
 "gets money flowing around, makes the\n"
 "new owners proud of what they built,\n"
 "feels less like charity, et cetera."
-msgstr ""
+msgstr "Всегда лучше поступать так:\nпозволить деньгам течь вокруг, делая\nновых владельцев гордыми за построенное,\nчто больше похоже на благотворительность,\nи так далее."
 
 #: ../data/level/tea-with-milgram.cfg:260
 msgid "But, apparently we just got conned."
-msgstr ""
+msgstr "Но, по-видимому, мы только что обманулись."
 
 #: ../data/level/tea-with-milgram.cfg:263
 msgid ""
 "And once they figured that out,\n"
 "some of our security guys were\n"
 "a little overzealous about recovering assets."
-msgstr ""
+msgstr "И как только это обнаружилось,\nнекоторые из наших ребят из безопасности\nнемного переусердствовали в восстановлении активов."
 
 #: ../data/level/tea-with-milgram.cfg:265
 msgid ""
 "Uh...\n"
 "That's a pretty spectacular euphemism, there..."
-msgstr ""
+msgstr "Ох...\nВот это довольно впечатляющим эвфемизм..."
 
 #: ../data/level/tea-with-milgram.cfg:267
 msgid ""
 "Yes, okay ...\n"
 "they were just thugs, plain and simple."
-msgstr ""
+msgstr "Да, ладно...\nони были обычные бандиты, просто и понятно."
 
 #: ../data/level/tea-with-milgram.cfg:269
 msgid ""
 "I didn't authorize that operation,\n"
 "but I <em>will</em> take responsibility for it!"
-msgstr ""
+msgstr "Я не разрешал эту операцию, но я\n<em>возьму</em> на себя ответственность за это!"
 
 #: ../data/level/tea-with-milgram.cfg:271
 msgid ""
 "Those cats are turning into bullies.\n"
 "Sooner or later, they're going to\n"
 "cause me some <em>serious</em> problems!"
-msgstr ""
+msgstr "Эти кошки превращаются в хулиганов.\nРано или поздно, они будут создавать\nмне <em>серьезные</em> проблемы!"
 
 #: ../data/level/tea-with-milgram.cfg:273
 msgid ""
 "I haven't given you a chance to apologize,\n"
 "but no need.\n"
 "Thank you for embarrassing them."
-msgstr ""
+msgstr "Я не дал вам шанса, чтобы извиниться,\nно теперь нет необходимости.\nСпасибо что приструнил их."
 
 #: ../data/level/tea-with-milgram.cfg:276
 msgid "I hope they've learned a lesson from this."
-msgstr ""
+msgstr "Я надеюсь, что они вывели из этого урок."
 
 #: ../data/level/tea-with-milgram.cfg:278
 msgid ""
 "Regarding THIS incident, I will need\n"
 "to have a talk with them about common sense."
-msgstr ""
+msgstr "Что касается ЭТОГО инцидента, мне нужно\nбудет поговорить с ними о здравом смысле."
 
 #: ../data/level/tea-with-milgram.cfg:281
 msgid ""
 "Any fool could guess that the\n"
 "money had long since been spent."
-msgstr ""
+msgstr "Любой дурак мог догадаться,\nчто деньги уже давно потрачены."
 
 #: ../data/level/tea-with-milgram.cfg:288
 msgid "Thank you Jeeves, that will do nicely."
@@ -5826,183 +5828,183 @@ msgstr "Спасибо, Дживис."
 
 #: ../data/level/tea-with-milgram.cfg:292
 msgid "Anyhow, I'm quite unsure where to go from here."
-msgstr ""
+msgstr "Во всяком случае, я совершенно\nне уверен, куда двигаться далее."
 
 #: ../data/level/tea-with-milgram.cfg:294
 msgid ""
 "I'd like to do something\n"
 "to make amends with the town..."
-msgstr ""
+msgstr "Я хотел бы сделать что-то\nчто бы загладить свою вину с городом..."
 
 #: ../data/level/tea-with-milgram.cfg:296
 msgid ""
 "... what the kitties did there\n"
 "was decidedly impolite."
-msgstr ""
+msgstr "... то, что сделали котята,\nбыло решительно невежливо."
 
 #: ../data/level/tea-with-milgram.cfg:299
 msgid ""
 "Then again, I'm almost tempted to cut my\n"
 "losses and leave you guys well enough alone."
-msgstr ""
+msgstr "Опять же, я почти смирился\nсо своими потерями и собираюсь\nоставить вас, ребята, в покое."
 
 #: ../data/level/tea-with-milgram.cfg:302
 msgid "Would you have any suggestions?"
-msgstr ""
+msgstr "У тебя есть догадки?"
 
 #: ../data/level/tea-with-milgram.cfg:304
 msgid "One or two."
-msgstr ""
+msgstr "Парочка."
 
 #: ../data/level/tea-with-milgram.cfg:307
 msgid ""
 "Probably the craziest and most helpful is...\n"
 "I actually think <em>he still has</em> that money."
-msgstr ""
+msgstr "Возможно это невероятно, но полезно знать что...\nя на самом деле думаю, что\n<em>он до сих пор</em> сохранил эти деньги."
 
 #: ../data/level/tea-with-milgram.cfg:310
 msgid ""
 "I know it sounds completely nuts,\n"
 "but I honestly think that when he was given it..."
-msgstr ""
+msgstr "Я знаю, это звучит совершенно безумно,\nно я искренне считаю, что, когда он получил их..."
 
 #: ../data/level/tea-with-milgram.cfg:312
 msgid ""
 "...he didn't have a clue what to do with it,\n"
 "so he just ... hid it."
-msgstr ""
+msgstr "...он не имел ни малейшего понятия,\nчто делать с ними, так что он просто...\nспрятал их."
 
 #: ../data/level/tea-with-milgram.cfg:314
 msgid ""
 "We've all known him for years,\n"
 "and he's a hoarder, and a miser."
-msgstr ""
+msgstr "Мы все знали его в течение многих лет\nи он скряга и скопидом."
 
 #: ../data/level/tea-with-milgram.cfg:316
 msgid ""
 "We've never seen him suddenly having more\n"
 "money to spend; so it's crazy, but it fits."
-msgstr ""
+msgstr "Мы никогда не видели его вдруг тратящего кучу денег;\nтак что это невероятно, но он подходит."
 
 #: ../data/level/tea-with-milgram.cfg:318
 msgid "I ... didn't see that coming."
-msgstr ""
+msgstr "Кто мог подумать..."
 
 #: ../data/level/tea-with-milgram.cfg:321
 msgid ""
 "When he was getting shaken down by that kitty,\n"
 "we turned our back on him for a second."
-msgstr ""
+msgstr "Когда его трясли коты, мы на секунду потеряли его из виду."
 
 #: ../data/level/tea-with-milgram.cfg:324
 msgid ""
 "It turned out he'd hidden\n"
 "in some sort of secret passage."
-msgstr ""
+msgstr "Оказалось, что он спрятался в какой-то секретный проход."
 
 #: ../data/level/tea-with-milgram.cfg:326
 msgid ""
 "He may have used some of the money to build it,\n"
 "but his house has some sort of safe room."
-msgstr ""
+msgstr "Он, возможно, использовал часть денег, чтобы построить его,\nно в его доме точно есть безопасная комната."
 
 #: ../data/level/tea-with-milgram.cfg:328
 msgid ""
 "It's just a guess, but I honestly think he\n"
 "might have hidden the rest right inside it."
-msgstr ""
+msgstr "Это просто предположение, но я действительно думаю,\nчто он мог спрятать остатки прямо там."
 
 #: ../data/level/tea-with-milgram.cfg:330
 msgid "Incredible."
-msgstr ""
+msgstr "Потрясающе."
 
 #: ../data/level/tea-with-milgram.cfg:332
 msgid ""
 "Knowing that, you could probably\n"
 "just walk in and take it."
-msgstr ""
+msgstr "Зная это, вероятно, вы можете просто пойти и взять их."
 
 #: ../data/level/tea-with-milgram.cfg:335
 msgid ""
 "We may.\n"
 "In fact I believe we will!"
-msgstr ""
+msgstr "Мы можем.\nНа самом деле я считаю,\nчто мы так и сделаем!"
 
 #: ../data/level/tea-with-milgram.cfg:338
 msgid ""
 "If I may be so bold, I think it's\n"
 "safe to say on behalf of the town..."
-msgstr ""
+msgstr "Если я могу быть настолько смелым, я думаю,\nчто с уверенностью скажу от имени города ..."
 
 #: ../data/level/tea-with-milgram.cfg:340
 msgid ""
 "...the rest of us would still appreciate\n"
 "some sort of public-works project."
-msgstr ""
+msgstr "...остальные из нас по-прежнему оценят\nсвоеобразное общественное строительство."
 
 #: ../data/level/tea-with-milgram.cfg:342
 msgid ""
 "You probably should hear what others are\n"
 "interested in, but I for one really wish there\n"
 "was a road of any kind between here and there."
-msgstr ""
+msgstr "Вы, наверное, должны услышать то,\nчто другие скажут, но я, например, очень хотел бы\nдорогу любого типа - от туда и до сюда."
 
 #: ../data/level/tea-with-milgram.cfg:344
 msgid "I'm dreading the trip back."
-msgstr ""
+msgstr "Я в ужасе от обратного пути."
 
 #: ../data/level/tea-with-milgram.cfg:346
 msgid ""
 "Really?\n"
 "Where's your ship parked?"
-msgstr ""
+msgstr "Правда?\nИ где твой корабль?"
 
 #: ../data/level/tea-with-milgram.cfg:349
 msgid ""
 "I ... didn't ... use a vehicle.\n"
 "I walked."
-msgstr ""
+msgstr "Я... не использовал... транспорт.\nПришёл на своих двоих."
 
 #: ../data/level/tea-with-milgram.cfg:352
 msgid ""
 "...\n"
 "I'm amazed that's even <em>possible.</em>"
-msgstr ""
+msgstr "...\nЯ поражен, что это даже <em>возможно.</em>"
 
 #: ../data/level/tea-with-milgram.cfg:354
 msgid ""
 "I like you, little frog!\n"
 "You're quite bold."
-msgstr ""
+msgstr "Ты мне нравишься, маленький лягушонок.\nВесьма недурно."
 
 #: ../data/level/tea-with-milgram.cfg:356
 msgid ""
 "Well, I can certainly at least\n"
 "guarantee transportation for you!"
-msgstr ""
+msgstr "Что ж, уж транспортом-то я\nтебя обеспечу!"
 
 #: ../data/level/tea-with-milgram.cfg:358
 msgid ""
 "And I'd be happy to consider some kind of project.\n"
 "You yourself could be my paid liaison."
-msgstr ""
+msgstr "И я бы с удовольствием рассмотрел\nнекоторые проекты. Вы сами можете быть\nсо мой на уделеной связи."
 
 #: ../data/level/tea-with-milgram.cfg:360
 msgid ""
 "We should keep in touch - hopefully,\n"
 "through you, I can meet some of the\n"
 "more 'level-headed' members of your town."
-msgstr ""
+msgstr "Мы должны быть в курсе - мы надеемся,\nчерез вас, я могу встретиться с некоторыми\nиз более \"уравновешенных\" членов вашего города."
 
 #: ../data/level/tea-with-milgram.cfg:363
 msgid "So ... all's well that ends well?"
-msgstr ""
+msgstr "В общем... всё хорошо, что хорошо кончается?"
 
 #: ../data/level/tea-with-milgram.cfg:365
 msgid ""
 "Yes, I do think everyone will have\n"
 "an equitable outcome to this whole mess."
-msgstr ""
+msgstr "Да, я думаю, что это будет справедливый\nисход для всей этой неразберихи."
 
 #: ../data/level/tea-with-milgram.cfg:367
 msgid "Except the elder."
@@ -6014,11 +6016,11 @@ msgstr "Конец"
 
 #: ../data/level/test-multiplayer.cfg:127
 msgid "Staging Forest"
-msgstr ""
+msgstr "Халтурный лес"
 
 #: ../data/level/the-north-tower.cfg:2089
 msgid "The North Tower"
-msgstr ""
+msgstr "Северная Башня"
 
 #: ../data/level/titlescreen-arcade.cfg:61
 msgid "Each machine has a different arcade-style challenge."
@@ -6062,38 +6064,38 @@ msgstr "ЗОЛОТОИСКАТЕЛЬ"
 
 #: ../data/level/titlescreen-difficulty-selector.cfg:39
 msgid "SELECT DIFFICULTY LEVEL:"
-msgstr ""
+msgstr "ВЫБЕРИТЕ УРОВЕНЬ СЛОЖНОСТИ:"
 
 #: ../data/level/titlescreen-load-game-selector.cfg:23
 msgid "File 1:"
-msgstr ""
+msgstr "Файл 1:"
 
 #: ../data/level/titlescreen-load-game-selector.cfg:50
 msgid "File 2:"
-msgstr ""
+msgstr "Файл 2:"
 
 #: ../data/level/titlescreen-load-game-selector.cfg:77
 msgid "File 3:"
-msgstr ""
+msgstr "Файл 3:"
 
 #: ../data/level/titlescreen-load-game-selector.cfg:121
 #: ../data/level/titlescreen-new-game-selector.cfg:236
 msgid "Play!"
-msgstr ""
+msgstr "Играть!"
 
 #: ../data/level/titlescreen-new-game-selector.cfg:24
 msgid "Select Save Slot:"
-msgstr ""
+msgstr "Выберите слот сохранения:"
 
 #: ../data/level/titlescreen-new-game-selector.cfg:50
 msgid "Select Difficulty:"
-msgstr ""
+msgstr "Выберите сложность:"
 
 #: ../data/level/titlescreen-new-game-selector.cfg:65
 #: ../data/level/titlescreen-new-game-selector.cfg:94
 #: ../data/level/titlescreen-new-game-selector.cfg:123
 msgid "empty"
-msgstr ""
+msgstr "пусто"
 
 #: ../data/level/titlescreen-new-game-selector.cfg:163
 #: ../data/objects/playable/difficulty-selector.cfg:24
@@ -6102,7 +6104,7 @@ msgstr "Обычно"
 
 #: ../data/level/titlescreen-new-game-selector.cfg:191
 msgid "Challenging"
-msgstr ""
+msgstr "Испытание"
 
 #: ../data/level/titlescreen.cfg:60
 msgid "LOAD GAME"
@@ -6114,51 +6116,51 @@ msgstr "НОВАЯ ИГРА"
 
 #: ../data/level/titlescreen.cfg:125
 msgid "Press ${LEFT_KEY} or ${RIGHT_KEY} to walk."
-msgstr ""
+msgstr "Нажмите ${LEFT_KEY} или ${RIGHT_KEY} для ходьбы."
 
 #: ../data/level/titlescreen.cfg:125
 msgid "Tap ← or → to walk."
-msgstr ""
+msgstr "Жми ← или → для ходьбы."
 
 #: ../data/level/titlescreen.cfg:126
 msgid "Quickly press ${LEFT_KEY} or ${RIGHT_KEY} twice to run."
-msgstr ""
+msgstr "Дважды нажмите ${LEFT_KEY} или ${RIGHT_KEY} для бега."
 
 #: ../data/level/titlescreen.cfg:126
 msgid "Quickly tap ← or → twice to run."
-msgstr ""
+msgstr "Быстро жми ← или → дважды для бега."
 
 #: ../data/level/titlescreen.cfg:128
 msgid "Press ${DOWN_KEY} to crouch."
-msgstr ""
+msgstr "Нажмите ${DOWN_KEY}, чтобы нагнуться."
 
 #: ../data/level/titlescreen.cfg:128
 msgid "Walk in front of a door or person,"
-msgstr ""
+msgstr "Подойдите к двери или персонажу,"
 
 #: ../data/level/titlescreen.cfg:129
 msgid "Press ${UP_KEY} to talk, and use things like doors."
-msgstr ""
+msgstr "Нажмите ${UP_KEY} для общения и использования дверей и предметов."
 
 #: ../data/level/titlescreen.cfg:129
 msgid "and tap ☆ to interact with them."
-msgstr ""
+msgstr "и нажмите ☆ для взаимодействия с ними."
 
 #: ../data/level/titlescreen.cfg:130
 msgid "Press ${JUMP_KEY} to jump."
-msgstr ""
+msgstr "Нажмите ${JUMP_KEY} для прыжка."
 
 #: ../data/level/titlescreen.cfg:130
 msgid "Tap ○ to jump."
-msgstr ""
+msgstr "Жми ○ для прыжка."
 
 #: ../data/level/titlescreen.cfg:131
 msgid "Press ${TONGUE_KEY} to use a character's attacks."
-msgstr ""
+msgstr "Нажмите ${TONGUE_KEY} для атаки."
 
 #: ../data/level/titlescreen.cfg:131
 msgid "Tap □ to use a character's attacks."
-msgstr ""
+msgstr "Жми □ для атаки."
 
 #: ../data/level/titlescreen.cfg:170
 msgid "ARCADE"
@@ -6168,7 +6170,7 @@ msgstr "АРКАДА"
 msgid ""
 "If that gets in the batter,\n"
 "I swear..."
-msgstr ""
+msgstr "Если это попадёт в тесто,\nя клянусь..."
 
 #: ../data/level/to-nenes-house-inside.cfg:36
 msgid "Hey Nene, what's cooking?"
@@ -6208,32 +6210,32 @@ msgstr "Да, вот ключ.\nТам муравьи завелись."
 msgid ""
 "I've been meaning to get rid of them,\n"
 "but I just can't find the time."
-msgstr ""
+msgstr "Я имею ввиду, избавиться от них,\nно я просто не могу найти время."
 
 #: ../data/level/to-nenes-house-inside.cfg:53
 msgid ""
 "And now, they've gone and\n"
 "ruined a whole bag of flour!"
-msgstr ""
+msgstr "И теперь, они залезли и\nиспортили целый мешок муки!"
 
 #: ../data/level/to-nenes-house-inside.cfg:56
 msgid "Ick."
-msgstr ""
+msgstr "Ве-е."
 
 #: ../data/level/to-nenes-house-inside.cfg:58
 msgid "I know, right?"
-msgstr ""
+msgstr "Я знаю, хорошо?"
 
 #: ../data/level/to-nenes-house-inside.cfg:59
 msgid ""
 "So you showed up, and I thought ...\n"
 "hey, maybe you could be a gentleman,\n"
 "and help me out here, hm?"
-msgstr ""
+msgstr "Так на основе увиденного, я подумала...\nэй, может быть, ты будешь джентльменом,\nи поможешь мне здесь, хм?"
 
 #: ../data/level/to-nenes-house-inside.cfg:61
 msgid "Yeah, that sounds ... opportune."
-msgstr ""
+msgstr "Да, это звучит ... кстати."
 
 #: ../data/level/to-nenes-house-inside.cfg:63
 msgid ""
@@ -6251,7 +6253,7 @@ msgstr "Ну, я думала, что это ты\nсделаешь по-дру�
 msgid ""
 "Also, come back and\n"
 "talk to me when you're done."
-msgstr ""
+msgstr "Так же, возвращайся и\nпереговори со мной, когда закончишь."
 
 #: ../data/level/to-nenes-house-inside.cfg:65
 msgid ""
@@ -6262,110 +6264,110 @@ msgstr "Но если тебе так угодно, то, кажется,\nя т
 
 #: ../data/level/to-nenes-house-inside.cfg:65
 msgid "I might have something else for you."
-msgstr ""
+msgstr "У меня возможно будет кое-что для тебя."
 
 #: ../data/level/to-nenes-house-inside.cfg:70
 msgid ""
 "Ah, so you're carrying one of the ants.\n"
 "You'll get rid of it, won't you?"
-msgstr ""
+msgstr "Ах, так ты носишь одного из муравьев.\nТы избавился от них, не так ли?"
 
 #: ../data/level/to-nenes-house-inside.cfg:72
 msgid ""
 "I don't know, now that I think of it...\n"
 "It's not their fault they're here,\n"
 "the ants are just playing to their instincts."
-msgstr ""
+msgstr "Я не знаю: теперь, когда я подумал об этом...\nЭто не их вина, что они здесь,\nмуравьи просто следуют инстинктам."
 
 #: ../data/level/to-nenes-house-inside.cfg:74
 msgid ""
 "If you say so... Just throw it outside.\n"
 "As long as they're out of my food, I'm good."
-msgstr ""
+msgstr "Если так рассуждать...\nПросто выбросить его на улицу.\nПока они не в моей пище, я довольна."
 
 #: ../data/level/to-nenes-house-inside.cfg:80
 msgid "Here, I have another little surprise for you."
-msgstr ""
+msgstr "Эй, небольшой сюрприз для тебя."
 
 #: ../data/level/to-nenes-house-inside.cfg:80
 msgid ""
 "You really did do it.\n"
 "You rock!"
-msgstr ""
+msgstr "Ты действительно сделал это.\nТы крут!"
 
 #: ../data/level/to-nenes-house-inside.cfg:83
 msgid "Is it cake?"
-msgstr ""
+msgstr "Это торт?"
 
 #: ../data/level/to-nenes-house-inside.cfg:85
 msgid ""
 "Ha.  No, it's quite a bit better.\n"
 "It's a little souvenir from the IDF."
-msgstr ""
+msgstr "Ха. это кое-что получше.\nНебольшой сувенир от ВВС."
 
 #: ../data/level/to-nenes-house-inside.cfg:86
 msgid "It's a Fire Talisman, and I'd like you to have it."
-msgstr ""
+msgstr "Это Огненный Талисман, и\nя рада дать его тебе."
 
 #: ../data/level/to-nenes-house-inside.cfg:89
 msgid ""
 "Wow... That's... awesome, but\n"
 "why on earth are you giving this to me?"
-msgstr ""
+msgstr "Ого... Это... поразительно,\nно почему. ради всего, ты отдаешь мне это?"
 
 #: ../data/level/to-nenes-house-inside.cfg:91
 msgid "It's a bit much for getting rid of a few ants!"
-msgstr ""
+msgstr "Это многовато за избавление\nот нескольких муравьев!"
 
 #: ../data/level/to-nenes-house-inside.cfg:93
 msgid ""
 "Honestly?  I had originally meant to\n"
 "give it to you as a birthday present."
-msgstr ""
+msgstr "Честно? Я первоначально хотела дать его тебе\nв качестве подарка на день рождения."
 
 #: ../data/level/to-nenes-house-inside.cfg:94
 msgid "I just never got around to it."
-msgstr ""
+msgstr "Я бы никогда не догадался."
 
 #: ../data/level/to-nenes-house-inside.cfg:95
 msgid ""
 "I don't need it myself, and I know\n"
 "you'd get a LOT of use out of it."
-msgstr ""
+msgstr "Мне он не нужен, и я знаю, ты\nполучишь больше пользы от него."
 
 #: ../data/level/to-nenes-house-inside.cfg:96
 msgid "So...  Happy (rather belated) Birthday!"
-msgstr ""
+msgstr "Так что ... С (запоздалым) Днём рождения!"
 
 #: ../data/level/to-nenes-house-inside.cfg:99
 msgid ""
 "You know, I'm really lucky to\n"
 "have friends like you!"
-msgstr ""
+msgstr "Знаешь, мне действительно повезло\nиметь таких друзей, как вы!"
 
 #: ../data/level/to-nenes-house-inside.cfg:102
 msgid ""
 "Say, that wouldn't also happen\n"
 "to be <em>Birthday</em> Cake, would it?"
-msgstr ""
+msgstr "Скажи, может быть, что ещё будет торт\nна <em>день рождения</em>, не так ли?"
 
 #: ../data/level/to-nenes-house-inside.cfg:104
 msgid ""
 "...\n"
 "What?  No!"
-msgstr ""
+msgstr "...\nЧто? Нет!"
 
 #: ../data/level/to-nenes-house-inside.cfg:105
 msgid ""
 "Just take the present,\n"
 "you silly, silly frog."
-msgstr ""
+msgstr "Просто возьми подарок,\nты невыносимая, невыносимая лягушка."
 
 #: ../data/level/to-nenes-house-inside.cfg:111
 msgid ""
 "Hey, thanks for taking care\n"
 "of those ants down there!"
-msgstr ""
+msgstr "Эй, спасибо что позаботился\nоб этих муравьях внизу!"
 
 #: ../data/level/to-nenes-house-inside.cfg:113
 msgid ""
@@ -6402,19 +6404,19 @@ msgid ""
 "It smells like Nene's cooking something nice,\n"
 "but I don't think she'd want any ants for lunch.\n"
 "I'd better throw it out before entering!"
-msgstr ""
+msgstr "Пахнет будто Нене готовит что-то приятное,\nно я не думаю, что она хочет муравьев на обед.\nЯ лучше выброшу его, прежде чем войти!"
 
 #: ../data/level/to-nenes-house.cfg:178
 msgid ""
 "I guess that sneaking in with some bugs\n"
 "would be an easy way of getting a new job..."
-msgstr ""
+msgstr "Я думаю, что тайком пронести несколько жуков,\nбудет лёгкий способ получить ещё работы..."
 
 #: ../data/level/to-nenes-house.cfg:180
 msgid ""
 "But what am I thinking?\n"
 "It would be just nasty of me if I did that."
-msgstr ""
+msgstr "Но о чём я думаю?\nЭто было бы просто противно,\nесли я так поступил."
 
 #: ../data/level/to-nenes-house.cfg:2146
 msgid "Hah!"
@@ -6477,188 +6479,188 @@ msgstr "Кривые деревья"
 msgid ""
 "But it was horrible!  And green!\n"
 "I've never seen something move that fast!"
-msgstr ""
+msgstr "Но это было ужасно! И зеленое!\nЯ никогда не видел что бы\nчто-то двигалось так быстро!"
 
 #: ../data/level/underground-pool.cfg:2461
 msgid ""
 "... And let me guess -\n"
 "it stomped on your squishy kitty head?"
-msgstr ""
+msgstr "...И позвольте мне догадаться -\nэто он потоптался твоей на тупой котячей голове?"
 
 #: ../data/level/underground-pool.cfg:2463
 msgid "Yes, how did you ... know that?"
-msgstr ""
+msgstr "Да, а как вы... узнали?"
 
 #: ../data/level/underground-pool.cfg:2466
 msgid "A certain design decision I've been regretting."
-msgstr ""
+msgstr "Основное дизайнерское решение,\nо котором я пожалел."
 
 #: ../data/level/underground-pool.cfg:2468
 msgid ""
 "It seemed like a cute idea at the time, but it's\n"
 "turned out to be a consistent point of failure."
-msgstr ""
+msgstr "Казалось бы, милой идеей в то время,\nно это, оказалось, обратилось в точку отказа."
 
 #: ../data/level/underground-pool.cfg:2470
 msgid "My head still hurts..."
-msgstr ""
+msgstr "Моя голова всё ещё болит..."
 
 #: ../data/level/underground-pool.cfg:2474
 msgid ""
 "Frankly, I'm almost glad it does!\n"
 "You need to learn a lesson from this."
-msgstr ""
+msgstr "Честно говоря, я почти рад, что болит!\nТы должен извлечь урок из этого."
 
 #: ../data/level/underground-pool.cfg:2476
 msgid ""
 "Just because it's convenient, does not\n"
 "mean you can just push people around."
-msgstr ""
+msgstr "Просто потому, что это удобно, не означает,\nчто вы можете просто давить на людей вокруг."
 
 #: ../data/level/underground-pool.cfg:2478
 msgid ""
 "It's tempting when you're strong.\n"
 "People can't say no."
-msgstr ""
+msgstr "Заманчиво, когда вы сильны.\nЛюди не могут сказать нет."
 
 #: ../data/level/underground-pool.cfg:2480
 msgid ""
 "And sometimes,\n"
 "it's much faster to do things that way."
-msgstr ""
+msgstr "И иногда, это намного быстрее,\nпоступать таким образом."
 
 #: ../data/level/underground-pool.cfg:2482
 msgid ""
 "But even if you have good intentions, people\n"
 "don't like it when you're mean to them."
-msgstr ""
+msgstr "Но даже если у вас хорошие намерения,\nлюди не любят, когда ты озадачиваешь их."
 
 #: ../data/level/underground-pool.cfg:2484
 msgid "I'm sorry, sir."
-msgstr ""
+msgstr "Простите, сир."
 
 #: ../data/level/underground-pool.cfg:2487
 msgid "Noted."
-msgstr ""
+msgstr "Отмечено."
 
 #: ../data/level/underground-pool.cfg:2489
 msgid ""
 "We're lucky in this case that\n"
 "no real damage was done."
-msgstr ""
+msgstr "Нам повезло, что в этом случае\nникакого реального ущерба\nне было нанесено."
 
 #: ../data/level/underground-pool.cfg:2491
 msgid ""
 "You've seen the danger of raising the ire\n"
 "of something stronger than yourself."
-msgstr ""
+msgstr "Вы видели опасность пробуждения\nгнева в чем-то сильнее, чем вы."
 
 #: ../data/level/underground-pool.cfg:2493
 msgid ""
 "Now, the consequences, there,\n"
 "are limited to yourself."
-msgstr ""
+msgstr "Теперь, последствия всего -\nполностью на вас."
 
 #: ../data/level/underground-pool.cfg:2495
 msgid "However, I cannot stress this enough:"
-msgstr ""
+msgstr "Тем не менее, я не могу не подчеркнуть:"
 
 #: ../data/level/underground-pool.cfg:2497
 msgid ""
 "I am afraid of angering\n"
 "something stronger than all of us."
-msgstr ""
+msgstr "Я боюсь разозлить кое-что\nсильнее, чем все мы вместе."
 
 #: ../data/level/underground-pool.cfg:2499
 msgid ""
 "Huh? You mean ... something stronger\n"
 "than all the Milgramen put together?"
-msgstr ""
+msgstr "А? Вы имеете в виду ... что-то сильнее,\nчем все вместе взятые мильграмены?"
 
 #: ../data/level/underground-pool.cfg:2502
 msgid "Yup."
-msgstr ""
+msgstr "Ага."
 
 #: ../data/level/underground-pool.cfg:2504
 msgid ""
 "But what would ... ever qualify?\n"
 "We're the biggest group on this island."
-msgstr ""
+msgstr "Но что бы... могло сравниться?\nМы самая большая группа на этом острове."
 
 #: ../data/level/underground-pool.cfg:2507
 msgid "I have no idea."
-msgstr ""
+msgstr "Без понятия."
 
 #: ../data/level/underground-pool.cfg:2509
 msgid ""
 "But there are so many things\n"
 "we don't know about the world."
-msgstr ""
+msgstr "Но есть так много вещей,\nкоторых мы не знаем о мире."
 
 #: ../data/level/underground-pool.cfg:2511
 msgid ""
 "Hell, there's so little we even\n"
 "know about this island's history..."
-msgstr ""
+msgstr "Черт, есть так мало мы еще знаем\nоб истории этого острова ..."
 
 #: ../data/level/underground-pool.cfg:2513
 msgid "Who knows what we'll run into?"
-msgstr ""
+msgstr "Кто знает, что мы расшевелили?"
 
 #: ../data/level/underground-pool.cfg:2515
 msgid ""
 "Don't get me wrong - I have no illusions\n"
 "that it can neutralize ALL threats."
-msgstr ""
+msgstr "Не поймите меня неправильно - я не питаю иллюзий,\nчто можно нейтрализовать ВСЕ угрозы."
 
 #: ../data/level/underground-pool.cfg:2517
 msgid ""
 "But being nice will prevent MOST\n"
 "from even happening in the first place."
-msgstr ""
+msgstr "Но для начала, весьма неплохо будет предотвращать\nбольшинство из них ещё до возникновения."
 
 #: ../data/level/underground-pool.cfg:2519
 msgid ""
 "Furthermore, it tends to do one thing\n"
 "that cruelty and aggression doesn't:"
-msgstr ""
+msgstr "Кроме того, имеет тенденцию одна вещь,\nкогда жестокость и агрессия не помогают:"
 
 #: ../data/level/underground-pool.cfg:2521
 msgid "It makes friends."
-msgstr ""
+msgstr "Это даёт друзей."
 
 #: ../data/level/underground-pool.cfg:2523
 msgid ""
 "We might someday find ourselves in\n"
 "a situation where having the island\n"
 "on our side becomes indispensable."
-msgstr ""
+msgstr "Мы можем однажды обнаружить себя в ситуации,\nкогда иметь остров на нашей стороне\nбудет незаменимо."
 
 #: ../data/level/underground-pool.cfg:2525
 msgid "Understood, sir."
-msgstr ""
+msgstr "Понял, сир."
 
 #: ../data/level/underground-pool.cfg:2528
 msgid "Good."
-msgstr ""
+msgstr "Хорошо."
 
 #: ../data/level/underground-pool.cfg:2530
 msgid ""
 "Sorry about dressing you down like\n"
 "this, you generally do your job well."
-msgstr ""
+msgstr "Прости что отчитал тебя так,\nкак правило ты делаешь свою работу хорошо."
 
 #: ../data/level/underground-pool.cfg:2532
 msgid ""
 "Just understand that being overzealous\n"
 "isn't going to impress me."
-msgstr ""
+msgstr "Просто поймите, что, будучи фанатичным -\nне произвести на меня впечатление."
 
 #: ../data/level/underground-pool.cfg:2535
 msgid ""
 "Tact and discretion, my good man.\n"
 "Remember that.  Dismissed!"
-msgstr ""
+msgstr "Такт и рассудительность, мой милый подчинённый.\nПомните, что. Разойтись!"
 
 #: ../data/level/underground-pool.cfg:3965
 msgid "Underground Pool"
@@ -6676,7 +6678,7 @@ msgstr "Водные аллеи"
 #: ../data/object_prototypes/buyable_item.cfg:19
 #: ../data/object_prototypes/buyable_item.cfg:22
 msgid "The price is ${final_price} coins."
-msgstr ""
+msgstr "Цена: ${final_price} монет."
 
 #: ../data/object_prototypes/buyable_item.cfg:19
 msgid "You don't have enough money."
@@ -6684,7 +6686,7 @@ msgstr "У вас недостаточно денег."
 
 #: ../data/object_prototypes/buyable_item.cfg:23
 msgid "Do you want to buy the ${consts.name}?"
-msgstr ""
+msgstr "Хотите купить ${consts.name}?"
 
 #: ../data/object_prototypes/door.cfg:21
 msgid "Nope, it's locked."
@@ -6693,61 +6695,61 @@ msgstr "Неа, она заперта."
 #: ../data/objects/effects/control/level_controller_coin_race.cfg:15
 #: ../data/objects/effects/control/level_controller_coin_race.cfg:17
 msgid "You made it to level ${level.player.difficulty} of the coin race."
-msgstr ""
+msgstr "Вы дошли до уровня ${level.player.difficulty} в игре золотоискатель."
 
 #: ../data/objects/effects/control/level_controller_coin_race.cfg:18
 msgid ""
 "The furthest that has been reached is level "
 "${registry.arcade_coin_race_high_score}."
-msgstr ""
+msgstr "Максимальный уровень ${registry.arcade_coin_race_high_score}"
 
 #: ../data/objects/items/ability.cfg:8
 msgid "This has very little range, but is quite damaging."
-msgstr ""
+msgstr "У него маленькая дальность,\nно сильные повреждения."
 
 #: ../data/objects/items/ability.cfg:8
 msgid ""
 "You can now breathe out a\n"
 "short stream of intense flame."
-msgstr ""
+msgstr "Вы можете теперь выдыхать\nнебольшой поток мощного пламени."
 
 #: ../data/objects/items/ability.cfg:8 ../data/objects/items/ability.cfg:9
 #: ../data/objects/items/ability.cfg:10
 msgid "You gained a new ability!"
-msgstr ""
+msgstr "Вы получили новую способность!"
 
 #: ../data/objects/items/ability.cfg:9
 msgid ""
 "This has excellent range,\n"
 "and does decent damage."
-msgstr ""
+msgstr "У него отличная дальность,\nи он наносит приличный урон."
 
 #: ../data/objects/items/ability.cfg:9
 msgid ""
 "You can now fire balls of harmful\n"
 "energy from your fingertips."
-msgstr ""
+msgstr "Теперь вы можете выстреливать огненные\nсгустки жгучей энергии из ваших пальцев."
 
 #: ../data/objects/items/ability.cfg:10
 msgid ""
 "These have excellent range and decent damage,\n"
 "but are somewhat draining to use."
-msgstr ""
+msgstr "Они имеют отличный диапазон и приличный урон,\nно несколько опустошительны в использовании."
 
 #: ../data/objects/items/ability.cfg:10
 msgid ""
 "You can now fire balls of harmful\n"
 "energy from your fingertips,\n"
 "which home in on your enemies."
-msgstr ""
+msgstr "Теперь вы можете стрелять из ваших пальцев\nогненными сгустками жгучей энергии, которые\nнаводятся на ваших врагов."
 
 #: ../data/objects/items/ability.cfg:12
 msgid "Press ${ATTACK_KEY} to switch between abilities."
-msgstr ""
+msgstr "Нажмите ${ATTACK_KEY} для переключения между способностями."
 
 #: ../data/objects/items/ability.cfg:12
 msgid "Tap ♲ to switch between abilities."
-msgstr ""
+msgstr "Жми ♲ для переключения способностей."
 
 #: ../data/objects/items/max_heart_object.cfg:8
 msgid ""
@@ -6795,14 +6797,14 @@ msgstr "Скользящие крылья позволят вам\nскольз�
 
 #: ../data/objects/items/store-items/buyable_greater_mana_talisman.cfg:5
 msgid "greater mana talisman"
-msgstr ""
+msgstr "большой талисман маны"
 
 #: ../data/objects/items/store-items/buyable_greater_mana_talisman.cfg:7
 msgid ""
 "This is a crystal talisman which\n"
 "will boost your mana recharge rate.\n"
 "This one is quite strong, but the price is steep."
-msgstr ""
+msgstr "Это хрустальный талисман\nкоторый увеличивает перезарядку маны.\nЭтот весьма сильный, но и цена впечатляет."
 
 #: ../data/objects/items/store-items/buyable_heart_container.cfg:5
 msgid "heart"
@@ -6822,14 +6824,14 @@ msgstr "Сапоги силы увеличат высоту прыжка."
 
 #: ../data/objects/items/store-items/buyable_lesser_mana_talisman.cfg:5
 msgid "lesser mana talisman"
-msgstr ""
+msgstr "малый талисман маны"
 
 #: ../data/objects/items/store-items/buyable_lesser_mana_talisman.cfg:7
 msgid ""
 "This is a crystal talisman which\n"
 "will boost your mana recharge rate.\n"
 "It's weak, but you can't beat the price."
-msgstr ""
+msgstr "Это хрустальный талисман\nкоторый увеличивает перезарядку маны.\nОн слабый, но вы можете его себе позволить."
 
 #: ../data/objects/items/store-items/buyable_powerup_invincible.cfg:5
 msgid "invincibility crystal"
@@ -6904,11 +6906,11 @@ msgstr "Удлинитель языка увеличивает расстоян�
 msgid ""
 "It has no special use, but hey - it's solid gold.\n"
 "That can't be bad!"
-msgstr ""
+msgstr "У него нет специального назначения, но это - кусок золота.\nЭто не может быть плохо!"
 
 #: ../data/objects/items/trophy.cfg:28
 msgid "You found a golden trophy!"
-msgstr ""
+msgstr "Вы нашли золотой трофей!"
 
 #: ../data/objects/playable/difficulty-selector.cfg:31
 msgid "Intense"
@@ -6924,19 +6926,19 @@ msgstr "Замок Мильграма"
 
 #: ../data/objects/playable/menu_selector_load_game.cfg:84
 msgid "level"
-msgstr ""
+msgstr "уровень"
 
 #: ../data/objects/playable/menu_selector_load_game.cfg:85
 msgid "coins"
-msgstr ""
+msgstr "монеты"
 
 #: ../data/objects/playable/menu_selector_load_game.cfg:86
 msgid "visited levels"
-msgstr ""
+msgstr "посещённые уровни"
 
 #: ../data/objects/playable/menu_selector_load_game.cfg:88
 msgid "hp"
-msgstr ""
+msgstr "оз"
 
 #: ../data/objects/props-interactive/misc/save_toilet.cfg:16
 #: ../data/objects/props-interactive/portals/dungeon_save_door.cfg:13
