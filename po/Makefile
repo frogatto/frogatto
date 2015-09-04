@@ -11,6 +11,7 @@ LINGUAS=ar be_BY ca_ES cs da de el eo es fr gd hu_HU id it ja ko ms_MY mt nl pl 
 
 update-po:
 	(for lang in ${LINGUAS}; do \
+		mkdir -p ../locale/$$lang/LC_MESSAGES ; \
 		${MAKE} ../locale/$$lang/LC_MESSAGES/$$lang.po ; \
 	done)
 
