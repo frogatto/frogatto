@@ -16,6 +16,7 @@ my $show_heart_pieces = 0;
 my $show_coins = 0;
 my $show_palettes = 0;
 my $show_pathnames = 1;
+my $show_levelnames = 1;
 
 while(my $arg = shift @ARGV) {
 	if($arg eq '--show_music') {
@@ -28,6 +29,8 @@ while(my $arg = shift @ARGV) {
 		$show_palettes = 1;
 	} elsif($arg eq '--hide_pathnames') {
 		$show_pathnames = 0;
+	} elsif($arg eq '--hide_levelnames') {
+		$show_levelnames = 0;
 	} else {
 		die "Unrecognized argument: $arg";
 	}
@@ -35,8 +38,9 @@ while(my $arg = shift @ARGV) {
 
 
 
-
-my @levels = glob("data/level/Seaside/*");
+my @levels = glob("data/level/Seaside/frogatto-grotto-frogattos-room.cfg");
+#push @levels, grep !/^frogattos-room/, <"data/level/Seaside/*">
+push @levels, grep { ! /frogattos-room/ } glob("data/level/Seaside/*");
 push @levels, glob("data/level/Forest/*");
 push @levels, glob("data/level/Cave/*");
 push @levels, glob("data/level/Dungeon/*");
@@ -154,7 +158,12 @@ foreach my $level (@levels) {
 		$label .= "coins worth " . $coins;
 	}
 	
-	print qq~N$index [label="$label",shape=box,fontsize=12];\n~;
+	if($show_levelnames) {
+		print qq~N$index [label="$label",shape=box,fontsize=24];\n~;
+	}
+	else {
+		print qq~N$index [shape=box,fontsize=24];\n~;
+	}
 
 	++$index;
 }
