@@ -1,7 +1,7 @@
 [main]
 host = https://www.transifex.com
 
-[Frogatto.frogattopot]
-file_filter = po/<lang>.po
+[frogatto.frogattopot]
+file_filter = locale/<lang>/LC_MESSAGES/<lang>.po
 source_file = po/frogatto.pot
-source_lang = en_US
+source_lang = en
