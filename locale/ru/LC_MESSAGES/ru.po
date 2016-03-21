@@ -3,33 +3,30 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# AlexanderR <alexander.r@gmx.com>, 2012
-# AlexanderR <alexander.r@gmx.com>, 2013
-# AlexanderR <alexander.r@gmx.com>, 2012
-# Artem Krosheninnikov <feeblehamster@gmail.com>, 2011-2012
+# AlexanderR <alexander.r@gmx.com>, 2011-2013
+# Anton <toxx@inbox.ru>, 2012
+# Artem Krosheninnikov <feeblehamster@gmail.com>, 2015
 # Azamat Hackimov <azamat.hackimov@gmail.com>, 2011
 # nerv55 <leonardo.a.salazar@gmail.com>, 2013
 # oleg koptev <koptev.oleg@gmail.com>, 2011
 # Philipp Zabel <pzabel@gmx.de>, 2011
-# <rvacheva@nxt.ru>, 2011
-# AlexanderR <alexander.r@gmx.com>, 2011
+# Asking_questions <rvacheva@nxt.ru>, 2011
 # Sergey Soltys <treefeed@mail.ru>, 2015
 # Tiomik <ArtMOON95@gmail.com>, 2012
-# Anton <toxx@inbox.ru>, 2012
-# Радулов Артём <artmoon95@gmail.com>, 2012
 # Евгений Лежнин <z_lezhnin@mail2000.ru>, 2011
+# Радулов Артём <artmoon95@gmail.com>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: Frogatto\n"
 "Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
-"POT-Creation-Date: 2013-04-26 01:54-0300\n"
-"PO-Revision-Date: 2015-06-10 08:58+0000\n"
-"Last-Translator: Sergey Soltys <treefeed@mail.ru>\n"
-"Language-Team: Russian (http://www.transifex.com/projects/p/Frogatto/language/ru/)\n"
+"POT-Creation-Date: 2012-11-19 01:43-0200\n"
+"PO-Revision-Date: 2015-09-07 12:58+0000\n"
+"Last-Translator: Artem Krosheninnikov <feeblehamster@gmail.com>\n"
+"Language-Team: Russian (Russia) (http://www.transifex.com/frogatto/frogatto/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ru\n"
+"Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: ../../../src/controls_dialog.cpp:51
@@ -48,47 +45,39 @@ msgstr "Язык"
 msgid "Attack"
 msgstr "Атака"
 
-#: ../../../src/controls_dialog.cpp:62 ../../../src/language_dialog.cpp:102
+#: ../../../src/controls_dialog.cpp:62
 msgid "Back"
 msgstr "Назад"
 
-#: ../../../src/custom_object_functions.cpp:251
+#: ../../../src/custom_object_functions.cpp:242
 msgid "Select save slot to use."
 msgstr "Выберите слот для сохранения."
 
-#: ../../../src/custom_object_functions.cpp:361
+#: ../../../src/custom_object_functions.cpp:352
 msgid "Select save slot to load."
 msgstr "Выберите слот для загрузки."
 
-#: ../../../src/draw_scene.cpp:442
+#: ../../../src/draw_scene.cpp:428
 msgid "Achievement Unlocked!"
 msgstr "Разблокировано достижение!"
 
-#: ../../../src/language_dialog.cpp:79
-msgid "Language change will take effect in next level."
-msgstr "Изменения языка возымеют эффект на следующем уровне."
-
-#: ../../../src/language_dialog.cpp:96
-msgid "Use system language"
-msgstr "Использовать язык системы"
-
-#: ../../../src/main.cpp:700
+#: ../../../src/main.cpp:707
 msgid "Initializing custom object functions"
 msgstr "Инициализация функций объектов"
 
-#: ../../../src/main.cpp:702
+#: ../../../src/main.cpp:709
 msgid "Initializing textures"
 msgstr "Инициализация изображений"
 
-#: ../../../src/main.cpp:704
+#: ../../../src/main.cpp:711
 msgid "Initializing tiles"
 msgstr "Инициализация изображений"
 
-#: ../../../src/main.cpp:706 ../../../src/main.cpp:710
+#: ../../../src/main.cpp:713 ../../../src/main.cpp:717
 msgid "Initializing GUI"
 msgstr "Инициализация графического интерфейса"
 
-#: ../../../src/main.cpp:717
+#: ../../../src/main.cpp:724
 msgid "Loading level"
 msgstr "Загрузка уровня"
 
@@ -109,380 +98,311 @@ msgid "Controls..."
 msgstr "Управление..."
 
 #: ../../../src/pause_game_dialog.cpp:75
-msgid "Language..."
-msgstr "Язык..."
-
-#: ../../../src/pause_game_dialog.cpp:76
 msgid "Return to Titlescreen"
 msgstr "Назад в главный экран"
 
-#: ../../../src/pause_game_dialog.cpp:77
+#: ../../../src/pause_game_dialog.cpp:76
 msgid "Exit Game"
 msgstr "Выход из игры"
 
-#: ../../../src/pause_game_dialog.cpp:78
+#: ../../../src/pause_game_dialog.cpp:77
 msgid "Reverse A and B"
 msgstr "Поменять A и B местами"
 
+#: ../../../src/pause_game_dialog.cpp:79
+msgid "OpenFeint"
+msgstr ""
+
 #: ../CHANGELOG:1 ../iOS_CHANGELOG:1
-msgid "Version 1.3:"
-msgstr "Версия 1.3:"
-
-#: ../CHANGELOG:2 ../iOS_CHANGELOG:2
-msgid ""
-"Expansion and improvements to the plot and dialogue, adding new cutscenes "
-"that give you a closer look at the antagonists' motives."
-msgstr "Расширены и улучшены сценарий и диалоги, добавлены новые ролики, которые дают вам более подробный взгляд на мотивы антагонистов."
-
-#: ../CHANGELOG:3 ../iOS_CHANGELOG:3
-msgid ""
-"Several new levels were added to the dungeon environment; with some of them "
-"being optional, there's much more to explore now."
-msgstr "Несколько новых уровней добавлены к подземельям; некоторые из них необязательно, но можно дополнительно исследовать."
-
-#: ../CHANGELOG:4 ../iOS_CHANGELOG:4
-msgid ""
-"Some new enemies to be vanquished: a red bat that's much more tenacious than"
-" the regular ones, and the hard-hitting ninja-kitty, that has many tools at "
-"his disposal to fight you. And these are just a few examples!"
-msgstr "Несколько новых противников для сражений: красные летучие мыши более свирепы чем обычные, и изворотливый нинзя-кот, что вооружён разными приспособлениями для драки с вами. И это только пара примеров!"
-
-#: ../CHANGELOG:5 ../iOS_CHANGELOG:5
-msgid ""
-"New difficulty level: Challenging. Some enemies will be faster, hardier, "
-"smarter, or all of those put together."
-msgstr "Новый уровень сложности: Испытание. Некоторые враги будут быстрее, сложнее, умнее, или всё это сразу."
-
-#: ../CHANGELOG:6 ../iOS_CHANGELOG:6
-msgid ""
-"A better \"New Game/Load Game\" screen, that allows the selection of save "
-"slots."
-msgstr "Улучшенный экран \"Новая игра/Загрузка\", что позволяет выбирать слот сохранения."
-
-#: ../CHANGELOG:7 ../iOS_CHANGELOG:7
-msgid ""
-"New power-up system, based on a common \"mana\" resource - now players can "
-"choose what powers to use at any time, if they've acquired them and have "
-"enough mana to use them."
-msgstr "Новая система усилений, основанная на ресурсе \"мана\" - теперь игроки могут выбирать, какую силу использовать в данном случае, если они приобрели оную и обладают достаточным количеством маны для использования."
-
-#: ../CHANGELOG:8 ../iOS_CHANGELOG:8
-msgid ""
-"Two new power-ups: Fire-breath attack and an energy shot that homes in on "
-"enemies."
-msgstr "Два новых усиления: Огненное дыхание и энергетический выстрел, что наводится на врагов."
-
-#: ../CHANGELOG:9 ../iOS_CHANGELOG:9
-msgid ""
-"Graphical improvements abound: ground tiles on most environments were "
-"reworked, adding better perspective, and being improved on in general."
-msgstr "Графические улучшения: текстуры земли большинства окружений переработаны, добавлена лучшая перспектива и общее улучшение вида."
-
-#: ../CHANGELOG:10 ../iOS_CHANGELOG:10
-msgid ""
-"Lots of new objects show up in the foreground and background, giving more "
-"depth and diversity to each map."
-msgstr "Больше новых объектов прорисовываются на заднем и переднем плане, придавая больше глубины и разнообразия каждой карте."
-
-#: ../CHANGELOG:11 ../iOS_CHANGELOG:11
-msgid ""
-"Many new tracks were added to the soundtrack, while most of the previous "
-"repertoire has been enhanced."
-msgstr "Множество новых звуковых дорожек было добавлено к саундтреку, и многие из прежнего репертуара были улучшены."
-
-#: ../CHANGELOG:12 ../iOS_CHANGELOG:12
-msgid ""
-"A much wider and smarter usage of sound effects; now you'll be able to "
-"notice flying enemies' wings flapping, kitties running around, and even the "
-"sounds Frogatto make are when moving around are dependent on terrain."
-msgstr "Более широкое и разумное использование звуковых эффектов; теперь вы заметите летающих врагов по хлопанью крыльев, коты бегают вокруг, и даже звуки шагов Фрогатто зависят от типа местности по которой он шагает."
-
-#: ../CHANGELOG:14 ../iOS_CHANGELOG:14
 msgid "Version 1.2:"
 msgstr "Версия 1.2:"
 
-#: ../CHANGELOG:15 ../iOS_CHANGELOG:15
+#: ../CHANGELOG:2 ../iOS_CHANGELOG:2
 msgid ""
 "Complete redo of attack logic; frogatto now is free to walk around whilst he"
 " attacks, and in general is much more responsive."
 msgstr "Завершена работа по изменению управления во время атак: Frogatto теперь может ходить во время атаки, и в основном управление стало более отзывчивое."
 
-#: ../CHANGELOG:16 ../iOS_CHANGELOG:16
+#: ../CHANGELOG:3 ../iOS_CHANGELOG:3
 msgid "Frogatto's tongue-grabbing is MUCH more forgiving"
 msgstr "Приём захвата языком у Frogatto НАМНОГО более удобен в управлении"
 
-#: ../CHANGELOG:17 ../iOS_CHANGELOG:17
+#: ../CHANGELOG:4 ../iOS_CHANGELOG:4
 msgid ""
 "Complete rewrite of damage handling; much more consistent now, and "
 "categorically eliminates some bugs where damage wouldn't get dealt."
 msgstr "Завершена работа над ошибками, связанными с системой урона; теперь она намного более стабильна и совершенно исключает ошибки, из-за которых урон не наносился."
 
-#: ../CHANGELOG:18 ../iOS_CHANGELOG:18
+#: ../CHANGELOG:5 ../iOS_CHANGELOG:5
 msgid "Reworked some tilesets to eliminate tiling errors."
 msgstr "Переработаны некоторые тайлсеты для устранения ошибок, связанных с ними."
 
-#: ../CHANGELOG:19 ../iOS_CHANGELOG:19
+#: ../CHANGELOG:6 ../iOS_CHANGELOG:6
 msgid "Further enhancements to dungeon wall graphics (added edges)."
 msgstr "Дальнейшее улучшение графики стен подземелий (добавлено окаймление)."
 
-#: ../CHANGELOG:20 ../iOS_CHANGELOG:20
+#: ../CHANGELOG:7 ../iOS_CHANGELOG:7
 msgid "New, more readable dialogue font."
 msgstr "Новый, более разборчивый шрифт для диалогов."
 
-#: ../CHANGELOG:21 ../iOS_CHANGELOG:21
+#: ../CHANGELOG:8 ../iOS_CHANGELOG:8
 msgid "Lots of small graphical tweaks."
 msgstr "Много небольших графических поправок."
 
-#: ../CHANGELOG:22 ../iOS_CHANGELOG:22
+#: ../CHANGELOG:9 ../iOS_CHANGELOG:9
 msgid "Maps are now strewn with spittable props within easy reach."
 msgstr "Теперь в пределах досягаемости по картам разбросаны предметы, которые можно плевать."
 
-#: ../CHANGELOG:23 ../iOS_CHANGELOG:23
+#: ../CHANGELOG:10 ../iOS_CHANGELOG:10
 msgid "Rewrote most of the dialogue."
 msgstr "Переписано большинство диалогов."
 
-#: ../CHANGELOG:24 ../iOS_CHANGELOG:24
+#: ../CHANGELOG:11 ../iOS_CHANGELOG:11
 msgid ""
 "Collectible items like coins can be collected by being touched by the "
 "tongue, besides just frogatto's body."
 msgstr "Предметы, которые можно собрать, как например монетки, теперь можно собирать, дотронувшись до них языком."
 
-#: ../CHANGELOG:25 ../iOS_CHANGELOG:25
+#: ../CHANGELOG:12 ../iOS_CHANGELOG:12
 msgid "Redrew the world map."
 msgstr "Перерисована карта мира."
 
-#: ../CHANGELOG:26 ../iOS_CHANGELOG:26
+#: ../CHANGELOG:13 ../iOS_CHANGELOG:13
 msgid ""
 "Added a few new monsters, like the red hornbugs, and completely rewrote how "
 "bats behave."
 msgstr "Добавлено несколько новых монстров, как например красный жуг-носорог, и полностью изменено поведение летучих мышей."
 
-#: ../CHANGELOG:27 ../iOS_CHANGELOG:27
+#: ../CHANGELOG:14 ../iOS_CHANGELOG:14
 msgid ""
 "Fixed a bug that caused a black line in the seaside background during "
 "dialogues."
 msgstr "Исправлена ошибка, обусловленная появлением чёрной линии на заднем фоне морского побережья во время диалогов."
 
-#: ../CHANGELOG:28 ../iOS_CHANGELOG:28
+#: ../CHANGELOG:15 ../iOS_CHANGELOG:15
 msgid ""
 "Fixed a bug that caused some tiles to incorrectly be flagged as opaque."
 msgstr "Исправлена ошибка с ошибочным присвоением некоторым тайлам прозрачности."
 
-#: ../CHANGELOG:30 ../iOS_CHANGELOG:30
+#: ../CHANGELOG:17 ../iOS_CHANGELOG:17
 msgid "Version 1.1.1:"
 msgstr "Версия 1.1.1:"
 
-#: ../CHANGELOG:31 ../iOS_CHANGELOG:31
+#: ../CHANGELOG:18 ../iOS_CHANGELOG:18
 msgid "Fixed some crashing bugs."
 msgstr "Исправлены некоторые проблемы, вызывающие принудительное выключение игры."
 
-#: ../CHANGELOG:32
+#: ../CHANGELOG:19
 msgid "Fixed The Long Haul (compiled mode)"
 msgstr "Исправлен Большой рывок (compiled mode)"
 
-#: ../CHANGELOG:33
+#: ../CHANGELOG:20
 msgid "Fixed instructions on titlescreen (iOS)"
 msgstr "Исправлены инструкции при загрузке (iOS)."
 
-#: ../CHANGELOG:34 ../iOS_CHANGELOG:34
+#: ../CHANGELOG:21 ../iOS_CHANGELOG:21
 msgid "New translation: Italian"
 msgstr "Перевод на итальянский"
 
-#: ../CHANGELOG:35
+#: ../CHANGELOG:22
 msgid "Added automatic language selection for Windows"
 msgstr "Добавлен автоматический выбор языка (для Windows)"
 
-#: ../CHANGELOG:36 ../iOS_CHANGELOG:35
+#: ../CHANGELOG:23 ../iOS_CHANGELOG:22
 msgid ""
 "Complete redo of iOS controls, switching to a 2-button dpad from a 4-button."
 "  Eliminates all problems with mispressed up or down keys interrupting other"
 " actions."
 msgstr "Завершена работа на управлением на iOS, оно изменено с четырёхкнопочного на двухкнопочное."
 
-#: ../CHANGELOG:38
+#: ../CHANGELOG:25
 msgid "Version 1.1:"
 msgstr "Версия 1.1:"
 
-#: ../CHANGELOG:39
+#: ../CHANGELOG:26
 msgid "Added arcade mode."
 msgstr "Добавлен аркадный режим."
 
-#: ../CHANGELOG:40
+#: ../CHANGELOG:27
 msgid "Redid graphics for forest trees."
 msgstr "Переработана графика деревьев в лесу."
 
-#: ../CHANGELOG:41
+#: ../CHANGELOG:28
 msgid "Redid graphics for forest background"
 msgstr "Переработана графика заднего плана леса."
 
-#: ../CHANGELOG:42
+#: ../CHANGELOG:29
 msgid "Redid graphics for dungeon wall tiles"
 msgstr "Переработана графика тайлов стен подземелий."
 
-#: ../CHANGELOG:43
+#: ../CHANGELOG:30
 msgid "Redid graphics for basement wall tiles"
 msgstr "Переработана графика тайлов основных стен."
 
-#: ../CHANGELOG:44
+#: ../CHANGELOG:31
 msgid "Added a bunch of interior props"
 msgstr "Добавлены несколько параметров интерьеров."
 
-#: ../CHANGELOG:45
+#: ../CHANGELOG:32
 msgid "Reworked \"darkness\" for improved appearance"
 msgstr "Переработана 'темнота' для улучшенного вида"
 
-#: ../CHANGELOG:46
+#: ../CHANGELOG:33
 msgid "Added new palettes to forest and seaside areas."
 msgstr "Добавлены новые расцветки лесной и береговой зон."
 
-#: ../CHANGELOG:47
+#: ../CHANGELOG:34
 msgid "Added some unique enemies to the forest."
 msgstr "Добавлено несколько уникальных врагов в лес."
 
-#: ../CHANGELOG:48
+#: ../CHANGELOG:35
 msgid ""
 "Refactored damage and monster type systems to make behavior more consistent "
 "and eliminate some rare buggy behavior."
 msgstr "Реорганизация механизма нанесения урона и системы врагов - более единообразное поведение, исправлены некоторые ошибки."
 
-#: ../CHANGELOG:49
+#: ../CHANGELOG:36
 msgid ""
 "Added translation support, with 4 complete translations: French, Brazilian "
 "Portuguese, Chinese (Simplified), and Japanese."
 msgstr "Добавлена поддержка перевода и доступны 4 полных перевода на французский, португальский бразильский, упрощенный китайский и японский языки."
 
-#: ../CHANGELOG:51
+#: ../CHANGELOG:38
 msgid "Version 1.0.3:"
 msgstr "Версия 1.0.3:"
 
-#: ../CHANGELOG:52
+#: ../CHANGELOG:39
 msgid "Fixed crash when picking up max heart pieces."
 msgstr "Исправлено падение при наборе максимального количества сердечек."
 
-#: ../CHANGELOG:53
+#: ../CHANGELOG:40
 msgid "Other small bug fixes."
 msgstr "Другие небольшие исправления."
 
-#: ../CHANGELOG:55
+#: ../CHANGELOG:42
 msgid "Version 1.0.2:"
 msgstr "Версия 1.0.2:"
 
-#: ../CHANGELOG:56
+#: ../CHANGELOG:43
 msgid "Added support for \"darkness\" in levels."
 msgstr "Добавлена поддержка 'темноты' в уровнях."
 
-#: ../CHANGELOG:57
+#: ../CHANGELOG:44
 msgid "Added support for WVGA."
 msgstr "Добавлена поддержка WVGA."
 
-#: ../CHANGELOG:58
+#: ../CHANGELOG:45
 msgid "Made player status not show on the titlescreen or world map."
 msgstr "Статус игрока больше не отображается в заголовке глобальной карты."
 
-#: ../CHANGELOG:59
+#: ../CHANGELOG:46
 msgid "Made golden ants less ambiguous."
 msgstr "Золотые муравьи теперь доставляют меньше хлопот."
 
-#: ../CHANGELOG:60
+#: ../CHANGELOG:47
 msgid "Fixed bug making certain music always play at full volume (iPhone)."
 msgstr "Исправлена проблема, из-за которой некоторая музыка всегда играла на полную громкость (iPhone)."
 
-#: ../CHANGELOG:61
+#: ../CHANGELOG:48
 msgid "Added option to reverse positions of A and B buttons (iPhone)."
 msgstr "Добавлена опция изменения кнопок A и B (iPhone)."
 
-#: ../CHANGELOG:62
+#: ../CHANGELOG:49
 msgid "Added support for repeating levels (for arcade modes)."
 msgstr "Добавлена поддержка повторяющихся уровней (для аркадного вида игры)."
 
-#: ../CHANGELOG:63
+#: ../CHANGELOG:50
 msgid ""
 "Pressing jump while in the air pressing against a wall now makes you cling "
 "to the wall."
 msgstr "Теперь, нажав \"прыжок\" в воздухе возле стены, вы зацепитесь за неё."
 
-#: ../CHANGELOG:64
+#: ../CHANGELOG:51
 msgid "Made it so you can skip dialogs sequences."
 msgstr "Теперь вы можете пропускать несколько диалогов подряд."
 
-#: ../CHANGELOG:65
+#: ../CHANGELOG:52
 msgid "Fixed lots of z-order issues."
 msgstr "Исправления z-order."
 
-#: ../CHANGELOG:66
+#: ../CHANGELOG:53
 msgid "Fixed bug causing ambient sounds to not work."
 msgstr "Восстановлена работа звуков окружения в ряде случаев."
 
-#: ../CHANGELOG:67
+#: ../CHANGELOG:54
 msgid "Improved forest background, and made it go upwards infinitely."
 msgstr "Улучшен и неограниченно продлён вверх фон в лесу."
 
-#: ../CHANGELOG:68
+#: ../CHANGELOG:55
 msgid "Made hearts heal a full heart, rather than just half."
 msgstr "Сердца теперь исцеляют пункт здоровья, а не половину пункта."
 
-#: ../CHANGELOG:69
+#: ../CHANGELOG:56
 msgid "Changed tilesets to make water look better."
 msgstr "Улучшены текстуры воды."
 
-#: ../CHANGELOG:70
+#: ../CHANGELOG:57
 msgid "Many small bug fixes."
 msgstr "Множество других небольших исправлений."
 
-#: ../CHANGELOG:72
+#: ../CHANGELOG:59
 msgid "Version 1.0.1 (iPhone only):"
 msgstr "Версия 1.0.1 (только для iPhone)"
 
-#: ../CHANGELOG:73
+#: ../CHANGELOG:60
 msgid ""
 "Significantly improved controls, both functionally and graphically (iPhone)."
 msgstr "Улучшение управления (iPhone)."
 
-#: ../CHANGELOG:74
+#: ../CHANGELOG:61
 msgid "Fixed auto-saving on iOS4 where multitasking is supported (iPhone)."
 msgstr "Исправлена работа авто-сохранения на iOS4 (iPhone)."
 
-#: ../CHANGELOG:75
+#: ../CHANGELOG:62
 msgid "Fixed bug where a dialog could repeat forever."
 msgstr "Исправлен баг, из-за которого диалог мог повторяться бесконечно."
 
-#: ../CHANGELOG:76
+#: ../CHANGELOG:63
 msgid "Fixed crash in world map when you hold down while entering it."
 msgstr "Исправлен вылет при нажатии кнопки вниз во время открытия глобальной карты."
 
-#: ../CHANGELOG:77
+#: ../CHANGELOG:64
 msgid "Fixed fullscreen mode (Mac/Windows)."
 msgstr "Исправлен полноэкранный режим (Mac/Windows)."
 
-#: ../CHANGELOG:78
+#: ../CHANGELOG:65
 msgid "Fixed controlpad issues for computers."
 msgstr "Решены проблемы с джойстиками на компьютерах."
 
-#: ../CHANGELOG:79
+#: ../CHANGELOG:66
 msgid "Added music and sound volume controls to pause screen."
 msgstr "Добавлено управление громкостью звука и музыки в экране паузы."
 
-#: ../CHANGELOG:80
+#: ../CHANGELOG:67
 msgid "Added customizable controls."
 msgstr "Изменяемое управление."
 
-#: ../CHANGELOG:81
+#: ../CHANGELOG:68
 msgid "Added half-hearts."
 msgstr "Половинки сердец."
 
-#: ../CHANGELOG:82
+#: ../CHANGELOG:69
 msgid "Added scons script for compiling."
 msgstr "Добавлен сборочный скрипт scons."
 
-#: ../CHANGELOG:83
+#: ../CHANGELOG:70
 msgid "Minor level changes."
 msgstr "Небольшие изменения уровней."
 
-#: ../CHANGELOG:84
+#: ../CHANGELOG:71
 msgid "Updated music."
 msgstr "Обновлена музыка."
 
 #: ../MAC_APP_STORE_METADATA:1 ../iOS_APP_STORE_METADATA:1
+msgid "NOW WITH BETTER CONTROLS:"
+msgstr ""
+
+#: ../MAC_APP_STORE_METADATA:3 ../iOS_APP_STORE_METADATA:3
 msgid ""
 "Frogatto is a classic-style 2d adventure game, starring a certain quixotic "
 "frog.  It's made by the same team that brought you Battle for Wesnoth, and "
@@ -491,7 +411,7 @@ msgid ""
 "character on a humdrum errand that turns into a daring adventure."
 msgstr "Фрогатто - двумерная приключенческая игра в классическом стиле, посвящённая похождениям лягушонка по имени Фрогатто.  Созданная творцами \"Битвы за Веснот\", она выделяется высочайшим вниманием к деталям и рисованной вручную графикой.  При помощи традиционного платформера с видом сбоку и стандартной механикой авторы рассказывают нам историю об обыкновенной послеобеденной прогулке, плавно перетекающую в увлекательное путешествие."
 
-#: ../MAC_APP_STORE_METADATA:3 ../iOS_APP_STORE_METADATA:3
+#: ../MAC_APP_STORE_METADATA:5 ../iOS_APP_STORE_METADATA:5
 msgid ""
 "Frogatto's key mechanic is an unusual twist; like any frog, he jumps, swims,"
 " and snags bugs with his tongue, but unlike any frog before him, can spit "
@@ -500,69 +420,69 @@ msgid ""
 "puzzles to solve, and a wide, complex world to explore."
 msgstr "Кнопочное управление во Frogatto необычно; как лягушка он прыгает, плавает и ловит насекомых языком, но как ни одна лягушка, он также и может выплёвывать этих жуков с невообразимой силой. Но это не только экшн игра, но и большая классическая приключенческая игра с персонажами, с которыми надо говорить, предметами, которые надо покупать, загадками, которые надо решать и с большим полноценным миром, который надо исследовать."
 
-#: ../MAC_APP_STORE_METADATA:5 ../iOS_APP_STORE_METADATA:5
+#: ../MAC_APP_STORE_METADATA:7 ../iOS_APP_STORE_METADATA:7
 msgid "Features:"
 msgstr "Особенности:"
 
-#: ../MAC_APP_STORE_METADATA:6 ../iOS_APP_STORE_METADATA:6
+#: ../MAC_APP_STORE_METADATA:8 ../iOS_APP_STORE_METADATA:8
 msgid "- grab enemies with your tongue and spit them to deal damage"
 msgstr "- хватай противников языком и прыгай на них чтобы нанести урон"
 
-#: ../MAC_APP_STORE_METADATA:7 ../iOS_APP_STORE_METADATA:7
+#: ../MAC_APP_STORE_METADATA:9 ../iOS_APP_STORE_METADATA:9
 msgid "- buy powerups to enhance and unlock new abilities"
 msgstr "- улучшай свои навыки при помощи бонусов"
 
-#: ../MAC_APP_STORE_METADATA:8 ../iOS_APP_STORE_METADATA:8
+#: ../MAC_APP_STORE_METADATA:10 ../iOS_APP_STORE_METADATA:10
 msgid ""
 "- arcade mode, giving instant access to action-only gameplay on randomized "
 "levels"
 msgstr "- аркадный режим со случайными уровнями"
 
-#: ../MAC_APP_STORE_METADATA:9 ../iOS_APP_STORE_METADATA:9
+#: ../MAC_APP_STORE_METADATA:11 ../iOS_APP_STORE_METADATA:11
 msgid ""
 "- forgiving savegame/respawn system so you don't have to be afraid of losing"
 " progress"
 msgstr "- удобная система автосохранений"
 
-#: ../MAC_APP_STORE_METADATA:10 ../iOS_APP_STORE_METADATA:10
+#: ../MAC_APP_STORE_METADATA:12 ../iOS_APP_STORE_METADATA:12
 msgid "- playful dialogue writing that tries not to insult your intelligence"
 msgstr "- увлекательный сюжет"
 
-#: ../MAC_APP_STORE_METADATA:11 ../iOS_APP_STORE_METADATA:11
+#: ../MAC_APP_STORE_METADATA:13 ../iOS_APP_STORE_METADATA:13
 msgid "- massive soundtrack with over an hour of original music"
 msgstr "- оригинальное звуковое сопровождение"
 
-#: ../MAC_APP_STORE_METADATA:12 ../iOS_APP_STORE_METADATA:12
+#: ../MAC_APP_STORE_METADATA:14 ../iOS_APP_STORE_METADATA:14
 msgid ""
-"- sprawling, complex world with over 70 levels to explore, and tons of "
+"- sprawling, complex world with over 50 levels to explore, and tons of "
 "secrets to find"
-msgstr "- расползающийся, сложный мир с более чем 70 уровнями для исследования, и тоннами секретов для поиска"
+msgstr ""
 
-#: ../MAC_APP_STORE_METADATA:14 ../iOS_APP_STORE_METADATA:15
+#: ../MAC_APP_STORE_METADATA:16 ../iOS_APP_STORE_METADATA:17
 msgid "To find out more about the game please visit http://www.frogatto.com/"
 msgstr "Не поленитесь посетить наш сайт - http://www.frogatto.com/"
 
-#: ../MAC_APP_STORE_METADATA:16 ../iOS_APP_STORE_METADATA:17
+#: ../MAC_APP_STORE_METADATA:18 ../iOS_APP_STORE_METADATA:19
 msgid "Reviews:"
 msgstr "Обзоры:"
 
-#: ../MAC_APP_STORE_METADATA:17 ../iOS_APP_STORE_METADATA:18
+#: ../MAC_APP_STORE_METADATA:19 ../iOS_APP_STORE_METADATA:20
 msgid "- [3/4 SlideToPlay.com] \"a fun and surprisingly deep platformer\""
 msgstr "- [3/4 SlideToPlay.com] \"весёлый и удивительно глубокий платформер\""
 
-#: ../MAC_APP_STORE_METADATA:18 ../iOS_APP_STORE_METADATA:19
+#: ../MAC_APP_STORE_METADATA:20 ../iOS_APP_STORE_METADATA:21
 msgid "- [4/5 AppSpy.com] \"boy-howdy is this an amazing visual feast!\""
 msgstr "- [4/5 AppSpy.com] \"божечки-мой, это великолепный визуальный праздник!\""
 
-#: ../MAC_APP_STORE_METADATA:19 ../iOS_APP_STORE_METADATA:20
+#: ../MAC_APP_STORE_METADATA:21 ../iOS_APP_STORE_METADATA:22
 msgid "- [n/a TouchArcade.com] \"totally worth checking out.\""
 msgstr "- [n/a TouchArcade.com] \"абсолютно стоит заценить.\""
 
-#: ../MAC_APP_STORE_METADATA:21 ../iOS_APP_STORE_METADATA:22
+#: ../MAC_APP_STORE_METADATA:23 ../iOS_APP_STORE_METADATA:24
 msgid "keywords:"
 msgstr "ключевые слова:"
 
-#: ../MAC_APP_STORE_METADATA:22 ../iOS_APP_STORE_METADATA:23
+#: ../MAC_APP_STORE_METADATA:24 ../iOS_APP_STORE_METADATA:25
 msgid ""
 "platformer,pixelart,oldschool,platform,game,pixel,arcade,action,adventure,frog"
 msgstr "платформер, пиксель-арт, олдскул, платформа, игра, пиксель, аркада, экшн, приключения, лягушка"
@@ -880,7 +800,7 @@ msgstr "Да?"
 msgid ""
 "Yes, I've pulled a few strings,\n"
 "called in a few favors and whatnot..."
-msgstr "Да, я подёргал за несколько ниточек\nоказал пару услуг и подобное..."
+msgstr "Да, я подёргал за несколько ниточек,\nоказал пару услуг и подобное..."
 
 #: ../data/level/bon-bosque.cfg:202
 msgid ""
@@ -927,7 +847,7 @@ msgstr "Безусловно!\nЕщё раз спасибо!"
 msgid "Bon Bosque"
 msgstr "Бон Боск"
 
-#: ../data/level/bug-mining.cfg:4114
+#: ../data/level/bug-mining.cfg:4115
 msgid "Bug Mining"
 msgstr "Шахта жуков"
 
@@ -1330,7 +1250,7 @@ msgid "We can do that."
 msgstr "Я могу это устроить."
 
 #: ../data/level/crevice-village-cave.cfg:1231
-#: ../data/level/crevice-village-central.cfg:4153
+#: ../data/level/crevice-village-central.cfg:4134
 #: ../data/level/crevice-village-heights.cfg:2246
 #: ../data/level/crevice-village.cfg:1647
 #: ../data/objects/playable/map-selector.cfg:17
@@ -1412,7 +1332,7 @@ msgid ""
 "our best bet for a clue."
 msgstr "Лучше всего будет спросить\nкого-нибудь из пленных."
 
-#: ../data/level/crevice-village-central.cfg:2830
+#: ../data/level/crevice-village-central.cfg:2811
 msgid "Hey! Over here!"
 msgstr "Эй! Сюда!"
 
@@ -2008,8 +1928,8 @@ msgstr "Мы видели, лейтенант Мильграм пошёл туд
 msgid "How interesting."
 msgstr "Как интересно."
 
-#: ../data/level/crevice-village-house-3-backroom.cfg:1773
-#: ../data/level/crevice-village-house-3.cfg:1516
+#: ../data/level/crevice-village-house-3-backroom.cfg:1754
+#: ../data/level/crevice-village-house-3.cfg:1499
 #: ../data/level/liberated-crevice-village-house-3.cfg:1312
 msgid "The Danger House"
 msgstr "Опасный дом"
@@ -2921,7 +2841,7 @@ msgstr "Тут сказано \"Сокровищница.\nНе входить �
 msgid "Storeroom Treasure Chamber"
 msgstr "Склад Сокровищницы"
 
-#: ../data/level/dungeon-storerooms.cfg:1440
+#: ../data/level/dungeon-storerooms.cfg:1354
 msgid "Storerooms"
 msgstr "Склады"
 
@@ -2942,17 +2862,17 @@ msgstr "Затопленные пещеры."
 msgid "Foreboding Forest"
 msgstr "Проклятый лес"
 
-#: ../data/level/frogatto-grotto-frogattos-room.cfg:291
+#: ../data/level/frogatto-grotto-frogattos-room.cfg:292
 msgid ""
 "Ahh, what a beautiful ...\n"
 "<em>...afternoon?!</em>"
 msgstr "Ахх, какое прекрасное...\n<em>Уже полдень?!</em>"
 
-#: ../data/level/frogatto-grotto-frogattos-room.cfg:292
+#: ../data/level/frogatto-grotto-frogattos-room.cfg:293
 msgid "Oh geez! I overslept!"
 msgstr "Ой! Я проспал!"
 
-#: ../data/level/frogatto-grotto-frogattos-room.cfg:889
+#: ../data/level/frogatto-grotto-frogattos-room.cfg:890
 msgid "Frogatto's Room"
 msgstr "Комната Фрогатто"
 
@@ -3069,7 +2989,7 @@ msgstr "Пещера Фрогатто"
 msgid "Gloomy Glade"
 msgstr "Мрачная равнина"
 
-#: ../data/level/gnarled-knoll.cfg:3375
+#: ../data/level/gnarled-knoll.cfg:3908
 msgid "Gnarled Knoll"
 msgstr "Искривлённый холм"
 
@@ -3537,15 +3457,15 @@ msgstr "Травяная дорожка"
 msgid "Hanging Platforms"
 msgstr "Подвесные платформы"
 
-#: ../data/level/hidden-depths.cfg:48
-msgid "This is a very deep chasm..."
-msgstr "Это очень глубокая расщелина..."
-
-#: ../data/level/hidden-depths.cfg:50
+#: ../data/level/hidden-depths.cfg:47
 msgid "I'd better be careful."
 msgstr "Надо быть как можно осторожней."
 
-#: ../data/level/hidden-depths.cfg:323
+#: ../data/level/hidden-depths.cfg:47
+msgid "This is a very deep chasm..."
+msgstr "Это очень глубокая расщелина..."
+
+#: ../data/level/hidden-depths.cfg:322
 msgid "AAAAAAH! I CAN'T FLY!"
 msgstr "ААА! Я НЕ УМЕЮ ЛЕТАТЬ!"
 
@@ -3557,7 +3477,7 @@ msgstr "Скрытые глубины"
 msgid "That guy sure doesn't look glad to meet me!"
 msgstr "По-моему, этот парень не очень мне рад!"
 
-#: ../data/level/killer-bunnies.cfg:4322
+#: ../data/level/killer-bunnies.cfg:4377
 msgid "Killer Bunnies"
 msgstr "Зайцы-убийцы"
 
@@ -4740,7 +4660,7 @@ msgstr "Я понимаю, чертова штука, притопала сюд�
 msgid ""
 "There's only one thing that can\n"
 "drive a man like that:  Revenge."
-msgstr "Только одна вещь может\nподвигнуть на такое:\nМесть."
+msgstr "Только одна вещь может\nсподвигнуть на такое:\nМесть."
 
 #: ../data/level/milgrams-basement-junction.cfg:421
 msgid ""
@@ -4957,6 +4877,11 @@ msgstr "\"Полностью не приспособлена для пешехо
 msgid "Moonlit Ramparts"
 msgstr "Лунные Бастионы"
 
+#: ../data/level/new-game-screen.cfg:39
+#: ../data/level/titlescreen-difficulty-selector.cfg:39
+msgid "SELECT DIFFICULTY LEVEL:"
+msgstr "ВЫБЕРИТЕ УРОВЕНЬ СЛОЖНОСТИ:"
+
 #: ../data/level/north-courtyard.cfg:648
 msgid "North Courtyard"
 msgstr "Северный двор"
@@ -5172,152 +5097,90 @@ msgid "I say! Who's there?"
 msgstr "Слышь! Кто здесь?"
 
 #: ../data/level/secluded-hut-interior.cfg:1063
-#: ../data/level/secluded-hut.cfg:2358
+#: ../data/level/secluded-hut.cfg:2238
 #: ../data/objects/playable/map-selector.cfg:16
 msgid "Secluded Hut"
 msgstr "Одинокая хижина."
 
-#: ../data/level/secluded-hut.cfg:1462
-msgid ""
-"This is the end of the demo, which you probably\n"
-"can infer from the impassible barrier right ahead."
-msgstr "Это конец демонстрации, поэтому вы\nне сможете пройти барьер впереди."
-
-#: ../data/level/secluded-hut.cfg:1463
-msgid ""
-"You're free to keep exploring the first chapter,\n"
-" but you can't go any further forward."
-msgstr "Вы вольны исследовать первую часть,\nно не сможете продвинутся далее."
-
-#: ../data/level/secluded-hut.cfg:1465
-msgid ""
-"Well... hey, what the hell?\n"
-"I wanted to see what happens..."
-msgstr "Хорошо... что за чёрт?\nЯ хочу посмотреть, что случится..."
-
-#: ../data/level/secluded-hut.cfg:1467
-msgid ""
-"I have rather a vested interest in this,\n"
-"you know."
-msgstr "У меня живой интерес,\nзнаешь ли."
-
-#: ../data/level/secluded-hut.cfg:1468
-msgid ""
-"Naturally; but so does the crew that made this.\n"
-"Gotta pay the piper, or he won't play."
-msgstr "Естественно; но подумай о сделавшей это команде.\nОплати счёт, или он не будет играть."
-
-#: ../data/level/secluded-hut.cfg:1470
-msgid ""
-"I guess.\n"
-"It's so annoying to pay for stuff, though."
-msgstr "Я понял.\nТак раздражает платить за вещи."
-
-#: ../data/level/secluded-hut.cfg:1471
-msgid ""
-"Sure, but that's just business.\n"
-"That's what pays for making games like this."
-msgstr "Конечно, но это просто бизнес.\nПоэтому игры и создаются."
-
-#: ../data/level/secluded-hut.cfg:1472
-msgid ""
-"Check out our website, at frogatto.com, if\n"
-"you do want to buy a copy."
-msgstr "Посмотри на нашем сайте frogatto.com,\nесли желаешь приобрести копию игры."
-
-#: ../data/level/secluded-hut.cfg:1474
-msgid "Uh, sure, I'll keep that in mind."
-msgstr "О, конечно, буду знать."
-
-#: ../data/level/secluded-hut.cfg:1475
-msgid ""
-"Of course.  At any rate, enjoy yourself,\n"
-"and if you do choose to buy - thank you."
-msgstr "Несомненно. В любом случае, наслаждайся,\nи если выберешь покупку - спасибо."
-
-#: ../data/level/secluded-hut.cfg:1476
-msgid "Because that's pretty awesome if you do."
-msgstr "Потому что это великолепно,\nесли ты так поступишь."
-
-#: ../data/level/secluded-hut.cfg:1518
+#: ../data/level/secluded-hut.cfg:1398
 msgid "Are you quite alright?"
 msgstr "Ты в порядке?"
 
-#: ../data/level/secluded-hut.cfg:1520
+#: ../data/level/secluded-hut.cfg:1400
 msgid ""
 "Yeah.\n"
 "Who WAS that guy?!"
 msgstr "Ага.\nКто это был?!"
 
-#: ../data/level/secluded-hut.cfg:1521
+#: ../data/level/secluded-hut.cfg:1401
 msgid "One of Milgram's henchmen, no doubt."
 msgstr "Я уверен, что это был\nодин из головорезов Мильграма."
 
-#: ../data/level/secluded-hut.cfg:1522
+#: ../data/level/secluded-hut.cfg:1402
 msgid ""
 "They may have seen me talking to you,\n"
 "I can't be sure."
 msgstr "Я не могу быть уверен,\nчто за мной не следят."
 
-#: ../data/level/secluded-hut.cfg:1524
+#: ../data/level/secluded-hut.cfg:1404
 msgid "Wait, what?  Milgram?"
 msgstr "Подожди, что? Мильграм?"
 
-#: ../data/level/secluded-hut.cfg:1526
+#: ../data/level/secluded-hut.cfg:1406
 msgid ""
 "What's <em>he</em> doing\n"
 "on this side of the island?"
 msgstr "Что <em>он</em> делает,\nв этой части острова?"
 
-#: ../data/level/secluded-hut.cfg:1528
+#: ../data/level/secluded-hut.cfg:1408
 msgid "You still haven't heard, then."
 msgstr "Ты не дал мне тогда договорить."
 
-#: ../data/level/secluded-hut.cfg:1529
+#: ../data/level/secluded-hut.cfg:1409
 msgid ""
 "Milgram's men showed up\n"
 "early this morning, in town.\n"
 "They've taken the whole place hostage!"
 msgstr "Люди Мильграма появились\nс утра пораньше в городе.\nОни взяли в заложники всё это место!"
 
-#: ../data/level/secluded-hut.cfg:1530
+#: ../data/level/secluded-hut.cfg:1410
 msgid ""
 "Unfortunately, I don't know the details.\n"
 "I just flew out of there as soon as I could,\n"
 "looking for <em>anyone</em> who could help."
 msgstr "К несчастью, я не посвящён в детали.\nЯ улетел как только смог, искать\nхоть <em>кого-то</em> кто поможет."
 
-#: ../data/level/secluded-hut.cfg:1532
+#: ../data/level/secluded-hut.cfg:1412
 msgid ""
 "That certainly...\n"
 "changes my plans for the day."
 msgstr "Это всё... конечно же,\nменяет мои сегодняшние планы."
 
-#: ../data/level/secluded-hut.cfg:1534
+#: ../data/level/secluded-hut.cfg:1414
 msgid ""
 "Wow, uhm... \n"
 "I'd sure like to help, but ...\n"
 "I just don't see what I could do."
 msgstr "Эм...\nЯ хочу помочь, но... Я пока не понял,\nчто именно я могу сделать."
 
-#: ../data/level/secluded-hut.cfg:1536
+#: ../data/level/secluded-hut.cfg:1416
 msgid ""
 "I don't think I can promise anything,\n"
 "but if the opportunity presents itself,\n"
 "who knows?"
 msgstr "Я не буду ничего обещать, но если\nподвернётся такая возможность,\nя обязательно помогу."
 
-#: ../data/level/secluded-hut.cfg:1537
+#: ../data/level/secluded-hut.cfg:1417
 msgid ""
 "Yes, it's unreasonable to expect\n"
 "someone to just charge in there."
 msgstr "Да, вообще-то немного наивно было\nожидать, что нам поможет первый\nвстречный. Ну да ладно..."
 
-#: ../data/level/secluded-hut.cfg:1538
+#: ../data/level/secluded-hut.cfg:1418
 msgid "I'm at a loss for a plan, myself."
 msgstr "Я сам немного не\nпонимаю ситуацию."
 
-#: ../data/level/secluded-hut.cfg:1539
+#: ../data/level/secluded-hut.cfg:1419
 msgid ""
 "Nevertheless, I'd better be going.\n"
 "Hopefully, we'll fix that bridge soon.\n"
@@ -5325,27 +5188,27 @@ msgid ""
 "with modular construction and all."
 msgstr "Однако, мне пора идти. Надеюсь, мы скоро\nпочиним мост. Удивительно, как быстро\nработают наши строители с этими модульными\nконструкциями."
 
-#: ../data/level/secluded-hut.cfg:1540
+#: ../data/level/secluded-hut.cfg:1420
 msgid ""
 "In the meantime, you might benefit from\n"
 "visiting the fellow who lives here."
 msgstr "Тебе будет полезно зайти к одному\nпарню, живущему неподалёку."
 
-#: ../data/level/secluded-hut.cfg:1541
+#: ../data/level/secluded-hut.cfg:1421
 msgid ""
 "Bit of a recluse, but he's quite sharp.\n"
 "He lives on top of this rock column."
 msgstr "Он немного нелюдим, но очень умён.\nОн живёт на вершине горы."
 
-#: ../data/level/secluded-hut.cfg:1543
+#: ../data/level/secluded-hut.cfg:1423
 msgid "And I get up there... how?"
 msgstr "И мне надо туда залезть... а как?"
 
-#: ../data/level/secluded-hut.cfg:1547
+#: ../data/level/secluded-hut.cfg:1427
 msgid "Simple, just take to the air!"
 msgstr "Очень просто, тебe нужно взлететь!"
 
-#: ../data/level/secluded-hut.cfg:1550
+#: ../data/level/secluded-hut.cfg:1430
 msgid "You ... <em>do</em> realize I can't fly?"
 msgstr "Ты...  <em>понимаешь</em> что я не умею летать?"
 
@@ -5353,11 +5216,11 @@ msgstr "Ты...  <em>понимаешь</em> что я не умею летат�
 msgid "Splash, Hop"
 msgstr "Прыжок и брызги"
 
-#: ../data/level/starlit-cave.cfg:1094
+#: ../data/level/starlit-cave.cfg:1056
 msgid "Starlit Cave"
 msgstr "Звёздная котловина"
 
-#: ../data/level/stonepipe-meadow.cfg:2796
+#: ../data/level/stonepipe-meadow.cfg:2797
 msgid "Stonepipe Meadow"
 msgstr "Каменная долина"
 
@@ -6062,10 +5925,6 @@ msgstr "Золотоискатeль"
 msgid "COIN RACE"
 msgstr "ЗОЛОТОИСКАТЕЛЬ"
 
-#: ../data/level/titlescreen-difficulty-selector.cfg:39
-msgid "SELECT DIFFICULTY LEVEL:"
-msgstr "ВЫБЕРИТЕ УРОВЕНЬ СЛОЖНОСТИ:"
-
 #: ../data/level/titlescreen-load-game-selector.cfg:23
 msgid "File 1:"
 msgstr "Файл 1:"
@@ -6078,7 +5937,7 @@ msgstr "Файл 2:"
 msgid "File 3:"
 msgstr "Файл 3:"
 
-#: ../data/level/titlescreen-load-game-selector.cfg:121
+#: ../data/level/titlescreen-load-game-selector.cfg:122
 #: ../data/level/titlescreen-new-game-selector.cfg:236
 msgid "Play!"
 msgstr "Играть!"
@@ -6100,11 +5959,11 @@ msgstr "пусто"
 #: ../data/level/titlescreen-new-game-selector.cfg:163
 #: ../data/objects/playable/difficulty-selector.cfg:24
 msgid "Casual"
-msgstr "Обычно"
+msgstr "Обычная"
 
 #: ../data/level/titlescreen-new-game-selector.cfg:191
 msgid "Challenging"
-msgstr "Испытание"
+msgstr "Сложная"
 
 #: ../data/level/titlescreen.cfg:60
 msgid "LOAD GAME"
@@ -6118,49 +5977,33 @@ msgstr "НОВАЯ ИГРА"
 msgid "Press ${LEFT_KEY} or ${RIGHT_KEY} to walk."
 msgstr "Нажмите ${LEFT_KEY} или ${RIGHT_KEY} для ходьбы."
 
-#: ../data/level/titlescreen.cfg:125
-msgid "Tap ← or → to walk."
-msgstr "Жми ← или → для ходьбы."
-
 #: ../data/level/titlescreen.cfg:126
 msgid "Quickly press ${LEFT_KEY} or ${RIGHT_KEY} twice to run."
 msgstr "Дважды нажмите ${LEFT_KEY} или ${RIGHT_KEY} для бега."
-
-#: ../data/level/titlescreen.cfg:126
-msgid "Quickly tap ← or → twice to run."
-msgstr "Быстро жми ← или → дважды для бега."
 
 #: ../data/level/titlescreen.cfg:128
 msgid "Press ${DOWN_KEY} to crouch."
 msgstr "Нажмите ${DOWN_KEY}, чтобы нагнуться."
 
 #: ../data/level/titlescreen.cfg:128
-msgid "Walk in front of a door or person,"
-msgstr "Подойдите к двери или персонажу,"
+msgid "Walk in front of a door or person, and press"
+msgstr ""
 
 #: ../data/level/titlescreen.cfg:129
 msgid "Press ${UP_KEY} to talk, and use things like doors."
 msgstr "Нажмите ${UP_KEY} для общения и использования дверей и предметов."
 
 #: ../data/level/titlescreen.cfg:129
-msgid "and tap ☆ to interact with them."
-msgstr "и нажмите ☆ для взаимодействия с ними."
+msgid "the button that appears to interact with them."
+msgstr ""
 
 #: ../data/level/titlescreen.cfg:130
 msgid "Press ${JUMP_KEY} to jump."
 msgstr "Нажмите ${JUMP_KEY} для прыжка."
 
-#: ../data/level/titlescreen.cfg:130
-msgid "Tap ○ to jump."
-msgstr "Жми ○ для прыжка."
-
 #: ../data/level/titlescreen.cfg:131
 msgid "Press ${TONGUE_KEY} to use a character's attacks."
 msgstr "Нажмите ${TONGUE_KEY} для атаки."
-
-#: ../data/level/titlescreen.cfg:131
-msgid "Tap □ to use a character's attacks."
-msgstr "Жми □ для атаки."
 
 #: ../data/level/titlescreen.cfg:170
 msgid "ARCADE"
@@ -6210,7 +6053,7 @@ msgstr "Да, вот ключ.\nТам муравьи завелись."
 msgid ""
 "I've been meaning to get rid of them,\n"
 "but I just can't find the time."
-msgstr "Я имею ввиду, избавиться от них,\nно я просто не могу найти время."
+msgstr "Я хотела избавиться от них,\nно я просто не могу найти время."
 
 #: ../data/level/to-nenes-house-inside.cfg:53
 msgid ""
@@ -6748,8 +6591,10 @@ msgid "Press ${ATTACK_KEY} to switch between abilities."
 msgstr "Нажмите ${ATTACK_KEY} для переключения между способностями."
 
 #: ../data/objects/items/ability.cfg:12
-msgid "Tap ♲ to switch between abilities."
-msgstr "Жми ♲ для переключения способностей."
+msgid ""
+"Tap the upper-left corner of the screen\n"
+"to switch between abilities."
+msgstr ""
 
 #: ../data/objects/items/max_heart_object.cfg:8
 msgid ""
@@ -6976,14 +6821,14 @@ msgstr "Загрузка текстур..."
 msgid "Loading Frogatto character"
 msgstr "Загрузка персонажа Фрогатто"
 
-#: ../iOS_APP_STORE_METADATA:13
+#: ../iOS_APP_STORE_METADATA:15
 msgid "- OpenFeint and Achievement support"
 msgstr "- Поддержка OpenFeint и механизма достижений"
 
-#: ../iOS_CHANGELOG:32
+#: ../iOS_CHANGELOG:19
 msgid "Fixed The Long Haul (arcade level)"
 msgstr "Исправлен Большой рывок (аркадный уровень)"
 
-#: ../iOS_CHANGELOG:33
+#: ../iOS_CHANGELOG:20
 msgid "Fixed instructions on titlescreen"
 msgstr "Исправлены инструкции при загрузке"
