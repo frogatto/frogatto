@@ -7,6 +7,8 @@ The following directories are exempt from this, and all of their contents are co
 - sounds, which contains our sound effects
 - music, which contains our background music
 
-Any format-conversions of the above files, such as the files in music_aac and sounds_wav, are also copyrighted.
+Any format-conversions of our audio files, such as the files in music_aac and sounds_wav, are also copyrighted.
+
+Frogatto’s story, and all visual designs of characters (in any representation) and names of characters within the game are copyrighted.
 
 The source code to the game -- limited to the C++ source code files found in the "src" directory of the Anura engine -- is also available for license under the Zlib license. See the LICENSE file in that directory for the details of the license.
