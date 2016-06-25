@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os, sys, codecs
 #usage: from the module base folder:
@@ -11,16 +11,13 @@ def main(levels):
 	levels = [(shortname(x), codecs.open(x, encoding="utf-8").readlines()) for x in levels]
 	for y in levels:
 		coins = 0
-		#this'll break if there's more than one coin
-		#defined in the same line. Hopefully never happens.
-		
 		for line in y[1]:
-			if "\"gold_berry\"" in line: coins += 1
-			if "\"coin_silver\"" in line: coins += 1
-			if "\"coin_gold\"" in line: coins += 5
-			if "\"coin_gold_big\"" in line: coins += 20
-			if "\"coin_gold_enormous\"" in line: coins += 100
-		print y[0] + ":", coins
+			coins += (line.count('"gold_berry"') * 1 +
+			          line.count('"coin_silver"') * 1 +
+			          line.count('"coin_gold"') * 5 +
+			          line.count('"coin_gold_big"') * 20 +
+			          line.count('"coin_gold_enormous"') * 100)
+		print(y[0] + ": " + str(coins))
 
 if __name__ == "__main__":
 	if len(sys.argv) > 1:
