@@ -41,6 +41,7 @@ grep -Hn --exclude-dir=".svn" "~[^~][^~]*~" ../data/level/*/*.cfg | \
 	sed -ne ":A;s/\([a-zA-Z0-9/\._-]*:[0-9]*\):[^~]*~\([^~][^~]*\)~/\n#: \1\nmsgid \"\2\"\nmsgstr \"\"\n\1:/;tA;s/\n\([a-zA-Z0-9/\._-]*:[0-9]*\):[^\n]*//;p"
 # find marked strings ~...~ in data files; files in data/*/experimental are ignored
 grep -Hnr --exclude-dir=".svn" --exclude-dir="experimental" "~[^~][^~]*~" ../data/objects/ ../data/object_prototypes/ | \
+    grep -v "collide_dimensions:"  | \
 	sed -e 's/\\\\n/\\n/g' | \
 	sed -ne ":A;s/\([a-zA-Z0-9/\._-]*:[0-9]*\):[^~]*~\([^~][^~]*\)~/\n#: \1\nmsgid \"\2\"\nmsgstr \"\"\n\1:/;tA;s/\n\([a-zA-Z0-9/\._-]*:[0-9]*\):[^\n]*//;p"
 # find marked strings _("...") in source files
