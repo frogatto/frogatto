@@ -12,21 +12,43 @@ def main(image):
     output = output.split('\n')
     output = output[1:] #discard the header line: "#Image"
 
-
     sizeCheck = "identify -format \"%w,%h\" " + image
     sizeCheck = subprocess.check_output(['bash','-c', sizeCheck])
     sizeCheck = sizeCheck.split(',')
-    imgH = int(sizeCheck[0])
-    imgW = int(sizeCheck[1])
+    imgW = int(sizeCheck[0])
+    imgH = int(sizeCheck[1])
     
-    pixArray = linesToArray(output, imgW, imgH)
+    pixArray = linesToArray(output, imgH, imgW)
+    for i in range(imgH):
+        for j in range(imgW):
+            if pixArray[i][j] == BOXRED:
+                print findBox(pixArray, i, j)
+            #print i, j, pixArray[i][j]
     
-def linesToArray(imageTxt, width, height):
-    simplify = lambda x: '#' + x.split('#')[1][:6]
-    newA = [[None] * height] * width
-    for i in range(width):
-        for j in range(height):
+def linesToArray(imageTxt, height, width):
+    #newA = [[None] * width] * height #this fails in really unusual ways - all lines are the same as the last one
+    newA = [[0 for x in range(width)] for y in range(height)] 
+    #print imageTxt[32*320 + 2]
+    #print imageTxt[32*320 + 3]
+    #print imageTxt[33*320 + 3]
+    for i in range(height):
+        for j in range(width):
             newA[i][j] = simplify(imageTxt[width * i + j])
+    return newA
+
+def simplify(line):
+    return '#' + line.split('#')[1][:6]
+
+def findBox(array, line, col):
+    lineInside = line + 1
+    colInside = col + 1
+    #scan the pixels going down, starting at offset +1,+1 from the red pixel in the args
+    while array[lineInside][colInside] != BOXRED:
+        lineInside += 1
+    while array[line + 1][colInside] != BOXRED:
+        colInside += 1
+    return (line, col, lineInside, colInside) 
+    
 
 if __name__ == "__main__":
 	if len(sys.argv) == 2:
