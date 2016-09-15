@@ -20,15 +20,28 @@ def main(image):
     
     
     pixArray = linesToArray(output, imgH, imgW)
-    boxes = []
+    boxID = 0
     for i in range(imgH):
-        for j in range(imgW):
+        j = 0
+        while j < imgW:
             if pixArray[i][j] == BOXRED:
                 thisBox = findBox(pixArray, i, j)
-                if thisBox is not None: 
+                if thisBox is None: 
+                    j += 1
+                else:
                     boxes.append(thisBox)
                     j = thisBox[3] + 1 #continue the search *after* this box
-                    print thisBox
+                    pngX = thisBox[1] 
+                    pngY = thisBox[0]
+                    pngW = thisBox[3] - thisBox[1] + 1
+                    pngH = thisBox[2] - thisBox[0] + 1
+                    cropBox = "convert -crop " + pngW + "x" + pngH + "+" + \
+                                pngX + "+" + pngY + " " + image + \ 
+                                " make-gif-temp" + ("%03d" % boxID) + ".png"
+                    boxID += 1
+                    print cropBox
+            else:
+                j += 1
             #print i, j, pixArray[i][j]
     
 def linesToArray(imageTxt, height, width):
@@ -45,16 +58,24 @@ def simplify(line):
 def findBox(array, line, col):
     line2 = line + 1
     col2 = col + 1
-    #see if we're on the first line of a box, by checking if the pixel to the right is also red
-    if 
-        return None
-    #scan the pixels going down, starting at offset +1,+1 from the red pixel in the args
+    boxFound = 0
+    
     try:
+        #see if we're on the first line/column of a box, by checking
+        #if the pixels at offsets 1,0 and 0,1 are also red
+        if array[line][col + 1] != BOXRED or array[line + 1][col] != BOXRED:
+            return None
+            
+        #scan the pixels going down, starting at offset +1,+1 from the red pixel in the args
         while array[line2][col2] != BOXRED:
             line2 += 1
         while array[line + 1][col2] != BOXRED:
             col2 += 1
     except IndexError:
+        return None
+    
+    #if line2 or col2 didn't change at all, no box was found
+    if (line2 - line == 1) or (col2 - col == 1):
         return None
     return (line, col, line2, col2) 
     
