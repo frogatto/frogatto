@@ -9,6 +9,10 @@ BGBROWN = "#6F6D51"
 #./anura --utility=query modules/frogatto/data/objects/enemies/bugs/maggot_white.cfg '[x.animation | x <- visit_objects(doc)]' 2>/dev/null
 #find the thrown animation
 #./anura --utility=query modules/frogatto/data/objects/enemies/bugs/maggot_white.cfg '[find(x.animation, value.id = "thrown") | x <- visit_objects(doc)]'
+#value[@base] should work to filter @base = true
+#noting that 
+# '@base'  "@base" q(@base) 
+# are all ways of writing that if you need to nest strings
 
 def mainRead(cfgFile, anim):
     pwd = "".join(bash("pwd")).split('\n')[0]
@@ -54,15 +58,16 @@ def mainRead(cfgFile, anim):
     
     rect = [x.split(':')[1] for x in anim.split('\n') if "\"rect\"" in x][0][:-1]
     rect = [int(x) for x in rect.replace('[','').replace(']','').replace(' ','').split(',')]
-    boxID = 20
-    pngW = str(rect[2] - rect[0] + 1)
-    pngH = str(rect[3] - rect[1] + 1)
-    pngX = str(rect[0])
-    pngY = str(rect[1])
-    cropBox = "convert -crop " + pngW + "x" + pngH + "+" + \
-                                pngX + "+" + pngY + " +repage " + image + \
-                                " make-gif-temp" + ("%03d" % boxID) + ".png"
-    bash(cropBox)
+    for boxID in range(frames):
+        width = rect[2] - rect[0] + 1
+        pngW = str(width)
+        pngH = str(rect[3] - rect[1] + 1)
+        pngX = str(rect[0] + boxID * (pad + width))
+        pngY = str(rect[1])
+        cropBox = "convert -crop " + pngW + "x" + pngH + "+" + \
+                                    pngX + "+" + pngY + " +repage " + image + \
+                                    " make-gif-temp" + ("%03d" % boxID) + ".png"
+        bash(cropBox)
     print pwd
 
 def mainBoxes(image):
