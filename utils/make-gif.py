@@ -33,42 +33,71 @@ def mainRead(cfgFile, anim):
         baseAnim = ""
         
     try:
-        anim = [x for x in animations if anim in x][0]
+        anim = [x for x in animations if ("\"" + anim + "\"") in x][0]
     except IndexError:
         print "ERROR: '" + anim + "' animation was not found for " + cfgFile
         return
     
     anim = baseAnim + anim
-    print anim
-    image = [x.split(':')[1].split('"')[1] for x in anim.split('\n') if "\"image\"" in x][0]
+    #we always try to get the last entry of image, pad, etc. since it'll be from the
+    #specific animation, instead of being the default in @base
+    image = [x.split(':')[1].split('"')[1] for x in anim.split('\n') if "\"image\"" in x][-1]
     image = pwd + "/images/" + image
-    print image
     try:
-        pad = int([x.split(': ')[1].replace(',','') for x in anim.split('\n') if "\"pad\"" in x][0])
+        pad = int([x.split(': ')[1].replace(',','') for x in anim.split('\n') if "\"pad\"" in x][-1])
     except IndexError:
         pad = 0
-    print pad
     #duration is multiplied by 2, since each frame is 20ms but imagemagick uses cs (thus, 2cs)
-    duration = int([x.split(': ')[1].replace(',','') for x in anim.split('\n') if "\"duration\"" in x][0]) * 2
-    print duration
+    try:
+        duration = int([x.split(': ')[1].replace(',','') for x in anim.split('\n') if "\"duration\"" in x][-1]) * 2
+    except IndexError:
+        duration = 10
     
-    #also could be frames_per_row, with additional rows value
-    frames = int([x.split(': ')[1].replace(',','') for x in anim.split('\n') if "\"frames\"" in x][0])
-    print frames
-    
-    rect = [x.split(':')[1] for x in anim.split('\n') if "\"rect\"" in x][0][:-1]
-    rect = [int(x) for x in rect.replace('[','').replace(']','').replace(' ','').split(',')]
-    for boxID in range(frames):
+    frames = int([x.split(': ')[1].replace(',','') for x in anim.split('\n') if "\"frames\":" in x][-1])
+    try:
+        perRow = int([x.split(': ')[1].replace(',','') for x in anim.split('\n') if "\"frames_per_row\"" in x][-1])
+    except IndexError:
+        perRow = frames
+        
+    xPos = yPos = width = height = 0
+    try:
+        rect = [x.split(':')[1] for x in anim.split('\n') if "\"rect\"" in x][0][:-1]
+        rect = [int(x) for x in rect.replace('[','').replace(']','').replace(' ','').split(',')]
+        xPos = rect[0]
+        yPos = rect[1]
         width = rect[2] - rect[0] + 1
+        height = rect[3] - rect[1] + 1
+    except IndexError:
+        try:
+            rectx = [x.split(':')[1] for x in anim.split('\n') if "\"x\"" in x][0].replace(',','')
+            recty = [x.split(':')[1] for x in anim.split('\n') if "\"y\"" in x][0].replace(',','')
+            rectw = [x.split(':')[1] for x in anim.split('\n') if "\"w\"" in x][0].replace(',','')
+            recth = [x.split(':')[1] for x in anim.split('\n') if "\"h\"" in x][0].replace(',','')
+            xPos = int(rectx.replace(' ',''))
+            yPos = int(recty.replace(' ',''))
+            width = int(rectw.replace(' ',''))
+            height = int(recth.replace(' ','')) 
+        except IndexError:
+            print "ERROR: no valid 'rect' or 'xywh' coordinates found for " + anim
+            return
+
+    for boxID in range(frames):
+        
+        
         pngW = str(width)
-        pngH = str(rect[3] - rect[1] + 1)
-        pngX = str(rect[0] + boxID * (pad + width))
-        pngY = str(rect[1])
+        pngH = str(height)
+        pngX = str(xPos + (boxID % perRow) * (pad + width))
+        pngY = str(yPos + (boxID / perRow) * (pad + height))
         cropBox = "convert -crop " + pngW + "x" + pngH + "+" + \
                                     pngX + "+" + pngY + " +repage " + image + \
                                     " make-gif-temp" + ("%03d" % boxID) + ".png"
+        print cropBox
         bash(cropBox)
-    print pwd
+    makeAnim = "convert -adjoin -delay " + str(duration) + " -layers optimize" + \
+               " make-gif-temp[0-9][0-9][0-9].png make-gif-output.gif"
+    bash(makeAnim)
+    
+    bash("rm make-gif-temp*") #cleanup
 
 def mainBoxes(image):
     #global BOXRED, BGBROWN
