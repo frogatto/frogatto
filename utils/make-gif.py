@@ -82,8 +82,6 @@ def mainRead(cfgFile, anim):
             return
 
     for boxID in range(frames):
-        
-        
         pngW = str(width)
         pngH = str(height)
         pngX = str(xPos + (boxID % perRow) * (pad + width))
@@ -93,8 +91,17 @@ def mainRead(cfgFile, anim):
                                     " make-gif-temp" + ("%03d" % boxID) + ".png"
         print cropBox
         bash(cropBox)
-    makeAnim = "convert -adjoin -delay " + str(duration) + " -layers optimize" + \
-               " make-gif-temp[0-9][0-9][0-9].png make-gif-output.gif"
+        
+    scale = 1
+    for i in range(2, 11):
+        if (width * i) <= 560 and (height * i) <= 440:
+            scale = i
+        else:
+            break
+    print scale
+    makeAnim = "convert -scale " + str(scale) + "00% -extent 560x440 -gravity center" + \
+                " -background \"#6F6D51\" -adjoin -delay " + str(duration) + \
+                " -layers optimize make-gif-temp[0-9][0-9][0-9].png make-gif-output.gif"
     bash(makeAnim)
     
     bash("rm make-gif-temp*") #cleanup
@@ -195,5 +202,8 @@ if __name__ == "__main__":
 		    mainRead(sys.argv[1], "stand")
 	elif len(sys.argv) == 3:
 		if sys.argv[1][-4:] == ".cfg":
-		    mainRead(sys.argv[1], sys.argv[2])
-		#print "Incorrect number of arguments, 1 required"
+			mainRead(sys.argv[1], sys.argv[2])
+	else:
+		print "Usage: utils/make-gif.py path/to/image.png OR"
+		print "utils/make-gif.py path/to/object.cfg animation"
+		print "result is output as \"make-gif-output.gif\""
