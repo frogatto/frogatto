@@ -102,7 +102,7 @@ def mainRead(cfgFile, anim):
 		frameIDs = list(reversed(range(frames))) + range(frames)[1:]
 	elif reverse:
 		frameIDs = range(frames)[:-1] + list(reversed(range(frames)))
-	elif plays_backwards:
+	elif play_backwards:
 		frameIDs = list(reversed(range(frames)))
 	else:
 		frameIDs = range(frames)
