@@ -58,7 +58,7 @@ msgstr ""
 
 #: ../../../src/language_dialog.cpp:96
 msgid "Use system language"
-msgstr ""
+msgstr "Gebruik de systeemtaal"
 
 #: ../../../src/main.cpp:700
 msgid "Initializing custom object functions"
@@ -98,7 +98,7 @@ msgstr "Besturing"
 
 #: ../../../src/pause_game_dialog.cpp:75
 msgid "Language..."
-msgstr ""
+msgstr "Taal..."
 
 #: ../../../src/pause_game_dialog.cpp:76
 msgid "Return to Titlescreen"
@@ -114,13 +114,14 @@ msgstr "A en B omdraaien"
 
 #: ../CHANGELOG:1 ../iOS_CHANGELOG:1
 msgid "Version 1.3:"
-msgstr ""
+msgstr "Versie 1.3"
 
 #: ../CHANGELOG:2 ../iOS_CHANGELOG:2
 msgid ""
 "Expansion and improvements to the plot and dialogue, adding new cutscenes "
 "that give you a closer look at the antagonists' motives."
-msgstr ""
+msgstr "Uitbreiding en verbetering van het verhaal en dialoog, toevoegen nieuwe "
+"cutscenes die een beter beeld geven van de motieven van de hoofdpersoon."
 
 #: ../CHANGELOG:3 ../iOS_CHANGELOG:3
 msgid ""
@@ -139,7 +140,8 @@ msgstr ""
 msgid ""
 "New difficulty level: Challenging. Some enemies will be faster, hardier, "
 "smarter, or all of those put together."
-msgstr ""
+msgstr "Nieuwe moeilijkheidsgraad: Uitdagend. Sommige tegenstanders zullen sneller, "
+"sterker, slimmer, of een combinatie hiervan zijn."
 
 #: ../CHANGELOG:6 ../iOS_CHANGELOG:6
 msgid ""
@@ -187,7 +189,7 @@ msgstr ""
 
 #: ../CHANGELOG:14 ../iOS_CHANGELOG:14
 msgid "Version 1.2:"
-msgstr ""
+msgstr "Versie 1.2:"
 
 #: ../CHANGELOG:15 ../iOS_CHANGELOG:15
 msgid ""
@@ -1657,7 +1659,7 @@ msgstr ""
 
 #: ../data/level/crevice-village-heights.cfg:1495
 msgid "...Sorry."
-msgstr ""
+msgstr "...Sorry."
 
 #: ../data/level/crevice-village-heights.cfg:1498
 msgid ""
@@ -1980,7 +1982,7 @@ msgstr "Heb je toevallig nog tips voor me?"
 
 #: ../data/level/crevice-village-house-2.cfg:1391
 msgid "Yeah."
-msgstr ""
+msgstr "Ja."
 
 #: ../data/level/crevice-village-house-2.cfg:1392
 msgid ""
@@ -2026,7 +2028,7 @@ msgstr "hmmm..."
 
 #: ../data/level/crevice-village-house-4.cfg:1069
 msgid "It seems I'm trapped inside this house."
-msgstr ""
+msgstr "Het lijk er op dat ik vast zit in dit huis."
 
 #: ../data/level/crevice-village-house-4.cfg:1070
 msgid "I guess the only way out, is in!"
@@ -2131,7 +2133,7 @@ msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:340
 msgid "Go on..."
-msgstr ""
+msgstr "Ga door..."
 
 #: ../data/level/crevice-village-house-elder.cfg:342
 msgid ""
@@ -2171,7 +2173,7 @@ msgstr "En jij bent...?"
 
 #: ../data/level/crevice-village-house-elder.cfg:365
 msgid "I sometimes ask myself that question."
-msgstr ""
+msgstr "Dat vraag ik mezelf soms ook af."
 
 #: ../data/level/crevice-village-house-elder.cfg:369
 msgid "I don't have to put up with this."
@@ -2217,7 +2219,7 @@ msgstr "Het is mijn eigen veilige kamer."
 
 #: ../data/level/crevice-village-house-elder.cfg:480
 msgid "^Wow."
-msgstr ""
+msgstr "^Wauw."
 
 #: ../data/level/crevice-village-house-elder.cfg:482
 msgid "Built it for exactly this sort of crisis."
@@ -2408,7 +2410,7 @@ msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:556
 msgid "I'm not sure I follow you..."
-msgstr ""
+msgstr "Ik weet eigenlijk niet waarom\nik jou gevolgd ben..."
 
 #: ../data/level/crevice-village-house-elder.cfg:558
 msgid "Okay, do you know what 'usury' is?"
@@ -2416,7 +2418,7 @@ msgstr ""
 
 #: ../data/level/crevice-village-house-elder.cfg:560
 msgid "Not exactly."
-msgstr ""
+msgstr "Niet precies."
 
 #: ../data/level/crevice-village-house-elder.cfg:562
 msgid ""
@@ -2730,45 +2732,51 @@ msgstr "De Ingang"
 
 #: ../data/level/dungeon-gateway.cfg:126
 msgid "h... Hello?"
-msgstr ""
+msgstr "H... Hallo?"
 
 #: ../data/level/dungeon-gateway.cfg:130
 msgid "Is everything alright?"
-msgstr ""
+msgstr "Is alles in orde?"
 
 #: ../data/level/dungeon-gateway.cfg:132
 msgid "Oh thank goodness, you can talk!"
-msgstr ""
+msgstr "Oh, gelukkig, je kunt praten!"
 
 #: ../data/level/dungeon-gateway.cfg:135
 msgid "This is a surprise?"
-msgstr ""
+msgstr "Dat is een verrassing?"
 
 #: ../data/level/dungeon-gateway.cfg:137
 msgid ""
 "Yeah, I thought you were some creature\n"
 "that had shambled in from the caves."
 msgstr ""
+"Ja, ik dacht dat je een of ander wezen\n"
+"was die uit uit de grotten hierheen was geslopen."
 
 #: ../data/level/dungeon-gateway.cfg:138
 msgid "We get that from time to time."
-msgstr ""
+msgstr "Dat gebeurt zo af en toe."
 
 #: ../data/level/dungeon-gateway.cfg:139
 msgid ""
 "I hate this job.\n"
 "It's CREEPY down here!"
 msgstr ""
+"Ik haat deze baan.\n"
+"Het is hier beneden zo griezelig!"
 
 #: ../data/level/dungeon-gateway.cfg:142
 msgid "What are you even doing?"
-msgstr ""
+msgstr "Wat doe je hier überhaupt?"
 
 #: ../data/level/dungeon-gateway.cfg:144
 msgid ""
 "Cleaning.\n"
 "I'm a janitor."
 msgstr ""
+"Schoonmaken.\n"
+"Ik ben een schoonmaker."
 
 #: ../data/level/dungeon-gateway.cfg:145
 msgid ""
@@ -2779,11 +2787,11 @@ msgstr ""
 #: ../data/level/dungeon-gateway.cfg:148
 #: ../data/level/kitty-dormitory.cfg:3174
 msgid "I'm Frogatto."
-msgstr ""
+msgstr "Ik ben Frogatto."
 
 #: ../data/level/dungeon-gateway.cfg:150
 msgid "Do Frogattoes live in caves?"
-msgstr ""
+msgstr "Leven Frogatto's in grotten?"
 
 #: ../data/level/dungeon-gateway.cfg:153
 msgid ""
@@ -2911,7 +2919,7 @@ msgstr ""
 
 #: ../data/level/dungeon-storerooms.cfg:1440
 msgid "Storerooms"
-msgstr ""
+msgstr "Voorraadkamers"
 
 #: ../data/level/eerie-arbor.cfg:4309
 msgid "Eerie Arbor"
@@ -3065,7 +3073,7 @@ msgstr "Knoestige Heuvel"
 #: ../data/level/milgrams-basement-junction.cfg:387
 #: ../data/level/underground-pool.cfg:2453
 msgid "Meanwhile..."
-msgstr ""
+msgstr "Ondertussen..."
 
 #: ../data/level/golden-glen.cfg:2306
 msgid ""
@@ -3543,7 +3551,7 @@ msgstr "Verborgen Dieptes"
 
 #: ../data/level/killer-bunnies.cfg:1135
 msgid "That guy sure doesn't look glad to meet me!"
-msgstr ""
+msgstr "Die vent lijkt bepaald niet blij me te zien!"
 
 #: ../data/level/killer-bunnies.cfg:4322
 msgid "Killer Bunnies"
@@ -3553,7 +3561,8 @@ msgstr "Dodelijke Konijntjes"
 msgid ""
 "It says, \"Today's Special:\n"
 "Caesar Salad and Avocado Wraps\""
-msgstr ""
+msgstr "Er staat, \"Menu van de dag:\n"
+"Caesar Salade en Avocado Wraps\""
 
 #: ../data/level/kitty-dormitory.cfg:735
 msgid ""
@@ -3572,7 +3581,7 @@ msgstr ""
 msgid ""
 "Uh, maybe...\n"
 "I certainly appreciate the hospitality!"
-msgstr ""
+msgstr "Ik waardeer de gastvrijheid!"
 
 #: ../data/level/kitty-dormitory.cfg:1901
 msgid "So is this some kind of dining area?"
@@ -3628,7 +3637,7 @@ msgstr ""
 
 #: ../data/level/kitty-dormitory.cfg:1920
 msgid "I'll keep that in mind, thanks."
-msgstr ""
+msgstr "Ik zal het onthouden, bedankt."
 
 #: ../data/level/kitty-dormitory.cfg:1948
 msgid "Hi there, what's going on?"
@@ -5876,7 +5885,7 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:318
 msgid "I ... didn't see that coming."
-msgstr ""
+msgstr "Dat ... zag ik niet aankomen."
 
 #: ../data/level/tea-with-milgram.cfg:321
 msgid ""
@@ -5904,7 +5913,7 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:330
 msgid "Incredible."
-msgstr ""
+msgstr "Ongelofelijk."
 
 #: ../data/level/tea-with-milgram.cfg:332
 msgid ""
@@ -5939,7 +5948,7 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:344
 msgid "I'm dreading the trip back."
-msgstr ""
+msgstr "Ik zie op tegen de terugweg."
 
 #: ../data/level/tea-with-milgram.cfg:346
 msgid ""
@@ -5986,7 +5995,7 @@ msgstr ""
 
 #: ../data/level/tea-with-milgram.cfg:363
 msgid "So ... all's well that ends well?"
-msgstr ""
+msgstr "Dus ... eind goed, al goed?"
 
 #: ../data/level/tea-with-milgram.cfg:365
 msgid ""
@@ -6008,7 +6017,7 @@ msgstr ""
 
 #: ../data/level/the-north-tower.cfg:2089
 msgid "The North Tower"
-msgstr ""
+msgstr "De Noordelijke Toren"
 
 #: ../data/level/titlescreen-arcade.cfg:61
 msgid "Each machine has a different arcade-style challenge."
@@ -6056,20 +6065,20 @@ msgstr ""
 
 #: ../data/level/titlescreen-load-game-selector.cfg:23
 msgid "File 1:"
-msgstr ""
+msgstr "Bestand 1:"
 
 #: ../data/level/titlescreen-load-game-selector.cfg:50
 msgid "File 2:"
-msgstr ""
+msgstr "Bestand 2:"
 
 #: ../data/level/titlescreen-load-game-selector.cfg:77
 msgid "File 3:"
-msgstr ""
+msgstr "Bestand 3:"
 
 #: ../data/level/titlescreen-load-game-selector.cfg:121
 #: ../data/level/titlescreen-new-game-selector.cfg:236
 msgid "Play!"
-msgstr ""
+msgstr "Speel!"
 
 #: ../data/level/titlescreen-new-game-selector.cfg:24
 msgid "Select Save Slot:"
@@ -6077,13 +6086,13 @@ msgstr ""
 
 #: ../data/level/titlescreen-new-game-selector.cfg:50
 msgid "Select Difficulty:"
-msgstr ""
+msgstr "Selecteer moeilijkheid:"
 
 #: ../data/level/titlescreen-new-game-selector.cfg:65
 #: ../data/level/titlescreen-new-game-selector.cfg:94
 #: ../data/level/titlescreen-new-game-selector.cfg:123
 msgid "empty"
-msgstr ""
+msgstr "leeg"
 
 #: ../data/level/titlescreen-new-game-selector.cfg:163
 #: ../data/objects/playable/difficulty-selector.cfg:24
@@ -6092,7 +6101,7 @@ msgstr "Ontspannend"
 
 #: ../data/level/titlescreen-new-game-selector.cfg:191
 msgid "Challenging"
-msgstr ""
+msgstr "Uitdagend"
 
 #: ../data/level/titlescreen.cfg:60
 msgid "LOAD GAME"
@@ -6104,23 +6113,23 @@ msgstr "NIEUW SPEL"
 
 #: ../data/level/titlescreen.cfg:125
 msgid "Press ${LEFT_KEY} or ${RIGHT_KEY} to walk."
-msgstr ""
+msgstr "Druk op ${LEFT_KEY} of ${RIGHT_KEY} om te lopen."
 
 #: ../data/level/titlescreen.cfg:125
 msgid "Tap ← or → to walk."
-msgstr ""
+msgstr "Tik op ← of → om te lopen."
 
 #: ../data/level/titlescreen.cfg:126
 msgid "Quickly press ${LEFT_KEY} or ${RIGHT_KEY} twice to run."
-msgstr ""
+msgstr "Druk twee keer snel op ${LEFT_KEY} of ${RIGHT_KEY} om te rennen."
 
 #: ../data/level/titlescreen.cfg:126
 msgid "Quickly tap ← or → twice to run."
-msgstr ""
+msgstr "Tik twee keer snel op ← of → om te rennen."
 
 #: ../data/level/titlescreen.cfg:128
 msgid "Press ${DOWN_KEY} to crouch."
-msgstr ""
+msgstr "Druk op ${DOWN_KEY} om te bukken."
 
 #: ../data/level/titlescreen.cfg:128
 msgid "Walk in front of a door or person,"
@@ -6136,11 +6145,11 @@ msgstr ""
 
 #: ../data/level/titlescreen.cfg:130
 msgid "Press ${JUMP_KEY} to jump."
-msgstr ""
+msgstr "Druk op ${JUMP_KEY} om te springen."
 
 #: ../data/level/titlescreen.cfg:130
 msgid "Tap ○ to jump."
-msgstr ""
+msgstr "Druk op ○ om te springen."
 
 #: ../data/level/titlescreen.cfg:131
 msgid "Press ${TONGUE_KEY} to use a character's attacks."
@@ -6159,6 +6168,8 @@ msgid ""
 "If that gets in the batter,\n"
 "I swear..."
 msgstr ""
+"Ik zweer...\n"
+"Als dat in het beslag komt."
 
 #: ../data/level/to-nenes-house-inside.cfg:36
 msgid "Hey Nene, what's cooking?"
@@ -6252,7 +6263,7 @@ msgstr "Maar als het zo moet,\nIk denk dat er nog wel een\nhartjescapsule ligt.\
 
 #: ../data/level/to-nenes-house-inside.cfg:65
 msgid "I might have something else for you."
-msgstr ""
+msgstr "Misschien heb ik nog iets anders voor je."
 
 #: ../data/level/to-nenes-house-inside.cfg:70
 msgid ""
@@ -6282,10 +6293,12 @@ msgid ""
 "You really did do it.\n"
 "You rock!"
 msgstr ""
+"Je hebt het echt gedaan.\n"
+"Je bent geweldig!"
 
 #: ../data/level/to-nenes-house-inside.cfg:83
 msgid "Is it cake?"
-msgstr ""
+msgstr "Is het taart?"
 
 #: ../data/level/to-nenes-house-inside.cfg:85
 msgid ""
@@ -6302,6 +6315,8 @@ msgid ""
 "Wow... That's... awesome, but\n"
 "why on earth are you giving this to me?"
 msgstr ""
+"Wauw... Dat is... geweldig, maar\n"
+"waarom in vredesnaam geef je dit aan mij?"
 
 #: ../data/level/to-nenes-house-inside.cfg:91
 msgid "It's a bit much for getting rid of a few ants!"
@@ -6312,16 +6327,20 @@ msgid ""
 "Honestly?  I had originally meant to\n"
 "give it to you as a birthday present."
 msgstr ""
+"Om eerlijk te zijn wou ik het eigenlijk\n"
+"aan je geven als verjaardagscadeau."
 
 #: ../data/level/to-nenes-house-inside.cfg:94
 msgid "I just never got around to it."
-msgstr ""
+msgstr "Ik ben er gewoon nooit aan toe gekomen."
 
 #: ../data/level/to-nenes-house-inside.cfg:95
 msgid ""
 "I don't need it myself, and I know\n"
 "you'd get a LOT of use out of it."
 msgstr ""
+"Ik heb het zelf niet nodig, en ik weet\n"
+"dat jij er VEEL meer aan hebt."
 
 #: ../data/level/to-nenes-house-inside.cfg:96
 msgid "So...  Happy (rather belated) Birthday!"
@@ -6332,6 +6351,8 @@ msgid ""
 "You know, I'm really lucky to\n"
 "have friends like you!"
 msgstr ""
+"Weet je, ik heb geluk\n"
+"met vrienden zoals jij!"
 
 #: ../data/level/to-nenes-house-inside.cfg:102
 msgid ""
@@ -6344,6 +6365,8 @@ msgid ""
 "...\n"
 "What?  No!"
 msgstr ""
+"...\n"
+"Wat? Nee!"
 
 #: ../data/level/to-nenes-house-inside.cfg:105
 msgid ""
@@ -6468,6 +6491,8 @@ msgid ""
 "But it was horrible!  And green!\n"
 "I've never seen something move that fast!"
 msgstr ""
+"Maar het was verschrikkelijk! En groen!\n"
+"Ik heb nog nooit iets zo snel zien bewegen."
 
 #: ../data/level/underground-pool.cfg:2461
 msgid ""
@@ -6477,7 +6502,7 @@ msgstr ""
 
 #: ../data/level/underground-pool.cfg:2463
 msgid "Yes, how did you ... know that?"
-msgstr ""
+msgstr "Ja, hoe ... wist je dat?"
 
 #: ../data/level/underground-pool.cfg:2466
 msgid "A certain design decision I've been regretting."
@@ -6491,7 +6516,7 @@ msgstr ""
 
 #: ../data/level/underground-pool.cfg:2470
 msgid "My head still hurts..."
-msgstr ""
+msgstr "Mijn hoofd doet nog steeds pijn."
 
 #: ../data/level/underground-pool.cfg:2474
 msgid ""
@@ -6510,12 +6535,16 @@ msgid ""
 "It's tempting when you're strong.\n"
 "People can't say no."
 msgstr ""
+"Het is verleidelijk als je sterk bent.\n"
+"Mensen kunnen geen \"nee\" zeggen"
 
 #: ../data/level/underground-pool.cfg:2480
 msgid ""
 "And sometimes,\n"
 "it's much faster to do things that way."
 msgstr ""
+"En soms is het veel sneller\n"
+"om dingen op die manier te doen."
 
 #: ../data/level/underground-pool.cfg:2482
 msgid ""
@@ -6525,7 +6554,7 @@ msgstr ""
 
 #: ../data/level/underground-pool.cfg:2484
 msgid "I'm sorry, sir."
-msgstr ""
+msgstr "Het spijt me, meneer."
 
 #: ../data/level/underground-pool.cfg:2487
 msgid "Noted."
@@ -6536,6 +6565,8 @@ msgid ""
 "We're lucky in this case that\n"
 "no real damage was done."
 msgstr ""
+"We mogen blij zijn dat er in dit\n"
+"geval niet veel schade is aangericht."
 
 #: ../data/level/underground-pool.cfg:2491
 msgid ""
@@ -6551,7 +6582,7 @@ msgstr ""
 
 #: ../data/level/underground-pool.cfg:2495
 msgid "However, I cannot stress this enough:"
-msgstr ""
+msgstr "Maar ik kan dit niet vaak genoeg zeggen:"
 
 #: ../data/level/underground-pool.cfg:2497
 msgid ""
@@ -6567,7 +6598,7 @@ msgstr ""
 
 #: ../data/level/underground-pool.cfg:2502
 msgid "Yup."
-msgstr ""
+msgstr "Yup."
 
 #: ../data/level/underground-pool.cfg:2504
 msgid ""
@@ -6577,13 +6608,15 @@ msgstr ""
 
 #: ../data/level/underground-pool.cfg:2507
 msgid "I have no idea."
-msgstr ""
+msgstr "Ik heb geen idee."
 
 #: ../data/level/underground-pool.cfg:2509
 msgid ""
 "But there are so many things\n"
 "we don't know about the world."
 msgstr ""
+"Maar er zijn zo veel dingen\n"
+"die we niet weten over de wereld."
 
 #: ../data/level/underground-pool.cfg:2511
 msgid ""
@@ -6593,7 +6626,7 @@ msgstr ""
 
 #: ../data/level/underground-pool.cfg:2513
 msgid "Who knows what we'll run into?"
-msgstr ""
+msgstr "Wie weet wat we tegen zullen komen?"
 
 #: ../data/level/underground-pool.cfg:2515
 msgid ""
@@ -6626,7 +6659,7 @@ msgstr ""
 
 #: ../data/level/underground-pool.cfg:2525
 msgid "Understood, sir."
-msgstr ""
+msgstr "Begrepen, meneer."
 
 #: ../data/level/underground-pool.cfg:2528
 msgid "Good."
@@ -6666,7 +6699,7 @@ msgstr "Waterige Steeg"
 #: ../data/object_prototypes/buyable_item.cfg:19
 #: ../data/object_prototypes/buyable_item.cfg:22
 msgid "The price is ${final_price} coins."
-msgstr ""
+msgstr "De prijs is ${final_price} munten."
 
 #: ../data/object_prototypes/buyable_item.cfg:19
 msgid "You don't have enough money."
@@ -6674,7 +6707,7 @@ msgstr "Je hebt niet genoeg geld."
 
 #: ../data/object_prototypes/buyable_item.cfg:23
 msgid "Do you want to buy the ${consts.name}?"
-msgstr ""
+msgstr "Wil je de ${consts.name} kopen?"
 
 #: ../data/object_prototypes/door.cfg:21
 msgid "Nope, it's locked."
@@ -6704,13 +6737,15 @@ msgstr ""
 #: ../data/objects/items/ability.cfg:8 ../data/objects/items/ability.cfg:9
 #: ../data/objects/items/ability.cfg:10
 msgid "You gained a new ability!"
-msgstr ""
+msgstr "Je hebt een nieuwe vaardigheid verkregen!"
 
 #: ../data/objects/items/ability.cfg:9
 msgid ""
 "This has excellent range,\n"
 "and does decent damage."
 msgstr ""
+"Dit heeft een uitstekend bereik,\n"
+"en doet redelijk veel schade."
 
 #: ../data/objects/items/ability.cfg:9
 msgid ""
@@ -6723,6 +6758,8 @@ msgid ""
 "These have excellent range and decent damage,\n"
 "but are somewhat draining to use."
 msgstr ""
+"Deze hebben een uitstekend bereik en doen redelijk\n"
+"veel schade, maar zijn vermoeiend om te gebruiken."
 
 #: ../data/objects/items/ability.cfg:10
 msgid ""
@@ -6733,11 +6770,11 @@ msgstr ""
 
 #: ../data/objects/items/ability.cfg:12
 msgid "Press ${ATTACK_KEY} to switch between abilities."
-msgstr ""
+msgstr "Druk op ${ATTACK_KEY} om van vaardigheid te wisselen."
 
 #: ../data/objects/items/ability.cfg:12
 msgid "Tap ♲ to switch between abilities."
-msgstr ""
+msgstr "Druk op ♲ om van vaardigheid te wisselen."
 
 #: ../data/objects/items/max_heart_object.cfg:8
 msgid ""
@@ -6898,7 +6935,7 @@ msgstr ""
 
 #: ../data/objects/items/trophy.cfg:28
 msgid "You found a golden trophy!"
-msgstr ""
+msgstr "Je hebt een gouden troffee gevonden!"
 
 #: ../data/objects/playable/difficulty-selector.cfg:31
 msgid "Intense"
@@ -6914,11 +6951,11 @@ msgstr "Milgram's Kasteel"
 
 #: ../data/objects/playable/menu_selector_load_game.cfg:84
 msgid "level"
-msgstr ""
+msgstr "level"
 
 #: ../data/objects/playable/menu_selector_load_game.cfg:85
 msgid "coins"
-msgstr ""
+msgstr "muntstukken"
 
 #: ../data/objects/playable/menu_selector_load_game.cfg:86
 msgid "visited levels"
