@@ -44,7 +44,7 @@ convert \( -background none -fill '#550b0b' -font '%{font}' -pointsize %{point_s
         -delete 0 -reverse -layers merge +repage png32:%{glyph}
   OUTLINE
 
-  :label => <<-'LABEL'
+  :label => <<-'LABEL',
 convert \( -background none -fill '#000000' -font '%{font}' -pointsize %{point_size} \
         label:%{character} \) \
         \( -background none -fill '#ffffff' -font '%{font}' -pointsize %{point_size} \
@@ -52,12 +52,22 @@ convert \( -background none -fill '#000000' -font '%{font}' -pointsize %{point_s
         \( -clone 0 -repage -0-1 \) \
         -delete 0 -reverse -layers merge +repage png32:%{glyph}
   LABEL
+
+  :label_dark => <<-'LABEL_DARK'
+convert \( -background none -fill '#000000' -font '%{font}' -pointsize %{point_size} \
+        label:%{character} \) \
+        \( -background none -fill '#5E1816' -font '%{font}' -pointsize %{point_size} \
+        label:%{character} \) \
+        \( -clone 0 -repage -0-1 \) \
+        -delete 0 -reverse -layers merge +repage png32:%{glyph}
+  LABEL_DARK
 }
 
 FONT_CFG_IDS = {
-  :dialog  => 'default',
-  :label   => 'door_label',
-  :outline => 'white_outline'
+  :dialog     => 'default',
+  :label      => 'door_label',
+  :label_dark => 'door_label_dark',
+  :outline    => 'white_outline'
 }
 
 # Naming scheme of font textures
@@ -172,15 +182,16 @@ LANGUAGES.each do |language|
   file fonts_cfg(language) do |t|
     File.open(t.name, 'w') do |file|
       file.write <<-EOF
-      {
-      font: ["@flatten",
+{
+font: ["@flatten",
 	"@include data/number_font_large.cfg",
 	"@include data/outline_font.#{language}.cfg",
 	"@include data/label_font.#{language}.cfg",
+	"@include data/label_dark_font.#{language}.cfg",
 	"@include data/dialog_font.#{language}.cfg"
-      ],
-      }
-      EOF
+],
+}
+EOF
     end
   end
 
