@@ -10,29 +10,19 @@ EXTRA_FML = Hash.new('').merge({
 })
 
 def source_font(language, style)
-  case style
-  when :dialog
-    ['source_fonts/unifont.pcf.gz', 16]
-  else # :outline, :label
-    case language
-    when 'zh_CN'
-      ['source_fonts/wenquanyi_9pt.pcf.gz', 12]
-    when 'ko'
-      ['source_fonts/dotum+ascii-10.bdf', 10]
-    when 'ja'
-      ['source_fonts/mplus+ascii-10.bdf', 10]
-    end
+  case language
+  when 'zh_CN'
+    ['source_fonts/wenquanyi_9pt.pcf.gz', 12]
+  when 'ko'
+    ['source_fonts/dotum+ascii-10.bdf', 10]
+  when 'ja'
+    ['source_fonts/mplus+ascii-10.bdf', 10]
   end
 end
 
 # Command template to generate glyph images for each font style
 FONT_STYLES = {
-  :dialog => <<-DIALOG, 
-convert -background none -font '%{font}' -pointsize %{point_size} \
-        -fill '#f5f5f5' label:%{character} png32:%{glyph}
-  DIALOG
-
-  :outline => <<-'OUTLINE',
+  :outline_font => <<-'OUTLINE',
 convert \( -background none -fill '#550b0b' -font '%{font}' -pointsize %{point_size} \
         label:%{character} \) \
         \( -background none -fill '#e9f9f9' -font '%{font}' -pointsize %{point_size} \
@@ -44,16 +34,7 @@ convert \( -background none -fill '#550b0b' -font '%{font}' -pointsize %{point_s
         -delete 0 -reverse -layers merge +repage png32:%{glyph}
   OUTLINE
 
-  :label => <<-'LABEL',
-convert \( -background none -fill '#000000' -font '%{font}' -pointsize %{point_size} \
-        label:%{character} \) \
-        \( -background none -fill '#ffffff' -font '%{font}' -pointsize %{point_size} \
-        label:%{character} \) \
-        \( -clone 0 -repage -0-1 \) \
-        -delete 0 -reverse -layers merge +repage png32:%{glyph}
-  LABEL
-
-  :label_dark => <<-'LABEL_DARK'
+  :label_font_dark => <<-'LABEL_DARK'
 convert \( -background none -fill '#000000' -font '%{font}' -pointsize %{point_size} \
         label:%{character} \) \
         \( -background none -fill '#5E1816' -font '%{font}' -pointsize %{point_size} \
@@ -64,24 +45,30 @@ convert \( -background none -fill '#000000' -font '%{font}' -pointsize %{point_s
 }
 
 FONT_CFG_IDS = {
-  :dialog     => 'default',
-  :label      => 'door_label',
-  :label_dark => 'door_label_dark',
-  :outline    => 'white_outline'
+  :label_font_dark => 'door_label_dark',
+  :outline_font    => 'white_outline'
 }
 
 # Naming scheme of font textures
 def font_texture(style, language)
-  "../../images/gui/#{style}_font.#{language}.png"
+  "../../images/gui/#{style}.#{language}.png"
 end
 
 # Naming scheme of locale specific fonts.cfg
 def fonts_cfg(language)
-  "../..//data/fonts.#{language}.cfg"
+  "../../data/fonts.#{language}.cfg"
 end
+
 # Naming scheme of fonts.cfg snippets
-def font_cfg_snippet(style, language)
-  "../../data/#{style}_font.#{language}.cfg"
+def font_cfg_snippet(style, language = nil, prefix = '../../')
+  # For non-latin fonts, insert . and language code
+  infix =
+    if language
+      ".#{language}"
+    else
+      ''
+    end
+  "#{prefix}data/fonts-bitmap/#{style}#{infix}.cfg"
 end
 
 # Naming scheme of character lists
@@ -150,11 +137,7 @@ FONT_STYLES.each_key do |style|
   task glyphs_task(style, 'latin') => work_path do
     latin_characters =
       ['a'..'z', 'A'..'Z', '0'..'9'].map(&:to_a).join + ' `~!#$%^&*()-_=+[]{};:",.<>/?|→←↑↓'
-    latin_font = ["../../", "anura"].map do |prefix|
-      "#{prefix}/data/fonts-bitmap/#{style}_font.cfg"
-    end.find do |file|
-      File.exist? file
-    end
+    latin_font = font_cfg_snippet(style, nil)
 
     sh "echo '#{latin_characters}' | ./extract_glyphs.rb #{work_path} #{latin_font}"
   end
@@ -184,11 +167,9 @@ LANGUAGES.each do |language|
       file.write <<-EOF
 {
 font: ["@flatten",
-	"@include data/number_font_large.cfg",
-	"@include data/outline_font.#{language}.cfg",
-	"@include data/label_font.#{language}.cfg",
-	"@include data/label_dark_font.#{language}.cfg",
-	"@include data/dialog_font.#{language}.cfg"
+	"@include #{font_cfg_snippet(:number_font_large)}",
+	"@include #{font_cfg_snippet(:outline_font, language)}",
+	"@include #{font_cfg_snippet(:label_font_dark, language)}",
 ],
 }
 EOF
@@ -231,7 +212,7 @@ EOF
     task font_texture => [work_path, glyphs_task, glyphs_task(style, 'latin')] do
       sh <<-SCRIPT
       cp #{work_path(style, 'latin')}/* #{work_path}
-      ./build_font.rb #{work_path} ../../data/#{style}_font.#{language}.cfg #{FONT_CFG_IDS[style]}
+      ./build_font.rb #{work_path} #{font_cfg_snippet(style, language)} #{FONT_CFG_IDS[style]}
       SCRIPT
     end
   end
