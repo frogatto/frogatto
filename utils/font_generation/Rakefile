@@ -91,7 +91,7 @@ end
 
 # Naming scheme of po files
 def po_file(language)
-  "../../po/#{language}.po"
+  "../../locale/#{language}/LC_MESSAGES/#{language}.po"
 end
 
 # Naming scheme of font generation working path
@@ -151,7 +151,7 @@ FONT_STYLES.each_key do |style|
     latin_characters =
       ['a'..'z', 'A'..'Z', '0'..'9'].map(&:to_a).join + ' `~!#$%^&*()-_=+[]{};:",.<>/?|→←↑↓'
     latin_font = ["../../", "anura"].map do |prefix|
-      "#{prefix}/data/#{style}_font.cfg"
+      "#{prefix}/data/fonts-bitmap/#{style}_font.cfg"
     end.find do |file|
       File.exist? file
     end
