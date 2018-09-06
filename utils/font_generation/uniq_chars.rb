@@ -10,6 +10,6 @@ add = []
 
 # these don't need glyphs, and/or cause the texture generation scripts
 # to fail
-minus = ["\n", "\\", '@', ' ']
+minus = ["\n", "\\", '@']
 
 STDOUT.write (ARGF.read.chars.to_a + add - minus).uniq.join

@@ -47,6 +47,12 @@ access to a TrueType font and the po file for the language.
 Before using the system, it may be needed to edit the top section of
 Rakefile.fonts, to specify fonts used in each language.
 
+It's also necessary to make either a copy or symbolic link of the Anura
+repository, named "anura", in this directory, because the "dialog" and
+"label" fonts are found in the Anura repository. Alternatively, you can
+copy the cfg and png files for those fonts into this repository before
+running the script. 
+
 To use the system, simply run::
 
     rake fonts
@@ -77,10 +83,20 @@ showing their inter-dependencies:
 
 * po/<locale>.po: translation file
 * source_fonts/*: general purpose fonts used to generate the texture
+* data/fonts-bitmap/{outline_font,label_font_dark}.cfg: Latin fonts
+  some of whose glyphs are copied
+* img/gui/{outline_font,label_font_dark}.png: Latin fonts
+  some of whose glyphs are copied
+* ./anura/data/fonts-bitmap/{dialog_font,label_font}.cfg: Latin fonts
+  which reside in the Anura repository
+* ./anura/img/gui/{dialog_font,label_font}.png: Latin fonts
+  which reside in the Anura repository
 * tmp/fonts/<locale>/characters.txt: list of characters
 * tmp/fonts/<locale>/{dialog,outline,label}/<codepoint>.png: glyph image
 * images/gui/{dialog,outline,label}_font.<locale>.png: font texture
-* data/fonts.<locale>.cfg: glyph location data
+* data/fonts-bitmap/{{dialog,outline,label}_font,label_font_dark}.<locale>.cfg:
+  glyph location data
+* data/fonts.<locale>.cfg: aggregate font data
 
 Currently the following TrueType fonts are used:
 * GNU Unifont http://unifoundry.com/unifont.html

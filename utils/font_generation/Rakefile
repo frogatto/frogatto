@@ -10,18 +10,28 @@ EXTRA_FML = Hash.new('').merge({
 })
 
 def source_font(language, style)
-  case language
-  when 'zh_CN'
-    ['source_fonts/wenquanyi_9pt.pcf.gz', 12]
-  when 'ko'
-    ['source_fonts/dotum+ascii-10.bdf', 10]
-  when 'ja'
-    ['source_fonts/mplus+ascii-10.bdf', 10]
+  case style
+  when :dialog_font
+    ['source_fonts/unifont.pcf.gz', 16]
+  else # :outline_font, :label_font, :label_font_dark
+    case language
+    when 'zh_CN'
+      ['source_fonts/wenquanyi_9pt.pcf.gz', 12]
+    when 'ko'
+      ['source_fonts/dotum+ascii-10.bdf', 10]
+    when 'ja'
+      ['source_fonts/mplus+ascii-10.bdf', 10]
+    end
   end
 end
 
 # Command template to generate glyph images for each font style
 FONT_STYLES = {
+  :dialog_font => <<-'DIALOG', 
+convert -background none -font '%{font}' -pointsize %{point_size} \
+        -fill '#f5f5f5' label:%{character} png32:%{glyph}
+  DIALOG
+
   :outline_font => <<-'OUTLINE',
 convert \( -background none -fill '#550b0b' -font '%{font}' -pointsize %{point_size} \
         label:%{character} \) \
@@ -34,6 +44,15 @@ convert \( -background none -fill '#550b0b' -font '%{font}' -pointsize %{point_s
         -delete 0 -reverse -layers merge +repage png32:%{glyph}
   OUTLINE
 
+  :label_font => <<-'LABEL',
+convert \( -background none -fill '#000000' -font '%{font}' -pointsize %{point_size} \
+        label:%{character} \) \
+        \( -background none -fill '#ffffff' -font '%{font}' -pointsize %{point_size} \
+        label:%{character} \) \
+        \( -clone 0 -repage -0-1 \) \
+        -delete 0 -reverse -layers merge +repage png32:%{glyph}
+  LABEL
+
   :label_font_dark => <<-'LABEL_DARK'
 convert \( -background none -fill '#000000' -font '%{font}' -pointsize %{point_size} \
         label:%{character} \) \
@@ -45,6 +64,8 @@ convert \( -background none -fill '#000000' -font '%{font}' -pointsize %{point_s
 }
 
 FONT_CFG_IDS = {
+  :dialog_font     => 'default',
+  :label_font      => 'door_label',
   :label_font_dark => 'door_label_dark',
   :outline_font    => 'white_outline'
 }
@@ -137,7 +158,14 @@ FONT_STYLES.each_key do |style|
   task glyphs_task(style, 'latin') => work_path do
     latin_characters =
       ['a'..'z', 'A'..'Z', '0'..'9'].map(&:to_a).join + ' `~!#$%^&*()-_=+[]{};:",.<>/?|→←↑↓'
-    latin_font = font_cfg_snippet(style, nil)
+    latin_font = ["../../", "./anura/"].map do |prefix|
+      font_cfg_snippet(style, nil, prefix)
+    end.find do |file|
+      File.exist? file
+    end
+    unless latin_font
+      abort "Missing #{font_cfg_snippet(style, nil, '')}. For 'dialog' and 'label' fonts this is located in the Anura repository, so make sure ./anura contains or links to it."
+    end
 
     sh "echo '#{latin_characters}' | ./extract_glyphs.rb #{work_path} #{latin_font}"
   end
