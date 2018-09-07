@@ -195,9 +195,15 @@ LANGUAGES.each do |language|
       file.write <<-EOF
 {
 font: ["@flatten",
-	"@include #{font_cfg_snippet(:number_font_large)}",
-	"@include #{font_cfg_snippet(:outline_font, language)}",
-	"@include #{font_cfg_snippet(:label_font_dark, language)}",
+	"@include #{font_cfg_snippet(:number_font, nil, '')}",
+	"@include #{font_cfg_snippet(:number_font_large, nil, '')}",
+	"@include #{font_cfg_snippet(:number_font_enormous, nil, '')}",
+	"@include #{font_cfg_snippet(:outline_font, language, '')}",
+	"@include #{font_cfg_snippet(:label_font, language, '')}",
+	"@include #{font_cfg_snippet(:label_font_dark, language, '')}",
+	"@include #{font_cfg_snippet(:dialog_font, language, '')}",
+	"@include #{font_cfg_snippet(:language_name_font, nil, '')}",
+	"@include #{font_cfg_snippet(:title_font, nil, '')}",
 ],
 }
 EOF
