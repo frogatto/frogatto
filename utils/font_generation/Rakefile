@@ -222,6 +222,9 @@ EOF
       # escape for shell
       if character == "'"
         character = %q("'")
+      elsif character == ' '
+        # ImageMagick seems to require the space character to be escaped
+        character = %q('\ ')
       else
         character = "'#{character}'"
       end
