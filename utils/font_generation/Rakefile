@@ -54,9 +54,7 @@ convert \( -background none -fill '#000000' -font '%{font}' -pointsize %{point_s
   LABEL
 
   :label_font_dark => <<-'LABEL_DARK'
-convert \( -background none -fill '#000000' -font '%{font}' -pointsize %{point_size} \
-        label:%{character} \) \
-        \( -background none -fill '#5E1816' -font '%{font}' -pointsize %{point_size} \
+convert \( -background none -fill '#5E1816' -font '%{font}' -pointsize %{point_size} \
         label:%{character} \) \
         \( -clone 0 -repage -0-1 \) \
         -delete 0 -reverse -layers merge +repage png32:%{glyph}
