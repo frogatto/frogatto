@@ -11,9 +11,9 @@ EXTRA_FML = Hash.new('').merge({
 
 def source_font(language, style)
   case style
-  when :dialog
+  when :dialog_font
     ['source_fonts/unifont.pcf.gz', 16]
-  else # :outline, :label
+  else # :outline_font, :label_font, :label_font_dark
     case language
     when 'zh_CN'
       ['source_fonts/wenquanyi_9pt.pcf.gz', 12]
@@ -27,12 +27,12 @@ end
 
 # Command template to generate glyph images for each font style
 FONT_STYLES = {
-  :dialog => <<-DIALOG, 
+  :dialog_font => <<-'DIALOG', 
 convert -background none -font '%{font}' -pointsize %{point_size} \
         -fill '#f5f5f5' label:%{character} png32:%{glyph}
   DIALOG
 
-  :outline => <<-'OUTLINE',
+  :outline_font => <<-'OUTLINE',
 convert \( -background none -fill '#550b0b' -font '%{font}' -pointsize %{point_size} \
         label:%{character} \) \
         \( -background none -fill '#e9f9f9' -font '%{font}' -pointsize %{point_size} \
@@ -44,7 +44,7 @@ convert \( -background none -fill '#550b0b' -font '%{font}' -pointsize %{point_s
         -delete 0 -reverse -layers merge +repage png32:%{glyph}
   OUTLINE
 
-  :label => <<-'LABEL'
+  :label_font => <<-'LABEL',
 convert \( -background none -fill '#000000' -font '%{font}' -pointsize %{point_size} \
         label:%{character} \) \
         \( -background none -fill '#ffffff' -font '%{font}' -pointsize %{point_size} \
@@ -52,26 +52,42 @@ convert \( -background none -fill '#000000' -font '%{font}' -pointsize %{point_s
         \( -clone 0 -repage -0-1 \) \
         -delete 0 -reverse -layers merge +repage png32:%{glyph}
   LABEL
+
+  :label_font_dark => <<-'LABEL_DARK'
+convert \( -background none -fill '#5E1816' -font '%{font}' -pointsize %{point_size} \
+        label:%{character} \) \
+        \( -clone 0 -repage -0-1 \) \
+        -delete 0 -reverse -layers merge +repage png32:%{glyph}
+  LABEL_DARK
 }
 
 FONT_CFG_IDS = {
-  :dialog  => 'default',
-  :label   => 'door_label',
-  :outline => 'white_outline'
+  :dialog_font     => 'default',
+  :label_font      => 'door_label',
+  :label_font_dark => 'door_label_dark',
+  :outline_font    => 'white_outline'
 }
 
 # Naming scheme of font textures
 def font_texture(style, language)
-  "../../images/gui/#{style}_font.#{language}.png"
+  "../../images/gui/#{style}.#{language}.png"
 end
 
 # Naming scheme of locale specific fonts.cfg
 def fonts_cfg(language)
-  "../..//data/fonts.#{language}.cfg"
+  "../../data/fonts.#{language}.cfg"
 end
+
 # Naming scheme of fonts.cfg snippets
-def font_cfg_snippet(style, language)
-  "../../data/#{style}_font.#{language}.cfg"
+def font_cfg_snippet(style, language = nil, prefix = '../../')
+  # For non-latin fonts, insert . and language code
+  infix =
+    if language
+      ".#{language}"
+    else
+      ''
+    end
+  "#{prefix}data/fonts-bitmap/#{style}#{infix}.cfg"
 end
 
 # Naming scheme of character lists
@@ -81,7 +97,7 @@ end
 
 # Naming scheme of po files
 def po_file(language)
-  "../../po/#{language}.po"
+  "../../locale/#{language}/LC_MESSAGES/#{language}.po"
 end
 
 # Naming scheme of font generation working path
@@ -140,10 +156,13 @@ FONT_STYLES.each_key do |style|
   task glyphs_task(style, 'latin') => work_path do
     latin_characters =
       ['a'..'z', 'A'..'Z', '0'..'9'].map(&:to_a).join + ' `~!#$%^&*()-_=+[]{};:",.<>/?|→←↑↓'
-    latin_font = ["../../", "anura"].map do |prefix|
-      "#{prefix}/data/#{style}_font.cfg"
+    latin_font = ["../../", "./anura/"].map do |prefix|
+      font_cfg_snippet(style, nil, prefix)
     end.find do |file|
       File.exist? file
+    end
+    unless latin_font
+      abort "Missing #{font_cfg_snippet(style, nil, '')}. For 'dialog' and 'label' fonts this is located in the Anura repository, so make sure ./anura contains or links to it."
     end
 
     sh "echo '#{latin_characters}' | ./extract_glyphs.rb #{work_path} #{latin_font}"
@@ -172,15 +191,20 @@ LANGUAGES.each do |language|
   file fonts_cfg(language) do |t|
     File.open(t.name, 'w') do |file|
       file.write <<-EOF
-      {
-      font: ["@flatten",
-	"@include data/number_font_large.cfg",
-	"@include data/outline_font.#{language}.cfg",
-	"@include data/label_font.#{language}.cfg",
-	"@include data/dialog_font.#{language}.cfg"
-      ],
-      }
-      EOF
+{
+font: ["@flatten",
+	"@include #{font_cfg_snippet(:number_font, nil, '')}",
+	"@include #{font_cfg_snippet(:number_font_large, nil, '')}",
+	"@include #{font_cfg_snippet(:number_font_enormous, nil, '')}",
+	"@include #{font_cfg_snippet(:outline_font, language, '')}",
+	"@include #{font_cfg_snippet(:label_font, language, '')}",
+	"@include #{font_cfg_snippet(:label_font_dark, language, '')}",
+	"@include #{font_cfg_snippet(:dialog_font, language, '')}",
+	"@include #{font_cfg_snippet(:language_name_font, nil, '')}",
+	"@include #{font_cfg_snippet(:title_font, nil, '')}",
+],
+}
+EOF
     end
   end
 
@@ -196,6 +220,9 @@ LANGUAGES.each do |language|
       # escape for shell
       if character == "'"
         character = %q("'")
+      elsif character == ' '
+        # ImageMagick seems to require the space character to be escaped
+        character = %q('\ ')
       else
         character = "'#{character}'"
       end
@@ -220,7 +247,7 @@ LANGUAGES.each do |language|
     task font_texture => [work_path, glyphs_task, glyphs_task(style, 'latin')] do
       sh <<-SCRIPT
       cp #{work_path(style, 'latin')}/* #{work_path}
-      ./build_font.rb #{work_path} ../../data/#{style}_font.#{language}.cfg #{FONT_CFG_IDS[style]}
+      ./build_font.rb #{work_path} #{font_cfg_snippet(style, language)} #{FONT_CFG_IDS[style]}
       SCRIPT
     end
   end
