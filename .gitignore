@@ -4,3 +4,6 @@ phydemo/
 .DS_Store
 *\~
 .directory
+
+# Vim stuff
+*.swp
