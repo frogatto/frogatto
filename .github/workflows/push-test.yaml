@@ -1,0 +1,43 @@
+name: Unit Tests
+on: push
+
+jobs:
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Install Dependencies
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo apt-get install --no-install-recommends --no-install-suggests \
+            libboost-dev \
+            libboost-filesystem-dev \
+            libboost-locale-dev \
+            libboost-regex-dev \
+            libboost-system-dev \
+            libglew-dev \
+            libglm-dev \
+            libsdl2-dev \
+            libsdl2-image-dev \
+            libsdl2-mixer-dev \
+            libsdl2-ttf-dev \
+            libvorbis-dev
+
+      - name: Checkout Anura
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+        with:
+          repository: 'anura-engine/anura'
+          submodules: true
+
+      - name: Build Anura
+        # Number of cores * 3
+        run: make -j "$(($(getconf _NPROCESSORS_ONLN) * 3))"
+
+      - name: Checkout Frogatto
+        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # v3.0.2
+        with:
+          path: modules/frogatto4
+
+      - name: Run Unit Tests
+        run: ./anura --module=frogatto4 --tests
