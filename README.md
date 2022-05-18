@@ -1,5 +1,5 @@
 # Frogatto & Friends
-[![Latest release](https://img.shields.io/github/v/tag/frogatto/frogatto?label=Latest%20release)](https://github.com/frogatto/frogatto/releases) [![Anura](https://img.shields.io/badge/Engine-Anura-informational)](https://github.com/anura-engine/anura) [![Discord](https://img.shields.io/discord/225816341737766912?label=Discord&logo=Discord&logoColor=white)](https://discord.gg/duSVAX3)
+[![Latest release](https://img.shields.io/github/v/tag/frogatto/frogatto?label=Latest%20release)](https://github.com/frogatto/frogatto/releases) [![Anura](https://img.shields.io/badge/Engine-Anura-informational)](https://github.com/anura-engine/anura) [![Discord](https://img.shields.io/discord/225816341737766912?label=Discord&logo=Discord&logoColor=white)](https://discord.gg/duSVAX3) [![Matrix](https://img.shields.io/matrix/frogatto:matrix.org?label=Matrix)](https://matrix.to/#/!CBBwOSRlKVFiheKBpP:matrix.org)
 
 **Frogatto & Friends** is an action-adventure game, starring a certain quixotic frog.  We're trying to push 2D platforming, pixel-art, and music into uncharted territory; we hope you like the results!
 
