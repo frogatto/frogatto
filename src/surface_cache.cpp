@@ -116,7 +116,7 @@ surface get_no_cache(const std::string& key, std::string* full_filename)
 	}
 #endif // ANDROID
 	//std::cerr << "loading image '" << fname << "'\n";
-	if(surf.get() == false || surf->w == 0) {
+	if((!surf.get()) || !surf->w) {
 		if(key != "") {
 			std::cerr << "failed to load image '" << key << "'\n";
 		}
