@@ -60,7 +60,7 @@ game: $(objects)
 	$(CCACHE) $(CXX) \
 		$(BASE_CXXFLAGS) $(LDFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(INC) \
 		$(objects) -o game \
-		$(LIBS) -lboost_regex-mt -lboost_system-mt -lpthread -fthreadsafe-statics
+		$(LIBS) -lboost_regex -lboost_system -lpthread -fthreadsafe-statics
 
 # pull in dependency info for *existing* .o files
 -include $(objects:.o=.d)
@@ -69,7 +69,7 @@ server: $(server_objects)
 	$(CCACHE) $(CXX) \
 		$(BASE_CXXFLAGS) $(LDFLAGS) $(CXXFLAGS) $(CPPFLAGS) \
 		$(server_objects) -o server \
-		$(LIBS) -lboost_regex-mt -lboost_system-mt -lboost_thread-mt -lboost_iostreams-mt
+		$(LIBS) -lboost_regex -lboost_system -lboost_thread -lboost_iostreams
 
 clean:
 	rm -f *.o *.d game
