@@ -58,7 +58,7 @@ public:
 	unsigned int get_id() const;
 	static void set_current_texture(unsigned int id);
 	void set_as_current_texture() const;
-	bool valid() const { return id_; }
+	bool valid() const { return (bool) id_; }
 
 	static texture get(const std::string& str, int options=0);
 	static texture get(const std::string& str, const std::string& algorithm);
