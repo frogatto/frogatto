@@ -165,10 +165,12 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	if (glBlendEquationOES) {
 		glBlendEquationOES(GL_FUNC_REVERSE_SUBTRACT_OES);
 	}
-#elif defined(GL_OES_blend_subtract)
-	glBlendEquationOES(GL_FUNC_REVERSE_SUBTRACT_OES);
 #elif defined(USE_GLES2)
+#if defined(GL_OES_blend_subtract)
+	glBlendEquationOES(GL_FUNC_REVERSE_SUBTRACT_OES);
+#else
 	glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
+#endif
 #else
 	if(GLEW_EXT_blend_equation_separate && (GLEW_ARB_imaging || GLEW_VERSION_1_4)) {
 		glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
@@ -212,10 +214,12 @@ bool water::draw_area(const water::area& a, int x, int y, int w, int h) const
 	if (glBlendEquationOES) {
 		glBlendEquationOES(GL_FUNC_ADD_OES);
 	}
-#elif defined(GL_OES_blend_subtract)
-	glBlendEquationOES(GL_FUNC_ADD_OES);
 #elif defined(USE_GLES2)
+#if defined(GL_OES_blend_subtract)
+	glBlendEquationOES(GL_FUNC_ADD_OES);
+#else
 	glBlendEquation(GL_FUNC_ADD);
+#endif
 #else
 	if (GLEW_EXT_blend_equation_separate && (GLEW_ARB_imaging || GLEW_VERSION_1_4)) {
 		glBlendEquation(GL_FUNC_ADD);
