@@ -71,7 +71,7 @@ foreach my $level (@levels) {
 	my $coins = 0;
 
 	while(my $line = <LVL>) {
-		if(my ($toilet) = $line =~ /type"?: "(save_toilet|dungeon_save_door)"/) {
+		if(my ($toilet) = $line =~ /type"?: "(save_statue)"/) {
 			++$saves;
 		}
 
@@ -92,11 +92,11 @@ foreach my $level (@levels) {
 			$bg_palette = $bg_palette_;
 		}
 		
-		if(my ($heart_object) = $line =~ /type"?: "(max_heart_object)"/) {
+		if(my ($heart_object) = $line =~ /kind"?: "?[\@eval enum]*(item_heart_container)"?/) {
 			++$full_heart_pieces;
 		}
 		
-		if(my ($heart_object) = $line =~ /type"?: "(partial_max_heart_object)"/) {
+		if(my ($heart_object) = $line =~ /kind"?: "?[\@eval enum]*(item_partial_heart_container)"?/) {
 			++$heart_pieces;
 		}
 		
