@@ -31,7 +31,7 @@ web_server::web_server(boost::asio::io_service& io_service, int port)
 
 void web_server::start_accept()
 {
-	socket_ptr socket(new tcp::socket(acceptor_.get_io_service()));
+	socket_ptr socket(new tcp::socket(acceptor_.get_executor()));
 	acceptor_.async_accept(*socket, boost::bind(&web_server::handle_accept, this, socket, boost::asio::placeholders::error));
 
 }
