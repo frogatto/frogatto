@@ -7,8 +7,8 @@ cat <<EOF
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Frogatto v1.0.3\n"
-"Report-Msgid-Bugs-To: http://code.google.com/p/frogatto/issues/list\n"
+"Project-Id-Version: Frogatto v4.29\n"
+"Report-Msgid-Bugs-To: https://github.com/frogatto/frogatto/issues\n"
 EOF
 echo '"POT-Creation-Date: '$(date +"%Y-%m-%d %H:%M%z")"\\\\n\""
 cat <<EOF
