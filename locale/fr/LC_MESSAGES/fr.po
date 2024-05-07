@@ -38,11 +38,11 @@ msgstr "Langue"
 
 #: ../../../src/controls_dialog.cpp:93
 msgid "Item"
-msgstr ""
+msgstr "Objet"
 
 #: ../../../src/controls_dialog.cpp:97
 msgid "Sprint"
-msgstr ""
+msgstr "Courir"
 
 #: ../../../src/controls_dialog.cpp:99 ../../../src/language_dialog.cpp:124
 msgid "Back"
@@ -62,11 +62,11 @@ msgstr ""
 
 #: ../../../src/draw_scene.cpp:520
 msgid "Achievement Unlocked!"
-msgstr "Accomplissement débloqué !"
+msgstr "Succès débloqué !"
 
 #: ../../../src/dropdown_widget.cpp:183
 msgid "No items"
-msgstr ""
+msgstr "Pas d'objets"
 
 #: ../../../src/file_chooser_dialog.cpp:197
 msgid "File already exists."
